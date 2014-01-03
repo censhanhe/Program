@@ -6,9 +6,9 @@
 /* Debug mode. */
 #define GAIA_DEBUG_CODEPURE
 #ifdef GAIA_DEBUG_CODEPURE
-#	define GAIA_DEBUG_CODEPURE_INL
+#	define GAIA_DEBUG_CODEPURE_FUNC extern
 #else
-#	define GAIA_DEBUG_CODEPURE_INL GINL
+#	define GAIA_DEBUG_CODEPURE_FUNC GINL
 #endif
 
 /* OS flag. */

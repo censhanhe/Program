@@ -2,6 +2,7 @@
 using namespace GAIA;
 using namespace GAIA::CONTAINER;
 using namespace GAIA::ALGORITHM;
+using namespace GAIA::MATH;
 
 void main()
 {
@@ -46,5 +47,11 @@ void main()
 		U64 uWriteSize = buf.size_w();
 		U64 uReadSize = buf.size_r();
 		uWriteSize = uReadSize;
+	}
+
+	// Basic math test.
+	{
+		REAL f = xcos(10.0F);
+		f = 0.0F;
 	}
 }
