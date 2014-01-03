@@ -31,6 +31,7 @@ namespace GAIA
 	/* Float type declaration. */
 	typedef float F32;
 	typedef double F64;
+	typedef float REAL;
 
 	/* Char type declaration. */
 	typedef char CHAR;

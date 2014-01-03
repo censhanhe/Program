@@ -30,6 +30,9 @@
 #include	"gaia_container_vector.h"
 #include	"gaia_container_buffer.h"
 
+#include	"gaia_math_basic.h"
+#include	"gaia_math_cookies.h"
+
 #include	"gaia_datamodel.h"
 #include	"gaia_linkmodel.h"
 
