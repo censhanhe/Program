@@ -3,9 +3,9 @@
 
 namespace GAIA
 {
-	template <typename _SizeType> GINL GAIA::VOID* memcpy(GAIA::VOID* dst, const GAIA::VOID* src, _SizeType size)
+	template <typename _SizeType> GINL GAIA::GVOID* memcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, _SizeType size)
 	{
-		GAIA::VOID* pRet = dst;
+		GAIA::GVOID* pRet = dst;
 		while(size > sizeof(GAIA::UM))
 		{
 			*(GAIA::UM*)dst = *(GAIA::UM*)src;
@@ -25,13 +25,13 @@ namespace GAIA
 		return pRet;
 	}
 
-	template <typename _SizeType> GINL GAIA::VOID* memset(GAIA::VOID* dst, GAIA::N8 ch, _SizeType size)
+	template <typename _SizeType> GINL GAIA::GVOID* memset(GAIA::GVOID* dst, GAIA::N8 ch, _SizeType size)
 	{
 		GAIA::UM clean = 0;
 		for(N32 c = 0; c < sizeof(GAIA::UM) / sizeof(GAIA::N8); c++)
 			clean |= (ch << (c * 8));
 
-		GAIA::VOID* pRet = dst;
+		GAIA::GVOID* pRet = dst;
 		while(size > sizeof(GAIA::UM))
 		{
 			*(GAIA::UM*)dst = (GAIA::UM)clean;

@@ -12,9 +12,9 @@ namespace GAIA
 		ENUM_END
 
 	public:
-		virtual	GAIA::BL		Bind(const GAIA::TCHAR* pszSource, GAIA::UM type) = 0;
+		virtual	GAIA::BL		Bind(const GAIA::GTCH* pszSource, GAIA::UM type) = 0;
 		virtual GAIA::BL		Unbind() const = 0;
-		virtual GAIA::TCHAR*	GetBindingSourceName() const = 0;
+		virtual GAIA::GTCH*		GetBindingSourceName() const = 0;
 		virtual _DataSizeType	GetSize() const = 0;
 		virtual GAIA::BL		Seek(_DataSizeType position, N8 nDirection) = 0;
 		virtual GAIA::BL		Read() = 0;

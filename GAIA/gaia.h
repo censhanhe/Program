@@ -41,6 +41,9 @@
 #include	"gaia_stream.h"
 #include	"gaia_dataphase_xml.h"
 
+#include	"gaia_thread.h"
+#include	"gaia_process.h"
+
 #include	"gaia_framework.h"
 #include	"gaia_id.h"
 #include	"gaia_hd.h"

@@ -3,9 +3,8 @@
 
 namespace GAIA
 {
-	namespace ERROR
+	namespace ERROR_MANAGEMENT
 	{
-		
 	};
 };
 

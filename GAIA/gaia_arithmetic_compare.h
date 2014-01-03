@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	template <typename _Type> GINL const _Type& max(const _Type& v1, const _Type& v2)
+	template <typename _DataType> GINL const _DataType& max(const _DataType& v1, const _DataType& v2)
 	{
 		if(v1 > v2)
 			return v1;
@@ -13,7 +13,7 @@ namespace GAIA
 			return v1;
 	}
 
-	template <typename _Type> GINL const _Type& min(const _Type& v1, const _Type& v2)
+	template <typename _DataType> GINL const _DataType& min(const _DataType& v1, const _DataType& v2)
 	{
 		if(v1 < v2)
 			return v1;

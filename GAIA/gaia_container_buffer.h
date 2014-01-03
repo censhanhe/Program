@@ -8,14 +8,14 @@ namespace GAIA
 		template <typename _SizeIncreaserType, typename _DataSizeType> class Buffer
 		{
 		public:
-			GINL Buffer(){m_pFront = m_pBack = m_pRead = m_pWrite = NULL;}
-			GINL ~Buffer(){if(m_pFront != NULL) delete[] m_pFront;}
+			GINL Buffer(){m_pFront = m_pBack = m_pRead = m_pWrite = GNULL;}
+			GINL ~Buffer(){if(m_pFront != GNULL) delete[] m_pFront;}
 			GINL GAIA::U8* front() const{return m_pFront;}
 			GINL GAIA::U8* back() const{return m_pBack;}
 			GINL _DataSizeType size_r() const{return m_pRead - m_pFront;}
 			GINL _DataSizeType size_w() const{return m_pWrite - m_pFront;}
 
-			template <typename ObjType> GINL GAIA::VOID push(const ObjType& obj)
+			template <typename ObjType> GINL GAIA::GVOID push(const ObjType& obj)
 			{
 				GAIA::U8* pNew = this->alloc(sizeof(obj));
 				memcpy(pNew, &obj, sizeof(obj));
@@ -37,7 +37,7 @@ namespace GAIA
 			GAIA::U8* alloc(_DataSizeType size)
 			{
 				if(size == 0)
-					return NULL;
+					return GNULL;
 				if(m_pBack - m_pWrite >= size)
 				{
 					GAIA::U8* pRet = m_pWrite;
@@ -50,7 +50,7 @@ namespace GAIA
 				GAIA::U8* pNew = new GAIA::U8[newsize];
 				if(m_pWrite != m_pFront)
 					memcpy(pNew, m_pFront, m_pWrite - m_pFront);
-				if(m_pFront != NULL)
+				if(m_pFront != GNULL)
 					delete[] m_pFront;
 
 				m_pRead = pNew + (m_pRead - m_pFront);

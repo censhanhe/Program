@@ -25,7 +25,11 @@
 #	undef wchar_t
 #	undef __wchar_t
 #	undef unsigned
+
 #	include <math.h>
+
+#	define NOMINMAX
+#	include <windows.h>
 #endif
 #include "gaia.h"
 

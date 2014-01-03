@@ -4,6 +4,18 @@ using namespace GAIA::CONTAINER;
 using namespace GAIA::ALGORITHM;
 using namespace GAIA::MATH;
 
+class MyThread : public GAIA::THREAD::Thread
+{
+public:
+	MyThread(){}
+	~MyThread(){}
+
+	virtual GAIA::GVOID WorkProcedure()
+	{
+		N32 nDebug = 0;
+	}
+};
+
 void main()
 {
 	// Array test.
@@ -53,5 +65,12 @@ void main()
 	{
 		REAL f = xcos(10.0F);
 		f = 0.0F;
+	}
+
+	// Thread test.
+	{
+		MyThread thread;
+		thread.Run();
+		thread.Wait(0xFFFFFFFF);
 	}
 }

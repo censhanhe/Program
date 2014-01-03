@@ -34,12 +34,12 @@ namespace GAIA
 	typedef float REAL;
 
 	/* Char type declaration. */
-	typedef char CHAR;
-	typedef wchar_t WCHAR;
+	typedef char GCH;
+	typedef wchar_t GWCH;
 #if GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
-	typedef wchar_t TCHAR;
+	typedef wchar_t GTCH;
 #else
-	typedef char TCHAR;
+	typedef char GTCH;
 #endif
 
 	/* Bool enum. */
@@ -47,10 +47,10 @@ namespace GAIA
 	static const BL False = 0;
 
 	/* Common constants. */
-	#define NULL 0
+	#define GNULL 0
 
 	/* Void. */
-	typedef void VOID;
+	typedef void GVOID;
 
 	/* Undefine origin type. */
 #ifdef GAIA_DEBUG_CODEPURE

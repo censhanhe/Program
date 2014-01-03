@@ -7,8 +7,10 @@
 #define GAIA_DEBUG_CODEPURE
 #ifdef GAIA_DEBUG_CODEPURE
 #	define GAIA_DEBUG_CODEPURE_FUNC extern
+#	define GAIA_DEBUG_CODEPURE_MEMFUNC
 #else
 #	define GAIA_DEBUG_CODEPURE_FUNC GINL
+#	define GAIA_DEBUG_CODEPURE_MEMFUNC GINL
 #endif
 
 /* OS flag. */
@@ -39,7 +41,7 @@
 #endif
 
 /* Enum helper. */
-#define ENUM_BEGIN(name) enum name{
+#define ENUM_BEGIN(name) enum name{name##_INVALID = 0,
 #define ENUM_END name##_FORCE##=GAIA_MAX_UNSIGNED_INTEGER,};
 
 #endif
