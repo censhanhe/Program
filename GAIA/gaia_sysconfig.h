@@ -30,6 +30,7 @@
 /* Machine bit count flag. */
 #define GAIA_MACHINE32 32
 #define	GAIA_MACHINE64 64
+#define GAIA_MACHINE128 128
 #define GAIA_MACHINE GAIA_MACHINE32
 
 #if GAIA_MACHINE == GAIA_MACHINE32

@@ -3,6 +3,7 @@
 
 #include	"gaia_sysconfig.h"
 #include	"gaia_type.h"
+#include	"gaia_type_convert.h"
 
 #include	"gaia_assert.h"
 #include	"gaia_error.h"
@@ -32,6 +33,8 @@
 
 #include	"gaia_math_basic.h"
 #include	"gaia_math_cookies.h"
+
+#include	"gaia_time.h"
 
 #include	"gaia_datamodel.h"
 #include	"gaia_linkmodel.h"

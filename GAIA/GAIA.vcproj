@@ -240,10 +240,14 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="TYPE"
+					Name="DATATYPE"
 					>
 					<File
 						RelativePath=".\gaia_type.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_type_convert.h"
 						>
 					</File>
 				</Filter>
