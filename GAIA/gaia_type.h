@@ -53,18 +53,20 @@ namespace GAIA
 	typedef void VOID;
 
 	/* Undefine origin type. */
-	#define bool
-	#define true
-	#define false
-	#define char
-	#define short
-	#define int
-	#define long
-	#define float
-	#define double
-	#define wchar_t
-	#define __wchar_t
-	#define unsigned
+#ifdef GAIA_DEBUG_CODEPURE
+#	define bool 1
+#	define true 1
+#	define false 1
+#	define char 1
+#	define short 1
+#	define int 1
+#	define long 1
+#	define float 1
+#	define double 1
+#	define wchar_t 1
+#	define __wchar_t 1
+#	define unsigned 1
+#endif
 }
 
 
