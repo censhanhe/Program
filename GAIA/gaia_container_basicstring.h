@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _Allocator> class BasicString
+		template <typename _DataType, typename _SizeType> class BasicString
 		{
 		public:
 

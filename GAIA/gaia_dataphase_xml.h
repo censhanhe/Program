@@ -5,10 +5,10 @@ namespace GAIA
 {
 	namespace DATAPHASE
 	{
-		template <typename _StringType, typename _StringLengthType, typename _DataSizeType, typename _Allocator> class XML
+		template <typename _StringType, typename _StringLengthType, typename _DataSizeType> class XML
 		{
 		public:
-			typedef GAIA::CONTAINER::BasicString<_StringType, _StringLengthType, _Allocator> __MyString;
+			typedef GAIA::CONTAINER::BasicString<_StringType, _StringLengthType> __MyString;
 
 		public:
 			GINL XML(){}

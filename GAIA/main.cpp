@@ -31,5 +31,20 @@ void main()
 		n = bs.top();
 		bs.pop();
 		U32 uSize = bs.size();
+		uSize = 0;
+	}
+
+	// Buffer test.
+	{
+		N32 arr[32];
+		for(N32 x = 0; x < sizeof(arr) / sizeof(N32); x++)
+			arr[x] = x;
+
+		Buffer<TwiceSizeIncreaser<U32>, U32> buf;
+		buf.push(arr);
+		buf.push(48);
+		U64 uWriteSize = buf.size_w();
+		U64 uReadSize = buf.size_r();
+		uWriteSize = uReadSize;
 	}
 }

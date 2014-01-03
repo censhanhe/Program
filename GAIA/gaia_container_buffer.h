@@ -47,7 +47,7 @@ namespace GAIA
 
 				_SizeIncreaserType increaser;
 				_DataSizeType newsize = GAIA::max(increaser.Increase(m_pWrite - m_pFront), m_pWrite - m_pFront + size);
-				GAIA::U8* pNew = (GAIA::U8*)new GAIA::U8[newsize];
+				GAIA::U8* pNew = new GAIA::U8[newsize];
 				if(m_pWrite != m_pFront)
 					memcpy(pNew, m_pFront, m_pWrite - m_pFront);
 				if(m_pFront != NULL)

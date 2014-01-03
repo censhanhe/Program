@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MODEL
 	{
-		template <typename _SizeType, typename _KeyType, typename _Allocator> class SPDataModel : public DataModel<_SizeType, _KeyType, _Allocator>
+		template <typename _SizeType, typename _KeyType> class SPDataModel : public DataModel<_SizeType, _KeyType>
 		{
 		public:
 		private:
