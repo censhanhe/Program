@@ -1,0 +1,52 @@
+#ifndef		__GAIA_ARITHMETIC_MEMORY_H__
+#define		__GAIA_ARITHMETIC_MEMORY_H__
+
+namespace GAIA
+{
+	template <typename _SizeType> GINL GAIA::VOID* memcpy(GAIA::VOID* dst, const GAIA::VOID* src, _SizeType size)
+	{
+		GAIA::VOID* pRet = dst;
+		while(size > sizeof(GAIA::UM))
+		{
+			*(GAIA::UM*)dst = *(GAIA::UM*)src;
+			dst = ((GAIA::UM*)dst) + 1;
+			src = ((GAIA::UM*)src) + 1;
+			size -= sizeof(GAIA::UM);
+		}
+
+		while(size > 0)
+		{
+			*(GAIA::U8*)dst = *(GAIA::U8*)src;
+			dst = ((GAIA::U8*)dst) + 1;
+			src = ((GAIA::U8*)src) + 1;
+			size -= sizeof(GAIA::U8);
+		}
+
+		return pRet;
+	}
+
+	template <typename _SizeType> GINL GAIA::VOID* memset(GAIA::VOID* dst, GAIA::N8 ch, _SizeType size)
+	{
+		GAIA::UM clean = 0;
+		for(N32 c = 0; c < sizeof(GAIA::UM) / sizeof(GAIA::N8); c++)
+			clean |= (ch << (c * 8));
+
+		GAIA::VOID* pRet = dst;
+		while(size > sizeof(GAIA::UM))
+		{
+			*(GAIA::UM*)dst = (GAIA::UM)clean;
+			dst = ((GAIA::UM*)dst) + 1;
+			size -= sizeof(GAIA::UM);
+		}
+
+		while(size > 0)
+		{
+			*(GAIA::U8*)dst = (GAIA::U8)clean;
+			dst = ((GAIA::U8*)dst) + 1;
+			size -= sizeof(GAIA::U8);
+		}
+		return pRet;
+	}
+};
+
+#endif
