@@ -289,6 +289,10 @@
 					<Filter
 						Name="STACK"
 						>
+						<File
+							RelativePath=".\gaia_container_basicstack.h"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="LIST"
@@ -327,10 +331,10 @@
 					Name="ALGORITHM"
 					>
 					<Filter
-						Name="MEMINCREASER"
+						Name="SIZEINCREASER"
 						>
 						<File
-							RelativePath=".\gaia_arithmetic_memincreaser.h"
+							RelativePath=".\gaia_arithmetic_sizeincreaser.h"
 							>
 						</File>
 					</Filter>

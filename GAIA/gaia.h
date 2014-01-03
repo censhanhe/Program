@@ -15,13 +15,14 @@
 
 #include	"gaia_arithmetic_compare.h"
 #include	"gaia_arithmetic_memory.h"
-#include	"gaia_arithmetic_memincreaser.h"
+#include	"gaia_arithmetic_sizeincreaser.h"
 
 #include	"gaia_container_basicstring.h"
 #include	"gaia_container_wstring.h"
 #include	"gaia_container_astring.h"
 #include	"gaia_container_tstring.h"
 
+#include	"gaia_container_basicstack.h"
 #include	"gaia_container_basicarray.h"
 #include	"gaia_container_array.h"
 

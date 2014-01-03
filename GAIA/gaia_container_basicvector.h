@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _MemIncreaserType> class BasicVector
+		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicVector
 		{
 		public:
 			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
@@ -34,7 +34,7 @@ namespace GAIA
 
 			private:
 				_SizeType m_index;
-				BasicVector<_DataType, _SizeType, _MemIncreaserType>* m_pVector;
+				BasicVector<_DataType, _SizeType, _SizeIncreaserType>* m_pVector;
 			};
 
 			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
@@ -62,7 +62,7 @@ namespace GAIA
 
 			private:
 				_SizeType m_index;
-				const BasicVector<_DataType, _SizeType, _MemIncreaserType>* m_pVector;
+				const BasicVector<_DataType, _SizeType, _SizeIncreaserType>* m_pVector;
 			};
 
 		public:
@@ -107,7 +107,7 @@ namespace GAIA
 			{
 				if(m_cursize == m_size)
 				{
-					_MemIncreaserType increaser;
+					_SizeIncreaserType increaser;
 					_SizeType newsize = increaser.Increase(m_size);
 					_DataType* pTemp = new _DataType[newsize];
 					if(m_pData != NULL)
