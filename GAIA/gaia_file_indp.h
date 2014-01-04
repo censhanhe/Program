@@ -7,7 +7,7 @@ namespace GAIA
 {
 	namespace FILESYSTEM
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Open(const GAIA::GCH* filekey, FILE_OPEN_TYPE opentype)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Open(const GAIA::GCH* filekey, const GAIA::UM& opentype)
 		{
 			if(this->IsOpen())
 				this->Close();
@@ -19,6 +19,8 @@ namespace GAIA
 			else if(opentype == FILE_OPEN_TYPE_READ)
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb");
 			else
+				return GAIA::False;
+			if(m_pFile == GNULL)
 				return GAIA::False;
 			m_offset = 0;
 			fseek((FILE*)m_pFile, 0, SEEK_END);

@@ -58,9 +58,7 @@ N32 main()
 		Buffer<TwiceSizeIncreaser<U32>, U32> buf;
 		buf.push(arr);
 		buf.push(48);
-		U64 uWriteSize = buf.size_w();
-		U64 uReadSize = buf.size_r();
-		uWriteSize = uReadSize;
+		U64 size = buf.size();
 	}
 
 	// String algorithm test.
@@ -111,9 +109,18 @@ N32 main()
 	// File test.
 	{
 		File file;
-		GAIA::BL bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_CREATEALWAYS);
+		GAIA::BL bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_CREATEALWAYS | FILE_OPEN_TYPE_WRITE);
 		file.Write(L"My name is Armterla!");
-		file.Close();
+		bResult = file.Close();
+		bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_READ);
+		GAIA::U64 uFileSize = file.Size();
+		GAIA::CONTAINER::Buffer<TwiceSizeIncreaser<U32>, U32> buf;
+		buf.resize(uFileSize);
+		file.Read(buf.front(), buf.size());
+		const GAIA::GWCH* p = (GAIA::GWCH*)buf.front();
+		GAIA::GWCH szTemp[1024];
+		GAIA::ALGORITHM::strcpy(szTemp, p);
+		N32 nDebug = 0;
 	}
 	
 	return 0;

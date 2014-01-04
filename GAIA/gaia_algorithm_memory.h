@@ -3,44 +3,47 @@
 
 namespace GAIA
 {
-	template <typename _SizeType> GINL GAIA::GVOID* memcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, _SizeType size)
+	namespace ALGORITHM
 	{
-		GAIA::GVOID* pRet = dst;
-		while(size > sizeof(GAIA::UM))
+		template <typename _SizeType> GINL GAIA::GVOID* memcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, _SizeType size)
 		{
-			*(GAIA::UM*)dst = *(GAIA::UM*)src;
-			dst = ((GAIA::UM*)dst) + 1;
-			src = ((GAIA::UM*)src) + 1;
-			size -= sizeof(GAIA::UM);
+			GAIA::GVOID* pRet = dst;
+			while(size > sizeof(GAIA::UM))
+			{
+				*(GAIA::UM*)dst = *(GAIA::UM*)src;
+				dst = ((GAIA::UM*)dst) + 1;
+				src = ((GAIA::UM*)src) + 1;
+				size -= sizeof(GAIA::UM);
+			}
+			while(size > 0)
+			{
+				*(GAIA::U8*)dst = *(GAIA::U8*)src;
+				dst = ((GAIA::U8*)dst) + 1;
+				src = ((GAIA::U8*)src) + 1;
+				size -= sizeof(GAIA::U8);
+			}
+			return pRet;
 		}
-		while(size > 0)
+		template <typename _SizeType> GINL GAIA::GVOID* memset(GAIA::GVOID* dst, GAIA::N8 ch, _SizeType size)
 		{
-			*(GAIA::U8*)dst = *(GAIA::U8*)src;
-			dst = ((GAIA::U8*)dst) + 1;
-			src = ((GAIA::U8*)src) + 1;
-			size -= sizeof(GAIA::U8);
+			GAIA::UM clean = 0;
+			for(N32 c = 0; c < sizeof(GAIA::UM) / sizeof(GAIA::N8); c++)
+				clean |= (ch << (c * 8));
+			GAIA::GVOID* pRet = dst;
+			while(size > sizeof(GAIA::UM))
+			{
+				*(GAIA::UM*)dst = (GAIA::UM)clean;
+				dst = ((GAIA::UM*)dst) + 1;
+				size -= sizeof(GAIA::UM);
+			}
+			while(size > 0)
+			{
+				*(GAIA::U8*)dst = (GAIA::U8)clean;
+				dst = ((GAIA::U8*)dst) + 1;
+				size -= sizeof(GAIA::U8);
+			}
+			return pRet;
 		}
-		return pRet;
-	}
-	template <typename _SizeType> GINL GAIA::GVOID* memset(GAIA::GVOID* dst, GAIA::N8 ch, _SizeType size)
-	{
-		GAIA::UM clean = 0;
-		for(N32 c = 0; c < sizeof(GAIA::UM) / sizeof(GAIA::N8); c++)
-			clean |= (ch << (c * 8));
-		GAIA::GVOID* pRet = dst;
-		while(size > sizeof(GAIA::UM))
-		{
-			*(GAIA::UM*)dst = (GAIA::UM)clean;
-			dst = ((GAIA::UM*)dst) + 1;
-			size -= sizeof(GAIA::UM);
-		}
-		while(size > 0)
-		{
-			*(GAIA::U8*)dst = (GAIA::U8)clean;
-			dst = ((GAIA::U8*)dst) + 1;
-			size -= sizeof(GAIA::U8);
-		}
-		return pRet;
 	}
 };
 

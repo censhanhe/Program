@@ -74,14 +74,15 @@ namespace GAIA
 			GINL GAIA::GVOID resize(const _SizeType& size)
 			{
 				GAIA_ASSERT(size > 0);
-				if(size < m_size)
+				if(size <= m_size)
 				{
 					m_cursize = size;
 					return;
 				}
 				this->destroy();
-				m_pData = new _DataType[size];
 				m_size = m_cursize = size;
+				if(size != 0)
+					m_pData = new _DataType[size];
 			}
 			GINL GAIA::GVOID reserve(const _SizeType& size)
 			{
@@ -89,9 +90,10 @@ namespace GAIA
 				if(m_size == size)
 					return;
 				this->destroy();
-				m_pData = new _DataType[size];
 				m_size = size;
 				m_cursize = 0;
+				if(size != 0)
+					m_pData = new _DataType[size];
 			}
 			GINL GAIA::GVOID clear(){m_cursize = 0;}
 			GINL GAIA::GVOID destroy()

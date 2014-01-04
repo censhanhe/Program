@@ -23,9 +23,10 @@ namespace GAIA
 		public:
 			GINL File(){m_fileopentype = FILE_OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNULL;}
 			GINL virtual ~File(){if(this->IsOpen()) this->Close();}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Open(const GAIA::GCH* filekey, FILE_OPEN_TYPE opentype);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Open(const GAIA::GCH* filekey, const GAIA::UM& opentype);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Close();
 			GINL GAIA::BL IsOpen() const{if(m_pFile == GNULL) return GAIA::False; return GAIA::True;}
+			GINL GAIA::N64 Size() const{return m_size;}
 			template <typename _ObjType> GINL GAIA::BL Read(_ObjType& obj)
 			{
 				GAIA_ASSERT(m_pFile != GNULL); 
@@ -49,7 +50,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Seek(FILE_SEEK_TYPE seektype, const GAIA::N64& offset);
 			GINL const GAIA::N64& Tell() const{return m_offset;}
 		private:
-			FILE_OPEN_TYPE m_fileopentype;
+			GAIA::UM m_fileopentype;
 			GAIA::N64 m_size;
 			GAIA::N64 m_offset;
 			GAIA::GVOID* m_pFile;
