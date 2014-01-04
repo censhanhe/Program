@@ -67,6 +67,13 @@ N32 main()
 		REAL f = xcos(10.0F);
 		f = 0.0F;
 	}
+	
+	// VEC2 math cookies test.
+	{
+		VEC2<GAIA::REAL> v0(1.0);
+		VEC2<GAIA::N32> v1(1, 2.0F);
+		VEC2<GAIA::REAL> v3 = v0;
+	}
 
 	// Thread test.
 	{

@@ -8,11 +8,63 @@ namespace GAIA
 		template <typename _DataType> class VEC2
 		{
 		public:
+			GINL VEC2(){}
+			template <typename _ParamType> GINL VEC2(const VEC2<_ParamType>& src){this->x = (_DataType)src.x;this->y = (_DataType)src.y;}
+			template <typename _ParamType1, typename _ParamType2> GINL VEC2(const _ParamType1& x, const _ParamType2& y){this->x = (_DataType)x; this->y = (_DataType)y;}
+			template <typename _ParamType> GINL VEC2(const _ParamType& v){this->y = this->x = (_DataType)v;}
+			template <typename _ParamType> GINL VEC2(const _ParamType* pV){this->x = (_DataType)pV[0]; this->y = (_DataType)pV[1];}
+			GINL _DataType length() const{}
+			GINL _DataType lengthsq() const{}
+			GINL _DataType min() const{}
+			GINL _DataType max() const{}
+			GINL GAIA::GVOID normalize(){}
+			GINL GAIA::BL isnormalize() const{}
+			GINL GAIA::BL iszero() const{}
+			template <typename _ParamType> GINL VEC2<_DataType> dot(const VEC2<_ParamType>& src) const{}
+			template <typename _ParamType> GINL VEC2<_DataType> cross(const VEC2<_ParamType>& src) const{}
+			template <typename _ParamType> GINL VEC2 num(const VEC2<_ParamType>& src) const{}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator + (const VEC2<_ParamType>& src) const{}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator - (const VEC2<_ParamType>& src) const{}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator * (const VEC2<_ParamType>& src) const{}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator / (const VEC2<_ParamType>& src) const{}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator + (const _ParamType& src) const{}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator - (const _ParamType& src) const{}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator * (const _ParamType& src) const{}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator / (const _ParamType& src) const{}
+			template <typename _ParamType> GINL VEC2<_DataType> operator + (const VEC2<_ParamType>& src){}
+			template <typename _ParamType> GINL VEC2<_DataType> operator - (const VEC2<_ParamType>& src){}
+			template <typename _ParamType> GINL VEC2<_DataType> operator * (const VEC2<_ParamType>& src){}
+			template <typename _ParamType> GINL VEC2<_DataType> operator / (const VEC2<_ParamType>& src){}
+			template <typename _ParamType> GINL VEC2<_DataType> operator + (const _ParamType& src){}
+			template <typename _ParamType> GINL VEC2<_DataType> operator - (const _ParamType& src){}
+			template <typename _ParamType> GINL VEC2<_DataType> operator * (const _ParamType& src){}
+			template <typename _ParamType> GINL VEC2<_DataType> operator / (const _ParamType& src){}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator = (const VEC2<_ParamType>& src){}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator = (const _ParamType& v){}
+			template <typename _ParamType> GINL const VEC2<_DataType>& operator = (const _ParamType* pV){}
+			template <typename _ParamType> GINL GAIA::BL operator == (const VEC2<_ParamType>& v) const{}
+			template <typename _ParamType> GINL GAIA::BL operator != (const VEC2<_ParamType>& v) const{}
+			template <typename _ParamType> GINL GAIA::BL operator >= (const VEC2<_ParamType>& v) const{}
+			template <typename _ParamType> GINL GAIA::BL operator <= (const VEC2<_ParamType>& v) const{}
+			template <typename _ParamType> GINL GAIA::BL operator > (const VEC2<_ParamType>& v) const{}
+			template <typename _ParamType> GINL GAIA::BL operator < (const VEC2<_ParamType>& v) const{}
+			template <typename _ParamType> GINL const _DataType& operator [] (const _DataType& index) const{}
+			template <typename _ParamType> GINL _DataType& operator [] (const _DataType& index){}
+			GINL operator _DataType*(){}
+		public:
+			_DataType x, y;
 		};
 
 		template <typename _DataType> class VEC3
 		{
 		public:
+			GINL VEC3(){}
+			template <typename _ParamType> VEC3(const VEC3<_ParamType>& src){this->x = (_DataType)src.x; this->y = (_DataType)src.y; this->z = (_DataType)src.z;}
+			template <typename _ParamType1, typename _ParamType2, typename _ParamType3> VEC3(const _ParamType1& x, const _ParamType2& y, const _ParamType3& z){this->x = (_DataType)x; this->y = (_DataType)y; this->z = (_DataType)z;}
+			template <typename _ParamType> VEC3(const _ParamType& v){this->z = this->y = this->x = (_DataType)v;}
+			template <typename _ParamType> VEC3(const _ParamType* pV){this->x = (_DataType)pV[0]; this->y = (_DataType)pV[1]; this->z = (_DataType)pV[2];}
+		public:
+			_DataType x, y, z;
 		};
 
 		template <typename _DataType> class QUA
@@ -23,6 +75,10 @@ namespace GAIA
 		template <typename _DataType> class MTX22
 		{
 		public:
+			GINL MTX22<_DataType>& identity(){}
+			GINL GAIA::BL isidentity() const{}
+			GINL MTX22<_DataType>& inverse(){}
+			GINL MTX22<_DataType>& transpose(){}
 		};
 
 		template <typename _DataType> class MTX33
@@ -48,11 +104,19 @@ namespace GAIA
 		template <typename _DataType> class AABR
 		{
 		public:
+			
+		public:
+			VEC2<_DataType> posMin;
+			VEC2<_DataType> posMax;
 		};
 
 		template <typename _DataType> class AABB
 		{
 		public:
+			
+		public:
+			VEC3<_DataType> posMin;
+			VEC3<_DataType> posMax;
 		};
 	};
 };
