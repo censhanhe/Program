@@ -327,6 +327,10 @@
 					<Filter
 						Name="QUEUE"
 						>
+						<File
+							RelativePath=".\gaia_container_basicqueue.h"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="BTREE"

@@ -86,6 +86,17 @@ N32 main()
 		BasicStackString<GAIA::GCH, GAIA::N32, 260> str;
 	}
 
+	// BasicQueue test.
+	{
+		BasicQueue<GAIA::U32, GAIA::U32> que;
+		for(GAIA::U32 x = 0; x < 100; x++)
+			que.push(x);
+		for(GAIA::U32 x = 0; x < 50; x++)
+			que.pop();
+		que.front();
+		GAIA_ASSERT(que.size() == 50);
+	}
+
 	// Basic math test.
 	{
 		REAL f = xcos(10.0F);

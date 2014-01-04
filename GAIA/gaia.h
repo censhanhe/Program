@@ -20,18 +20,16 @@
 #include	"gaia_algorithm_string.h"
 
 #include	"gaia_container_basicstackstring.h"
-
 #include	"gaia_container_basicstring.h"
 #include	"gaia_container_wstring.h"
 #include	"gaia_container_astring.h"
 #include	"gaia_container_tstring.h"
-
 #include	"gaia_container_basicstack.h"
 #include	"gaia_container_basicarray.h"
 #include	"gaia_container_array.h"
-
 #include	"gaia_container_basicvector.h"
 #include	"gaia_container_vector.h"
+#include	"gaia_container_basicqueue.h"
 #include	"gaia_container_buffer.h"
 
 #include	"gaia_math_basic.h"
