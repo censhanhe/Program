@@ -28,8 +28,10 @@
 
 #	include <math.h>
 
-#	define NOMINMAX
-#	include <windows.h>
+#	if GAIA_OS == GAIA_OS_WINDOWS
+#		define NOMINMAX
+#		include <windows.h>
+#	endif
 #endif
 #include "gaia.h"
 

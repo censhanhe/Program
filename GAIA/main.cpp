@@ -13,10 +13,11 @@ public:
 	virtual GAIA::GVOID WorkProcedure()
 	{
 		N32 nDebug = 0;
+		nDebug = 0;
 	}
 };
 
-void main()
+N32 main()
 {
 	// Array test.
 	{
@@ -73,4 +74,6 @@ void main()
 		thread.Run();
 		thread.Wait(0xFFFFFFFF);
 	}
+	
+	return 0;
 }

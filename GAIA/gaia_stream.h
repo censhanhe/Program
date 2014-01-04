@@ -9,7 +9,7 @@ namespace GAIA
 		ENUM_BEGIN(BIND_TYPE)
 			BIND_TYPE_READ			= 0x00000001,
 			BIND_TYPE_WRITE			= 0x00000002,
-		ENUM_END
+		ENUM_END(BIND_TYPE)
 
 	public:
 		virtual	GAIA::BL		Bind(const GAIA::GTCH* pszSource, GAIA::UM type) = 0;

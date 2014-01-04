@@ -20,7 +20,11 @@
 #define GAIA_OS_ANDROID 4
 #define GAIA_OS_LINUX 5
 #define GAIA_OS_UNIX 6
-#define GAIA_OS GAIA_OS_WINDOWS
+#ifdef _MSC_VCR
+#	define GAIA_OS GAIA_OS_WINDOWS
+#else
+#	define GAIA_OS 0
+#endif
 
 /* Language code flag. */
 #define GAIA_CHARFMT_ANSI 1
@@ -43,6 +47,6 @@
 
 /* Enum helper. */
 #define ENUM_BEGIN(name) enum name{name##_INVALID = 0,
-#define ENUM_END name##_FORCE##=GAIA_MAX_UNSIGNED_INTEGER,};
+#define ENUM_END(name) name##_FORCE=GAIA_MAX_UNSIGNED_INTEGER,};
 
 #endif
