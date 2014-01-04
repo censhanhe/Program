@@ -67,7 +67,10 @@ namespace GAIA
 #	define __wchar_t 1
 #	define unsigned 1
 #endif
-}
 
+	/* Global constants */
+	static GAIA_DEBUG_CONST GAIA::BL ALWAYSTRUE = GAIA::True;
+	static GAIA_DEBUG_CONST GAIA::BL ALWAYSFALSE = GAIA::False;
+}
 
 #endif

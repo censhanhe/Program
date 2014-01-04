@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, GAIA::UM Size> class Array : public BasicArray<_DataType, GAIA::UM, Size>
+		template <typename _DataType, GAIA::UM _Size> class Array : public BasicArray<_DataType, GAIA::UM, _Size>
 		{
 		};
 	};

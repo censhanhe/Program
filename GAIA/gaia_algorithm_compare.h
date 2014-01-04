@@ -1,5 +1,5 @@
-#ifndef		__GAIA_ARITHMETIC_COMPARE_H__
-#define		__GAIA_ARITHMETIC_COMPARE_H__
+#ifndef		__GAIA_ALGORITHM_COMPARE_H__
+#define		__GAIA_ALGORITHM_COMPARE_H__
 
 namespace GAIA
 {
@@ -23,6 +23,16 @@ namespace GAIA
 				return v2;
 			else
 				return v1;
+		}
+
+		template <typename _DataType1, typename _DataType2> GINL GAIA::N32 cmp(const _DataType1& v1, const _DataType2& v2)
+		{
+			if(v1 < v2)
+				return -1;
+			else if(v1 > v2)
+				return +1;
+			else
+				return 0;
 		}
 	};
 };

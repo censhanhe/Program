@@ -4,6 +4,12 @@
 #define GINL inline
 
 /* Debug mode. */
+#define GAIA_DEBUG_CODING 
+#ifdef GAIA_DEBUG_CODING
+#	define GAIA_DEBUG_CONST
+#else
+#	define GAIA_DEBUG_CONST const
+#endif
 #define GAIA_DEBUG_CODEPURE
 #ifdef GAIA_DEBUG_CODEPURE
 #	define GAIA_DEBUG_CODEPURE_FUNC extern

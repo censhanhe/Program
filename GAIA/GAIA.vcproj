@@ -338,6 +338,14 @@
 						Name="GRAPH"
 						>
 					</Filter>
+					<Filter
+						Name="STACKSTRING"
+						>
+						<File
+							RelativePath=".\gaia_container_basicstackstring.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ALGORITHM"
@@ -346,7 +354,7 @@
 						Name="SIZEINCREASER"
 						>
 						<File
-							RelativePath=".\gaia_arithmetic_sizeincreaser.h"
+							RelativePath=".\gaia_algorithm_sizeincreaser.h"
 							>
 						</File>
 					</Filter>
@@ -354,7 +362,7 @@
 						Name="MEMORY"
 						>
 						<File
-							RelativePath=".\gaia_arithmetic_memory.h"
+							RelativePath=".\gaia_algorithm_memory.h"
 							>
 						</File>
 					</Filter>
@@ -362,7 +370,7 @@
 						Name="COMPARE"
 						>
 						<File
-							RelativePath=".\gaia_arithmetic_compare.h"
+							RelativePath=".\gaia_algorithm_compare.h"
 							>
 						</File>
 					</Filter>
@@ -373,6 +381,14 @@
 					<Filter
 						Name="SORT"
 						>
+					</Filter>
+					<Filter
+						Name="STRING"
+						>
+						<File
+							RelativePath=".\gaia_algorithm_string.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter

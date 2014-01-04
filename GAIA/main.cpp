@@ -62,6 +62,31 @@ N32 main()
 		uWriteSize = uReadSize;
 	}
 
+	// String algorithm test.
+	{
+		GAIA::GTCH ch = tolower('A');
+		GAIA::GTCH sz[128] = L"abcdefgABCDEFG1234567!@#$%^&";
+		GAIA::UM uLen = strlen(sz);
+		uLen = 0;
+		tolower(sz);
+		sz[0] = 0;
+		GAIA::N32 nCompare = strcmp(L"Hello world", L"Hello kitty!");
+
+		GAIA::ALGORITHM::strcpy(sz, L"Helloword");
+		GAIA::ALGORITHM::strcat(sz, L"My name is arm!");
+		N32 nCmp = GAIA::ALGORITHM::strcmp(sz, L"Helloxitty");
+		nCmp = GAIA::ALGORITHM::strcmp(sz, sz);
+		GAIA::ALGORITHM::strcpy(sz, L"Helloworld");
+		GAIA::GTCH* pResult = GAIA::ALGORITHM::strstr(sz, L"lo");
+		pResult = GAIA::ALGORITHM::strmch(sz, L"Hel");
+		sz[0] = 0;
+	}
+
+	// Stack basic string test.
+	{
+		BasicStackString<GAIA::GCH, GAIA::N32, 260> str;
+	}
+
 	// Basic math test.
 	{
 		REAL f = xcos(10.0F);

@@ -14,9 +14,12 @@
 
 #include	"gaia_iterator.h"
 
-#include	"gaia_arithmetic_compare.h"
-#include	"gaia_arithmetic_memory.h"
-#include	"gaia_arithmetic_sizeincreaser.h"
+#include	"gaia_algorithm_compare.h"
+#include	"gaia_algorithm_memory.h"
+#include	"gaia_algorithm_sizeincreaser.h"
+#include	"gaia_algorithm_string.h"
+
+#include	"gaia_container_basicstackstring.h"
 
 #include	"gaia_container_basicstring.h"
 #include	"gaia_container_wstring.h"

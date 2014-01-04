@@ -1,5 +1,5 @@
-#ifndef		__GAIA_ARITHMETIC_MEMORY_H__
-#define		__GAIA_ARITHMETIC_MEMORY_H__
+#ifndef		__GAIA_ALGORITHM_MEMORY_H__
+#define		__GAIA_ALGORITHM_MEMORY_H__
 
 namespace GAIA
 {
