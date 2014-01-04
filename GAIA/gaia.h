@@ -39,6 +39,7 @@
 #include	"gaia_datamodel.h"
 #include	"gaia_linkmodel.h"
 
+#include	"gaia_file.h"
 #include	"gaia_log.h"
 
 #include	"gaia_stream.h"
