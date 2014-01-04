@@ -14,7 +14,7 @@ namespace GAIA
 			GINL ~BasicStackString(){}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL const _SizeType& capacity() const{return _Size;}
-			GINL GAIA::BL empty() const{if(m_size) == 0) return GAIA::True; return GAIA::False;}
+			GINL GAIA::BL empty() const{if(m_size == 0) return GAIA::True; return GAIA::False;}
 			GINL GAIA::GVOID clear() const{m_str[0] = m_size = 0;}
 			GINL GAIA::GVOID destroy() const{this->clear();}
 			GINL BasicStackString<_DataType, _SizeType, _Size>& operator = (const _DataType* p){}

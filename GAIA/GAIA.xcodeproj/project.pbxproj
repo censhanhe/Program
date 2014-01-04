@@ -26,13 +26,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3BDEBFE918781C54009605F4 /* gaia_algorithm_compare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_algorithm_compare.h; sourceTree = SOURCE_ROOT; };
+		3BDEBFEA18781C55009605F4 /* gaia_algorithm_memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_algorithm_memory.h; sourceTree = SOURCE_ROOT; };
+		3BDEBFEB18781C55009605F4 /* gaia_algorithm_sizeincreaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_algorithm_sizeincreaser.h; sourceTree = SOURCE_ROOT; };
+		3BDEBFEC18781C55009605F4 /* gaia_algorithm_string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_algorithm_string.h; sourceTree = SOURCE_ROOT; };
+		3BDEBFED18781C55009605F4 /* gaia_container_basicstackstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_container_basicstackstring.h; sourceTree = SOURCE_ROOT; };
 		3BFB13F71877852C00A1731D /* GAIA */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GAIA; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BFB144A187785E700A1731D /* gaia_allocator_crt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_allocator_crt.h; sourceTree = SOURCE_ROOT; };
 		3BFB144B187785E700A1731D /* gaia_allocator_esg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_allocator_esg.h; sourceTree = SOURCE_ROOT; };
 		3BFB144C187785E700A1731D /* gaia_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_allocator.h; sourceTree = SOURCE_ROOT; };
-		3BFB144D187785E700A1731D /* gaia_arithmetic_compare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_arithmetic_compare.h; sourceTree = SOURCE_ROOT; };
-		3BFB144E187785E700A1731D /* gaia_arithmetic_memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_arithmetic_memory.h; sourceTree = SOURCE_ROOT; };
-		3BFB144F187785E700A1731D /* gaia_arithmetic_sizeincreaser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_arithmetic_sizeincreaser.h; sourceTree = SOURCE_ROOT; };
 		3BFB1450187785E700A1731D /* gaia_assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_assert.h; sourceTree = SOURCE_ROOT; };
 		3BFB1451187785E700A1731D /* gaia_atom_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_atom_event.h; sourceTree = SOURCE_ROOT; };
 		3BFB1452187785E700A1731D /* gaia_atom_lock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_atom_lock.h; sourceTree = SOURCE_ROOT; };
@@ -77,8 +79,6 @@
 		3BFB1479187785E700A1731D /* gaia_type_convert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_type_convert.h; sourceTree = SOURCE_ROOT; };
 		3BFB147A187785E700A1731D /* gaia_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_type.h; sourceTree = SOURCE_ROOT; };
 		3BFB147B187785E700A1731D /* gaia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia.h; sourceTree = SOURCE_ROOT; };
-		3BFB147C187785E700A1731D /* GAIA.sln */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GAIA.sln; sourceTree = SOURCE_ROOT; };
-		3BFB147D187785E700A1731D /* GAIA.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GAIA.vcproj; sourceTree = SOURCE_ROOT; };
 		3BFB147E187785E700A1731D /* preheader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = preheader.cpp; sourceTree = SOURCE_ROOT; };
 		3BFB147F187785E700A1731D /* preheader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = preheader.h; sourceTree = SOURCE_ROOT; };
 		3BFB14831877920A00A1731D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
@@ -114,13 +114,15 @@
 		3BFB13FA1877852C00A1731D /* GAIA */ = {
 			isa = PBXGroup;
 			children = (
+				3BDEBFE918781C54009605F4 /* gaia_algorithm_compare.h */,
+				3BDEBFEA18781C55009605F4 /* gaia_algorithm_memory.h */,
+				3BDEBFEB18781C55009605F4 /* gaia_algorithm_sizeincreaser.h */,
+				3BDEBFEC18781C55009605F4 /* gaia_algorithm_string.h */,
+				3BDEBFED18781C55009605F4 /* gaia_container_basicstackstring.h */,
 				3BFB14831877920A00A1731D /* main.cpp */,
 				3BFB144A187785E700A1731D /* gaia_allocator_crt.h */,
 				3BFB144B187785E700A1731D /* gaia_allocator_esg.h */,
 				3BFB144C187785E700A1731D /* gaia_allocator.h */,
-				3BFB144D187785E700A1731D /* gaia_arithmetic_compare.h */,
-				3BFB144E187785E700A1731D /* gaia_arithmetic_memory.h */,
-				3BFB144F187785E700A1731D /* gaia_arithmetic_sizeincreaser.h */,
 				3BFB1450187785E700A1731D /* gaia_assert.h */,
 				3BFB1451187785E700A1731D /* gaia_atom_event.h */,
 				3BFB1452187785E700A1731D /* gaia_atom_lock.h */,
@@ -165,8 +167,6 @@
 				3BFB1479187785E700A1731D /* gaia_type_convert.h */,
 				3BFB147A187785E700A1731D /* gaia_type.h */,
 				3BFB147B187785E700A1731D /* gaia.h */,
-				3BFB147C187785E700A1731D /* GAIA.sln */,
-				3BFB147D187785E700A1731D /* GAIA.vcproj */,
 				3BFB147E187785E700A1731D /* preheader.cpp */,
 				3BFB147F187785E700A1731D /* preheader.h */,
 			);
