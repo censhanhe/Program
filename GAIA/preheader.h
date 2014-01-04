@@ -27,7 +27,7 @@
 #	undef unsigned
 
 #	include <math.h>
-
+#	include <stdio.h>
 #	if GAIA_OS == GAIA_OS_WINDOWS
 #		define NOMINMAX
 #		include <windows.h>

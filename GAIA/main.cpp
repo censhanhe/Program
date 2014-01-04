@@ -3,6 +3,7 @@ using namespace GAIA;
 using namespace GAIA::CONTAINER;
 using namespace GAIA::ALGORITHM;
 using namespace GAIA::MATH;
+using namespace GAIA::FILESYSTEM;
 
 class MyThread : public GAIA::THREAD::Thread
 {
@@ -105,6 +106,14 @@ N32 main()
 		MyThread thread;
 		thread.Run();
 		thread.Wait(0xFFFFFFFF);
+	}
+
+	// File test.
+	{
+		File file;
+		GAIA::BL bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_CREATEALWAYS);
+		file.Write(L"My name is Armterla!");
+		file.Close();
 	}
 	
 	return 0;

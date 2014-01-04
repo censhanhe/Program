@@ -48,6 +48,7 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
+				DisableSpecificWarnings="4996;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -121,6 +122,7 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
+				DisableSpecificWarnings="4996;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -234,10 +236,22 @@
 						RelativePath=".\gaia_directory.h"
 						>
 					</File>
-					<File
-						RelativePath=".\gaia_file.h"
+					<Filter
+						Name="FILE"
 						>
-					</File>
+						<File
+							RelativePath=".\gaia_file.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_file_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_file_indp.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="DATATYPE"

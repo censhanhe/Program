@@ -6,43 +6,59 @@ namespace GAIA
 	namespace FILESYSTEM
 	{
 		ENUM_BEGIN(FILE_OPEN_TYPE)
-			FILE_OPEN_READ				= 0x00000001,
-			FILE_OPEN_WRITE				= 0x00000002,
-			FILE_OPEN_NOTEXISTCREATE	= 0x00000004,
-			FILE_OPEN_CREATEALWAYS		= 0x00000008,
+			FILE_OPEN_TYPE_READ				= 0x00000001,
+			FILE_OPEN_TYPE_WRITE			= 0x00000002,
+			FILE_OPEN_TYPE_CREATEALWAYS		= 0x00000004,
 		ENUM_END(FILE_OPEN_TYPE)
 		
 		ENUM_BEGIN(FILE_SEEK_TYPE)
-			FILE_SEEK_BEGIN,
-			FILE_SEEK_END,
-			FILE_SEEK_FORWARD,
-			FILE_SEEK_BACKWARD,
+			FILE_SEEK_TYPE_BEGIN,
+			FILE_SEEK_TYPE_END,
+			FILE_SEEK_TYPE_FORWARD,
+			FILE_SEEK_TYPE_BACKWARD,
 		ENUM_END(FILE_SEEK_TYPE)
 		
-		template <typename _SizeType, typename _KeyType> class File
+		class File
 		{
 		public:
-			GINL File();
-			GINL virtual ~File();
-
-			GINL GAIA::BL Open(const _KeyType& filekey, FILE_OPEN_TYPE opentype){}
-			GINL GAIA::BL Close(){}
-			GINL GAIA::BL IsOpen() const{}
-			
-			template <typename _ObjType> GINL GAIA::BL Read(const _ObjType& obj){}
-			GINL const _SizeType& Read(GAIA::GVOID* pDst, const _SizeType& size){}
-			template <typename _ObjType> GINL GAIA::BL Write(const _ObjType& obj){}
-			GINL const _SizeType& Write(const GAIA::GVOID* pSrc, const _SizeType& size){}
-
-			GINL const _SizeType& Seek(FILE_SEEK_TYPE seektype, const _SizeType& offset){}
-			GINL const _SizeType& Tell() const{}
-			
+			GINL File(){m_fileopentype = FILE_OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNULL;}
+			GINL virtual ~File(){if(this->IsOpen()) this->Close();}
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Open(const GAIA::GCH* filekey, FILE_OPEN_TYPE opentype);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Close();
+			GINL GAIA::BL IsOpen() const{if(m_pFile == GNULL) return GAIA::False; return GAIA::True;}
+			template <typename _ObjType> GINL GAIA::BL Read(_ObjType& obj)
+			{
+				GAIA_ASSERT(m_pFile != GNULL); 
+				if(m_pFile == GNULL)
+					return GAIA::False;
+				if(this->Read(&obj, sizeof(obj)) != sizeof(obj))
+					return GAIA::False;
+				return GAIA::True;
+			}
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Read(GAIA::GVOID* pDst, const GAIA::N64& size);
+			template <typename _ObjType> GINL GAIA::BL Write(const _ObjType& obj)
+			{
+				GAIA_ASSERT(m_pFile != GNULL);
+				if(m_pFile == GNULL)
+					return GAIA::False;
+				if(this->Write(&obj, sizeof(obj)) != sizeof(obj))
+					return GAIA::False;
+				return GAIA::True;
+			}
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Seek(FILE_SEEK_TYPE seektype, const GAIA::N64& offset);
+			GINL const GAIA::N64& Tell() const{return m_offset;}
 		private:
-			_SizeType m_size;
-			_SizeType m_offset;
+			FILE_OPEN_TYPE m_fileopentype;
+			GAIA::N64 m_size;
+			GAIA::N64 m_offset;
 			GAIA::GVOID* m_pFile;
 		};
 	};
 };
+
+#ifndef GAIA_DEBUG_CODEPURE
+#	include "gaia_file_indp.h"
+#endif
 
 #endif
