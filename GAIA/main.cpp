@@ -28,17 +28,17 @@ N32 main()
 
 	// Basic vector test.
 	{
-		BasicVector<N32, U32, TwiceSizeIncreaser<U32>> bv;
+		BasicVector<N32, U32, TwiceSizeIncreaser<U32> > bv;
 		bv.push_back(10);
 		bv.push_back(20);
-		BasicVector<N32, U32, TwiceSizeIncreaser<U32>>::BidirectionalIterator iter = bv.front();
+		BasicVector<N32, U32, TwiceSizeIncreaser<U32> >::BidirectionalIterator iter = bv.front();
 		while(!iter.empty())
 			++iter;
 	}
 
 	// Basic stack test.
 	{
-		BasicStack<N32, U32, TwiceSizeIncreaser<U32>> bs;
+		BasicStack<N32, U32, TwiceSizeIncreaser<U32> > bs;
 		bs.push(10);
 		bs.push(20);
 		N32 n = bs.top();
@@ -109,18 +109,18 @@ N32 main()
 	// File test.
 	{
 		File file;
-		GAIA::BL bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_CREATEALWAYS | FILE_OPEN_TYPE_WRITE);
-		file.Write(L"My name is Armterla!");
-		bResult = file.Close();
-		bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_READ);
-		GAIA::U64 uFileSize = file.Size();
-		GAIA::CONTAINER::Buffer<TwiceSizeIncreaser<U32>, U32> buf;
-		buf.resize(uFileSize);
-		file.Read(buf.front(), buf.size());
-		const GAIA::GWCH* p = (GAIA::GWCH*)buf.front();
-		GAIA::GWCH szTemp[1024];
-		GAIA::ALGORITHM::strcpy(szTemp, p);
-		N32 nDebug = 0;
+		//GAIA::BL bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_CREATEALWAYS | FILE_OPEN_TYPE_WRITE);
+		//file.Write(L"My name is Armterla!");
+		//bResult = file.Close();
+		//bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_READ);
+		//GAIA::U64 uFileSize = file.Size();
+		//GAIA::CONTAINER::Buffer<TwiceSizeIncreaser<U32>, U32> buf;
+		//buf.resize(uFileSize);
+		//file.Read(buf.front(), buf.size());
+		//const GAIA::GWCH* p = (GAIA::GWCH*)buf.front();
+		//GAIA::GWCH szTemp[1024];
+		//GAIA::ALGORITHM::strcpy(szTemp, p);
+		//N32 nDebug = 0;
 	}
 	
 	return 0;
