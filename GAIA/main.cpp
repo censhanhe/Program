@@ -114,7 +114,7 @@ N32 main()
 	{
 		MyThread thread;
 		thread.Run();
-		thread.Wait(0xFFFFFFFF);
+		thread.Wait();
 	}
 
 	// File test.

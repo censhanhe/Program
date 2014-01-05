@@ -31,6 +31,8 @@
 #	if GAIA_OS == GAIA_OS_WINDOWS
 #		define NOMINMAX
 #		include <windows.h>
+#	else
+#		include <pthread.h>
 #	endif
 #endif
 #include "gaia.h"
