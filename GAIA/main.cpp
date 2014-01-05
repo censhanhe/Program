@@ -148,6 +148,14 @@ N32 main()
 		GAIA::ALGORITHM::strcpy(szTemp, p);
 		N32 nDebug = 0;
 	}
-	
+
+	// Basic factor test.
+	{
+		GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
+		GAIA::DATATRAFFIC::TransmissionIDM* pTIDM = dynamic_cast<GAIA::DATATRAFFIC::TransmissionIDM*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM));
+		pTIDM->Release();
+		pTIDM = GNULL;
+	}
+
 	return 0;
 }

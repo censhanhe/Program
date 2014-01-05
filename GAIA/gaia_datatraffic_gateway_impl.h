@@ -10,12 +10,14 @@ namespace GAIA
 			GAIA_ASSERT(pRoute != NULL);
 			pRoute->Reference();
 			m_routes.insert(pRoute);
+			return GAIA::True;
 		}
 		GINL GAIA::BL Gateway::RemoveRoute(Route* pRoute)
 		{
 			GAIA_ASSERT(pRoute != NULL);
 			pRoute->Release();
 			return m_routes.remove(pRoute);
+			return GAIA::True;
 		}
 		GINL GAIA::BL Gateway::IsExistRoute(Route* pRoute) const
 		{

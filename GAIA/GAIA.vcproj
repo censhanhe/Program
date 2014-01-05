@@ -710,6 +710,10 @@
 								RelativePath=".\gaia_datatraffic_route.h"
 								>
 							</File>
+							<File
+								RelativePath=".\gaia_datatraffic_route_impl.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="DEFAULTEXTENSION"

@@ -47,25 +47,24 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL GAIA::BL CollectCreateCallBack(GAIA::CONTAINER::Vector<FactoryCreateCallBack*>& listResult) const{listResult = m_listCreateCB;}
-			GINL virtual Instance* CreateInstance(class ClsID& cid)
+			GINL virtual Instance* CreateInstance(const ClsID& cid)
 			{
 				if(cid.IsInvalid())
 					return GNULL;
 				Instance* pRet = GNULL;
 				if(GAIA::ALWAYSFALSE){}
-				//else if(cid == GAIA_CLSID_GATEWAY_MEM)
-				//	pRet = new GAIA::DATATRAFFIC::GatewayMem;
-				//else if(cid == GAIA_CLSID_GATEWAY_SHAREMEM)
-				//	pRet = new GAIA::DATATRAFFIC::GatewayShareMem;
-				//else if(cid == GAIA_CLSID_GATEWAY_FILE)
-				//	pRet = new GAIA::DATATRAFFIC::GatewayFile;
-				//else if(cid == GAIA_CLSID_ROUTE_MEM)
-				//	pRet = new GAIA::DATATRAFFIC::RouteMem;
-				//else if(cid == GAIA_CLSID_ROUTE_NET)
-				//	pRet = new GAIA::DATATRAFFIC::RouteNet;
+				else if(cid == GAIA_CLSID_GATEWAY_MEM)
+					pRet = new GAIA::DATATRAFFIC::GatewayMem;
+				else if(cid == GAIA_CLSID_GATEWAY_SHAREMEM)
+					pRet = new GAIA::DATATRAFFIC::GatewayShareMem;
+				else if(cid == GAIA_CLSID_GATEWAY_FILE)
+					pRet = new GAIA::DATATRAFFIC::GatewayFile;
+				else if(cid == GAIA_CLSID_ROUTE_MEM)
+					pRet = new GAIA::DATATRAFFIC::RouteMem;
+				else if(cid == GAIA_CLSID_ROUTE_NET)
+					pRet = new GAIA::DATATRAFFIC::RouteNet;
 				else if(cid == GAIA_CLSID_TRANSMISSION_IDM)
 					pRet = new GAIA::DATATRAFFIC::TransmissionIDM;
-				
 				if(pRet == GNULL)
 				{
 					for(LIST_CREATECALLBACK::_sizetype x = 0; x < m_listCreateCB.size(); x++)
@@ -76,6 +75,8 @@ namespace GAIA
 							break;
 					}
 				}
+				if(pRet != GNULL)
+					pRet->Begin();
 				return pRet;
 			}
 		private:

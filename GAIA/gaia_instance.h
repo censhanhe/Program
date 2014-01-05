@@ -7,6 +7,7 @@ namespace GAIA
 	{
 		class Instance
 		{
+			friend class Factory;
 		public:
 			Instance(){m_nRef = 1; m_bDestructing = GAIA::False;}
 			virtual ~Instance(){}

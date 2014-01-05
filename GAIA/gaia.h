@@ -67,6 +67,7 @@
 #include	"gaia_datatraffic_route.h"
 #include	"gaia_datatraffic_transmission.h"
 #include	"gaia_datatraffic_gateway_impl.h"
+#include	"gaia_datatraffic_route_impl.h"
 
 #include	"gaia_datatraffic_gateway_mem.h"
 #include	"gaia_datatraffic_gateway_file.h"

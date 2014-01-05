@@ -4,13 +4,14 @@
 #define GINL inline
 
 /* Debug mode. */
+#define GAIA_DEBUG_WARNING
 #define GAIA_DEBUG_CODING 
+#define GAIA_DEBUG_CODEPURE
 #ifdef GAIA_DEBUG_CODING
 #	define GAIA_DEBUG_CONST
 #else
 #	define GAIA_DEBUG_CONST const
 #endif
-#define GAIA_DEBUG_CODEPURE
 #ifdef GAIA_DEBUG_CODEPURE
 #	define GAIA_DEBUG_CODEPURE_FUNC extern
 #	define GAIA_DEBUG_CODEPURE_MEMFUNC
@@ -54,5 +55,14 @@
 /* Enum helper. */
 #define ENUM_BEGIN(name) enum name{name##_INVALID = 0,
 #define ENUM_END(name) name##_FORCE=GAIA_MAX_UNSIGNED_INTEGER,};
+
+/* Warning adjust. */
+#ifdef GAIA_DEBUG_WARNING
+#	if GAIA_OS == GAIA_OS_WINDOWS
+#		pragma warning(disable : 4100)
+#		pragma warning(disable : 4189)
+#	else
+#	endif
+#endif
 
 #endif

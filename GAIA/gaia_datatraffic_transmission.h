@@ -10,26 +10,27 @@ namespace GAIA
 		private:
 			typedef GAIA::CONTAINER::Orderless<Route*, GNULL> OL_ROUTE;
 		public:
-			GAIA::BL RegistRoute(GAIA::DATATRAFFIC::Route* pRoute)
+			GINL virtual GAIA::BL RegistRoute(GAIA::DATATRAFFIC::Route* pRoute)
 			{
 				GAIA_ASSERT(pRoute != NULL);
 				pRoute->Reference();
 				m_routes.insert(pRoute);
+				return GAIA::True;
 			}
-			GAIA::BL UnregistRoute(GAIA::DATATRAFFIC::Route* pRoute)
+			GINL virtual GAIA::BL UnregistRoute(GAIA::DATATRAFFIC::Route* pRoute)
 			{
 				GAIA_ASSERT(pRoute != NULL);
 				pRoute->Release();
 				return m_routes.remove(pRoute);
 			}
-			GAIA::BL IsRegistedRoute(GAIA::DATATRAFFIC::Route* pRoute) const
+			GINL virtual GAIA::BL IsRegistedRoute(GAIA::DATATRAFFIC::Route* pRoute) const
 			{
 				GAIA_ASSERT(pRoute != NULL);
 				if(m_routes.find(pRoute) == 0)
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GAIA::BL CollectRegistedRoutes(GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>& listResult) const
+			GINL virtual GAIA::BL CollectRegistedRoutes(GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>& listResult) const
 			{
 				GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype oldsize = listResult.size();
 				for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); ++x)

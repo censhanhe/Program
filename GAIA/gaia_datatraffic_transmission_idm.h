@@ -13,8 +13,8 @@ namespace GAIA
 			GINL virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM;}
 			virtual GAIA::GVOID WorkProcedure(){}
 		protected:
-			virtual GAIA::BL Begin(){m_bBegin = GAIA::True;}
-			virtual GAIA::BL End(){m_bBegin = GAIA::False;}
+			virtual GAIA::BL Begin(){m_bBegin = GAIA::True; return GAIA::True;}
+			virtual GAIA::BL End(){m_bBegin = GAIA::False; return GAIA::True;}
 			virtual GAIA::BL IsBegin() const{return m_bBegin;}
 		private:
 			GAIA::BL m_bBegin;
