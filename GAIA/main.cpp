@@ -120,10 +120,10 @@ N32 main()
 	// File test.
 	{
 		File file;
-		GAIA::BL bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_CREATEALWAYS | FILE_OPEN_TYPE_WRITE);
+		GAIA::BL bResult = file.Open("filetest.tmp", FILE_OPEN_TYPE_CREATEALWAYS | FILE_OPEN_TYPE_WRITE);
 		file.Write(L"My name is Armterla!");
 		bResult = file.Close();
-		bResult = file.Open("filetest.txt", FILE_OPEN_TYPE_READ);
+		bResult = file.Open("filetest.tmp", FILE_OPEN_TYPE_READ);
 		GAIA::U64 uFileSize = file.Size();
 		GAIA::CONTAINER::Buffer<TwiceSizeIncreaser<U32>, U32> buf;
 		buf.resize(uFileSize);

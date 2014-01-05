@@ -26,7 +26,7 @@
 #define GAIA_OS_ANDROID 4
 #define GAIA_OS_LINUX 5
 #define GAIA_OS_UNIX 6
-#ifdef _MSC_VCR
+#ifdef _MSC_VER
 #	define GAIA_OS GAIA_OS_WINDOWS
 #else
 #	define GAIA_OS 0

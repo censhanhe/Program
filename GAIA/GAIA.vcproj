@@ -364,6 +364,34 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="PACKAGE"
+						>
+						<File
+							RelativePath=".\gaia_container_basicpackage.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="STACKPACKAGE"
+						>
+						<File
+							RelativePath=".\gaia_container_basicstackpackage.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="VAR"
+						>
+						<File
+							RelativePath=".\gaia_container_basicstackvar.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_container_basicvar.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ALGORITHM"
@@ -399,12 +427,24 @@
 					<Filter
 						Name="SORT"
 						>
+						<File
+							RelativePath=".\gaia_algorithm_sort.h"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="STRING"
 						>
 						<File
 							RelativePath=".\gaia_algorithm_string.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="SEARCH"
+						>
+						<File
+							RelativePath=".\gaia_algorithm_search.h"
 							>
 						</File>
 					</Filter>
@@ -498,18 +538,22 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="ATOM"
+					Name="SYNC"
 					>
 					<File
-						RelativePath=".\gaia_atom_event.h"
+						RelativePath=".\gaia_sync_base.h"
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_atom_lock.h"
+						RelativePath=".\gaia_sync_event.h"
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_atom_mutex.h"
+						RelativePath=".\gaia_sync_lock.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_sync_mutex.h"
 						>
 					</File>
 				</Filter>
@@ -517,7 +561,11 @@
 					Name="STREAM"
 					>
 					<File
-						RelativePath=".\gaia_stream.h"
+						RelativePath=".\gaia_stream_inbase.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_stream_outbase.h"
 						>
 					</File>
 				</Filter>
@@ -550,6 +598,14 @@
 					>
 					<File
 						RelativePath=".\gaia_time.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="NETWORK"
+					>
+					<File
+						RelativePath=".\gaia_network.h"
 						>
 					</File>
 				</Filter>
@@ -614,12 +670,48 @@
 					>
 				</Filter>
 				<Filter
-					Name="IO"
+					Name="UI"
 					>
 				</Filter>
 				<Filter
-					Name="UI"
+					Name="STREAM"
 					>
+					<Filter
+						Name="BASE"
+						>
+						<File
+							RelativePath=".\gaia_stream_in.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_stream_out.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="MEM"
+						>
+						<File
+							RelativePath=".\gaia_stream_memin.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="FILE"
+						>
+						<File
+							RelativePath=".\gaia_stream_filein.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="NETWORK"
+						>
+						<File
+							RelativePath=".\gaia_stream_networkin.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

@@ -1,6 +1,11 @@
 #ifndef		__GAIA_H__
 #define		__GAIA_H__
 
+/* Pre-declaration. */
+class StreamIn;
+class StreamOut;
+
+/* Include file header. */
 #include	"gaia_sysconfig.h"
 #include	"gaia_type.h"
 #include	"gaia_type_convert.h"
@@ -43,7 +48,8 @@
 #include	"gaia_file.h"
 #include	"gaia_log.h"
 
-#include	"gaia_stream.h"
+#include	"gaia_stream_inbase.h"
+#include	"gaia_stream_outbase.h"
 #include	"gaia_dataphase_xml.h"
 
 #include	"gaia_thread.h"
@@ -55,5 +61,8 @@
 #include	"gaia_clsid.h"
 #include	"gaia_instance.h"
 #include	"gaia_factory.h"
+
+#include	"gaia_stream_in.h"
+#include	"gaia_stream_out.h"
 
 #endif

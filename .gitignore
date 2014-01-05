@@ -88,6 +88,7 @@ ipch/
 .exe
 .dll
 .lib
+.temp
 
 # Visual Studio profiler
 *.psess
