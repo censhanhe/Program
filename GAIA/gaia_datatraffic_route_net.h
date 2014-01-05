@@ -7,6 +7,8 @@ namespace GAIA
 	{
 		class RouteNet : public Route
 		{
+		public:
+			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::GAIA_CLSID_ROUTE_NET;}
 		};
 	};
 };

@@ -5,13 +5,21 @@ namespace GAIA
 {
 	namespace DATATRAFFIC
 	{
+		class Route;
 		class Gateway : public GAIA::FRAMEWORK::Instance
 		{
+		private:
+			typedef GAIA::CONTAINER::Orderless<Route*, GNULL> OL_ROUTE;
 		public:
-			virtual GAIA::BL Push(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
-
+			GINL virtual GAIA::BL AddRoute(Route* pRoute); // Single direction connection.
+			GINL virtual GAIA::BL RemoveRoute(Route* pRoute);
+			GINL virtual GAIA::BL IsExistRoute(Route* pRoute) const;
+			GINL virtual GAIA::BL CollectRoutes(GAIA::CONTAINER::Vector<Route*>& listResult) const;
+			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Pop(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
+			virtual GAIA::BL Receive(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
+		private:
+			OL_ROUTE m_routes;
 		};
 	};
 };

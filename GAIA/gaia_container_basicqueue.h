@@ -13,7 +13,7 @@ namespace GAIA
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
 			GINL BasicQueue(){m_pData = m_pFront = m_pBack = GNULL;m_capacity = m_size = 0;}
-			GINL BasicQueue(const BasicQueue<_DataType, _SizeType>& src){this->operator = (src);}
+			GINL BasicQueue(const BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& src){this->operator = (src);}
 			GINL ~BasicQueue(){if(m_pData != GNULL) delete[] m_pData;}
 			GINL _SizeType capacity() const{return m_capacity;}
 			GINL GAIA::BL empty() const{if(m_size == 0) return GAIA::True; return GAIA::False;}
@@ -86,7 +86,7 @@ namespace GAIA
 				*m_pBack++ = obj;
 				++m_size;
 			}
-			GINL const BasicQueue<_DataType, _SizeType>& operator = (const BasicQueue<_DataType, _SizeType>& src)
+			GINL const BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& operator = (const BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& src)
 			{
 				this->clear();
 				for(_SizeType x = 0; x < src.size(); ++x)

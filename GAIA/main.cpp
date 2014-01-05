@@ -94,13 +94,22 @@ N32 main()
 
 	// BasicQueue test.
 	{
-		BasicQueue<GAIA::U32, GAIA::U32, TwiceSizeIncreaser> que;
+		BasicQueue<GAIA::U32, GAIA::U32, TwiceSizeIncreaser<U32> > que;
 		for(GAIA::U32 x = 0; x < 100; x++)
 			que.push(x);
 		for(GAIA::U32 x = 0; x < 50; x++)
 			que.pop();
 		que.front();
 		GAIA_ASSERT(que.size() == 50);
+	}
+
+	// BasicOrderless test.
+	{
+		BasicOrderless<GAIA::U32, GAIA::U32, TwiceSizeIncreaser<U32>, (GAIA::U32)-1> ol;
+		GAIA::U32 u0 = ol.insert(32);
+		GAIA::U32 u1 = ol.insert(48);
+		ol.remove(u0);
+		ol.remove(u1);
 	}
 
 	// Basic math test.

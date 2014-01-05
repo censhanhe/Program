@@ -5,18 +5,9 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType> class Orderless
+		template <typename _DataType, _DataType _DefaultValue> class Orderless : public GAIA::CONTAINER::BasicOrderless<_DataType, GAIA::UM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::UM>, _DefaultValue>
 		{
 		public:
-			GINL Orderless();
-			GINL Orderless(const 
-			GINL ~Orderless(const Orderless<_DataType, _SizeType, _SizeIncreaserType>& src);
-
-			_SizeType push(
-
-		private:
-			BasicVector<_DataType, _SizeType, _SizeIncreaserType> m_use;
-			BasicStack<_DataType, _SizeType, _SizeIncreaserType> m_free;
 		};
 	};
 };

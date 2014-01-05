@@ -36,6 +36,9 @@
 #include	"gaia_container_queue.h"
 #include	"gaia_container_buffer.h"
 
+#include	"gaia_container_basicorderless.h"
+#include	"gaia_container_orderless.h"
+
 #include	"gaia_math_basic.h"
 #include	"gaia_math_cookies.h"
 
@@ -52,6 +55,8 @@
 #include	"gaia_thread.h"
 #include	"gaia_process.h"
 
+#include	"gaia_network.h"
+
 #include	"gaia_framework.h"
 #include	"gaia_id.h"
 #include	"gaia_hd.h"
@@ -61,6 +66,7 @@
 #include	"gaia_datatraffic_gateway.h"
 #include	"gaia_datatraffic_route.h"
 #include	"gaia_datatraffic_transmission.h"
+#include	"gaia_datatraffic_gateway_impl.h"
 
 #include	"gaia_datatraffic_gateway_mem.h"
 #include	"gaia_datatraffic_gateway_file.h"

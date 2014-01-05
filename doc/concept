@@ -1,0 +1,14 @@
+What is data-traffic ?
+	Data-traffic is a abstract structure for simplify the data communication, data access.
+
+How to use the data-traffic for network communication?
+If you are the server:
+	1.Create a NetworkListener first, listen the ip and port.
+	2.Construct RouteNet when accept a network link.
+	3.Create a Gateway and connect to the RouteNet.
+	4.Read and write data to Gateway.
+	5.Complete.
+If you are the client:
+	1.Create a RouteNet and connect to server.
+	2.Create a Gateway and connect to the RouteNet.
+	3.Read and write data to Gateway.

@@ -269,128 +269,156 @@
 					Name="CONTAINER"
 					>
 					<Filter
-						Name="STRING"
+						Name="EXT"
 						>
-						<File
-							RelativePath=".\gaia_container_astring.h"
+						<Filter
+							Name="ORDERLESS"
 							>
-						</File>
-						<File
-							RelativePath=".\gaia_container_basicstring.h"
-							>
-						</File>
-						<File
-							RelativePath=".\gaia_container_tstring.h"
-							>
-						</File>
-						<File
-							RelativePath=".\gaia_container_wstring.h"
-							>
-						</File>
+							<File
+								RelativePath=".\gaia_container_basicorderless.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_orderless.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
-						Name="ARRAY"
+						Name="BASE"
 						>
-						<File
-							RelativePath=".\gaia_container_array.h"
+						<Filter
+							Name="ARRAY"
 							>
-						</File>
-						<File
-							RelativePath=".\gaia_container_basicarray.h"
+							<File
+								RelativePath=".\gaia_container_array.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_basicarray.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="VECTOR"
 							>
-						</File>
-					</Filter>
-					<Filter
-						Name="VECTOR"
-						>
-						<File
-							RelativePath=".\gaia_container_basicvector.h"
+							<File
+								RelativePath=".\gaia_container_basicvector.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_vector.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="BTREE"
 							>
-						</File>
-						<File
-							RelativePath=".\gaia_container_vector.h"
+						</Filter>
+						<Filter
+							Name="BUFFER"
 							>
-						</File>
-					</Filter>
-					<Filter
-						Name="STACK"
-						>
-						<File
-							RelativePath=".\gaia_container_basicstack.h"
+							<File
+								RelativePath=".\gaia_container_buffer.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="GRAPH"
 							>
-						</File>
-					</Filter>
-					<Filter
-						Name="LIST"
-						>
-					</Filter>
-					<Filter
-						Name="QUEUE"
-						>
-						<File
-							RelativePath=".\gaia_container_basicqueue.h"
+						</Filter>
+						<Filter
+							Name="LIST"
 							>
-						</File>
-					</Filter>
-					<Filter
-						Name="BTREE"
-						>
-					</Filter>
-					<Filter
-						Name="MAP"
-						>
-					</Filter>
-					<Filter
-						Name="BUFFER"
-						>
-						<File
-							RelativePath=".\gaia_container_buffer.h"
+						</Filter>
+						<Filter
+							Name="MAP"
 							>
-						</File>
-					</Filter>
-					<Filter
-						Name="TREE"
-						>
-					</Filter>
-					<Filter
-						Name="GRAPH"
-						>
-					</Filter>
-					<Filter
-						Name="STACKSTRING"
-						>
-						<File
-							RelativePath=".\gaia_container_basicstackstring.h"
+						</Filter>
+						<Filter
+							Name="PACKAGE"
 							>
-						</File>
-					</Filter>
-					<Filter
-						Name="PACKAGE"
-						>
-						<File
-							RelativePath=".\gaia_container_basicpackage.h"
+							<File
+								RelativePath=".\gaia_container_basicpackage.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="QUEUE"
 							>
-						</File>
-					</Filter>
-					<Filter
-						Name="STACKPACKAGE"
-						>
-						<File
-							RelativePath=".\gaia_container_basicstackpackage.h"
+							<File
+								RelativePath=".\gaia_container_basicqueue.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_queue.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="STACK"
 							>
-						</File>
-					</Filter>
-					<Filter
-						Name="VAR"
-						>
-						<File
-							RelativePath=".\gaia_container_basicstackvar.h"
+							<File
+								RelativePath=".\gaia_container_basicstack.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_stack.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="STACKPACKAGE"
 							>
-						</File>
-						<File
-							RelativePath=".\gaia_container_basicvar.h"
+							<File
+								RelativePath=".\gaia_container_basicstackpackage.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="STACKSTRING"
 							>
-						</File>
+							<File
+								RelativePath=".\gaia_container_basicstackstring.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="STRING"
+							>
+							<File
+								RelativePath=".\gaia_container_astring.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_basicstring.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_tstring.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_wstring.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="TREE"
+							>
+						</Filter>
+						<Filter
+							Name="VAR"
+							>
+							<File
+								RelativePath=".\gaia_container_basicstackvar.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_basicvar.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -445,6 +473,14 @@
 						>
 						<File
 							RelativePath=".\gaia_algorithm_search.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="BASE"
+						>
+						<File
+							RelativePath=".\gaia_algorithm_base.h"
 							>
 						</File>
 					</Filter>
@@ -660,6 +696,86 @@
 				<Filter
 					Name="UI"
 					>
+				</Filter>
+				<Filter
+					Name="DATATRAFFIC"
+					>
+					<Filter
+						Name="ROUTE"
+						>
+						<Filter
+							Name="BASE"
+							>
+							<File
+								RelativePath=".\gaia_datatraffic_route.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="DEFAULTEXTENSION"
+							>
+							<File
+								RelativePath=".\gaia_datatraffic_route_mem.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_datatraffic_route_net.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="GATEWAY"
+						>
+						<Filter
+							Name="BASE"
+							>
+							<File
+								RelativePath=".\gaia_datatraffic_gateway.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_datatraffic_gateway_impl.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="DEFAULTEXTENSION"
+							>
+							<File
+								RelativePath=".\gaia_datatraffic_gateway_file.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_datatraffic_gateway_mem.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_datatraffic_gateway_sharemem.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="TRANSMISSION"
+						>
+						<Filter
+							Name="BASE"
+							>
+							<File
+								RelativePath=".\gaia_datatraffic_transmission.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="DEFAULTEXTENSION"
+							>
+							<File
+								RelativePath=".\gaia_datatraffic_transmission_idm.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

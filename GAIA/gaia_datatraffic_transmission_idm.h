@@ -5,11 +5,19 @@ namespace GAIA
 {
 	namespace DATATRAFFIC
 	{
-		class TransmissionIDM : public BaseTransmission
+		class TransmissionIDM : public Transmission // IDM means immediately-data-mode.
 		{
 		public:
-			GINL TransmissionIDM(){}
+			GINL TransmissionIDM(){m_bBegin = GAIA::False;}
 			GINL ~TransmissionIDM(){}
+			GINL virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM;}
+			virtual GAIA::GVOID WorkProcedure(){}
+		protected:
+			virtual GAIA::BL Begin(){m_bBegin = GAIA::True;}
+			virtual GAIA::BL End(){m_bBegin = GAIA::False;}
+			virtual GAIA::BL IsBegin() const{return m_bBegin;}
+		private:
+			GAIA::BL m_bBegin;
 		};
 	};
 };
