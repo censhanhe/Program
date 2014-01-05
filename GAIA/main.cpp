@@ -34,6 +34,12 @@ N32 main()
 		BasicVector<N32, U32, TwiceSizeIncreaser<U32> >::BidirectionalIterator iter = bv.front();
 		while(!iter.empty())
 			++iter;
+		bv.clear();
+		bv.insert(0, 10);
+		bv.insert(0, 20);
+		bv.insert(2, 30);
+		bv.erase(1);
+		bv.clear();
 	}
 
 	// Basic stack test.
@@ -88,7 +94,7 @@ N32 main()
 
 	// BasicQueue test.
 	{
-		BasicQueue<GAIA::U32, GAIA::U32> que;
+		BasicQueue<GAIA::U32, GAIA::U32, TwiceSizeIncreaser> que;
 		for(GAIA::U32 x = 0; x < 100; x++)
 			que.push(x);
 		for(GAIA::U32 x = 0; x < 50; x++)

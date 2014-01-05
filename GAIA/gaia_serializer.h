@@ -13,7 +13,3 @@ namespace GAIA
 };
 
 #endif
-
-/* 
-	NOFORGOT:Serializer负责持久化所有对象，但是对象上没有任何关于Serializer的使用，Serializer通过对象持久化模板来对匹配持久化方案。
-*/

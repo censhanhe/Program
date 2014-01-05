@@ -8,6 +8,10 @@ namespace GAIA
 		template <typename _DataType, typename _SizeType> class BasicString
 		{
 		public:
+			typedef _DataType _datatype;
+			typedef _SizeType _sizetype;
+
+		public:
 			BasicString(){}
 			~BasicString(){}
 

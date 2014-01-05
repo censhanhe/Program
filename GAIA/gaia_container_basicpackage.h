@@ -7,6 +7,7 @@ namespace GAIA
 	{
 		template<typename _SizeType> BasicPackage
 		{
+			typedef _SizeType _sizetype;
 		public:
 			GINL Package();
 			GINL ~Package();

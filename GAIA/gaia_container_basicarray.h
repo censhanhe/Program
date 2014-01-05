@@ -8,6 +8,9 @@ namespace GAIA
 		template <typename _DataType, typename _SizeType, _SizeType _Size> class BasicArray
 		{
 		public:
+			typedef _DataType _datatype;
+			typedef _SizeType _sizetype;
+		public:
 			BasicArray(){m_size = 0;}
 			GINL _SizeType size(){return m_size;}
 			GINL GAIA::BL push_back(const _DataType& t){if(m_size < _Size){m_data[m_size++] = t; return GAIA::True;} else return GAIA::False;}

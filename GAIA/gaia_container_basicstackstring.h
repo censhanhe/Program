@@ -8,6 +8,10 @@ namespace GAIA
 		template<typename _DataType, typename _SizeType, _SizeType _Size> class BasicStackString
 		{
 		public:
+			typedef _DataType _datatype;
+			typedef _SizeType _sizetype;
+
+		public:
 			GINL BasicStackString(){}
 			GINL BasicStackString(const _DataType* p){this->operator = (p);}
 			template <_SizeType _ParamSize> GINL BasicStackString(const BasicStackString<_DataType, _SizeType, _ParamSize>& src){this->operator = (src);}

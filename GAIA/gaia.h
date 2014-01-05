@@ -1,10 +1,6 @@
 #ifndef		__GAIA_H__
 #define		__GAIA_H__
 
-/* Pre-declaration. */
-class StreamIn;
-class StreamOut;
-
 /* Include file header. */
 #include	"gaia_sysconfig.h"
 #include	"gaia_type.h"
@@ -19,6 +15,7 @@ class StreamOut;
 
 #include	"gaia_iterator.h"
 
+#include	"gaia_algorithm_base.h"
 #include	"gaia_algorithm_compare.h"
 #include	"gaia_algorithm_memory.h"
 #include	"gaia_algorithm_sizeincreaser.h"
@@ -30,11 +27,13 @@ class StreamOut;
 #include	"gaia_container_astring.h"
 #include	"gaia_container_tstring.h"
 #include	"gaia_container_basicstack.h"
+#include	"gaia_container_stack.h"
 #include	"gaia_container_basicarray.h"
 #include	"gaia_container_array.h"
 #include	"gaia_container_basicvector.h"
 #include	"gaia_container_vector.h"
 #include	"gaia_container_basicqueue.h"
+#include	"gaia_container_queue.h"
 #include	"gaia_container_buffer.h"
 
 #include	"gaia_math_basic.h"
@@ -58,6 +57,18 @@ class StreamOut;
 #include	"gaia_hd.h"
 #include	"gaia_clsid.h"
 #include	"gaia_instance.h"
+
+#include	"gaia_datatraffic_gateway.h"
+#include	"gaia_datatraffic_route.h"
+#include	"gaia_datatraffic_transmission.h"
+
+#include	"gaia_datatraffic_gateway_mem.h"
+#include	"gaia_datatraffic_gateway_file.h"
+#include	"gaia_datatraffic_gateway_sharemem.h"
+#include	"gaia_datatraffic_route_mem.h"
+#include	"gaia_datatraffic_route_net.h"
+#include	"gaia_datatraffic_transmission_idm.h"
+
 #include	"gaia_factory.h"
 
 #endif
