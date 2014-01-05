@@ -17,8 +17,6 @@ namespace GAIA
 			GINL GAIA::BL Save(GAIA::FILESYSTEM::File& file) const;
 			GINL GAIA::BL Load(GAIA::CONTAINER::Buffer& buf);
 			GINL GAIA::BL Save(GAIA::CONTAINER::Buffer& buf) const;
-			GINL GAIA::BL Load(GAIA::STREAMBASE::StreamInBase& stream);
-			GINL GAIA::BL Save(GAIA::STREAMBASE::StreamOutBase& stream) const;
 			GINL GAIA::BL BeginNodeRead(__MyString& strNode);
 			GINL GAIA::BL EndNodeRead();
 			GINL GAIA::BL ReadAttr(__MyString& strAttrName, __MyString& strAttrValue);

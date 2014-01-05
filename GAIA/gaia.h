@@ -48,8 +48,6 @@ class StreamOut;
 #include	"gaia_file.h"
 #include	"gaia_log.h"
 
-#include	"gaia_stream_inbase.h"
-#include	"gaia_stream_outbase.h"
 #include	"gaia_dataphase_xml.h"
 
 #include	"gaia_thread.h"
@@ -61,8 +59,5 @@ class StreamOut;
 #include	"gaia_clsid.h"
 #include	"gaia_instance.h"
 #include	"gaia_factory.h"
-
-#include	"gaia_stream_in.h"
-#include	"gaia_stream_out.h"
 
 #endif

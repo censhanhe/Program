@@ -558,18 +558,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="STREAM"
-					>
-					<File
-						RelativePath=".\gaia_stream_inbase.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_stream_outbase.h"
-						>
-					</File>
-				</Filter>
-				<Filter
 					Name="MODEL"
 					>
 					<Filter
@@ -672,46 +660,6 @@
 				<Filter
 					Name="UI"
 					>
-				</Filter>
-				<Filter
-					Name="STREAM"
-					>
-					<Filter
-						Name="BASE"
-						>
-						<File
-							RelativePath=".\gaia_stream_in.h"
-							>
-						</File>
-						<File
-							RelativePath=".\gaia_stream_out.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="MEM"
-						>
-						<File
-							RelativePath=".\gaia_stream_memin.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="FILE"
-						>
-						<File
-							RelativePath=".\gaia_stream_filein.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="NETWORK"
-						>
-						<File
-							RelativePath=".\gaia_stream_networkin.h"
-							>
-						</File>
-					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
