@@ -18,6 +18,15 @@ namespace GAIA
 			pRoute->Release();
 			return m_routes.remove(pRoute);
 		}
+		GINL GAIA::GVOID Route::DisconnectAll()
+		{
+			for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); x++)
+			{
+				if(m_routes[x] != GNULL)
+					m_routes[x]->Release();
+			}
+			m_routes.destroy();
+		}
 		GINL GAIA::BL Route::IsConnected(Route* pRoute) const
 		{
 			GAIA_ASSERT(pRoute != NULL);
@@ -53,6 +62,15 @@ namespace GAIA
 			GAIA_ASSERT(pGateway != NULL);
 			pGateway->Release();
 			return m_gateways.remove(pGateway);
+		}
+		GINL GAIA::GVOID Route::RemoveGatewayAll()
+		{
+			for(OL_GATEWAY::_sizetype x = 0; x < m_gateways.size(); x++)
+			{
+				if(m_gateways[x] != GNULL)
+					m_gateways[x]->Release();
+			}
+			m_gateways.destroy();
 		}
 		GINL GAIA::BL Route::IsExistGateway(Gateway* pGateway) const
 		{

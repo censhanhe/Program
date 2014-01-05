@@ -71,7 +71,7 @@ namespace GAIA
 		public:
 			GINL BasicVector(){m_pData = GNULL; m_capacity = m_size = 0;}
 			GINL BasicVector(const BasicVector<_DataType, _SizeType, _SizeIncreaserType>& src){this->operator = (src);}
-			GINL ~BasicVector(){delete[] m_pData;}
+			GINL ~BasicVector(){if(m_pData != GNULL) delete[] m_pData;}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL const _SizeType& capacity() const{return m_capacity;}
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}

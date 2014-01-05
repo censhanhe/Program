@@ -4,6 +4,8 @@ using namespace GAIA::CONTAINER;
 using namespace GAIA::ALGORITHM;
 using namespace GAIA::MATH;
 using namespace GAIA::FILESYSTEM;
+using namespace GAIA::DATATRAFFIC;
+using namespace GAIA::FRAMEWORK;
 
 class MyThread : public GAIA::THREAD::Thread
 {
@@ -149,12 +151,46 @@ N32 main()
 		N32 nDebug = 0;
 	}
 
-	// Basic factor test.
+	// Basic factory test 1.
 	{
-		GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
-		GAIA::DATATRAFFIC::TransmissionIDM* pTIDM = dynamic_cast<GAIA::DATATRAFFIC::TransmissionIDM*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM));
-		pTIDM->Release();
-		pTIDM = GNULL;
+		Factory* pFactory = new Factory;
+		
+		TransmissionIDM* pTrans = dynamic_cast<TransmissionIDM*>(pFactory->CreateInstance(GAIA_CLSID_TRANSMISSION_IDM, GNULL));
+		GatewayMem* pGateway1 = dynamic_cast<GatewayMem*>(pFactory->CreateInstance(GAIA_CLSID_GATEWAY_MEM, GNULL));
+		GatewayMem* pGateway2 = dynamic_cast<GatewayMem*>(pFactory->CreateInstance(GAIA_CLSID_GATEWAY_MEM, GNULL));
+		RouteMem* pRoute = dynamic_cast<RouteMem*>(pFactory->CreateInstance(GAIA_CLSID_ROUTE_MEM, GNULL));
+
+		pRoute->AddGateway(pGateway1);
+		pRoute->AddGateway(pGateway2);
+		pGateway1->AddRoute(pRoute);
+		pGateway2->AddRoute(pRoute);
+		pTrans->AddRoute(pRoute);
+
+		pTrans->Run();
+		pTrans->Wait();
+
+		pRoute->RemoveGateway(pGateway1);
+		pRoute->RemoveGateway(pGateway2);
+		pGateway1->RemoveRoute(pRoute);
+
+		Vector<Route*> listResult;
+		pGateway2->CollectRoutes(listResult);
+		for(Vector<Route*>::_sizetype x = 0; x < listResult.size(); x++)
+		{
+			pGateway2->RemoveRoute(listResult[x]);
+			listResult[x]->Release();
+		}
+
+		pTrans->Release();
+		pGateway1->Release();
+		pGateway2->Release();
+		pRoute->Release();
+
+		delete pFactory;
+	}
+
+	// Basic factory test 2.
+	{
 	}
 
 	return 0;

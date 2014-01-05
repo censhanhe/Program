@@ -47,7 +47,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL GAIA::BL CollectCreateCallBack(GAIA::CONTAINER::Vector<FactoryCreateCallBack*>& listResult) const{listResult = m_listCreateCB;}
-			GINL virtual Instance* CreateInstance(const ClsID& cid)
+			GINL virtual Instance* CreateInstance(const ClsID& cid, GAIA::GVOID* pParameter)
 			{
 				if(cid.IsInvalid())
 					return GNULL;
@@ -76,7 +76,7 @@ namespace GAIA
 					}
 				}
 				if(pRet != GNULL)
-					pRet->Begin();
+					pRet->Begin(pParameter);
 				return pRet;
 			}
 		private:

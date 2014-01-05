@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MODEL
 	{
-		template <typename _SizeType, typename _KeyType> class SPDataModel : public DataModel<_SizeType, _KeyType>
+		template <typename _SizeType, typename _KeyType> class SPDataModel : public DataModel<_SizeType, _KeyType>// SP means separation piece.
 		{
 		public:
 		private:

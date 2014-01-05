@@ -10,22 +10,32 @@ namespace GAIA
 		private:
 			typedef GAIA::CONTAINER::Orderless<Route*, GNULL> OL_ROUTE;
 		public:
-			GINL virtual GAIA::BL RegistRoute(GAIA::DATATRAFFIC::Route* pRoute)
+			GINL ~Transmission(){this->RemoveRouteAll();}
+			GINL virtual GAIA::BL AddRoute(GAIA::DATATRAFFIC::Route* pRoute)
 			{
-				GAIA_ASSERT(pRoute != NULL);
+				GAIA_ASSERT(pRoute != GNULL);
 				pRoute->Reference();
 				m_routes.insert(pRoute);
 				return GAIA::True;
 			}
-			GINL virtual GAIA::BL UnregistRoute(GAIA::DATATRAFFIC::Route* pRoute)
+			GINL virtual GAIA::BL RemoveRoute(GAIA::DATATRAFFIC::Route* pRoute)
 			{
-				GAIA_ASSERT(pRoute != NULL);
+				GAIA_ASSERT(pRoute != GNULL);
 				pRoute->Release();
 				return m_routes.remove(pRoute);
 			}
-			GINL virtual GAIA::BL IsRegistedRoute(GAIA::DATATRAFFIC::Route* pRoute) const
+			GINL virtual GAIA::GVOID RemoveRouteAll()
 			{
-				GAIA_ASSERT(pRoute != NULL);
+				for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); x++)
+				{
+					if(m_routes[x] != GNULL)
+						m_routes[x]->Release();
+				}
+				m_routes.destroy();
+			}
+			GINL virtual GAIA::BL IsExistRoute(GAIA::DATATRAFFIC::Route* pRoute) const
+			{
+				GAIA_ASSERT(pRoute != GNULL);
 				if(m_routes.find(pRoute) == 0)
 					return GAIA::False;
 				return GAIA::True;

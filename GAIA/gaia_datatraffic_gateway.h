@@ -11,8 +11,10 @@ namespace GAIA
 		private:
 			typedef GAIA::CONTAINER::Orderless<Route*, GNULL> OL_ROUTE;
 		public:
+			GINL ~Gateway(){this->RemoveRouteAll();}
 			GINL virtual GAIA::BL AddRoute(Route* pRoute); // Single direction connection.
 			GINL virtual GAIA::BL RemoveRoute(Route* pRoute);
+			GINL virtual GAIA::GVOID RemoveRouteAll();
 			GINL virtual GAIA::BL IsExistRoute(Route* pRoute) const;
 			GINL virtual GAIA::BL CollectRoutes(GAIA::CONTAINER::Vector<Route*>& listResult) const;
 			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::UM& size) = 0;

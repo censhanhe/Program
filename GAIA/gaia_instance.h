@@ -16,7 +16,7 @@ namespace GAIA
 			GAIA::GVOID Release(){m_nRef--; if(m_nRef == 0 && !m_bDestructing){if(this->IsBegin()) this->End(); m_bDestructing = true; delete this;}}
 			GAIA::N32 GetRef() const{return m_nRef;}
 		protected:
-			virtual GAIA::BL Begin() = 0;
+			virtual GAIA::BL Begin(GAIA::GVOID* pParameter) = 0;
 			virtual GAIA::BL End() = 0;
 			virtual GAIA::BL IsBegin() const = 0;
 		private:

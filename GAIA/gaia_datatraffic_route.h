@@ -11,17 +11,20 @@ namespace GAIA
 			typedef GAIA::CONTAINER::Orderless<Route*, GNULL> OL_ROUTE;
 			typedef GAIA::CONTAINER::Orderless<Gateway*, GNULL> OL_GATEWAY;
 		public:
+			GINL ~Route(){this->DisconnectAll(); this->RemoveGatewayAll();}
 			GINL virtual GAIA::BL Connect(Route* pRoute); // Single direction connection.
 			GINL virtual GAIA::BL Disconnect(Route* pRoute);
+			GINL virtual GAIA::GVOID DisconnectAll();
 			GINL virtual GAIA::BL IsConnected(Route* pRoute) const;
 			GINL virtual GAIA::BL CollectConnections(GAIA::CONTAINER::Vector<Route*>& listResult) const;
 			GINL virtual GAIA::BL AddGateway(Gateway* pGateway); // Single direction connection.
 			GINL virtual GAIA::BL RemoveGateway(Gateway* pGateway);
+			GINL virtual GAIA::GVOID RemoveGatewayAll();
 			GINL virtual GAIA::BL IsExistGateway(Gateway* pGateway) const;
 			GINL virtual GAIA::BL CollectGateways(GAIA::CONTAINER::Vector<Gateway*>& listResult) const;
-			virtual GAIA::BL Push(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
+			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Pop(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
+			virtual GAIA::BL Receive(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
 		private:
 			OL_ROUTE m_routes;
 			OL_GATEWAY m_gateways;

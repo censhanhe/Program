@@ -19,6 +19,15 @@ namespace GAIA
 			return m_routes.remove(pRoute);
 			return GAIA::True;
 		}
+		GINL GAIA::GVOID Gateway::RemoveRouteAll()
+		{
+			for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); x++)
+			{
+				if(m_routes[x] != GNULL)
+					m_routes[x]->Release();
+			}
+			m_routes.destroy();
+		}
 		GINL GAIA::BL Gateway::IsExistRoute(Route* pRoute) const
 		{
 			GAIA_ASSERT(pRoute != NULL);

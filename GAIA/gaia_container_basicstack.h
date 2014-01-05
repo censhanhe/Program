@@ -13,13 +13,13 @@ namespace GAIA
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
 			BasicStack(){m_pData = GNULL; m_capacity = m_size = 0;}
-			~BasicStack(){delete[] m_pData;}
+			~BasicStack(){if(m_pData != GNULL) delete[] m_pData;}
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL _SizeType size() const{return m_size;}
 			GINL _SizeType capacity() const{return m_capacity;}
 			GINL GAIA::GVOID reserve(const _SizeType& size){this->destroy();if(size > 0){m_pData = new _DataType[size];m_capacity = size;m_size = 0;}}
-			GINL GAIA::GVOID destroy(){if(m_pData != GNULL){delete[] m_pData; m_capacity = m_size = 0;}}
+			GINL GAIA::GVOID destroy(){if(m_pData != GNULL){delete[] m_pData; m_pData = GNULL; m_capacity = m_size = 0;}}
 			GINL GAIA::GVOID push(const _DataType& t)
 			{
 				if(this->size() == this->capacity())
