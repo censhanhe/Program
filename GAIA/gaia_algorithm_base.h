@@ -30,7 +30,7 @@ namespace GAIA
 		}
 		template <typename _DataType1, typename _DataType2> GAIA::GVOID swap(_DataType1& t1, _DataType2& t2)
 		{
-			DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType t = t2;
+			typename DATATYPE::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType t = t2;
 			t2 = t1;
 			t1 = t;
 		}

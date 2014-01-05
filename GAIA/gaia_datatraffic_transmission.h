@@ -8,7 +8,7 @@ namespace GAIA
 		class Transmission : public GAIA::FRAMEWORK::Instance, public GAIA::THREAD::Thread
 		{
 		private:
-			typedef GAIA::CONTAINER::Orderless<Route*, GNULL> OL_ROUTE;
+			typedef GAIA::CONTAINER::Orderless<Route*, static_cast<class GAIA::DATATRAFFIC::Route*>(GNULL)> OL_ROUTE;
 		public:
 			GINL ~Transmission(){this->RemoveRouteAll();}
 			GINL virtual GAIA::BL AddRoute(GAIA::DATATRAFFIC::Route* pRoute)
