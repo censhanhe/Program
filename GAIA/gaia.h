@@ -39,6 +39,9 @@
 #include	"gaia_container_basicorderless.h"
 #include	"gaia_container_orderless.h"
 
+#include 	"gaia_container_basicset.h"
+#include 	"gaia_container_set.h"
+
 #include	"gaia_math_basic.h"
 #include	"gaia_math_cookies.h"
 
