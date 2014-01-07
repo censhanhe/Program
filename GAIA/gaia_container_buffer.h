@@ -50,7 +50,7 @@ namespace GAIA
 					return pRet;
 				}
 				_SizeIncreaserType increaser;
-				_SizeType newsize = GAIA::ALGORITHM::max(increaser.Increase(m_pCur - m_pFront), m_pCur - m_pFront + size);
+				_SizeType newsize = GAIA::ALGORITHM::maximize(increaser.Increase(m_pCur - m_pFront), m_pCur - m_pFront + size);
 				GAIA::U8* pNew = new GAIA::U8[newsize];
 				if(m_pCur != m_pFront)
 					GAIA::ALGORITHM::memcpy(pNew, m_pFront, m_pCur - m_pFront);

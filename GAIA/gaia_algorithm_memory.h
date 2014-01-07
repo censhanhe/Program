@@ -10,20 +10,21 @@ namespace GAIA
 			GAIA_ASSERT(dst != GNULL);
 			GAIA_ASSERT(src != GNULL);
 			GAIA_ASSERT(size != 0);
+			_SizeType sizet = size;
 			GAIA::GVOID* pRet = dst;
-			while(size > sizeof(GAIA::UM))
+			while(sizet > sizeof(GAIA::UM))
 			{
 				*(GAIA::UM*)dst = *(GAIA::UM*)src;
 				dst = ((GAIA::UM*)dst) + 1;
 				src = ((GAIA::UM*)src) + 1;
-				size -= sizeof(GAIA::UM);
+				sizet -= sizeof(GAIA::UM);
 			}
-			while(size > 0)
+			while(sizet > 0)
 			{
 				*(GAIA::U8*)dst = *(GAIA::U8*)src;
 				dst = ((GAIA::U8*)dst) + 1;
 				src = ((GAIA::U8*)src) + 1;
-				size -= sizeof(GAIA::U8);
+				sizet -= sizeof(GAIA::U8);
 			}
 			return pRet;
 		}
@@ -32,21 +33,22 @@ namespace GAIA
 			GAIA_ASSERT(dst != GNULL);
 			GAIA_ASSERT(src != GNULL);
 			GAIA_ASSERT(size != 0);
+			_SizeType sizet = size;
 			GAIA::UM clean = 0;
 			for(N32 c = 0; c < sizeof(GAIA::UM) / sizeof(GAIA::N8); c++)
 				clean |= (ch << (c * 8));
 			GAIA::GVOID* pRet = dst;
-			while(size > sizeof(GAIA::UM))
+			while(sizet > sizeof(GAIA::UM))
 			{
 				*(GAIA::UM*)dst = (GAIA::UM)clean;
 				dst = ((GAIA::UM*)dst) + 1;
-				size -= sizeof(GAIA::UM);
+				sizet -= sizeof(GAIA::UM);
 			}
-			while(size > 0)
+			while(sizet > 0)
 			{
 				*(GAIA::U8*)dst = (GAIA::U8)clean;
 				dst = ((GAIA::U8*)dst) + 1;
-				size -= sizeof(GAIA::U8);
+				sizet -= sizeof(GAIA::U8);
 			}
 			return pRet;
 		}
@@ -55,21 +57,22 @@ namespace GAIA
 			GAIA_ASSERT(dst != GNULL);
 			GAIA_ASSERT(src != GNULL);
 			GAIA_ASSERT(size != 0);
-			while(size > sizeof(GAIA::UM))
+			_SizeType sizet = size;
+			while(sizet > sizeof(GAIA::UM))
 			{
 				if(*((GAIA::UM*)p1) < *((GAIA::UM*)p2))
 					return +1;
 				else if(*((GAIA::UM*)p1) > *((GAIA::UM*)p2))
 					return -1;
-				size -= sizeof(GAIA::UM);
+				sizet -= sizeof(GAIA::UM);
 			}
-			while(size > sizeof(GAIA::U8))
+			while(sizet > sizeof(GAIA::U8))
 			{
 				if(*((GAIA::U8*)p1) < *((GAIA::U8*)p2))
 					return +1;
 				else if(*((GAIA::U8*)p1) > *((GAIA::U8*)p2))
 					return -1;			
-				size -= sizeof(GAIA::U8);
+				sizet -= sizeof(GAIA::U8);
 			}
 			return 0;
 		}

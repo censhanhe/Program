@@ -13,7 +13,7 @@ namespace GAIA
 			ENUM_END(THREAD_STATE)
 
 		public:
-			GAIA_DEBUG_CODEPURE_MEMFUNC Thread(){m_stacksize = 1024 * 1024; m_state = THREAD_STATE_INVALID; m_pThread = GNULL;}
+			GAIA_DEBUG_CODEPURE_MEMFUNC Thread();
 			GAIA_DEBUG_CODEPURE_MEMFUNC virtual ~Thread();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetStackSize(const GAIA::UM& size){m_stacksize = size;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC const GAIA::UM& GetStackSize() const{return m_stacksize;}

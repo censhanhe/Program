@@ -13,10 +13,10 @@ namespace GAIA
 			template <typename _ParamType1, typename _ParamType2> GINL VEC2(const _ParamType1& x, const _ParamType2& y){this->x = (_DataType)x; this->y = (_DataType)y;}
 			template <typename _ParamType> GINL VEC2(const _ParamType& v){this->y = this->x = (_DataType)v;}
 			template <typename _ParamType> GINL VEC2(const _ParamType* pV){this->x = (_DataType)pV[0]; this->y = (_DataType)pV[1];}
-			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq())}
+			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq());}
 			GINL _DataType lengthsq() const{return x * x + y * y;}
-			GINL _DataType min() const{return GAIA::ALGORITHM::min(x, y);}
-			GINL _DataType max() const{return GAIA::ALGORITHM::max(x, y);}
+			GINL _DataType minimize() const{return GAIA::ALGORITHM::minimize(x, y);}
+			GINL _DataType maximize() const{return GAIA::ALGORITHM::maximize(x, y);}
 			GINL GAIA::GVOID normalize(){_DataType t = this->length(); x /= t; y /= t;}
 			GINL GAIA::BL isnormalize() const{if(this->lengthsq() == (_DataType)1) return GAIA::True; return GAIA::False;}
 			GINL GAIA::BL iszero() const{if(x == (_DataType)0 && y == (_DataType)0) return GAIA::True; return GAIA::False;}
