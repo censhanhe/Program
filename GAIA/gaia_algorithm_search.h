@@ -67,6 +67,8 @@ namespace GAIA
 			GAIA_ASSERT(pBegin <= pEnd);
 			if(pBegin == pEnd)
 			{
+				if(*pBegin >= key)
+					return pBegin;
 				return GNULL;
 			}
 			_DataType* pMid = pBegin + (pEnd - pBegin) / 2;
@@ -76,7 +78,7 @@ namespace GAIA
 				if(pRet != GNULL)
 					return pRet;
 			}
-			else if(key >= *pMid)
+			else if(key > *pMid)
 			{
 				_DataType* pRet = lower_bound(pMid + 1, pEnd, key);
 				if(pRet != GNULL)
@@ -90,8 +92,25 @@ namespace GAIA
 			GAIA_ASSERT(pEnd != GNULL);
 			GAIA_ASSERT(pBegin < pEnd);
 			if(pBegin == pEnd)
+			{
+				if(*pEnd <= key)
+					return pEnd;
 				return GNULL;
-			
+			}
+			_DataType* pMid = pBegin + (pEnd - pBegin) / 2;
+			if(key > *pMid)
+			{
+				_DataType* pRet = lower_bound(pMid + 1, pEnd, key);
+				if(pRet != GNULL)
+					return pRet;
+			}
+			else if(key <= *pMid)
+			{
+				_DataType* pRet = lower_bound(pBegin, pMid, key);
+				if(pRet != GNULL)
+					return pRet;
+			}
+			return GNULL;
 		}
 	};
 };

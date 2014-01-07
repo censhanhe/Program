@@ -34,6 +34,19 @@ namespace GAIA
 			t2 = t1;
 			t1 = t;
 		}
+		template <typename _DataType> GAIA::GVOID inverse(_DataType* pBegin, _DataType* pEnd)
+		{
+			GAIA_ASSERT(pBegin != GNULL);
+			GAIA_ASSERT(pEnd != GNULL);
+			if(pBegin >= pEnd)
+				return;
+			while(pBegin < pEnd)
+			{
+				GAIA::ALGORITHM::swap(*pBegin, *pEnd);
+				++pBegin;
+				--pEnd;
+			}
+		}
 	};
 };
 
