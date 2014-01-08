@@ -1,39 +1,38 @@
-#include	"gaia.h"
-using namespace GAIA;
-using namespace GAIA::CONTAINER;
-using namespace GAIA::ALGORITHM;
-using namespace GAIA::MATH;
-using namespace GAIA::FILESYSTEM;
-using namespace GAIA::DATATRAFFIC;
-using namespace GAIA::FRAMEWORK;
+#include "gaia.h"
 
 class MyThread : public GAIA::THREAD::Thread
 {
 public:
-	MyThread(){}
+	MyThread(){m_bRuned = GAIA::False;}
 	~MyThread(){}
 
 	virtual GAIA::GVOID WorkProcedure()
 	{
-		N32 nDebug = 0;
+		GAIA::N32 nDebug = 0;
 		nDebug = 0;
+		m_bRuned = GAIA::True;
 	}
+
+	GAIA::BL IsRuned() const{return m_bRuned;}
+
+private:
+	GAIA::BL m_bRuned;
 };
 
-N32 main()
+GAIA::N32 main()
 {
 	// Array test.
 	{
-		Array<N32, 32> temp;
+		GAIA::CONTAINER::Array<GAIA::N32, 32> temp;
 		temp[0] = 10;
 	}
 
 	// Basic vector test.
 	{
-		BasicVector<N32, U32, TwiceSizeIncreaser<U32> > bv;
+		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > bv;
 		bv.push_back(10);
 		bv.push_back(20);
-		BasicVector<N32, U32, TwiceSizeIncreaser<U32> >::BidirectionalIterator iter = bv.front();
+		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> >::BidirectionalIterator iter = bv.front();
 		while(!iter.empty())
 			++iter;
 		bv.clear();
@@ -46,42 +45,42 @@ N32 main()
 
 	// Basic stack test.
 	{
-		BasicStack<N32, U32, TwiceSizeIncreaser<U32> > bs;
+		GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > bs;
 		bs.push(10);
 		bs.push(20);
-		N32 n = bs.top();
+		GAIA::N32 n = bs.top();
 		bs.pop();
 		n = bs.top();
 		bs.pop();
-		U32 uSize = bs.size();
+		GAIA::U32 uSize = bs.size();
 		uSize = 0;
 	}
 
 	// Buffer test.
 	{
-		N32 arr[32];
-		for(N32 x = 0; x < sizeof(arr) / sizeof(N32); x++)
+		GAIA::N32 arr[32];
+		for(GAIA::N32 x = 0; x < sizeof(arr) / sizeof(GAIA::N32); x++)
 			arr[x] = x;
 
-		Buffer<TwiceSizeIncreaser<U32>, U32> buf;
+		GAIA::CONTAINER::Buffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32> buf;
 		buf.push(arr);
 		buf.push(48);
-		U64 size = buf.size();
+		GAIA::U64 size = buf.size();
 	}
 
 	// String algorithm test.
 	{
-		GAIA::GTCH ch = tolower('A');
+		GAIA::GTCH ch = GAIA::ALGORITHM::tolower('A');
 		GAIA::GTCH sz[128] = L"abcdefgABCDEFG1234567!@#$%^&";
-		GAIA::UM uLen = strlen(sz);
+		GAIA::UM uLen = GAIA::ALGORITHM::strlen(sz);
 		uLen = 0;
-		tolower(sz);
+		GAIA::ALGORITHM::tolower(sz);
 		sz[0] = 0;
-		GAIA::N32 nCompare = strcmp(L"Hello world", L"Hello kitty!");
+		GAIA::N32 nCompare = GAIA::ALGORITHM::strcmp(L"Hello world", L"Hello kitty!");
 
 		GAIA::ALGORITHM::strcpy(sz, L"Helloword");
 		GAIA::ALGORITHM::strcat(sz, L"My name is arm!");
-		N32 nCmp = GAIA::ALGORITHM::strcmp(sz, L"Helloxitty");
+		GAIA::N32 nCmp = GAIA::ALGORITHM::strcmp(sz, L"Helloxitty");
 		nCmp = GAIA::ALGORITHM::strcmp(sz, sz);
 		GAIA::ALGORITHM::strcpy(sz, L"Helloworld");
 		GAIA::GTCH* pResult = GAIA::ALGORITHM::strstr(sz, L"lo");
@@ -91,12 +90,12 @@ N32 main()
 
 	// Stack basic string test.
 	{
-		BasicStackString<GAIA::GCH, GAIA::N32, 260> str;
+		GAIA::CONTAINER::BasicStackString<GAIA::GCH, GAIA::N32, 260> str;
 	}
 
 	// BasicQueue test.
 	{
-		BasicQueue<GAIA::U32, GAIA::U32, TwiceSizeIncreaser<U32> > que;
+		GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > que;
 		for(GAIA::U32 x = 0; x < 100; x++)
 			que.push(x);
 		for(GAIA::U32 x = 0; x < 50; x++)
@@ -107,7 +106,7 @@ N32 main()
 
 	// BasicOrderless test.
 	{
-		BasicOrderless<GAIA::U32, GAIA::U32, TwiceSizeIncreaser<U32>, (GAIA::U32)-1> ol;
+		GAIA::CONTAINER::BasicOrderless<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, (GAIA::U32)-1> ol;
 		GAIA::U32 u0 = ol.insert(32);
 		GAIA::U32 u1 = ol.insert(48);
 		ol.remove(u0);
@@ -116,52 +115,52 @@ N32 main()
 
 	// BasicPool test.
 	{
-		BasicPool<GAIA::N32, GAIA::N32, TwiceSizeIncreaser<U32>, 32> pool;
-		for(N32 x = 0; x < 1000; x++)
+		GAIA::CONTAINER::BasicPool<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 32> pool;
+		for(GAIA::N32 x = 0; x < 1000; x++)
 			pool.alloc();
 		pool.clear();
 		pool.destroy();
-		for(N32 x = 0; x < 1000; x++)
+		for(GAIA::N32 x = 0; x < 1000; x++)
 			pool.alloc();
 	}
 
 	// AVLTree test.
 	{
-		AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, TwiceSizeIncreaser<U32>, 100> btr;
-		static const N32 FIRST_SAMPLE_COUNT = 100000;
-		for(N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
+		static const GAIA::N32 FIRST_SAMPLE_COUNT = 100000;
+		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
 		{
-			BL bResult = btr.insert(x);
+			GAIA::BL bResult = btr.insert(x);
 			GAIA_ASSERT(bResult);
 			bResult = GAIA::True;
 		}
-		for(N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
 		{
-			BL bResult = btr.exist(x);
+			GAIA::BL bResult = btr.exist(x);
 			GAIA_ASSERT(bResult);
 			bResult = GAIA::True;
 		}
-		for(N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
 		{
-			BL bResult = btr.erase(x);
+			GAIA::BL bResult = btr.erase(x);
 			GAIA_ASSERT(bResult);
 			bResult = GAIA::True;
 		}
 
-		N32 nDebug = 0;
+		GAIA::N32 nDebug = 0;
 	}
 
 	// Basic math test.
 	{
-		REAL f = xcos(10.0F);
+		GAIA::REAL f = GAIA::MATH::xcos(10.0F);
 		f = 0.0F;
 	}
 	
 	// VEC2 math cookies test.
 	{
-		VEC2<GAIA::REAL> v0(1.0);
-		VEC2<GAIA::N32> v1(1, 2.0F);
-		VEC2<GAIA::REAL> v3 = v0;
+		GAIA::MATH::VEC2<GAIA::REAL> v0(1.0);
+		GAIA::MATH::VEC2<GAIA::N32> v1(1, 2.0F);
+		GAIA::MATH::VEC2<GAIA::REAL> v3 = v0;
 	}
 
 	// Thread test.
@@ -169,33 +168,34 @@ N32 main()
 		MyThread thread;
 		thread.Run();
 		thread.Wait();
+		GAIA_ASSERT(thread.IsRuned());
 	}
 
 	// File test.
 	{
-		File file;
-		GAIA::BL bResult = file.Open("filetest.tmp", FILE_OPEN_TYPE_CREATEALWAYS | FILE_OPEN_TYPE_WRITE);
+		GAIA::FILESYSTEM::File file;
+		GAIA::BL bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 		file.Write(L"My name is Armterla!");
 		bResult = file.Close();
-		bResult = file.Open("filetest.tmp", FILE_OPEN_TYPE_READ);
+		bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
 		GAIA::U64 uFileSize = file.Size();
-		GAIA::CONTAINER::Buffer<TwiceSizeIncreaser<U32>, U32> buf;
+		GAIA::CONTAINER::Buffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32> buf;
 		buf.resize(uFileSize);
 		file.Read(buf.front(), buf.size());
 		const GAIA::GWCH* p = (GAIA::GWCH*)buf.front();
 		GAIA::GWCH szTemp[1024];
 		GAIA::ALGORITHM::strcpy(szTemp, p);
-		N32 nDebug = 0;
+		GAIA::N32 nDebug = 0;
 	}
 
 	// Basic factory test 1.
 	{
-		Factory* pFactory = new Factory;
+		GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 		
-		TransmissionIDM* pTrans = dynamic_cast<TransmissionIDM*>(pFactory->CreateInstance(GAIA_CLSID_TRANSMISSION_IDM, GNULL));
-		GatewayMem* pGateway1 = dynamic_cast<GatewayMem*>(pFactory->CreateInstance(GAIA_CLSID_GATEWAY_MEM, GNULL));
-		GatewayMem* pGateway2 = dynamic_cast<GatewayMem*>(pFactory->CreateInstance(GAIA_CLSID_GATEWAY_MEM, GNULL));
-		RouteMem* pRoute = dynamic_cast<RouteMem*>(pFactory->CreateInstance(GAIA_CLSID_ROUTE_MEM, GNULL));
+		GAIA::DATATRAFFIC::TransmissionIDM* pTrans = dynamic_cast<GAIA::DATATRAFFIC::TransmissionIDM*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM, GNULL));
+		GAIA::DATATRAFFIC::GatewayMem* pGateway1 = dynamic_cast<GAIA::DATATRAFFIC::GatewayMem*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_GATEWAY_MEM, GNULL));
+		GAIA::DATATRAFFIC::GatewayMem* pGateway2 = dynamic_cast<GAIA::DATATRAFFIC::GatewayMem*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_GATEWAY_MEM, GNULL));
+		GAIA::DATATRAFFIC::RouteMem* pRoute = dynamic_cast<GAIA::DATATRAFFIC::RouteMem*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_ROUTE_MEM, GNULL));
 
 		pRoute->AddGateway(pGateway1);
 		pRoute->AddGateway(pGateway2);
@@ -210,9 +210,9 @@ N32 main()
 		pRoute->RemoveGateway(pGateway2);
 		pGateway1->RemoveRoute(pRoute);
 
-		Vector<Route*> listResult;
+		GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*> listResult;
 		pGateway2->CollectRoutes(listResult);
-		for(Vector<Route*>::_sizetype x = 0; x < listResult.size(); x++)
+		for(GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype x = 0; x < listResult.size(); x++)
 		{
 			pGateway2->RemoveRoute(listResult[x]);
 			listResult[x]->Release();
