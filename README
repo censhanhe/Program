@@ -1,0 +1,7 @@
+GAIA
+	GAIA is a source code based library. This concept like STL library more.
+
+MESSIAH
+	MESSIAH is a high performance network based log service. it based C-S structure.
+	Client can login the server and record log as a unified form storage.
+
