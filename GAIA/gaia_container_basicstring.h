@@ -15,19 +15,19 @@ namespace GAIA
 			GINL BasicString(const _DataType& t){}
 			GINL BasicString(const _DataType* pSource){}
 			GINL BasicString(const BasicString<_DataType, _SizeType>& src){}
-			GINL volatile BasicString(const GAIA::N8& t);
-			GINL volatile BasicString(const GAIA::N16& t);
-			GINL volatile BasicString(const GAIA::N32& t);
-			GINL volatile BasicString(const GAIA::N64& t);
-			GINL volatile BasicString(const GAIA::N128& t);
-			GINL volatile BasicString(const GAIA::U8& t);
-			GINL volatile BasicString(const GAIA::U16& t);
-			GINL volatile BasicString(const GAIA::U32& t);
-			GINL volatile BasicString(const GAIA::U64& t);
-			GINL volatile BasicString(const GAIA::U128& t);
-			GINL volatile BasicString(const GAIA::F32& t);
-			GINL volatile BasicString(const GAIA::F64& t);
-			GINL volatile BasicString(const GAIA::BL& t);
+			GINL BasicString(const GAIA::N8& t);
+			GINL BasicString(const GAIA::N16& t);
+			GINL BasicString(const GAIA::N32& t);
+			GINL BasicString(const GAIA::N64& t);
+			GINL BasicString(const GAIA::N128& t);
+			GINL BasicString(const GAIA::U8& t);
+			GINL BasicString(const GAIA::U16& t);
+			GINL BasicString(const GAIA::U32& t);
+			GINL BasicString(const GAIA::U64& t);
+			GINL BasicString(const GAIA::U128& t);
+			GINL BasicString(const GAIA::F32& t);
+			GINL BasicString(const GAIA::F64& t);
+			GINL BasicString(const GAIA::BL& t);
 			GINL ~BasicString(){}
 			GINL GAIA::BL empty() const;
 			GINL GAIA::GVOID clear();

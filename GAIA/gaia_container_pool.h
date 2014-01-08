@@ -5,7 +5,6 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		
 	};
 };
 

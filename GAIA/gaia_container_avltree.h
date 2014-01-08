@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> class AVLTree
+		template <typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class AVLTree
 		{
 		public:
 			GINL GAIA::BL empty() const;
@@ -39,7 +39,7 @@ namespace GAIA
 			GINL GAIA::GVOID rotate_right();
 		private:
 			Node* m_pRoot;
-			Pool m_pool;
+			BasicPool<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> m_pool;
 		};
 	};
 };

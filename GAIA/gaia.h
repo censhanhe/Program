@@ -35,10 +35,13 @@
 #include	"gaia_container_basicqueue.h"
 #include	"gaia_container_queue.h"
 #include	"gaia_container_buffer.h"
-
 #include	"gaia_container_basicorderless.h"
 #include	"gaia_container_orderless.h"
-
+#include 	"gaia_container_basicpool.h"
+#include 	"gaia_container_pool.h"
+#include 	"gaia_container_basiclist.h"
+#include 	"gaia_container_list.h"
+#include 	"gaia_container_avltree.h"
 #include 	"gaia_container_basicset.h"
 #include 	"gaia_container_set.h"
 

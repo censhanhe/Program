@@ -5,12 +5,12 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType> class List
+		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicList
 		{
 		public:
-			GINL List();
-			template <typename _ParamType> GINL List(const List<_DataType, _SizeType, _ParamType>& src);
-			GINL ~List();
+			GINL BasicList();
+			template <typename _ParamType> GINL BasicList(const BasicList<_DataType, _SizeType, _ParamType>& src);
+			GINL ~BasicList();
 			GINL _SizeType capacity() const;
 			GINL _SizeType size() const;
 			GINL GAIA::BL empty() const;
@@ -19,17 +19,17 @@ namespace GAIA
 			GINL GAIA::GVOID destroy();
 			GINL GAIA::GVOID insert(const _SizeType& index, const _DataType& t);
 			GINL GAIA::BL erase(const _SizeType& index);
-			GINL GAIA::BL swap(const _SizeType& index, const _SizeType& index);
+			GINL GAIA::BL swap(const _SizeType& index1, const _SizeType& index2);
 			GINL GAIA::GVOID push_back(const _DataType& t);
 			GINL GAIA::BL pop_back();
 			GINL _DataType& back();
 			GINL const _DataType& back() const;
 			GINL GAIA::GVOID push_front(const _DataType& t);
-			GINL GAIA::BL pop_back();
-			GINL _DataType& back();
-			GINL const _DataType& back() const;
+			GINL GAIA::BL pop_front();
+			GINL _DataType& front();
+			GINL const _DataType& front() const;
 			GINL GAIA::GVOID inverse();
-			template <typename _ParamType> GINL const List<_DataType, _SizeType, _SizeIncreaserType>& operator = (const List<_DataType, _SizeType, _ParamType)& src);
+			template <typename _ParamType> GINL const BasicList<_DataType, _SizeType, _SizeIncreaserType>& operator = (const BasicList<_DataType, _SizeType, _ParamType>& src);
 			GINL _DataType& operator[](const _SizeType& index);
 			GINL const _DataType& operator[](const _SizeType& index) const;
 		private:

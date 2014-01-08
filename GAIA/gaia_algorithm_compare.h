@@ -52,6 +52,12 @@ namespace GAIA
 		{
 			return clamp(src, (_DataType)0, (_DataType)1);
 		}
+		template <typename _DataType> _DataType floor(const _DataType& src)
+		{
+		}
+		template <typename _DataType> _DataType ceil(const _DataType& src)
+		{
+		}
 	};
 };
 
