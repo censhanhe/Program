@@ -5,7 +5,13 @@ namespace GAIA
 {
 	namespace SYNC
 	{
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::U32 sleep(const GAIA::U32& uMilliSecond);
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 usleep(const GAIA::U64& uMicroSecond);
 	};
 };
+
+#ifndef GAIA_DEBUG_CODEPURE
+#	include "gaia_sync_base_indp.h"
+#endif
 
 #endif

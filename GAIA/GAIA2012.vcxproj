@@ -78,7 +78,9 @@
   <ItemGroup>
     <ClCompile Include="gaia_file_indp.cpp" />
     <ClCompile Include="gaia_math_basic_indp.cpp" />
+    <ClCompile Include="gaia_sync_base_indp.cpp" />
     <ClCompile Include="gaia_thread_indp.cpp" />
+    <ClCompile Include="gaia_time_indp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="preheader.cpp" />
   </ItemGroup>
@@ -158,6 +160,7 @@
     <ClInclude Include="gaia_process.h" />
     <ClInclude Include="gaia_serializer.h" />
     <ClInclude Include="gaia_sync_base.h" />
+    <ClInclude Include="gaia_sync_base_indp.h" />
     <ClInclude Include="gaia_sync_event.h" />
     <ClInclude Include="gaia_sync_lock.h" />
     <ClInclude Include="gaia_sync_mutex.h" />
@@ -165,6 +168,7 @@
     <ClInclude Include="gaia_thread.h" />
     <ClInclude Include="gaia_thread_indp.h" />
     <ClInclude Include="gaia_time.h" />
+    <ClInclude Include="gaia_time_indp.h" />
     <ClInclude Include="gaia_type.h" />
     <ClInclude Include="gaia_type_convert.h" />
     <ClInclude Include="preheader.h" />
