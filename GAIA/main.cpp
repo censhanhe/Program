@@ -114,6 +114,43 @@ N32 main()
 		ol.remove(u1);
 	}
 
+	// BasicPool test.
+	{
+		BasicPool<GAIA::N32, GAIA::N32, TwiceSizeIncreaser<U32>, 32> pool;
+		for(N32 x = 0; x < 1000; x++)
+			pool.alloc();
+		pool.clear();
+		pool.destroy();
+		for(N32 x = 0; x < 1000; x++)
+			pool.alloc();
+	}
+
+	// AVLTree test.
+	{
+		AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, TwiceSizeIncreaser<U32>, 100> btr;
+		static const N32 FIRST_SAMPLE_COUNT = 100000;
+		for(N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		{
+			BL bResult = btr.insert(x);
+			GAIA_ASSERT(bResult);
+			bResult = GAIA::True;
+		}
+		for(N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		{
+			BL bResult = btr.exist(x);
+			GAIA_ASSERT(bResult);
+			bResult = GAIA::True;
+		}
+		for(N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		{
+			BL bResult = btr.erase(x);
+			GAIA_ASSERT(bResult);
+			bResult = GAIA::True;
+		}
+
+		N32 nDebug = 0;
+	}
+
 	// Basic math test.
 	{
 		REAL f = xcos(10.0F);

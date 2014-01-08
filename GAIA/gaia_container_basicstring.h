@@ -124,7 +124,6 @@ namespace GAIA
 			GINL operator GAIA::U128() const;
 			GINL operator GAIA::F32() const;
 			GINL operator GAIA::F64() const;
-			GINL operator GAIA::REAL() const;
 			GINL operator GAIA::BL() const;
 		private:
 			_DataType* m_pData;
