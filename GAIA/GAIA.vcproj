@@ -264,6 +264,10 @@
 						RelativePath=".\gaia_type_convert.h"
 						>
 					</File>
+					<File
+						RelativePath=".\gaia_type_traits2.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="CONTAINER"

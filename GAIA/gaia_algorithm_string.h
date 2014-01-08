@@ -161,6 +161,27 @@ namespace GAIA
 				return (_DataType*)p1;
 			return GNULL;
 		}
+		template <typename _DataType> class string_cast;
+		template <> class string_cast<GAIA::N32>
+		{
+		public:
+			string_cast(const GAIA::GCH* psz){m_pHead = psz; m_elesize = sizeof(GAIA::GCH);}
+			string_cast(const GAIA::GWCH* psz){m_pHead = psz; m_elesize = sizeof(GAIA::GWCH);}
+			operator GAIA::N32() const{return 12345;}
+		private:
+			const GAIA::GVOID* m_pHead;
+			GAIA::GCH m_elesize;
+		};
+		template <> class string_cast<GAIA::F32>
+		{
+		public:
+			string_cast(const GAIA::GCH* psz){m_pHead = psz; m_elesize = sizeof(GAIA::GCH);}
+			string_cast(const GAIA::GWCH* psz){m_pHead = psz; m_elesize = sizeof(GAIA::GWCH);}
+			operator GAIA::F32() const{return 54321.12345;}
+		private:
+			const GAIA::GVOID* m_pHead;
+			GAIA::GCH m_elesize;
+		};
 	};
 };
 
