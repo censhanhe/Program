@@ -213,6 +213,31 @@ namespace GAIA
 		private:
 			Node* m_pRoot;
 			BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> m_pool;
+
+		public:
+		#ifdef GAIA_DEBUG_INTERNALROUTINE
+			GINL GAIA::BL dbg_check_balance()
+			{
+				if(m_pRoot == GNULL)
+					return GAIA::True;
+				else
+					return this->dbg_check_balance_node(m_pRoot);
+			}
+			GINL GAIA::BL dbg_check_balance_node(Node* pNode)
+			{
+				if(pNode == GNULL)
+					return GAIA::True;
+				_HeightType prevh = pNode->pPrev == GNULL ? 0 : pNode->pPrev->h;
+				_HeightType nexth = pNode->pNext == GNULL ? 0 : pNode->pNext->h;
+				if(prevh - nexth > 1 || nexth - prevh > 1)
+					return GAIA::False;
+				if(!this->dbg_check_balance_node(pNode->pPrev))
+					return GAIA::False;
+				if(!this->dbg_check_balance_node(pNode->pNext))
+					return GAIA::False;
+				return GAIA::True;
+			}
+		#endif
 		};
 	};
 };

@@ -4,6 +4,8 @@
 #define GINL inline
 
 /* Debug mode. */
+#define GAIA_DEBUG_SELFCHECKROUTINE
+#define GAIA_DEBUG_INTERNALROUTINE
 #define GAIA_DEBUG_WARNING
 #define GAIA_DEBUG_CODING 
 #define GAIA_DEBUG_CODEPURE

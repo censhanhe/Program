@@ -20,6 +20,8 @@
 #include	"gaia_algorithm_memory.h"
 #include	"gaia_algorithm_sizeincreaser.h"
 #include	"gaia_algorithm_string.h"
+#include 	"gaia_algorithm_sort.h"
+#include 	"gaia_algorithm_search.h"
 
 #include	"gaia_container_basicstackstring.h"
 #include	"gaia_container_basicstring.h"
@@ -46,6 +48,8 @@
 #include 	"gaia_container_set.h"
 
 #include	"gaia_math_basic.h"
+#include 	"gaia_math_random.h"
+#include 	"gaia_math_lerp.h"
 #include	"gaia_math_cookies.h"
 
 #include	"gaia_time.h"

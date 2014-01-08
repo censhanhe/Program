@@ -170,6 +170,14 @@ namespace GAIA
 						++ret;
 				return ret;
 			}
+			GINL GAIA::GVOID sort(){if(m_size == 0) return; GAIA::ALGORITHM::sort(m_pData, m_pData + m_size - 1);}
+			GINL _SizeType search(const _DataType& t)
+			{
+				_DataType* pFinded = GAIA::ALGORITHM::search(m_pData, m_pData + m_size - 1, t);
+				if(pFinded == GNULL)
+					return (_SizeType)-1;
+				return pFinded - m_pData;
+			}
 			GINL GAIA::BL swap(const _SizeType& index1, const _SizeType& index2){GAIA::ALGORITHM::swap(this->operator[](index1), this->operator[](index2));}
 			GINL const _DataType& operator[](const _SizeType& index) const{GAIA_ASSERT(index >= 0 && index < this->size()); return m_pData[index];}
 			GINL _DataType& operator[](const _SizeType& index){GAIA_ASSERT(index >= 0 && index < this->size()); return m_pData[index];}
@@ -185,7 +193,6 @@ namespace GAIA
 			GINL ConstBidirectionalIterator front() const{ConstBidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
 			GINL BidirectionalIterator back(){BidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
 			GINL ConstBidirectionalIterator back() const{ConstBidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
-
 		private:
 			_DataType* m_pData;
 			_SizeType m_capacity;

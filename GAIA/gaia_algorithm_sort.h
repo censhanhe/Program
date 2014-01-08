@@ -25,8 +25,8 @@ namespace GAIA
 				++pBeginT;
 			}
 			GAIA::ALGORITHM::swap(*pMid, *pEnd);
-			GAIA::GLGORITHM::qsort(pBegin, pMid - 1);
-			GAIA::GLGORITHM::qsort(pMid + 1, pEnd);
+			GAIA::ALGORITHM::qsort(pBegin, pMid - 1);
+			GAIA::ALGORITHM::qsort(pMid + 1, pEnd);
 		}
 		template <typename _DataType> GAIA::GVOID bsort(_DataType* pBegin, _DataType* pEnd)
 		{
@@ -45,6 +45,7 @@ namespace GAIA
 			GAIA_ASSERT(pBegin != GNULL);
 			GAIA_ASSERT(pEnd != GNULL);
 			GAIA_ASSERT(pBegin < pEnd);
+			qsort(pBegin, pEnd);
 		}
 	};
 };

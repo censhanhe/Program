@@ -21,6 +21,14 @@ private:
 
 GAIA::N32 main()
 {
+#define BEGIN_TEST(name) do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0)
+#define END_TEST do{logfile.WriteText("\r\n\r\n");}while(0)
+#define LINE_TEST(text) do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n");}while(0)
+
+	GAIA::FILESYSTEM::File logfile;
+	logfile.Open("../gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
+	logfile.WriteText("[GAIA TEST BEGIN]\r\n\r\n");
+
 	// Array test.
 	{
 		GAIA::CONTAINER::Array<GAIA::N32, 32> temp;
@@ -126,28 +134,93 @@ GAIA::N32 main()
 
 	// AVLTree test.
 	{
+		BEGIN_TEST("<AVL Tree Function Test>");
+
 		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
 		static const GAIA::N32 FIRST_SAMPLE_COUNT = 100000;
+
+		GAIA::BL bFunctionSuccess = GAIA::True;
 		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
 		{
 			GAIA::BL bResult = btr.insert(x);
 			GAIA_ASSERT(bResult);
-			bResult = GAIA::True;
+			if(!bResult)
+				bFunctionSuccess;
 		}
+		if(bFunctionSuccess)
+			LINE_TEST("Insert by key operator is SUCCESSFULLY!");
+		else
+			LINE_TEST("Insert by key operator is FAILED!");
+
+		bFunctionSuccess = GAIA::True;
 		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
 		{
 			GAIA::BL bResult = btr.exist(x);
 			GAIA_ASSERT(bResult);
 			bResult = GAIA::True;
+			if(!bResult)
+				bFunctionSuccess;
 		}
+		if(bFunctionSuccess)
+			LINE_TEST("Exist by key operator is SUCCESSFULLY!");
+		else
+			LINE_TEST("Exist by key operator is FAILED!");
+
+		bFunctionSuccess = GAIA::True;
 		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
 		{
 			GAIA::BL bResult = btr.erase(x);
 			GAIA_ASSERT(bResult);
 			bResult = GAIA::True;
+			if(!bResult)
+				bFunctionSuccess;
 		}
+		if(bFunctionSuccess)
+			LINE_TEST("Erase element by key operator is SUCCESSFULLY!");
+		else
+			LINE_TEST("Erase element by key operator is FAILED!");
 
-		GAIA::N32 nDebug = 0;
+		btr.clear();
+		GAIA::CONTAINER::Vector<GAIA::N32> listSample;
+		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		{
+			GAIA::N32 nRand = GAIA::MATH::random();
+			btr.insert(nRand);
+			listSample.push_back(nRand);
+		}
+		bFunctionSuccess = GAIA::True;
+		for(GAIA::N32 x = 0; x < listSample.size(); x++)
+		{
+			if(!btr.exist(listSample[x]))
+				bFunctionSuccess = GAIA::False;
+		}
+		if(bFunctionSuccess)
+			LINE_TEST("Random data insertion and find AVL-Tree function check SUCCESSFULLY!");
+		else
+			LINE_TEST("Random data insertion and find AVL-Tree function check FAILED!");
+
+		if(btr.dbg_check_balance())
+			LINE_TEST("Check AVL-Tree balance SUCCESSFULLY!");
+		else
+			LINE_TEST("Check AVL-Tree balance FAILED!");
+
+		listSample.sort();
+		bFunctionSuccess = GAIA::True;
+		GAIA::N32 n = -1;
+		for(GAIA::N32 x = 0; x < listSample.size(); x++)
+		{
+			if(listSample[x] == n)
+				continue;
+			if(!btr.erase(listSample[x]))
+				bFunctionSuccess = GAIA::False;
+			n = listSample[x];
+		}
+		if(bFunctionSuccess)
+			LINE_TEST("Random data insertion and erase AVL-Tree function check SUCCESSFULLY!");
+		else
+			LINE_TEST("Random data insertion and erase AVL-Tree function check FAILED!");
+
+		END_TEST;
 	}
 
 	// Basic math test.
@@ -229,6 +302,9 @@ GAIA::N32 main()
 	// Basic factory test 2.
 	{
 	}
+
+	logfile.WriteText("[GAIA TEST END]");
+	logfile.Close();
 
 	return 0;
 }

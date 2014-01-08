@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="gaia_file_indp.cpp" />
     <ClCompile Include="gaia_math_basic_indp.cpp" />
+    <ClCompile Include="gaia_math_random_indp.cpp" />
     <ClCompile Include="gaia_sync_base_indp.cpp" />
     <ClCompile Include="gaia_thread_indp.cpp" />
     <ClCompile Include="gaia_time_indp.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="gaia_math_cookies.h" />
     <ClInclude Include="gaia_math_lerp.h" />
     <ClInclude Include="gaia_math_random.h" />
+    <ClInclude Include="gaia_math_random_indp.h" />
     <ClInclude Include="gaia_network.h" />
     <ClInclude Include="gaia_process.h" />
     <ClInclude Include="gaia_serializer.h" />
