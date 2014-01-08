@@ -1,7 +1,7 @@
 #ifndef 	__GAIA_MATH_RANDOM_INDP_H__
 #define 	__GAIA_MATH_RANDOM_INDP_H__
 
-#include <math.h>
+#include <stdlib.h>
 
 namespace GAIA
 {

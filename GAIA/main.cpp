@@ -1,3 +1,21 @@
+#define PERFORMANCE_COMPARE
+#ifdef PERFORMANCE_COMPARE
+#	include <vector>
+#	include <set>
+#	include <algorithm>
+#endif
+
+#define BEGIN_TEST(name)	do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0)
+#define END_TEST			do{logfile.WriteText("\r\n\r\n");}while(0)
+#define LINE_TEST(text)		do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n");}while(0)
+#define TEXT_TEST(text)		do{logfile.WriteText(text);}while(0)
+#define PERF_START(name)	uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
+#define PERF_END 			uPerfEnd = GAIA::TIME::clock_time();\
+							sprintf(szPerf, "%d(MS)", uPerfEnd - uPerfStart);\
+							TEXT_TEST("\t");\
+							TEXT_TEST(szPerfName);\
+							LINE_TEST(szPerf);
+
 #include "gaia.h"
 
 class MyThread : public GAIA::THREAD::Thread
@@ -21,10 +39,21 @@ private:
 
 GAIA::N32 main()
 {
-#define BEGIN_TEST(name) do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0)
-#define END_TEST do{logfile.WriteText("\r\n\r\n");}while(0)
-#define LINE_TEST(text) do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n");}while(0)
+#ifdef _DEBUG
+	static const GAIA::N32 SAMPLE_COUNT = 100000;
+#else
+	static const GAIA::N32 SAMPLE_COUNT = 1000000;
+#endif
 
+	GAIA::BL bFunctionSuccess = GAIA::True;
+
+	//
+	GAIA::MATH::random_seed(GAIA::TIME::clock_time());
+
+	//
+	GAIA::GCH szPerf[256];
+	GAIA::GCH szPerfName[256];
+	GAIA::U32 uPerfStart, uPerfEnd;
 	GAIA::FILESYSTEM::File logfile;
 	logfile.Open("../gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 	logfile.WriteText("[GAIA TEST BEGIN]\r\n\r\n");
@@ -104,9 +133,9 @@ GAIA::N32 main()
 	// BasicQueue test.
 	{
 		GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > que;
-		for(GAIA::U32 x = 0; x < 100; x++)
+		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; x++)
 			que.push(x);
-		for(GAIA::U32 x = 0; x < 50; x++)
+		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; x++)
 			que.pop();
 		que.front();
 		GAIA_ASSERT(que.size() == 50);
@@ -124,12 +153,92 @@ GAIA::N32 main()
 	// BasicPool test.
 	{
 		GAIA::CONTAINER::BasicPool<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 32> pool;
-		for(GAIA::N32 x = 0; x < 1000; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
 			pool.alloc();
 		pool.clear();
 		pool.destroy();
-		for(GAIA::N32 x = 0; x < 1000; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
 			pool.alloc();
+	}
+
+	// GAIA sort and search function test.
+	{
+		BEGIN_TEST("<Sort function test>");
+		{
+			bFunctionSuccess = GAIA::True;
+			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+				listGAIA.push_back(GAIA::MATH::random());
+			listGAIA.sort();
+			GAIA::N32 nOldValue = -1;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			{
+				if(nOldValue >= listGAIA[x])
+				{
+					bFunctionSuccess = GAIA::False;
+					break;
+				}
+			}
+			if(bFunctionSuccess)
+				LINE_TEST("GAIA sort is SUCCESSFULLY!");
+			else
+				LINE_TEST("GAIA sort is FAILED!");
+		}
+		END_TEST;
+
+		BEGIN_TEST("<Search function test>");
+		{
+			bFunctionSuccess = GAIA::True;
+			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+				listGAIA.push_back(x);
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			{
+				if(listGAIA.search(x) != x)
+				{
+					bFunctionSuccess = GAIA::False;
+					break;
+				}
+			}
+			if(bFunctionSuccess)
+				LINE_TEST("GAIA search is SUCCESSFULLY!");
+			else
+				LINE_TEST("GAIA search is FAILED!");
+		}
+		END_TEST;
+	}
+
+	// Sort and search function performance compare.
+	{
+#ifdef PERFORMANCE_COMPARE
+		BEGIN_TEST("<Sort function performance>");
+
+		std::vector<GAIA::N32> listSTL;
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			listSTL.push_back(GAIA::MATH::random());
+		PERF_START("STL sort use");
+		std::sort(listSTL.begin(), listSTL.end());
+		PERF_END;
+
+		GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			listGAIA.push_back(GAIA::MATH::random());
+		PERF_START("GAIA sort use");
+		GAIA::ALGORITHM::sort(&listGAIA[0], &listGAIA[listGAIA.size() - 1]);
+		PERF_END;
+
+		PERF_START("STL bsearch use");
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			binary_search(listSTL.begin(), listSTL.end(), listSTL[x]);
+		PERF_END;
+
+		PERF_START("GAIA bsearch use");
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]);
+		PERF_END;
+
+		END_TEST;
+#endif
 	}
 
 	// AVLTree test.
@@ -137,10 +246,9 @@ GAIA::N32 main()
 		BEGIN_TEST("<AVL Tree Function Test>");
 
 		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
-		static const GAIA::N32 FIRST_SAMPLE_COUNT = 100000;
 
-		GAIA::BL bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		bFunctionSuccess = GAIA::True;
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
 		{
 			GAIA::BL bResult = btr.insert(x);
 			GAIA_ASSERT(bResult);
@@ -153,7 +261,7 @@ GAIA::N32 main()
 			LINE_TEST("Insert by key operator is FAILED!");
 
 		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
 		{
 			GAIA::BL bResult = btr.exist(x);
 			GAIA_ASSERT(bResult);
@@ -167,7 +275,7 @@ GAIA::N32 main()
 			LINE_TEST("Exist by key operator is FAILED!");
 
 		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
 		{
 			GAIA::BL bResult = btr.erase(x);
 			GAIA_ASSERT(bResult);
@@ -182,7 +290,7 @@ GAIA::N32 main()
 
 		btr.clear();
 		GAIA::CONTAINER::Vector<GAIA::N32> listSample;
-		for(GAIA::N32 x = 0; x < FIRST_SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
 		{
 			GAIA::N32 nRand = GAIA::MATH::random();
 			btr.insert(nRand);
@@ -221,6 +329,27 @@ GAIA::N32 main()
 			LINE_TEST("Random data insertion and erase AVL-Tree function check FAILED!");
 
 		END_TEST;
+	}
+
+	// AVLTree performance compare.
+	{
+#ifdef PERFORMANCE_COMPARE
+		BEGIN_TEST("<AVLTree performance>");
+
+		PERF_START("STL set use");
+		std::set<GAIA::N32> setSTL;
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			setSTL.insert(GAIA::MATH::random());
+		PERF_END;
+
+		PERF_START("GAIA AVLTree use");
+		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> avltree;
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			avltree.insert(GAIA::MATH::random());
+		PERF_END;
+
+		END_TEST;
+#endif
 	}
 
 	// Basic math test.

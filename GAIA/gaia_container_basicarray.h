@@ -18,7 +18,16 @@ namespace GAIA
 			GINL const _DataType& back(){return m_data[m_size - 1];}
 			GINL GAIA::GVOID resize(_SizeType size){m_size = size;}
 			GINL GAIA::GVOID reset(const _DataType& t);
-			GINL GAIA::GVOID sort();
+			GINL GAIA::GVOID sort(){if(m_size == 0) return; GAIA::ALGORITHM::sort(m_data, &m_data[m_size - 1]);}
+			GINL _SizeType search(const _DataType& t) const
+			{
+				if(m_size <= 0)
+					return (_SizeType)-1;
+				_DataType* pFinded = GAIA::ALGORITHM::search(m_data, &m_data[m_size - 1], t);
+				if(pFinded == GNULL)
+					return (_SizeType)-1;
+				return pFinded - m_data;
+			}
 			GINL GAIA::GVOID reverse();
 			GINL _SizeType find(_SizeType index) const;
 			GINL _SizeType rfind(_SizeType index) const;

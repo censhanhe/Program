@@ -283,6 +283,18 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="POOL"
+							>
+							<File
+								RelativePath=".\gaia_container_basicpool.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_pool.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="BASE"
@@ -330,6 +342,14 @@
 						<Filter
 							Name="LIST"
 							>
+							<File
+								RelativePath=".\gaia_container_basiclist.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_list.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="MAP"
@@ -416,6 +436,26 @@
 							</File>
 							<File
 								RelativePath=".\gaia_container_basicvar.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="AVLTREE"
+							>
+							<File
+								RelativePath=".\gaia_container_avltree.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="SET"
+							>
+							<File
+								RelativePath=".\gaia_container_basicset.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_set.h"
 								>
 							</File>
 						</Filter>
@@ -516,6 +556,22 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="RANDOM"
+						>
+						<File
+							RelativePath=".\gaia_math_random.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_math_random_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_math_random_indp.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="DEBUG"
@@ -581,6 +637,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\gaia_sync_base_indp.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_sync_base_indp.h"
+						>
+					</File>
+					<File
 						RelativePath=".\gaia_sync_event.h"
 						>
 					</File>
@@ -622,6 +686,14 @@
 					>
 					<File
 						RelativePath=".\gaia_time.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_time_indp.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_time_indp.h"
 						>
 					</File>
 				</Filter>

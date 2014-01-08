@@ -173,6 +173,8 @@ namespace GAIA
 			GINL GAIA::GVOID sort(){if(m_size == 0) return; GAIA::ALGORITHM::sort(m_pData, m_pData + m_size - 1);}
 			GINL _SizeType search(const _DataType& t)
 			{
+				if(m_size <= 0)
+					return (_SizeType)-1;
 				_DataType* pFinded = GAIA::ALGORITHM::search(m_pData, m_pData + m_size - 1, t);
 				if(pFinded == GNULL)
 					return (_SizeType)-1;

@@ -9,6 +9,7 @@
 #define GAIA_DEBUG_WARNING
 #define GAIA_DEBUG_CODING 
 #define GAIA_DEBUG_CODEPURE
+
 #ifdef GAIA_DEBUG_CODING
 #	define GAIA_DEBUG_CONST
 #else

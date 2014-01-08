@@ -13,10 +13,10 @@ namespace GAIA
 			if(pBegin == pEnd)
 			{
 				if(*pBegin == key)
-					return pBegin;
+					return const_cast<_DataType*>(pBegin);
 				return GNULL;
 			}
-			_DataType* pMid = pBegin + (pEnd - pBegin) / 2;
+			_DataType* pMid = const_cast<_DataType*>(pBegin + (pEnd - pBegin) / 2);
 			if(key <= *pMid)
 			{
 				_DataType* pRet = GAIA::ALGORITHM::bsearch(pBegin, pMid, key);
@@ -39,9 +39,10 @@ namespace GAIA
 			while(pBegin != pEnd)
 			{
 				if(*pBegin == key)
-					return pBegin;
+					return const_cast<_DataType*>(pBegin);
 				++pBegin;
 			}
+			return GNULL;
 		}
 		template <typename _DataType> _DataType* search(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
 		{
@@ -53,7 +54,7 @@ namespace GAIA
 			if(pEnd == pBegin)
 			{
 				if(*pBegin == key)
-					return pBegin;
+					return const_cast<_DataType*>(pBegin);
 				return GNULL;
 			}
 			if(pEnd - pBegin < 10)
