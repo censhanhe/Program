@@ -103,6 +103,7 @@
     <ClInclude Include="gaia_container_astring.h" />
     <ClInclude Include="gaia_container_avltree.h" />
     <ClInclude Include="gaia_container_basicarray.h" />
+    <ClInclude Include="gaia_container_basicchars.h" />
     <ClInclude Include="gaia_container_basiclist.h" />
     <ClInclude Include="gaia_container_basicorderless.h" />
     <ClInclude Include="gaia_container_basicpackage.h" />
@@ -117,6 +118,7 @@
     <ClInclude Include="gaia_container_basicvar.h" />
     <ClInclude Include="gaia_container_basicvector.h" />
     <ClInclude Include="gaia_container_buffer.h" />
+    <ClInclude Include="gaia_container_chars.h" />
     <ClInclude Include="gaia_container_list.h" />
     <ClInclude Include="gaia_container_orderless.h" />
     <ClInclude Include="gaia_container_pool.h" />

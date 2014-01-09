@@ -195,6 +195,17 @@ GAIA::N32 main()
 		GAIA::U64 size = buf.size();
 	}
 
+	// Chars test.
+	{
+		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars;
+		chars = "abc";
+		chars += "123";
+		chars = 123.456F;
+		chars.clear();
+		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars1 = chars;
+		chars1.clear();
+	}
+
 	// String algorithm test.
 	{
 		GAIA::GTCH ch = GAIA::ALGORITHM::tolower('A');

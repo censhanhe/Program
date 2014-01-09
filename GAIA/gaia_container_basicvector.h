@@ -170,12 +170,12 @@ namespace GAIA
 						++ret;
 				return ret;
 			}
-			GINL GAIA::GVOID sort(){if(m_size == 0) return; GAIA::ALGORITHM::sort(m_pData, m_pData + m_size - 1);}
+			GINL GAIA::GVOID sort(){if(this->size() == 0) return; GAIA::ALGORITHM::sort(m_pData, m_pData + this->size() - 1);}
 			GINL _SizeType search(const _DataType& t)
 			{
-				if(m_size <= 0)
+				if(this->size() <= 0)
 					return (_SizeType)-1;
-				_DataType* pFinded = GAIA::ALGORITHM::search(m_pData, m_pData + m_size - 1, t);
+				_DataType* pFinded = GAIA::ALGORITHM::search(m_pData, m_pData + this->size() - 1, t);
 				if(pFinded == GNULL)
 					return (_SizeType)-1;
 				return pFinded - m_pData;
