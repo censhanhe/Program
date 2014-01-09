@@ -201,8 +201,12 @@ GAIA::N32 main()
 		chars = "abc";
 		chars += "123";
 		chars = 123.456F;
+		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars1;
+		chars1 = "3.4";
+		GAIA::UM u = chars.find('3', 0);
+		u = chars.find(chars1, 0);
+		u = chars.rfind('4', chars.size() - 1);
 		chars.clear();
-		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars1 = chars;
 		chars1.clear();
 	}
 
@@ -233,6 +237,10 @@ GAIA::N32 main()
 		str += L" Hello kitty!";
 		str = 32;
 		str = 123.456;
+		GAIA::UM u = str.find('2', 0);
+		u = str.find(L"3.4", 0);
+		GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str1 = L"3.4";
+		u = str.find(str1, 0);
 		GAIA::REAL r = str;
 		r = 0.0F;
 	}

@@ -5,6 +5,15 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
+		template <typename _DataType, typename _SizeType> GAIA::BL check(const _DataType* pBegin, const _DataType* p, const _SizeType& size)
+		{
+			for(_SizeType x = 0; x < size; x++)
+			{
+				if(pBegin[x] != p[x])
+					return GAIA::False;
+			}
+			return GAIA::True;
+		}
 		template <typename _DataType> _DataType* find(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
 		{
 			while(pBegin != pEnd)
@@ -15,9 +24,8 @@ namespace GAIA
 			}
 			return GNULL;
 		}
-
 		template <typename _DataType> _DataType* rfind(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
-		{
+		{
 			while(pBegin != pEnd)
 			{
 				if(*pEnd == key)
@@ -26,7 +34,34 @@ namespace GAIA
 			}
 			return GNULL;
 		}
-	
+		template <typename _DataType, typename _SizeType> GINL _DataType* finds(const _DataType* pBegin, const _DataType* pEnd, const _DataType* p, const _SizeType& size)
+		{
+			GAIA_ASSERT(pBegin != GNULL);
+			GAIA_ASSERT(pEnd != GNULL);
+			GAIA_ASSERT(p != GNULL);
+			GAIA_ASSERT(size != 0);
+			while(pEnd - pBegin + 1 >= size)
+			{
+				if(check(pBegin, p, size))
+					return const_cast<_DataType*>(pBegin);
+				++pBegin;
+			}
+			return GNULL;
+		}
+		template <typename _DataType, typename _SizeType> GINL _DataType* rfinds(const _DataType* pBegin, const _DataType* pEnd, const _DataType* p, const _SizeType& size)
+		{
+			GAIA_ASSERT(pBegin != GNULL);
+			GAIA_ASSERT(pEnd != GNULL);
+			GAIA_ASSERT(p != GNULL);
+			GAIA_ASSERT(size != 0);
+			while(pEnd - pBegin + 1 >= size)
+			{
+				if(check(pEnd - size + 1, p, size))
+					return const_cast<_DataType*>(pEnd - size + 1);
+				--pEnd;
+			}
+			return GNULL;
+		}
 		template <typename _DataType> _DataType* bsearch(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
 		{
 			GAIA_ASSERT(pBegin != GNULL);

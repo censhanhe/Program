@@ -61,32 +61,133 @@ namespace GAIA
 			GINL _DataType* front(){return m_pFront;}
 			GINL const _DataType* front() const{return m_pFront;}
 			GINL GAIA::GVOID inverse(){if(this->size() > 1) GAIA::ALGORITHM::inverse(m_pFront, m_pFront + this->size() - 2);}
-			GINL GAIA::BL insert(const _DataType& t, const _SizeType& index);
-			GINL GAIA::BL insert(const _DataType* p, const _SizeType& index);
-			GINL GAIA::BL insert(const BasicString<_DataType, _SizeType>& src);
-			GINL GAIA::BL erase(const _SizeType& index);
-			GINL GAIA::BL erase(const _SizeType& index_start, const _SizeType& index_end);
-			GINL GAIA::BL erase(const _DataType& t, const _SizeType& index);
-			GINL GAIA::BL erase(const _DataType* p, const _SizeType& index);
-			GINL GAIA::BL erase(const BasicString<_DataType, _SizeType>& src);
-			GINL _SizeType find(const _DataType& f, const _SizeType& index) const;
-			GINL _SizeType find(const _DataType* pSource, const _SizeType& index) const;
-			GINL _SizeType find(const BasicString<_DataType, _SizeType>& src) const;
-			GINL _SizeType rfind(const _DataType& f, const _SizeType& index) const;
-			GINL _SizeType rfind(const _DataType* pSource, const _SizeType& index) const;
-			GINL _SizeType rfind(const BasicString<_DataType, _SizeType>& src) const;
-			GINL _SizeType replace(const _DataType& src, const _DataType& dst);
-			GINL _SizeType replace(const _DataType* pSrc, const _DataType* pDst);
-			GINL _SizeType replace(const BasicString<_DataType, _SizeType>& src, const BasicString<_DataType, _SizeType>& dst);
-			GINL BasicString<_DataType, _SizeType>& left(const _SizeType& index) const;
-			GINL BasicString<_DataType, _SizeType>& right(const _SizeType& index) const;
-			GINL BasicString<_DataType, _SizeType>& mid(const _SizeType& index_start, const _SizeType& index_end) const;
-			GINL BasicString<_DataType, _SizeType>& trim_left(const _DataType& t);
-			GINL BasicString<_DataType, _SizeType>& trim_left(const _DataType* p);
-			GINL BasicString<_DataType, _SizeType>& trim_left(const BasicString<_DataType, _SizeType>& src);
-			GINL BasicString<_DataType, _SizeType>& trim_right(const _DataType& t);
-			GINL BasicString<_DataType, _SizeType>& trim_right(const _DataType* p);
-			GINL BasicString<_DataType, _SizeType>& trim_right(const BasicString<_DataType, _SizeType>& src);
+			GINL GAIA::BL insert(const _DataType& t, const _SizeType& index)
+			{
+			}
+			GINL GAIA::BL insert(const _DataType* p, const _SizeType& index)
+			{
+				GAIA_ASSERT(p != GNULL);
+			}
+			GINL GAIA::BL insert(const BasicString<_DataType, _SizeType>& src, const _SizeType& index)
+			{
+			}
+			GINL GAIA::BL erase(const _SizeType& index)
+			{
+			}
+			GINL GAIA::BL erase(const _SizeType& index_start, const _SizeType& index_end)
+			{
+			}
+			GINL GAIA::BL erase(const _DataType& t, const _SizeType& index)
+			{
+			}
+			GINL GAIA::BL erase(const _DataType* p, const _SizeType& index)
+			{
+			}
+			GINL GAIA::BL erase(const BasicString<_DataType, _SizeType>& src)
+			{
+			}
+			GINL _SizeType find(const _DataType& t, const _SizeType& index) const
+			{
+				if(index >= this->size())
+					return (_SizeType)-1;
+				_DataType* pFinded = GAIA::ALGORITHM::find(m_pFront, m_pFront + index - 1, t);
+				if(pFinded == GNULL)
+					return (_SizeType)-1;
+				return pFinded - m_pFront;
+			}
+			GINL _SizeType find(const _DataType* p, const _SizeType& index) const
+			{
+				GAIA_ASSERT(p != GNULL);
+				if(p == GNULL)
+					return (_SizeType)-1;
+				if(index >= this->size())
+					return (_SizeType)-1;
+				_DataType* pFinded = GAIA::ALGORITHM::strstr(m_pFront + index, p);
+				if(pFinded == GNULL)
+					return (_SizeType)-1;
+				return pFinded - m_pFront;
+			}
+			GINL _SizeType find(const BasicString<_DataType, _SizeType>& src, const _SizeType& index) const
+			{
+				GAIA_ASSERT(src.size() == 0);
+				if(src.size() == 0)
+					return (_SizeType)-1;
+				if(index >= this->size())
+					return (_SizeType)-1;
+				_DataType* pFinded = GAIA::ALGORITHM::strstr(m_pFront + index, src.front());
+				if(pFinded == GNULL)
+					return (_SizeType)-1;
+				return pFinded - m_pFront;
+			}
+			GINL _SizeType rfind(const _DataType& t, const _SizeType& index) const
+			{
+				if(index >= this->size())
+					return (_SizeType)-1;
+				_DataType* pFinded = GAIA::ALGORITHM::rfind(m_pFront, m_pFront + index - 1, t);
+				if(pFinded == GNULL)
+					return (_SizeType)-1;
+				return pFinded - m_pFront;
+			}
+			GINL _SizeType rfind(const _DataType* p, const _SizeType& size, const _SizeType& index) const
+			{
+				GAIA_ASSERT(p != GNULL);
+				if(p == GNULL)
+					return (_SizeType)-1;
+				if(index >= this->size())
+					return (_SizeType)-1;
+				_DataType* pFinded = GAIA::ALGORITHM::rfinds(m_pFront, m_pFront + index - 1, p, size);
+				if(pFinded == GNULL)
+					return (_SizeType)-1;
+				return pFinded - m_pFront;
+			}
+			GINL _SizeType rfind(const BasicString<_DataType, _SizeType>& src, const _SizeType& index) const
+			{
+				GAIA_ASSERT(src.size() != 0);
+				if(src.size() == 0)
+					return (_SizeType)-1;
+				if(index >= this->size())
+					return (_SizeType)-1;
+				_DataType* pFinded = GAIA::ALGORITHM::rfinds(m_pFront, m_pFront + index - 1, src.front(), src.size());
+				if(pFinded == GNULL)
+					return (_SizeType)-1;
+				return pFinded - m_pFront;
+			}
+			GINL _SizeType replace(const _DataType& src, const _DataType& dst)
+			{
+			}
+			GINL _SizeType replace(const _DataType* pSrc, const _DataType* pDst)
+			{
+			}
+			GINL _SizeType replace(const BasicString<_DataType, _SizeType>& src, const BasicString<_DataType, _SizeType>& dst)
+			{
+			}
+			GINL BasicString<_DataType, _SizeType>& left(const _SizeType& index) const
+			{
+			}
+			GINL BasicString<_DataType, _SizeType>& right(const _SizeType& index) const
+			{
+			}
+			GINL BasicString<_DataType, _SizeType>& mid(const _SizeType& index_start, const _SizeType& index_end) const
+			{
+			}
+			GINL BasicString<_DataType, _SizeType>& trim_left(const _DataType& t)
+			{
+			}
+			GINL BasicString<_DataType, _SizeType>& trim_left(const _DataType* p)
+			{
+			}
+			GINL BasicString<_DataType, _SizeType>& trim_left(const BasicString<_DataType, _SizeType>& src)
+			{
+			}
+			GINL BasicString<_DataType, _SizeType>& trim_right(const _DataType& t)
+			{
+			}
+			GINL BasicString<_DataType, _SizeType>& trim_right(const _DataType* p)
+			{
+			}
+			GINL BasicString<_DataType, _SizeType>& trim_right(const BasicString<_DataType, _SizeType>& src)
+			{
+			}
 			GINL BasicString<_DataType, _SizeType>& operator = (const BasicString<_DataType, _SizeType>& src){return this->assign(src.front(), src.size());}
 			GINL BasicString<_DataType, _SizeType>& operator = (const _DataType* p){return this->assign(p, GAIA::ALGORITHM::strlen(p));}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::N8& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
