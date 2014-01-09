@@ -8,6 +8,11 @@ namespace GAIA
 		template <typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class AVLTree
 		{
 		public:
+			typedef _DataType _datatype;
+			typedef _SizeType _sizetype;
+			typedef _HeightType _heighttype;
+			typedef _SizeIncreaserType _sizeincreasertype;
+		public:
 			GINL AVLTree(){m_pRoot = GNULL;}
 			GINL GAIA::BL empty() const{return m_pool.empty();}
 			GINL _SizeType size() const{return m_pool.size();}

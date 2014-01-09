@@ -134,6 +134,20 @@ GAIA::N32 main()
 		END_TEST;
 	}
 
+	// Basic array test
+	{
+		BEGIN_TEST("<Basic array test>");
+		{
+			GAIA::CONTAINER::BasicArray<GAIA::U32, GAIA::U32, 100> ba;
+			for(GAIA::CONTAINER::BasicArray<GAIA::U32, GAIA::U32, 100>::_sizetype x = 0; x < ba.capacity(); x++)
+				ba << GAIA::MATH::random();
+			ba.sort();
+			ba.erase(0);
+			ba.clear();
+		}
+		END_TEST;
+	};
+
 	// Array test.
 	{
 		GAIA::CONTAINER::Array<GAIA::N32, 32> temp;
@@ -199,6 +213,17 @@ GAIA::N32 main()
 		GAIA::GTCH* pResult = GAIA::ALGORITHM::strstr(sz, L"lo");
 		pResult = GAIA::ALGORITHM::strmch(sz, L"Hel");
 		sz[0] = 0;
+	}
+
+	// String class test.
+	{
+		GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str;
+		str = L"Hello world!";
+		str += L" Hello kitty!";
+		str = 32;
+		str = 123.456;
+		GAIA::REAL r = str;
+		r = 0.0F;
 	}
 
 	// Stack basic string test.
