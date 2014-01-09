@@ -5,6 +5,18 @@ namespace GAIA
 {
 	namespace MATH
 	{
+		template <typename _DataType1, typename _DataType2> GINL GAIA::BL equal(const _DataType1& t1, const _DataType2& t2)
+		{
+			if(abs(t1 - t2) < (GAIA::DATATYPE::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType)0.00001)
+				return GAIA::True;
+			return GAIA::False;
+		}
+		template <typename _DataType1, typename _DataType2, typename _DataType3> GINL GAIA::BL equal(const _DataType1& t1, const _DataType2& t2, const _DataType3& epsilon)
+		{
+			if(abs(t1 - t2) < epsilon)
+				return GAIA::True;
+			return GAIA::False;
+		}
 		GAIA_DEBUG_CODEPURE_FUNC REAL xcos(const REAL& v);
 		GAIA_DEBUG_CODEPURE_FUNC REAL xsin(const REAL& v);
 		GAIA_DEBUG_CODEPURE_FUNC REAL xacos(const REAL& v);

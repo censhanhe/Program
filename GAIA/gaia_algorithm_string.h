@@ -161,26 +161,192 @@ namespace GAIA
 				return (_DataType*)p1;
 			return GNULL;
 		}
+		template <typename _SrcDataType, typename _DstDataType> _DstDataType* int2str(const _SrcDataType& src, _DstDataType* pDst)
+		{
+			GAIA_ASSERT(pDst != GNULL);
+			_SrcDataType tsrc = src;
+			_DstDataType* p = pDst;
+			if(src < (_SrcDataType)0)
+			{
+				tsrc = -tsrc;
+				*p = '-';
+				++p;
+			}
+			while(tsrc > 0)
+			{
+				*p = (tsrc % 10 + '0');
+				tsrc /= 10;
+				++p;
+			}
+			if(p == pDst)
+			{
+				*p = '0';
+				++p;
+			}
+			else
+			{
+				GAIA::ALGORITHM::inverse(*pDst == '-' ? pDst + 1 : pDst, p - 1);
+			}
+			*p = 0;
+			return p + 1;
+		}
+		template <typename _SrcDataType, typename _DstDataType> _DstDataType* real2str(const _SrcDataType& src, _DstDataType* pDst)
+		{
+			GAIA_ASSERT(pDst != GNULL);
+			GAIA::N64 left = (GAIA::N64)src;
+			_SrcDataType right = src - (_SrcDataType)left;
+			right = GAIA::ALGORITHM::abs(right);
+			while(right - (_SrcDataType)(GAIA::N64)right != 0)
+				right *= 10.0F;
+			_DstDataType* p = int2str(left, pDst);
+			--p;
+			*p = '.';
+			++p;
+			p = int2str((GAIA::N64)right, p);
+			return p;
+		}
+		template <typename _SrcDataType, typename _DstDataType> GAIA::GVOID str2int(const _SrcDataType* p, _DstDataType& dst)
+		{
+			GAIA_ASSERT(p != GNULL);
+			dst = 0;
+			GAIA::BL bSign;
+			if(*p == '-')
+			{
+				bSign = GAIA::True;
+				++p;
+			}
+			else
+				bSign = GAIA::False;
+			while(*p != 0)
+			{
+				if(*p < '0' || *p > '9')
+					break;
+				dst *= 10;
+				dst += *p - '0';
+				++p;
+			}
+			if(bSign)
+				dst = -dst;
+		}
+		template <typename _SrcDataType, typename _DstDataType> GAIA::GVOID str2real(const _SrcDataType* p, _DstDataType& dst)
+		{
+			GAIA_ASSERT(p != GNULL);
+			GAIA::BL bSign;
+			if(*p == '-')
+			{
+				bSign = GAIA::True;
+				++p;
+			}
+			else
+				bSign = GAIA::False;
+			GAIA::UM left = 0;
+			GAIA::UM right = 0;
+			_DstDataType right_dst;
+			GAIA::UM* pTarget = &left;
+			while(*p != 0)
+			{
+				if(*p < '0' || *p > '9')
+					break;
+				*pTarget *= 10;
+				*pTarget += (*p - '0');
+				++p;
+			}
+			if(*p == '.')
+			{
+				++p;
+				GAIA::UM right_div = 1;
+				pTarget = &right;
+				while(*p != 0)
+				{
+					if(*p < '0' || *p > '9')
+						break;
+					*pTarget *= 10;
+					right_div *= 10;
+					*pTarget += (*p - '0');
+					++p;
+				}
+				right_dst = (_DstDataType)*pTarget / (_DstDataType)right_div;
+			}
+			else
+				right_dst = 0.0F;
+			dst = (_DstDataType)left + right_dst;
+			if(bSign)
+				dst = -dst;
+		}
 		template <typename _DataType> class string_cast;
-		template <> class string_cast<GAIA::N32>
-		{
-		public:
-			string_cast(const GAIA::GCH* psz){m_pHead = psz; m_elesize = sizeof(GAIA::GCH);}
-			string_cast(const GAIA::GWCH* psz){m_pHead = psz; m_elesize = sizeof(GAIA::GWCH);}
-			operator GAIA::N32() const{return 12345;}
-		private:
-			const GAIA::GVOID* m_pHead;
-			GAIA::GCH m_elesize;
+		#define GAIA_DECLARATION_STRINGCAST(type, convert_func) \
+		template <> class string_cast<type>\
+		{\
+		public:\
+			string_cast(const GAIA::GCH* psz){m_pGCH = psz; m_pGWCH = GNULL;}\
+			string_cast(const GAIA::GWCH* psz){m_pGCH = GNULL; m_pGWCH = psz;}\
+			operator type() const\
+			{\
+				type ret;\
+				if(m_pGCH != GNULL)\
+					convert_func(m_pGCH, ret);\
+				else if(m_pGWCH != GNULL)\
+					convert_func(m_pGCH, ret);\
+				else\
+				{\
+					GAIA_ASSERT(GAIA::False);\
+					ret = 0;\
+				}\
+				return ret;\
+			}\
+		private:\
+			const GAIA::GCH* m_pGCH;\
+			const GAIA::GWCH* m_pGWCH;\
 		};
-		template <> class string_cast<GAIA::F32>
+		GAIA_DECLARATION_STRINGCAST(GAIA::NM, str2real);
+		GAIA_DECLARATION_STRINGCAST(GAIA::UM, str2real);
+		GAIA_DECLARATION_STRINGCAST(GAIA::N8, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::N16, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::N32, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::N64, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::U8, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::U16, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::U32, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::U64, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::BL, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::F32, str2real);
+		GAIA_DECLARATION_STRINGCAST(GAIA::F64, str2real);
+		class string_autocast
 		{
 		public:
-			string_cast(const GAIA::GCH* psz){m_pHead = psz; m_elesize = sizeof(GAIA::GCH);}
-			string_cast(const GAIA::GWCH* psz){m_pHead = psz; m_elesize = sizeof(GAIA::GWCH);}
-			operator GAIA::F32() const{return 54321.12345;}
+			GINL string_autocast(const GAIA::GCH* psz){m_pGCH = psz; m_pGWCH = GNULL;}
+			GINL string_autocast(const GAIA::GWCH* psz){m_pGCH = GNULL; m_pGWCH = psz;}
+			#define GAIA_DECLARATION_STRINGAUTOCAST(type) \
+			GINL operator type()\
+			{\
+				type ret;\
+				if(m_pGCH != GNULL)\
+					return string_cast<type>(m_pGCH);\
+				else if(m_pGWCH != GNULL)\
+					return string_cast<type>(m_pGWCH);\
+				else\
+				{\
+					GAIA_ASSERT(GAIA::False);\
+					ret = 0;\
+				}\
+				return ret;\
+			}
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::NM);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::UM);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::N8);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::N16);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::N32);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::N64);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::U8);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::U16);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::U32);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::U64);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::BL);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::F32);
+			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::F64);
 		private:
-			const GAIA::GVOID* m_pHead;
-			GAIA::GCH m_elesize;
+			const GAIA::GCH* m_pGCH;
+			const GAIA::GWCH* m_pGWCH;
 		};
 	};
 };

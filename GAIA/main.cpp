@@ -58,6 +58,82 @@ GAIA::N32 main()
 	logfile.Open("../gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 	logfile.WriteText("[GAIA TEST BEGIN]\r\n\r\n");
 
+	// Real number float equal test.
+	{
+		BEGIN_TEST("<Float equal function test>");
+		{
+			GAIA::BL bEqual = GAIA::MATH::equal(0.1F, 0.100001F);
+			if(bEqual)
+				LINE_TEST("equal(2) convert SUCCESSFULLY!");
+			else
+				LINE_TEST("equal(2) convert FAILED!");
+
+			bEqual = GAIA::MATH::equal(0.1F, 0.11F, 0.1F);
+			if(bEqual)
+				LINE_TEST("equal(3) convert SUCCESSFULLY!");
+			else
+				LINE_TEST("equal(3) convert FAILED!");
+		}
+		END_TEST;
+	}
+
+	// String convert function test.
+	{
+		BEGIN_TEST("<String convert function test>");
+		{
+			GAIA::NM n;
+			GAIA::ALGORITHM::str2int("-123456789", n);
+			if(n != -123456789)
+				LINE_TEST("str2int convert FAILED!");
+			else
+				LINE_TEST("str2int convert SUCCESSFULLY!");
+
+			GAIA::REAL r;
+			GAIA::ALGORITHM::str2real("-.1234", r);
+			if(!GAIA::MATH::equal(r, -0.1234))
+				LINE_TEST("str2real convert FAILED!");
+			else
+				LINE_TEST("str2real convert SUCCESSFULLY!");
+
+			bFunctionSuccess = GAIA::True;
+			n = -1234;
+			GAIA::GTCH szTemp[1024];
+			GAIA::ALGORITHM::int2str(n, szTemp);
+			if(GAIA::ALGORITHM::strcmp(szTemp, L"-1234") != 0)
+				bFunctionSuccess = GAIA::False;
+			n = 0;
+			GAIA::ALGORITHM::int2str(n, szTemp);
+			if(GAIA::ALGORITHM::strcmp(szTemp, L"0") != 0)
+				bFunctionSuccess = GAIA::False;
+			if(!bFunctionSuccess)
+				LINE_TEST("int2str convert FAILED!");
+			else
+				LINE_TEST("int2str convert SUCCESSFULLY!");
+
+			bFunctionSuccess = GAIA::True;
+			r = -1.2;
+			GAIA::ALGORITHM::real2str(r, szTemp);
+			if(GAIA::ALGORITHM::strmch(szTemp, L"-1.2") != szTemp)
+				bFunctionSuccess = GAIA::False;
+			r = 0;
+			GAIA::ALGORITHM::real2str(r, szTemp);
+			if(GAIA::ALGORITHM::strcmp(szTemp, L"0.0") != 0)
+				bFunctionSuccess = GAIA::False;
+			if(!bFunctionSuccess)
+				LINE_TEST("real2str convert FAILED!");
+			else
+				LINE_TEST("real2str convert SUCCESSFULLY!");
+
+			n = GAIA::ALGORITHM::string_cast<GAIA::U8>("-124.456");
+			r = GAIA::ALGORITHM::string_cast<GAIA::REAL>("-123.456");
+			n = GAIA::ALGORITHM::string_autocast("-123.456");
+			r = GAIA::ALGORITHM::string_autocast("-123.456");
+
+			n = 0;
+		}
+		END_TEST;
+	}
+
 	// Array test.
 	{
 		GAIA::CONTAINER::Array<GAIA::N32, 32> temp;

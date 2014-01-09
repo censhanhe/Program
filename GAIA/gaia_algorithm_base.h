@@ -36,8 +36,6 @@ namespace GAIA
 		}
 		template <typename _DataType> GAIA::GVOID inverse(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_ASSERT(pBegin != GNULL);
-			GAIA_ASSERT(pEnd != GNULL);
 			if(pBegin >= pEnd)
 				return;
 			while(pBegin < pEnd)
