@@ -55,7 +55,11 @@ GAIA::N32 main()
 	GAIA::GCH szPerfName[256];
 	GAIA::U32 uPerfStart, uPerfEnd;
 	GAIA::FILESYSTEM::File logfile;
+#if GAIA_OS == GAIA_OS_WINDOWS
 	logfile.Open("../gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
+#else
+	logfile.Open("/users/armterla/gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
+#endif
 	logfile.WriteText("[GAIA TEST BEGIN]\r\n\r\n");
 
 	// Real number float equal test.

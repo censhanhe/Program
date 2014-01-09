@@ -44,7 +44,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL insert(const _DataType* p, const _SizeType& index)
 			{
-				GAIA_ASSERT(p) != GNULL;
+				GAIA_ASSERT(p != GNULL);
 			}
 			GINL GAIA::BL insert(const BasicChars<_DataType, _SizeType, _Size>& src)
 			{
@@ -208,12 +208,12 @@ namespace GAIA
 			GINL operator GAIA::N16() const{return GAIA::ALGORITHM::string_cast<N16>(m_chars);}
 			GINL operator GAIA::N32() const{return GAIA::ALGORITHM::string_cast<N32>(m_chars);}
 			GINL operator GAIA::N64() const{return GAIA::ALGORITHM::string_cast<N64>(m_chars);}
-			GINL operator GAIA::N128() const{return GAIA::ALGORITHM::string_cast<N128>(m_chars);}
+			GINL operator GAIA::N128() const{}
 			GINL operator GAIA::U8() const{return GAIA::ALGORITHM::string_cast<U8>(m_chars);}
 			GINL operator GAIA::U16() const{return GAIA::ALGORITHM::string_cast<U16>(m_chars);}
 			GINL operator GAIA::U32() const{return GAIA::ALGORITHM::string_cast<U32>(m_chars);}
 			GINL operator GAIA::U64() const{return GAIA::ALGORITHM::string_cast<U64>(m_chars);}
-			GINL operator GAIA::U128() const{return GAIA::ALGORITHM::string_cast<U128>(m_chars);}
+			GINL operator GAIA::U128() const{}
 			GINL operator GAIA::F32() const{return GAIA::ALGORITHM::string_cast<F32>(m_chars);}
 			GINL operator GAIA::F64() const{return GAIA::ALGORITHM::string_cast<F64>(m_chars);}
 			GINL operator GAIA::BL() const{return GAIA::ALGORITHM::string_cast<BL>(m_chars);}

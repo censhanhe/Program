@@ -229,12 +229,12 @@ namespace GAIA
 			GINL operator GAIA::N16() const{return GAIA::ALGORITHM::string_cast<N16>(m_pFront);}
 			GINL operator GAIA::N32() const{return GAIA::ALGORITHM::string_cast<N32>(m_pFront);}
 			GINL operator GAIA::N64() const{return GAIA::ALGORITHM::string_cast<N64>(m_pFront);}
-			GINL operator GAIA::N128() const{return GAIA::ALGORITHM::string_cast<N128>(m_pFront);}
+			GINL operator GAIA::N128() const{}
 			GINL operator GAIA::U8() const{return GAIA::ALGORITHM::string_cast<U8>(m_pFront);}
 			GINL operator GAIA::U16() const{return GAIA::ALGORITHM::string_cast<U16>(m_pFront);}
 			GINL operator GAIA::U32() const{return GAIA::ALGORITHM::string_cast<U32>(m_pFront);}
 			GINL operator GAIA::U64() const{return GAIA::ALGORITHM::string_cast<U64>(m_pFront);}
-			GINL operator GAIA::U128() const{return GAIA::ALGORITHM::string_cast<U128>(m_pFront);}
+			GINL operator GAIA::U128() const{}
 			GINL operator GAIA::F32() const{return GAIA::ALGORITHM::string_cast<F32>(m_pFront);}
 			GINL operator GAIA::F64() const{return GAIA::ALGORITHM::string_cast<F64>(m_pFront);}
 			GINL operator GAIA::BL() const{return GAIA::ALGORITHM::string_cast<BL>(m_pFront);}

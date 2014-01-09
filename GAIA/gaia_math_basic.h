@@ -7,7 +7,7 @@ namespace GAIA
 	{
 		template <typename _DataType1, typename _DataType2> GINL GAIA::BL equal(const _DataType1& t1, const _DataType2& t2)
 		{
-			if(abs(t1 - t2) < (GAIA::DATATYPE::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType)0.00001)
+			if(abs(t1 - t2) < (typename GAIA::DATATYPE::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType)0.00001)
 				return GAIA::True;
 			return GAIA::False;
 		}
