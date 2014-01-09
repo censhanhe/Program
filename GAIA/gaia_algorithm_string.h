@@ -239,10 +239,10 @@ namespace GAIA
 			}
 			else
 				bSign = GAIA::False;
-			GAIA::UM left = 0;
-			GAIA::UM right = 0;
+			_DstDataType left = 0;
+			_DstDataType right = 0;
 			_DstDataType right_dst;
-			GAIA::UM* pTarget = &left;
+			_DstDataType* pTarget = &left;
 			while(*p != 0)
 			{
 				if(*p < '0' || *p > '9')
@@ -254,7 +254,7 @@ namespace GAIA
 			if(*p == '.')
 			{
 				++p;
-				GAIA::UM right_div = 1;
+				_DstDataType right_div = 1;
 				pTarget = &right;
 				while(*p != 0)
 				{
@@ -265,11 +265,11 @@ namespace GAIA
 					*pTarget += (*p - '0');
 					++p;
 				}
-				right_dst = (_DstDataType)*pTarget / (_DstDataType)right_div;
+				right_dst = *pTarget / right_div;
 			}
 			else
 				right_dst = 0.0F;
-			dst = (_DstDataType)left + right_dst;
+			dst = left + right_dst;
 			if(bSign)
 				dst = -dst;
 		}
@@ -286,7 +286,7 @@ namespace GAIA
 				if(m_pGCH != GNULL)\
 					convert_func(m_pGCH, ret);\
 				else if(m_pGWCH != GNULL)\
-					convert_func(m_pGCH, ret);\
+					convert_func(m_pGWCH, ret);\
 				else\
 				{\
 					GAIA_ASSERT(GAIA::False);\
@@ -298,8 +298,8 @@ namespace GAIA
 			const GAIA::GCH* m_pGCH;\
 			const GAIA::GWCH* m_pGWCH;\
 		};
-		GAIA_DECLARATION_STRINGCAST(GAIA::NM, str2real);
-		GAIA_DECLARATION_STRINGCAST(GAIA::UM, str2real);
+		GAIA_DECLARATION_STRINGCAST(GAIA::NM, str2int);
+		GAIA_DECLARATION_STRINGCAST(GAIA::UM, str2int);
 		GAIA_DECLARATION_STRINGCAST(GAIA::N8, str2int);
 		GAIA_DECLARATION_STRINGCAST(GAIA::N16, str2int);
 		GAIA_DECLARATION_STRINGCAST(GAIA::N32, str2int);
