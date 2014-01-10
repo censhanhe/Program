@@ -6,6 +6,22 @@ namespace GAIA
 	namespace ALGORITHM
 	{
 		template <typename _DataType1, typename _DataType2> GAIA::GVOID move(_DataType1& dst, const _DataType2& src){dst = src;}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID move_prev(_DataType* p, const _SizeType& size)
+		{
+			for(_SizeType x = 0; x < size; x++)
+			{
+				*p = *(p + 1);
+				++p;
+			}
+		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID move_next(_DataType* p, const _SizeType& size)
+		{
+			for(_SizeType x = 0; x < size; x++)
+			{
+				*p = *(p - 1);
+				--p;
+			}
+		}
 		template <typename _DataType1, typename _DataType2, typename _SizeType> GAIA::GVOID move_prev(_DataType1* dst, const _DataType2* src, const _SizeType& size)
 		{
 			_SizeType sizetemp = size;

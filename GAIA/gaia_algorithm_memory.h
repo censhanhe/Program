@@ -64,6 +64,8 @@ namespace GAIA
 					return +1;
 				else if(*((GAIA::UM*)p1) > *((GAIA::UM*)p2))
 					return -1;
+				p1 = ((GAIA::UM*)p1) + 1;
+				p2 = ((GAIA::UM*)p2) + 1;
 				sizet -= sizeof(GAIA::UM);
 			}
 			while(sizet > sizeof(GAIA::U8))
@@ -72,7 +74,45 @@ namespace GAIA
 					return +1;
 				else if(*((GAIA::U8*)p1) > *((GAIA::U8*)p2))
 					return -1;			
+				p1 = ((GAIA::U8*)p1) + 1;
+				p2 = ((GAIA::U8*)p2) + 1;
 				sizet -= sizeof(GAIA::U8);
+			}
+			return 0;
+		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID xcopy(_DataType* dst, const _DataType* src, const _SizeType& size)
+		{
+			_SizeType sizet = size;
+			while(sizet > 0)
+			{
+				*dst = *src;
+				++src;
+				++dst;
+				--sizet;
+			}
+		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID xset(_DataType* dst, const _DataType& t, const _SizeType& size)
+		{
+			_SizeType sizet = size;
+			while(sizet > 0)
+			{
+				*dst = t;
+				++dst;
+				--sizet;
+			}
+		}
+		template <typename _DataType, typename _SizeType> GAIA::N32 xcmp(const _DataType* p1, const _DataType* p2, const _SizeType& size)
+		{
+			_SizeType sizet = size;
+			while(sizet > 0)
+			{
+				if(*p1 < *p2)
+					return +1;
+				else if(*p1 > *p2)
+					return -1;
+				++p1;
+				++p2;
+				--sizet;
 			}
 			return 0;
 		}

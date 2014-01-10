@@ -31,7 +31,7 @@ namespace GAIA
 			GINL BasicString(const GAIA::BL& t){this->init(); this->operator = (t);}
 			GINL BasicString(const _DataType* p1, const _SizeType& size1, const _DataType* p2, const _SizeType& size2){this->init(); this->combin(p1, size1, p2, size2);}
 			GINL ~BasicString(){this->destroy();}
-			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
+			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; if(this->front()[0] == 0) return GAIA::True; return GAIA::False;}
 			GINL _SizeType size() const{if(m_size == 0) return 0; return m_size - 1;}
 			GINL _SizeType capacity() const{if(m_capacity == 0) return 0; return m_capacity - 1;}
 			GINL GAIA::GVOID resize(const _SizeType& size)
@@ -63,13 +63,42 @@ namespace GAIA
 			GINL GAIA::GVOID inverse(){if(this->size() > 1) GAIA::ALGORITHM::inverse(m_pFront, m_pFront + this->size() - 2);}
 			GINL GAIA::BL insert(const _DataType& t, const _SizeType& index)
 			{
+				if(index > this->size())
+					return GAIA::False;
+				if(this->size() == this->capacity())
+					this->exten(1);
+				GAIA::ALGORITHM::move_next(this->front() + this->size() + 1, this->size() - index + 1);
+				this->operator[](index) = t;
+				this->resize(this->size() + 1);
+				return GAIA::True;
 			}
 			GINL GAIA::BL insert(const _DataType* p, const _SizeType& index)
 			{
+				if(index > this->size())
+					return GAIA::False;
 				GAIA_ASSERT(p != GNULL);
+				if(p == GNULL)
+					return GAIA::False;
+				if(*p == 0)
+					return GAIA::True;
+				_SizeType newsize = GAIA::ALGORITHM::strlen(p);
+				if(this->size() == this->capacity())
+					this->exten(newsize);
+				GAIA::ALGORITHM::move_next(this->front() + this->size() + newsize, this->front() + this->size(), newsize);
+				GAIA::ALGORITHM::xcopy(this->front() + index, p, newsize);
+				return GAIA::True;
 			}
 			GINL GAIA::BL insert(const BasicString<_DataType, _SizeType>& src, const _SizeType& index)
 			{
+				if(index > this->size())
+					return GAIA::False;
+				if(src.size() == 0)
+					return GAIA::True;
+				if(this->size() == this->capacity())
+					this->exten(src.size());
+				GAIA::ALGORITHM::move_next(this->front() + this->size() + src.size(), this->front() + this->size(), src.size());
+				GAIA::ALGORITHM::xcopy(this->front() + index, src.front(), src.size());
+				return GAIA::True;
 			}
 			GINL GAIA::BL erase(const _SizeType& index)
 			{
@@ -163,12 +192,34 @@ namespace GAIA
 			}
 			GINL BasicString<_DataType, _SizeType>& left(const _SizeType& index) const
 			{
+				if(index >= this->size())
+					return *this;
+				this->operator[](index) = 0;
+				this->resize(index);
+				return *this;
 			}
 			GINL BasicString<_DataType, _SizeType>& right(const _SizeType& index) const
 			{
+				if(index >= this->size())
+					return *this;
+				GAIA::ALGORITHM::move_prev(this->front(), this->front() + index + 1, this->size() - index);
+				this->resize(this->size() - index);
+				return *this;
 			}
 			GINL BasicString<_DataType, _SizeType>& mid(const _SizeType& index_start, const _SizeType& index_end) const
 			{
+				GAIA_ASSERT(index_start <= index_end);
+				if(index_start > index_end)
+					return *this;
+				if(index_start >= this->size())
+					return *this;
+				if(index_end >= this->size())
+					return *this;
+				_SizeType tempsize = index_end - index_start + 1;
+				GAIA::ALGORITHM::move_prev(this->front(), this->front() + index_start, tempsize);
+				this->operator[](tempsize) = 0;
+				this->resize(tempsize);
+				return *this;
 			}
 			GINL BasicString<_DataType, _SizeType>& trim_left(const _DataType& t)
 			{
@@ -246,7 +297,8 @@ namespace GAIA
 				if(size == 0)
 					return;
 				_DataType* pNew = new _DataType[this->capacity() + size + 1];
-				GAIA::ALGORITHM::strcpy(pNew, this->front());
+				if(!this->empty())
+					GAIA::ALGORITHM::strcpy(pNew, this->front());
 				m_capacity = this->capacity() + size + 1;
 				delete[] m_pFront;
 				m_pFront = pNew;

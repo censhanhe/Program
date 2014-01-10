@@ -175,6 +175,7 @@
     <ClInclude Include="gaia_time_indp.h" />
     <ClInclude Include="gaia_type.h" />
     <ClInclude Include="gaia_type_convert.h" />
+    <ClInclude Include="gaia_type_traits2.h" />
     <ClInclude Include="preheader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

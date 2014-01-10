@@ -199,21 +199,6 @@ GAIA::N32 main()
 		GAIA::U64 size = buf.size();
 	}
 
-	// Chars test.
-	{
-		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars;
-		chars = "abc";
-		chars += "123";
-		chars = 123.456F;
-		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars1;
-		chars1 = "3.4";
-		GAIA::UM u = chars.find('3', 0);
-		u = chars.find(chars1, 0);
-		u = chars.rfind('4', chars.size() - 1);
-		chars.clear();
-		chars1.clear();
-	}
-
 	// String algorithm test.
 	{
 		GAIA::GTCH ch = GAIA::ALGORITHM::tolower('A');
@@ -234,8 +219,46 @@ GAIA::N32 main()
 		sz[0] = 0;
 	}
 
+	// Chars class test.
+	{
+		BEGIN_TEST("<Chars class test>");
+
+		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars;
+		chars = "abc";
+		chars += "123";
+		chars = 123.456F;
+		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars1;
+		chars1 = "3.4";
+		GAIA::UM u = chars.find('3', 0);
+		u = chars.find(chars1, 0);
+		u = chars.rfind('4', chars.size() - 1);
+		chars.clear();
+		chars1.clear();
+
+		bFunctionSuccess = GAIA::True;
+		chars = "abc";
+		chars.insert('m', 1);
+		if(chars != "ambc")
+			bFunctionSuccess = GAIA::False;
+		chars.clear();
+		chars.insert('a', 0);
+		if(chars != "a")
+			bFunctionSuccess = GAIA::False;
+		chars.insert('b', 1);
+		if(chars != "ab")
+			bFunctionSuccess = GAIA::False;
+		if(bFunctionSuccess)
+			LINE_TEST("insert test SUCCESSFULLY!");
+		else
+			LINE_TEST("insert test FAILED!");
+
+		END_TEST;
+	}
+
 	// String class test.
 	{
+		BEGIN_TEST("<String class test>");
+
 		GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str;
 		str = L"Hello world!";
 		str += L" Hello kitty!";
@@ -247,6 +270,25 @@ GAIA::N32 main()
 		u = str.find(str1, 0);
 		GAIA::REAL r = str;
 		r = 0.0F;
+
+		bFunctionSuccess = GAIA::True;
+		str = L"abc";
+		str.insert('m', 1);
+		if(str != L"ambc")
+			bFunctionSuccess = GAIA::False;
+		str.clear();
+		str.insert('a', 0);
+		if(str != L"a")
+			bFunctionSuccess = GAIA::False;
+		str.insert('b', 1);
+		if(str != L"ab")
+			bFunctionSuccess = GAIA::False;
+		if(bFunctionSuccess)
+			LINE_TEST("insert test SUCCESSFULLY!");
+		else
+			LINE_TEST("insert test FAILED!");
+
+		END_TEST;
 	}
 
 	// Stack basic string test.
