@@ -33,6 +33,17 @@ namespace GAIA
 			GAIA_ASSERT(pBegin != GNULL);
 			GAIA_ASSERT(pEnd != GNULL);
 			GAIA_ASSERT(pBegin < pEnd);
+			while(pBegin < pEnd)
+			{
+				_DataType* pTemp = pBegin + 1;
+				while(pTemp <= pEnd)
+				{
+					if(*pBegin > *pTemp)
+						GAIA::ALGORITHM::swap(*pBegin, *pTemp);
+					++pTemp;
+				}
+				++pBegin;
+			}
 		}
 		template <typename _DataType> GAIA::GVOID esort(_DataType* pBegin, _DataType* pEnd)
 		{
@@ -45,7 +56,10 @@ namespace GAIA
 			GAIA_ASSERT(pBegin != GNULL);
 			GAIA_ASSERT(pEnd != GNULL);
 			GAIA_ASSERT(pBegin < pEnd);
-			qsort(pBegin, pEnd);
+			if(pEnd - pBegin < 10)
+				bsort(pBegin, pEnd);
+			else
+				qsort(pBegin, pEnd);
 		}
 	};
 };

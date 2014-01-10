@@ -327,6 +327,32 @@ GAIA::N32 main()
 			pool.alloc();
 	}
 
+	// GAIA sort algorithm test.
+	{
+		BEGIN_TEST("<Sort algorithm test>");
+		{
+			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
+			for(GAIA::N32 x = 0; x < 100; x++)
+				listGAIA.push_back(GAIA::MATH::random());
+			GAIA::ALGORITHM::bsort(&listGAIA[0], &listGAIA[listGAIA.size() - 1]);
+			GAIA::N32 nOldValue = -1;
+			for(GAIA::N32 x = 0; x < 100; x++)
+			{
+				if(nOldValue > listGAIA[x])
+				{
+					bFunctionSuccess = GAIA::False;
+					break;
+				}
+				nOldValue = listGAIA[x];
+			}
+			if(bFunctionSuccess)
+				LINE_TEST("GAIA bsort is SUCCESSFULLY!");
+			else
+				LINE_TEST("GAIA bsort is FAILED!");
+		}
+		END_TEST;
+	}
+
 	// GAIA sort and search function test.
 	{
 		BEGIN_TEST("<Sort function test>");
@@ -339,16 +365,17 @@ GAIA::N32 main()
 			GAIA::N32 nOldValue = -1;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
 			{
-				if(nOldValue >= listGAIA[x])
+				if(nOldValue > listGAIA[x])
 				{
 					bFunctionSuccess = GAIA::False;
 					break;
 				}
+				nOldValue = listGAIA[x];
 			}
 			if(bFunctionSuccess)
-				LINE_TEST("GAIA sort is SUCCESSFULLY!");
+				LINE_TEST("GAIA vector's sort is SUCCESSFULLY!");
 			else
-				LINE_TEST("GAIA sort is FAILED!");
+				LINE_TEST("GAIA vector's sort is FAILED!");
 		}
 		END_TEST;
 
