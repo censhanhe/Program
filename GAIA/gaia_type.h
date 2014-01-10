@@ -47,12 +47,10 @@ namespace GAIA
 		GINL X128& operator = (const X128& src){u0 = src.u0; u1 = src.u1; u2 = src.u2; u3 = src.u3;return *this;}
 		GINL X128& operator = (const GCH* p)
 		{
-			GAIA_ASSERT(p);
 			return *this;
 		}
 		GINL X128& operator = (const GWCH* p)
 		{
-			GAIA_ASSERT(p);
 			return *this;
 		}
 		GINL BL operator == (const X128& src) const

@@ -137,6 +137,45 @@ GAIA::N32 main()
 		}
 		END_TEST;
 	}
+	// Basic stack bitset test.
+	{
+		BEGIN_TEST("<Basic stack bitset test>");
+		{
+			bFunctionSuccess = GAIA::True;
+			GAIA::CONTAINER::BasicStackBitset<GAIA::U32, 32> bs;
+			bs.clear();
+			bs = 16;
+			bs += 48;
+			if(bs == 16 && bs == 48){}
+			else
+				bFunctionSuccess = GAIA::False;
+			bs.clear();
+			if(bs.capacity() != 32)
+				bFunctionSuccess = GAIA::False;
+			if(bFunctionSuccess)
+				LINE_TEST("multi and operation test SUCCESSFULLY!");
+			else
+				LINE_TEST("multi and operation test FAILED!");
+			bs.clear();
+
+			bs = 0;
+			bs = 1;
+			bs = 2;
+			bs = 3;
+			bs = 4;
+			bs = 5;
+			bs = 6;
+			bs = 7;
+
+			bs = 48;
+			bs.inverse(48);
+			if(bs == 48)
+				LINE_TEST("inverse operation test FAILED!");
+			else
+				LINE_TEST("inverse operation test SUCCESSFULLY!");
+		}
+		END_TEST;
+	}
 
 	// Basic array test
 	{
@@ -289,11 +328,6 @@ GAIA::N32 main()
 			LINE_TEST("insert test FAILED!");
 
 		END_TEST;
-	}
-
-	// Stack basic string test.
-	{
-		GAIA::CONTAINER::BasicStackString<GAIA::GCH, GAIA::N32, 260> str;
 	}
 
 	// BasicQueue test.

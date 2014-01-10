@@ -24,9 +24,12 @@
 #include 	"gaia_algorithm_sort.h"
 #include 	"gaia_algorithm_search.h"
 
+#include 	"gaia_container_basicstackbitset.h"
+#include 	"gaia_container_stackbitset.h"
+#include 	"gaia_container_basicbitset.h"
+#include 	"gaia_container_bitset.h"
 #include 	"gaia_container_basicchars.h"
 #include 	"gaia_container_chars.h"
-#include	"gaia_container_basicstackstring.h"
 #include	"gaia_container_basicstring.h"
 #include	"gaia_container_wstring.h"
 #include	"gaia_container_astring.h"
