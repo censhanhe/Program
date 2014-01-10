@@ -1,6 +1,12 @@
 #ifndef		__GAIA_SYS_CONFIG_H__
 #define		__GAIA_SYS_CONFIG_H__
 
+
+#define GAIA_VERSION_MAJOR		0 // unsigned int type. 0 is not a valid version.
+#define GAIA_VERSION_RELEASE	0 // unsigned int type. 0 is not a valid version.
+#define GAIA_VERSION_MINOR		0 // unsigned int type. 0 is not a valid version.
+#define GAIA_VERSION_BUILD		0 // unsigned int type. 0 is not a valid version.
+
 #define GINL inline
 
 /* Debug mode. */

@@ -20,12 +20,11 @@ namespace GAIA
 			GINL BasicString(const GAIA::N16& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::N32& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::N64& t){this->init(); this->operator = (t);}
-			GINL BasicString(const GAIA::N128& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::U8& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::U16& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::U32& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::U64& t){this->init(); this->operator = (t);}
-			GINL BasicString(const GAIA::U128& t){this->init(); this->operator = (t);}
+			GINL BasicString(const GAIA::X128& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::F32& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::F64& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::BL& t){this->init(); this->operator = (t);}
@@ -245,12 +244,11 @@ namespace GAIA
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::N16& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::N32& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::N64& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
-			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::N128& t){}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::U8& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::U16& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::U32& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::U64& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
-			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::U128& t){}
+			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::X128& t){}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::F32& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::real2str(t, sz); return this->operator = (sz);}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::F64& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::real2str(t, sz); return this->operator = (sz);}
 			GINL BasicString<_DataType, _SizeType>& operator = (const GAIA::BL& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
@@ -280,12 +278,11 @@ namespace GAIA
 			GINL operator GAIA::N16() const{return GAIA::ALGORITHM::string_cast<N16>(m_pFront);}
 			GINL operator GAIA::N32() const{return GAIA::ALGORITHM::string_cast<N32>(m_pFront);}
 			GINL operator GAIA::N64() const{return GAIA::ALGORITHM::string_cast<N64>(m_pFront);}
-			GINL operator GAIA::N128() const{}
 			GINL operator GAIA::U8() const{return GAIA::ALGORITHM::string_cast<U8>(m_pFront);}
 			GINL operator GAIA::U16() const{return GAIA::ALGORITHM::string_cast<U16>(m_pFront);}
 			GINL operator GAIA::U32() const{return GAIA::ALGORITHM::string_cast<U32>(m_pFront);}
 			GINL operator GAIA::U64() const{return GAIA::ALGORITHM::string_cast<U64>(m_pFront);}
-			GINL operator GAIA::U128() const{}
+			GINL operator GAIA::X128() const{}
 			GINL operator GAIA::F32() const{return GAIA::ALGORITHM::string_cast<F32>(m_pFront);}
 			GINL operator GAIA::F64() const{return GAIA::ALGORITHM::string_cast<F64>(m_pFront);}
 			GINL operator GAIA::BL() const{return GAIA::ALGORITHM::string_cast<BL>(m_pFront);}

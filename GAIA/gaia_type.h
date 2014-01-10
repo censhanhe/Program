@@ -16,18 +16,6 @@ namespace GAIA
 	typedef long long N64;
 	typedef unsigned long long U64;
 
-	class N128
-	{
-	public:
-	private:
-	};
-
-	class U128
-	{
-	public:
-	private:
-	};
-
 	/* Float type declaration. */
 	typedef float F32;
 	typedef double F64;
@@ -51,6 +39,76 @@ namespace GAIA
 
 	/* Void. */
 	typedef void GVOID;
+
+	/* X128 */
+	class X128
+	{
+	public:
+		GINL X128& operator = (const X128& src){u0 = src.u0; u1 = src.u1; u2 = src.u2; u3 = src.u3;return *this;}
+		GINL X128& operator = (const GCH* p)
+		{
+			GAIA_ASSERT(p);
+			return *this;
+		}
+		GINL X128& operator = (const GWCH* p)
+		{
+			GAIA_ASSERT(p);
+			return *this;
+		}
+		GINL BL operator == (const X128& src) const
+		{
+			if(u0 == src.u0 && u1 == src.u1 && u2 == src.u2 && u3 == src.u3)
+				return GAIA::True;
+			return GAIA::False;
+		}
+		GINL BL operator != (const X128& src) const{return !this->operator == (src);}
+		GINL BL operator <= (const X128& src) const
+		{
+			if(u0 < src.u0)
+				return GAIA::True;
+			else if(u0 > src.u0)
+				return GAIA::False;
+			if(u1 < src.u1)
+				return GAIA::True;
+			else if(u1 > src.u1)
+				return GAIA::False;
+			if(u2 < src.u2)
+				return GAIA::True;
+			else if(u2 > src.u2)
+				return GAIA::False;
+			if(u3 < src.u3)
+				return GAIA::True;
+			else if(u3 > src.u3)
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL BL operator >= (const X128& src) const
+		{
+			if(u0 > src.u0)
+				return GAIA::True;
+			else if(u0 < src.u0)
+				return GAIA::False;
+			if(u1 > src.u1)
+				return GAIA::True;
+			else if(u1 < src.u1)
+				return GAIA::False;
+			if(u2 > src.u2)
+				return GAIA::True;
+			else if(u2 < src.u2)
+				return GAIA::False;
+			if(u3 > src.u3)
+				return GAIA::True;
+			else if(u3 < src.u3)
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL BL operator < (const X128& src) const{return !this->operator >= (src);}
+		GINL BL operator > (const X128& src) const{return !this->operator <= (src);}
+		GAIA::U32 u0;
+		GAIA::U32 u1;
+		GAIA::U32 u2;
+		GAIA::U32 u3;
+	};
 
 	/* Undefine origin type. */
 #ifdef GAIA_DEBUG_CODEPURE
