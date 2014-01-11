@@ -342,6 +342,10 @@
 						<Filter
 							Name="GRAPH"
 							>
+							<File
+								RelativePath=".\gaia_container_basicgraph.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="LIST"
@@ -358,6 +362,10 @@
 						<Filter
 							Name="MAP"
 							>
+							<File
+								RelativePath=".\gaia_container_basicmap.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="PACKAGE"
@@ -475,6 +483,58 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="DICTIONARY"
+							>
+							<File
+								RelativePath=".\gaia_container_basicdictionary.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="STACKBITSET"
+							>
+							<File
+								RelativePath=".\gaia_container_basicstackbitset.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_stackbitset.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="BITSET"
+							>
+							<File
+								RelativePath=".\gaia_container_basicbitset.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_bitset.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="PRIQUEUE"
+							>
+							<File
+								RelativePath=".\gaia_container_basicpriqueue.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="NewFilter1"
+							>
+						</Filter>
+						<Filter
+							Name="PAIR"
+							>
+							<File
+								RelativePath=".\gaia_container_basicpair.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -585,6 +645,14 @@
 						</File>
 						<File
 							RelativePath=".\gaia_math_random_indp.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="LERP"
+						>
+						<File
+							RelativePath=".\gaia_math_lerp.h"
 							>
 						</File>
 					</Filter>
