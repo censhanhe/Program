@@ -45,12 +45,21 @@ namespace GAIA
 	{
 	public:
 		GINL X128& operator = (const X128& src){u0 = src.u0; u1 = src.u1; u2 = src.u2; u3 = src.u3;return *this;}
-		GINL X128& operator = (const GCH* p)
+		template <typename _DataType> GINL X128& operator = (const _DataType* p)
 		{
-			return *this;
-		}
-		GINL X128& operator = (const GWCH* p)
-		{
+			u0 = u1 = u2 = u3 = 0;
+			for(GAIA::U32 x = 0; x < 32; x++)
+			{
+				GAIA::U32 uIndex = x / 8;
+				if(p[x] >= '0' && p[x] <= '9')
+					u[uIndex] |= p[x] - '0';
+				else if(p[x] >= 'a' && p[x] <= 'f')
+					u[uIndex] |= p[x] - 'a' + 10;
+				else if(p[x] >= 'A' && p[x] <= 'F')
+					u[uIndex] |= p[x] - 'A' + 10;
+				if((x % 8) != 7)
+					u[uIndex] = u[uIndex] << 4;
+			}
 			return *this;
 		}
 		GINL BL operator == (const X128& src) const
@@ -102,10 +111,17 @@ namespace GAIA
 		}
 		GINL BL operator < (const X128& src) const{return !this->operator >= (src);}
 		GINL BL operator > (const X128& src) const{return !this->operator <= (src);}
-		GAIA::U32 u0;
-		GAIA::U32 u1;
-		GAIA::U32 u2;
-		GAIA::U32 u3;
+		union
+		{
+			struct
+			{
+				GAIA::U32 u0;
+				GAIA::U32 u1;
+				GAIA::U32 u2;
+				GAIA::U32 u3;
+			};
+			GAIA::U32 u[4];
+		};
 	};
 
 	/* Undefine origin type. */

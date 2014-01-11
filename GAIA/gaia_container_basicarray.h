@@ -11,16 +11,24 @@ namespace GAIA
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
 		public:
-			BasicArray(){m_size = 0;}
+			GINL BasicArray(){this->init();}
+			GINL BasicArray(const BasicArray<_DataType, _sizetype, _Size>& src){this->init(); this->operator = (src);}
 			GINL GAIA::BL empty(){if(this->size() == 0) return GAIA::True; return GAIA::False;}
 			GINL _SizeType size(){return m_size;}
 			GINL _SizeType capacity(){return _Size;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL GAIA::BL push_back(const _DataType& t){if(this->size() < _Size){m_data[m_size++] = t; return GAIA::True;} else return GAIA::False;}
 			GINL GAIA::BL pop_back(){if(this->size() > 0){m_size--; return GAIA::True;} else return GAIA::False;}
-			GINL const _DataType& back(){return m_data[this->size() - 1];}
-			GINL GAIA::GVOID resize(const _SizeType& size){m_size = size;}
-			GINL GAIA::GVOID reset(const _DataType& t){for(_SizeType x = 0; x < _Size; x++) m_data[x] = t;}
+			GINL const _DataType& front() const{GAIA_ASSERT(this->size() > 0); this->operator[](0);}
+			GINL _DataType& front(){GAIA_ASSERT(this->size() > 0); return this->operator[](0);}
+			GINL const _DataType& back() const{GAIA_ASSERT(this->size() > 0); this->operator[](this->size() - 1);}
+			GINL _DataType& back(){GAIA_ASSERT(this->size() > 0); return this->operator[](this->size() - 1);}
+			GINL const _DataType* front_ptr() const{GAIA_ASSERT(this->size() > 0); return &this->operator[](0);}
+			GINL _DataType* front_ptr(){GAIA_ASSERT(this->size() > 0); return &this->operator[](0);}
+			GINL const _DataType* back_ptr() const{GAIA_ASSERT(this->size() > 0); return &this->operator[](this->size() - 1);}
+			GINL _DataType* back_ptr(){GAIA_ASSERT(this->size() > 0); return &this->operator[](this->size() - 1);}
+			GINL GAIA::GVOID resize(const _SizeType& size){GAIA_ASSERT(size >= 0 && size <= _Size); m_size = size;}
+			GINL GAIA::GVOID reset(const _DataType& t){for(_SizeType x = 0; x < this->size(); x++) m_data[x] = t;}
 			GINL GAIA::GVOID sort(){if(this->size() == 0) return; GAIA::ALGORITHM::sort(m_data, &m_data[this->size() - 1]);}
 			GINL _SizeType search(const _DataType& t) const
 			{
@@ -73,8 +81,17 @@ namespace GAIA
 			}
 			GINL const _DataType& operator [] (const _SizeType& index) const{return m_data[index];}
 			GINL _DataType& operator [] (const _SizeType& index){return m_data[index];}
-			GINL BasicArray& operator << (const _DataType& t){this->push_back(t); return *this;}
-			GINL BasicArray& operator >> (const _DataType& t){this->push_back(t); return *this;}
+			GINL BasicArray<_DataType, _SizeType, _Size>& operator << (const _DataType& t){this->push_back(t); return *this;}
+			GINL BasicArray<_DataType, _SizeType, _Size>& operator >> (const _DataType& t){this->push_back(t); return *this;}
+			GINL BasicArray<_DataType, _SizeType, _Size>& operator = (const BasicArray<_DataType, _SizeType, _Size>& src)
+			{
+				this->resize(src.size());
+				for(_sizetype x = 0; x < src.size(); x++)
+					this->operator[](x) = src[x];
+				return *this;
+			}
+		private:
+			GINL GAIA::GVOID init(){m_size = 0;}
 		private:
 			_DataType m_data[_Size];
 			_SizeType m_size;

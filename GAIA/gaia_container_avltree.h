@@ -147,7 +147,6 @@ namespace GAIA
 					pNew->pParent = GNULL;
 					return pNew;
 				}
-			
 				if(t < pNode->t)
 					pNode->pPrev = this->insert_node(pNode->pPrev, t, bResult);
 				else if(t > pNode->t)
@@ -218,7 +217,6 @@ namespace GAIA
 		private:
 			Node* m_pRoot;
 			BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> m_pool;
-
 		public:
 		#ifdef GAIA_DEBUG_INTERNALROUTINE
 			GINL GAIA::BL dbg_check_balance()

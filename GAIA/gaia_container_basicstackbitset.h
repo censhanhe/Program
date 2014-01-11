@@ -31,6 +31,7 @@ namespace GAIA
 			GINL GAIA::BL operator != (const _SizeType& index){return !(this->operator == (index));}
 			GINL GAIA::BL operator != (const BasicStackBitset<_SizeType, _Size>& src){return !(this->operator == (src));}
 			GINL BasicStackBitset<_SizeType, _Size>& operator ~ (){for(_SizeType x = 0; x < _Size; x++) m_bits[x] ^ (GAIA::U8)-1; return *this;}
+			GINL GAIA::BL operator[](const _SizeType& index) const{return this->exist(index);}
 		private:
 			GAIA::U8 m_bits[_Size];
 		};

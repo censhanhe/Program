@@ -35,8 +35,8 @@ namespace GAIA
 			GINL _SizeType capacity() const{return _Size;}
 			GINL GAIA::GVOID resize(const _SizeType& size){if(size > _Size) return; m_size = size + 1;}
 			GINL GAIA::GVOID clear(){m_size = 0; if(m_chars != GNULL) m_chars[0] = 0;}
-			GINL _DataType* front(){return m_chars;}
-			GINL const _DataType* front() const{return m_chars;}
+			GINL _DataType* front_ptr(){return &this->operator[](0);}
+			GINL const _DataType* front_ptr() const{return &this->operator[](0);}
 			GINL GAIA::GVOID inverse(){if(this->size() > 1) GAIA::ALGORITHM::inverse(m_chars, m_chars + this->size() - 2);}
 			GINL GAIA::BL insert(const _DataType& t, const _SizeType& index)
 			{
@@ -44,7 +44,7 @@ namespace GAIA
 					return GAIA::False;
 				if(this->size() == this->capacity())
 					return GAIA::False;
-				GAIA::ALGORITHM::move_next(this->front() + this->size() + 1, this->size() - index + 1);
+				GAIA::ALGORITHM::move_next(this->front_ptr() + this->size() + 1, this->size() - index + 1);
 				this->operator[](index) = t;
 				this->resize(this->size() + 1);
 				return GAIA::True;
@@ -61,8 +61,8 @@ namespace GAIA
 				_SizeType newsize = GAIA::ALGORITHM::strlen(p);
 				if(this->size() + newsize >= this->capacity())
 					return GAIA::False;
-				GAIA::ALGORITHM::move_next(this->front() + this->size() + newsize, this->front() + this->size(), newsize);
-				GAIA::ALGORITHM::xcopy(this->front() + index, p, newsize);
+				GAIA::ALGORITHM::move_next(this->front_ptr() + this->size() + newsize, this->front_ptr() + this->size(), newsize);
+				GAIA::ALGORITHM::xcopy(this->front_ptr() + index, p, newsize);
 				return GAIA::True;
 			}
 			GINL GAIA::BL insert(const BasicChars<_DataType, _SizeType, _Size>& src, const _SizeType& index)
@@ -73,8 +73,8 @@ namespace GAIA
 					return GAIA::True;
 				if(this->size() + src.size() >= this->capacity())
 					return GAIA::False;
-				GAIA::ALGORITHM::move_next(this->front() + this->size() + src.size(), this->front() + this->size(), src.size());
-				GAIA::ALGORITHM::xcopy(this->front() + index, src.front(), src.size());
+				GAIA::ALGORITHM::move_next(this->front_ptr() + this->size() + src.size(), this->front_ptr() + this->size(), src.size());
+				GAIA::ALGORITHM::xcopy(this->front_ptr() + index, src.front_ptr(), src.size());
 				return GAIA::True;
 			}
 			GINL GAIA::BL erase(const _SizeType& index)
@@ -121,7 +121,7 @@ namespace GAIA
 					return (_SizeType)-1;
 				if(index >= this->size())
 					return (_SizeType)-1;
-				_DataType* pFinded = GAIA::ALGORITHM::strstr(m_chars + index, src.front());
+				_DataType* pFinded = GAIA::ALGORITHM::strstr(m_chars + index, src.front_ptr());
 				if(pFinded == GNULL)
 					return (_SizeType)-1;
 				return pFinded - m_chars;
@@ -154,7 +154,7 @@ namespace GAIA
 					return (_SizeType)-1;
 				if(index >= this->size())
 					return (_SizeType)-1;
-				_DataType* pFinded = GAIA::ALGORITHM::rfinds(m_chars, m_chars + index - 1, src.front(), src.size());
+				_DataType* pFinded = GAIA::ALGORITHM::rfinds(m_chars, m_chars + index - 1, src.front_ptr(), src.size());
 				if(pFinded == GNULL)
 					return (_SizeType)-1;
 				return pFinded - m_chars;
@@ -180,7 +180,7 @@ namespace GAIA
 			{
 				if(index >= this->size())
 					return *this;
-				GAIA::ALGORITHM::move_prev(this->front(), this->front() + index + 1, this->size() - index);
+				GAIA::ALGORITHM::move_prev(this->front_ptr(), this->front_ptr() + index + 1, this->size() - index);
 				this->resize(this->size() - index);
 				return *this;
 			}
@@ -194,7 +194,7 @@ namespace GAIA
 				if(index_end >= this->size())
 					return *this;
 				_SizeType tempsize = index_end - index_start + 1;
-				GAIA::ALGORITHM::move_prev(this->front(), this->front() + index_start, tempsize);
+				GAIA::ALGORITHM::move_prev(this->front_ptr(), this->front_ptr() + index_start, tempsize);
 				this->operator[](tempsize) = 0;
 				this->resize(tempsize);
 				return *this;
@@ -217,7 +217,7 @@ namespace GAIA
 			GINL BasicChars<_DataType, _SizeType, _Size>& trim_right(const BasicChars<_DataType, _SizeType, _Size>& src)
 			{
 			}
-			GINL BasicChars<_DataType, _SizeType, _Size>& operator = (const BasicChars<_DataType, _SizeType, _Size>& src){return this->assign(src.front(), src.size());}
+			GINL BasicChars<_DataType, _SizeType, _Size>& operator = (const BasicChars<_DataType, _SizeType, _Size>& src){return this->assign(src.front_ptr(), src.size());}
 			GINL BasicChars<_DataType, _SizeType, _Size>& operator = (const _DataType* p){return this->assign(p, GAIA::ALGORITHM::strlen(p));}
 			GINL BasicChars<_DataType, _SizeType, _Size>& operator = (const GAIA::N8& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			GINL BasicChars<_DataType, _SizeType, _Size>& operator = (const GAIA::N16& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
@@ -231,22 +231,22 @@ namespace GAIA
 			GINL BasicChars<_DataType, _SizeType, _Size>& operator = (const GAIA::F32& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::real2str(t, sz); return this->operator = (sz);}
 			GINL BasicChars<_DataType, _SizeType, _Size>& operator = (const GAIA::F64& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::real2str(t, sz); return this->operator = (sz);}
 			GINL BasicChars<_DataType, _SizeType, _Size>& operator = (const GAIA::BL& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
-			GINL BasicChars<_DataType, _SizeType, _Size>& operator += (const BasicChars<_DataType, _SizeType, _Size>& src){return this->combin(src.front(), src.size());}
+			GINL BasicChars<_DataType, _SizeType, _Size>& operator += (const BasicChars<_DataType, _SizeType, _Size>& src){return this->combin(src.front_ptr(), src.size());}
 			GINL BasicChars<_DataType, _SizeType, _Size>& operator += (const _DataType* p){return this->combin(p, GAIA::ALGORITHM::strlen(p));}
-			GINL BasicChars<_DataType, _SizeType, _Size> operator + (const BasicChars<_DataType, _SizeType, _Size>& src) const{return BasicChars<_DataType, _SizeType, _Size>(this->front(), this->size(), src.front(), src.size());}
-			GINL BasicChars<_DataType, _SizeType, _Size> operator + (const _DataType* p) const{return BasicChars<_DataType, _SizeType, _Size>(this->front(), this->size(), p, GAIA::ALGORITHM::strlen(p));}
-			GINL GAIA::BL operator == (const BasicChars<_DataType, _SizeType, _Size>& src) const{if(this->size() != src.size()) return GAIA::False; return GAIA::ALGORITHM::strcmp(this->front(), src.front()) == 0;}
-			GINL GAIA::BL operator == (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front(), p) == 0;}
-			GINL GAIA::BL operator != (const BasicChars<_DataType, _SizeType, _Size>& src) const{if(this->size() != src.size()) return GAIA::True; return GAIA::ALGORITHM::strcmp(this->front(), src.front()) != 0;}
-			GINL GAIA::BL operator != (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front(), p) != 0;}
-			GINL GAIA::BL operator >= (const BasicChars<_DataType, _SizeType, _Size>& src) const{return GAIA::ALGORITHM::strcmp(this->front(), src.front()) >= 0;}
-			GINL GAIA::BL operator >= (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front(), p) >= 0;}
-			GINL GAIA::BL operator <= (const BasicChars<_DataType, _SizeType, _Size>& src) const{return GAIA::ALGORITHM::strcmp(this->front(), src.front()) <= 0;}
-			GINL GAIA::BL operator <= (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front(), p) <= 0;}
-			GINL GAIA::BL operator > (const BasicChars<_DataType, _SizeType, _Size>& src) const{return GAIA::ALGORITHM::strcmp(this->front(), src.front()) > 0;}
-			GINL GAIA::BL operator > (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front(), p) > 0;}
-			GINL GAIA::BL operator < (const BasicChars<_DataType, _SizeType, _Size>& src) const{return GAIA::ALGORITHM::strcmp(this->front(), src.front()) < 0;}
-			GINL GAIA::BL operator < (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front(), p) < 0;}
+			GINL BasicChars<_DataType, _SizeType, _Size> operator + (const BasicChars<_DataType, _SizeType, _Size>& src) const{return BasicChars<_DataType, _SizeType, _Size>(this->front_ptr(), this->size(), src.front_ptr(), src.size());}
+			GINL BasicChars<_DataType, _SizeType, _Size> operator + (const _DataType* p) const{return BasicChars<_DataType, _SizeType, _Size>(this->front_ptr(), this->size(), p, GAIA::ALGORITHM::strlen(p));}
+			GINL GAIA::BL operator == (const BasicChars<_DataType, _SizeType, _Size>& src) const{if(this->size() != src.size()) return GAIA::False; return GAIA::ALGORITHM::strcmp(this->front_ptr(), src.front_ptr()) == 0;}
+			GINL GAIA::BL operator == (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) == 0;}
+			GINL GAIA::BL operator != (const BasicChars<_DataType, _SizeType, _Size>& src) const{if(this->size() != src.size()) return GAIA::True; return GAIA::ALGORITHM::strcmp(this->front_ptr(), src.front_ptr()) != 0;}
+			GINL GAIA::BL operator != (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) != 0;}
+			GINL GAIA::BL operator >= (const BasicChars<_DataType, _SizeType, _Size>& src) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), src.front_ptr()) >= 0;}
+			GINL GAIA::BL operator >= (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) >= 0;}
+			GINL GAIA::BL operator <= (const BasicChars<_DataType, _SizeType, _Size>& src) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), src.front_ptr()) <= 0;}
+			GINL GAIA::BL operator <= (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) <= 0;}
+			GINL GAIA::BL operator > (const BasicChars<_DataType, _SizeType, _Size>& src) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), src.front_ptr()) > 0;}
+			GINL GAIA::BL operator > (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) > 0;}
+			GINL GAIA::BL operator < (const BasicChars<_DataType, _SizeType, _Size>& src) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), src.front_ptr()) < 0;}
+			GINL GAIA::BL operator < (const _DataType* p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) < 0;}
 			GINL const _DataType& operator[](const _SizeType& index) const{GAIA_ASSERT(index < this->size()); return m_chars[index];}
 			GINL _DataType& operator[](const _SizeType& index){GAIA_ASSERT(index < this->size()); return m_chars[index];}
 			GINL operator _DataType*(){return m_chars;}
@@ -288,7 +288,7 @@ namespace GAIA
 					return *this;
 				if(this->capacity() - this->size() >= size)
 				{
-					GAIA::ALGORITHM::strcpy(this->front() + this->size(), p);
+					GAIA::ALGORITHM::strcpy(this->front_ptr() + this->size(), p);
 					this->resize(this->size() + size);
 				}
 				return *this;
@@ -314,7 +314,7 @@ namespace GAIA
 				else
 				{
 					this->operator = (p1);
-					GAIA::ALGORITHM::strcpy(this->front() + this->size(), p2);
+					GAIA::ALGORITHM::strcpy(this->front_ptr() + this->size(), p2);
 					this->resize(size1 + size2);
 					return *this;
 				}

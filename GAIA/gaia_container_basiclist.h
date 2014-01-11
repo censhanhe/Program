@@ -5,11 +5,11 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicList
+		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicList
 		{
 		public:
-			GINL BasicList();
-			template <typename _ParamType> GINL BasicList(const BasicList<_DataType, _SizeType, _ParamType>& src);
+			GINL BasicList(){this->init();}
+			GINL BasicList(const BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& src);
 			GINL ~BasicList();
 			GINL _SizeType capacity() const;
 			GINL _SizeType size() const;
@@ -29,9 +29,11 @@ namespace GAIA
 			GINL _DataType& front();
 			GINL const _DataType& front() const;
 			GINL GAIA::GVOID inverse();
-			template <typename _ParamType> GINL const BasicList<_DataType, _SizeType, _SizeIncreaserType>& operator = (const BasicList<_DataType, _SizeType, _ParamType>& src);
+			template <typename _ParamType> GINL const BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& operator = (const BasicList<_DataType, _SizeType, _ParamType, _GroupElementSize>& src);
 			GINL _DataType& operator[](const _SizeType& index);
 			GINL const _DataType& operator[](const _SizeType& index) const;
+		private:
+			GINL GAIA::GVOID init(){m_pFront = m_pBack = m_pCurrent = GNULL;}
 		private:
 			class Node
 			{
@@ -44,7 +46,7 @@ namespace GAIA
 			Node* m_pFront;
 			Node* m_pBack;
 			Node* m_pCurrent;
-			BasicStack<_DataType, _SizeType, _SizeIncreaserType> m_free;
+			BasicPool<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> m_pool;
 		};
 	};
 };

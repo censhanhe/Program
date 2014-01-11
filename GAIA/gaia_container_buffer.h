@@ -12,10 +12,13 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 
 		public:
-			GINL Buffer(){m_pFront = m_pBack = m_pCur = GNULL;}
+			GINL Buffer(){this->init();}
+			GINL Buffer(const Buffer<_SizeIncreaserType, _SizeType>& src){this->init(); this->operator = (src);}
 			GINL ~Buffer(){if(m_pFront != GNULL) delete[] m_pFront;}
-			GINL GAIA::U8* front() const{return m_pFront;}
-			GINL GAIA::U8* back() const{return m_pBack;}
+			GINL const GAIA::U8* front_ptr() const{return m_pFront;}
+			GINL GAIA::U8* front_ptr(){return m_pFront;}
+			GINL const GAIA::U8* back_ptr() const{return m_pBack;}
+			GINL GAIA::U8* back_ptr(){return m_pBack;}
 			GINL GAIA::GVOID reserve(const _SizeType& size){this->destroy(); if(size > 0){this->alloc(size); m_pCur = m_pFront;}}
 			GINL GAIA::GVOID resize(const _SizeType& size){if(this->capacity() < size) this->reserve(size); m_pCur = m_pFront + size;}
 			GINL GAIA::GVOID clear(){m_pCur = m_pFront;}
@@ -37,9 +40,20 @@ namespace GAIA
 			}
 			template <typename ObjType> GINL Buffer& operator << (const ObjType& obj){this->push(obj); return *this;}
 			template <typename ObjType> GINL Buffer& operator >> (ObjType& obj){this->pop(obj); return *this;}
+			GINL Buffer<_SizeIncreaserType, _SizeType>& operator = (const Buffer<_SizeIncreaserType, _sizetype>& src)
+			{
+				this->destroy();
+				if(src.size() > 0)
+				{
+					this->reserve(src.size());
+					GAIA::ALGORITHM::memcpy(this->front_ptr(), src.front_ptr(), src.size());
+				}
+				return *this;
+			}
 			GINL operator GAIA::U8*(){return m_pFront;}
 		private:
-			GAIA::U8* alloc(_SizeType size)
+			GINL GAIA::GVOID init(){m_pFront = m_pBack = m_pCur = GNULL;}
+			GINL GAIA::U8* alloc(_SizeType size)
 			{
 				if(size == 0)
 					return GNULL;

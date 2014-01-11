@@ -328,10 +328,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="BTREE"
-							>
-						</Filter>
-						<Filter
 							Name="BUFFER"
 							>
 							<File
@@ -374,10 +370,18 @@
 								RelativePath=".\gaia_container_basicpackage.h"
 								>
 							</File>
+							<File
+								RelativePath=".\gaia_container_basicstackpackage.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="QUEUE"
 							>
+							<File
+								RelativePath=".\gaia_container_basicpriqueue.h"
+								>
+							</File>
 							<File
 								RelativePath=".\gaia_container_basicqueue.h"
 								>
@@ -396,22 +400,6 @@
 							</File>
 							<File
 								RelativePath=".\gaia_container_stack.h"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="STACKPACKAGE"
-							>
-							<File
-								RelativePath=".\gaia_container_basicstackpackage.h"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="STACKSTRING"
-							>
-							<File
-								RelativePath=".\gaia_container_basicstackstring.h"
 								>
 							</File>
 						</Filter>
@@ -438,6 +426,10 @@
 						<Filter
 							Name="TREE"
 							>
+							<File
+								RelativePath=".\gaia_container_avltree.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="VAR"
@@ -448,14 +440,6 @@
 							</File>
 							<File
 								RelativePath=".\gaia_container_basicvar.h"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="AVLTREE"
-							>
-							<File
-								RelativePath=".\gaia_container_avltree.h"
 								>
 							</File>
 						</Filter>
@@ -492,18 +476,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="STACKBITSET"
-							>
-							<File
-								RelativePath=".\gaia_container_basicstackbitset.h"
-								>
-							</File>
-							<File
-								RelativePath=".\gaia_container_stackbitset.h"
-								>
-							</File>
-						</Filter>
-						<Filter
 							Name="BITSET"
 							>
 							<File
@@ -511,21 +483,17 @@
 								>
 							</File>
 							<File
+								RelativePath=".\gaia_container_basicstackbitset.h"
+								>
+							</File>
+							<File
 								RelativePath=".\gaia_container_bitset.h"
 								>
 							</File>
-						</Filter>
-						<Filter
-							Name="PRIQUEUE"
-							>
 							<File
-								RelativePath=".\gaia_container_basicpriqueue.h"
+								RelativePath=".\gaia_container_stackbitset.h"
 								>
 							</File>
-						</Filter>
-						<Filter
-							Name="NewFilter1"
-							>
 						</Filter>
 						<Filter
 							Name="PAIR"

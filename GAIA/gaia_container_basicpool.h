@@ -8,9 +8,9 @@ namespace GAIA
 		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicPool
 		{
 		public:
-			GINL BasicPool(){m_size = m_capacity = 0;}
+			GINL BasicPool(){this->init();}
 			GINL ~BasicPool(){this->destroy();}
-			GINL GAIA::BL empty() const{if(m_size == 0) return GAIA::True; return GAIA::False;}
+			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
 			GINL GAIA::GVOID clear()
 			{
 				m_free.clear();
@@ -45,12 +45,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL release(_DataType* p){m_free.push(p); --m_size; return GAIA::True;}
 		private:
-			class Group
-			{
-			public:
-				BasicVector<_DataType, _SizeType, _SizeIncreaserType> listEle;
-			};
-		private:
+			GINL GAIA::GVOID init(){m_size = m_capacity = 0;}
 			GINL GAIA::GVOID alloc_group()
 			{
 				Group* pGroup = new Group;
@@ -60,6 +55,12 @@ namespace GAIA
 				m_buf.push_back(pGroup);
 				m_capacity += _GroupElementSize;
 			}
+		private:
+			class Group
+			{
+			public:
+				BasicVector<_DataType, _SizeType, _SizeIncreaserType> listEle;
+			};
 		private:
 			BasicVector<Group*, _SizeType, _SizeIncreaserType> m_buf;
 			BasicStack<_DataType*, _SizeType, _SizeIncreaserType> m_free;

@@ -11,7 +11,6 @@ namespace GAIA
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
-
 		public:
 			GINL BasicOrderless(){}
 			GINL BasicOrderless(const BasicOrderless<_DataType, _SizeType, _SizeIncreaserType, _DefaultValue>& src){this->operator = (src);}

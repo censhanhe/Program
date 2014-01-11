@@ -57,8 +57,8 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID clear(){m_size = 0; if(m_pFront != GNULL) m_pFront[0] = 0;}
 			GINL GAIA::GVOID destroy(){m_size = m_capacity = 0; if(m_pFront != GNULL){delete[] m_pFront; m_pFront = GNULL;}}
-			GINL _DataType* front(){return m_pFront;}
-			GINL const _DataType* front() const{return m_pFront;}
+			GINL _DataType* front(){return &this->operator[](0);}
+			GINL const _DataType* front() const{return &this->operator[](0);}
 			GINL GAIA::GVOID inverse(){if(this->size() > 1) GAIA::ALGORITHM::inverse(m_pFront, m_pFront + this->size() - 2);}
 			GINL GAIA::BL insert(const _DataType& t, const _SizeType& index)
 			{

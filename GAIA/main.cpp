@@ -81,6 +81,25 @@ GAIA::N32 main()
 		END_TEST;
 	}
 
+	// X128 test.
+	{
+		BEGIN_TEST("<X128 test>");
+		{
+			GAIA::X128 id;
+			id = "0123456789ABCDEF0123456789ABCDEF";
+			GAIA::X128 tid;
+			tid.u0 = 0x01234567;
+			tid.u1 = 0x89ABCDEF;
+			tid.u2 = 0x01234567;
+			tid.u3 = 0x89ABCDEF;
+			if(tid == id)
+				LINE_TEST("X128 type convert and compare SUCCESSFULLY!");
+			else
+				LINE_TEST("X128 type convert and compare FAILED!");
+		}
+		END_TEST;
+	}
+
 	// String convert function test.
 	{
 		BEGIN_TEST("<String convert function test>");
@@ -202,7 +221,7 @@ GAIA::N32 main()
 		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > bv;
 		bv.push_back(10);
 		bv.push_back(20);
-		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> >::BidirectionalIterator iter = bv.front();
+		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> >::BidirectionalIterator iter = bv.front_iterator();
 		while(!iter.empty())
 			++iter;
 		bv.clear();
@@ -610,8 +629,8 @@ GAIA::N32 main()
 		GAIA::U64 uFileSize = file.Size();
 		GAIA::CONTAINER::Buffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32> buf;
 		buf.resize(uFileSize);
-		file.Read(buf.front(), buf.size());
-		const GAIA::GWCH* p = (GAIA::GWCH*)buf.front();
+		file.Read(buf.front_ptr(), buf.size());
+		const GAIA::GWCH* p = (GAIA::GWCH*)buf.front_ptr();
 		GAIA::GWCH szTemp[1024];
 		GAIA::ALGORITHM::strcpy(szTemp, p);
 		GAIA::N32 nDebug = 0;

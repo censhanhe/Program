@@ -69,8 +69,8 @@ namespace GAIA
 			};
 
 		public:
-			GINL BasicVector(){m_pData = GNULL; m_capacity = m_size = 0;}
-			GINL BasicVector(const BasicVector<_DataType, _SizeType, _SizeIncreaserType>& src){this->operator = (src);}
+			GINL BasicVector(){this->init();}
+			GINL BasicVector(const BasicVector<_DataType, _SizeType, _SizeIncreaserType>& src){this->init(); this->operator = (src);}
 			GINL ~BasicVector(){if(m_pData != GNULL) delete[] m_pData;}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL const _SizeType& capacity() const{return m_capacity;}
@@ -191,10 +191,20 @@ namespace GAIA
 					this->push_back(src[x]);
 				return *this;
 			}
-			GINL BidirectionalIterator front(){BidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
-			GINL ConstBidirectionalIterator front() const{ConstBidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
-			GINL BidirectionalIterator back(){BidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
-			GINL ConstBidirectionalIterator back() const{ConstBidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
+			GINL _DataType& front(){this->operator[](0);}
+			GINL const _DataType& front() const{this->operator[](0);}
+			GINL _DataType& back(){this->operator[](this->size() - 1);}
+			GINL const _DataType& back() const{this->operator[](this->size() - 1);}
+			GINL _DataType* front_ptr(){&this->operator[](0);}
+			GINL const _DataType* front_ptr() const{&this->operator[](0);}
+			GINL _DataType* back_ptr(){&this->operator[](this->size() - 1);}
+			GINL const _DataType* back_ptr() const{&this->operator[](this->size() - 1);}
+			GINL BidirectionalIterator front_iterator(){BidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
+			GINL ConstBidirectionalIterator front_iterator() const{ConstBidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
+			GINL BidirectionalIterator back_iterator(){BidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
+			GINL ConstBidirectionalIterator back_iterator() const{ConstBidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
+		private:
+			GINL GAIA::GVOID init(){m_pData = GNULL; m_capacity = m_size = 0;}
 		private:
 			_DataType* m_pData;
 			_SizeType m_capacity;
