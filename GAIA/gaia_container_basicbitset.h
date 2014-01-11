@@ -8,6 +8,9 @@ namespace GAIA
 		template <typename _SizeType> class BasicBitset
 		{
 		public:
+			GINL BasicBitset();
+			~GINL BasicBitset();
+			
 		private:
 		};
 	};
