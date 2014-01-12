@@ -879,6 +879,10 @@
 					<Filter
 						Name="PHYSICS"
 						>
+						<File
+							RelativePath=".\gaia_physics_physicsdriver.h"
+							>
+						</File>
 						<Filter
 							Name="COLLISIONCONTEXT"
 							>
@@ -1003,10 +1007,6 @@
 							Name="MATERIAL"
 							>
 						</Filter>
-						<Filter
-							Name="POSTPROCESS"
-							>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="AI"
@@ -1041,7 +1041,7 @@
 									Name="CAMERA"
 									>
 									<File
-										RelativePath=".\gaia_render_camera.h"
+										RelativePath=".\gaia_scene_camera.h"
 										>
 									</File>
 								</Filter>
@@ -1049,7 +1049,7 @@
 									Name="HEIGHTFIELD"
 									>
 									<File
-										RelativePath=".\gaia_render_heightfield.h"
+										RelativePath=".\gaia_scene_heightfield.h"
 										>
 									</File>
 								</Filter>
@@ -1057,7 +1057,7 @@
 									Name="PARTICLE"
 									>
 									<File
-										RelativePath=".\gaia_render_particle.h"
+										RelativePath=".\gaia_scene_particle.h"
 										>
 									</File>
 								</Filter>
@@ -1065,7 +1065,7 @@
 									Name="SKIN"
 									>
 									<File
-										RelativePath=".\gaia_render_skin.h"
+										RelativePath=".\gaia_scene_skin.h"
 										>
 									</File>
 								</Filter>
@@ -1074,6 +1074,22 @@
 									>
 									<File
 										RelativePath=".\gaia_scene_staticmesh.h"
+										>
+									</File>
+								</Filter>
+								<Filter
+									Name="GEOMETRY"
+									>
+									<File
+										RelativePath=".\gaia_scene_geometry.h"
+										>
+									</File>
+								</Filter>
+								<Filter
+									Name="POSTPROCESS"
+									>
+									<File
+										RelativePath=".\gaia_scene_postprocess.h"
 										>
 									</File>
 								</Filter>
