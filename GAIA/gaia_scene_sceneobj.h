@@ -19,6 +19,12 @@ namespace GAIA
 			GINL const GAIA::MATH::MTX44& GetAABBWorld() const;
 			GINL GAIA::GVOID SetAABBLocal(const GAIA::MATH::AABB& aabb);
 			GINL const GAIA::MATH::AABB& GetAABBLocal() const;
+
+			GINL const GAIA::BL SetParent(SceneObj* pParent);
+			GINL const SceneObj* GetParent() const;
+
+			GINL const GAIA::BL AddComponent(GAIA::COMPONENT::Component* pComp);
+			GINL const GAIA::BL RemoveComponent(GAIA::COMPONENT::Component* pComp);
 		};
 	};
 };

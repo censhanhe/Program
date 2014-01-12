@@ -79,6 +79,14 @@ namespace GAIA
 					pRet->Begin(pParameter);
 				return pRet;
 			}
+			GINL virtual Instance* RequestInstance(const ClsID& cid, GAIA::GVOID* pParameter)
+			{
+				return GNULL;
+			}
+		private:
+			GINL virtual GAIA::GVOID CacheInstance(Instance* pInstance)
+			{
+			}
 		private:
 			LIST_CREATECALLBACK m_listCreateCB;
 		};

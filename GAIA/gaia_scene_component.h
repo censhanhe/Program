@@ -3,12 +3,15 @@
 
 namespace GAIA
 {
-	namespace SCENE
+	namespace COMPONENT
 	{
 		class Component
 		{
 		public:
-
+			GINL Component();
+			GINL ~Component();
+			GINL virtual GAIA::BL Attach(Component* pComponent);
+			GINL virtual GAIA::BL Dettach(Component* pComponent);
 		};
 	};
 };

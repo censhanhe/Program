@@ -762,6 +762,30 @@
 				Name="FUNCTON_LAYER"
 				>
 				<Filter
+					Name="TASKDRIVER"
+					>
+					<File
+						RelativePath=".\gaia_task_task.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_task_taskdriver.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="RESOURCEDRIVER"
+					>
+					<File
+						RelativePath=".\gaia_resource_resource.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_resource_resourcedriver.h"
+						>
+					</File>
+				</Filter>
+				<Filter
 					Name="UI"
 					>
 				</Filter>
@@ -976,7 +1000,11 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="SHADINGSYSTEM"
+							Name="MATERIAL"
+							>
+						</Filter>
+						<Filter
+							Name="POSTPROCESS"
 							>
 						</Filter>
 					</Filter>
@@ -996,7 +1024,7 @@
 						Name="SCENE"
 						>
 						<File
-							RelativePath=".\gaia_render_scene.h"
+							RelativePath=".\gaia_scene_scene.h"
 							>
 						</File>
 						<Filter
@@ -1009,10 +1037,6 @@
 							<Filter
 								Name="COMPONENT"
 								>
-								<File
-									RelativePath=".\gaia_scene_component.h"
-									>
-								</File>
 								<Filter
 									Name="CAMERA"
 									>
@@ -1056,6 +1080,14 @@
 							</Filter>
 						</Filter>
 					</Filter>
+				</Filter>
+				<Filter
+					Name="COMPONENT"
+					>
+					<File
+						RelativePath=".\gaia_scene_component.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
