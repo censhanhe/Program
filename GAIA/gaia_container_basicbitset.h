@@ -22,8 +22,8 @@ namespace GAIA
 			GINL GAIA::U8* front_ptr(){return m_pFront;}
 			GINL const GAIA::U8* front_ptr() const{return m_pFront;}
 			GINL GAIA::BL exist(const _SizeType& index) const{GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return GAIA::False; return (GAIA_BITSET_SRC & GAIA_BITSET_CUR) != 0;}
-			GINL GAIA::GVOID set(const _SizeType& index){GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_STACKBITSET_SRC |= GAIA_STACKBITSET_CUR;}
-			GINL GAIA::GVOID reset(const _SizeType& index){GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_STACKBITSET_SRC &= ~GAIA_STACKBITSET_CUR;}
+			GINL GAIA::GVOID set(const _SizeType& index){GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_BITSET_SRC |= GAIA_BITSET_CUR;}
+			GINL GAIA::GVOID reset(const _SizeType& index){GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_BITSET_SRC &= ~GAIA_BITSET_CUR;}
 			GINL GAIA::GVOID inverse(const _SizeType& index){GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return; if(this->exist(index)) this->reset(index); else this->set(index);}
 			GINL GAIA::GVOID resize(const _SizeType& size)
 			{
@@ -82,7 +82,7 @@ namespace GAIA
 			{
 				_SizeType minsize = GAIA::ALGORITHM::minimize(this->size(), src.size());
 				for(_SizeType x = 0; x < minsize; x++)
-					this->front_ptr()[x] &= ~src.front_ptr()[x]
+					this->front_ptr()[x] &= ~src.front_ptr()[x];
 				return *this;
 			}
 			GINL GAIA::BL operator == (const _SizeType& index){return this->exist(index);}

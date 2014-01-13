@@ -62,7 +62,7 @@ namespace GAIA
 						if(m_pNode->t == src.m_pNode->t)
 							return GAIA::True;
 						else
-							return GAIA:False;
+							return GAIA::False;
 					}
 				}
 				GINL GAIA::BL operator != (const BidirectionalIterator& src) const{return !(*this == src);}
@@ -197,7 +197,7 @@ namespace GAIA
 						if(m_pNode->t == src.m_pNode->t)
 							return GAIA::True;
 						else
-							return GAIA:False;
+							return GAIA::False;
 					}
 				}
 				GINL GAIA::BL operator != (const ConstBidirectionalIterator& src) const{return !(*this == src);}

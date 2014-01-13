@@ -108,7 +108,7 @@ namespace GAIA
 			GINL _DataType& operator[](const _SizeType& index)
 			{
 				GAIA_ASSERT(index < this->size());
-				if((_SizeType)m_pFront < (_SizeType)m_pBack)
+				if(m_pFront < m_pBack)
 					return m_pFront[index];
 				else
 				{
