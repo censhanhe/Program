@@ -359,21 +359,6 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL ConstBidirectionalIterator front_iterator() const
-			{
-				ConstBidirectionalIterator iter;
-				if(m_pRoot == GNULL)
-				{
-					iter.m_pNode = GNULL;
-					iter.m_pAVLTree = GNULL;
-				}
-				else
-				{
-					iter.m_pNode = this->front_node(m_pRoot);
-					iter.m_pAVLTree = this;
-				}
-				return iter;
-			}
 			GINL BidirectionalIterator back_iterator()
 			{
 				BidirectionalIterator iter;
@@ -389,7 +374,22 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL ConstBidirectionalIterator back_iterator() const
+			GINL ConstBidirectionalIterator const_front_iterator() const
+			{
+				ConstBidirectionalIterator iter;
+				if(m_pRoot == GNULL)
+				{
+					iter.m_pNode = GNULL;
+					iter.m_pAVLTree = GNULL;
+				}
+				else
+				{
+					iter.m_pNode = this->front_node(m_pRoot);
+					iter.m_pAVLTree = this;
+				}
+				return iter;
+			}
+			GINL ConstBidirectionalIterator const_back_iterator() const
 			{
 				ConstBidirectionalIterator iter;
 				if(m_pRoot == GNULL)

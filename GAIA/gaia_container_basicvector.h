@@ -192,9 +192,9 @@ namespace GAIA
 			GINL _DataType* back_ptr(){&this->operator[](this->size() - 1);}
 			GINL const _DataType* back_ptr() const{&this->operator[](this->size() - 1);}
 			GINL BidirectionalIterator front_iterator(){BidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
-			GINL ConstBidirectionalIterator front_iterator() const{ConstBidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
 			GINL BidirectionalIterator back_iterator(){BidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
-			GINL ConstBidirectionalIterator back_iterator() const{ConstBidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
+			GINL ConstBidirectionalIterator const_front_iterator() const{ConstBidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
+			GINL ConstBidirectionalIterator const_back_iterator() const{ConstBidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
 		private:
 			GINL GAIA::GVOID init(){m_pData = GNULL; m_capacity = m_size = 0;}
 		private:
