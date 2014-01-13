@@ -92,6 +92,18 @@
 #include	"gaia_datatraffic_route_net.h"
 #include	"gaia_datatraffic_transmission_idm.h"
 
+#include 	"gaia_render_vertexbuffer.h"
+#include 	"gaia_render_indexbuffer.h"
+#include 	"gaia_render_texture.h"
+#include	"gaia_render_context.h"
+#include 	"gaia_render_render.h"
+#include 	"gaia_render_gl1.h"
+#include 	"gaia_render_gl2.h"
+#include 	"gaia_render_gl3.h"
+#include 	"gaia_render_dx9.h"
+#include 	"gaia_render_dx10.h"
+#include 	"gaia_render_dx11.h"
+
 #include	"gaia_factory.h"
 
 #endif

@@ -113,8 +113,9 @@ namespace GAIA
 		GINL BL operator > (const X128& src) const{return !this->operator <= (src);}
 		union
 		{
-			struct
+			class
 			{
+			public:
 				GAIA::U32 u0;
 				GAIA::U32 u1;
 				GAIA::U32 u2;

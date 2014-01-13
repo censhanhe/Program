@@ -118,6 +118,10 @@ namespace GAIA
 			VEC3<_DataType> posMin;
 			VEC3<_DataType> posMax;
 		};
+
+		template <typename _DataType> class COLOR
+		{
+		};
 	};
 };
 

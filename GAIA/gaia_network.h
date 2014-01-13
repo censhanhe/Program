@@ -13,8 +13,9 @@ namespace GAIA
 		class NetworkListener
 		{
 		public:
-			struct LISTEN_DESC
+			class LISTEN_DESC
 			{
+			public:
 				GAIA::U64 uIP;
 				GAIA::U64 uPort;
 			};
