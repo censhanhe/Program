@@ -499,21 +499,33 @@ GAIA::N32 main()
 			GAIA::BL bResult = btr.insert(x);
 			GAIA_ASSERT(bResult);
 			if(!bResult)
-				bFunctionSuccess;
+				bFunctionSuccess = GAIA::False;
 		}
 		if(bFunctionSuccess)
 			LINE_TEST("Insert by key operator is SUCCESSFULLY!");
 		else
 			LINE_TEST("Insert by key operator is FAILED!");
+		GAIA::BL bCheckParent = btr.dbg_check_parent();
+		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100>::BidirectionalIterator iter = btr.front_iterator();
+		while(!iter.empty())
+		{
+			GAIA::N32 n = *iter;
+			++iter;
+		}
+		iter = btr.back_iterator();
+		while(!iter.empty())
+		{
+			GAIA::N32 n = *iter;
+			--iter;
+		}
 
 		bFunctionSuccess = GAIA::True;
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
 		{
-			GAIA::BL bResult = btr.exist(x);
-			GAIA_ASSERT(bResult);
-			bResult = GAIA::True;
-			if(!bResult)
-				bFunctionSuccess;
+			GAIA::N32* pFinded = btr.find(x);
+			GAIA_ASSERT(pFinded != GNULL);
+			if(pFinded == GNULL)
+				bFunctionSuccess = GAIA::False;
 		}
 		if(bFunctionSuccess)
 			LINE_TEST("Exist by key operator is SUCCESSFULLY!");
@@ -545,7 +557,7 @@ GAIA::N32 main()
 		bFunctionSuccess = GAIA::True;
 		for(GAIA::N32 x = 0; x < listSample.size(); x++)
 		{
-			if(!btr.exist(listSample[x]))
+			if(btr.find(listSample[x]) == GNULL)
 				bFunctionSuccess = GAIA::False;
 		}
 		if(bFunctionSuccess)
@@ -553,10 +565,21 @@ GAIA::N32 main()
 		else
 			LINE_TEST("Random data insertion and find AVL-Tree function check FAILED!");
 
+		for(GAIA::N32 x = 0; x < listSample.size(); x += 10)
+			btr.erase(listSample[x]);
+
 		if(btr.dbg_check_balance())
 			LINE_TEST("Check AVL-Tree balance SUCCESSFULLY!");
 		else
 			LINE_TEST("Check AVL-Tree balance FAILED!");
+
+		if(btr.dbg_check_parent())
+			LINE_TEST("Check AVL-Tree parent SUCCESSFULLY!");
+		else
+			LINE_TEST("Check AVL-Tree parent FAILED!");
+
+		for(GAIA::N32 x = 0; x < listSample.size(); x += 10)
+			btr.insert(listSample[x]);
 
 		listSample.sort();
 		bFunctionSuccess = GAIA::True;
