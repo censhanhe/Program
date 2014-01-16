@@ -95,6 +95,7 @@
 #include 	"gaia_render_vertexbuffer.h"
 #include 	"gaia_render_indexbuffer.h"
 #include 	"gaia_render_texture.h"
+#include	"gaia_render_target.h"
 #include	"gaia_render_context.h"
 #include 	"gaia_render_render.h"
 #include 	"gaia_render_gl1.h"

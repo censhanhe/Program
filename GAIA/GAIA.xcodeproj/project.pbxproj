@@ -30,6 +30,41 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3B6F8FC81884F00B00C9B60D /* gaia_ai_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_ai_context.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FC91884F00B00C9B60D /* gaia_physics_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_physics_context.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FCA1884F00B00C9B60D /* gaia_physics_physicsdriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_physics_physicsdriver.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FCB1884F00C00C9B60D /* gaia_render_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_context.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FCC1884F00C00C9B60D /* gaia_render_dx9.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_dx9.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FCD1884F00C00C9B60D /* gaia_render_dx10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_dx10.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FCE1884F00C00C9B60D /* gaia_render_dx11.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_dx11.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FCF1884F00D00C9B60D /* gaia_render_gl1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_gl1.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD01884F00D00C9B60D /* gaia_render_gl2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_gl2.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD11884F00D00C9B60D /* gaia_render_gl3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_gl3.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD21884F00D00C9B60D /* gaia_render_gles1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_gles1.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD31884F00D00C9B60D /* gaia_render_gles2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_gles2.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD41884F00D00C9B60D /* gaia_render_gles3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_gles3.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD51884F00D00C9B60D /* gaia_render_indexbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_indexbuffer.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD61884F00D00C9B60D /* gaia_render_pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_pipeline.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD71884F00D00C9B60D /* gaia_render_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_render.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD81884F00D00C9B60D /* gaia_render_target.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_target.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FD91884F00E00C9B60D /* gaia_render_texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_texture.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FDA1884F00E00C9B60D /* gaia_render_vertexbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_render_vertexbuffer.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FDB1884F00E00C9B60D /* gaia_resource_resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_resource_resource.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FDC1884F00E00C9B60D /* gaia_resource_resourcedriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_resource_resourcedriver.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FDD1884F00E00C9B60D /* gaia_scene_camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_camera.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FDE1884F00E00C9B60D /* gaia_scene_component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_component.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FDF1884F00E00C9B60D /* gaia_scene_geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_geometry.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE01884F00E00C9B60D /* gaia_scene_heightfield.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_heightfield.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE11884F00E00C9B60D /* gaia_scene_particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_particle.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE21884F00E00C9B60D /* gaia_scene_postprocess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_postprocess.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE31884F00E00C9B60D /* gaia_scene_scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_scene.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE41884F00E00C9B60D /* gaia_scene_sceneobj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_sceneobj.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE51884F00E00C9B60D /* gaia_scene_skin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_skin.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE61884F00E00C9B60D /* gaia_scene_staticmesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_scene_staticmesh.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE71884F00E00C9B60D /* gaia_sound_listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_sound_listener.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE81884F00E00C9B60D /* gaia_sound_sounder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_sound_sounder.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FE91884F00F00C9B60D /* gaia_task_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_task_task.h; sourceTree = SOURCE_ROOT; };
+		3B6F8FEA1884F00F00C9B60D /* gaia_task_taskdriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_task_taskdriver.h; sourceTree = SOURCE_ROOT; };
 		3BD55BEC1879D4D300FE89B5 /* gaia_algorithm_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_algorithm_base.h; sourceTree = SOURCE_ROOT; };
 		3BD55BED1879D4D300FE89B5 /* gaia_algorithm_search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_algorithm_search.h; sourceTree = SOURCE_ROOT; };
 		3BD55BEE1879D4D300FE89B5 /* gaia_algorithm_sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_algorithm_sort.h; sourceTree = SOURCE_ROOT; };
@@ -170,6 +205,41 @@
 		3BFB13FA1877852C00A1731D /* GAIA */ = {
 			isa = PBXGroup;
 			children = (
+				3B6F8FC81884F00B00C9B60D /* gaia_ai_context.h */,
+				3B6F8FC91884F00B00C9B60D /* gaia_physics_context.h */,
+				3B6F8FCA1884F00B00C9B60D /* gaia_physics_physicsdriver.h */,
+				3B6F8FCB1884F00C00C9B60D /* gaia_render_context.h */,
+				3B6F8FCC1884F00C00C9B60D /* gaia_render_dx9.h */,
+				3B6F8FCD1884F00C00C9B60D /* gaia_render_dx10.h */,
+				3B6F8FCE1884F00C00C9B60D /* gaia_render_dx11.h */,
+				3B6F8FCF1884F00D00C9B60D /* gaia_render_gl1.h */,
+				3B6F8FD01884F00D00C9B60D /* gaia_render_gl2.h */,
+				3B6F8FD11884F00D00C9B60D /* gaia_render_gl3.h */,
+				3B6F8FD21884F00D00C9B60D /* gaia_render_gles1.h */,
+				3B6F8FD31884F00D00C9B60D /* gaia_render_gles2.h */,
+				3B6F8FD41884F00D00C9B60D /* gaia_render_gles3.h */,
+				3B6F8FD51884F00D00C9B60D /* gaia_render_indexbuffer.h */,
+				3B6F8FD61884F00D00C9B60D /* gaia_render_pipeline.h */,
+				3B6F8FD71884F00D00C9B60D /* gaia_render_render.h */,
+				3B6F8FD81884F00D00C9B60D /* gaia_render_target.h */,
+				3B6F8FD91884F00E00C9B60D /* gaia_render_texture.h */,
+				3B6F8FDA1884F00E00C9B60D /* gaia_render_vertexbuffer.h */,
+				3B6F8FDB1884F00E00C9B60D /* gaia_resource_resource.h */,
+				3B6F8FDC1884F00E00C9B60D /* gaia_resource_resourcedriver.h */,
+				3B6F8FDD1884F00E00C9B60D /* gaia_scene_camera.h */,
+				3B6F8FDE1884F00E00C9B60D /* gaia_scene_component.h */,
+				3B6F8FDF1884F00E00C9B60D /* gaia_scene_geometry.h */,
+				3B6F8FE01884F00E00C9B60D /* gaia_scene_heightfield.h */,
+				3B6F8FE11884F00E00C9B60D /* gaia_scene_particle.h */,
+				3B6F8FE21884F00E00C9B60D /* gaia_scene_postprocess.h */,
+				3B6F8FE31884F00E00C9B60D /* gaia_scene_scene.h */,
+				3B6F8FE41884F00E00C9B60D /* gaia_scene_sceneobj.h */,
+				3B6F8FE51884F00E00C9B60D /* gaia_scene_skin.h */,
+				3B6F8FE61884F00E00C9B60D /* gaia_scene_staticmesh.h */,
+				3B6F8FE71884F00E00C9B60D /* gaia_sound_listener.h */,
+				3B6F8FE81884F00E00C9B60D /* gaia_sound_sounder.h */,
+				3B6F8FE91884F00F00C9B60D /* gaia_task_task.h */,
+				3B6F8FEA1884F00F00C9B60D /* gaia_task_taskdriver.h */,
 				3BD55C7E18802D4700FE89B5 /* gaia_container_basicbitset.h */,
 				3BD55C7F18802D4800FE89B5 /* gaia_container_basicdictionary.h */,
 				3BD55C8018802D4900FE89B5 /* gaia_container_basicgraph.h */,
