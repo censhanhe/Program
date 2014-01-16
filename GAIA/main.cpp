@@ -682,30 +682,83 @@ GAIA::N32 main()
 		_MyGraphType::__NodeListType listResult;
 		graph.find(GNULL, 3.0, listResult);
 		if(listResult.empty())
-			LINE_TEST("graph find FAILED!");
+			LINE_TEST("basic graph find FAILED!");
 		else
-			LINE_TEST("graph find SUCCESSFULLY!");
+			LINE_TEST("basic graph find SUCCESSFULLY!");
 
 		{
 			listResult.clear();
 			graph.find(GNULL, 8.0F, listResult);
-			_MyGraphType::__Node* pNode1 = listResult[0];
+			if(!listResult.empty())
+			{
+				_MyGraphType::__Node* pNode1 = listResult[0];
+				if(pNode1 == GNULL)
+					LINE_TEST("basic graph find FAILED!");
+				graph.insert(80.0F, listResult[0]);
+			}
+			else
+				LINE_TEST("basic graph find FAILED!");
 			listResult.clear();
 			graph.find(GNULL, 80.0F, listResult);
-			_MyGraphType::__Node* pNode2 = listResult[1];
-			_MyGraphType::__PathListType listResultPath;
-			//graph.paths(*pNode1, *pNode2, listResultPath);
+			if(!listResult.empty())
+			{
+				_MyGraphType::__Node* pNode2 = listResult[1];
+				if(pNode2 == GNULL)
+					LINE_TEST("basic graph find FAILED!");
+			}
+			else
+				LINE_TEST("basic graph find FAILED!");
+		}
+
+		{
+			/*
+			*	1-------2
+			*	|     / | \
+			*	|   /   |  3
+			*	| /     | /
+			*	5-------4
+			*/
+
+			graph.destroy();
+			_MyGraphType::__Node* pNode0 = graph.insert(0.0F, GNULL);
+			_MyGraphType::__Node* pNode1 = graph.insert(1.0F, GNULL);
+			_MyGraphType::__Node* pNode2 = graph.insert(2.0F, GNULL);
+			_MyGraphType::__Node* pNode3 = graph.insert(3.0F, GNULL);
+			_MyGraphType::__Node* pNode4 = graph.insert(4.0F, GNULL);
+			_MyGraphType::__Node* pNode5 = graph.insert(5.0F, GNULL);
+			graph.erase(*pNode0);
+			graph.root(pNode1);
+			graph.link(*pNode1, *pNode5);
+			graph.link(*pNode1, *pNode2);
+			graph.link(*pNode2, *pNode3);
+			graph.link(*pNode2, *pNode4);
+			graph.link(*pNode2, *pNode5);
+			graph.link(*pNode3, *pNode4);
+			graph.link(*pNode4, *pNode5);
+			_MyGraphType::__NodeListType listResult1;
+			graph.find(GNULL, 5.0F, listResult1);
+			_MyGraphType::__NodeListType listResult2;
+			graph.find(GNULL, 3.0F, listResult2);
+			if(!listResult1.empty() && !listResult2.empty())
+			{
+				_MyGraphType::__PathTreeType treeResult;
+				graph.paths(*listResult1[0], *listResult2[0], treeResult);
+				if(treeResult.empty())
+					LINE_TEST("basic graph path from one node to another FAILED!");
+			}
+			else
+				LINE_TEST("basic graph find FAILED!");
 		}
 
 		if(graph.dbg_check_traveling())
-			LINE_TEST("graph debug check traveling SUCESSFULLY!");
+			LINE_TEST("basic graph debug check traveling SUCCESSFULLY!");
 		else
-			LINE_TEST("graph debug check traveling FAILED!");
+			LINE_TEST("basic graph debug check traveling FAILED!");
 
 		if(graph.dbg_check_relation())
-			LINE_TEST("graph debug check relation SUCCESSFULLY!");
+			LINE_TEST("basic graph debug check relation SUCCESSFULLY!");
 		else
-			LINE_TEST("graph debug check relation FAILED!");
+			LINE_TEST("basic graph debug check relation FAILED!");
 
 		END_TEST;
 	}

@@ -48,7 +48,7 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4996;4804;4244;4800;4127;4305;4018;4172;4146;4389;"
+				DisableSpecificWarnings="4996;4804;4244;4800;4127;4305;4018;4172;4146;4389;4201;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -122,7 +122,7 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
-				DisableSpecificWarnings="4996;4804;4244;4800;4127;4305;4018;4172;4146;4389;"
+				DisableSpecificWarnings="4996;4804;4244;4800;4127;4305;4018;4172;4146;4389;4201;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -428,6 +428,10 @@
 							>
 							<File
 								RelativePath=".\gaia_container_avltree.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_basictree.h"
 								>
 							</File>
 						</Filter>

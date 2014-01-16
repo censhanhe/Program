@@ -9,7 +9,6 @@ namespace GAIA
 		{
 		public:
 			typedef GAIA::CONTAINER::BasicString<_StringType, _StringLengthType> __MyString;
-
 		public:
 			GINL XML(){}
 			GINL ~XML(){}
