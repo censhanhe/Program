@@ -52,6 +52,8 @@
 #include 	"gaia_container_avltree.h"
 #include 	"gaia_container_basicset.h"
 #include 	"gaia_container_set.h"
+#include	"gaia_container_basicmap.h"
+#include	"gaia_container_basicgraph.h"
 
 #include	"gaia_math_basic.h"
 #include 	"gaia_math_random.h"
