@@ -195,8 +195,16 @@ namespace GAIA
 				result.clear();
 				this->paths_node(src, dst, result, GNULL);
 			}
-			GINL GAIA::GVOID paths(const __Node& src, const _DataType& t, __PathTreeType& result) const;
-			GINL GAIA::GVOID paths(const _DataType& src, const _DataType& dst, __PathTreeType& result) const;
+			GINL GAIA::GVOID paths(const __Node& src, const _DataType& t, __PathTreeType& result) const
+			{
+				result.clear();
+				this->paths_node(src, t, result, GNULL);
+			}
+			GINL GAIA::GVOID paths(const _DataType& src, const _DataType& dst, __PathTreeType& result) const
+			{
+				result.clear();
+				this->paths_node(src, dst, result, GNULL);
+			}
 			GINL GAIA::BL minimize(const __Node& src, const _DataType& dst, __NodeListType& result, _DistanceType& dist) const;
 			GINL GAIA::BL maximize(const __Node& src, const _DataType& dst, __NodeListType& result, _DistanceType& dist) const;
 			GINL GAIA::BL minimize(const __Node& src, const __Node& dst, __NodeListType& result, _DistanceType& dist) const;
@@ -277,6 +285,12 @@ namespace GAIA
 						result.erase(*pNewTreeNode);
 				}
 				src.LeaveTraveling();
+			}
+			GINL GAIA::GVOID paths_node(const __Node& src, const _DataType& t, __PathTreeType& result, typename __PathTreeType::__Node* pParentTreeNode) const
+			{
+			}
+			GINL GAIA::GVOID paths_node(const _DataType& src, const _DataType& dst, __PathTreeType& result, typename __PathTreeType::__Node* pParentTreeNode) const
+			{
 			}
 		private:
 			__Node* m_pRoot;
