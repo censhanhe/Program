@@ -63,8 +63,8 @@ namespace GAIA
 				else
 				{
 					typedef _DataType* LPDATATYPE;
-					LPDATATYPE* pFront = m_free.front();
-					LPDATATYPE* pBack = m_free.back();
+					LPDATATYPE* pFront = m_free.front_ptr();
+					LPDATATYPE* pBack = m_free.back_ptr();
 					for(_SizeType x = 0; x < this->capacity(); ++x)
 					{
 						const _DataType& t = m_buf[x / _GroupElementSize]->listEle[x % _GroupElementSize];
