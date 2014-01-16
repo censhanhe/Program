@@ -48,7 +48,7 @@ namespace GAIA
 		template <typename _DataType> GINL X128& operator = (const _DataType* p)
 		{
 			u0 = u1 = u2 = u3 = 0;
-			for(GAIA::U32 x = 0; x < 32; x++)
+			for(GAIA::U32 x = 0; x < 32; ++x)
 			{
 				GAIA::U32 uIndex = x / 8;
 				if(p[x] >= '0' && p[x] <= '9')

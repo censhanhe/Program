@@ -32,7 +32,7 @@ namespace GAIA
 				m_use.push_back(t);
 				return m_use.size() - 1;
 			}
-			GINL GAIA::BL removei(const _SizeType& index)
+			GINL GAIA::BL erasei(const _SizeType& index)
 			{
 				GAIA_ASSERT(m_use[index] != _DefaultValue);
 				if(m_use[index] == _DefaultValue)
@@ -41,14 +41,14 @@ namespace GAIA
 				m_use[index] = _DefaultValue;
 				return GAIA::True;
 			}
-			GINL GAIA::BL remove(const _DataType& t)
+			GINL GAIA::BL erase(const _DataType& t)
 			{
 				for(_SizeType x = 0; x < m_use.size(); ++x)
 				{
 					if(m_use[x] == _DefaultValue)
 						continue;
 					if(m_use[x] == t)
-						return this->removei(x);
+						return this->erasei(x);
 				}
 				return GAIA::False;
 			}

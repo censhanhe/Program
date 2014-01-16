@@ -14,20 +14,20 @@ namespace GAIA
 			GINL GAIA::GVOID clear()
 			{
 				m_free.clear();
-				for(_SizeType y = 0; y < m_buf.size(); y++)
+				for(_SizeType y = 0; y < m_buf.size(); ++y)
 				{
 					BasicVector<_DataType, _SizeType, _SizeIncreaserType>& listEle = m_buf[y]->listEle;
-					for(_SizeType x = 0; x < listEle.size(); x++)
+					for(_SizeType x = 0; x < listEle.size(); ++x)
 						m_free.push(&listEle[x]);
 				}
 				m_size = 0;
-				m_capacity = m_buf.size();
+				m_capacity = m_buf.size() * _GroupElementSize;
 			}
 			GINL _SizeType size() const{return m_size;}
 			GINL _SizeType capacity() const{return m_capacity;}
 			GINL GAIA::GVOID destroy()
 			{
-				for(_SizeType x = 0; x < m_buf.size(); x++)
+				for(_SizeType x = 0; x < m_buf.size(); ++x)
 					delete m_buf[x];
 				m_buf.destroy();
 				m_free.destroy();
@@ -44,13 +44,42 @@ namespace GAIA
 				return pTop;
 			}
 			GINL GAIA::BL release(_DataType* p){m_free.push(p); --m_size; return GAIA::True;}
+			GINL _DataType& operator[](const _SizeType& index)
+			{
+				return m_buf[index / _GroupElementSize]->listEle[index % _GroupElementSize];
+			}
+			GINL const _DataType& operator[](const _SizeType& index) const
+			{
+				return m_buf[index / _GroupElementSize]->listEle[index % _GroupElementSize];
+			}
+			GINL GAIA::GVOID collect_valid_index_list(GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType>& result)
+			{
+				result.clear();
+				if(m_free.empty())
+				{
+					for(_SizeType x = 0; x < this->capacity(); ++x)
+						result.push_back(x);
+				}
+				else
+				{
+					typedef _DataType* LPDATATYPE;
+					LPDATATYPE* pFront = m_free.front();
+					LPDATATYPE* pBack = m_free.back();
+					for(_SizeType x = 0; x < this->capacity(); ++x)
+					{
+						const _DataType& t = m_buf[x / _GroupElementSize]->listEle[x % _GroupElementSize];
+						if(GAIA::ALGORITHM::find(pFront, pBack, (LPDATATYPE)&t) == GNULL)
+							result.push_back(x);
+					}
+				}
+			}
 		private:
 			GINL GAIA::GVOID init(){m_size = m_capacity = 0;}
 			GINL GAIA::GVOID alloc_group()
 			{
 				Group* pGroup = new Group;
 				pGroup->listEle.resize(_GroupElementSize);
-				for(_SizeType x = 0; x < _GroupElementSize; x++)
+				for(_SizeType x = 0; x < _GroupElementSize; ++x)
 					m_free.push(&pGroup->listEle[x]);
 				m_buf.push_back(pGroup);
 				m_capacity += _GroupElementSize;

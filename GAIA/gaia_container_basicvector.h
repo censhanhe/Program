@@ -149,7 +149,7 @@ namespace GAIA
 			}
 			GINL _SizeType find(const _DataType& t) const
 			{
-				for(_SizeType x = 0; x < this->size(); x++)
+				for(_SizeType x = 0; x < this->size(); ++x)
 					if(this->operator[](x) == t)
 						return x;
 				return (_SizeType)-1;
@@ -157,7 +157,7 @@ namespace GAIA
 			GINL _SizeType count(const _DataType& t) const
 			{
 				_SizeType ret = 0;
-				for(_SizeType x = 0; x < this->size(); x++)
+				for(_SizeType x = 0; x < this->size(); ++x)
 					if(this->operator[](x) == t)
 						++ret;
 				return ret;
@@ -179,7 +179,7 @@ namespace GAIA
 			{
 				this->destroy();
 				this->reserve(src.size());
-				for(_SizeType x = 0; x < src.size(); x++)
+				for(_SizeType x = 0; x < src.size(); ++x)
 					this->push_back(src[x]);
 				return *this;
 			}

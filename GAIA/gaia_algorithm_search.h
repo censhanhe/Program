@@ -7,7 +7,7 @@ namespace GAIA
 	{
 		template <typename _DataType, typename _SizeType> GAIA::BL check(const _DataType* pBegin, const _DataType* p, const _SizeType& size)
 		{
-			for(_SizeType x = 0; x < size; x++)
+			for(_SizeType x = 0; x < size; ++x)
 			{
 				if(pBegin[x] != p[x])
 					return GAIA::False;
@@ -24,12 +24,32 @@ namespace GAIA
 			}
 			return GNULL;
 		}
+		template <typename _DataType> _DataType** findp(_DataType** pBegin, _DataType** pEnd, const _DataType& key)
+		{
+			while(pBegin != pEnd)
+			{
+				if(**pBegin == key)
+					return const_cast<_DataType**>(pBegin);
+				++pBegin;
+			}
+			return GNULL;
+		}
 		template <typename _DataType> _DataType* rfind(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
 		{
 			while(pBegin != pEnd)
 			{
 				if(*pEnd == key)
 					return const_cast<_DataType*>(pEnd);
+				--pEnd;
+			}
+			return GNULL;
+		}
+		template <typename _DataType> _DataType* rfindp(_DataType** pBegin, _DataType** pEnd, const _DataType& key)
+		{
+			while(pBegin != pEnd)
+			{
+				if(**pEnd == key)
+					return const_cast<_DataType**>(pEnd);
 				--pEnd;
 			}
 			return GNULL;

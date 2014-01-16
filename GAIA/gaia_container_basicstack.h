@@ -21,6 +21,10 @@ namespace GAIA
 			GINL _SizeType capacity() const{return m_capacity;}
 			GINL GAIA::GVOID reserve(const _SizeType& size){this->destroy();if(size > 0){m_pData = new _DataType[size];m_capacity = size;m_size = 0;}}
 			GINL GAIA::GVOID destroy(){if(m_pData != GNULL){delete[] m_pData; m_pData = GNULL; m_capacity = m_size = 0;}}
+			GINL _DataType* front(){return m_pData;}
+			GINL const _DataType* front() const{return m_pData;}
+			GINL _DataType* back(){return &m_pData[m_size - 1];}
+			GINL const _DataType* back() const{return &m_pData[m_size - 1];}
 			GINL GAIA::GVOID push(const _DataType& t)
 			{
 				if(this->size() == this->capacity())
@@ -47,6 +51,16 @@ namespace GAIA
 				this->reserve(src.size());
 				GAIA::ALGORITHM::xcopy(m_pData, src.m_pData, src.size());
 				return *this;
+			}
+			GINL _DataType& operator[](const _SizeType& index)
+			{
+				GAIA_ASSERT(index < m_size);
+				return m_pData[index];
+			}
+			GINL const _DataType& operator[](const _SizeType& index) const
+			{
+				GAIA_ASSERT(index < m_size);
+				return m_pData[index];
 			}
 		private:
 			GINL GAIA::GVOID init(){m_pData = GNULL; m_capacity = m_size = 0;}

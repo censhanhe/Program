@@ -201,7 +201,7 @@ GAIA::N32 main()
 		BEGIN_TEST("<Basic array test>");
 		{
 			GAIA::CONTAINER::BasicArray<GAIA::U32, GAIA::U32, 100> ba;
-			for(GAIA::CONTAINER::BasicArray<GAIA::U32, GAIA::U32, 100>::_sizetype x = 0; x < ba.capacity(); x++)
+			for(GAIA::CONTAINER::BasicArray<GAIA::U32, GAIA::U32, 100>::_sizetype x = 0; x < ba.capacity(); ++x)
 				ba << GAIA::MATH::random();
 			ba.sort();
 			ba.erase(0);
@@ -248,7 +248,7 @@ GAIA::N32 main()
 	// Buffer test.
 	{
 		GAIA::N32 arr[32];
-		for(GAIA::N32 x = 0; x < sizeof(arr) / sizeof(GAIA::N32); x++)
+		for(GAIA::N32 x = 0; x < sizeof(arr) / sizeof(GAIA::N32); ++x)
 			arr[x] = x;
 
 		GAIA::CONTAINER::Buffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32> buf;
@@ -352,9 +352,9 @@ GAIA::N32 main()
 	// BasicQueue test.
 	{
 		GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > que;
-		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
 			que.push(x);
-		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
 			que.pop();
 		que.front();
 		GAIA_ASSERT(que.size() == 50);
@@ -365,18 +365,18 @@ GAIA::N32 main()
 		GAIA::CONTAINER::BasicOrderless<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, (GAIA::U32)-1> ol;
 		GAIA::U32 u0 = ol.insert(32);
 		GAIA::U32 u1 = ol.insert(48);
-		ol.remove(u0);
-		ol.remove(u1);
+		ol.erase(u0);
+		ol.erase(u1);
 	}
 
 	// BasicPool test.
 	{
 		GAIA::CONTAINER::BasicPool<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 32> pool;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			pool.alloc();
 		pool.clear();
 		pool.destroy();
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			pool.alloc();
 	}
 
@@ -385,11 +385,11 @@ GAIA::N32 main()
 		BEGIN_TEST("<Sort algorithm test>");
 		{
 			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
-			for(GAIA::N32 x = 0; x < 100; x++)
+			for(GAIA::N32 x = 0; x < 100; ++x)
 				listGAIA.push_back(GAIA::MATH::random());
 			GAIA::ALGORITHM::bsort(&listGAIA[0], &listGAIA[listGAIA.size() - 1]);
 			GAIA::N32 nOldValue = -1;
-			for(GAIA::N32 x = 0; x < 100; x++)
+			for(GAIA::N32 x = 0; x < 100; ++x)
 			{
 				if(nOldValue > listGAIA[x])
 				{
@@ -412,11 +412,11 @@ GAIA::N32 main()
 		{
 			bFunctionSuccess = GAIA::True;
 			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				listGAIA.push_back(GAIA::MATH::random());
 			listGAIA.sort();
 			GAIA::N32 nOldValue = -1;
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			{
 				if(nOldValue > listGAIA[x])
 				{
@@ -436,9 +436,9 @@ GAIA::N32 main()
 		{
 			bFunctionSuccess = GAIA::True;
 			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				listGAIA.push_back(x);
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			{
 				if(listGAIA.search(x) != x)
 				{
@@ -460,26 +460,26 @@ GAIA::N32 main()
 		BEGIN_TEST("<Sort function performance>");
 
 		std::vector<GAIA::N32> listSTL;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			listSTL.push_back(GAIA::MATH::random());
 		PERF_START("STL sort use");
 		std::sort(listSTL.begin(), listSTL.end());
 		PERF_END;
 
 		GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			listGAIA.push_back(GAIA::MATH::random());
 		PERF_START("GAIA sort use");
 		GAIA::ALGORITHM::sort(&listGAIA[0], &listGAIA[listGAIA.size() - 1]);
 		PERF_END;
 
 		PERF_START("STL bsearch use");
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			binary_search(listSTL.begin(), listSTL.end(), listSTL[x]);
 		PERF_END;
 
 		PERF_START("GAIA bsearch use");
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]);
 		PERF_END;
 
@@ -494,7 +494,7 @@ GAIA::N32 main()
 		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
 
 		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::BL bResult = btr.insert(x);
 			GAIA_ASSERT(bResult);
@@ -520,7 +520,7 @@ GAIA::N32 main()
 		}
 
 		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::N32* pFinded = btr.find(x);
 			GAIA_ASSERT(pFinded != GNULL);
@@ -533,7 +533,7 @@ GAIA::N32 main()
 			LINE_TEST("Exist by key operator is FAILED!");
 
 		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::BL bResult = btr.erase(x);
 			GAIA_ASSERT(bResult);
@@ -548,14 +548,14 @@ GAIA::N32 main()
 
 		btr.clear();
 		GAIA::CONTAINER::Vector<GAIA::N32> listSample;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::N32 nRand = GAIA::MATH::random();
 			btr.insert(nRand);
 			listSample.push_back(nRand);
 		}
 		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < listSample.size(); x++)
+		for(GAIA::N32 x = 0; x < listSample.size(); ++x)
 		{
 			if(btr.find(listSample[x]) == GNULL)
 				bFunctionSuccess = GAIA::False;
@@ -584,7 +584,7 @@ GAIA::N32 main()
 		listSample.sort();
 		bFunctionSuccess = GAIA::True;
 		GAIA::N32 n = -1;
-		for(GAIA::N32 x = 0; x < listSample.size(); x++)
+		for(GAIA::N32 x = 0; x < listSample.size(); ++x)
 		{
 			if(listSample[x] == n)
 				continue;
@@ -607,18 +607,47 @@ GAIA::N32 main()
 
 		PERF_START("STL set use");
 		std::set<GAIA::N32> setSTL;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			setSTL.insert(GAIA::MATH::random());
 		PERF_END;
 
 		PERF_START("GAIA AVLTree use");
 		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> avltree;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; x++)
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			avltree.insert(GAIA::MATH::random());
 		PERF_END;
 
 		END_TEST;
 #endif
+	}
+
+	// BasicGraph function test.
+	{
+		BEGIN_TEST("<BasicGraph function test>");
+		
+		typedef GAIA::CONTAINER::BasicGraph<GAIA::REAL, GAIA::REAL, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> _MyGraphType;
+		_MyGraphType graph;
+		_MyGraphType::__Node* pNode = GNULL;
+		for(GAIA::N32 x = 0; x < 100; ++x)
+			pNode = graph.insert((GAIA::REAL)x, pNode);
+		_MyGraphType::__NodeListType listResult;
+		graph.find(GNULL, 3.0, listResult);
+		if(listResult.empty())
+			LINE_TEST("graph find FAILED!");
+		else
+			LINE_TEST("graph find SUCCESSFULLY!");
+
+		if(graph.dbg_check_traveling())
+			LINE_TEST("graph debug check traveling SUCESSFULLY!");
+		else
+			LINE_TEST("graph debug check traveling FAILED!");
+
+		if(graph.dbg_check_relation())
+			LINE_TEST("graph debug check relation SUCCESSFULLY!");
+		else
+			LINE_TEST("graph debug check relation FAILED!");
+
+		END_TEST;
 	}
 
 	// Basic math test.
@@ -683,7 +712,7 @@ GAIA::N32 main()
 
 		GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*> listResult;
 		pGateway2->CollectRoutes(listResult);
-		for(GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype x = 0; x < listResult.size(); x++)
+		for(GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype x = 0; x < listResult.size(); ++x)
 		{
 			pGateway2->RemoveRoute(listResult[x]);
 			listResult[x]->Release();

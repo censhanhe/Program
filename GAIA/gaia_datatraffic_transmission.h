@@ -22,11 +22,11 @@ namespace GAIA
 			{
 				GAIA_ASSERT(pRoute != GNULL);
 				pRoute->Release();
-				return m_routes.remove(pRoute);
+				return m_routes.erase(pRoute);
 			}
 			GINL virtual GAIA::GVOID RemoveRouteAll()
 			{
-				for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); x++)
+				for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); ++x)
 				{
 					if(m_routes[x] != GNULL)
 						m_routes[x]->Release();

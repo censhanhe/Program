@@ -23,14 +23,14 @@ namespace GAIA
 			GINL BasicStackBitset<_SizeType, _Size>& operator = (const _SizeType& index){this->clear(); this->set(index); return *this;}
 			GINL BasicStackBitset<_SizeType, _Size>& operator = (const BasicStackBitset<_SizeType, _Size>& src){GAIA::ALGORITHM::memcpy(m_bits, src.m_bits, _Size); return *this;}
 			GINL BasicStackBitset<_SizeType, _Size>& operator += (const _SizeType& index){this->set(index); return *this;}
-			GINL BasicStackBitset<_SizeType, _Size>& operator += (const BasicStackBitset<_SizeType, _Size>& src){for(_SizeType x = 0; x < _Size; x++) m_bits[x] |= src.m_bits[x]; return *this;}
+			GINL BasicStackBitset<_SizeType, _Size>& operator += (const BasicStackBitset<_SizeType, _Size>& src){for(_SizeType x = 0; x < _Size; ++x) m_bits[x] |= src.m_bits[x]; return *this;}
 			GINL BasicStackBitset<_SizeType, _Size>& operator -= (const _SizeType& index){this->reset(index); return *this;}
-			GINL BasicStackBitset<_SizeType, _Size>& operator -= (const BasicStackBitset<_SizeType, _Size>& src){for(_SizeType x = 0; x < _Size; x++) m_bits[x] &= ~src.m_bits[x]; return *this;}
+			GINL BasicStackBitset<_SizeType, _Size>& operator -= (const BasicStackBitset<_SizeType, _Size>& src){for(_SizeType x = 0; x < _Size; ++x) m_bits[x] &= ~src.m_bits[x]; return *this;}
 			GINL GAIA::BL operator == (const _SizeType& index){return this->exist(index);}
 			GINL GAIA::BL operator == (const BasicStackBitset<_SizeType, _Size>& src){if(GAIA::ALGORITHM::memcmp(m_bits, src.m_bits, _Size) == 0) return GAIA::True; return GAIA::False;}
 			GINL GAIA::BL operator != (const _SizeType& index){return !(this->operator == (index));}
 			GINL GAIA::BL operator != (const BasicStackBitset<_SizeType, _Size>& src){return !(this->operator == (src));}
-			GINL BasicStackBitset<_SizeType, _Size>& operator ~ (){for(_SizeType x = 0; x < _Size; x++) m_bits[x] ^ (GAIA::U8)-1; return *this;}
+			GINL BasicStackBitset<_SizeType, _Size>& operator ~ (){for(_SizeType x = 0; x < _Size; ++x) m_bits[x] ^ (GAIA::U8)-1; return *this;}
 			GINL GAIA::BL operator[](const _SizeType& index) const{return this->exist(index);}
 		private:
 			GAIA::U8 m_bits[_Size];

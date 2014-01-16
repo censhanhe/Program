@@ -16,11 +16,11 @@ namespace GAIA
 		{
 			GAIA_ASSERT(pRoute != NULL);
 			pRoute->Release();
-			return m_routes.remove(pRoute);
+			return m_routes.erase(pRoute);
 		}
 		GINL GAIA::GVOID Route::DisconnectAll()
 		{
-			for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); x++)
+			for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); ++x)
 			{
 				if(m_routes[x] != GNULL)
 					m_routes[x]->Release();
@@ -61,11 +61,11 @@ namespace GAIA
 		{
 			GAIA_ASSERT(pGateway != NULL);
 			pGateway->Release();
-			return m_gateways.remove(pGateway);
+			return m_gateways.erase(pGateway);
 		}
 		GINL GAIA::GVOID Route::RemoveGatewayAll()
 		{
-			for(OL_GATEWAY::_sizetype x = 0; x < m_gateways.size(); x++)
+			for(OL_GATEWAY::_sizetype x = 0; x < m_gateways.size(); ++x)
 			{
 				if(m_gateways[x] != GNULL)
 					m_gateways[x]->Release();

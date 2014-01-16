@@ -28,7 +28,7 @@ namespace GAIA
 			GINL const _DataType* back_ptr() const{GAIA_ASSERT(this->size() > 0); return &this->operator[](this->size() - 1);}
 			GINL _DataType* back_ptr(){GAIA_ASSERT(this->size() > 0); return &this->operator[](this->size() - 1);}
 			GINL GAIA::GVOID resize(const _SizeType& size){GAIA_ASSERT(size >= 0 && size <= _Size); m_size = size;}
-			GINL GAIA::GVOID reset(const _DataType& t){for(_SizeType x = 0; x < this->size(); x++) m_data[x] = t;}
+			GINL GAIA::GVOID reset(const _DataType& t){for(_SizeType x = 0; x < this->size(); ++x) m_data[x] = t;}
 			GINL GAIA::GVOID sort(){if(this->size() == 0) return; GAIA::ALGORITHM::sort(m_data, &m_data[this->size() - 1]);}
 			GINL _SizeType search(const _DataType& t) const
 			{
@@ -86,7 +86,7 @@ namespace GAIA
 			GINL BasicArray<_DataType, _SizeType, _Size>& operator = (const BasicArray<_DataType, _SizeType, _Size>& src)
 			{
 				this->resize(src.size());
-				for(_sizetype x = 0; x < src.size(); x++)
+				for(_sizetype x = 0; x < src.size(); ++x)
 					this->operator[](x) = src[x];
 				return *this;
 			}
