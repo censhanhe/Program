@@ -8,7 +8,7 @@ namespace GAIA
 		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicTree
 		{
 		public:
-			template <typename _DataType, typename _SizeType, typename _SizeIncreaserType> class Node
+			class Node
 			{
 			private:
 				friend class BasicTree;
@@ -26,10 +26,9 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			typedef Node<_DataType, _SizeType, _SizeIncreaserType> __Node;
 			typedef BasicTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicVector<__Node*, _SizeType, _SizeIncreaserType> __NodeListType;
-			typedef BasicPool<__Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
+			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
+			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
 		public:
 			GINL BasicTree(){this->init();}
 			GINL BasicTree(const __MyType& src){this->init(); this->operator = (src);}
@@ -41,11 +40,11 @@ namespace GAIA
 			GINL GAIA::GVOID clear(){m_pRoot = GNULL; m_pool.clear();}
 			GINL GAIA::GVOID resize(const _SizeType& size){}
 			GINL GAIA::GVOID reserve(const _SizeType& size){}
-			GINL __Node* root(){return m_pRoot;}
-			GINL const __Node* root() const{return m_pRoot;}
-			GINL __Node* insert(const _DataType& t, __Node* pNode)
+			GINL Node* root(){return m_pRoot;}
+			GINL const Node* root() const{return m_pRoot;}
+			GINL Node* insert(const _DataType& t, Node* pNode)
 			{
-				__Node* pNew = m_pool.alloc();
+				Node* pNew = m_pool.alloc();
 				pNew->m_t = t;
 				pNew->m_pParent = GNULL;
 				pNew->m_links.clear();
@@ -63,11 +62,11 @@ namespace GAIA
 				}
 				return pNew;
 			}
-			GINL GAIA::GVOID erase(__Node& n)
+			GINL GAIA::GVOID erase(Node& n)
 			{
 				for(_SizeType x = 0; x < n.m_links.size(); ++x)
 				{
-					__Node* pNode = n.m_links[x];
+					Node* pNode = n.m_links[x];
 					if(pNode == GNULL)
 						continue;
 					this->erase(*pNode);
@@ -78,13 +77,13 @@ namespace GAIA
 				if(&n == m_pRoot)
 					m_pRoot = GNULL;
 			}
-			GINL GAIA::BL link(__Node& parent, __Node& child)
+			GINL GAIA::BL link(Node& parent, Node& child)
 			{
 				if(child.m_pParent != GNULL)
 					this->unlink(*child.m_pParent, child);
-				__Node** ppn;
+				Node** ppn;
 				if(!parent.m_links.empty())
-					ppn = GAIA::ALGORITHM::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), (__Node*)GNULL);
+					ppn = GAIA::ALGORITHM::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), (Node*)GNULL);
 				else
 					ppn = GNULL;
 				if(ppn == GNULL)
@@ -94,33 +93,33 @@ namespace GAIA
 				child.m_pParent = &parent;
 				return GAIA::True;
 			}
-			GINL GAIA::BL unlink(__Node& parent, __Node& child)
+			GINL GAIA::BL unlink(Node& parent, Node& child)
 			{
 				if(child.m_pParent != &parent)
 					return GAIA::False;
 				if(parent.m_links.empty())
 					return GAIA::False;
-				__Node** pFinded = GAIA::ALGORITHM::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), &child);
+				Node** pFinded = GAIA::ALGORITHM::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), &child);
 				*pFinded = NULL;
 				child.m_pParent = GNULL;
 				return GAIA::True;
 			}
-			GINL GAIA::BL islinked(const __Node& parent, const __Node& child) const{if(child.m_pParent == &parent) return GAIA::True; return GAIA::False;}
-			GINL __Node* parent(const __Node& n) const{return n.m_pParent;}
-			GINL _SizeType getlinksize(const __Node& n) const{return n.m_links.size();}
-			GINL _SizeType getlinkcount(const __Node& n, __Node* p) const{return n.m_links.count(p);}
-			GINL __Node* getlink(const __Node& n, const _SizeType& index) const{return n.m_links[index];}
-			GINL GAIA::GVOID find(const __Node* pSrc, const _DataType& t, __NodeListType& result) const
+			GINL GAIA::BL islinked(const Node& parent, const Node& child) const{if(child.m_pParent == &parent) return GAIA::True; return GAIA::False;}
+			GINL Node* parent(const Node& n) const{return n.m_pParent;}
+			GINL _SizeType getlinksize(const Node& n) const{return n.m_links.size();}
+			GINL _SizeType getlinkcount(const Node& n, Node* p) const{return n.m_links.count(p);}
+			GINL Node* getlink(const Node& n, const _SizeType& index) const{return n.m_links[index];}
+			GINL GAIA::GVOID find(const Node* pSrc, const _DataType& t, __NodeListType& result) const
 			{
 				if(pSrc == GNULL)
 					pSrc = m_pRoot;
 				if(pSrc == GNULL)
 					return;
 				if(pSrc->m_t == t)
-					result.push_back((const_cast<__Node*>(pSrc)));
+					result.push_back((const_cast<Node*>(pSrc)));
 				for(_SizeType x = 0; x < pSrc->m_links.size(); ++x)
 				{
-					const __Node* pNode = pSrc->m_links[x];
+					const Node* pNode = pSrc->m_links[x];
 					if(pNode == GNULL)
 						continue;
 					this->find(pNode, t, result);
@@ -139,7 +138,7 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
 		private:
-			__Node* m_pRoot;
+			Node* m_pRoot;
 			__PoolType m_pool;
 		};
 	};

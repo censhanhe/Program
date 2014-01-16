@@ -627,11 +627,11 @@ GAIA::N32 main()
 
 		typedef GAIA::CONTAINER::BasicTree<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> _MyTreeType;
 		_MyTreeType tree;
-		_MyTreeType::__Node* pNode = tree.insert(10, GNULL);
+		_MyTreeType::Node* pNode = tree.insert(10, GNULL);
 		tree.insert(20, pNode);
-		_MyTreeType::__Node* pChildNode = tree.insert(30, pNode);
+		_MyTreeType::Node* pChildNode = tree.insert(30, pNode);
 		tree.insert(40, pNode);
-		_MyTreeType::__Node* pChildChild = tree.insert(40, pChildNode);
+		_MyTreeType::Node* pChildChild = tree.insert(40, pChildNode);
 		_MyTreeType::__NodeListType listResult;
 
 		tree.find(GNULL, 40, listResult);
@@ -676,7 +676,7 @@ GAIA::N32 main()
 		
 		typedef GAIA::CONTAINER::BasicGraph<GAIA::REAL, GAIA::REAL, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> _MyGraphType;
 		_MyGraphType graph;
-		_MyGraphType::__Node* pNode = GNULL;
+		_MyGraphType::Node* pNode = GNULL;
 		for(GAIA::N32 x = 0; x < 100; ++x)
 			pNode = graph.insert((GAIA::REAL)x, pNode);
 		_MyGraphType::__NodeListType listResult;
@@ -691,7 +691,7 @@ GAIA::N32 main()
 			graph.find(GNULL, 8.0F, listResult);
 			if(!listResult.empty())
 			{
-				_MyGraphType::__Node* pNode1 = listResult[0];
+				_MyGraphType::Node* pNode1 = listResult[0];
 				if(pNode1 == GNULL)
 					LINE_TEST("basic graph find FAILED!");
 				graph.insert(80.0F, listResult[0]);
@@ -702,7 +702,7 @@ GAIA::N32 main()
 			graph.find(GNULL, 80.0F, listResult);
 			if(!listResult.empty())
 			{
-				_MyGraphType::__Node* pNode2 = listResult[1];
+				_MyGraphType::Node* pNode2 = listResult[1];
 				if(pNode2 == GNULL)
 					LINE_TEST("basic graph find FAILED!");
 			}
@@ -720,12 +720,12 @@ GAIA::N32 main()
 			*/
 
 			graph.destroy();
-			_MyGraphType::__Node* pNode0 = graph.insert(0.0F, GNULL);
-			_MyGraphType::__Node* pNode1 = graph.insert(1.0F, GNULL);
-			_MyGraphType::__Node* pNode2 = graph.insert(2.0F, GNULL);
-			_MyGraphType::__Node* pNode3 = graph.insert(3.0F, GNULL);
-			_MyGraphType::__Node* pNode4 = graph.insert(4.0F, GNULL);
-			_MyGraphType::__Node* pNode5 = graph.insert(5.0F, GNULL);
+			_MyGraphType::Node* pNode0 = graph.insert(0.0F, GNULL);
+			_MyGraphType::Node* pNode1 = graph.insert(1.0F, GNULL);
+			_MyGraphType::Node* pNode2 = graph.insert(2.0F, GNULL);
+			_MyGraphType::Node* pNode3 = graph.insert(3.0F, GNULL);
+			_MyGraphType::Node* pNode4 = graph.insert(4.0F, GNULL);
+			_MyGraphType::Node* pNode5 = graph.insert(5.0F, GNULL);
 			graph.erase(*pNode0);
 			graph.root(pNode1);
 			graph.link(*pNode1, *pNode5);
