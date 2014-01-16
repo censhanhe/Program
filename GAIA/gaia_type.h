@@ -34,9 +34,6 @@ namespace GAIA
 	static const BL True = 1;
 	static const BL False = 0;
 
-	/* Common constants. */
-	#define GNULL 0
-
 	/* Void. */
 	typedef void GVOID;
 
@@ -124,7 +121,8 @@ namespace GAIA
 			GAIA::U32 u[4];
 		};
 	};
-
+	/* Common constants. */
+	#define GNULL 0
 	/* Undefine origin type. */
 #ifdef GAIA_DEBUG_CODEPURE
 #	define bool 1

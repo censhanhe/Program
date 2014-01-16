@@ -621,6 +621,55 @@ GAIA::N32 main()
 #endif
 	}
 
+	// BasicTree function test.
+	{
+		BEGIN_TEST("<BasicTree function test>");
+
+		typedef GAIA::CONTAINER::BasicTree<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> _MyTreeType;
+		_MyTreeType tree;
+		_MyTreeType::__Node* pNode = tree.insert(10, GNULL);
+		tree.insert(20, pNode);
+		_MyTreeType::__Node* pChildNode = tree.insert(30, pNode);
+		tree.insert(40, pNode);
+		_MyTreeType::__Node* pChildChild = tree.insert(40, pChildNode);
+		_MyTreeType::__NodeListType listResult;
+
+		tree.find(GNULL, 40, listResult);
+		if(listResult.size() == 2)
+			LINE_TEST("basic tree find SUCCESSFULLY!");
+		else
+			LINE_TEST("basic tree find FAILED!");
+
+		GAIA::BL bResult = tree.link(*pNode, *pChildChild);
+		if(bResult)
+			LINE_TEST("basic tree link function SUCCESSFULLY!");
+		else
+			LINE_TEST("basic tree link function FAILED!");
+
+		bResult = tree.unlink(*pNode, *pChildChild);
+		if(bResult)
+			LINE_TEST("basic tree unlink function SUCCESSFULLY!");
+		else
+			LINE_TEST("basic tree unlink function FAILED!");
+
+		bResult = tree.islinked(*pNode, *pChildChild);
+		if(!bResult)
+			LINE_TEST("basic tree islinked function SUCCESSFULLY!");
+		else
+			LINE_TEST("basic tree islinked function FAILED!");
+
+		bResult = tree.link(*pNode, *pChildChild);
+		if(bResult)
+			LINE_TEST("basic tree link function SUCCESSFULLY!");
+		else
+			LINE_TEST("basic tree link function FAILED!");
+
+		tree.erase(*pChildChild);
+		tree.erase(*pNode);
+
+		END_TEST;
+	}
+
 	// BasicGraph function test.
 	{
 		BEGIN_TEST("<BasicGraph function test>");
@@ -636,6 +685,17 @@ GAIA::N32 main()
 			LINE_TEST("graph find FAILED!");
 		else
 			LINE_TEST("graph find SUCCESSFULLY!");
+
+		{
+			listResult.clear();
+			graph.find(GNULL, 8.0F, listResult);
+			_MyGraphType::__Node* pNode1 = listResult[0];
+			listResult.clear();
+			graph.find(GNULL, 80.0F, listResult);
+			_MyGraphType::__Node* pNode2 = listResult[1];
+			_MyGraphType::__PathListType listResultPath;
+			//graph.paths(*pNode1, *pNode2, listResultPath);
+		}
 
 		if(graph.dbg_check_traveling())
 			LINE_TEST("graph debug check traveling SUCESSFULLY!");

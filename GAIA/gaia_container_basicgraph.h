@@ -8,28 +8,29 @@ namespace GAIA
 		template <typename _DataType, typename _DistanceType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicGraph
 		{
 		public:
-			template <typename _DataType, typename _DistanceType, typename _SizeType, typename _SizeIncreaserType> class BasicGraphNode
+			template <typename _DataType, typename _DistanceType, typename _SizeType, typename _SizeIncreaserType> class Node
 			{
+			private:
 				friend class BasicGraph;
 			public:
-				GINL BasicGraphNode(){m_bTraveling = GAIA::False;}
+				GINL Node(){m_bTraveling = GAIA::False;}
 				GINL GAIA::GVOID EnterTraveling() const
 				{
 					GAIA_ASSERT(!m_bTraveling);
-					(const_cast<BasicGraphNode<_DataType, _DistanceType, _SizeType, _SizeIncreaserType>*>(this))->m_bTraveling = GAIA::True;
+					(const_cast<Node<_DataType, _DistanceType, _SizeType, _SizeIncreaserType>*>(this))->m_bTraveling = GAIA::True;
 				}
 				GINL GAIA::GVOID LeaveTraveling() const
 				{
 					GAIA_ASSERT(m_bTraveling);
-					(const_cast<BasicGraphNode<_DataType, _DistanceType, _SizeType, _SizeIncreaserType>*>(this))->m_bTraveling = GAIA::False;
+					(const_cast<Node<_DataType, _DistanceType, _SizeType, _SizeIncreaserType>*>(this))->m_bTraveling = GAIA::False;
 				}
 			private:
 				_DataType m_t;
-				BasicVector<BasicGraphNode*, _SizeType, _SizeIncreaserType> m_links;
+				BasicVector<Node*, _SizeType, _SizeIncreaserType> m_links;
 				GAIA::BL m_bTraveling : 1;
 			};
 		public:
-			typedef BasicGraphNode<_DataType, _DistanceType, _SizeType, _SizeIncreaserType> __Node;
+			typedef Node<_DataType, _DistanceType, _SizeType, _SizeIncreaserType> __Node;
 			typedef BasicGraph<_DataType, _DistanceType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicVector<__Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicVector<__NodeListType, _SizeType, _SizeIncreaserType> __PathListType;
@@ -38,7 +39,7 @@ namespace GAIA
 			GINL BasicGraph(){this->init();}
 			GINL BasicGraph(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicGraph(){}
-			GINL GAIA::BL empty() const{if(m_pRoot == GNULL) return GAIA::True; return GAIA::False;}
+			GINL GAIA::BL empty() const{return m_pRoot == GNULL;}
 			GINL _SizeType size() const{return m_pool.size();}
 			GINL _SizeType capacity() const{return m_pool.capacity();}
 			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_pool.destroy();}
@@ -137,7 +138,7 @@ namespace GAIA
 				}
 				return bRet;
 			}
-			GINL GAIA::BL islinked(__Node& n1, __Node& n2) const
+			GINL GAIA::BL islinked(const __Node& n1, const __Node& n2) const
 			{
 				for(_SizeType x = 0; x < n1.m_links.size(); ++x)
 				{
@@ -170,44 +171,21 @@ namespace GAIA
 				}
 				pSrc->LeaveTraveling();
 			}
-			GINL GAIA::GVOID paths(const __Node& src, const __Node& dst, __PathListType& result) const
+			GINL GAIA::BL paths(const __Node& src, const __Node& dst, __PathListType& result) const;
+			GINL GAIA::BL paths(const __Node& src, const _DataType& t, __PathListType& result) const;
+			GINL GAIA::BL paths(const _DataType& src, const _DataType& dst, __PathListType& result) const;
+			GINL GAIA::BL minimize(const __Node& src, const _DataType& dst, __NodeListType& result, _DistanceType& dist) const;
+			GINL GAIA::BL maximize(const __Node& src, const _DataType& dst, __NodeListType& result, _DistanceType& dist) const;
+			GINL GAIA::BL minimize(const __Node& src, const __Node& dst, __NodeListType& result, _DistanceType& dist) const;
+			GINL GAIA::BL maximize(const __Node& src, const __Node& dst, __NodeListType& result, _DistanceType& dist) const;
+			GINL GAIA::BL minimize(const _DataType& src, const _DataType& dst, __NodeListType& result, _DistanceType& dist) const;
+			GINL GAIA::BL maximize(const _DataType& src, const _DataType& dst, __NodeListType& result, _DistanceType& dist) const;
+			GINL GAIA::GVOID collect_valid_index_list(GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType>& result) const{m_pool.collect_valid_index_list(result);}
+			GINL _DataType& operator[](const _SizeType& index){return m_pool[index];}
+			GINL const _DataType& operator[](const _SizeType& index) const{return m_pool[index];}
+			GINL __MyType& operator = (const __MyType& src)
 			{
-			}
-			GINL GAIA::GVOID paths(const __Node& src, const _DataType& t, __PathListType& result) const
-			{
-			}
-			GINL GAIA::GVOID paths(const _DataType& src, const _DataType& dst, __PathListType& result) const
-			{
-			}
-			GINL _DistanceType minimize_in(const __Node& src, const _DataType& dst, __NodeListType& result) const
-			{
-			}
-			GINL _DistanceType maximize_in(const __Node& src, const _DataType& dst, __NodeListType& result) const
-			{
-			}
-			GINL _DistanceType minimize_in(const __Node& src, const __Node& dst, __NodeListType& result) const
-			{
-			}
-			GINL _DistanceType maximize_in(const __Node& src, const __Node& dst, __NodeListType& result) const
-			{
-			}
-			GINL _DistanceType minimize_in(const _DataType& src, const _DataType& dst, __NodeListType& result) const
-			{
-			}
-			GINL _DistanceType maximize_in(const _DataType& src, const _DataType& dst, __NodeListType& result) const
-			{
-			}
-			GINL _DistanceType minimize_out(const _DataType& src, __Node& result) const
-			{
-			}
-			GINL _DistanceType maximize_out(const _DataType& src, __Node& result) const
-			{
-			}
-			GINL _DistanceType minimize_out(const _DataType& src, const _DataType& dst) const // src is out of the graph, dst is in the graph.
-			{
-			}
-			GINL _DistanceType maximize_out(const _DataType& src, const _DataType& dst) const // src is out of the graph, dst is in the graph.
-			{
+				return *this;
 			}
 		public:
 		#ifdef GAIA_DEBUG_INTERNALROUTINE

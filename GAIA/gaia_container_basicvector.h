@@ -13,6 +13,7 @@ namespace GAIA
 		public:
 			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
 			{
+			private:
 				friend class BasicVector;
 			public:
 				GINL BidirectionalIterator(){m_pVector = GNULL; m_index = 0;}
@@ -38,6 +39,7 @@ namespace GAIA
 			};
 			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
+			private:
 				friend class BasicVector;
 			public:
 				GINL ConstBidirectionalIterator(){m_pVector = GNULL; m_index = 0;}
@@ -183,14 +185,14 @@ namespace GAIA
 					this->push_back(src[x]);
 				return *this;
 			}
-			GINL _DataType& front(){this->operator[](0);}
-			GINL const _DataType& front() const{this->operator[](0);}
-			GINL _DataType& back(){this->operator[](this->size() - 1);}
-			GINL const _DataType& back() const{this->operator[](this->size() - 1);}
-			GINL _DataType* front_ptr(){&this->operator[](0);}
-			GINL const _DataType* front_ptr() const{&this->operator[](0);}
-			GINL _DataType* back_ptr(){&this->operator[](this->size() - 1);}
-			GINL const _DataType* back_ptr() const{&this->operator[](this->size() - 1);}
+			GINL _DataType& front(){return this->operator[](0);}
+			GINL const _DataType& front() const{return this->operator[](0);}
+			GINL _DataType& back(){return this->operator[](this->size() - 1);}
+			GINL const _DataType& back() const{return this->operator[](this->size() - 1);}
+			GINL _DataType* front_ptr(){return &this->operator[](0);}
+			GINL const _DataType* front_ptr() const{return &this->operator[](0);}
+			GINL _DataType* back_ptr(){return &this->operator[](this->size() - 1);}
+			GINL const _DataType* back_ptr() const{return &this->operator[](this->size() - 1);}
 			GINL BidirectionalIterator front_iterator(){BidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
 			GINL BidirectionalIterator back_iterator(){BidirectionalIterator ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
 			GINL ConstBidirectionalIterator const_front_iterator() const{ConstBidirectionalIterator ret; ret.m_index = 0; ret.m_pVector = this; return ret;}

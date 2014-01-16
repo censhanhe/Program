@@ -201,6 +201,7 @@
     <ClInclude Include="gaia_container_set.h" />
     <ClInclude Include="gaia_container_stack.h" />
     <ClInclude Include="gaia_container_stackbitset.h" />
+    <ClInclude Include="gaia_container_basictree.h" />
     <ClInclude Include="gaia_container_tstring.h" />
     <ClInclude Include="gaia_container_vector.h" />
     <ClInclude Include="gaia_container_wstring.h" />

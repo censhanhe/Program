@@ -28,6 +28,7 @@ namespace GAIA
 		public:
 			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
 			{
+			private:
 				friend class AVLTree;
 			public:
 				GINL BidirectionalIterator(){m_pNode = GNULL; m_pAVLTree = GNULL;}
@@ -164,6 +165,7 @@ namespace GAIA
 			};
 			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
+			private:
 				friend class AVLTree;
 			public:
 				GINL ConstBidirectionalIterator(){m_pNode = GNULL; m_pAVLTree = GNULL;}

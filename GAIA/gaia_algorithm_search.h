@@ -16,7 +16,7 @@ namespace GAIA
 		}
 		template <typename _DataType> _DataType* find(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
 		{
-			while(pBegin != pEnd)
+			while(pBegin <= pEnd)
 			{
 				if(*pBegin == key)
 					return const_cast<_DataType*>(pBegin);
@@ -24,9 +24,9 @@ namespace GAIA
 			}
 			return GNULL;
 		}
-		template <typename _DataType> _DataType** findp(_DataType** pBegin, _DataType** pEnd, const _DataType& key)
+		template <typename _DataType> _DataType** findp(const _DataType** pBegin, const _DataType** pEnd, const _DataType& key)
 		{
-			while(pBegin != pEnd)
+			while(pBegin <= pEnd)
 			{
 				if(**pBegin == key)
 					return const_cast<_DataType**>(pBegin);
@@ -36,7 +36,7 @@ namespace GAIA
 		}
 		template <typename _DataType> _DataType* rfind(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
 		{
-			while(pBegin != pEnd)
+			while(pBegin <= pEnd)
 			{
 				if(*pEnd == key)
 					return const_cast<_DataType*>(pEnd);
@@ -44,9 +44,9 @@ namespace GAIA
 			}
 			return GNULL;
 		}
-		template <typename _DataType> _DataType* rfindp(_DataType** pBegin, _DataType** pEnd, const _DataType& key)
+		template <typename _DataType> _DataType* rfindp(const _DataType** pBegin, const _DataType** pEnd, const _DataType& key)
 		{
-			while(pBegin != pEnd)
+			while(pBegin <= pEnd)
 			{
 				if(**pEnd == key)
 					return const_cast<_DataType**>(pEnd);

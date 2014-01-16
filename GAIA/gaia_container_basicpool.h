@@ -52,7 +52,7 @@ namespace GAIA
 			{
 				return m_buf[index / _GroupElementSize]->listEle[index % _GroupElementSize];
 			}
-			GINL GAIA::GVOID collect_valid_index_list(GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType>& result)
+			GINL GAIA::GVOID collect_valid_index_list(GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType>& result) const
 			{
 				result.clear();
 				if(m_free.empty())
@@ -63,8 +63,8 @@ namespace GAIA
 				else
 				{
 					typedef _DataType* LPDATATYPE;
-					LPDATATYPE* pFront = m_free.front_ptr();
-					LPDATATYPE* pBack = m_free.back_ptr();
+					const LPDATATYPE* pFront = m_free.front_ptr();
+					const LPDATATYPE* pBack = m_free.back_ptr();
 					for(_SizeType x = 0; x < this->capacity(); ++x)
 					{
 						const _DataType& t = m_buf[x / _GroupElementSize]->listEle[x % _GroupElementSize];
