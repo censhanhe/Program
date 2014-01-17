@@ -26,6 +26,11 @@ namespace GAIA
 			typedef _HeightType _heighttype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
+			static const _SizeType _groupelementsize = _GroupElementSize;
+		public:
+			typedef AVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
+			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
+		public:
 			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
@@ -161,7 +166,7 @@ namespace GAIA
 				}
 			private:
 				Node* m_pNode;
-				AVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize>* m_pAVLTree;
+				__MyType* m_pAVLTree;
 			};
 			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
@@ -289,7 +294,7 @@ namespace GAIA
 				}
 			private:
 				const Node* m_pNode;
-				const AVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize>* m_pAVLTree;
+				const __MyType* m_pAVLTree;
 			};
 		public:
 			GINL AVLTree(){m_pRoot = GNULL;}
@@ -616,7 +621,7 @@ namespace GAIA
 			}
 		private:
 			Node* m_pRoot;
-			BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> m_pool;
+			__PoolType m_pool;
 		public:
 		#ifdef GAIA_DEBUG_INTERNALROUTINE
 			GINL GAIA::BL dbg_check_balance()

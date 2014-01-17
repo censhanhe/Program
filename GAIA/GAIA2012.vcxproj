@@ -188,6 +188,7 @@
     <ClInclude Include="gaia_container_basicstack.h" />
     <ClInclude Include="gaia_container_basicstackbitset.h" />
     <ClInclude Include="gaia_container_basicstackpackage.h" />
+    <ClInclude Include="gaia_container_basicstackstack.h" />
     <ClInclude Include="gaia_container_basicstackvar.h" />
     <ClInclude Include="gaia_container_basicstring.h" />
     <ClInclude Include="gaia_container_basicvar.h" />

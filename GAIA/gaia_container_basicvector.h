@@ -10,6 +10,9 @@ namespace GAIA
 		public:
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
+			typedef _SizeIncreaserType _sizeincreasertype;
+		public:
+			typedef BasicVector<_DataType, _SizeType, _SizeIncreaserType> __MyType;
 		public:
 			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
 			{
@@ -35,7 +38,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){GAIA_ASSERT(m_pVector != GNULL); if(m_index > 0) --m_index; return *this;}
 			private:
 				_SizeType m_index;
-				BasicVector<_DataType, _SizeType, _SizeIncreaserType>* m_pVector;
+				__MyType* m_pVector;
 			};
 			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
@@ -60,11 +63,11 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){GAIA_ASSERT(m_pVector != GNULL); if(m_index > 0) --m_index; return *this;}
 			private:
 				_SizeType m_index;
-				const BasicVector<_DataType, _SizeType, _SizeIncreaserType>* m_pVector;
+				const __MyType* m_pVector;
 			};
 		public:
 			GINL BasicVector(){this->init();}
-			GINL BasicVector(const BasicVector<_DataType, _SizeType, _SizeIncreaserType>& src){this->init(); this->operator = (src);}
+			GINL BasicVector(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicVector(){if(m_pData != GNULL) delete[] m_pData;}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL const _SizeType& capacity() const{return m_capacity;}
@@ -186,7 +189,7 @@ namespace GAIA
 			GINL GAIA::BL swap(const _SizeType& index1, const _SizeType& index2){GAIA::ALGORITHM::swap(this->operator[](index1), this->operator[](index2));}
 			GINL const _DataType& operator[](const _SizeType& index) const{GAIA_ASSERT(index >= 0 && index < this->size()); return m_pData[index];}
 			GINL _DataType& operator[](const _SizeType& index){GAIA_ASSERT(index >= 0 && index < this->size()); return m_pData[index];}
-			GINL BasicVector<_DataType, _SizeType, _SizeIncreaserType>& operator = (const BasicVector<_DataType, _SizeType, _SizeIncreaserType>& src)
+			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->destroy();
 				this->reserve(src.size());

@@ -12,8 +12,10 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
+			typedef BasicStack<_DataType, _SizeType, _SizeIncreaserType> __MyType;
+		public:
 			GINL BasicStack(){this->init();}
-			GINL BasicStack(const BasicStack<_DataType, _SizeType, _SizeIncreaserType>& src){this->init(); this->operator = (src);}
+			GINL BasicStack(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicStack(){if(m_pData != GNULL) delete[] m_pData;}
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
@@ -54,7 +56,7 @@ namespace GAIA
 			GINL GAIA::BL pop(){if(this->size() > 0){--m_size; return GAIA::True;} return GAIA::False;}
 			GINL const _DataType& top() const{return m_pData[this->size()];}
 			GINL _DataType& top(){return m_pData[this->size() - 1];}
-			GINL BasicStack<_DataType, _SizeType, _SizeIncreaserType>& operator = (const BasicStack<_DataType, _SizeType, _SizeIncreaserType>& src)
+			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->reserve(src.size());
 				GAIA::ALGORITHM::xcopy(m_pData, src.m_pData, src.size());

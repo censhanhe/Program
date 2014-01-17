@@ -10,10 +10,11 @@ namespace GAIA
 		public:
 			typedef _SizeIncreaserType _sizeincreasertype;
 			typedef _SizeType _sizetype;
-
+		public:
+			typedef Buffer<_SizeIncreaserType, _SizeType> __MyType;
 		public:
 			GINL Buffer(){this->init();}
-			GINL Buffer(const Buffer<_SizeIncreaserType, _SizeType>& src){this->init(); this->operator = (src);}
+			GINL Buffer(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~Buffer(){if(m_pFront != GNULL) delete[] m_pFront;}
 			GINL const GAIA::U8* front_ptr() const{return m_pFront;}
 			GINL GAIA::U8* front_ptr(){return m_pFront;}
@@ -40,7 +41,7 @@ namespace GAIA
 			}
 			template <typename ObjType> GINL Buffer& operator << (const ObjType& obj){this->push(obj); return *this;}
 			template <typename ObjType> GINL Buffer& operator >> (ObjType& obj){this->pop(obj); return *this;}
-			GINL Buffer<_SizeIncreaserType, _SizeType>& operator = (const Buffer<_SizeIncreaserType, _sizetype>& src)
+			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->destroy();
 				if(src.size() > 0)

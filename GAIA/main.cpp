@@ -858,6 +858,18 @@ GAIA::N32 main()
 			}
 			else
 				LINE_TEST("basic graph find FAILED!");
+
+			_MyGraphType::__PoolType::__IndexListType listIndex;
+			graph.collect_valid_index_list(listIndex);
+			for(_MyGraphType::__PoolType::__IndexListType::_sizetype x = 0; x < listIndex.size(); ++x)
+			{
+				_MyGraphType::__PoolType::__IndexListType::_sizetype index = listIndex[x];
+				_MyGraphType::Node& n = graph[index];
+				if(*n == 5.0F)
+				{
+				}
+			}
+			_MyGraphType::_sizetype k = _MyGraphType::_groupelementsize;
 		}
 
 		if(graph.dbg_check_traveling())

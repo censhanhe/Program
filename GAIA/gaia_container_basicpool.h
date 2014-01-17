@@ -8,6 +8,15 @@ namespace GAIA
 		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicPool
 		{
 		public:
+			typedef _DataType _datatype;
+			typedef _SizeType _sizetype;
+			typedef _SizeIncreaserType _sizeincreasertype;
+		public:
+			static const _SizeType _groupelementsize = _GroupElementSize;
+		public:
+			typedef BasicPool<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
+			typedef GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType> __IndexListType;
+		public:
 			GINL BasicPool(){this->init();}
 			GINL ~BasicPool(){this->destroy();}
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
@@ -52,7 +61,7 @@ namespace GAIA
 			{
 				return m_buf[index / _GroupElementSize]->listEle[index % _GroupElementSize];
 			}
-			GINL GAIA::GVOID collect_valid_index_list(GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType>& result) const
+			GINL GAIA::GVOID collect_valid_index_list(__IndexListType& result) const
 			{
 				result.clear();
 				if(m_free.empty())

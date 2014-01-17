@@ -12,8 +12,10 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
+			typedef BasicOrderless<_DataType, _SizeType, _SizeIncreaserType, _DefaultValue> __MyType;
+		public:
 			GINL BasicOrderless(){}
-			GINL BasicOrderless(const BasicOrderless<_DataType, _SizeType, _SizeIncreaserType, _DefaultValue>& src){this->operator = (src);}
+			GINL BasicOrderless(const __MyType& src){this->operator = (src);}
 			GINL ~BasicOrderless(){}
 			GINL const _SizeType& capacity() const{return m_use.capacity();}
 			GINL const _SizeType& size() const{return m_use.size();}
@@ -54,7 +56,7 @@ namespace GAIA
 			}
 			GINL _SizeType find(const _DataType& t) const{return m_use.find(t);}
 			GINL _SizeType count(const _DataType& t) const{return m_use.count(t);}
-			GINL BasicOrderless<_DataType, _SizeType, _SizeIncreaserType, _DefaultValue>& operator = (const BasicOrderless<_DataType, _SizeType, _SizeIncreaserType, _DefaultValue>& src){m_use = src.m_use; m_free = src.m_free;}
+			GINL __MyType& operator = (const __MyType& src){m_use = src.m_use; m_free = src.m_free;}
 			GINL _DataType& operator[](const _SizeType& index){return m_use[index];}
 			GINL const _DataType& operator[](const _SizeType& index) const{return m_use[index];}
 		private:

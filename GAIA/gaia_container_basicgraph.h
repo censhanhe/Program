@@ -40,6 +40,8 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
+			static const _SizeType _groupelementsize = _GroupElementSize;
+		public:
 			typedef BasicGraph<_DataType, _DistanceType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType, _GroupElementSize> __PathTreeType;
@@ -192,9 +194,9 @@ namespace GAIA
 				result.clear();
 				this->paths_node(src, t, result, GNULL);
 			}
-			GINL GAIA::GVOID collect_valid_index_list(GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType>& result) const{m_pool.collect_valid_index_list(result);}
-			GINL _DataType& operator[](const _SizeType& index){return m_pool[index];}
-			GINL const _DataType& operator[](const _SizeType& index) const{return m_pool[index];}
+			GINL GAIA::GVOID collect_valid_index_list(typename __PoolType::__IndexListType& result) const{m_pool.collect_valid_index_list(result);}
+			GINL Node& operator[](const _SizeType& index){return m_pool[index];}
+			GINL const Node& operator[](const _SizeType& index) const{return m_pool[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				return *this;
@@ -203,7 +205,7 @@ namespace GAIA
 		#ifdef GAIA_DEBUG_INTERNALROUTINE
 			GINL GAIA::BL dbg_check_traveling()
 			{
-				GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType> result;
+				typename __PoolType::__IndexListType result;
 				m_pool.collect_valid_index_list(result);
 				for(_SizeType x = 0; x < result.size(); ++x)
 				{
@@ -215,7 +217,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL dbg_check_relation()
 			{
-				GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType> result;
+				typename __PoolType::__IndexListType result;
 				m_pool.collect_valid_index_list(result);
 				for(_SizeType x = 0; x < result.size(); ++x)
 				{

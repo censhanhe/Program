@@ -10,6 +10,10 @@ namespace GAIA
 		template <typename _SizeType> class BasicBitset
 		{
 		public:
+			typedef _SizeType _sizetype;
+		public:
+			typedef BasicBitset<_SizeType> __MyType;
+		public:
 			GINL BasicBitset(){this->init();}
 			GINL BasicBitset(const BasicBitset<_SizeType>& src){this->init(); this->operator = (src);}
 			GINL BasicBitset(const _SizeType& index){this->init(); this->set(index);}

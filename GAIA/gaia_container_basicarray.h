@@ -11,8 +11,12 @@ namespace GAIA
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
 		public:
+			static const _SizeType _size = _Size;
+		public:
+			typedef BasicArray<_DataType, _sizetype, _Size> __MyType;
+		public:
 			GINL BasicArray(){this->init();}
-			GINL BasicArray(const BasicArray<_DataType, _sizetype, _Size>& src){this->init(); this->operator = (src);}
+			GINL BasicArray(const __MyType& src){this->init(); this->operator = (src);}
 			GINL GAIA::BL empty(){if(this->size() == 0) return GAIA::True; return GAIA::False;}
 			GINL _SizeType size(){return m_size;}
 			GINL _SizeType capacity(){return _Size;}

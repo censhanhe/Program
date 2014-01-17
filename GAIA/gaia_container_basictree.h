@@ -28,6 +28,8 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
+			static const _SizeType _groupelementsize = _GroupElementSize;
+		public:
 			typedef BasicTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicVector<__NodeListType, _SizeType, _SizeIncreaserType> __PathListType;
@@ -142,6 +144,9 @@ namespace GAIA
 					return;
 				this->paths_node(*pSrc, *pSrc, result);
 			}
+			GINL GAIA::GVOID collect_valid_index_list(typename __PoolType::__IndexListType& result) const{m_pool.collect_valid_index_list(result);}
+			GINL Node& operator[](const _SizeType& index){return m_pool[index];}
+			GINL const Node& operator[](const _SizeType& index) const{return m_pool[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				return *this;

@@ -35,6 +35,7 @@
 #include	"gaia_container_wstring.h"
 #include	"gaia_container_astring.h"
 #include	"gaia_container_tstring.h"
+#include 	"gaia_container_basicstackstack.h"
 #include	"gaia_container_basicstack.h"
 #include	"gaia_container_stack.h"
 #include	"gaia_container_basicarray.h"

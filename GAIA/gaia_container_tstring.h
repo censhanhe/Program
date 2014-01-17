@@ -3,6 +3,9 @@
 
 namespace GAIA
 {
+	namespace CONTAINER
+	{
+	};
 };
 
 #endif

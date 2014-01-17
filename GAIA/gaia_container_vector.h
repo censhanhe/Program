@@ -8,8 +8,6 @@ namespace GAIA
 		template <typename _DataType> class Vector : public BasicVector<_DataType, GAIA::UM, GAIA::ALGORITHM::TwiceSizeIncreaser<UM> >
 		{
 		public:
-			GINL Vector(){}
-			GINL ~Vector(){}
 		};
 	};
 };
