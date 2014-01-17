@@ -3,6 +3,7 @@
 #	include <vector>
 #	include <set>
 #	include <algorithm>
+#	include <iostream>
 #endif
 
 #define BEGIN_TEST(name)	do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0)
@@ -61,7 +62,7 @@ GAIA::N32 main()
 	logfile.Open("/users/armterla/gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 #endif
 	logfile.WriteText("[GAIA TEST BEGIN]\r\n\r\n");
-
+	/*
 	// Real number float equal test.
 	{
 		BEGIN_TEST("<Float equal function test>");
@@ -669,7 +670,7 @@ GAIA::N32 main()
 
 		END_TEST;
 	}
-
+	*/
 	// BasicGraph function test.
 	{
 		BEGIN_TEST("<BasicGraph function test>");
@@ -745,6 +746,33 @@ GAIA::N32 main()
 				graph.paths(*listResult1[0], *listResult2[0], treeResult);
 				if(treeResult.empty())
 					LINE_TEST("basic graph path from one node to another FAILED!");
+				_MyGraphType::__PathTreeType::__PathListType pathlist;
+				treeResult.paths(GNULL, pathlist);
+				for(_MyGraphType::__PathTreeType::__PathListType::_sizetype x = 0; x < pathlist.size(); ++x)
+				{
+					_MyGraphType::__PathTreeType::__PathListType::_datatype& path = pathlist[x];
+					for(_MyGraphType::__PathTreeType::__PathListType::_datatype::_sizetype y = 0; y < path.size(); ++y)
+					{
+						_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
+						GAIA_ASSERT(pTreeNode != GNULL);
+						_MyGraphType::Node* pNode = **pTreeNode;
+						GAIA_ASSERT(pNode != GNULL);
+						if(pNode != GNULL)
+						{
+							_MyGraphType::_datatype data = **pNode;
+						#ifdef PERFORMANCE_COMPARE
+							std::cout << data << " ";
+						#endif
+							GAIA::N32 nDebug = 0;
+						}
+					}
+				#ifdef PERFORMANCE_COMPARE
+					std::cout << std::endl;
+				#endif
+				}
+				if(pathlist.size() != 6)
+				{
+				}
 			}
 			else
 				LINE_TEST("basic graph find FAILED!");
