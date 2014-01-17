@@ -23,6 +23,7 @@
 #include	"gaia_algorithm_string.h"
 #include 	"gaia_algorithm_sort.h"
 #include 	"gaia_algorithm_search.h"
+#include 	"gaia_algorithm_unique.h"
 
 #include 	"gaia_container_basicstackbitset.h"
 #include 	"gaia_container_stackbitset.h"

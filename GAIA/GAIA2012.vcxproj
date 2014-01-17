@@ -162,6 +162,7 @@
     <ClInclude Include="gaia_algorithm_sizeincreaser.h" />
     <ClInclude Include="gaia_algorithm_sort.h" />
     <ClInclude Include="gaia_algorithm_string.h" />
+    <ClInclude Include="gaia_algorithm_unique.h" />
     <ClInclude Include="gaia_allocator.h" />
     <ClInclude Include="gaia_allocator_crt.h" />
     <ClInclude Include="gaia_allocator_esg.h" />

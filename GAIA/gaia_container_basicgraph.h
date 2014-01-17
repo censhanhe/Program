@@ -175,21 +175,12 @@ namespace GAIA
 					pSrc = m_pRoot;
 				if(pSrc == GNULL)
 					return;
-				if(pSrc->m_bTraveling)
-					return;
-				if(pSrc->m_t == t)
-					result.push_back(const_cast<Node*>(pSrc));
-				pSrc->EnterTraveling();
+				this->find_node(pSrc, t, result);
+				if(!result.empty())
 				{
-					for(_SizeType x = 0; x < pSrc->m_links.size(); ++x)
-					{
-						const Node* pNode = pSrc->m_links[x];
-						if(pNode == GNULL)
-							continue;
-						this->find(pNode, t, result);
-					}
+					result.sort();
+					result.unique();
 				}
-				pSrc->LeaveTraveling();
 			}
 			GINL GAIA::GVOID paths(const Node& src, const Node& dst, __PathTreeType& result) const
 			{
@@ -264,6 +255,27 @@ namespace GAIA
 		#endif
 		private:
 			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
+			GINL GAIA::GVOID find_node(const Node* pSrc, const _DataType& t, __NodeListType& result) const
+			{
+				if(pSrc->m_bTraveling)
+					return;
+				if(pSrc->m_t == t)
+				{
+					result.push_back(const_cast<Node*>(pSrc));
+					return;
+				}
+				pSrc->EnterTraveling();
+				{
+					for(_SizeType x = 0; x < pSrc->m_links.size(); ++x)
+					{
+						const Node* pNode = pSrc->m_links[x];
+						if(pNode == GNULL)
+							continue;
+						this->find_node(pNode, t, result);
+					}
+				}
+				pSrc->LeaveTraveling();
+			}
 			GINL GAIA::GVOID paths_node(const Node& src, const Node& dst, __PathTreeType& result, typename __PathTreeType::Node* pParentTreeNode) const
 			{
 				if(src.m_bTraveling)

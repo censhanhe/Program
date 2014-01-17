@@ -41,7 +41,7 @@ private:
 GAIA::N32 main()
 {
 #ifdef _DEBUG
-	static const GAIA::N32 SAMPLE_COUNT = 100000;
+	static const GAIA::N32 SAMPLE_COUNT = 10000;
 #else
 	static const GAIA::N32 SAMPLE_COUNT = 1000000;
 #endif
@@ -62,7 +62,7 @@ GAIA::N32 main()
 	logfile.Open("/users/armterla/gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 #endif
 	logfile.WriteText("[GAIA TEST BEGIN]\r\n\r\n");
-	/*
+
 	// Real number float equal test.
 	{
 		BEGIN_TEST("<Float equal function test>");
@@ -231,6 +231,17 @@ GAIA::N32 main()
 		bv.insert(2, 30);
 		bv.erase(1);
 		bv.clear();
+
+		bv.clear();
+		bv.push_back(0);
+		bv.push_back(1);
+		bv.push_back(2);
+		bv.push_back(4);
+		bv.push_back(2);
+		bv.push_back(3);
+		bv.sort();
+		GAIA::U32 uDropCount = bv.unique();
+		uDropCount = 0;
 	}
 
 	// Basic stack test.
@@ -670,7 +681,7 @@ GAIA::N32 main()
 
 		END_TEST;
 	}
-	*/
+	
 	// BasicGraph function test.
 	{
 		BEGIN_TEST("<BasicGraph function test>");

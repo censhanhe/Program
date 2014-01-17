@@ -165,6 +165,15 @@ namespace GAIA
 				return ret;
 			}
 			GINL GAIA::GVOID sort(){if(this->size() == 0) return; GAIA::ALGORITHM::sort(m_pData, m_pData + this->size() - 1);}
+			GINL _SizeType unique()
+			{
+				if(this->empty())
+					return 0;
+				_DataType* p = GAIA::ALGORITHM::unique_order(this->front_ptr(), this->back_ptr());
+				_SizeType ret = m_size - (p - this->front_ptr() + 1);
+				m_size = p - this->front_ptr() + 1;
+				return ret;
+			}
 			GINL _SizeType search(const _DataType& t)
 			{
 				if(this->size() <= 0)
