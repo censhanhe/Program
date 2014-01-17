@@ -25,6 +25,14 @@ namespace GAIA
 			GINL const _DataType* front_ptr() const{return m_pData;}
 			GINL _DataType* back_ptr(){return &m_pData[m_size - 1];}
 			GINL const _DataType* back_ptr() const{return &m_pData[m_size - 1];}
+			GINL _SizeType count(const _DataType& t) const
+			{
+				if(this->empty())
+					return 0;
+				_SizeType ret = 0;
+				GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret);
+				return ret;
+			}
 			GINL GAIA::GVOID push(const _DataType& t)
 			{
 				if(this->size() == this->capacity())

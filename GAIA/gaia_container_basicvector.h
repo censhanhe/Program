@@ -158,10 +158,10 @@ namespace GAIA
 			}
 			GINL _SizeType count(const _DataType& t) const
 			{
+				if(this->empty())
+					return 0;
 				_SizeType ret = 0;
-				for(_SizeType x = 0; x < this->size(); ++x)
-					if(this->operator[](x) == t)
-						++ret;
+				GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret);
 				return ret;
 			}
 			GINL GAIA::GVOID sort(){if(this->size() == 0) return; GAIA::ALGORITHM::sort(m_pData, m_pData + this->size() - 1);}

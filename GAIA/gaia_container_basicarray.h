@@ -29,7 +29,24 @@ namespace GAIA
 			GINL _DataType* back_ptr(){GAIA_ASSERT(this->size() > 0); return &this->operator[](this->size() - 1);}
 			GINL GAIA::GVOID resize(const _SizeType& size){GAIA_ASSERT(size >= 0 && size <= _Size); m_size = size;}
 			GINL GAIA::GVOID reset(const _DataType& t){for(_SizeType x = 0; x < this->size(); ++x) m_data[x] = t;}
+			GINL _SizeType count(const _DataType& t) const
+			{
+				if(this->empty())
+					return 0;
+				_SizeType ret = 0;
+				GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret);
+				return ret;
+			}
 			GINL GAIA::GVOID sort(){if(this->size() == 0) return; GAIA::ALGORITHM::sort(m_data, &m_data[this->size() - 1]);}
+			GINL _SizeType unique()
+			{
+				if(this->empty())
+					return 0;
+				_DataType* p = GAIA::ALGORITHM::unique_order(this->front_ptr(), this->back_ptr());
+				_SizeType ret = m_size - (p - this->front_ptr() + 1);
+				m_size = p - this->front_ptr() + 1;
+				return ret;
+			}
 			GINL _SizeType search(const _DataType& t) const
 			{
 				if(this->size() <= 0)

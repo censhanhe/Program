@@ -192,18 +192,6 @@ namespace GAIA
 				result.clear();
 				this->paths_node(src, t, result, GNULL);
 			}
-			GINL GAIA::BL minimize(const Node& src, const Node& dst, __NodeListType& result, _DistanceType& dist) const
-			{
-			}
-			GINL GAIA::BL maximize(const Node& src, const Node& dst, __NodeListType& result, _DistanceType& dist) const
-			{
-			}
-			GINL GAIA::BL minimize(const Node& src, const _DataType& dst, __NodeListType& result, _DistanceType& dist) const
-			{
-			}
-			GINL GAIA::BL maximize(const Node& src, const _DataType& dst, __NodeListType& result, _DistanceType& dist) const
-			{
-			}
 			GINL GAIA::GVOID collect_valid_index_list(GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType>& result) const{m_pool.collect_valid_index_list(result);}
 			GINL _DataType& operator[](const _SizeType& index){return m_pool[index];}
 			GINL const _DataType& operator[](const _SizeType& index) const{return m_pool[index];}
