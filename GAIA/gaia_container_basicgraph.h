@@ -317,7 +317,7 @@ namespace GAIA
 						const Node* pNode = src.m_links[x];
 						if(pNode == GNULL)
 							continue;
-						this->paths_node(*pNode, t, result, pParentTreeNode);
+						this->paths_node(*pNode, t, result, pNewTreeNode);
 					}
 					if(result.leaf(*pNewTreeNode))
 						result.erase(*pNewTreeNode);

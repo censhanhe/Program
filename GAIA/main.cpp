@@ -789,6 +789,77 @@ GAIA::N32 main()
 				LINE_TEST("basic graph find FAILED!");
 		}
 
+		{
+			/*
+			*	3
+			*     \
+			*		1-------2
+			*		|     / | \
+			*		|   /   |  3
+			*		| /     | /
+			*		5-------4
+			*/
+		#ifdef PERFORMANCE_COMPARE
+			std::cout << std::endl;
+		#endif
+			graph.destroy();
+			_MyGraphType::Node* pNode0 = graph.insert(0.0F, GNULL);
+			_MyGraphType::Node* pNode1 = graph.insert(1.0F, GNULL);
+			_MyGraphType::Node* pNode2 = graph.insert(2.0F, GNULL);
+			_MyGraphType::Node* pNode3 = graph.insert(3.0F, GNULL);
+			_MyGraphType::Node* pNode4 = graph.insert(4.0F, GNULL);
+			_MyGraphType::Node* pNode5 = graph.insert(5.0F, GNULL);
+			_MyGraphType::Node* pNode33= graph.insert(3.0F, GNULL);
+			graph.erase(*pNode0);
+			graph.root(pNode1);
+			graph.link(*pNode1, *pNode5);
+			graph.link(*pNode1, *pNode2);
+			graph.link(*pNode2, *pNode3);
+			graph.link(*pNode2, *pNode4);
+			graph.link(*pNode2, *pNode5);
+			graph.link(*pNode3, *pNode4);
+			graph.link(*pNode4, *pNode5);
+			graph.link(*pNode1, *pNode33);
+			_MyGraphType::__NodeListType listResult1;
+			graph.find(GNULL, 5.0F, listResult1);
+			if(!listResult1.empty())
+			{
+				_MyGraphType::__PathTreeType treeResult;
+				graph.paths(*listResult1[0], 3.0F, treeResult);
+				if(treeResult.empty())
+					LINE_TEST("basic graph path from one node to another FAILED!");
+				_MyGraphType::__PathTreeType::__PathListType pathlist;
+				treeResult.paths(GNULL, pathlist);
+				for(_MyGraphType::__PathTreeType::__PathListType::_sizetype x = 0; x < pathlist.size(); ++x)
+				{
+					_MyGraphType::__PathTreeType::__PathListType::_datatype& path = pathlist[x];
+					for(_MyGraphType::__PathTreeType::__PathListType::_datatype::_sizetype y = 0; y < path.size(); ++y)
+					{
+						_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
+						GAIA_ASSERT(pTreeNode != GNULL);
+						_MyGraphType::Node* pNode = **pTreeNode;
+						GAIA_ASSERT(pNode != GNULL);
+						if(pNode != GNULL)
+						{
+							_MyGraphType::_datatype data = **pNode;
+						#ifdef PERFORMANCE_COMPARE
+							std::cout << data << " ";
+						#endif
+							GAIA::N32 nDebug = 0;
+						}
+					}
+				#ifdef PERFORMANCE_COMPARE
+					std::cout << std::endl;
+				#endif
+				}
+				if(pathlist.size() != 6)
+				{
+				}
+			}
+			else
+				LINE_TEST("basic graph find FAILED!");
+		}
+
 		if(graph.dbg_check_traveling())
 			LINE_TEST("basic graph debug check traveling SUCCESSFULLY!");
 		else
