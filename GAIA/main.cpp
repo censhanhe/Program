@@ -101,6 +101,18 @@ GAIA::N32 main()
 		END_TEST;
 	}
 
+	// Unique test.
+	{
+		BEGIN_TEST("<Unique algorithm test>");
+		{
+			GAIA::N32 listNum[] = {3,1,4,5,2,1,6,8,1,3,2,6,4,9,7,0};
+			GAIA::N32* pNew = GAIA::ALGORITHM::unique_noorder(listNum, &listNum[sizeof(listNum) / sizeof(listNum[0]) - 1]);
+			GAIA::N32 nCount = pNew - listNum + 1;
+			GAIA::N32 n = 0;
+		}
+		END_TEST;
+	}
+
 	// String convert function test.
 	{
 		BEGIN_TEST("<String convert function test>");

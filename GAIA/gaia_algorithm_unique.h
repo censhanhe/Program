@@ -25,7 +25,31 @@ namespace GAIA
 		template <typename _DataType> _DataType* unique_noorder(_DataType* pBegin, _DataType* pEnd)
 		{
 			GAIA_ASSERT(pBegin <= pEnd);
-
+			_DataType* pFirst = pBegin;
+			_DataType* pLast = pBegin;
+			++pBegin;
+			while(pBegin <= pEnd)
+			{
+				GAIA::BL bExist = GAIA::False;
+				_DataType* pTemp = pFirst;
+				while(pTemp <= pLast)
+				{
+					if(*pTemp == *pBegin)
+					{
+						bExist = GAIA::True;
+						break;
+					}
+					++pTemp;
+				}
+				if(!bExist)
+				{
+					++pLast;
+					if(pLast != pBegin) // OPT for large object copy.
+						*pLast = *pBegin;
+				}
+				++pBegin;
+			}
+			return pLast;
 		}
 	};
 };
