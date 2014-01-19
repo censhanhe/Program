@@ -105,7 +105,7 @@ namespace GAIA
 				if(parent.m_links.empty())
 					return GAIA::False;
 				Node** pFinded = GAIA::ALGORITHM::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), &child);
-				*pFinded = NULL;
+				*pFinded = GNULL;
 				child.m_pParent = GNULL;
 				return GAIA::True;
 			}

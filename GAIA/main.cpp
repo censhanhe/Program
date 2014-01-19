@@ -699,7 +699,7 @@ GAIA::N32 main()
 	{
 		BEGIN_TEST("<BasicGraph function test>");
 		
-		typedef GAIA::CONTAINER::BasicGraph<GAIA::REAL, GAIA::REAL, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> _MyGraphType;
+		typedef GAIA::CONTAINER::BasicGraph<GAIA::REAL, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> _MyGraphType;
 		_MyGraphType graph;
 		_MyGraphType::Node* pNode = GNULL;
 		for(GAIA::N32 x = 0; x < 100; ++x)

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _DistanceType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicGraph
+		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicGraph
 		{
 		public:
 			class Node
@@ -36,13 +36,12 @@ namespace GAIA
 			};
 		public:
 			typedef _DataType _datatype;
-			typedef _DistanceType _distancetype;
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
 			static const _SizeType _groupelementsize = _GroupElementSize;
 		public:
-			typedef BasicGraph<_DataType, _DistanceType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
+			typedef BasicGraph<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType, _GroupElementSize> __PathTreeType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
@@ -66,9 +65,9 @@ namespace GAIA
 				pNew->m_t = t;
 				pNew->m_links.clear();
 				pNew->m_bTraveling = GAIA::False;
-				if(pNode == NULL)
+				if(pNode == GNULL)
 				{
-					if(m_pRoot == NULL)
+					if(m_pRoot == GNULL)
 						m_pRoot = pNew;
 					else
 						this->link(*m_pRoot, *pNew);
@@ -124,11 +123,11 @@ namespace GAIA
 						break;
 					}
 				}
-				if(ppn1 == NULL)
+				if(ppn1 == GNULL)
 					n1.m_links.push_back(&n2);
 				else
 					*ppn1 = &n2;
-				if(ppn2 == NULL)
+				if(ppn2 == GNULL)
 					n2.m_links.push_back(&n1);
 				else
 					*ppn2 = &n1;

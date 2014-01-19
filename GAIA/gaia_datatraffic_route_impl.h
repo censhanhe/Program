@@ -7,14 +7,14 @@ namespace GAIA
 	{
 		GINL GAIA::BL Route::Connect(Route* pRoute)
 		{
-			GAIA_ASSERT(pRoute != NULL);
+			GAIA_ASSERT(pRoute != GNULL);
 			pRoute->Reference();
 			m_routes.insert(pRoute);
 			return GAIA::True;
 		}
 		GINL GAIA::BL Route::Disconnect(Route* pRoute)
 		{
-			GAIA_ASSERT(pRoute != NULL);
+			GAIA_ASSERT(pRoute != GNULL);
 			pRoute->Release();
 			return m_routes.erase(pRoute);
 		}
@@ -29,7 +29,7 @@ namespace GAIA
 		}
 		GINL GAIA::BL Route::IsConnected(Route* pRoute) const
 		{
-			GAIA_ASSERT(pRoute != NULL);
+			GAIA_ASSERT(pRoute != GNULL);
 			if(m_routes.find(pRoute) == 0)
 				return GAIA::False;
 			return GAIA::True;
@@ -52,14 +52,14 @@ namespace GAIA
 		}
 		GINL GAIA::BL Route::AddGateway(Gateway* pGateway)
 		{
-			GAIA_ASSERT(pGateway != NULL);
+			GAIA_ASSERT(pGateway != GNULL);
 			pGateway->Reference();
 			m_gateways.insert(pGateway);
 			return GAIA::True;
 		}
 		GINL GAIA::BL Route::RemoveGateway(Gateway* pGateway)
 		{
-			GAIA_ASSERT(pGateway != NULL);
+			GAIA_ASSERT(pGateway != GNULL);
 			pGateway->Release();
 			return m_gateways.erase(pGateway);
 		}
@@ -74,7 +74,7 @@ namespace GAIA
 		}
 		GINL GAIA::BL Route::IsExistGateway(Gateway* pGateway) const
 		{
-			GAIA_ASSERT(pGateway != NULL);
+			GAIA_ASSERT(pGateway != GNULL);
 			if(m_gateways.find(pGateway) == 0)
 				return GAIA::False;
 			return GAIA::True;

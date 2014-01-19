@@ -21,13 +21,13 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC Thread::~Thread()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(m_pThread != NULL)
+			if(m_pThread != GNULL)
 			{
 				::WaitForSingleObject((HANDLE)m_pThread, INFINITE);
 				::CloseHandle((HANDLE)m_pThread);
 			}
 		#else
-			if(m_pThread != NULL)
+			if(m_pThread != GNULL)
 			{
 				pthread_join(*(pthread_t*)m_pThread, GNULL);
 				delete (pthread_t*)m_pThread;
@@ -63,7 +63,7 @@ namespace GAIA
 			if(m_pThread != GNULL)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS
-				if(m_pThread != NULL)
+				if(m_pThread != GNULL)
 				{
 					if(::WaitForSingleObject((HANDLE)m_pThread, INFINITE) == WAIT_OBJECT_0)
 					{

@@ -7,14 +7,14 @@ namespace GAIA
 	{
 		GINL GAIA::BL Gateway::AddRoute(Route* pRoute)
 		{
-			GAIA_ASSERT(pRoute != NULL);
+			GAIA_ASSERT(pRoute != GNULL);
 			pRoute->Reference();
 			m_routes.insert(pRoute);
 			return GAIA::True;
 		}
 		GINL GAIA::BL Gateway::RemoveRoute(Route* pRoute)
 		{
-			GAIA_ASSERT(pRoute != NULL);
+			GAIA_ASSERT(pRoute != GNULL);
 			pRoute->Release();
 			return m_routes.erase(pRoute);
 		}
@@ -29,7 +29,7 @@ namespace GAIA
 		}
 		GINL GAIA::BL Gateway::IsExistRoute(Route* pRoute) const
 		{
-			GAIA_ASSERT(pRoute != NULL);
+			GAIA_ASSERT(pRoute != GNULL);
 			if(m_routes.find(pRoute) == 0)
 				return GAIA::False;
 			return GAIA::True;

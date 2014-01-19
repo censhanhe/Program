@@ -221,12 +221,12 @@ namespace GAIA
 			{
 				if(*p < '0' || *p > '9')
 					break;
-				dst *= 10;
-				dst += *p - '0';
+				dst = (_DstDataType)(dst * 10);
+				dst = (_DstDataType)(dst + (*p - '0'));
 				++p;
 			}
 			if(bSign)
-				dst = -dst;
+				dst = 0 - dst;
 		}
 		template <typename _SrcDataType, typename _DstDataType> GAIA::GVOID str2real(const _SrcDataType* p, _DstDataType& dst)
 		{

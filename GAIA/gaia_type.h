@@ -125,18 +125,20 @@ namespace GAIA
 	#define GNULL 0
 	/* Undefine origin type. */
 #ifdef GAIA_DEBUG_CODEPURE
-#	define bool 1
-#	define true 1
-#	define false 1
-#	define char 1
-#	define short 1
-#	define int 1
-#	define long 1
-#	define float 1
-#	define double 1
-#	define wchar_t 1
-#	define __wchar_t 1
-#	define unsigned 1
+#	ifndef GAIA_NOCANCEL_ORIGINTYPE
+#		define bool 1
+#		define true 1
+#		define false 1
+#		define char 1
+#		define short 1
+#		define int 1
+#		define long 1
+#		define float 1
+#		define double 1
+#		define wchar_t 1
+#		define __wchar_t 1
+#		define unsigned 1
+#	endif
 #endif
 
 	/* Global constants */
