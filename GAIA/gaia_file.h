@@ -50,6 +50,8 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Seek(FILE_SEEK_TYPE seektype, const GAIA::N64& offset);
 			GINL const GAIA::N64& Tell() const{return m_offset;}
+			template <typename _ObjType> GINL File& operator >> (_ObjType& t){this->Read(t); return *this;}
+			template <typename _ObjType> GINL File& operator << (const _ObjType& t){this->Write(t); return *this;}
 		private:
 			GAIA::UM m_fileopentype;
 			GAIA::N64 m_size;

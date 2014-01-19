@@ -45,6 +45,7 @@ namespace GAIA
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType, _GroupElementSize> __PathTreeType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
+			typedef GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::Pair<Node*, Node*>, _SizeType, GAIA::ALGORITHM::TwiceSizeIncreaser<_SizeType>> __LinkListType;
 		public:
 			GINL BasicGraph(){this->init();}
 			GINL BasicGraph(const __MyType& src){this->init(); this->operator = (src);}
@@ -192,6 +193,30 @@ namespace GAIA
 			{
 				result.clear();
 				this->paths_node(src, t, result, GNULL);
+			}
+			GINL GAIA::GVOID collect_link_list(__LinkListType& result) const
+			{
+				result.clear();
+				__PoolType::__IndexListType listIndex;
+				this->collect_valid_index_list(listIndex);
+				for(__PoolType::__IndexListType::_sizetype x = 0; x < listIndex.size(); ++x)
+				{
+					const Node& n = this->operator[](listIndex[x]);
+					for(_SizeType y = 0; y < n.m_links.size(); ++y)
+					{
+						Node* pNext = n.m_links[y];
+						if(pNext == GNULL)
+							continue;
+						GAIA::CONTAINER::Pair<Node*, Node*> rec;
+						if(&n < pNext)
+							rec.frontback(const_cast<Node*>(&n), pNext);
+						else
+							rec.frontback(pNext, const_cast<Node*>(&n));
+						result.push_back(rec);
+					}
+				}
+				result.sort();
+				result.unique();
 			}
 			GINL GAIA::GVOID collect_valid_index_list(typename __PoolType::__IndexListType& result) const{m_pool.collect_valid_index_list(result);}
 			GINL Node& operator[](const _SizeType& index){return m_pool[index];}

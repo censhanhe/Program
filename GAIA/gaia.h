@@ -25,6 +25,7 @@
 #include 	"gaia_algorithm_search.h"
 #include 	"gaia_algorithm_unique.h"
 
+#include	"gaia_container_pair.h"
 #include 	"gaia_container_basicstackbitset.h"
 #include 	"gaia_container_stackbitset.h"
 #include 	"gaia_container_basicbitset.h"

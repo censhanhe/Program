@@ -170,6 +170,20 @@ GAIA::N32 main()
 		}
 		END_TEST;
 	}
+
+	// Pair test.
+	{
+		BEGIN_TEST("<Pair test>");
+		{
+			GAIA::CONTAINER::Pair<GAIA::GCH*, GAIA::N32> pair("abc", 123);
+			GAIA::CONTAINER::Pair<GAIA::GCH*, GAIA::N32> newpair = pair;
+			if(newpair != pair)
+				LINE_TEST("Pair equal function test FAILED!");
+			GAIA::N32 nDebug = 0;
+		}
+		END_TEST;
+	}
+
 	// Basic stack bitset test.
 	{
 		BEGIN_TEST("<Basic stack bitset test>");
@@ -800,6 +814,11 @@ GAIA::N32 main()
 			}
 			else
 				LINE_TEST("basic graph find FAILED!");
+
+			_MyGraphType::__LinkListType listLinkResult;
+			graph.collect_link_list(listLinkResult);
+			if(listLinkResult.size() == 0)
+				LINE_TEST("collect graph link list FAILED!");
 		}
 
 		{
