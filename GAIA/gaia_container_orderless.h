@@ -5,10 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, _DataType _DefaultValue> class Orderless : public GAIA::CONTAINER::BasicOrderless<_DataType, GAIA::UM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::UM>, _DefaultValue>
-		{
-		public:
-		};
+		template <typename _DataType, _DataType _DefaultValue> class Orderless : public GAIA::CONTAINER::BasicOrderless<_DataType, GAIA::UM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::UM>, _DefaultValue>{public:};
 	};
 };
 

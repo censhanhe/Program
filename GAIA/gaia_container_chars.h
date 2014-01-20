@@ -5,10 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, GAIA::UM _Size> class Chars : public BasicChars<_DataType, GAIA::UM, _Size>
-		{
-		public:
-		};
+		template <typename _DataType, GAIA::UM _Size> class Chars : public BasicChars<_DataType, GAIA::UM, _Size>{public:};
 	};
 };
 

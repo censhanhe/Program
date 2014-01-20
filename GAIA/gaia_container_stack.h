@@ -5,10 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType> class Stack : public BasicStack<_DataType, GAIA::UM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::UM>>
-		{
-		public:
-		};
+		template <typename _DataType> class Stack : public BasicStack<_DataType, GAIA::UM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::UM>>{public:};
 	};
 };
 

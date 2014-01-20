@@ -5,6 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
+		class WString : public GAIA::CONTAINER::BasicString<GAIA::GWCH, GAIA::U32>{public:};
 	};
 };
 
