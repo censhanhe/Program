@@ -526,6 +526,36 @@ GAIA::N32 main()
 #endif
 	}
 
+	// BasicList funciton test.
+	{
+		BEGIN_TEST("<BasicList Function Test>");
+		{
+			typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __ListType;
+			__ListType list;
+			for(GAIA::N32 x = 0; x < 100; ++x)
+				list.push_back(x);
+			__ListType::BidirectionalIterator iter = list.front_iterator();
+			for(GAIA::N32 x = 0; x < 100; ++x)
+				list.erase(iter);
+			list.destroy();
+			list.clear();
+			for(GAIA::N32 x = 0; x < 100; ++x)
+				list.push_front(x);
+			for(GAIA::N32 x = 0; x < 100; ++x)
+				list.pop_front();
+			if(!list.empty())
+				LINE_TEST("list front push pop operator FAILED!");
+			iter = list.front_iterator();
+			for(GAIA::N32 x = 0; x < 100; ++x)
+				list.insert(iter, x);
+			for(GAIA::N32 x = 0; x < 100; ++x)
+				list.pop_back();
+			if(!list.empty())
+				LINE_TEST("list back push pop operator FAILED!");
+		}
+		END_TEST;
+	}
+	
 	// AVLTree test.
 	{
 		BEGIN_TEST("<AVL Tree Function Test>");
