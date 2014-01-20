@@ -394,13 +394,15 @@ GAIA::N32 main()
 
 	// BasicQueue test.
 	{
-		GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > que;
+		typedef GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> __QueueType;
+		__QueueType que;
 		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
 			que.push(x);
 		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
 			que.pop();
 		que.front();
 		GAIA_ASSERT(que.size() == 50);
+		__QueueType newque = que;
 	}
 
 	// BasicOrderless test.

@@ -94,7 +94,7 @@ namespace GAIA
 				for(_SizeType x = 0; x < src.size(); ++x)
 				{
 					const _DataType* pTemp;
-					if((_SizeType)src.m_pFront < (_SizeType)src.m_pBack)
+					if(src.m_pFront < src.m_pBack)
 						pTemp = &src.m_pFront[x];
 					else
 					{
@@ -123,7 +123,7 @@ namespace GAIA
 			GINL const _DataType& operator[](const _SizeType& index) const
 			{
 				GAIA_ASSERT(index < this->size());
-				if((_SizeType)m_pFront < (_SizeType)m_pBack)
+				if(m_pFront < m_pBack)
 					return m_pFront[index];
 				else
 				{
