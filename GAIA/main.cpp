@@ -247,10 +247,10 @@ GAIA::N32 main()
 
 	// Basic vector test.
 	{
-		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > bv;
+		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bv;
 		bv.push_back(10);
 		bv.push_back(20);
-		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> >::BidirectionalIterator iter = bv.front_iterator();
+		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>>::BidirectionalIterator iter = bv.front_iterator();
 		while(!iter.empty())
 			++iter;
 		bv.clear();
@@ -274,7 +274,7 @@ GAIA::N32 main()
 
 	// Basic stack test.
 	{
-		GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > bs;
+		GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bs;
 		bs.push(10);
 		bs.push(20);
 		GAIA::N32 n = bs.top();
