@@ -107,7 +107,7 @@ GAIA::N32 main()
 		{
 			GAIA::N32 listNum[] = {3,1,4,5,2,1,6,8,1,3,2,6,4,9,7,0};
 			GAIA::N32* pNew = GAIA::ALGORITHM::unique_noorder(listNum, &listNum[sizeof(listNum) / sizeof(listNum[0]) - 1]);
-			GAIA::N32 nCount = pNew - listNum + 1;
+			GAIA::N64 nCount = pNew - listNum + 1;
 			if(nCount != 10)
 				LINE_TEST("unique_noorder FAILED!");
 		}
@@ -175,11 +175,12 @@ GAIA::N32 main()
 	{
 		BEGIN_TEST("<Pair test>");
 		{
-			GAIA::CONTAINER::Pair<GAIA::GCH*, GAIA::N32> pair("abc", 123);
-			GAIA::CONTAINER::Pair<GAIA::GCH*, GAIA::N32> newpair = pair;
+			GAIA::CONTAINER::Pair<const GAIA::GCH*, GAIA::N32> pair("abc", 123);
+			GAIA::CONTAINER::Pair<const GAIA::GCH*, GAIA::N32> newpair = pair;
 			if(newpair != pair)
 				LINE_TEST("Pair equal function test FAILED!");
 			GAIA::N32 nDebug = 0;
+			nDebug++;
 		}
 		END_TEST;
 	}
@@ -294,17 +295,20 @@ GAIA::N32 main()
 		buf.push(arr);
 		buf.push(48);
 		GAIA::U64 size = buf.size();
+		size = 0;
 	}
 
 	// String algorithm test.
 	{
 		GAIA::GTCH ch = GAIA::ALGORITHM::tolower('A');
+		ch = 0;
 		GAIA::GTCH sz[128] = L"abcdefgABCDEFG1234567!@#$%^&";
 		GAIA::UM uLen = GAIA::ALGORITHM::strlen(sz);
 		uLen = 0;
 		GAIA::ALGORITHM::tolower(sz);
 		sz[0] = 0;
 		GAIA::N32 nCompare = GAIA::ALGORITHM::strcmp(L"Hello world", L"Hello kitty!");
+		nCompare = 0;
 
 		GAIA::ALGORITHM::strcpy(sz, L"Helloword");
 		GAIA::ALGORITHM::strcat(sz, L"My name is arm!");
@@ -575,16 +579,19 @@ GAIA::N32 main()
 		else
 			LINE_TEST("Insert by key operator is FAILED!");
 		GAIA::BL bCheckParent = btr.dbg_check_parent();
+		bCheckParent = true;
 		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100>::BidirectionalIterator iter = btr.front_iterator();
 		while(!iter.empty())
 		{
 			GAIA::N32 n = *iter;
+			n = 0;
 			++iter;
 		}
 		iter = btr.back_iterator();
 		while(!iter.empty())
 		{
 			GAIA::N32 n = *iter;
+			n = 0;
 			--iter;
 		}
 
@@ -608,7 +615,7 @@ GAIA::N32 main()
 			GAIA_ASSERT(bResult);
 			bResult = GAIA::True;
 			if(!bResult)
-				bFunctionSuccess;
+				bFunctionSuccess = GAIA::False;
 		}
 		if(bFunctionSuccess)
 			LINE_TEST("Erase element by key operator is SUCCESSFULLY!");
@@ -832,6 +839,7 @@ GAIA::N32 main()
 							std::cout << data << " ";
 						#endif
 							GAIA::N32 nDebug = 0;
+							nDebug = 0;
 						}
 					}
 				#ifdef PERFORMANCE_COMPARE
@@ -908,6 +916,7 @@ GAIA::N32 main()
 							std::cout << data << " ";
 						#endif
 							GAIA::N32 nDebug = 0;
+							nDebug = 0;
 						}
 					}
 				#ifdef PERFORMANCE_COMPARE
@@ -932,6 +941,7 @@ GAIA::N32 main()
 				}
 			}
 			_MyGraphType::_sizetype k = _MyGraphType::_groupelementsize;
+			k = 0;
 		}
 
 		if(graph.dbg_check_traveling())
@@ -958,6 +968,7 @@ GAIA::N32 main()
 		GAIA::MATH::VEC2<GAIA::REAL> v0(1.0);
 		GAIA::MATH::VEC2<GAIA::N32> v1(1, 2.0F);
 		GAIA::MATH::VEC2<GAIA::REAL> v3 = v0;
+		v3.normalize();
 	}
 
 	// Thread test.
@@ -976,13 +987,14 @@ GAIA::N32 main()
 		bResult = file.Close();
 		bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
 		GAIA::U64 uFileSize = file.Size();
-		GAIA::CONTAINER::Buffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32> buf;
+		GAIA::CONTAINER::Buffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>, GAIA::U64> buf;
 		buf.resize(uFileSize);
 		file.Read(buf.front_ptr(), buf.size());
 		const GAIA::GWCH* p = (GAIA::GWCH*)buf.front_ptr();
 		GAIA::GWCH szTemp[1024];
 		GAIA::ALGORITHM::strcpy(szTemp, p);
 		GAIA::N32 nDebug = 0;
+		nDebug = 0;
 	}
 
 	// Basic factory test 1.

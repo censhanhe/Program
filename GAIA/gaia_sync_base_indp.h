@@ -29,7 +29,7 @@ namespace GAIA
 			::Sleep((GAIA::U32)uMicroSecond / 1000);
 			return uMicroSecond;
 		#else
-			::usleep(uMicroSecond);
+			::usleep((useconds_t)uMicroSecond);
 			return uMicroSecond;
 		#endif
 		}

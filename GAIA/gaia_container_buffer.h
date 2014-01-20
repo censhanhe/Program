@@ -24,8 +24,8 @@ namespace GAIA
 			GINL GAIA::GVOID resize(const _SizeType& size){if(this->capacity() < size) this->reserve(size); m_pCur = m_pFront + size;}
 			GINL GAIA::GVOID clear(){m_pCur = m_pFront;}
 			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){delete[] m_pFront; m_pFront = m_pBack = m_pCur = GNULL;}}
-			GINL _SizeType capacity() const{return m_pBack - m_pFront;}
-			GINL _SizeType size() const{return m_pCur - m_pFront;}
+			GINL _SizeType capacity() const{return static_cast<_SizeType>(m_pBack - m_pFront);}
+			GINL _SizeType size() const{return static_cast<_SizeType>(m_pCur - m_pFront);}
 			template <typename ObjType> GINL GAIA::GVOID push(const ObjType& obj)
 			{
 				GAIA::U8* pNew = this->alloc(sizeof(obj));
@@ -65,7 +65,9 @@ namespace GAIA
 					return pRet;
 				}
 				_SizeIncreaserType increaser;
-				_SizeType newsize = GAIA::ALGORITHM::maximize(increaser.Increase(m_pCur - m_pFront), m_pCur - m_pFront + size);
+				_SizeType newsize = GAIA::ALGORITHM::maximize(
+					increaser.Increase(static_cast<_SizeType>(m_pCur - m_pFront)),
+					static_cast<_SizeType>(m_pCur - m_pFront) + size);
 				GAIA::U8* pNew = new GAIA::U8[newsize];
 				if(m_pCur != m_pFront)
 					GAIA::ALGORITHM::memcpy(pNew, m_pFront, m_pCur - m_pFront);
