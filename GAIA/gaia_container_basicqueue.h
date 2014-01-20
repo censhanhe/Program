@@ -79,7 +79,7 @@ namespace GAIA
 					m_pBack = &pTemp[this->capacity()];
 					delete[] m_pData;
 					m_pData = pTemp;
-					m_capacity = this->capacity() + GAIA::ALGORITHM::minimize(this->capacity() / 2 + 1, 256);
+					m_capacity = this->capacity() + GAIA::ALGORITHM::minimize(this->capacity() / 2 + 1, (_SizeType)256);
 				}
 				if(m_pBack == m_pData + this->capacity())
 					m_pBack = m_pData;
