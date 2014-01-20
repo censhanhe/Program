@@ -61,16 +61,6 @@ namespace GAIA
 				--pEnd;
 			}
 		}
-		template <typename _DataType, typename _SizeType> GAIA::GVOID count(const _DataType* pBegin, const _DataType* pEnd, const _DataType& t, _SizeType& result)
-		{
-			GAIA_ASSERT(pBegin <= pEnd);
-			while(pBegin <= pEnd)
-			{
-				if(*pBegin == t)
-					++result;
-				++pBegin;
-			}
-		}
 	};
 };
 

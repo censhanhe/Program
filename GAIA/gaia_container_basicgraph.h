@@ -197,9 +197,9 @@ namespace GAIA
 			GINL GAIA::GVOID collect_link_list(__LinkListType& result) const
 			{
 				result.clear();
-				__PoolType::__IndexListType listIndex;
+				typename __PoolType::__IndexListType listIndex;
 				this->collect_valid_index_list(listIndex);
-				for(__PoolType::__IndexListType::_sizetype x = 0; x < listIndex.size(); ++x)
+				for(typename __PoolType::__IndexListType::_sizetype x = 0; x < listIndex.size(); ++x)
 				{
 					const Node& n = this->operator[](listIndex[x]);
 					for(_SizeType y = 0; y < n.m_links.size(); ++y)

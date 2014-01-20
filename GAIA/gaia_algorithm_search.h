@@ -190,6 +190,56 @@ namespace GAIA
 			}
 			return GNULL;
 		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID count(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key, _SizeType& result)
+		{
+			GAIA_ASSERT(pBegin <= pEnd);
+			while(pBegin <= pEnd)
+			{
+				if(*pBegin == key)
+					++result;
+				++pBegin;
+			}
+		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID lower_equal_count(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key, _SizeType& result)
+		{
+			GAIA_ASSERT(pBegin <= pEnd);
+			while(pBegin <= pEnd)
+			{
+				if(*pBegin <= key)
+					++result;
+				++pBegin;
+			}
+		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID upper_equal_count(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key, _SizeType& result)
+		{
+			GAIA_ASSERT(pBegin <= pEnd);
+			while(pBegin <= pEnd)
+			{
+				if(*pBegin >= key)
+					++result;
+				++pBegin;
+			}
+		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID lower_count(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key, _SizeType& result)
+		{
+			GAIA_ASSERT(pBegin <= pEnd);
+			while(pBegin <= pEnd)
+			{
+				if(*pBegin < key)
+					++result;
+				++pBegin;
+			}
+		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID upper_count(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key, _SizeType& result)
+		{
+			GAIA_ASSERT(pBegin <= pEnd);
+			while(pBegin <= pEnd)
+			{
+				if(*pBegin > key)
+					++result;
+				++pBegin;
+			}
+		}
 	};
 };
 
