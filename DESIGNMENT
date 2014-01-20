@@ -6,7 +6,7 @@
 
 			Every template class must been typedef before it been used. In include the code in container class internal.
 
-		Use algoritm instead of 'for', for example : use GAIA::ALGORITHM::find instead of 'for' traversal.
+		Use algorithm instead of 'for', for example : use GAIA::ALGORITHM::find instead of 'for' traversal.
 
 		The return value will been a pointer type, the function parameter will been a reference type.
 
