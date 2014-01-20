@@ -208,7 +208,7 @@ namespace GAIA
 						if(pNext == GNULL)
 							continue;
 						GAIA::CONTAINER::Pair<Node*, Node*> rec;
-						if(&n < pNext)
+						if(&n > pNext)
 							rec.frontback(const_cast<Node*>(&n), pNext);
 						else
 							rec.frontback(pNext, const_cast<Node*>(&n));
