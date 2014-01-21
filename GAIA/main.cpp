@@ -836,11 +836,6 @@ GAIA::N32 main()
 				graph.navpath<GAIA::REAL, 5>(*listResult1[0], *listResult2[0], listResultNode);
 				graph.navpath<GAIA::REAL, 5>(*listResult1[0], 4.0F, listResultNode);
 
-				GAIA::BL bExist = graph.exist(3.0F);
-				bExist = GAIA::False;
-				_MyGraphType::_sizetype c = graph.count(4.0F);
-				c = 0;
-
 				_MyGraphType::__PathTreeType treeResult;
 				graph.paths(*listResult1[0], *listResult2[0], treeResult);
 				if(treeResult.empty())
