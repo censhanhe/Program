@@ -126,13 +126,13 @@ namespace GAIA
 				if(iter.m_pNode == m_pFront)
 				{
 					m_pFront = m_pFront->pNext;
-					if(m_pFront != NULL)
+					if(m_pFront != GNULL)
 						m_pFront->pPrev = GNULL;
 				}
 				if(iter.m_pNode == m_pBack)
 				{
 					m_pBack = m_pBack->pPrev;
-					if(m_pBack != NULL)
+					if(m_pBack != GNULL)
 						m_pBack->pNext = GNULL;
 				}
 				Node* pErase = iter.m_pNode;
