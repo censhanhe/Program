@@ -5,25 +5,25 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataTypeFront, typename _DataTypeBack> class Pair
+		template <typename _FrontDataType, typename _BackDataType> class Pair
 		{
 		public:
-			typedef _DataTypeFront _datatypefront;
-			typedef _DataTypeBack _datatypeback;
+			typedef _FrontDataType _frontdatatype;
+			typedef _BackDataType _backdatatype;
 		public:
-			typedef Pair<_DataTypeFront, _datatypeback> __MyType;
+			typedef Pair<_FrontDataType, _BackDataType> __MyType;
 		public:
 			GINL Pair(){}
-			GINL Pair(const _DataTypeFront& front, const _DataTypeBack& back){m_front = front; m_back = back;}
-			GINL Pair(const Pair<_DataTypeFront, _DataTypeBack>& src){this->operator = (src);}
+			GINL Pair(const _FrontDataType& front, const _BackDataType& back){m_front = front; m_back = back;}
+			GINL Pair(const Pair<_FrontDataType, _BackDataType>& src){this->operator = (src);}
 			GINL ~Pair(){}
-			GINL GAIA::GVOID front(const _DataTypeFront& front){m_front = front;}
-			GINL GAIA::GVOID back(const _DataTypeBack& back){m_back = back;}
-			GINL GAIA::GVOID frontback(const _DataTypeFront& front, const _DataTypeBack& back){m_front = front; m_back = back;}
-			GINL _DataTypeFront& front(){return m_front;}
-			GINL const _DataTypeFront& front() const{return m_front;}
-			GINL _DataTypeBack& back(){return m_back;}
-			GINL const _DataTypeBack& back() const{return m_back;}
+			GINL GAIA::GVOID front(const _FrontDataType& front){m_front = front;}
+			GINL GAIA::GVOID back(const _BackDataType& back){m_back = back;}
+			GINL GAIA::GVOID frontback(const _FrontDataType& front, const _BackDataType& back){m_front = front; m_back = back;}
+			GINL _FrontDataType& front(){return m_front;}
+			GINL const _FrontDataType& front() const{return m_front;}
+			GINL _BackDataType& back(){return m_back;}
+			GINL const _BackDataType& back() const{return m_back;}
 			GINL __MyType& operator = (const __MyType& src){m_front = src.m_front; m_back = src.m_back; return *this;}
 			GINL GAIA::BL operator == (const __MyType& src) const{if(m_front == src.m_front && m_back == src.m_back) return GAIA::True; return GAIA::False;}
 			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
@@ -62,8 +62,8 @@ namespace GAIA
 			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
 		private:
-			_DataTypeFront m_front;
-			_DataTypeBack m_back;
+			_FrontDataType m_front;
+			_BackDataType m_back;
 		};
 	};
 };

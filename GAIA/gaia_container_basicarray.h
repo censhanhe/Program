@@ -13,7 +13,7 @@ namespace GAIA
 		public:
 			static const _SizeType _size = _Size;
 		public:
-			typedef BasicArray<_DataType, _sizetype, _Size> __MyType;
+			typedef BasicArray<_DataType, _SizeType, _Size> __MyType;
 		public:
 			GINL BasicArray(){this->init();}
 			GINL BasicArray(const __MyType& src){this->init(); this->operator = (src);}

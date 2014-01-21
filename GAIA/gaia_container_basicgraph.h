@@ -44,7 +44,6 @@ namespace GAIA
 			typedef BasicGraph<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType, _GroupElementSize> __PathTreeType;
-			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __PathListType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
 			typedef BasicVector<Pair<Node*, Node*>, _SizeType, GAIA::ALGORITHM::TwiceSizeIncreaser<_SizeType>> __LinkListType;
 		public:
@@ -172,6 +171,8 @@ namespace GAIA
 			GINL _SizeType getlinksize(const Node& n) const{return n.m_links.size();}
 			GINL _SizeType getlinkcount(const Node& n, Node* p) const{return n.m_links.count(p);}
 			GINL Node* getlink(const Node& n, const _SizeType& index) const{return n.m_links[index];}
+			GINL GAIA::BL exist(const _DataType& t) const;
+			GINL _SizeType count(const _DataType& t) const;
 			GINL GAIA::GVOID find(const Node* pSrc, const _DataType& t, __NodeListType& result) const
 			{
 				if(pSrc == GNULL)
@@ -195,16 +196,28 @@ namespace GAIA
 				result.clear();
 				this->paths_node(src, t, result, GNULL);
 			}
-			GINL GAIA::GVOID anypath(const Node& src, const Node& dst, __PathListType& result) const
+			GINL GAIA::GVOID anypath(const Node& src, const Node& dst, __NodeListType& result) const
 			{
 				result.clear();
 				if(this->anypath_node(src, dst, result))
 					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
 			}
-			GINL GAIA::GVOID anypath(const Node& src, const _DataType& t, __PathListType& result) const
+			GINL GAIA::GVOID anypath(const Node& src, const _DataType& t, __NodeListType& result) const
 			{
 				result.clear();
 				if(this->anypath_node(src, t, result))
+					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+			}
+			template <typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::GVOID navpath(const Node& src, const Node& dst, __NodeListType& result) const
+			{
+				result.clear();
+				if(this->navpath_node<_KeyType, _MaxLinkCount>(src, dst, result))
+					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+			}
+			template <typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::GVOID navpath(const Node& src, const _DataType& t, __NodeListType& result) const
+			{
+				result.clear();
+				if(this->navpath_node<_KeyType, _MaxLinkCount>(src, t, result))
 					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
 			}
 			GINL GAIA::GVOID collect_link_list(__LinkListType& result) const
@@ -351,7 +364,7 @@ namespace GAIA
 				}
 				src.leave_traveling();
 			}
-			GINL GAIA::BL anypath_node(const Node& src, const Node& dst, __PathListType& result) const
+			GINL GAIA::BL anypath_node(const Node& src, const Node& dst, __NodeListType& result) const
 			{
 				if(src.m_traveling)
 					return GAIA::False;
@@ -378,7 +391,7 @@ namespace GAIA
 				src.leave_traveling();
 				return GAIA::False;
 			}
-			GINL GAIA::BL anypath_node(const Node& src, const _DataType& t, __PathListType& result) const
+			GINL GAIA::BL anypath_node(const Node& src, const _DataType& t, __NodeListType& result) const
 			{
 				if(src.m_traveling)
 					return GAIA::False;
@@ -395,6 +408,84 @@ namespace GAIA
 						if(pNode == GNULL)
 							continue;
 						if(this->anypath_node(*pNode, t, result))
+						{
+							result.push_back(const_cast<Node*>(&src));
+							src.leave_traveling();
+							return GAIA::True;
+						}
+					}
+				}
+				src.leave_traveling();
+				return GAIA::False;
+			}
+			template <typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::BL navpath_node(const Node& src, const Node& dst, __NodeListType& result) const
+			{
+				if(src.m_traveling)
+					return GAIA::False;
+				if(&dst == &src)
+				{
+					result.push_back(const_cast<Node*>(&src));
+					return GAIA::True;
+				}
+				src.enter_traveling();
+				{
+					BasicArray<Pair<_DataType, const Node*>, _SizeType, _MaxLinkCount> arrlink;
+					for(_SizeType x = 0; x < src.m_links.size(); ++x)
+					{
+						const Node* pNode = src.m_links[x];
+						if(pNode == GNULL)
+							continue;	
+						arrlink.push_back(Pair<_DataType, const Node*>(dst.m_t - pNode->m_t, pNode));
+						GAIA_ASSERT(arrlink.size() < arrlink.capacity());
+						if(arrlink.size() == arrlink.capacity())
+							break;
+					}
+					arrlink.sort();
+					for(_SizeType x = 0; x < arrlink.size(); ++x)
+					{
+						const Node* pNode = arrlink[x].back();
+						if(pNode == GNULL)
+							continue;
+						if(this->navpath_node<_KeyType, _MaxLinkCount>(*pNode, dst, result))
+						{
+							result.push_back(const_cast<Node*>(&src));
+							src.leave_traveling();
+							return GAIA::True;
+						}
+					}
+				}
+				src.leave_traveling();
+				return GAIA::False;
+			}
+			template <typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::BL navpath_node(const Node& src, const _DataType& t, __NodeListType& result) const
+			{
+				if(src.m_traveling)
+					return GAIA::False;
+				if(src.m_t == t)
+				{
+					result.push_back(const_cast<Node*>(&src));
+					return GAIA::True;
+				}
+				src.enter_traveling();
+				{
+					BasicArray<Pair<_DataType, const Node*>, _SizeType, _MaxLinkCount> arrlink;
+					for(_SizeType x = 0; x < src.m_links.size(); ++x)
+					{
+						const Node* pNode = src.m_links[x];
+						if(pNode == GNULL)
+							continue;	
+						arrlink.push_back(Pair<_DataType, const Node*>(t - pNode->m_t, pNode));
+						GAIA_ASSERT(arrlink.size() < arrlink.capacity());
+						if(arrlink.size() == arrlink.capacity())
+							break;
+					}
+					arrlink.sort();
+					for(_SizeType x = 0; x < arrlink.size(); ++x)
+					{
+						const Node* pNode = arrlink[x].back();
+						if(pNode == GNULL)
+							continue;
+						if(this->navpath_node<_KeyType, _MaxLinkCount>(*pNode, t, result))
 						{
 							result.push_back(const_cast<Node*>(&src));
 							src.leave_traveling();

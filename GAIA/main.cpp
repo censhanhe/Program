@@ -447,6 +447,19 @@ GAIA::N32 main()
 				LINE_TEST("GAIA bsort is SUCCESSFULLY!");
 			else
 				LINE_TEST("GAIA bsort is FAILED!");
+
+			GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::N32, 2> arrGAIA;
+			arrGAIA.push_back(2);
+			arrGAIA.push_back(1);
+			arrGAIA.sort();
+			arrGAIA.clear();
+			arrGAIA.push_back(1);
+			arrGAIA.push_back(2);
+			arrGAIA.sort();
+			arrGAIA.clear();
+			arrGAIA.push_back(1);
+			arrGAIA.push_back(1);
+			arrGAIA.sort();
 		}
 		END_TEST;
 	}
@@ -819,6 +832,15 @@ GAIA::N32 main()
 			graph.find(GNULL, 3.0F, listResult2);
 			if(!listResult1.empty() && !listResult2.empty())
 			{
+				_MyGraphType::__NodeListType listResultNode;
+				graph.navpath<GAIA::REAL, 5>(*listResult1[0], *listResult2[0], listResultNode);
+				graph.navpath<GAIA::REAL, 5>(*listResult1[0], 4.0F, listResultNode);
+
+				GAIA::BL bExist = graph.exist(3.0F);
+				bExist = GAIA::False;
+				_MyGraphType::_sizetype c = graph.count(4.0F);
+				c = 0;
+
 				_MyGraphType::__PathTreeType treeResult;
 				graph.paths(*listResult1[0], *listResult2[0], treeResult);
 				if(treeResult.empty())
