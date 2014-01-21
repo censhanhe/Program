@@ -849,8 +849,7 @@ GAIA::N32 main()
 				#endif
 				}
 				if(pathlist.size() != 6)
-				{
-				}
+					LINE_TEST("basic graph paths FAILED!");
 			}
 			else
 				LINE_TEST("basic graph find FAILED!");
@@ -925,9 +924,8 @@ GAIA::N32 main()
 					std::cout << std::endl;
 				#endif
 				}
-				if(pathlist.size() != 6)
-				{
-				}
+				if(pathlist.size() != 9)
+					LINE_TEST("basic graph paths FAILED!");
 			}
 			else
 				LINE_TEST("basic graph find FAILED!");

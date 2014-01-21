@@ -36,9 +36,6 @@ namespace GAIA
 			}
 			GINL GAIA::BL erasei(const _SizeType& index)
 			{
-				GAIA_ASSERT(m_use[index] != _DefaultValue);
-				if(m_use[index] == _DefaultValue)
-					return GAIA::False;
 				m_free.push(index);
 				m_use[index] = _DefaultValue;
 				return GAIA::True;
@@ -47,8 +44,6 @@ namespace GAIA
 			{
 				for(_SizeType x = 0; x < m_use.size(); ++x)
 				{
-					if(m_use[x] == _DefaultValue)
-						continue;
 					if(m_use[x] == t)
 						return this->erasei(x);
 				}

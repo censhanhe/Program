@@ -14,25 +14,25 @@ namespace GAIA
 				friend class BasicGraph;
 			public:
 			#ifdef GAIA_DEBUG_INTERNALROUTINE
-				Node(){m_bTraveling = GAIA::False;}
+				Node(){m_traveling = GAIA::False;}
 			#endif
 			public:
-				GINL GAIA::GVOID EnterTraveling() const
+				GINL GAIA::GVOID enter_traveling() const
 				{
-					GAIA_ASSERT(!m_bTraveling);
-					(const_cast<Node*>(this))->m_bTraveling = GAIA::True;
+					GAIA_ASSERT(!m_traveling);
+					(const_cast<Node*>(this))->m_traveling = GAIA::True;
 				}
-				GINL GAIA::GVOID LeaveTraveling() const
+				GINL GAIA::GVOID leave_traveling() const
 				{
-					GAIA_ASSERT(m_bTraveling);
-					(const_cast<Node*>(this))->m_bTraveling = GAIA::False;
+					GAIA_ASSERT(m_traveling);
+					(const_cast<Node*>(this))->m_traveling = GAIA::False;
 				}
 				GINL _DataType& operator * (){return m_t;}
 				GINL const _DataType& operator * () const{return m_t;}
 			private:
 				_DataType m_t;
 				BasicVector<Node*, _SizeType, _SizeIncreaserType> m_links;
-				GAIA::BL m_bTraveling : 1;
+				GAIA::BL m_traveling : 1;
 			};
 		public:
 			typedef _DataType _datatype;
@@ -44,8 +44,9 @@ namespace GAIA
 			typedef BasicGraph<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType, _GroupElementSize> __PathTreeType;
+			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __PathListType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
-			typedef GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::Pair<Node*, Node*>, _SizeType, GAIA::ALGORITHM::TwiceSizeIncreaser<_SizeType>> __LinkListType;
+			typedef BasicVector<Pair<Node*, Node*>, _SizeType, GAIA::ALGORITHM::TwiceSizeIncreaser<_SizeType>> __LinkListType;
 		public:
 			GINL BasicGraph(){this->init();}
 			GINL BasicGraph(const __MyType& src){this->init(); this->operator = (src);}
@@ -65,7 +66,7 @@ namespace GAIA
 				Node* pNew = m_pool.alloc();
 				pNew->m_t = t;
 				pNew->m_links.clear();
-				pNew->m_bTraveling = GAIA::False;
+				pNew->m_traveling = GAIA::False;
 				if(pNode == GNULL)
 				{
 					if(m_pRoot == GNULL)
@@ -194,6 +195,18 @@ namespace GAIA
 				result.clear();
 				this->paths_node(src, t, result, GNULL);
 			}
+			GINL GAIA::GVOID anypath(const Node& src, const Node& dst, __PathListType& result) const
+			{
+				result.clear();
+				if(this->anypath_node(src, dst, result))
+					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+			}
+			GINL GAIA::GVOID anypath(const Node& src, const _DataType& t, __PathListType& result) const
+			{
+				result.clear();
+				if(this->anypath_node(src, t, result))
+					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+			}
 			GINL GAIA::GVOID collect_link_list(__LinkListType& result) const
 			{
 				result.clear();
@@ -234,7 +247,7 @@ namespace GAIA
 				for(_SizeType x = 0; x < result.size(); ++x)
 				{
 					Node& t = m_pool[result[x]];
-					if(t.m_bTraveling)
+					if(t.m_traveling)
 						return GAIA::False;
 				}
 				return GAIA::True;
@@ -271,14 +284,14 @@ namespace GAIA
 			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
 			GINL GAIA::GVOID find_node(const Node* pSrc, const _DataType& t, __NodeListType& result) const
 			{
-				if(pSrc->m_bTraveling)
+				if(pSrc->m_traveling)
 					return;
 				if(pSrc->m_t == t)
 				{
 					result.push_back(const_cast<Node*>(pSrc));
 					return;
 				}
-				pSrc->EnterTraveling();
+				pSrc->enter_traveling();
 				{
 					for(_SizeType x = 0; x < pSrc->m_links.size(); ++x)
 					{
@@ -288,18 +301,18 @@ namespace GAIA
 						this->find_node(pNode, t, result);
 					}
 				}
-				pSrc->LeaveTraveling();
+				pSrc->leave_traveling();
 			}
 			GINL GAIA::GVOID paths_node(const Node& src, const Node& dst, __PathTreeType& result, typename __PathTreeType::Node* pParentTreeNode) const
 			{
-				if(src.m_bTraveling)
+				if(src.m_traveling)
 					return;
 				if(&dst == &src)
 				{
 					result.insert(const_cast<Node*>(&src), pParentTreeNode);
 					return;
 				}
-				src.EnterTraveling();
+				src.enter_traveling();
 				{
 					typename __PathTreeType::Node* pNewTreeNode = result.insert(const_cast<Node*>(&src), pParentTreeNode);
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
@@ -312,18 +325,18 @@ namespace GAIA
 					if(result.leaf(*pNewTreeNode))
 						result.erase(*pNewTreeNode);
 				}
-				src.LeaveTraveling();
+				src.leave_traveling();
 			}
 			GINL GAIA::GVOID paths_node(const Node& src, const _DataType& t, __PathTreeType& result, typename __PathTreeType::Node* pParentTreeNode) const
 			{
-				if(src.m_bTraveling)
+				if(src.m_traveling)
 					return;
 				if(src.m_t == t)
 				{
 					result.insert(const_cast<Node*>(&src), pParentTreeNode);
 					return;
 				}
-				src.EnterTraveling();
+				src.enter_traveling();
 				{
 					typename __PathTreeType::Node* pNewTreeNode = result.insert(const_cast<Node*>(&src), pParentTreeNode);
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
@@ -336,7 +349,61 @@ namespace GAIA
 					if(result.leaf(*pNewTreeNode))
 						result.erase(*pNewTreeNode);
 				}
-				src.LeaveTraveling();
+				src.leave_traveling();
+			}
+			GINL GAIA::BL anypath_node(const Node& src, const Node& dst, __PathListType& result) const
+			{
+				if(src.m_traveling)
+					return GAIA::False;
+				if(&dst == &src)
+				{
+					result.push_back(const_cast<Node*>(&src));
+					return GAIA::True;
+				}
+				src.enter_traveling();
+				{
+					for(_SizeType x = 0; x < src.m_links.size(); ++x)
+					{
+						const Node* pNode = src.m_links[x];
+						if(pNode == GNULL)
+							continue;
+						if(this->anypath_node(*pNode, dst, result))
+						{
+							result.push_back(const_cast<Node*>(&src));
+							src.leave_traveling();
+							return GAIA::True;
+						}
+					}
+				}
+				src.leave_traveling();
+				return GAIA::False;
+			}
+			GINL GAIA::BL anypath_node(const Node& src, const _DataType& t, __PathListType& result) const
+			{
+				if(src.m_traveling)
+					return GAIA::False;
+				if(src.m_t == t)
+				{
+					result.push_back(const_cast<Node*>(&src));
+					return GAIA::True;
+				}
+				src.enter_traveling();
+				{
+					for(_SizeType x = 0; x < src.m_links.size(); ++x)
+					{
+						const Node* pNode = src.m_links[x];
+						if(pNode == GNULL)
+							continue;
+						if(this->anypath_node(*pNode, t, result))
+						{
+							result.push_back(const_cast<Node*>(&src));
+							src.leave_traveling();
+							return GAIA::True;
+						}
+					}
+				}
+				src.leave_traveling();
+				return GAIA::False;
 			}
 		private:
 			Node* m_pRoot;

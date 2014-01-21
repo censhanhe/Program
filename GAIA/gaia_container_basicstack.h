@@ -54,7 +54,7 @@ namespace GAIA
 				m_pData[m_size++] = t;
 			}
 			GINL GAIA::BL pop(){if(this->size() > 0){--m_size; return GAIA::True;} return GAIA::False;}
-			GINL const _DataType& top() const{return m_pData[this->size()];}
+			GINL const _DataType& top() const{return m_pData[this->size() - 1];}
 			GINL _DataType& top(){return m_pData[this->size() - 1];}
 			GINL __MyType& operator = (const __MyType& src)
 			{

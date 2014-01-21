@@ -15,7 +15,7 @@ namespace GAIA
 			static const _SizeType _groupelementsize = _GroupElementSize;
 		public:
 			typedef BasicPool<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType> __IndexListType;
+			typedef BasicVector<_SizeType, _SizeType, _SizeIncreaserType> __IndexListType;
 		public:
 			GINL BasicPool(){this->init();}
 			GINL ~BasicPool(){this->destroy();}
