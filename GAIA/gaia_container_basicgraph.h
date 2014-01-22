@@ -429,13 +429,13 @@ namespace GAIA
 				}
 				src.enter_traveling();
 				{
-					BasicArray<Pair<_DataType, const Node*>, _SizeType, _MaxLinkCount> arrlink;
+					BasicArray<Pair<_KeyType, const Node*>, _SizeType, _MaxLinkCount> arrlink;
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
 					{
 						const Node* pNode = src.m_links[x];
 						if(pNode == GNULL)
 							continue;	
-						arrlink.push_back(Pair<_DataType, const Node*>(dst.m_t - pNode->m_t, pNode));
+						arrlink.push_back(Pair<_KeyType, const Node*>(dst.m_t - pNode->m_t, pNode));
 						GAIA_ASSERT(arrlink.size() < arrlink.capacity());
 						if(arrlink.size() == arrlink.capacity())
 							break;
@@ -468,13 +468,13 @@ namespace GAIA
 				}
 				src.enter_traveling();
 				{
-					BasicArray<Pair<_DataType, const Node*>, _SizeType, _MaxLinkCount> arrlink;
+					BasicArray<Pair<_KeyType, const Node*>, _SizeType, _MaxLinkCount> arrlink;
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
 					{
 						const Node* pNode = src.m_links[x];
 						if(pNode == GNULL)
 							continue;	
-						arrlink.push_back(Pair<_DataType, const Node*>(t - pNode->m_t, pNode));
+						arrlink.push_back(Pair<_KeyType, const Node*>(t - pNode->m_t, pNode));
 						GAIA_ASSERT(arrlink.size() < arrlink.capacity());
 						if(arrlink.size() == arrlink.capacity())
 							break;
