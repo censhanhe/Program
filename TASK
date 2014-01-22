@@ -3,6 +3,8 @@
 
 		String based mathematics expression analyze. 1 * 2.4 / 5 = ?
 
+		KMP substring search algorithm support.
+
 
 	CONTAINER
 

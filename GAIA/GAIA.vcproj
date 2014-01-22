@@ -502,6 +502,14 @@
 								RelativePath=".\gaia_container_basictree.h"
 								>
 							</File>
+							<File
+								RelativePath=".\gaia_container_ksvdtree.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_trietree.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="VECTOR"
