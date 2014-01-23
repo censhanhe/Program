@@ -112,11 +112,10 @@ namespace GAIA
 			GINL GAIA::BL islinked(const Node& parent, const Node& child) const{if(child.m_pParent == &parent) return GAIA::True; return GAIA::False;}
 			GINL Node* parent(const Node& n) const{return n.m_pParent;}
 			GINL _SizeType getlinksize(const Node& n) const{return n.m_links.size();}
-			GINL _SizeType getlinkcount(const Node& n, Node* p) const{return n.m_links.count(p);}
 			GINL Node* getlink(const Node& n, const _SizeType& index) const{return n.m_links[index];}
 			GINL GAIA::BL leaf(const Node& n) const
 			{
-				if(this->getlinkcount(n, GNULL) == this->getlinksize(n))
+				if(n.m_links.count(GNULL) == this->getlinksize(n))
 					return GAIA::True;
 				return GAIA::False;
 			}

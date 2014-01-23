@@ -46,6 +46,7 @@ namespace GAIA
 			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType, _GroupElementSize> __PathTreeType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
 			typedef BasicVector<Pair<Node*, Node*>, _SizeType, GAIA::ALGORITHM::TwiceSizeIncreaser<_SizeType>> __LinkListType;
+			typedef BasicStack<Node*, _SizeType, _SizeIncreaserType> __TravelingStackType;
 		public:
 			GINL BasicGraph(){this->init();}
 			GINL BasicGraph(const __MyType& src){this->init(); this->operator = (src);}
@@ -53,7 +54,7 @@ namespace GAIA
 			GINL GAIA::BL empty() const{return m_pRoot == GNULL;}
 			GINL _SizeType size() const{return m_pool.size();}
 			GINL _SizeType capacity() const{return m_pool.capacity();}
-			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_pool.destroy();}
+			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_pool.destroy(); m_tstack.destroy();}
 			GINL GAIA::GVOID clear(){m_pRoot = GNULL; m_pool.clear();}
 			GINL GAIA::GVOID resize(const _SizeType& size){}
 			GINL GAIA::GVOID reserve(const _SizeType& size){}
@@ -169,7 +170,6 @@ namespace GAIA
 				return GAIA::False;
 			}
 			GINL _SizeType getlinksize(const Node& n) const{return n.m_links.size();}
-			GINL _SizeType getlinkcount(const Node& n, Node* p) const{return n.m_links.count(p);}
 			GINL Node* getlink(const Node& n, const _SizeType& index) const{return n.m_links[index];}
 			GINL GAIA::BL exist(const _DataType& t) const;
 			GINL _SizeType count(const _DataType& t) const;
@@ -201,24 +201,28 @@ namespace GAIA
 				result.clear();
 				if(this->anypath_node(src, dst, result))
 					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+				this->reset_tstack();
 			}
 			GINL GAIA::GVOID anypath(const Node& src, const _DataType& t, __NodeListType& result) const
 			{
 				result.clear();
 				if(this->anypath_node(src, t, result))
 					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+				this->reset_tstack();
 			}
 			template <typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::GVOID navpath(const Node& src, const Node& dst, __NodeListType& result) const
 			{
 				result.clear();
 				if(this->navpath_node<_KeyType, _MaxLinkCount>(src, dst, result))
 					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+				this->reset_tstack();
 			}
 			template <typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::GVOID navpath(const Node& src, const _DataType& t, __NodeListType& result) const
 			{
 				result.clear();
 				if(this->navpath_node<_KeyType, _MaxLinkCount>(src, t, result))
 					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+				this->reset_tstack();
 			}
 			GINL GAIA::GVOID collect_link_list(__LinkListType& result) const
 			{
@@ -295,6 +299,15 @@ namespace GAIA
 		#endif
 		private:
 			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
+			GINL GAIA::GVOID reset_tstack() const
+			{
+				while(!m_tstack.empty())
+				{
+					Node* pNode = m_tstack.top();
+					pNode->leave_traveling();
+					const_cast<__MyType*>(this)->m_tstack.pop();
+				}
+			}
 			GINL GAIA::GVOID find_node(const Node* pSrc, const _DataType& t, __NodeListType& result) const
 			{
 				if(pSrc->m_traveling)
@@ -388,7 +401,10 @@ namespace GAIA
 						}
 					}
 				}
-				src.leave_traveling();
+				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
+					const_cast<__MyType*>(this)->m_tstack.push(const_cast<Node*>(&src));
+				else
+					src.leave_traveling();
 				return GAIA::False;
 			}
 			GINL GAIA::BL anypath_node(const Node& src, const _DataType& t, __NodeListType& result) const
@@ -415,7 +431,10 @@ namespace GAIA
 						}
 					}
 				}
-				src.leave_traveling();
+				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
+					const_cast<__MyType*>(this)->m_tstack.push(const_cast<Node*>(&src));
+				else
+					src.leave_traveling();
 				return GAIA::False;
 			}
 			template <typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::BL navpath_node(const Node& src, const Node& dst, __NodeListType& result) const
@@ -454,7 +473,10 @@ namespace GAIA
 						}
 					}
 				}
-				src.leave_traveling();
+				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
+					const_cast<__MyType*>(this)->m_tstack.push(const_cast<Node*>(&src));
+				else
+					src.leave_traveling();
 				return GAIA::False;
 			}
 			template <typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::BL navpath_node(const Node& src, const _DataType& t, __NodeListType& result) const
@@ -493,12 +515,16 @@ namespace GAIA
 						}
 					}
 				}
-				src.leave_traveling();
+				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
+					const_cast<__MyType*>(this)->m_tstack.push(const_cast<Node*>(&src));
+				else
+					src.leave_traveling();
 				return GAIA::False;
 			}
 		private:
 			Node* m_pRoot;
 			__PoolType m_pool;
+			__TravelingStackType m_tstack;
 		};
 	};
 };
