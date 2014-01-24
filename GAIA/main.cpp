@@ -285,13 +285,13 @@ GAIA::N32 main()
 		uSize = 0;
 	}
 
-	// Buffer test.
+	// BasicBuffer test.
 	{
 		GAIA::N32 arr[32];
 		for(GAIA::N32 x = 0; x < sizeof(arr) / sizeof(GAIA::N32); ++x)
 			arr[x] = x;
 
-		GAIA::CONTAINER::Buffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32> buf;
+		GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32> buf;
 		buf.push(arr);
 		buf.push(48);
 		GAIA::U64 size = buf.size();
@@ -575,11 +575,11 @@ GAIA::N32 main()
 		END_TEST;
 	}
 	
-	// AVLTree test.
+	// BasicAVLTree test.
 	{
 		BEGIN_TEST("<AVL Tree Function Test>");
 
-		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
+		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
 
 		bFunctionSuccess = GAIA::True;
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
@@ -595,7 +595,7 @@ GAIA::N32 main()
 			LINE_TEST("Insert by key operator is FAILED!");
 		GAIA::BL bCheckParent = btr.dbg_check_parent();
 		bCheckParent = true;
-		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100>::BidirectionalIterator iter = btr.front_iterator();
+		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100>::BidirectionalIterator iter = btr.front_iterator();
 		while(!iter.empty())
 		{
 			GAIA::N32 n = *iter;
@@ -691,10 +691,10 @@ GAIA::N32 main()
 		END_TEST;
 	}
 
-	// AVLTree performance compare.
+	// BasicAVLTree performance compare.
 	{
 #ifdef PERFORMANCE_COMPARE
-		BEGIN_TEST("<AVLTree performance>");
+		BEGIN_TEST("<BasicAVLTree performance>");
 
 		PERF_START("STL set use");
 		std::set<GAIA::N32> setSTL;
@@ -702,8 +702,8 @@ GAIA::N32 main()
 			setSTL.insert(GAIA::MATH::random());
 		PERF_END;
 
-		PERF_START("GAIA AVLTree use");
-		GAIA::CONTAINER::AVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> avltree;
+		PERF_START("GAIA BasicAVLTree use");
+		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> avltree;
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			avltree.insert(GAIA::MATH::random());
 		PERF_END;
@@ -1004,7 +1004,7 @@ GAIA::N32 main()
 		bResult = file.Close();
 		bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
 		GAIA::U64 uFileSize = file.Size();
-		GAIA::CONTAINER::Buffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>, GAIA::U64> buf;
+		GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>, GAIA::U64> buf;
 		buf.resize(uFileSize);
 		file.Read(buf.front_ptr(), buf.size());
 		const GAIA::GWCH* p = (GAIA::GWCH*)buf.front_ptr();

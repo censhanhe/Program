@@ -1,11 +1,11 @@
-#ifndef 	__GAIA_CONTAINER_AVLTREE_H__
-#define 	__GAIA_CONTAINER_AVLTREE_H__
+#ifndef 	__GAIA_CONTAINER_BASICAVLTREE_H__
+#define 	__GAIA_CONTAINER_BASICAVLTREE_H__
 
 namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class AVLTree
+		template <typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicAVLTree
 		{
 		private:
 			friend class BidirectionalIterator;
@@ -28,13 +28,13 @@ namespace GAIA
 		public:
 			static const _SizeType _groupelementsize = _GroupElementSize;
 		public:
-			typedef AVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
+			typedef BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
 		public:
 			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
-				friend class AVLTree;
+				friend class BasicAVLTree;
 			public:
 				GINL BidirectionalIterator(){m_pNode = GNULL; m_pAVLTree = GNULL;}
 				GINL virtual ~BidirectionalIterator(){}
@@ -171,7 +171,7 @@ namespace GAIA
 			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			private:
-				friend class AVLTree;
+				friend class BasicAVLTree;
 			public:
 				GINL ConstBidirectionalIterator(){m_pNode = GNULL; m_pAVLTree = GNULL;}
 				GINL virtual ~ConstBidirectionalIterator(){}
@@ -297,7 +297,7 @@ namespace GAIA
 				const __MyType* m_pAVLTree;
 			};
 		public:
-			GINL AVLTree(){m_pRoot = GNULL;}
+			GINL BasicAVLTree(){m_pRoot = GNULL;}
 			GINL GAIA::BL empty() const{return m_pool.empty();}
 			GINL _SizeType size() const{return m_pool.size();}
 			GINL _SizeType capacity() const{return m_pool.capacity();}
