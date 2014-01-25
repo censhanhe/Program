@@ -323,7 +323,7 @@
 								>
 							</File>
 							<File
-								RelativePath=".\gaia_container_basicvar.h"
+								RelativePath=".\gaia_container_vari.h"
 								>
 							</File>
 						</Filter>
@@ -331,7 +331,7 @@
 							Name="BUFFER"
 							>
 							<File
-								RelativePath=".\gaia_container_buffer.h"
+								RelativePath=".\gaia_container_basicbuffer.h"
 								>
 							</File>
 						</Filter>
@@ -380,6 +380,10 @@
 							>
 							<File
 								RelativePath=".\gaia_container_basicmap.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_map.h"
 								>
 							</File>
 						</Filter>
@@ -470,6 +474,10 @@
 								RelativePath=".\gaia_container_stack.h"
 								>
 							</File>
+							<File
+								RelativePath=".\gaia_container_stackstack.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="STRING"
@@ -495,11 +503,27 @@
 							Name="TREE"
 							>
 							<File
-								RelativePath=".\gaia_container_avltree.h"
+								RelativePath=".\gaia_container_basicavltree.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_basichuffmantree.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_basickdtree.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_basicksvdtree.h"
 								>
 							</File>
 							<File
 								RelativePath=".\gaia_container_basictree.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_basictrietree.h"
 								>
 							</File>
 							<File
@@ -520,6 +544,14 @@
 							</File>
 							<File
 								RelativePath=".\gaia_container_vector.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="NET"
+							>
+							<File
+								RelativePath=".\gaia_container_basicnet.h"
 								>
 							</File>
 						</Filter>
