@@ -577,7 +577,7 @@ GAIA::N32 main()
 	
 	// BasicAVLTree test.
 	{
-		BEGIN_TEST("<AVL Tree Function Test>");
+		BEGIN_TEST("<BasicAVLTree Function Test>");
 
 		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
 
@@ -733,6 +733,88 @@ GAIA::N32 main()
 			tt.destroy();
 		}
 		END_TEST;
+	}
+
+	// BasicTrieTree performance test.
+	{
+#ifdef PERFORMANCE_COMPARE
+		BEGIN_TEST("<BasicTrieTree performance test>");
+		{
+			typedef GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::N64>, GAIA::N64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>> __StringList;
+			__StringList listString;
+			GAIA::FILESYSTEM::File file;
+			if(file.Open("main.cpp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+			{
+				GAIA::N64 nSize = file.Size();
+				if(nSize > 0)
+				{
+					GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::N64> str;
+					str.resize(nSize);
+					file.Read(str.front_ptr(), nSize);
+					while(GAIA::ALWAYSTRUE)
+					{
+						while(GAIA::ALWAYSTRUE)
+						{
+							GAIA::BL bMatch = GAIA::True;
+							while(str.trim_left("\r\n"))
+								bMatch = GAIA::False;
+							while(str.trim_left(' '))
+								bMatch = GAIA::False;
+							while(str.trim_left('\t'))
+								bMatch = GAIA::False;
+							if(bMatch)
+								break;
+						}
+						GAIA::N64 index = 0;
+						while(GAIA::ALWAYSTRUE)
+						{
+							if(	str[index] == 0 || 
+								str[index] == ' ' || 
+								str[index] == '\t' || 
+								str[index] == '\n' || 
+								str[index] == '\r')
+								break;
+							++index;
+						}
+						if(index == 0)
+							break;
+						GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::N64> strTemp = str;
+						strTemp.left(index);
+						str.trim_left(index);
+						listString.push_back(strTemp);
+					}
+				}
+				file.Close();
+			}
+
+			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 10000> __TrieTree;
+			__TrieTree tt;
+
+			PERF_START("TrieTree Insert");
+			{
+				for(__StringList::_sizetype x = 0; x < listString.size(); ++x)
+					tt.insert(listString[x].front_ptr(), listString[x].size() * sizeof(__StringList::_datatype::_datatype));
+			}
+			PERF_END;
+
+			PERF_START("TrieTree find and count test.");
+			{
+				for(__StringList::_sizetype x = 0; x < listString.size(); ++x)
+				{
+					__TrieTree::Node* pNode = tt.find(GNULL, listString[x].front_ptr(), listString[x].size() * sizeof(__StringList::_datatype::_datatype));
+					if(pNode != GNULL)
+					{
+						__TrieTree::_sizetype c = tt.count(*pNode);
+						__TrieTree::_sizetype cc = tt.catagory_count(*pNode);
+						__TrieTree::_sizetype fc = tt.full_count(*pNode);
+						c = cc = fc = 0;
+					}
+				}
+			}
+			PERF_END;
+		}
+		END_TEST;
+#endif
 	}
 
 	// BasicTree function test.

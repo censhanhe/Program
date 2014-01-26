@@ -172,7 +172,7 @@ namespace GAIA
 			GINL _SizeType replace(const __MyType& src, const __MyType& dst)
 			{
 			}
-			GINL __MyType& left(const _SizeType& index) const
+			GINL __MyType& left(const _SizeType& index)
 			{
 				if(index >= this->size())
 					return *this;
@@ -180,7 +180,7 @@ namespace GAIA
 				this->resize(index);
 				return *this;
 			}
-			GINL __MyType& right(const _SizeType& index) const
+			GINL __MyType& right(const _SizeType& index)
 			{
 				if(index >= this->size())
 					return *this;
@@ -188,7 +188,7 @@ namespace GAIA
 				this->resize(this->size() - index);
 				return *this;
 			}
-			GINL __MyType& mid(const _SizeType& index_start, const _SizeType& index_end) const
+			GINL __MyType& mid(const _SizeType& index_start, const _SizeType& index_end)
 			{
 				GAIA_ASSERT(index_start <= index_end);
 				if(index_start > index_end)
@@ -203,26 +203,74 @@ namespace GAIA
 				this->resize(tempsize);
 				return *this;
 			}
-			GINL __MyType& trim_left(const _DataType& t)
+			GINL GAIA::BL trim_left(const _SizeType& size)
 			{
+				if(index > this->size() + 1)
+					return GAIA::False;
+				if(index <= 0)
+					return GAIA::False;
+				GAIA::ALGORITHM::move_prev(this->front_ptr(), this->front_ptr() + index, this->size() + 1 - index);
+				this->resize(this->size() - index);
+				return GAIA::True;
 			}
-			GINL __MyType& trim_left(const _DataType* p)
+			GINL GAIA::BL trim_left(const _DataType& t)
 			{
+				if(this->empty())
+					return GAIA::False;
+				_DataType* pTemp = m_pFront;
+				while(*pTemp != 0)
+				{
+					if(*pTemp != t)
+						break;
+					++pTemp;
+				}
+				if(pTemp == this->front_ptr())
+					return GAIA::False;
+				_SizeType newsize = this->size() - (pTemp - this->front_ptr());
+				GAIA::ALGORITHM::move_prev(this->front_ptr(), pTemp, newsize + 1);
+				this->resize(newsize);
+				return GAIA::True;
 			}
-			GINL __MyType& trim_left(const __MyType& src)
+			GINL GAIA::BL trim_left(const _DataType* p)
 			{
+				GAIA_ASSERT(p != GNULL);
+				if(this->empty())
+					return GAIA::False;
+				_DataType* pTemp = this->front_ptr();
+				while(*pTemp != 0 && *p != 0)
+				{
+					if(*pTemp != *p)
+						break;
+					++pTemp;
+					++p;
+				}
+				if(pTemp == this->front_ptr())
+					return GAIA::False;
+				_SizeType newsize = this->size() - (pTemp - this->front_ptr());
+				GAIA::ALGORITHM::move_prev(this->front_ptr(), pTemp, newsize + 1);
+				this->resize(newsize);
+				return GAIA::True;
 			}
-			GINL __MyType& trim_right(const _DataType& t)
+			GINL GAIA::BL trim_left(const GAIA::BL src)
 			{
+				if(src.empty())
+					return GAIA::False;
+				return this->trim_left(src.front_ptr());
 			}
-			GINL __MyType& trim_right(const _DataType* p)
+			GINL GAIA::BL trim_right(const _DataType& t)
 			{
+				return GAIA::True;
 			}
-			GINL __MyType& trim_right(const __MyType& src)
+			GINL GAIA::BL trim_right(const _DataType* p)
 			{
+				return GAIA::True;
 			}
-			GINL __MyType& operator = (const __MyType& src){return this->assign(src.front_ptr(), src.size());}
-			GINL __MyType& operator = (const _DataType* p){return this->assign(p, GAIA::ALGORITHM::strlen(p));}
+			GINL GAIA::BL trim_right(const __MyType& src)
+			{
+				return GAIA::True;
+			}
+			GINL __MyType& operator = (const __MyType& src){this->assign(src.front_ptr(), src.size()); return *this;}
+			GINL __MyType& operator = (const _DataType* p){this->assign(p, GAIA::ALGORITHM::strlen(p)); return *this;}
 			GINL __MyType& operator = (const GAIA::N8& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::N16& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::N32& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
