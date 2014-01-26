@@ -712,6 +712,29 @@ GAIA::N32 main()
 #endif
 	}
 
+	// BasicTrieTree function test.
+	{
+		BEGIN_TEST("<BasicTrieTree function test>");
+		{
+			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> __TrieTree;
+			__TrieTree tt;
+			tt.insert("hello", 5);
+			tt.insert("world", 5);
+			tt.insert("kitty", 5);
+			GAIA::BL bErase = tt.erase("hello", 5);
+			GAIA::BL bExist = tt.exist("hello", 5);
+			__TrieTree::Node* pNode = tt.find(GNULL, "hello", 5);
+			__TrieTree::__PathList result_paths;
+			tt.paths(GNULL, "hello", 5, result_paths);
+			tt.empty();
+			tt.size();
+			tt.capacity();
+			tt.clear();
+			tt.destroy();
+		}
+		END_TEST;
+	}
+
 	// BasicTree function test.
 	{
 		BEGIN_TEST("<BasicTree function test>");

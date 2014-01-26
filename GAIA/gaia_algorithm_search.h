@@ -200,6 +200,10 @@ namespace GAIA
 				++pBegin;
 			}
 		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID index(const _DataType* pBegin, const _DataType* pCurrent, _SizeType& result)
+		{
+			result = pCurrent - pBegin;
+		}
 		template <typename _DataType, typename _SizeType> GAIA::GVOID lower_equal_count(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key, _SizeType& result)
 		{
 			GAIA_ASSERT(pBegin <= pEnd);
