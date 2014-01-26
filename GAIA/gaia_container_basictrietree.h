@@ -88,11 +88,11 @@ namespace GAIA
 					return GAIA::False;
 				else
 				{
+					if(pNode->m_count == 0)
+						return GAIA::False;
+					--pNode->m_count;
 					while(pNode != GNULL)
 					{
-						if(pNode->m_count == 0)
-							return GAIA::False;
-						--pNode->m_count;
 						--pNode->m_category_count;
 						--pNode->m_full_count;
 						if(pNode->m_count == 0 && pNode->m_category_count == 0 && pNode->m_full_count == 0)
@@ -192,13 +192,13 @@ namespace GAIA
 					pNew->m_t = *p;
 					pNew->m_count = 0;
 					pNew->m_category_count = 1;
-					pNew->m_full_count = 1;
 					if(n.free_linked_index(index))
 						n.m_links[index] = pNew;
 					else
 						n.m_links.push_back(pNew);
 					ret = GAIA::True;
 					this->insert_node(*pNew, p + 1, size - 1);
+					pNew->m_full_count = 1;
 				}
 				return ret;
 			}

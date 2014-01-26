@@ -545,7 +545,7 @@ GAIA::N32 main()
 #endif
 	}
 
-	// BasicList funciton test.
+	// BasicList function test.
 	{
 		BEGIN_TEST("<BasicList Function Test>");
 		{
