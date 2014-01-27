@@ -46,6 +46,7 @@
 #include	"gaia_container_vector.h"
 #include	"gaia_container_basicqueue.h"
 #include	"gaia_container_queue.h"
+#include 	"gaia_container_basicpriqueue.h"
 #include	"gaia_container_basicbuffer.h"
 #include 	"gaia_container_buffer.h"
 #include	"gaia_container_basicorderless.h"
