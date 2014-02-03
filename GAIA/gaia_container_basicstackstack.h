@@ -56,7 +56,7 @@ namespace GAIA
 				this->clear();
 				if(!src.empty())
 				{
-					GAIA::ALGORITHM::xcopy(m_data, src.m_data, src.size);
+					GAIA::ALGORITHM::copy(m_data, src.m_data, src.size);
 					m_size = src.size;
 				}
 				return *this;

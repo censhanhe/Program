@@ -351,6 +351,18 @@ namespace GAIA
 			GINL GAIA::GVOID upper_bound(const _DataType& t) const
 			{
 			}
+			GINL _DataType* minimize() const
+			{
+				if(m_pRoot == GNULL)
+					return GNULL;
+				return &this->findmin(m_pRoot);
+			}
+			GINL _DataType* maximize() const
+			{
+				if(m_pRoot == GNULL)
+					return GNULL;
+				return &this->findmax(m_pRoot);
+			}
 			GINL BidirectionalIterator front_iterator()
 			{
 				BidirectionalIterator iter;

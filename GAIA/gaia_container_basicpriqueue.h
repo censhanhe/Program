@@ -21,17 +21,18 @@ namespace GAIA
 		public:
 			typedef BasicPriQueue<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeList;
+			typedef BasicAVLTree<_DataType, _SizeType, _SizeType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
 		public:
-			GINL BasicPriQueue();
-			GINL BasicPriQueue(const __MyType& src){this->operator = (src);}
-			GINL ~BasicPriQueue();
-			GINL GAIA::BL empty() const;
-			GINL _SizeType size() const;
-			GINL _SizeType capacity() const;
-			GINL GAIA::GVOID resize(const _SizeType& size);
-			GINL GAIA::GVOID reserve(const _SizeType& size);
-			GINL GAIA::GVOID clear();
-			GINL GAIA::GVOID destroy();
+			GINL BasicPriQueue(){this->init();}
+			GINL BasicPriQueue(const __MyType& src){this->init(); this->operator = (src);}
+			GINL ~BasicPriQueue(){}
+			GINL GAIA::BL empty() const{return m_avltree.empty();}
+			GINL _SizeType size() const{return m_avltree.size();}
+			GINL _SizeType capacity() const{return m_avltree.capacity();}
+			GINL GAIA::GVOID resize(const _SizeType& size){return m_avltree.resize();}
+			GINL GAIA::GVOID reserve(const _SizeType& size){return m_avltree.reserve();}
+			GINL GAIA::GVOID clear(){return m_avltree.clear();}
+			GINL GAIA::GVOID destroy(){return m_avltree.destroy();}
 			GINL GAIA::GVOID insert(const _DataType& t);
 			GINL GAIA::GVOID erase(Node& n);
 			GINL GAIA::BL exist(const _DataType& t) const;
@@ -47,8 +48,9 @@ namespace GAIA
 			GINL _DataType& back();
 			GINL __MyType& operator = (const __MyType& src){return *this;}
 		private:
-			GINL GAIA::GVOID init();
+			GINL GAIA::GVOID init(){}
 		private:
+			__AVLTreeType m_avltree;
 		};
 	};
 };

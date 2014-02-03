@@ -19,6 +19,25 @@
 
 #include "gaia.h"
 
+template <typename _DataType> class SNode
+{
+public:
+	typedef _DataType _datatype;
+public:
+	typedef SNode<_DataType> __MyType;
+public:
+	GINL SNode(){}
+	GINL ~SNode(){}
+	GINL GAIA::BL operator == (const __MyType& src) const{return m_data == src.m_data;}
+	GINL GAIA::BL operator != (const __MyType& src) const{return m_data != src.m_data;}
+	GINL GAIA::BL operator >= (const __MyType& src) const{return m_data >= src.m_data;}
+	GINL GAIA::BL operator <= (const __MyType& src) const{return m_data <= src.m_data;}
+	GINL GAIA::BL operator > (const __MyType& src) const{return m_data > src.m_data;}
+	GINL GAIA::BL operator < (const __MyType& src) const{return m_data < src.m_data;}
+private:
+	_DataType m_data;
+};
+
 class MyThread : public GAIA::THREAD::Thread
 {
 public:
@@ -869,6 +888,16 @@ GAIA::N32 main()
 		END_TEST;
 	}
 	
+	// BasicPriQueue function test.
+	{
+		BEGIN_TEST("<BasicPriQueue function test");
+		{
+			typedef GAIA::CONTAINER::BasicPriQueue<SNode<GAIA::N32>, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> __PriQueueType;
+			__PriQueueType pq;
+		}
+		END_TEST;
+	}
+	
 	// BasicGraph function test.
 	{
 		BEGIN_TEST("<BasicGraph function test>");
@@ -1092,8 +1121,11 @@ GAIA::N32 main()
 	{
 		GAIA::MATH::VEC2<GAIA::REAL> v0(1.0);
 		GAIA::MATH::VEC2<GAIA::N32> v1(1, 2.0F);
-		GAIA::MATH::VEC2<GAIA::REAL> v3 = v0;
-		v3.normalize();
+		GAIA::MATH::VEC2<GAIA::REAL> v2 = v0;
+		v2.normalize();
+		GAIA::MATH::VEC2<GAIA::REAL> v4 = v1 + v2;
+		v4 = 0.0F;
+		if(v1 == v2){}
 	}
 
 	// Thread test.

@@ -86,7 +86,7 @@ namespace GAIA
 				if(this->size() == this->capacity())
 					this->exten(newsize);
 				GAIA::ALGORITHM::move_next(this->front_ptr() + this->size() + newsize, this->front_ptr() + this->size(), newsize);
-				GAIA::ALGORITHM::xcopy(this->front_ptr() + index, p, newsize);
+				GAIA::ALGORITHM::copy(this->front_ptr() + index, p, newsize);
 				return GAIA::True;
 			}
 			GINL GAIA::BL insert(const __MyType& src, const _SizeType& index)
@@ -98,7 +98,7 @@ namespace GAIA
 				if(this->size() == this->capacity())
 					this->exten(src.size());
 				GAIA::ALGORITHM::move_next(this->front_ptr() + this->size() + src.size(), this->front_ptr() + this->size(), src.size());
-				GAIA::ALGORITHM::xcopy(this->front_ptr() + index, src.front_ptr(), src.size());
+				GAIA::ALGORITHM::copy(this->front_ptr() + index, src.front_ptr(), src.size());
 				return GAIA::True;
 			}
 			GINL GAIA::BL erase(const _SizeType& index)

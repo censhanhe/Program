@@ -32,6 +32,111 @@ namespace GAIA
 			else
 				return 0;
 		}
+		template <typename _DataType1, typename _DataType2, typename _SizeType> GAIA::N32 cmp(const _DataType1* p1, const _DataType2* p2, const _SizeType& size)
+		{
+			_SizeType sizet = size;
+			while(sizet > 0)
+			{
+				if(*p1 < *p2)
+					return +1;
+				else if(*p1 > *p2)
+					return -1;
+				++p1;
+				++p2;
+				--sizet;
+			}
+			return 0;
+		}
+		template <typename _DataType1, typename _DataType2> GAIA::N32 cmp2(const _DataType1* p1, const _DataType2* p2)
+		{
+			if(p1[0] < p2[0])
+				return -1;
+			else if(p1[0] > p2[0])
+				return +1;
+			else
+			{
+				if(p1[1] < p2[1])
+					return -1;
+				else if(p1[1] > p2[1])
+					return +1;
+				else
+					return 0;
+			}
+		}
+		template <typename _DataType1, typename _DataType2> GAIA::N32 cmp3(const _DataType1* p1, const _DataType2* p2)
+		{
+			if(p1[0] < p2[0])
+				return -1;
+			else if(p1[0] > p2[0])
+				return +1;
+			else
+			{
+				if(p1[1] < p2[1])
+					return -1;
+				else if(p1[1] > p2[1])
+					return +1;
+				else
+				{
+					if(p1[2] < p2[2])
+						return -1;
+					else if(p1[2] > p2[2])
+						return +1;
+					else
+						return 0;
+				}
+			}
+		}
+		template <typename _DataType1, typename _DataType2> GAIA::N32 cmp4(const _DataType1* p1, const _DataType2* p2)
+		{
+			if(p1[0] < p2[0])
+				return -1;
+			else if(p1[0] > p2[0])
+				return +1;
+			else
+			{
+				if(p1[1] < p2[1])
+					return -1;
+				else if(p1[1] > p2[1])
+					return +1;
+				else
+				{
+					if(p1[2] < p2[2])
+						return -1;
+					else if(p1[2] > p2[2])
+						return +1;
+					else
+					{
+						if(p1[3] < p2[3])
+							return -1;
+						else if(p1[3] > p2[3])
+							return +1;
+						else
+							return 0;
+					}
+				}
+			}
+		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID copy(_DataType* dst, const _DataType* src, const _SizeType& size)
+		{
+			_SizeType sizet = size;
+			while(sizet > 0)
+			{
+				*dst = *src;
+				++src;
+				++dst;
+				--sizet;
+			}
+		}
+		template <typename _DataType, typename _SizeType> GAIA::GVOID set(_DataType* dst, const _DataType& t, const _SizeType& size)
+		{
+			_SizeType sizet = size;
+			while(sizet > 0)
+			{
+				*dst = t;
+				++dst;
+				--sizet;
+			}
+		}
 		template <typename _DataType> GINL _DataType abs(const _DataType& t)
 		{
 			if(t < 0)

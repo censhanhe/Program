@@ -59,7 +59,7 @@ namespace GAIA
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->reserve(src.size());
-				GAIA::ALGORITHM::xcopy(m_pData, src.m_pData, src.size());
+				GAIA::ALGORITHM::copy(m_pData, src.m_pData, src.size());
 				return *this;
 			}
 			GINL _DataType& operator[](const _SizeType& index)

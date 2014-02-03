@@ -18,7 +18,7 @@ namespace GAIA
 			GINL BasicBitset(const BasicBitset<_SizeType>& src){this->init(); this->operator = (src);}
 			GINL BasicBitset(const _SizeType& index){this->init(); this->set(index);}
 			GINL ~BasicBitset(){this->destroy();}
-			GINL GAIA::GVOID clear(){GAIA::ALGORITHM::xset(this->front_ptr(), 0, this->size()); m_size = 0;}
+			GINL GAIA::GVOID clear(){GAIA::ALGORITHM::set(this->front_ptr(), 0, this->size()); m_size = 0;}
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
 			GINL _SizeType size() const{return m_size;}
 			GINL _SizeType capacity() const{return m_capacity;}
@@ -58,7 +58,7 @@ namespace GAIA
 				if(size > 0)
 				{
 					m_pFront = new GAIA::U8[size];
-					GAIA::ALGORITHM::xset(m_pFront, 0, size);
+					GAIA::ALGORITHM::set(m_pFront, 0, size);
 					m_capacity = size;
 					m_size = 0;
 				}
@@ -68,7 +68,7 @@ namespace GAIA
 			{
 				this->destroy();
 				this->reverse(src.size());
-				GAIA::ALGORITHM::xcopy(this->front_ptr(), src.front_ptr(), src.size());
+				GAIA::ALGORITHM::copy(this->front_ptr(), src.front_ptr(), src.size());
 				return *this;
 			}
 			GINL BasicBitset<_SizeType>& operator += (const _SizeType& index){this->set(index); return *this;}
@@ -94,7 +94,7 @@ namespace GAIA
 			{
 				if(this->size() != src.size())
 					return GAIA::False;
-				if(GAIA::ALGORITHM::xcmp(this->front_ptr(), src.front_ptr(), this->size()) != 0) 
+				if(GAIA::ALGORITHM::cmp(this->front_ptr(), src.front_ptr(), this->size()) != 0) 
 					return GAIA::False; 
 				return GAIA::True;
 			}
