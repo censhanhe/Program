@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template <typename _DataType, typename _SizeType> GINL GAIA::BL check(const _DataType* pBegin, const _DataType* p, const _SizeType& size)
+		template <typename _DataType, typename _SizeType> GINL GAIA::BL equal(const _DataType* pBegin, const _DataType* p, const _SizeType& size)
 		{
 			for(_SizeType x = 0; x < size; ++x)
 			{
@@ -62,7 +62,7 @@ namespace GAIA
 			GAIA_ASSERT(size != 0);
 			while(pEnd - pBegin + 1 >= size)
 			{
-				if(check(pBegin, p, size))
+				if(equal(pBegin, p, size))
 					return const_cast<_DataType*>(pBegin);
 				++pBegin;
 			}
@@ -76,7 +76,7 @@ namespace GAIA
 			GAIA_ASSERT(size != 0);
 			while(pEnd - pBegin + 1 >= size)
 			{
-				if(check(pEnd - size + 1, p, size))
+				if(equal(pEnd - size + 1, p, size))
 					return const_cast<_DataType*>(pEnd - size + 1);
 				--pEnd;
 			}
