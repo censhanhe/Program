@@ -4,7 +4,7 @@
 namespace GAIA
 {
 	namespace MATH
-	{
+	{		
 		template <typename _DataType> class VEC2
 		{
 		public:
@@ -24,8 +24,7 @@ namespace GAIA
 			GINL GAIA::GVOID normalize(){_DataType t = this->length(); (*this) /= t;}
 			GINL GAIA::BL isnormalize() const{if(this->lengthsq() == (_DataType)1) return GAIA::True; return GAIA::False;}
 			GINL GAIA::BL iszero() const{if(x == (_DataType)0 && y == (_DataType)0) return GAIA::True; return GAIA::False;}
-			template <typename _ParamType> GINL __MyType dot(const VEC2<_ParamType>& v) const{return x * v.x + y * v.y;}
-			template <typename _ParamType> GINL __MyType cross(const VEC2<_ParamType>& v) const{}
+			template <typename _ParamType> GINL _DataType dot(const VEC2<_ParamType>& v) const{return x * v.x + y * v.y;}
 			template <typename _ParamType> GINL VEC2 num(const VEC2<_ParamType>& v) const{VEC2 ret; ret.x = x * v.x; ret.y = y * v.y; return ret;}
 			template <typename _ParamType> GINL __MyType operator + (const VEC2<_ParamType>& v) const{__MyType ret; ret.x = x + v.x; ret.y = y + v.y; return ret;}
 			template <typename _ParamType> GINL __MyType operator - (const VEC2<_ParamType>& v) const{__MyType ret; ret.x = x - v.x; ret.y = y - v.y; return ret;}
@@ -46,12 +45,18 @@ namespace GAIA
 			template <typename _ParamType> GINL const __MyType& operator = (const VEC2<_ParamType>& v){x = v.x; y = v.y; return *this;}
 			template <typename _ParamType> GINL const __MyType& operator = (const _ParamType& v){x = y = v; return *this;}
 			template <typename _ParamType> GINL const __MyType& operator = (const _ParamType* pV){x = pV[0]; y = pV[1]; return *this;}
-			template <typename _ParamType> GINL GAIA::BL operator == (const VEC2<_ParamType>& v) const{if(x == v.x && y == v.y) return GAIA::True; return GAIA::False;}
+			template <typename _ParamType> GINL GAIA::BL operator == (const VEC2<_ParamType>& v) const{if(GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamType>::_datatype*)&v) == 0) return GAIA::True; return GAIA::False;}
 			template <typename _ParamType> GINL GAIA::BL operator != (const VEC2<_ParamType>& v) const{if(this->operator == (v)) return GAIA::False; return GAIA::True;}
 			template <typename _ParamType> GINL GAIA::BL operator >= (const VEC2<_ParamType>& v) const{return !this->operator < (v);}
 			template <typename _ParamType> GINL GAIA::BL operator <= (const VEC2<_ParamType>& v) const{return !this->operator > (v);}
-			template <typename _ParamType> GINL GAIA::BL operator > (const VEC2<_ParamType>& v) const{if(GAIA::ALGORITHM::cmp2((const _DataType*)this, (const VEC2<_ParamType>*)&v) > 0) return GAIA::True; return GAIA::False;}
-			template <typename _ParamType> GINL GAIA::BL operator < (const VEC2<_ParamType>& v) const{if(GAIA::ALGORITHM::cmp2((const _DataType*)this, (const VEC2<_ParamType>*)&v) < 0) return GAIA::True; return GAIA::False;}
+			template <typename _ParamType> GINL GAIA::BL operator > (const VEC2<_ParamType>& v) const{if(GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamType>::_datatype*)&v) > 0) return GAIA::True; return GAIA::False;}
+			template <typename _ParamType> GINL GAIA::BL operator < (const VEC2<_ParamType>& v) const{if(GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamType>::_datatype*)&v) < 0) return GAIA::True; return GAIA::False;}
+			template <typename _ParamType> GINL GAIA::BL operator == (const _ParamType& v) const{if(GAIA::ALGORITHM::cmp2((const _DataType*)this, v) == 0) return GAIA::True; return GAIA::False;}
+			template <typename _ParamType> GINL GAIA::BL operator != (const _ParamType& v) const{if(this->operator == (v)) return GAIA::False; return GAIA::True;}
+			template <typename _ParamType> GINL GAIA::BL operator >= (const _ParamType& v) const{return !this->operator < (v);}
+			template <typename _ParamType> GINL GAIA::BL operator <= (const _ParamType& v) const{return !this->operator > (v);}
+			template <typename _ParamType> GINL GAIA::BL operator > (const _ParamType& v) const{if(GAIA::ALGORITHM::cmp2((const _DataType*)this, v) > 0) return GAIA::True; return GAIA::False;}
+			template <typename _ParamType> GINL GAIA::BL operator < (const _ParamType& v) const{if(GAIA::ALGORITHM::cmp2((const _DataType*)this, v) < 0) return GAIA::True; return GAIA::False;}
 			template <typename _ParamType> GINL const _DataType& operator [] (const _DataType& index) const{return ((_DataType*)this)[index];}
 			template <typename _ParamType> GINL _DataType& operator [] (const _DataType& index){return ((_DataType*)this)[index];}
 			GINL operator _DataType*(){return (_DataType*)this;}
@@ -70,51 +75,60 @@ namespace GAIA
 		template <typename _DataType> class VEC4
 		{
 		public:
-		private:
+		public:
 			_DataType x, y, z, w;
 		};
 
 		template <typename _DataType> class QUA
 		{
 		public:
+			_DataType x, y, z, w;
 		};
 
 		template <typename _DataType> class MTX22
 		{
 		public:
-			GINL MTX22<_DataType>& identity(){}
+			GINL GAIA::GVOID identity(){}
 			GINL GAIA::BL isidentity() const{}
-			GINL MTX22<_DataType>& inverse(){}
-			GINL MTX22<_DataType>& transpose(){}
+			GINL GAIA::GVOID inverse(){}
+			GINL GAIA::GVOID transpose(){}
 		};
 
 		template <typename _DataType> class MTX33
 		{
+		public:
 		public:
 		};
 
 		template <typename _DataType> class MTX34
 		{
 		public:
+		public:
 		};
 
 		template <typename _DataType> class MTX44
 		{
+		public:
 		public:
 		};
 
 		template <typename _DataType> class PLANE
 		{
 		public:
+		public:
+			_DataType a, b, c, d;
 		};
 
 		template <typename _DataType> class AABR
 		{
 		public:
-			
+			GINL GAIA::GVOID identity(){pmin = (_DataType)+1; pmax = (_DataType)-1;}
+			GINL GAIA::GVOID isidentity() const{}
+			GINL GAIA::GVOID zero(){pmin = (_DataType)0; pmax = (_DataType)0;}
+			GINL GAIA::GVOID iszero() const{}
 		public:
-			VEC2<_DataType> posMin;
-			VEC2<_DataType> posMax;
+			VEC2<_DataType> pmin;
+			VEC2<_DataType> pmax;
 		};
 
 		template <typename _DataType> class AABB
@@ -122,12 +136,22 @@ namespace GAIA
 		public:
 			
 		public:
-			VEC3<_DataType> posMin;
-			VEC3<_DataType> posMax;
+			VEC3<_DataType> pmin;
+			VEC3<_DataType> pmax;
 		};
 
-		template <typename _DataType> class COLOR
+		template <typename _DataType> class ARGB
 		{
+		public:
+		public:
+			_DataType a, r, g, b;
+		};
+		
+		template <typename _DataType> class RGB
+		{
+		public:
+		public:
+			_DataType r, g, b;
 		};
 	};
 };

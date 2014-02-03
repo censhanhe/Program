@@ -46,7 +46,7 @@ namespace GAIA
 			GINL _DataType& front();
 			GINL const _DataType& back() const;
 			GINL _DataType& back();
-			GINL __MyType& operator = (const __MyType& src){return *this;}
+			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
 		private:
 			GINL GAIA::GVOID init(){}
 		private:

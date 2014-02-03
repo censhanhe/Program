@@ -759,7 +759,7 @@ GAIA::N32 main()
 
 	// BasicTrieTree performance test.
 	{
-#ifdef PERFORMANCE_COMPARE
+	#ifdef PERFORMANCE_COMPARE
 		BEGIN_TEST("<BasicTrieTree performance test>");
 		{
 			typedef GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::N64>, GAIA::N64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>> __StringList;
@@ -836,7 +836,7 @@ GAIA::N32 main()
 			PERF_END;
 		}
 		END_TEST;
-#endif
+	#endif
 	}
 
 	// BasicTree function test.
@@ -890,7 +890,7 @@ GAIA::N32 main()
 	
 	// BasicPriQueue function test.
 	{
-		BEGIN_TEST("<BasicPriQueue function test");
+		BEGIN_TEST("<BasicPriQueue function test>");
 		{
 			typedef GAIA::CONTAINER::BasicPriQueue<SNode<GAIA::N32>, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> __PriQueueType;
 			__PriQueueType pq;
@@ -1125,7 +1125,9 @@ GAIA::N32 main()
 		v2.normalize();
 		GAIA::MATH::VEC2<GAIA::REAL> v4 = v1 + v2;
 		v4 = 0.0F;
-		if(v1 == v2){}
+		if(v1 == v2)
+		{
+		}
 	}
 
 	// Thread test.
