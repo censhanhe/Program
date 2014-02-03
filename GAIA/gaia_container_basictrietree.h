@@ -38,10 +38,10 @@ namespace GAIA
 				{
 					if(m_links.empty())
 						return GAIA::False;
-					__NodeList::_datatype* p = GAIA::ALGORITHM::find(m_links.front_ptr(), m_links.back_ptr(), (__NodeList::_datatype)GNULL);
-					if(p == GNULL)
+					typename __NodeList::_datatype* pTemp = GAIA::ALGORITHM::find(m_links.front_ptr(), m_links.back_ptr(), (typename __NodeList::_datatype)GNULL);
+					if(pTemp == GNULL)
 						return GAIA::False;
-					GAIA::ALGORITHM::index(m_links.front_ptr(), p, result);
+					GAIA::ALGORITHM::index(m_links.front_ptr(), pTemp, result);
 					return GAIA::True;
 				}
 			private:

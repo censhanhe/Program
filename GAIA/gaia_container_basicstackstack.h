@@ -47,7 +47,7 @@ namespace GAIA
 					return GAIA::True;
 				}
 				else
-					GAIA::False;
+					return GAIA::False;
 			}
 			GINL const _DataType& top() const{return m_data[m_size];}
 			GINL _DataType& top(){return m_data[m_size];}

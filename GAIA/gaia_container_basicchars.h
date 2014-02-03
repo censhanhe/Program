@@ -203,7 +203,7 @@ namespace GAIA
 				this->resize(tempsize);
 				return *this;
 			}
-			GINL GAIA::BL trim_left(const _SizeType& size)
+			GINL GAIA::BL trim_left(const _SizeType& index)
 			{
 				if(index > this->size() + 1)
 					return GAIA::False;
@@ -217,7 +217,7 @@ namespace GAIA
 			{
 				if(this->empty())
 					return GAIA::False;
-				_DataType* pTemp = m_pFront;
+				const _DataType* pTemp = m_chars;
 				while(*pTemp != 0)
 				{
 					if(*pTemp != t)
@@ -251,7 +251,7 @@ namespace GAIA
 				this->resize(newsize);
 				return GAIA::True;
 			}
-			GINL GAIA::BL trim_left(const GAIA::BL src)
+			GINL GAIA::BL trim_left(const __MyType& src)
 			{
 				if(src.empty())
 					return GAIA::False;

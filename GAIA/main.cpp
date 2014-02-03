@@ -731,6 +731,9 @@ GAIA::N32 main()
 			tt.capacity();
 			tt.clear();
 			tt.destroy();
+			bErase = GAIA::True;
+			bExist = GAIA::True;
+			pNode = GNULL;
 		}
 		END_TEST;
 	}
@@ -793,7 +796,7 @@ GAIA::N32 main()
 			PERF_START("TrieTree Insert");
 			{
 				for(__StringList::_sizetype x = 0; x < listString.size(); ++x)
-					tt.insert(listString[x].front_ptr(), listString[x].size() * sizeof(__StringList::_datatype::_datatype));
+					tt.insert(listString[x].front_ptr(), (GAIA::N32)listString[x].size() * sizeof(__StringList::_datatype::_datatype));
 			}
 			PERF_END;
 
@@ -801,7 +804,7 @@ GAIA::N32 main()
 			{
 				for(__StringList::_sizetype x = 0; x < listString.size(); ++x)
 				{
-					__TrieTree::Node* pNode = tt.find(GNULL, listString[x].front_ptr(), listString[x].size() * sizeof(__StringList::_datatype::_datatype));
+					__TrieTree::Node* pNode = tt.find(GNULL, listString[x].front_ptr(), (GAIA::N32)listString[x].size() * sizeof(__StringList::_datatype::_datatype));
 					if(pNode != GNULL)
 					{
 						__TrieTree::_sizetype c = tt.count(*pNode);
