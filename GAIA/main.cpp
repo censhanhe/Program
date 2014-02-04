@@ -27,6 +27,8 @@ public:
 	typedef SNode<_DataType> __MyType;
 public:
 	GINL SNode(){}
+	GINL SNode(const __MyType& src){this->operator = (src);}
+	GINL SNode(const _DataType& src){this->operator = (src);}
 	GINL ~SNode(){}
 	GINL GAIA::BL operator == (const __MyType& src) const{return m_data == src.m_data;}
 	GINL GAIA::BL operator != (const __MyType& src) const{return m_data != src.m_data;}
@@ -34,6 +36,10 @@ public:
 	GINL GAIA::BL operator <= (const __MyType& src) const{return m_data <= src.m_data;}
 	GINL GAIA::BL operator > (const __MyType& src) const{return m_data > src.m_data;}
 	GINL GAIA::BL operator < (const __MyType& src) const{return m_data < src.m_data;}
+	GINL _DataType& operator * (){return m_data;}
+	GINL const _DataType& operator * () const{return m_data;}
+	GINL __MyType& operator = (const __MyType& src){m_data = src.m_data; return *this;}
+	GINL __MyType& operator = (const _DataType& src){m_data = src; return *this;}
 private:
 	_DataType m_data;
 };
@@ -892,8 +898,29 @@ GAIA::N32 main()
 	{
 		BEGIN_TEST("<BasicPriQueue function test>");
 		{
-			typedef GAIA::CONTAINER::BasicPriQueue<SNode<GAIA::N32>, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> __PriQueueType;
+			typedef GAIA::CONTAINER::BasicPriQueue<SNode<GAIA::N32>, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __PriQueueType;
+			typedef GAIA::CONTAINER::BasicVector<SNode<GAIA::N32>, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
 			__PriQueueType pq;
+			__VectorType vr;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				__PriQueueType::_datatype t;
+				*t = GAIA::MATH::random();
+				pq.insert(t);
+				vr.push_back(t);
+			}
+			vr.sort();
+			bFunctionSuccess = GAIA::True;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				if(pq.front() != vr[x])
+					bFunctionSuccess = GAIA::False;
+				pq.pop_front();
+			}
+			if(bFunctionSuccess)
+				LINE_TEST("BasicPriQueue insert and pop_front SUCCESSFULLY!");
+			else
+				LINE_TEST("BasicPriQueue insert and pop_front FAILED!");
 		}
 		END_TEST;
 	}

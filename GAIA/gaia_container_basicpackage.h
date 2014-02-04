@@ -10,9 +10,11 @@ namespace GAIA
 		public:
 			typedef _SizeType _sizetype;
 		public:
+			typedef BasicPackage<_SizeType> __MyType;
+		public:
 			GINL Package();
 			GINL ~Package();
-
+		private:
 		};
 	};
 };

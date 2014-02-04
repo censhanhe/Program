@@ -222,22 +222,6 @@
 		3BFB13FA1877852C00A1731D /* GAIA */ = {
 			isa = PBXGroup;
 			children = (
-				3B033B5418A07A6B00404E49 /* gaia_container_basicmultiavltree.h */,
-				3B033B5518A07A6B00404E49 /* gaia_container_basicmultimap.h */,
-				3B033B5618A07A6B00404E49 /* gaia_container_basicmultipriqueue.h */,
-				3B033B5718A07A6C00404E49 /* gaia_container_basicmultiset.h */,
-				3B033B5818A07A6C00404E49 /* gaia_container_multimap.h */,
-				3B033B5918A07A6D00404E49 /* gaia_container_multiset.h */,
-				3B033B4A189F4B5B00404E49 /* gaia_container_basicavltree.h */,
-				3B033B4B189F4B5B00404E49 /* gaia_container_basicbuffer.h */,
-				3B033B4C189F4B5B00404E49 /* gaia_container_basichuffmantree.h */,
-				3B033B4D189F4B5B00404E49 /* gaia_container_basickdtree.h */,
-				3B033B4E189F4B5B00404E49 /* gaia_container_basicksvdtree.h */,
-				3B033B4F189F4B5B00404E49 /* gaia_container_basicnet.h */,
-				3B033B50189F4B5B00404E49 /* gaia_container_basictrietree.h */,
-				3B033B51189F4B5B00404E49 /* gaia_container_map.h */,
-				3B033B52189F4B5B00404E49 /* gaia_container_stackstack.h */,
-				3B033B53189F4B5B00404E49 /* gaia_container_vari.h */,
 				3BFB147B187785E700A1731D /* gaia.h */,
 				3B6F8FC81884F00B00C9B60D /* gaia_ai_context.h */,
 				3BD55BEC1879D4D300FE89B5 /* gaia_algorithm_base.h */,
@@ -256,12 +240,22 @@
 				3BFB1455187785E700A1731D /* gaia_container_array.h */,
 				3BFB1456187785E700A1731D /* gaia_container_astring.h */,
 				3BFB1457187785E700A1731D /* gaia_container_basicarray.h */,
+				3B033B4A189F4B5B00404E49 /* gaia_container_basicavltree.h */,
 				3BD55C7E18802D4700FE89B5 /* gaia_container_basicbitset.h */,
+				3B033B4B189F4B5B00404E49 /* gaia_container_basicbuffer.h */,
 				3BD55C6B187F1C3000FE89B5 /* gaia_container_basicchars.h */,
 				3BD55C7F18802D4800FE89B5 /* gaia_container_basicdictionary.h */,
 				3BD55C8018802D4900FE89B5 /* gaia_container_basicgraph.h */,
+				3B033B4C189F4B5B00404E49 /* gaia_container_basichuffmantree.h */,
+				3B033B4D189F4B5B00404E49 /* gaia_container_basickdtree.h */,
+				3B033B4E189F4B5B00404E49 /* gaia_container_basicksvdtree.h */,
 				3BD55C65187B05C000FE89B5 /* gaia_container_basiclist.h */,
 				3BD55C8118802D4A00FE89B5 /* gaia_container_basicmap.h */,
+				3B033B5418A07A6B00404E49 /* gaia_container_basicmultiavltree.h */,
+				3B033B5518A07A6B00404E49 /* gaia_container_basicmultimap.h */,
+				3B033B5618A07A6B00404E49 /* gaia_container_basicmultipriqueue.h */,
+				3B033B5718A07A6C00404E49 /* gaia_container_basicmultiset.h */,
+				3B033B4F189F4B5B00404E49 /* gaia_container_basicnet.h */,
 				3BD55BEF1879D4D300FE89B5 /* gaia_container_basicorderless.h */,
 				3BD55BF01879D4D300FE89B5 /* gaia_container_basicpackage.h */,
 				3BD55C6C187F1C3000FE89B5 /* gaia_container_basicpool.h */,
@@ -275,11 +269,15 @@
 				3BD55BF21879D4D300FE89B5 /* gaia_container_basicstackvar.h */,
 				3BFB1459187785E700A1731D /* gaia_container_basicstring.h */,
 				3B6F8FF11888612600C9B60D /* gaia_container_basictree.h */,
+				3B033B50189F4B5B00404E49 /* gaia_container_basictrietree.h */,
 				3BFB145A187785E700A1731D /* gaia_container_basicvector.h */,
 				3BD55C8518802D4E00FE89B5 /* gaia_container_bitset.h */,
 				3BFB145B187785E700A1731D /* gaia_container_buffer.h */,
 				3BD55C6E187F1C3000FE89B5 /* gaia_container_chars.h */,
 				3BD55C64187B055D00FE89B5 /* gaia_container_list.h */,
+				3B033B51189F4B5B00404E49 /* gaia_container_map.h */,
+				3B033B5818A07A6C00404E49 /* gaia_container_multimap.h */,
+				3B033B5918A07A6D00404E49 /* gaia_container_multiset.h */,
 				3BD55BF41879D4D300FE89B5 /* gaia_container_orderless.h */,
 				3B3E55D1188C295F00375D49 /* gaia_container_pair.h */,
 				3BD55C6F187F1C3000FE89B5 /* gaia_container_pool.h */,
@@ -287,7 +285,9 @@
 				3BD55C70187F1C3000FE89B5 /* gaia_container_set.h */,
 				3BD55BF61879D4D300FE89B5 /* gaia_container_stack.h */,
 				3BD55C8618802D5000FE89B5 /* gaia_container_stackbitset.h */,
+				3B033B52189F4B5B00404E49 /* gaia_container_stackstack.h */,
 				3BFB145C187785E700A1731D /* gaia_container_tstring.h */,
+				3B033B53189F4B5B00404E49 /* gaia_container_vari.h */,
 				3BFB145D187785E700A1731D /* gaia_container_vector.h */,
 				3BFB145E187785E700A1731D /* gaia_container_wstring.h */,
 				3BFB1460187785E700A1731D /* gaia_datamodel.h */,
@@ -462,7 +462,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -491,7 +491,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

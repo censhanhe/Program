@@ -351,18 +351,10 @@ namespace GAIA
 			GINL GAIA::GVOID upper_bound(const _DataType& t) const
 			{
 			}
-			GINL _DataType* minimize() const
-			{
-				if(m_pRoot == GNULL)
-					return GNULL;
-				return &this->findmin(m_pRoot);
-			}
-			GINL _DataType* maximize() const
-			{
-				if(m_pRoot == GNULL)
-					return GNULL;
-				return &this->findmax(m_pRoot);
-			}
+			GINL const _DataType* minimize() const{if(m_pRoot == GNULL) return GNULL; return &this->findmin(m_pRoot);}
+			GINL _DataType* minimize(){if(m_pRoot == GNULL) return GNULL; return &this->findmin(m_pRoot);}
+			GINL const _DataType* maximize() const{if(m_pRoot == GNULL) return GNULL; return &this->findmax(m_pRoot);}
+			GINL _DataType* maximize(){if(m_pRoot == GNULL) return GNULL; return &this->findmax(m_pRoot);}
 			GINL BidirectionalIterator front_iterator()
 			{
 				BidirectionalIterator iter;
@@ -423,12 +415,18 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL GAIA::GVOID front_prev(){}
-			GINL GAIA::GVOID back_prev(){}
-			GINL GAIA::GVOID front_mid(){}
-			GINL GAIA::GVOID back_mid(){}
-			GINL GAIA::GVOID front_next(){}
-			GINL GAIA::GVOID back_next(){}
+			GINL GAIA::GVOID front_prev_iterator(){}
+			GINL GAIA::GVOID back_prev_iterator(){}
+			GINL GAIA::GVOID front_mid_iterator(){}
+			GINL GAIA::GVOID back_mid_iterator(){}
+			GINL GAIA::GVOID front_next_iterator(){}
+			GINL GAIA::GVOID back_next_iterator(){}
+			GINL GAIA::GVOID const_front_prev_iterator(){}
+			GINL GAIA::GVOID const_back_prev_iterator(){}
+			GINL GAIA::GVOID const_front_mid_iterator(){}
+			GINL GAIA::GVOID const_back_mid_iterator(){}
+			GINL GAIA::GVOID const_front_next_iterator(){}
+			GINL GAIA::GVOID const_back_next_iterator(){}
 		private:
 			GINL GAIA::GVOID rotate_prev(Node*& pNode)
 			{
@@ -503,13 +501,13 @@ namespace GAIA
 				else
 					return pNode;
 			}
-			GINL const _DataType& findmin(Node* pNode)
+			GINL _DataType& findmin(Node* pNode) const
 			{
 				if(pNode->pPrev == GNULL)
 					return pNode->t;
 				return this->findmin(pNode->pPrev);
 			}
-			GINL const _DataType& findmax(Node* pNode)
+			GINL _DataType& findmax(Node* pNode) const
 			{
 				if(pNode->pNext == GNULL)
 					return pNode->t;
