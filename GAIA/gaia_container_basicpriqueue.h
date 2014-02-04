@@ -8,11 +8,6 @@ namespace GAIA
 		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicPriQueue
 		{
 		public:
-			class Node
-			{
-			public:
-			};
-		public:
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
@@ -20,7 +15,6 @@ namespace GAIA
 			static const _SizeType _groupelementsize = _GroupElementSize;
 		public:
 			typedef BasicPriQueue<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeList;
 			typedef BasicAVLTree<_DataType, _SizeType, _SizeType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
 		public:
 			GINL BasicPriQueue(){this->init();}
@@ -33,19 +27,28 @@ namespace GAIA
 			GINL GAIA::GVOID reserve(const _SizeType& size){return m_avltree.reserve();}
 			GINL GAIA::GVOID clear(){return m_avltree.clear();}
 			GINL GAIA::GVOID destroy(){return m_avltree.destroy();}
-			GINL GAIA::GVOID insert(const _DataType& t);
-			GINL GAIA::GVOID erase(Node& n);
-			GINL GAIA::BL exist(const _DataType& t) const;
-			GINL _SizeType count(const _DataType& t) const;
-			GINL GAIA::GVOID find(const _DataType& t, __NodeList& result) const;
-			GINL GAIA::GVOID push_front(const _DataType& t);
-			GINL GAIA::GVOID pop_front();
-			GINL GAIA::GVOID push_back(const _DataType& t);
-			GINL GAIA::GVOID pop_back();
-			GINL const _DataType& front() const;
-			GINL _DataType& front();
-			GINL const _DataType& back() const;
-			GINL _DataType& back();
+			GINL GAIA::BL insert(const _DataType& t){return m_avltree.insert(t);}
+			GINL GAIA::BL erase(const _DataType& t){return m_avltree.erase(t);}
+			GINL const _DataType* find(const _DataType& t) const{return m_avltree.find(t);}
+			GINL _DataType* find(const _DataType& t){return m_avltree.find(t);}
+			GINL GAIA::BL pop_front()
+			{
+				const _DataType* p = m_avltree.minimize();
+				if(p == GNULL)
+					return GNULL;
+				return m_avltree.erase(*p);
+			}
+			GINL GAIA::BL pop_back()
+			{
+				const _DataType* p = m_avltree.maximize();
+				if(p == GNULL)
+					return GNULL;
+				return m_avltree.erase(*p);
+			}
+			GINL const _DataType& front() const{return *m_avltree.minimize();}
+			GINL _DataType& front(){return *m_avltree.minimize();}
+			GINL const _DataType& back() const{return *m_avltree.maximize();}
+			GINL _DataType& back(){return *m_avltree.maximize();}
 			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
 		private:
 			GINL GAIA::GVOID init(){}

@@ -45,14 +45,14 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					m_pNode = this->SelectNext(m_pNode);
+					m_pNode = this->select_next(m_pNode);
 					return *this;
 				}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ()
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					m_pNode = this->SelectPrev(m_pNode);
+					m_pNode = this->select_prev(m_pNode);
 					return *this;
 				}
 				GINL GAIA::BL operator == (const BidirectionalIterator& src) const
@@ -110,7 +110,7 @@ namespace GAIA
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
-				GINL Node* SelectNext(Node* pNode)
+				GINL Node* select_next(Node* pNode)
 				{
 					if(pNode->pNext != GNULL)
 						pNode = m_pAVLTree->front_node(pNode->pNext);
@@ -137,7 +137,7 @@ namespace GAIA
 					}
 					return pNode;
 				}
-				GINL Node* SelectPrev(Node* pNode)
+				GINL Node* select_prev(Node* pNode)
 				{
 					if(pNode->pPrev != GNULL)
 						pNode = m_pAVLTree->back_node(pNode->pPrev);
@@ -181,14 +181,14 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					m_pNode = this->SelectNext(m_pNode);
+					m_pNode = this->select_next(m_pNode);
 					return *this;
 				}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ()
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					m_pNode = this->SelectPrev(m_pNode);
+					m_pNode = this->select_prev(m_pNode);
 					return *this;
 				}
 				GINL GAIA::BL operator == (const ConstBidirectionalIterator& src) const
@@ -246,10 +246,10 @@ namespace GAIA
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
-				GINL Node* SelectNext(Node* pNode)
+				GINL Node* select_next(Node* pNode)
 				{
 					if(pNode->pNext != GNULL)
-						return this->SelectPrev(pNode->pNext);
+						return this->select_prev(pNode->pNext);
 					else
 					{
 						while(GAIA::ALWAYSTRUE)
@@ -262,17 +262,17 @@ namespace GAIA
 							else
 							{
 								if(pNode == pNode->pParent->pPrev)
-									return this->SelectNext(pNode->pParent);
+									return this->select_next(pNode->pParent);
 								else
 									pNode = pNode->pParent;
 							}
 						}
 					}
 				}
-				GINL Node* SelectPrev(Node* pNode)
+				GINL Node* select_prev(Node* pNode)
 				{
 					if(pNode->pPrev != GNULL)
-						return this->SelectNext(pNode->pPrev);
+						return this->select_next(pNode->pPrev);
 					else
 					{
 						while(GAIA::ALWAYSTRUE)
@@ -285,7 +285,7 @@ namespace GAIA
 							else
 							{
 								if(pNode == pNode->pParent->pNext)
-									return this->SelectPrev(pNode->pParent);
+									return this->select_prev(pNode->pParent);
 								else
 									pNode = pNode->pParent;
 							}

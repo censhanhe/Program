@@ -61,6 +61,19 @@ namespace GAIA
 			else
 				qsort(pBegin, pEnd);
 		}
+		template <typename _DataType> GAIA::BL issorted(_DataType* pBegin, _DataType* pEnd)
+		{
+			GAIA_ASSERT(pBegin != GNULL);
+			GAIA_ASSERT(pEnd != GNULL);
+			GAIA_ASSERT(pBegin < pEnd);
+			while(pBegin != pEnd)
+			{
+				if(*pBegin > *(pBegin + 1))
+					return GAIA::False;
+				++pBegin;
+			}
+			return GAIA::False;
+		}
 	};
 };
 
