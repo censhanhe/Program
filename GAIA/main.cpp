@@ -925,6 +925,23 @@ GAIA::N32 main()
 		END_TEST;
 	}
 	
+	// BasicMap function test.
+	{
+		BEGIN_TEST("<BasicMap function test>");
+		{
+			typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __MapType;
+			__MapType mp;
+			*mp["Arm"] = 30;
+			*mp["Jerry"] = 30;
+			*mp["NeedLight"] = 32;
+			GAIA::N32 n = *mp["Arm"];
+			n = *mp["Jerry"];
+			n = *mp["NeedLight"];
+			n = 0;
+		}
+		END_TEST;
+	}
+	
 	// BasicGraph function test.
 	{
 		BEGIN_TEST("<BasicGraph function test>");

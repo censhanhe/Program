@@ -1,0 +1,25 @@
+	GAIA INTERFACE REFERENCE
+
+		ALGORITHM
+
+			move move_prev move_next inverse swap
+
+			minimize maximize cmp cmp2-4 copy set abs saturate clamp floor ceil
+
+			memcpy memset memcmp
+
+			equal find findp rfind rfindp finds rfinds 
+			bsearch ssearch search 
+			lower_bound upper_bound 
+			index count lower_equal_count upper_equal_count lower_count upper_count
+
+			qsort bsort esort sort issorted
+
+			tolower toupper islower isupper isexistlower isexistupper isalllower isallupper
+			isdigit isalpha ispunctuation isspecial
+			strlen strcpy strcat strcmp stricmp strstr stristr strmch strimch
+			int2str real2str str2int str2real
+
+			unique_order unique_noorder
+
+		CONTAINER

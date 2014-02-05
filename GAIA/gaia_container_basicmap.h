@@ -11,8 +11,21 @@ namespace GAIA
 			class Node
 			{
 			private:
-				_DataType m_data;
+				friend class BasicMap;
+			public:
+				GINL Node(){}
+				GINL Node(const Node& src){this->operator = (src);}
+				GINL ~Node(){}
+				GINL GAIA::BL operator == (const Node& src) const{if(m_key == src.m_key) return GAIA::True; return GAIA::False;}
+				GINL GAIA::BL operator != (const Node& src) const{if(this->operator == (src)) return GAIA::False; return GAIA::True;}
+				GINL GAIA::BL operator >= (const Node& src) const{if(this->operator > (src)) return GAIA::False; return GAIA::True;}
+				GINL GAIA::BL operator <= (const Node& src) const{if(this->operator < (src)) return GAIA::False; return GAIA::True;}
+				GINL GAIA::BL operator > (const Node& src) const{if(m_key > src.m_key) return GAIA::True; return GAIA::False;}
+				GINL GAIA::BL operator < (const Node& src) const{if(m_key < src.m_key) return GAIA::True; return GAIA::False;}
+				GINL Node& operator = (const Node& src){m_key = src.m_key; m_data = src.m_data; return *this;}
+			private:
 				_KeyType m_key;
+				_DataType m_data;
 			};
 		public:
 			typedef _DataType _datatype;
@@ -26,19 +39,41 @@ namespace GAIA
 			typedef BasicMap<_DataType, _KeyType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicAVLTree<Node, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
 		public:
-			GINL BasicMap(){this->init();}
-			GINL BasicMap(const __MyType& src){this->init(); this->operator = (src);}
+			GINL BasicMap(){}
+			GINL BasicMap(const __MyType& src){this->operator = (src);}
 			GINL ~BasicMap(){}
-			GINL GAIA::BL empty() const{}
-			GINL _SizeType size() const{}
-			GINL _SizeType capacity() const{}
-			GINL GAIA::GVOID clear(){}
-			GINL GAIA::GVOID destroy(){}
-			GINL GAIA::BL erase(const _KeyType& key){}
-			GINL _DataType& operator [] (const _KeyType& key){}
-			GINL const _DataType& operator [] (const _KeyType& key) const{}
-		private:
-			GAIA::GVOID init(){}
+			GINL GAIA::BL empty() const{return m_avltree.empty();}
+			GINL _SizeType size() const{return m_avltree.size();}
+			GINL _SizeType capacity() const{return m_avltree.capacity();}
+			GINL GAIA::GVOID clear(){m_avltree.clear();}
+			GINL GAIA::GVOID destroy(){m_avltree.destroy();}
+			GINL GAIA::BL erase(const _KeyType& key)
+			{
+				Node n;
+				n.m_key = key;
+				return m_avltree.erase(n);
+			}
+			GINL _DataType* operator [] (const _KeyType& key)
+			{
+				Node n;
+				n.m_key = key;
+				Node* pNode = m_avltree.find(n);
+				if(pNode == GNULL)
+				{
+					m_avltree.insert(n);
+					pNode = m_avltree.find(n);
+				}
+				return &pNode->m_data;
+			}
+			GINL const _DataType* operator [] (const _KeyType& key) const
+			{
+				Node n;
+				n.m_key = key;
+				Node* pNode = m_avltree.find(n);
+				if(pNode == GNULL)
+					return GNULL;
+				return pNode->m_data;
+			}
 		private:
 			__AVLTreeType m_avltree;
 		};

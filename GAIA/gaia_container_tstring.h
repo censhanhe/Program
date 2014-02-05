@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		class TString : public GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::U32>{public:};
+		typedef GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::U32> TString;
 	};
 };
 
