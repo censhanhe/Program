@@ -68,7 +68,7 @@ GAIA::N32 main()
 #ifdef _DEBUG
 	static const GAIA::N32 SAMPLE_COUNT = 10000;
 #else
-	static const GAIA::N32 SAMPLE_COUNT = 1000000;
+	static const GAIA::N32 SAMPLE_COUNT = 100000;
 #endif
 
 	GAIA::BL bFunctionSuccess = GAIA::True;
@@ -921,6 +921,23 @@ GAIA::N32 main()
 				LINE_TEST("BasicPriQueue insert and pop_front SUCCESSFULLY!");
 			else
 				LINE_TEST("BasicPriQueue insert and pop_front FAILED!");
+		}
+		END_TEST;
+	}
+	
+	// BasicSet function test.
+	{
+		BEGIN_TEST("<BasicSet function test>");
+		{
+			typedef GAIA::CONTAINER::BasicSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __SetType;
+			__SetType st;
+			st.insert(1);
+			st.insert(2);
+			st.insert(3);
+			GAIA::N32 n = *st.find(1);
+			n = *st.find(2);
+			n = *st.find(3);
+			n = 0;
 		}
 		END_TEST;
 	}
