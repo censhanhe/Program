@@ -1258,7 +1258,7 @@ GAIA::N32 main()
 	// Basic factory test 2.
 	{
 	}
-
+		
 	logfile.WriteText("[GAIA TEST END]");
 	logfile.Close();
 

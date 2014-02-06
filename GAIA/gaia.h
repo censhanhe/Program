@@ -10,6 +10,10 @@
 #include	"gaia_assert.h"
 #include	"gaia_error.h"
 
+#include	"gaia_math_basic.h"
+#include 	"gaia_math_random.h"
+#include 	"gaia_math_lerp.h"
+
 #include	"gaia_allocator.h"
 #include	"gaia_allocator_crt.h"
 #include	"gaia_allocator_esg.h"
@@ -72,13 +76,13 @@
 #include	"gaia_container_multimap.h"
 #include	"gaia_container_basicgraph.h"
 #include 	"gaia_container_basicnet.h"
+#include	"gaia_container_basicdictionary.h"
 
 #include 	"gaia_container_vari.h"
+#include 	"gaia_container_ref.h"
 
-#include	"gaia_math_basic.h"
-#include 	"gaia_math_random.h"
-#include 	"gaia_math_lerp.h"
 #include	"gaia_math_cookies.h"
+#include	"gaia_math_coord.h"
 
 #include	"gaia_time.h"
 

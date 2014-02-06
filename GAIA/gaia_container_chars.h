@@ -5,7 +5,9 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, GAIA::UM _Size> class Chars : public BasicChars<_DataType, GAIA::UM, _Size>{public:};
+		typedef BasicChars<GAIA::GCH, GAIA::NM, 512> AChars;
+		typedef BasicChars<GAIA::GWCH, GAIA::NM, 512> WChars;
+		typedef BasicChars<GAIA::GTCH, GAIA::NM, 512> TChars;
 	};
 };
 

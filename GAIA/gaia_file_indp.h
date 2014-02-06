@@ -89,17 +89,17 @@ namespace GAIA
 				return GAIA::False;
 			if(seektype == FILE_SEEK_TYPE_BEGIN)
 			{
-				if(fseek((FILE*)m_pFile, GAIA::ALGORITHM::clamp(offset, 0, m_size), SEEK_SET) == 0)
+				if(fseek((FILE*)m_pFile, GAIA::MATH::clamp(offset, 0, m_size), SEEK_SET) == 0)
 					return GAIA::True;
 			}
 			else if(seektype == FILE_SEEK_TYPE_END)
 			{
-				if(fseek((FILE*)m_pFile, GAIA::ALGORITHM::clamp(m_size - offset, 0, m_size), SEEK_SET) == 0)
+				if(fseek((FILE*)m_pFile, GAIA::MATH::clamp(m_size - offset, 0, m_size), SEEK_SET) == 0)
 					return GAIA::True;
 			}
 			else if(seektype == FILE_SEEK_TYPE_FORWARD)
 			{
-				if(fseek((FILE*)m_pFile, GAIA::ALGORITHM::clamp(m_offset + offset, 0, m_size), SEEK_SET) == 0)
+				if(fseek((FILE*)m_pFile, GAIA::MATH::clamp(m_offset + offset, 0, m_size), SEEK_SET) == 0)
 				{
 					m_offset += offset;
 					return GAIA::True;
@@ -107,7 +107,7 @@ namespace GAIA
 			}
 			else if(seektype == FILE_SEEK_TYPE_BACKWARD)
 			{
-				if(fseek((FILE*)m_pFile, GAIA::ALGORITHM::clamp(m_offset - offset, 0, m_size), SEEK_SET) == 0)
+				if(fseek((FILE*)m_pFile, GAIA::MATH::clamp(m_offset - offset, 0, m_size), SEEK_SET) == 0)
 				{
 					m_offset -= offset;
 					return GAIA::True;

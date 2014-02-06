@@ -195,7 +195,7 @@ namespace GAIA
 			GAIA_ASSERT(pDst != GNULL);
 			GAIA::N64 left = (GAIA::N64)src;
 			_SrcDataType right = src - (_SrcDataType)left;
-			right = GAIA::ALGORITHM::abs(right);
+			right = GAIA::MATH::abs(right);
 			while(right - (_SrcDataType)(GAIA::N64)right != 0)
 				right *= 10.0F;
 			_DstDataType* p = int2str(left, pDst);

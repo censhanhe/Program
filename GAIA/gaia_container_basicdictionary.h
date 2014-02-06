@@ -5,6 +5,31 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
+		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicDictionary
+		{
+		public:
+			typedef _DataType _datatype;
+			typedef _SizeType _sizetype;
+			typedef _SizeIncreaserType _sizeincreasertype;
+		public:
+			static const _SizeType _groupelementsize = _GroupElementSize;
+		public:
+			typedef BasicDictionary<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
+		public:
+			GINL BasicDictionary(){}
+			GINL BasicDictionary(const __MyType& src){}
+			GINL ~BasicDictionary(){}
+			GINL GAIA::BL empty() const;
+			GINL _SizeType size() const;
+			GINL _SizeType capacity() const;
+			GINL GAIA::GVOID resize(const _SizeType& size);
+			GINL GAIA::GVOID reserve(const _SizeType& size);
+			GINL GAIA::GVOID clear();
+			GINL GAIA::GVOID destroy();
+		private:
+			GINL GAIA::GVOID init(){}
+		private:
+		};
 	};
 };
 
