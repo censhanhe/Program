@@ -179,7 +179,7 @@ namespace GAIA
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->destroy();
-				ConstBidirectionalIterator& iter = src.const_front_iterator();
+				ConstBidirectionalIterator iter = src.const_front_iterator();
 				while(!iter.empty())
 				{
 					this->push_back(*iter);

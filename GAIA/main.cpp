@@ -736,6 +736,32 @@ GAIA::N32 main()
 		END_TEST;
 #endif
 	}
+	
+	// BasicMultiAVLTree function test.
+	{
+		typedef GAIA::CONTAINER::BasicMultiAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 32> __MAVLTreeType;
+		__MAVLTreeType mavlt;
+		mavlt.insert(32);
+		mavlt.insert(32);
+		mavlt.clear();
+		mavlt.empty();
+		mavlt.size();
+		mavlt.capacity();
+		mavlt.find(32);
+		mavlt.erase(32);
+		mavlt.erase(32);
+		mavlt.minimize();
+		mavlt.maximize();
+		mavlt.destroy();
+		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+		{
+			mavlt.insert(x);
+			mavlt.insert(x);
+		}
+		__MAVLTreeType::BidirectionalIterator iter = mavlt.front_iterator();
+		while(!iter.empty())
+			++iter;
+	}
 
 	// BasicTrieTree function test.
 	{
