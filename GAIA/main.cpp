@@ -1,3 +1,12 @@
+#if defined(_MSC_VER) && defined(_DEBUG)
+#	ifdef		_DEBUG
+#		define	_CRTDBG_MAP_ALLOC
+#	endif
+#	include	<stdlib.h>
+#	include	<stdio.h>
+#	include	<crtdbg.h>
+#endif
+
 #define PERFORMANCE_COMPARE
 #ifdef PERFORMANCE_COMPARE
 #	include <vector>
@@ -6,8 +15,8 @@
 #	include <iostream>
 #endif
 
-#define BEGIN_TEST(name)	do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0)
-#define END_TEST			do{logfile.WriteText("\r\n\r\n");}while(0)
+#define BEGIN_TEST(name)	do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0) ;PERF_START("TIME-LOST")
+#define END_TEST			PERF_END; do{logfile.WriteText("\r\n\r\n");}while(0)
 #define LINE_TEST(text)		do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n");}while(0)
 #define TEXT_TEST(text)		do{logfile.WriteText(text);}while(0)
 #define PERF_START(name)	uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
@@ -18,6 +27,10 @@
 							LINE_TEST(szPerf);
 
 #include "gaia.h"
+
+#if defined(_MSC_VER) && defined(_DEBUG)
+#	define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#endif
 
 template <typename _DataType> class SNode
 {
@@ -65,6 +78,12 @@ private:
 
 GAIA::N32 main()
 {
+#if defined(_MSC_VER) && defined(_DEBUG)
+#	if defined(_DEBUG)
+		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#	endif
+#endif
+
 #ifdef _DEBUG
 	static const GAIA::N32 SAMPLE_COUNT = 10000;
 #else
@@ -576,23 +595,23 @@ GAIA::N32 main()
 		{
 			typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __ListType;
 			__ListType list;
-			for(GAIA::N32 x = 0; x < 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.push_back(x);
 			__ListType::BidirectionalIterator iter = list.front_iterator();
-			for(GAIA::N32 x = 0; x < 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.erase(iter);
 			list.destroy();
 			list.clear();
-			for(GAIA::N32 x = 0; x < 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.push_front(x);
-			for(GAIA::N32 x = 0; x < 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.pop_front();
 			if(!list.empty())
 				LINE_TEST("list front push pop operator FAILED!");
 			iter = list.front_iterator();
-			for(GAIA::N32 x = 0; x < 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.insert(iter, x);
-			for(GAIA::N32 x = 0; x < 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.pop_back();
 			if(!list.empty())
 				LINE_TEST("list back push pop operator FAILED!");
@@ -739,28 +758,53 @@ GAIA::N32 main()
 	
 	// BasicMultiAVLTree function test.
 	{
+		BEGIN_TEST("<BasicMultiAVLTree function test>");
+
+		bFunctionSuccess = GAIA::True;
 		typedef GAIA::CONTAINER::BasicMultiAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 32> __MAVLTreeType;
 		__MAVLTreeType mavlt;
-		mavlt.insert(32);
-		mavlt.insert(32);
+		if(!mavlt.insert(32))
+			bFunctionSuccess = GAIA::False;
+		if(!mavlt.insert(32))
+			bFunctionSuccess = GAIA::False;
+		if(mavlt.empty())
+			bFunctionSuccess = GAIA::False;
+		if(mavlt.size() != 2)
+			bFunctionSuccess = GAIA::False;
+		if(mavlt.capacity() == 0)
+			bFunctionSuccess = GAIA::False;
+		if(mavlt.find(32) == GNULL)
+			bFunctionSuccess = GAIA::False;
+		if(!mavlt.erase(32))
+			bFunctionSuccess = GAIA::False;
+		if(mavlt.erase(32))
+			bFunctionSuccess = GAIA::False;
 		mavlt.clear();
-		mavlt.empty();
-		mavlt.size();
-		mavlt.capacity();
-		mavlt.find(32);
-		mavlt.erase(32);
-		mavlt.erase(32);
-		mavlt.minimize();
-		mavlt.maximize();
 		mavlt.destroy();
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			mavlt.insert(x);
-			mavlt.insert(x);
+			if(!mavlt.insert(x))
+				bFunctionSuccess = GAIA::False;
+			if(!mavlt.insert(x))
+				bFunctionSuccess = GAIA::False;
 		}
+		GAIA::N32* pMinimize = mavlt.minimize();
+		if(pMinimize == GNULL)
+			bFunctionSuccess = GAIA::False;
+		GAIA::N32* pMaximize = mavlt.maximize();
+		if(pMaximize == GNULL)
+			bFunctionSuccess = GAIA::False;
 		__MAVLTreeType::BidirectionalIterator iter = mavlt.front_iterator();
+		if(iter.empty())
+			bFunctionSuccess = GAIA::False;
 		while(!iter.empty())
 			++iter;
+		if(bFunctionSuccess)
+			LINE_TEST("BasicMultiAVLTree function test SUCCESSFULLY!");
+		else
+			LINE_TEST("BasicMultiAVLTree function test FAILED!");
+
+		END_TEST;
 	}
 
 	// BasicTrieTree function test.
@@ -931,11 +975,10 @@ GAIA::N32 main()
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			{
 				__PriQueueType::_datatype t;
-				*t = GAIA::MATH::random();
+				*t = x;
 				pq.insert(t);
 				vr.push_back(t);
 			}
-			vr.sort();
 			bFunctionSuccess = GAIA::True;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			{
@@ -955,15 +998,68 @@ GAIA::N32 main()
 	{
 		BEGIN_TEST("<BasicSet function test>");
 		{
+			bFunctionSuccess = GAIA::True;
 			typedef GAIA::CONTAINER::BasicSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __SetType;
 			__SetType st;
-			st.insert(1);
-			st.insert(2);
-			st.insert(3);
+			if(!st.insert(1))
+				bFunctionSuccess = GAIA::False;
+			if(!st.insert(2))
+				bFunctionSuccess = GAIA::False;
+			if(!st.insert(3))
+				bFunctionSuccess = GAIA::False;
+			if(st.insert(1))
+				bFunctionSuccess = GAIA::False;
 			GAIA::N32 n = *st.find(1);
+			if(n != 1)
+				bFunctionSuccess = GAIA::False;
 			n = *st.find(2);
+			if(n != 2)
+				bFunctionSuccess = GAIA::False;
 			n = *st.find(3);
+			if(n != 3)
+				bFunctionSuccess = GAIA::False;
 			n = 0;
+			if(bFunctionSuccess)
+				LINE_TEST("BasicSet function test SUCCESSFULLY!");
+			else
+				LINE_TEST("BasicSet function test FAILED!");
+		}
+		END_TEST;
+	}
+
+	// BasicMultiSet function test.
+	{
+		BEGIN_TEST("<BasicMultiSet function test>");
+		{
+			bFunctionSuccess = GAIA::True;
+			typedef GAIA::CONTAINER::BasicMultiSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __MultiSetType;
+			__MultiSetType mst;
+			if(!mst.insert(32))
+				bFunctionSuccess = GAIA::False;
+			if(!mst.insert(32))
+				bFunctionSuccess = GAIA::False;
+			if(!mst.erase(32))
+				bFunctionSuccess = GAIA::False;
+			if(!mst.empty())
+				bFunctionSuccess = GAIA::False;
+			if(mst.size() != 0)
+				bFunctionSuccess = GAIA::False;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				mst.insert(x);
+				mst.insert(x);
+			}
+			GAIA::N32 nSize = mst.size();
+			GAIA::N32 nCapacity = mst.capacity();
+			__MultiSetType::__DataListType lr;
+			if(!mst.find(16, lr))
+				bFunctionSuccess = GAIA::False;
+			mst.clear();
+			mst.destroy();
+			if(bFunctionSuccess)
+				LINE_TEST("BasicMultiSet function test SUCCESSFULLY!");
+			else
+				LINE_TEST("BasicMultiSet function test FAILED!");
 		}
 		END_TEST;
 	}
@@ -972,15 +1068,70 @@ GAIA::N32 main()
 	{
 		BEGIN_TEST("<BasicMap function test>");
 		{
+			bFunctionSuccess = GAIA::True;
 			typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __MapType;
 			__MapType mp;
 			*mp["Arm"] = 30;
-			*mp["Jerry"] = 30;
+			*mp["Box"] = 30;
 			*mp["NeedLight"] = 32;
 			GAIA::N32 n = *mp["Arm"];
-			n = *mp["Jerry"];
+			if(n != 30)
+				bFunctionSuccess = GAIA::False;
+			n = *mp["Box"];
+			if(n != 30)
+				bFunctionSuccess = GAIA::False;
 			n = *mp["NeedLight"];
+			if(n != 32)
+				bFunctionSuccess = GAIA::False;
 			n = 0;
+			mp.erase("Arm");
+			mp.clear();
+			mp.destroy();
+			if(bFunctionSuccess)
+				LINE_TEST("BasicMap function test SUCCESSFULLY!");
+			else
+				LINE_TEST("BasicMap function test FAILED!");
+
+			{
+				bFunctionSuccess = GAIA::True;
+				typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __MapType;
+				__MapType mp;
+				GAIA::MATH::random_seed(0);
+				for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				{
+					GAIA::N32 n = (GAIA::MATH::random() | (GAIA::MATH::random() << 16));
+					*mp[n] = n;
+				}
+				GAIA::MATH::random_seed(0);
+				for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				{
+					GAIA::N32 n = (GAIA::MATH::random() | (GAIA::MATH::random() << 16));
+					if(*mp[n] != n)
+						bFunctionSuccess = GAIA::False;
+				}
+			}
+		}
+		END_TEST;
+	}
+
+	// BasicMultiMap function test.
+	{
+		BEGIN_TEST("<BasicMultiMap function test>");
+		{
+			bFunctionSuccess = GAIA::True;
+			typedef GAIA::CONTAINER::BasicMultiMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __MultiMapType;
+			__MultiMapType mmp;
+			mmp.insert("Arm", 30);
+			mmp.insert("Arm", 31);
+			mmp.insert("NeedLight", 32);
+			mmp.insert("Box", 30);
+			mmp.erase("Arm");
+			mmp.clear();
+			mmp.destroy();
+			if(bFunctionSuccess)
+				LINE_TEST("BasicMultiMap function test SUCCESSFULLY!");
+			else
+				LINE_TEST("BasicMultiMap function test FAILED!");
 		}
 		END_TEST;
 	}

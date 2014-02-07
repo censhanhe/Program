@@ -17,6 +17,7 @@ namespace GAIA
 		public:
 			typedef BasicMultiSet<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicMultiAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MultiAVLTreeType;
+			typedef BasicVector<Pair<_DataType, _SizeType>, _SizeType, _SizeIncreaserType> __DataListType;
 		public:
 			GINL BasicMultiSet(){}
 			GINL BasicMultiSet(const __MyType& src){this->operator = (src);}
@@ -30,7 +31,7 @@ namespace GAIA
 			GINL GAIA::BL erase(const _DataType& t){return m_mavltree.erase(t);}
 			GINL GAIA::BL erase(const Pair<_DataType, _SizeType>& t){return m_mavltree.erase(t);}
 			GINL _SizeType count(const _DataType& t) const{return m_mavltree.count(t);}
-			GINL GAIA::BL find(const _DataType& t, BasicVector<Pair<_DataType, _SizeType>, _SizeType, _SizeIncreaserType>& result) const{}
+			GINL GAIA::BL find(const _DataType& t, __DataListType& result) const{return m_mavltree.find(t, result);}
 			GINL __MyType& operator = (const __MyType& src){m_mavltree = src.m_mavltree; return *this;}
 		private:
 		private:

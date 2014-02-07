@@ -55,6 +55,7 @@ namespace GAIA
 		public:
 			typedef BasicMultiAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicAVLTree<Node, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
+			typedef BasicVector<Pair<_DataType, _SizeType>, _SizeType, _SizeIncreaserType> __DataListType;
 		public:
 			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
 			{
@@ -300,7 +301,7 @@ namespace GAIA
 					return GAIA::False;
 				if(t.back() >= pN->m_datas.size())
 					return GAIA::False;
-				Node::__DataListType::BidirectionalIterator iter = pN->m_datas.front_iterator();
+				typename Node::__DataListType::BidirectionalIterator iter = pN->m_datas.front_iterator();
 				iter += t.back();
 				pN->m_datas.erase(iter);
 				return GAIA::True;
@@ -325,6 +326,24 @@ namespace GAIA
 				if(pN == GNULL)
 					return GNULL;
 				return &pN->m_datas.front();
+			}
+			GINL GAIA::BL find(const _DataType& t, __DataListType& result) const
+			{
+				const Node* pN = this->find_node(t);
+				if(pN == GNULL)
+					return GNULL;
+				typename Node::__DataListType::ConstBidirectionalIterator iter = pN->m_datas.const_front_iterator();
+				if(iter.empty())
+					return GAIA::False;
+				_SizeType index = 0;
+				while(!iter.empty())
+				{
+					Pair<_DataType, _SizeType> pr(*iter, index);
+					result.push_back(pr);
+					index++;
+					++iter;
+				}
+				return GAIA::True;
 			}
 			GINL GAIA::GVOID lower_bound(const _DataType& t) const{}
 			GINL GAIA::GVOID upper_bound(const _DataType& t) const{}
@@ -403,11 +422,11 @@ namespace GAIA
 			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
 		private:
 			GINL GAIA::GVOID init(){}
-			GINL Node* find_node(const _DataType& t)
+			GINL Node* find_node(const _DataType& t) const
 			{
 				Node n;
 				n.m_datas.push_back(t);
-				return m_avltree.find(n);
+				return const_cast<Node*>(m_avltree.find(n));
 			}
 		private:
 			__AVLTreeType m_avltree;

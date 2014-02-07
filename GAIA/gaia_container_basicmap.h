@@ -17,9 +17,9 @@ namespace GAIA
 				GINL Node(const Node& src){this->operator = (src);}
 				GINL ~Node(){}
 				GINL GAIA::BL operator == (const Node& src) const{if(m_key == src.m_key) return GAIA::True; return GAIA::False;}
-				GINL GAIA::BL operator != (const Node& src) const{if(this->operator == (src)) return GAIA::False; return GAIA::True;}
-				GINL GAIA::BL operator >= (const Node& src) const{if(this->operator > (src)) return GAIA::False; return GAIA::True;}
-				GINL GAIA::BL operator <= (const Node& src) const{if(this->operator < (src)) return GAIA::False; return GAIA::True;}
+				GINL GAIA::BL operator != (const Node& src) const{return !(this->operator == (src));}
+				GINL GAIA::BL operator >= (const Node& src) const{return !(this->operator > (src));}
+				GINL GAIA::BL operator <= (const Node& src) const{return !(this->operator < (src));}
 				GINL GAIA::BL operator > (const Node& src) const{if(m_key > src.m_key) return GAIA::True; return GAIA::False;}
 				GINL GAIA::BL operator < (const Node& src) const{if(m_key < src.m_key) return GAIA::True; return GAIA::False;}
 				GINL Node& operator = (const Node& src){m_key = src.m_key; m_data = src.m_data; return *this;}
@@ -74,6 +74,7 @@ namespace GAIA
 					return GNULL;
 				return pNode->m_data;
 			}
+			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
 		private:
 			__AVLTreeType m_avltree;
 		};
