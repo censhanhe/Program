@@ -237,6 +237,12 @@ namespace GAIA
 				n.m_datas.push_back(t);
 				return m_avltree.erase(n);
 			}
+			GINL GAIA::BL erase(const Pair<_DataType, _SizeType>& t)
+			{
+			}
+			GINL _SizeType count() const
+			{
+			}
 			GINL _DataType* find(const _DataType& t)
 			{
 				Node* pN = this->find_node(t);

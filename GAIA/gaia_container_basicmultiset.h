@@ -16,23 +16,25 @@ namespace GAIA
 			static const _SizeType _groupelementsize = _GroupElementSize;
 		public:
 			typedef BasicMultiSet<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
+			typedef BasicMultiAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MultiAVLTreeType;
 		public:
-			GINL BasicMultiSet(){this->init();}
-			GINL BasicMultiSet(const __MyType& src){this->init(); this->operator = (src);}
+			GINL BasicMultiSet(){}
+			GINL BasicMultiSet(const __MyType& src){this->operator = (src);}
 			GINL ~BasicMultiSet(){}
-			GINL GAIA::BL empty() const{}
-			GINL _SizeType size() const{}
-			GINL _SizeType capacity() const{}
-			GINL GAIA::GVOID clear(){}
-			GINL GAIA::GVOID destroy(){}
-			GINL GAIA::BL insert(const _DataType& t){}
-			GINL GAIA::BL erase(const _DataType& t){}
-			GINL GAIA::BL erase(const Pair<_DataType, _SizeType>& tp){}
-			GINL _SizeType count(const _DataType& t){}
+			GINL GAIA::BL empty() const{return m_mavltree.empty();}
+			GINL _SizeType size() const{return m_mavltree.size();}
+			GINL _SizeType capacity() const{return m_mavltree.capacity();}
+			GINL GAIA::GVOID clear(){m_mavltree.clear();}
+			GINL GAIA::GVOID destroy(){m_mavltree.destroy();}
+			GINL GAIA::BL insert(const _DataType& t){return m_mavltree.insert(t);}
+			GINL GAIA::BL erase(const _DataType& t){return m_mavltree.erase(t);}
+			GINL GAIA::BL erase(const Pair<_DataType, _SizeType>& t){return m_mavltree.erase(t);}
+			GINL _SizeType count(const _DataType& t) const{return m_mavltree.count(t);}
 			GINL GAIA::BL find(const _DataType& t, BasicVector<Pair<_DataType, _SizeType>, _SizeType, _SizeIncreaserType>& result) const{}
-			GINL __MyType& operator = (const __MyType& src){return *this;}
+			GINL __MyType& operator = (const __MyType& src){m_mavltree = src.m_mavltree; return *this;}
 		private:
 		private:
+			__MultiAVLTreeType m_mavltree;
 		};
 	};
 };
