@@ -14,10 +14,9 @@ namespace GAIA
 			GINL virtual const _DataType& operator * () const = 0;
 			GINL virtual Iterator& operator ++ () = 0;
 			GINL virtual Iterator& operator -- () = 0;
-
 		private:
-			GINL virtual Iterator& operator ++ (N32) = 0;
-			GINL virtual Iterator& operator -- (N32) = 0;
+			GINL virtual Iterator& operator ++ (GAIA::N32) = 0;
+			GINL virtual Iterator& operator -- (GAIA::N32) = 0;
 		};
 
 		template <typename _DataType> class ConstIterator
@@ -28,10 +27,9 @@ namespace GAIA
 			GINL virtual const _DataType& operator * () const = 0;
 			GINL virtual ConstIterator& operator ++ () = 0;
 			GINL virtual ConstIterator& operator -- () = 0;
-
 		private:
-			GINL virtual ConstIterator& operator ++ (N32) = 0;
-			GINL virtual ConstIterator& operator -- (N32) = 0;
+			GINL virtual ConstIterator& operator ++ (GAIA::N32) = 0;
+			GINL virtual ConstIterator& operator -- (GAIA::N32) = 0;
 		};
 	};
 };

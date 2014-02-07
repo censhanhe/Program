@@ -26,6 +26,36 @@ namespace GAIA
 				GINL virtual const _DataType& operator * () const{GAIA_ASSERT(m_pVector != GNULL); return (*m_pVector)[m_index];}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (){GAIA_ASSERT(m_pVector != GNULL); if(m_index < m_pVector->size()) ++m_index; return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (){GAIA_ASSERT(m_pVector != GNULL); if(m_index > 0) --m_index; return *this;}
+				GINL BidirectionalIterator& operator += (const _SizeType& c)
+				{
+					if(m_pVector == GNULL)
+						return *this;
+					m_index += c;
+					if(m_index >= m_pVector->size())
+						m_index = m_pVector->size();
+					return *this;
+				}
+				GINL BidirectionalIterator& operator -= (const _SizeType& c)
+				{
+					if(m_pVector == GNULL)
+						return *this;
+					m_index -= c;
+					if(m_index < 0)
+						m_index = 0;
+					return *this;
+				}
+				GINL BidirectionalIterator operator + (const _SizeType& c) const
+				{
+					BidirectionalIterator ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL BidirectionalIterator operator - (const _SizeType& c) const
+				{
+					BidirectionalIterator ret = *this;
+					ret -= c;
+					return ret;
+				}
 				GINL GAIA::BL operator == (const BidirectionalIterator& src) const{GAIA_ASSERT(m_pVector != GNULL); GAIA_ASSERT(m_pVector == src.m_pVector); if(m_index == src.m_index) return GAIA::True; return GAIA::False;}
 				GINL GAIA::BL operator != (const BidirectionalIterator& src) const{GAIA_ASSERT(m_pVector != GNULL); GAIA_ASSERT(m_pVector == src.m_pVector); if(*this == src) return GAIA::False; return GAIA::True;}
 				GINL GAIA::BL operator >= (const BidirectionalIterator& src) const{GAIA_ASSERT(m_pVector != GNULL); GAIA_ASSERT(m_pVector == src.m_pVector); if(m_index >= src.m_index) return GAIA::True; return GAIA::False;}
@@ -51,6 +81,36 @@ namespace GAIA
 				GINL virtual const _DataType& operator * () const{GAIA_ASSERT(m_pVector != GNULL); return (*m_pVector)[m_index];}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){GAIA_ASSERT(m_pVector != GNULL); if(m_index < m_pVector->size()) +m_index; return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){GAIA_ASSERT(m_pVector != GNULL); if(m_index > 0) --m_index; return *this;}
+				GINL ConstBidirectionalIterator& operator += (const _SizeType& c)
+				{
+					if(m_pVector == GNULL)
+						return *this;
+					m_index += c;
+					if(m_index >= m_pVector->size())
+						m_index = m_pVector->size();
+					return *this;
+				}
+				GINL ConstBidirectionalIterator& operator -= (const _SizeType& c)
+				{
+					if(m_pVector == GNULL)
+						return *this;
+					m_index -= c;
+					if(m_index < 0)
+						m_index = 0;
+					return *this;
+				}
+				GINL ConstBidirectionalIterator operator + (const _SizeType& c) const
+				{
+					ConstBidirectionalIterator ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL ConstBidirectionalIterator operator - (const _SizeType& c) const
+				{
+					ConstBidirectionalIterator ret = *this;
+					ret -= c;
+					return ret;
+				}
 				GINL GAIA::BL operator == (const ConstBidirectionalIterator& src) const{GAIA_ASSERT(m_pVector != GNULL); GAIA_ASSERT(m_pVector == src.m_pVector); if(m_index == src.m_index) return GAIA::True; return GAIA::False;}
 				GINL GAIA::BL operator != (const ConstBidirectionalIterator& src) const{GAIA_ASSERT(m_pVector != GNULL); GAIA_ASSERT(m_pVector == src.m_pVector); if(*this == src) return GAIA::False; return GAIA::True;}
 				GINL GAIA::BL operator >= (const ConstBidirectionalIterator& src) const{GAIA_ASSERT(m_pVector != GNULL); GAIA_ASSERT(m_pVector == src.m_pVector); if(m_index >= src.m_index) return GAIA::True; return GAIA::False;}

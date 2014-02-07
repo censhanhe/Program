@@ -334,6 +334,10 @@
 								RelativePath=".\gaia_container_basicbuffer.h"
 								>
 							</File>
+							<File
+								RelativePath=".\gaia_container_buffer.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="CHARS"
@@ -383,7 +387,15 @@
 								>
 							</File>
 							<File
+								RelativePath=".\gaia_container_basicmultimap.h"
+								>
+							</File>
+							<File
 								RelativePath=".\gaia_container_map.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_multimap.h"
 								>
 							</File>
 						</Filter>
@@ -435,6 +447,10 @@
 							Name="QUEUE"
 							>
 							<File
+								RelativePath=".\gaia_container_basicmultipriqueue.h"
+								>
+							</File>
+							<File
 								RelativePath=".\gaia_container_basicpriqueue.h"
 								>
 							</File>
@@ -451,7 +467,15 @@
 							Name="SET"
 							>
 							<File
+								RelativePath=".\gaia_container_basicmultiset.h"
+								>
+							</File>
+							<File
 								RelativePath=".\gaia_container_basicset.h"
+								>
+							</File>
+							<File
+								RelativePath=".\gaia_container_multiset.h"
 								>
 							</File>
 							<File
@@ -519,6 +543,10 @@
 								>
 							</File>
 							<File
+								RelativePath=".\gaia_container_basicmultiavltree.h"
+								>
+							</File>
+							<File
 								RelativePath=".\gaia_container_basictree.h"
 								>
 							</File>
@@ -552,6 +580,14 @@
 							>
 							<File
 								RelativePath=".\gaia_container_basicnet.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="REF"
+							>
+							<File
+								RelativePath=".\gaia_container_ref.h"
 								>
 							</File>
 						</Filter>
@@ -681,6 +717,14 @@
 						>
 						<File
 							RelativePath=".\gaia_math_lerp.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="COORD"
+						>
+						<File
+							RelativePath=".\gaia_math_coord.h"
 							>
 						</File>
 					</Filter>

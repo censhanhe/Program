@@ -15,6 +15,8 @@ namespace GAIA
 			{
 			private:
 				friend class BasicMultiAVLTree;
+				friend class BidirectionalIterator;
+				friend class ConstBidirectionalIterator;
 			public:
 				typedef BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __DataListType;
 			public:
@@ -85,6 +87,36 @@ namespace GAIA
 							m_iter_d = (*m_iter_n).m_datas.back_iterator();
 					}
 					return *this;
+				}
+				GINL BidirectionalIterator& operator += (const _SizeType& c)
+				{
+					for(_SizeType x = 0; x < c; ++x)
+					{
+						if(!this->empty())
+							++(*this);
+					}
+					return *this;
+				}
+				GINL BidirectionalIterator& operator -= (const _SizeType& c)
+				{
+					for(_SizeType x = 0; x < c; ++x)
+					{
+						if(!this->empty())
+							--(*this);
+					}
+					return *this;
+				}
+				GINL BidirectionalIterator operator + (const _SizeType& c) const
+				{
+					BidirectionalIterator ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL BidirectionalIterator operator - (const _SizeType& c) const
+				{
+					BidirectionalIterator ret = *this;
+					ret -= c;
+					return ret;
 				}
 				GINL GAIA::BL operator == (const BidirectionalIterator& src) const
 				{
@@ -162,6 +194,30 @@ namespace GAIA
 					}
 					return *this;
 				}
+				GINL ConstBidirectionalIterator& operator += (const _SizeType& c)
+				{
+					for(_SizeType x = 0; x < c; ++x)
+						++(*this);
+					return *this;
+				}
+				GINL ConstBidirectionalIterator& operator -= (const _SizeType& c)
+				{
+					for(_SizeType x = 0; x < c; ++x)
+						--(*this);
+					return *this;
+				}
+				GINL ConstBidirectionalIterator operator + (const _SizeType& c) const
+				{
+					ConstBidirectionalIterator ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL ConstBidirectionalIterator operator - (const _SizeType& c) const
+				{
+					ConstBidirectionalIterator ret = *this;
+					ret -= c;
+					return ret;
+				}
 				GINL GAIA::BL operator == (const ConstBidirectionalIterator& src) const
 				{
 					if(m_iter_n == src.m_iter_n && m_iter_d == src.m_iter_d)
@@ -205,7 +261,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
 			private:
 				typename __AVLTreeType::ConstBidirectionalIterator m_iter_n;
-				typename Node::_DataListType::ConstBidirectionalIterator m_iter_d;
+				typename Node::__DataListType::ConstBidirectionalIterator m_iter_d;
 			};
 		public:
 			GINL BasicMultiAVLTree(){this->init();}
@@ -239,9 +295,22 @@ namespace GAIA
 			}
 			GINL GAIA::BL erase(const Pair<_DataType, _SizeType>& t)
 			{
+				Node* pN = this->find_node(t.front());
+				if(pN == GNULL)
+					return GAIA::False;
+				if(t.back() >= pN->m_datas.size())
+					return GAIA::False;
+				Node::__DataListType::BidirectionalIterator iter = pN->m_datas.front_iterator();
+				iter += t.back();
+				pN->m_datas.erase(iter);
+				return GAIA::True;
 			}
-			GINL _SizeType count() const
+			GINL _SizeType count(const _DataType& t) const
 			{
+				Node* pN = this->find_node(t);
+				if(pN == GNULL)
+					return 0;
+				return pN->m_datas.size();
 			}
 			GINL _DataType* find(const _DataType& t)
 			{

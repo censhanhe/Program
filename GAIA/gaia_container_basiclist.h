@@ -37,6 +37,36 @@ namespace GAIA
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (){m_pNode = m_pNode->pNext; return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (){m_pNode = m_pNode->pPrev; return *this;}
+				GINL BidirectionalIterator& operator += (const _SizeType& c)
+				{
+					for(_SizeType x = 0; x < c; ++x)
+					{
+						if(!this->empty())
+							++(*this);
+					}
+					return *this;
+				}
+				GINL BidirectionalIterator& operator -= (const _SizeType& c)
+				{
+					for(_SizeType x = 0; x < c; ++x)
+					{
+						if(!this->empty())
+							--(*this);
+					}
+					return *this;
+				}
+				GINL BidirectionalIterator operator + (const _SizeType& c) const
+				{
+					BidirectionalIterator ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL BidirectionalIterator operator - (const _SizeType& c) const
+				{
+					BidirectionalIterator ret = *this;
+					ret -= c;
+					return ret;
+				}
 				GINL GAIA::BL operator == (const BidirectionalIterator& src) const{if(m_pNode == src.m_pNode) return GAIA::True; return GAIA::False;}
 				GINL GAIA::BL operator != (const BidirectionalIterator& src) const{return !(this->operator == (src));}
 				GINL GAIA::BL operator >= (const BidirectionalIterator& src) const{}
@@ -61,6 +91,30 @@ namespace GAIA
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){m_pNode = m_pNode->pNext; return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){m_pNode = m_pNode->pPrev; return *this;}
+				GINL ConstBidirectionalIterator& operator += (const _SizeType& c)
+				{
+					for(_SizeType x = 0; x < c; ++x)
+						++(*this);
+					return *this;
+				}
+				GINL ConstBidirectionalIterator& operator -= (const _SizeType& c)
+				{
+					for(_SizeType x = 0; x < c; ++x)
+						--(*this);
+					return *this;
+				}
+				GINL ConstBidirectionalIterator operator + (const _SizeType& c) const
+				{
+					ConstBidirectionalIterator ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL ConstBidirectionalIterator operator - (const _SizeType& c) const
+				{
+					ConstBidirectionalIterator ret = *this;
+					ret -= c;
+					return ret;
+				}
 				GINL GAIA::BL operator == (const ConstBidirectionalIterator& src) const{if(m_pNode == src.m_pNode) return GAIA::True; return GAIA::False;}
 				GINL GAIA::BL operator != (const ConstBidirectionalIterator& src) const{return !(this->operator == (src));}
 				GINL GAIA::BL operator >= (const ConstBidirectionalIterator& src) const{}
