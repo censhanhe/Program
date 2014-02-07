@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace FRAMEWORK
 	{
-		class Instance
+		class Instance : public Object
 		{
 		private:
 			friend class Factory;

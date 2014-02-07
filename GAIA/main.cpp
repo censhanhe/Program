@@ -1056,6 +1056,8 @@ GAIA::N32 main()
 				bFunctionSuccess = GAIA::False;
 			mst.clear();
 			mst.destroy();
+			nSize = 0;
+			nCapacity = 0;
 			if(bFunctionSuccess)
 				LINE_TEST("BasicMultiSet function test SUCCESSFULLY!");
 			else

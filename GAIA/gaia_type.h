@@ -121,6 +121,12 @@ namespace GAIA
 			GAIA::U32 u[4];
 		};
 	};
+	/* Class Object. It's the all class's base(except high-performance container and math class. */
+	class Object
+	{
+	public:
+		virtual ~Object(){}
+	};
 	/* Common constants. */
 	#define GNULL 0
 	/* Undefine origin type. */
@@ -141,7 +147,7 @@ namespace GAIA
 #	endif
 #endif
 
-	/* Global constants */
+	/* Global constants. */
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSTRUE = GAIA::True;
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSFALSE = GAIA::False;
 }
