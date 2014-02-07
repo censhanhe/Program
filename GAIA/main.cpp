@@ -13,10 +13,15 @@
 #	include <set>
 #	include <algorithm>
 #	include <iostream>
+#	define PERF_PRINT_NAME(name) std::cout<<name<<std::endl;
+#	define PERF_PRINT_TIME std::cout<<'\t'<<"TIME-LOST="<<uPerfEnd - uPerfStart<<"(MS)"<<std::endl;
+#else
+#	define PERF_PRINT_NAME(name)
+#	define PERF_PRINT_TIME
 #endif
 
-#define BEGIN_TEST(name)	do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0) ;PERF_START("TIME-LOST")
-#define END_TEST			PERF_END; do{logfile.WriteText("\r\n\r\n");}while(0)
+#define BEGIN_TEST(name)	PERF_PRINT_NAME(name); do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0) ;PERF_START("TIME-LOST")
+#define END_TEST			PERF_END; PERF_PRINT_TIME; do{logfile.WriteText("\r\n\r\n");}while(0)
 #define LINE_TEST(text)		do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n");}while(0)
 #define TEXT_TEST(text)		do{logfile.WriteText(text);}while(0)
 #define PERF_START(name)	uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
