@@ -5,27 +5,17 @@ namespace GAIA
 {
 	namespace FRAMEWORK
 	{
-		class ID
+		template <GAIA::NM _ElementSize> class ID
 		{
 		public:
-			GINL ID();
-			GINL ~ID();
-			GINL GAIA::GVOID Invalid();
-			GINL GAIA::BL IsInvalid() const;
-			GINL GAIA::BL IsStatic() const;
-			GINL  const ID& operator = (const ID& src);
-			GINL  const GAIA::BL operator == (const ID& src) const;
-			GINL  const GAIA::BL operator != (const ID& src) const;
-			GINL  const GAIA::BL operator >= (const ID& src) const;
-			GINL  const GAIA::BL operator <= (const ID& src) const;
-			GINL  const GAIA::BL operator > (const ID& src) const;
-			GINL  const GAIA::BL operator < (const ID& src) const;
+			static const GAIA::NM _elementsize = _ElementSize;
+		public:
+			GINL ID(){}
+			GINL ~ID(){}
+			GINL GAIA::GVOID invalid();
+			GINL GAIA::BL isinvalid() const;
 		private:
-			GAIA::U32 m_uIndex0;
-			GAIA::U32 m_uIndex1;
-			GAIA::U32 m_uIndex2;
-			GAIA::U16 m_uGroup;
-			GAIA::U16 m_uStaticCheckField;
+			GAIA::U8 m_eles[_ElementSize];
 		};
 	};
 };

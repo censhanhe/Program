@@ -286,15 +286,15 @@ GAIA::N32 main()
 			ba.clear();
 			
 			{
-				typedef GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::N32, 10000> __ArrayType;
+				typedef GAIA::CONTAINER::BasicArray<GAIA::N64, GAIA::N64, 10000> __ArrayType;
 				__ArrayType v;
-				for(GAIA::N32 x = 0; x < 10000; ++x)
+				for(GAIA::N64 x = 0; x < 10000; ++x)
 				{
 					v.push_back(GAIA::MATH::random()%100);
 					std::cout<<v[v.size()-1]<<" ";
 				}
 				v.sort();
-				GAIA::N32 nDrop = v.unique();
+				GAIA::N64 nDrop = v.unique();
 				nDrop = 0;
 				v.sort();
 				for(GAIA::N32 x = 0; x < v.size(); ++x)
@@ -769,6 +769,31 @@ GAIA::N32 main()
 		else
 			LINE_TEST("Random data insertion and erase AVL-Tree function check FAILED!");
 
+		{
+			typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __AVLTreeType;
+			__AVLTreeType av;
+			for(GAIA::N32 x = 0; x < 100; ++x)
+				av.insert(x);
+			__AVLTreeType::BidirectionalIterator iter = av.lower_bound(32);
+			GAIA::N32 nCount = 0;
+			while(!iter.empty())
+			{
+				++iter;
+				++nCount;
+			}
+			if(nCount != 68)
+				LINE_TEST("Lower bound function FAILED!");
+			iter = av.upper_bound(32);
+			nCount = 0;
+			while(!iter.empty())
+			{
+				--iter;
+				++nCount;
+			}
+			if(nCount != 33)
+				LINE_TEST("Upper bound function FAILED!");
+		}
+		
 		END_TEST;
 	}
 

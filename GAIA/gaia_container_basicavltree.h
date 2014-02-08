@@ -399,11 +399,61 @@ namespace GAIA
 					return GNULL;
 				return this->find_node(m_pRoot, t);
 			}
-			GINL GAIA::GVOID lower_bound(const _DataType& t) const
+			GINL BidirectionalIterator lower_bound(const _DataType& t)
 			{
+				BidirectionalIterator iter;
+				if(m_pRoot == GNULL)
+				{
+					iter.m_pNode = GNULL;
+					iter.m_pAVLTree = GNULL;
+					return iter;
+				}
+				iter.m_pNode = this->lower_bound_node(m_pRoot, t);
+				if(iter.m_pNode != GNULL)
+					iter.m_pAVLTree = this;
+				return iter;
 			}
-			GINL GAIA::GVOID upper_bound(const _DataType& t) const
+			GINL BidirectionalIterator upper_bound(const _DataType& t)
 			{
+				BidirectionalIterator iter;
+				if(m_pRoot == GNULL)
+				{
+					iter.m_pNode = GNULL;
+					iter.m_pAVLTree = GNULL;
+					return iter;
+				}
+				iter.m_pNode = this->upper_bound_node(m_pRoot, t);
+				if(iter.m_pNode != GNULL)
+					iter.m_pAVLTree = this;
+				return iter;
+			}
+			GINL ConstBidirectionalIterator lower_bound(const _DataType& t) const
+			{
+				ConstBidirectionalIterator iter;
+				if(m_pRoot == GNULL)
+				{
+					iter.m_pNode = GNULL;
+					iter.m_pAVLTree = GNULL;
+					return iter;
+				}
+				iter.m_pNode = this->lower_bound_node(m_pRoot, t);
+				if(iter.m_pNode != GNULL)
+					iter.m_pAVLTree = this;
+				return iter;
+			}
+			GINL ConstBidirectionalIterator upper_bound(const _DataType& t) const
+			{
+				ConstBidirectionalIterator iter;
+				if(m_pRoot == GNULL)
+				{
+					iter.m_pNode = GNULL;
+					iter.m_pAVLTree = GNULL;
+					return iter;
+				}
+				iter.m_pNode = this->upper_bound_node(m_pRoot, t);
+				if(iter.m_pNode != GNULL)
+					iter.m_pAVLTree = this;
+				return iter;
 			}
 			GINL const _DataType* minimize() const{if(m_pRoot == GNULL) return GNULL; return &this->findmin(m_pRoot);}
 			GINL _DataType* minimize(){if(m_pRoot == GNULL) return GNULL; return &this->findmin(m_pRoot);}
@@ -682,6 +732,34 @@ namespace GAIA
 				else
 					return &pNode->t;
 				return GNULL;
+			}
+			GINL Node* lower_bound_node(Node* pNode, const _DataType& t) const
+			{
+				if(pNode == GNULL)
+					return GNULL;
+				if(pNode->t < t)
+					return this->lower_bound_node(pNode->pNext, t);
+				else
+				{
+					Node* pNew = this->lower_bound_node(pNode->pPrev, t);
+					if(pNew == GNULL)
+						return pNode;
+					return pNew;
+				}
+			}
+			GINL Node* upper_bound_node(Node* pNode, const _DataType& t) const
+			{
+				if(pNode == GNULL)
+					return GNULL;
+				if(pNode->t > t)
+					return this->upper_bound_node(pNode->pPrev, t);
+				else
+				{
+					Node* pNew = this->upper_bound_node(pNode->pNext, t);
+					if(pNew == GNULL)
+						return pNode;
+					return pNew;
+				}
 			}
 		private:
 			Node* m_pRoot;
