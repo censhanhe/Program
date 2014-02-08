@@ -238,6 +238,16 @@ namespace GAIA
 				m_size = newsize;
 				return ret;
 			}
+			GINL _SizeType unique_noorder()
+			{
+				if(this->empty())
+					return 0;
+				_DataType* p = GAIA::ALGORITHM::unique_noorder(this->front_ptr(), this->back_ptr());
+				_SizeType newsize = static_cast<_SizeType>(p - this->front_ptr()) + 1;
+				_SizeType ret = m_size - newsize;
+				m_size = newsize;
+				return ret;
+			}
 			GINL _SizeType search(const _DataType& t)
 			{
 				if(this->size() <= 0)

@@ -51,6 +51,15 @@ namespace GAIA
 				m_size = p - this->front_ptr() + 1;
 				return ret;
 			}
+			GINL _SizeType unique_noorder()
+			{
+				if(this->empty())
+					return 0;
+				_DataType* p = GAIA::ALGORITHM::unique_noorder(this->front_ptr(), this->back_ptr());
+				_SizeType ret = m_size - (p - this->front_ptr() + 1);
+				m_size = p - this->front_ptr() + 1;
+				return ret;
+			}
 			GINL _SizeType search(const _DataType& t) const
 			{
 				if(this->size() <= 0)

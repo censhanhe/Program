@@ -284,6 +284,22 @@ GAIA::N32 main()
 			ba.sort();
 			ba.erase(0);
 			ba.clear();
+			
+			{
+				typedef GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::N32, 10000> __ArrayType;
+				__ArrayType v;
+				for(GAIA::N32 x = 0; x < 10000; ++x)
+				{
+					v.push_back(GAIA::MATH::random()%100);
+					std::cout<<v[v.size()-1]<<" ";
+				}
+				v.sort();
+				GAIA::N32 nDrop = v.unique();
+				nDrop = 0;
+				v.sort();
+				for(GAIA::N32 x = 0; x < v.size(); ++x)
+					std::cout<<v[x]<<" ";
+			}
 		}
 		END_TEST;
 	};
@@ -319,6 +335,22 @@ GAIA::N32 main()
 		bv.sort();
 		GAIA::U32 uDropCount = bv.unique();
 		uDropCount = 0;
+		
+		{
+			typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
+			__VectorType v;
+			for(GAIA::N32 x = 0; x < 10000; ++x)
+			{
+				v.push_back(GAIA::MATH::random()%100);
+				std::cout<<v[v.size()-1]<<" ";
+			}
+			v.sort();
+			GAIA::N32 nDrop = v.unique();
+			nDrop = 0;
+			v.sort();
+			for(GAIA::N32 x = 0; x < v.size(); ++x)
+				std::cout<<v[x]<<" ";
+		}
 	}
 
 	// Basic stack test.
