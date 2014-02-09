@@ -1088,7 +1088,7 @@ GAIA::N32 main()
 		BEGIN_TEST("<BasicMultiSet function test>");
 		{
 			bFunctionSuccess = GAIA::True;
-			typedef GAIA::CONTAINER::BasicMultiSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __MultiSetType;
+			typedef GAIA::CONTAINER::BasicMultiSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 256> __MultiSetType;
 			__MultiSetType mst;
 			if(!mst.insert(32))
 				bFunctionSuccess = GAIA::False;
@@ -1177,7 +1177,7 @@ GAIA::N32 main()
 		BEGIN_TEST("<BasicMultiMap function test>");
 		{
 			bFunctionSuccess = GAIA::True;
-			typedef GAIA::CONTAINER::BasicMultiMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __MultiMapType;
+			typedef GAIA::CONTAINER::BasicMultiMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 256> __MultiMapType;
 			__MultiMapType mmp;
 			mmp.insert("Arm", 30);
 			mmp.insert("Arm", 31);
