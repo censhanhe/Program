@@ -42,8 +42,162 @@ GAIA
 MESSIAH
 	
 	MESSIAH is a high performance network based log service. it based C-S structure.
-	Client can login the server and record log as a unified form storage.
+	Client can login the server and record log as a unified form storage. And can query log record quickly.
 
+	[Data Structure And Algorithm]
+		[File]
+			user(binary=user) : fileflag + version + user_count * {name + password + groupcount * {groupid}}
+				-fully loaded and fully rewrite.
+			group(binary=group) : fileflag + version + group_count * {groupname + groupid + rightcount * {righttype + author}}
+				-fully loaded and fully rewrite.
+			fileindex(binary=fileindex) : fileflag + version + filecount * {filename + startime + endtime}
+			logtimeindex(binary=lti_author_time) : fileflag + version + size(index file specified log content total size) + count * {time + fileoffset}
+			binlog(binary=bl_author_time) : fileflag + version + {time + author + key + text} + logcount
+			config(text=config) : administrator's_password + total_log_count + total_size
+		[Log]
+			time + author + key + text
+			time = year + month + day + hour + minute + second + msecond
+			key = string key
+			text = any text
+		[Memory]
+			account information set(BasicSet)
+			author cache set(BasicSet)
+			{
+				time section set(BasicSet)
+				{
+					time section trietree(BasicTrieTree)
+					time section key trietree(BasicTrieTree)
+					start time
+					end time
+					last access time
+					isloaded ? exist pLogList(BasicVector*) : pLogList is invalid.
+				}
+				file time section set(BasicSet)
+				{
+					start time
+					end time
+				}
+			}
+		[Message]
+			all text message communication.
 
+			write log procedure message(enum all branch).
+				c2s : 'noop\r\n'
+				s2c : 'noop\r\n'
+				c2s : 'login username password\r\n'
+				s2c : 'pwderr\r\n'
+				c2s : 'logout\r\n'
+				s2c : 'goodbye\r\n'
+				s2c : 'welcome\r\n'
+				c2s : 'log time author key text\r\n'
+					- 'time' 'author' 'key' 'text' can be 'x'.\
+					- it means that the property is not changed. it is same to latest one.
+				c2s : 'filter filterindex author authorname\r\n'
+				c2s : 'filter filterindex key keyname\r\n'
+				c2s : 'filter filterindex year-month-day-hour-minute-second-msecond year-month-day-hour-minute-second-msecond\r\n'
+					- any time can been a 'x', ex : 'filter 0 x-x-x-12-x-x x-x-x-14-x-x\r\n'\
+					- means each log occured from 12 hour to 14 hour will been filtered.
+				c2s : 'filter filterindex text text\r\n'
+				c2s : 'query filterindex1|filterindex2|... |filterindexn\r\n'(n < 16)
+				s2c : 'fbd\r\n'
+				s2c : 'log time author key text\r\n'
+					- 'time' 'author' 'key' 'text' can be 'x'.\
+					- it means that the property is not changed. it is same to latest one.
+				c2s : 'cancelquery\r\n'
+				s2c : 'ok\r\n'
+
+			account management procedure message(enum seperate function all branch).
+				c2s : 'login admin adminpassword\r\n'
+				s2c : 'welcome\r\n'
+				c2s : 'regacc name password\r\n'
+				c2s : 'pwd accname newpassword\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'unregacc name\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'freezeacc name\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'activeacc name\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'reggroup name\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'unreggroup name\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'freezegroup name\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'unfreezegroup name\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'right groupname right\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'unright groupname right\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'join acc group'
+				c2s : 'ok\r\n'
+				c2s : 'leave acc group'
+				c2s : 'ok\r\n'
+				c2s : 'listgroup\r\n'
+				s2c : 'name1 name2 ... namen\r\n'
+				c2s : 'listgroupmem\r\n'
+				s2c : 'name1 name2 ... namen\r\n'
+				c2s : 'listright group\r\n'
+				s2c : 'right1 right2 ... rightn\r\n'
+				c2s : 'listacc\r\n'
+				s2c : 'name1 name2 ... namen\r\n'
+				c2s : 'logout\r\n'
+				s2c : 'goodbye\r\n'
+
+			server management procedure message(enum seperate function all branch).
+				c2s : 'login admin adminpassword\r\n'
+				s2c : 'welcome\r\n'
+				c2s : 'status\r\n'
+				s2c : 'linkcount:n logcount:n logsize:n/%d%%(mb) memsize = n/%d%%(mb)\r\n'
+				c2s : 'shutdown\r\n'
+				s2c : 'ok\r\n'
+				c2s : 'restart\r\n'
+				s2c : 'ok\r\n'
+
+			other c2s operation failed will return s2c : 'failed\r\n' or 'fbd\r\n', fbd means 'forbid' and occured when right not match.
+
+		[Right]
+			admin : all right. 
+			read author | $ : read specified author's log. $ means all authors.
+			write author | $ : write specified author's log. $ means all authors.
+			status : only have the server status watch right.
+
+		[Multi Server Balance]
+			Every server can link to multi branch server. The parent server will send all c2s message to branch server.
+			The	branch server work like parent server but only c2s log request.
+
+			when a server dispatch c2s message. total_branch_server / (total_branch_server + 1)'s message will been send\
+			to branch server(BY SYNC MODE!)(total_branch_server include the branch's branch server etc).
+
+			Selected server index = int_hash(filters) % branch_server_count.
+			
 CONTACT
 	ACCESS http://armterla.github.io/Program FOR MORE INFORMATIONS.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
