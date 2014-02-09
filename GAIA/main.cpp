@@ -291,14 +291,11 @@ GAIA::N32 main()
 				for(GAIA::N64 x = 0; x < 10000; ++x)
 				{
 					v.push_back(GAIA::MATH::random()%100);
-					std::cout<<v[v.size()-1]<<" ";
 				}
 				v.sort();
 				GAIA::N64 nDrop = v.unique();
 				nDrop = 0;
 				v.sort();
-				for(GAIA::N32 x = 0; x < v.size(); ++x)
-					std::cout<<v[x]<<" ";
 			}
 		}
 		END_TEST;
@@ -342,14 +339,11 @@ GAIA::N32 main()
 			for(GAIA::N32 x = 0; x < 10000; ++x)
 			{
 				v.push_back(GAIA::MATH::random()%100);
-				std::cout<<v[v.size()-1]<<" ";
 			}
 			v.sort();
 			GAIA::N32 nDrop = v.unique();
 			nDrop = 0;
 			v.sort();
-			for(GAIA::N32 x = 0; x < v.size(); ++x)
-				std::cout<<v[x]<<" ";
 		}
 	}
 
