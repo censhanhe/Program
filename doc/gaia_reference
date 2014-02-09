@@ -23,3 +23,49 @@
 			unique_order unique_noorder
 
 		CONTAINER
+
+			BasicStackBitset<clear capacity exist set reset inverse = += -= == != ~ []>
+			BasicBitset<empty size capacity resize reverse clear destroy exist set reset inverse += -= == != ~ []>
+			BasicArray<>(empty size clear resize reset count sort unique unique_noorder erase push/pop_back [] = << >>)
+			BasicVector<>(empty size capacity resize reserve destroy insert erase push/pop_back sort find unique unique_noorder [] =)
+			BasicList<>(empty size capacity clear destroy resize reserve insert erase swap push/pop_front push/pop_back)
+			BasicQueue<>(empty size capacity clear destroy resize reserve push pop = [])
+			BasicStackStack<empty size resize clear count push pop top = []>
+			BasicStack<empty size capacity resize reserve count push pop top = []>
+			BasicTree<empty size capacity clear destroy root insert erase link unlink islinked parent getlinksize getlink leaf find path>
+			BasicAVLTree<>(empty size capacity clear destroy insert erase find lower/upper_bound min/maximize)
+			BasicMultiAVLTree<empty size capacity clear destroy insert erase find>
+			BasicMap<empty size capacity clear destroy erase [] =>
+			BasicMultiMap<empty size capacity clear destroy insert erase find =>
+			BasicSet<empty size capacity clear destroy insert erase find =>
+			BasicMultiSet<empty size capacity clear destroy insert erase count find =>
+			BasicGraph<empty size capacity clear destroy resize reverse root insert erase link unlink islinked getlinksize getlink exist count find path anypath navpath >
+			BasicChars<empty size capacity resize clear inverse insert erase find rfind left right mid trim_left/right/mid = += == != >= <= > < []>
+			BasicString<empty size capacity resize reverse clear destroy inverse insert erase find rfind replace left right mid trim_left/right/mid = += == != >= <= > < []>
+
+
+		FILE
+
+			File(Open Close IsOpen Size Read Write Seek Tell << >> WriteText)
+
+		SYNC
+			sleep usleep
+			Lock(Lock Unlock) AutoLock Event(Fire Wait)
+
+		THREAD
+
+			Thread(Run Wait WorkProcedule)
+
+		TIME
+
+			clock_time
+
+		PROCESS
+
+		NETWORK
+
+		RENDER
+
+		SOUND
+
+
