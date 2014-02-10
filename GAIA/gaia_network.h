@@ -72,7 +72,7 @@ namespace GAIA
 		protected:
 		private:
 		};
-		class NetworkReceiver
+		class NetworkReceiver : public GAIA::THREAD::Thread
 		{
 		private:
 			friend class NetworkHandle;
