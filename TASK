@@ -1,4 +1,11 @@
 
+	STRUCTURE
+
+		All class have a root class called 'class Base'.
+
+		Base class have a virtual function called 'GAIA::BL obj_statistics(flag)' for memory use statistic or others.
+
+
 	ALGORITHM
 
 		String based mathematics expression analyze. 1 * 2.4 / 5 = ?
@@ -14,6 +21,11 @@
 
 		Space path query based splash-ink algorithm implement.
 
+		Dictionary container implement.
+
+		Paragraph container implement.
+
+		Document container implement.
 
 	MATH
 
@@ -29,7 +41,7 @@
 
 	Network
 
-
+		TCP/UDP interface supported.
 
 	Render
 
