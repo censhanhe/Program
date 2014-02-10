@@ -121,11 +121,30 @@ namespace GAIA
 			GAIA::U32 u[4];
 		};
 	};
+	/* Class Base. All class's parent. */
+	class Base
+	{
+	public:
+	};
 	/* Class Object. It's the all class's base(except high-performance container and math class. */
-	class Object
+	class Object : public Base
 	{
 	public:
 		virtual ~Object(){}
+	};
+	/* Class RefObject. If a class need a reference function, it will derived from here. */
+	class RefObject : public Object
+	{
+	public:
+		GINL RefObject(){m_nRef = 1; m_bDestructing = GAIA::False;}
+		GINL GAIA::GVOID Reference(){m_nRef++;}
+		GINL GAIA::GVOID Release(){m_nRef--; if(m_nRef == 0 && !m_bDestructing){m_bDestructing = true; this->Destruct(); delete this;}}
+		GINL GAIA::N32 GetRef() const{return m_nRef;}
+	protected:
+		virtual GAIA::GVOID Destruct(){}
+	private:
+		GAIA::N32 m_nRef;
+		GAIA::N8 m_bDestructing : 1;
 	};
 	/* Common constants. */
 	#define GNULL 0
