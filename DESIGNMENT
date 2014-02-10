@@ -62,7 +62,21 @@
 			text = any text
 
 		[Memory]
-			account information set(BasicSet)
+			account set(BasicSet)
+			{
+				account name
+				password
+				group list(BasicVector)
+			}
+			group set(BasicSet)
+			{
+				account list(BasicVector)
+				author set(BasicSet)
+				{
+					author name
+					right
+				}
+			}
 			author cache set(BasicSet)
 			{
 				time section set(BasicSet)
@@ -175,4 +189,58 @@
 
 			Selected server index = int_hash(filters) % branch_server_count.
 
-	
+		[Algorithm Analyze]
+			Declaration:
+				FCC = find charactor count.
+				CCPL = charactor per log.
+				AC = account count.
+				AGC = account group count.
+				GC = group count.
+				GAC = group author count.
+				CAUC = cached author count.
+				CAUTSC = cached author time section count.
+				IFRC = index file record count.
+				BFLC = bin file log count.
+				RS = read bytes from disk.
+
+			RightCheck's O(n)
+				RCO(n) = AGC * log2(GAC)
+
+			CacheSingleLog's O(n)
+				CSLO(n) = log2(CAUC) * log2(CAUTSC)
+
+			WriteLog's O(n)
+				WLO(n) = RCO(n) + CSLO(n)
+
+			LogSecionRequest's O(n)
+				LSRO(n) = log2(AC) + log2(CAUC) + log2(CAUTSC) * 2 + log2(IFRC) * 2 + RS
+
+			LogSectionCache's O(n)
+				LSC(n) = 
+
+			QueryLog's O(n)	
+				QLO(n) = RCO(n) + 
+
+		
+		[Special Feature]
+			Difference log write. Log : "Hello world Tom!" and log "Hello world Jerry!". Only Jerry word will been write.
+			Word translate to id. Log : "Hello world Tom!" will been translate to "Handle1 Handle2 Handle3!",\
+			'Hello' 'world' and 'Tom!' will been insert to Word Balance Tree.(For share access.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
