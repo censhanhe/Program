@@ -9,8 +9,8 @@ namespace GAIA
 		{
 		public:
 			class Node;
-			typedef GAIA::CONTAINER::BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeList;
-			typedef GAIA::CONTAINER::BasicVector<__NodeList, _SizeType, _SizeIncreaserType> __PathList;
+			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
+			typedef BasicVector<__NodeListType, _SizeType, _SizeIncreaserType> __PathListType;
 		public:
 			class Node
 			{
@@ -38,7 +38,7 @@ namespace GAIA
 				{
 					if(m_links.empty())
 						return GAIA::False;
-					typename __NodeList::_datatype* pTemp = GAIA::ALGORITHM::find(m_links.front_ptr(), m_links.back_ptr(), (typename __NodeList::_datatype)GNULL);
+					typename __NodeListType::_datatype* pTemp = GAIA::ALGORITHM::find(m_links.front_ptr(), m_links.back_ptr(), (typename __NodeListType::_datatype)GNULL);
 					if(pTemp == GNULL)
 						return GAIA::False;
 					GAIA::ALGORITHM::index(m_links.front_ptr(), pTemp, result);
@@ -46,7 +46,7 @@ namespace GAIA
 				}
 			private:
 				Node* m_pParent;
-				__NodeList m_links;
+				__NodeListType m_links;
 				_DataType m_t;
 				_SizeType m_count;
 				_SizeType m_category_count;
@@ -60,7 +60,7 @@ namespace GAIA
 			static const _SizeType _groupelementsize = _GroupElementSize;
 		public:
 			typedef BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef GAIA::CONTAINER::BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
+			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
 		public:
 			GINL BasicTrieTree(){this->init();}
 			GINL BasicTrieTree(const __MyType& src){this->init(); this->operator = (src);}
@@ -144,7 +144,7 @@ namespace GAIA
 				GAIA_ASSERT(size > 0);
 				return this->match_node(pNode == GNULL? m_root : *pNode, p, size);
 			}
-			GINL GAIA::GVOID paths(const Node* pNode, const _DataType* p, const _SizeType& size, __PathList& result) const
+			GINL GAIA::GVOID paths(const Node* pNode, const _DataType* p, const _SizeType& size, __PathListType& result) const
 			{
 				GAIA_ASSERT(p != GNULL);
 				GAIA_ASSERT(size > 0);

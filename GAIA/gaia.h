@@ -100,6 +100,7 @@
 #include	"gaia_sync_event.h"
 #include	"gaia_sync_mutex.h"
 #include	"gaia_thread.h"
+#include 	"gaia_thread_pool.h"
 #include	"gaia_process.h"
 
 #include	"gaia_network.h"

@@ -237,7 +237,7 @@ namespace GAIA
 						Node* pNext = n.m_links[y];
 						if(pNext == GNULL)
 							continue;
-						GAIA::CONTAINER::Pair<Node*, Node*> rec;
+						Pair<Node*, Node*> rec;
 						if(&n > pNext)
 							rec.frontback(const_cast<Node*>(&n), pNext);
 						else

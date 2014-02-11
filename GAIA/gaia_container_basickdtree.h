@@ -32,7 +32,7 @@ namespace GAIA
 			private:
 				friend class BasicKDTree;
 			public:
-				typedef GAIA::CONTAINER::BasicAVLTree<_DataType*, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
+				typedef BasicAVLTree<_DataType*, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
 			public:
 				Node(){}
 				~Node(){}

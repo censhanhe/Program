@@ -875,7 +875,7 @@ GAIA::N32 main()
 			GAIA::BL bErase = tt.erase("hello", 5);
 			GAIA::BL bExist = tt.exist("hello", 5);
 			__TrieTree::Node* pNode = tt.find(GNULL, "hello", 5);
-			__TrieTree::__PathList result_paths;
+			__TrieTree::__PathListType result_paths;
 			tt.paths(GNULL, "hello", 5, result_paths);
 			tt.empty();
 			tt.size();

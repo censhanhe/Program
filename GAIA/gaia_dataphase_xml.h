@@ -8,7 +8,7 @@ namespace GAIA
 		template <typename _StringType, typename _StringLengthType, typename _DataSizeType> class XML
 		{
 		public:
-			typedef GAIA::CONTAINER::BasicString<_StringType, _StringLengthType> __MyString;
+			typedef GAIA::CONTAINER::BasicString<_StringType, _StringLengthType> __MyStringType;
 		public:
 			GINL XML(){}
 			GINL ~XML(){}
@@ -16,12 +16,12 @@ namespace GAIA
 			GINL GAIA::BL Save(GAIA::FILESYSTEM::File& file) const;
 			GINL GAIA::BL Load(GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32>& buf);
 			GINL GAIA::BL Save(GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32>& buf) const;
-			GINL GAIA::BL BeginNodeRead(__MyString& strNode);
+			GINL GAIA::BL BeginNodeRead(__MyStringType& strNode);
 			GINL GAIA::BL EndNodeRead();
-			GINL GAIA::BL ReadAttr(__MyString& strAttrName, __MyString& strAttrValue);
-			GINL GAIA::BL BeginNodeWrite(const __MyString& strNode);
+			GINL GAIA::BL ReadAttr(__MyStringType& strAttrName, __MyStringType& strAttrValue);
+			GINL GAIA::BL BeginNodeWrite(const __MyStringType& strNode);
 			GINL GAIA::BL EndNodeWrite();
-			GINL GAIA::BL WriteAttr(const __MyString& strAttrName, const __MyString& strAttrValue);
+			GINL GAIA::BL WriteAttr(const __MyStringType& strAttrName, const __MyStringType& strAttrValue);
 		};
 	};
 };

@@ -12,7 +12,7 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 		public:
 			typedef BasicPackage<_SizeIncreaserType, _SizeType> __MyType;
-			typedef GAIA::CONTAINER::BasicBuffer<_SizeIncreaserType, _SizeType> __BufferType;
+			typedef BasicBuffer<_SizeIncreaserType, _SizeType> __BufferType;
 		public:
 			GINL Package(){this->init();}
 			GINL Package(const __MyType& src){this->init();}

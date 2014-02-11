@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		typedef GAIA::CONTAINER::BasicString<GAIA::GWCH, GAIA::U32> WString;
+		typedef BasicString<GAIA::GWCH, GAIA::U32> WString;
 	};
 };
 
