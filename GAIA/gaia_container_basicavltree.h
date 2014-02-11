@@ -85,55 +85,10 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const BidirectionalIterator& src) const
-				{
-					if(m_pNode == GNULL && src.m_pNode == GNULL)
-						return GAIA::True;
-					else if(m_pNode != GNULL && src.m_pNode == GNULL)
-						return GAIA::False;
-					else if(m_pNode == GNULL && src.m_pNode != GNULL)
-						return GAIA::False;
-					else
-					{
-						if(m_pNode->t == src.m_pNode->t)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
+				GINL GAIA::BL operator == (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) == 0;}
 				GINL GAIA::BL operator != (const BidirectionalIterator& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const BidirectionalIterator& src) const
-				{
-					if(m_pNode == GNULL && src.m_pNode == GNULL)
-						return GAIA::True;
-					else if(m_pNode != GNULL && src.m_pNode == GNULL)
-						return GAIA::True;
-					else if(m_pNode == GNULL && src.m_pNode != GNULL)
-						return GAIA::False;
-					else
-					{
-						if(m_pNode->t >= *src.m_pNode->t)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
-				GINL GAIA::BL operator <= (const BidirectionalIterator& src) const
-				{
-					if(m_pNode == GNULL && src.m_pNode == GNULL)
-						return GAIA::True;
-					else if(m_pNode == GNULL && src.m_pNode != GNULL)
-						return GAIA::True;
-					else if(m_pNode != GNULL && src.m_pNode == GNULL)
-						return GAIA::False;
-					else
-					{
-						if(m_pNode->t <= src.m_pNode->t)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
+				GINL GAIA::BL operator >= (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) >= 0;}
+				GINL GAIA::BL operator <= (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const BidirectionalIterator& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const BidirectionalIterator& src) const{return !(*this >= src);}
 				GINL BidirectionalIterator& operator = (const BidirectionalIterator& src){m_pNode = src.m_pNode; m_pAVLTree = src.m_pAVLTree; return *this;}
@@ -245,55 +200,10 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const ConstBidirectionalIterator& src) const
-				{
-					if(m_pNode == GNULL && src.m_pNode == GNULL)
-						return GAIA::True;
-					else if(m_pNode != GNULL && src.m_pNode == GNULL)
-						return GAIA::False;
-					else if(m_pNode == GNULL && src.m_pNode != GNULL)
-						return GAIA::False;
-					else
-					{
-						if(m_pNode->t == src.m_pNode->t)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
+				GINL GAIA::BL operator == (const ConstBidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) == 0;}
 				GINL GAIA::BL operator != (const ConstBidirectionalIterator& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const ConstBidirectionalIterator& src) const
-				{
-					if(m_pNode == GNULL && src.m_pNode == GNULL)
-						return GAIA::True;
-					else if(m_pNode != GNULL && src.m_pNode == GNULL)
-						return GAIA::True;
-					else if(m_pNode == GNULL && src.m_pNode != GNULL)
-						return GAIA::False;
-					else
-					{
-						if(m_pNode->t >= *src.m_pNode->t)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
-				GINL GAIA::BL operator <= (const ConstBidirectionalIterator& src) const
-				{
-					if(m_pNode == GNULL && src.m_pNode == GNULL)
-						return GAIA::True;
-					else if(m_pNode == GNULL && src.m_pNode != GNULL)
-						return GAIA::True;
-					else if(m_pNode != GNULL && src.m_pNode == GNULL)
-						return GAIA::False;
-					else
-					{
-						if(m_pNode->t <= src.m_pNode->t)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
+				GINL GAIA::BL operator >= (const ConstBidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) >= 0;}
+				GINL GAIA::BL operator <= (const ConstBidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const ConstBidirectionalIterator& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const ConstBidirectionalIterator& src) const{return !(*this >= src);}
 				GINL ConstBidirectionalIterator& operator = (const ConstBidirectionalIterator& src){m_pNode = src.m_pNode; m_pAVLTree = src.m_pAVLTree; return *this;}

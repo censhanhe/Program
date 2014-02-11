@@ -52,6 +52,24 @@ namespace GAIA
 			else
 				return 0;
 		}
+		template <typename _DataType1, typename _DataType2> GAIA::N32 cmp(const _DataType1* p1, const _DataType2* p2)
+		{
+			if(p1 == GNULL && p2 == GNULL)
+				return 0;
+			else if(p1 != GNULL && p2 == GNULL)
+				return -1;
+			else if(p1 == GNULL && p2 != GNULL)
+				return +1;
+			else
+			{
+				if(*p1 < *p2)
+					return -1;
+				else if(*p1 > *p2)
+					return +1;
+				else
+					return 0;
+			}
+		}
 		template <typename _DataType1, typename _DataType2, typename _SizeType> GINL GAIA::N32 cmp(const _DataType1* p1, const _DataType2* p2, const _SizeType& size)
 		{
 			_SizeType sizet = size;
