@@ -1,5 +1,5 @@
 
-	STRUCTURE
+	FRAMEWORK STRUCTURE
 
 		All class have a root class called 'class Base'.
 
@@ -34,6 +34,15 @@
 		Intersection math arithmetic supported.
 
 		
+	Serializer
+
+		Class DataRecord : Every object can convert to a DataRecord with as little data-copy as possible.
+		The object can reconstruct from the DataRecord object too.
+
+		Serializer storage DataRecord to target storage media and 
+		restore object from DataRecord in target storage media.
+
+		Storage and storage engine.
 
 	Database
 

@@ -1,0 +1,92 @@
+
+
+[Version:00.00.01.00 Time:2014.04.01 State:NotReleased]
+
+	Name : CPB(Cross-Platform-Base)
+
+	Features : 
+		1. All common container implement.
+			1.1. Array/Vector/Stack/Queue/List/Tree/AVLTree/Set/Map.
+			1.2. Search/Sort/Count/Index and etc.
+		2. All common algorithm implement.
+		3. All platform interface wrapper implement.
+			3.1. Memory management.
+			3.2. Thread management.
+			3.3. Sync management.
+			3.4. Network management.
+			3.5. File management.
+			3.6. Directory management.
+			3.7. Share memory management.
+
+[Version:00.00.02.00 Time:2014.06.01 State:NotReleased]
+
+	Name : FC(Framework-Construction)
+
+	Feature : 
+		1. Multi-Layer-Structure construction complete.
+		2. Designment mode implement.
+		3. 
+
+
+[Version:00.00.03.00 Time:2014.08.01 State:NotReleased]
+
+	Name : DM(Data-Management)
+
+	Feature : 
+		1. Storage engine implement.
+		2. Database supported.
+
+
+[Version:00.00.04.00 Time:2014.12.01 State:NotReleased]
+
+	Name : RE(Render-Engine)
+
+	Feature : 
+		1. 3D render supported.
+
+
+[Version:00.00.05.00 Time:2015.01.01 State:NotRelease]
+
+	Name : SR(Sounder)
+
+	Feature : 
+		1. Sound plat supported.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
