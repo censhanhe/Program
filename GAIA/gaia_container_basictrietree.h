@@ -19,6 +19,22 @@ namespace GAIA
 			public:
 				GINL _DataType& operator * (){return m_t;}
 				GINL const _DataType& operator * () const{return m_t;}
+				GINL Node& operator = (const Node& src)
+				{
+					m_pParent = src.m_pParent;
+					m_links = src.m_links;
+					m_t = src.m_t;
+					m_count = src.m_count;
+					m_category_count = src.m_category_count;
+					m_full_count = src.m_full_count;
+					return *this;
+				}
+				GINL GAIA::BL operator == (const Node& src) const{return m_t == src.m_t;}
+				GINL GAIA::BL operator != (const Node& src) const{return m_t != src.m_t;}
+				GINL GAIA::BL operator >= (const Node& src) const{return m_t >= src.m_t;}
+				GINL GAIA::BL operator <= (const Node& src) const{return m_t <= src.m_t;}
+				GINL GAIA::BL operator > (const Node& src) const{return m_t > src.m_t;}
+				GINL GAIA::BL operator < (const Node& src) const{return m_t < src.m_t;}
 			private:
 				GINL GAIA::BL match_linked_index(const _DataType& t, _SizeType& result) const
 				{

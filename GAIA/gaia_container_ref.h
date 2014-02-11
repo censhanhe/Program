@@ -23,6 +23,20 @@ namespace GAIA
 			GINL const _DataType& operator * () const{return *m_p;}
 			template <typename _ParamSizeType> GINL _DataType& operator [] (const _ParamSizeType& index){return m_p[index];}
 			template <typename _ParamSizeType> GINL const _DataType& operator [] (const _ParamSizeType& index) const{return m_p[index];}
+			GINL GAIA::BL operator == (const __MyType& src) const{return *m_p == *src.m_p;}
+			GINL GAIA::BL operator != (const __MyType& src) const{return *m_p != *src.m_p;}
+			GINL GAIA::BL operator >= (const __MyType& src) const{return *m_p >= *src.m_p;}
+			GINL GAIA::BL operator <= (const __MyType& src) const{return *m_p <= *src.m_p;}
+			GINL GAIA::BL operator > (const __MyType& src) const{return *m_p > *src.m_p;}
+			GINL GAIA::BL operator < (const __MyType& src) const{return *m_p < *src.m_p;}
+			GINL GAIA::BL operator == (const _DataType* p) const{return *m_p == *p;}
+			GINL GAIA::BL operator != (const _DataType* p) const{return *m_p != *p;}
+			GINL GAIA::BL operator >= (const _DataType* p) const{return *m_p >= *p;}
+			GINL GAIA::BL operator <= (const _DataType* p) const{return *m_p <= *p;}
+			GINL GAIA::BL operator > (const _DataType* p) const{return *m_p > *p;}
+			GINL GAIA::BL operator < (const _DataType* p) const{return *m_p < *p;}
+			GINL operator const _DataType*() const{return m_p;}
+			GINL operator _DataType*(){return m_p;}
 		private:
 			GINL GAIA::GVOID init(){m_p = GNULL;}
 		private:

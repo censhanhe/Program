@@ -29,6 +29,8 @@
 #include 	"gaia_algorithm_search.h"
 #include 	"gaia_algorithm_unique.h"
 
+#include 	"gaia_container_ref.h"
+#include	"gaia_container_ptr.h"
 #include	"gaia_container_pair.h"
 #include 	"gaia_container_basicstackbitset.h"
 #include 	"gaia_container_stackbitset.h"
@@ -79,7 +81,6 @@
 #include	"gaia_container_basicdictionary.h"
 
 #include 	"gaia_container_vari.h"
-#include 	"gaia_container_ref.h"
 
 #include	"gaia_math_cookies.h"
 #include	"gaia_math_coord.h"

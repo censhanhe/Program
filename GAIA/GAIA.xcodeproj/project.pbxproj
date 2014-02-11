@@ -33,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		3B01966C18AA07FE002E8080 /* gaia_thread_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_thread_pool.h; sourceTree = SOURCE_ROOT; };
+		3B01966E18AA1898002E8080 /* gaia_container_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_container_ptr.h; sourceTree = SOURCE_ROOT; };
 		3B033B4A189F4B5B00404E49 /* gaia_container_basicavltree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_container_basicavltree.h; sourceTree = SOURCE_ROOT; };
 		3B033B4B189F4B5B00404E49 /* gaia_container_basicbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_container_basicbuffer.h; sourceTree = SOURCE_ROOT; };
 		3B033B4C189F4B5B00404E49 /* gaia_container_basichuffmantree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_container_basichuffmantree.h; sourceTree = SOURCE_ROOT; };
@@ -291,6 +292,7 @@
 				3BD55BF41879D4D300FE89B5 /* gaia_container_orderless.h */,
 				3B3E55D1188C295F00375D49 /* gaia_container_pair.h */,
 				3BD55C6F187F1C3000FE89B5 /* gaia_container_pool.h */,
+				3B01966E18AA1898002E8080 /* gaia_container_ptr.h */,
 				3BD55BF51879D4D300FE89B5 /* gaia_container_queue.h */,
 				3BE9D9C518A2858F00232CAC /* gaia_container_ref.h */,
 				3BD55C70187F1C3000FE89B5 /* gaia_container_set.h */,
