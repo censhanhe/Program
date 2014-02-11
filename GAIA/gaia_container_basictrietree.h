@@ -9,7 +9,7 @@ namespace GAIA
 		{
 		public:
 			class Node;
-			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
+			typedef BasicVector<Ref<Node>, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicVector<__NodeListType, _SizeType, _SizeIncreaserType> __PathListType;
 		public:
 			class Node
@@ -40,7 +40,7 @@ namespace GAIA
 				{
 					for(_SizeType x = 0; x < m_links.size(); ++x)
 					{
-						if(m_links[x] == GNULL)
+						if((const Node*)m_links[x] == GNULL)
 							continue;
 						if(**m_links[x] == t)
 						{

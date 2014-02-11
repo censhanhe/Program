@@ -35,6 +35,12 @@ namespace GAIA
 			GINL GAIA::BL operator <= (const _DataType* p) const{return *m_p <= *p;}
 			GINL GAIA::BL operator > (const _DataType* p) const{return *m_p > *p;}
 			GINL GAIA::BL operator < (const _DataType* p) const{return *m_p < *p;}
+			GINL GAIA::BL operator == (_DataType* p) const{return *m_p == *p;}
+			GINL GAIA::BL operator != (_DataType* p) const{return *m_p != *p;}
+			GINL GAIA::BL operator >= (_DataType* p) const{return *m_p >= *p;}
+			GINL GAIA::BL operator <= (_DataType* p) const{return *m_p <= *p;}
+			GINL GAIA::BL operator > (_DataType* p) const{return *m_p > *p;}
+			GINL GAIA::BL operator < (_DataType* p) const{return *m_p < *p;}
 			GINL operator const _DataType*() const{return m_p;}
 			GINL operator _DataType*(){return m_p;}
 		private:
