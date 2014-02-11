@@ -20,6 +20,17 @@ namespace GAIA
 		template <typename _DataType> GAIA::BL ispunctuation(const _DataType& c){if(c > ' ' && !GAIA::ALGORITHM::isalpha(c) && !GAIA::ALGORITHM::isdigit(c) && c < 0xFF) return GAIA::True; return GAIA::False;}
 		template <typename _DataType> GAIA::BL isspecial(const _DataType& c){if(c < ' ') return GAIA::True; return GAIA::False;}
 		template <typename _DataType> GAIA::UM strlen(const _DataType* p){GAIA_ASSERT(p != GNULL); GAIA::UM ret = 0; while(p[ret] != 0) ret++; return ret;}
+		template <typename _DataType1, typename _DataType2> GAIA::UM strcnt(const _DataType1* p, const _DataType2& key)
+		{
+			GAIA::UM ret = 0;
+			while(*p != 0)
+			{
+				if(*p == key)
+					++ret;
+				++p;
+			}
+			return ret;
+		}
 		template <typename _DataType> _DataType* strcpy(_DataType* dst, const _DataType* src)
 		{
 			GAIA_ASSERT(dst != GNULL);
@@ -205,7 +216,7 @@ namespace GAIA
 			p = int2str((GAIA::N64)right, p);
 			return p;
 		}
-		template <typename _SrcDataType, typename _DstDataType> GAIA::GVOID str2int(const _SrcDataType* p, _DstDataType& dst)
+		template <typename _SrcDataType, typename _DstDataType> const _SrcDataType* str2int(const _SrcDataType* p, _DstDataType& dst)
 		{
 			GAIA_ASSERT(p != GNULL);
 			dst = 0;
@@ -227,8 +238,9 @@ namespace GAIA
 			}
 			if(bSign)
 				dst = 0 - dst;
+			return p;
 		}
-		template <typename _SrcDataType, typename _DstDataType> GAIA::GVOID str2real(const _SrcDataType* p, _DstDataType& dst)
+		template <typename _SrcDataType, typename _DstDataType> const _SrcDataType* str2real(const _SrcDataType* p, _DstDataType& dst)
 		{
 			GAIA_ASSERT(p != GNULL);
 			GAIA::BL bSign;
@@ -272,6 +284,7 @@ namespace GAIA
 			dst = left + right_dst;
 			if(bSign)
 				dst = -dst;
+			return p;
 		}
 		template <typename _DataType> class string_cast;
 		#define GAIA_DECLARATION_STRINGCAST(type, convert_func) \

@@ -237,7 +237,7 @@ namespace GAIA
 				}
 			}
 		}
-		template <typename _DataType, typename _SizeType> GINL GAIA::GVOID copy(_DataType* dst, const _DataType* src, const _SizeType& size)
+		template <typename _DataType1, typename _DataType2, typename _SizeType> GINL GAIA::GVOID copy(_DataType1* dst, const _DataType2* src, const _SizeType& size)
 		{
 			_SizeType sizet = size;
 			while(sizet > 0)
@@ -248,7 +248,7 @@ namespace GAIA
 				--sizet;
 			}
 		}
-		template <typename _DataType, typename _SizeType> GINL GAIA::GVOID set(_DataType* dst, const _DataType& t, const _SizeType& size)
+		template <typename _DataType, typename _KeyType, typename _SizeType> GINL GAIA::GVOID set(_DataType* dst, const _KeyType& t, const _SizeType& size)
 		{
 			_SizeType sizet = size;
 			while(sizet > 0)

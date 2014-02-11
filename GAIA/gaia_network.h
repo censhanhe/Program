@@ -5,12 +5,72 @@ namespace GAIA
 {
 	namespace NETWORK
 	{
+		class IP
+		{
+		public:
+			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(u, 0, 6);}
+			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmp(u, 0, 6) == 0;}
+			GINL GAIA::BL FromString(const GAIA::GCH* psz)
+			{
+				const GAIA::GCH* p = psz;
+				GAIA::UM uDotCnt = GAIA::ALGORITHM::strcnt(psz, '.');
+				if(uDotCnt == 3)
+				{
+					for(GAIA::N32 x = 0; x < 3; ++x)
+					{
+						p = GAIA::ALGORITHM::str2int(p, u[x]);
+						++p;
+					}
+					GAIA::ALGORITHM::str2int(p, u[3]);
+					u[4] = 0;
+					u[5] = 0;
+				}
+				else if(uDotCnt == 5)
+				{
+					for(GAIA::N32 x = 0; x < 5; ++x)
+					{
+						p = GAIA::ALGORITHM::str2int(p, u[x]);
+						++p;
+					}
+					GAIA::ALGORITHM::str2int(p, u[5]);
+				}
+				else
+					return GAIA::False;
+				return GAIA::True;
+			}
+			GINL GAIA::GVOID ToString(GAIA::GCH* psz)
+			{
+				GAIA::GCH* p = psz;
+				GAIA::N32 nPart = (u4 == 0 && u5 == 0) ? 4 : 6;
+				for(GAIA::N32 x = 0; x < nPart; ++x)
+				{
+					p = GAIA::ALGORITHM::int2str(u[x], p);
+					*(p - 1) = '.';
+				}
+				*(p - 1) = 0;
+			}
+			union
+			{
+				GAIA::U8 u[6];
+				struct
+				{
+					GAIA::U8 u0;
+					GAIA::U8 u1;
+					GAIA::U8 u2;
+					GAIA::U8 u3;
+					GAIA::U8 u4;
+					GAIA::U8 u5;
+				};
+			};
+		};
 		class NetworkAddress
 		{
 		public:
-			GINL GAIA::GVOID FromString(const GAIA::GCH* psz);
-			GINL GAIA::GVOID ToString(GAIA::GCH* psz);
-			GAIA::U64 uIP;
+			GINL GAIA::GVOID Invalid(){ip.Invalid(); uPort = 0;}
+			GINL GAIA::BL IsInvalid() const{ return ip.IsInvalid() || uPort == 0;}
+			GINL GAIA::BL FromString(const GAIA::GCH* psz){}
+			GINL GAIA::GVOID ToString(GAIA::GCH* psz) const{}
+			IP ip;
 			GAIA::U16 uPort;
 		};
 		class NetworkSender;
@@ -52,7 +112,8 @@ namespace GAIA
 			GINL GAIA::BL End();
 			GINL GAIA::BL IsBegin() const;
 		protected: // Interface for derived class callback.
-			GINL virtual GAIA::BL Accept(const NetworkHandle& h) const = 0;
+			virtual GAIA::BL Accept(const NetworkHandle& h) const = 0;
+			virtual GAIA::GVOID WorkProcedule();
 		private:
 		};
 		class NetworkSender : public GAIA::THREAD::Thread
@@ -69,7 +130,6 @@ namespace GAIA
 			GINL GAIA::BL Add(NetworkHandle& h);
 			GINL GAIA::BL Remove(NetworkHandle& h);
 			GINL GAIA::GVOID RemoveAll();
-		protected:
 		private:
 		};
 		class NetworkReceiver : public GAIA::THREAD::Thread
@@ -87,7 +147,8 @@ namespace GAIA
 			GINL GAIA::BL Remove(NetworkHandle& h);
 			GINL GAIA::GVOID RemoveAll();
 		protected: // Interface for derived class callback.
-			GINL virtual GAIA::BL Receive(const NetworkSender& s, const GAIA::U8* p, GAIA::U32 size) const = 0;
+			virtual GAIA::BL Receive(const NetworkSender& s, const GAIA::U8* p, GAIA::U32 size) const = 0;
+			virtual GAIA::GVOID WorkProcedule();
 		private:
 		};
 	};

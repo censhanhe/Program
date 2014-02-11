@@ -1451,6 +1451,16 @@ GAIA::N32 main()
 		GAIA::N32 nDebug = 0;
 		nDebug = 0;
 	}
+	
+	// Network test.
+	{
+		GAIA::NETWORK::IP ip;
+		ip.Invalid();
+		ip.FromString("192.168.1.1");
+		GAIA::GCH szTemp[64];
+		ip.ToString(szTemp);
+		ip.IsInvalid();
+	}
 
 	// Basic factory test 1.
 	{
