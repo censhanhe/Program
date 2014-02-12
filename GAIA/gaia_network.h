@@ -8,6 +8,10 @@ namespace GAIA
 		class IP
 		{
 		public:
+			GINL IP(){}
+			GINL IP(const IP& src){this->operator = (src);}
+			GINL IP(const GAIA::GCH* psz){this->operator = (psz);}
+			GINL ~IP(){}
 			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(u, 0, 6);}
 			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmp(u, 0, 6) == 0;}
 			GINL GAIA::GVOID FromString(const GAIA::GCH* psz)
@@ -47,6 +51,7 @@ namespace GAIA
 				*(p - 1) = 0;
 			}
 			GINL IP& operator = (const IP& src){uIPv4 = src.uIPv4; uIPv6 = src.uIPv6; return *this;}
+			GINL IP& operator = (const GAIA::GCH* psz){this->FromString(psz); return *this;}
 			GINL GAIA::BL operator == (const IP& src) const{return uIPv4 == src.uIPv4 && uIPv6 == src.uIPv6;}
 			GINL GAIA::BL operator != (const IP& src) const{return !(this->operator == (src));}
 			GINL GAIA::BL operator >= (const IP& src) const
@@ -91,6 +96,10 @@ namespace GAIA
 		class NetworkAddress
 		{
 		public:
+			GINL NetworkAddress(){}
+			GINL NetworkAddress(const NetworkAddress& src){this->operator = (src);}
+			GINL NetworkAddress(const IP& ip, GAIA::U16 uPort){this->ip = ip; this->uPort = uPort;}
+			GINL ~NetworkAddress(){}
 			GINL GAIA::GVOID Invalid(){ip.Invalid(); uPort = 0;}
 			GINL GAIA::BL IsInvalid() const{return ip.IsInvalid() || uPort == 0;}
 			GINL GAIA::GVOID FromString(const GAIA::GCH* psz)
