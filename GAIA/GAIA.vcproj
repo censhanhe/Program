@@ -591,6 +591,14 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="PTR"
+							>
+							<File
+								RelativePath=".\gaia_container_ptr.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -752,6 +760,10 @@
 						RelativePath=".\gaia_thread_indp.h"
 						>
 					</File>
+					<File
+						RelativePath=".\gaia_thread_pool.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="PROCESS"
@@ -800,18 +812,50 @@
 						RelativePath=".\gaia_sync_base_indp.h"
 						>
 					</File>
-					<File
-						RelativePath=".\gaia_sync_event.h"
+					<Filter
+						Name="LOCK"
 						>
-					</File>
-					<File
-						RelativePath=".\gaia_sync_lock.h"
+						<File
+							RelativePath=".\gaia_sync_autolock.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_sync_lock.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_sync_lock_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_sync_lock_indp.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="EVENT"
 						>
-					</File>
-					<File
-						RelativePath=".\gaia_sync_mutex.h"
+						<File
+							RelativePath=".\gaia_sync_event.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_sync_event_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_sync_event_indp.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="MUTEX"
 						>
-					</File>
+						<File
+							RelativePath=".\gaia_sync_mutex.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="MODEL"
@@ -858,6 +902,14 @@
 					>
 					<File
 						RelativePath=".\gaia_network.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_network_indp.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_network_indp.h"
 						>
 					</File>
 				</Filter>

@@ -4,6 +4,7 @@
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	define NOMINMAX
 #	include <winsock2.h>
+#	include <ws2tcpip.h>
 #	include <windows.h>
 #else
 #	include <sys/socket.h>
@@ -15,7 +16,7 @@ namespace GAIA
 	namespace NETWORK
 	{
 		/* NetworkHandle's implement. */
-		GAIA_DEBUG_CODEPURE_MEMFUNC GINL GAIA::BL NetworkHandle::Connect(const ConnectDesc& desc)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkHandle::Connect(const ConnectDesc& desc)
 		{
 			if(this->IsConnected())
 				this->Disconnect();
@@ -81,7 +82,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GINL GAIA::BL NetworkHandle::Disconnect()
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkHandle::Disconnect()
 		{
 			if(!this->IsConnected())
 				return GAIA::False;
@@ -95,7 +96,7 @@ namespace GAIA
 			this->init();
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GINL GAIA::GVOID NetworkHandle::SetSender(NetworkSender* pSender)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID NetworkHandle::SetSender(NetworkSender* pSender)
 		{
 			if(pSender == m_pSender)
 				return;
@@ -104,7 +105,7 @@ namespace GAIA
 			pSender->Add(*this);
 			m_pSender = pSender;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GINL GAIA::GVOID NetworkHandle::SetReceiver(NetworkReceiver* pReceiver)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID NetworkHandle::SetReceiver(NetworkReceiver* pReceiver)
 		{
 			if(pReceiver == m_pReceiver)
 				return;
@@ -113,11 +114,49 @@ namespace GAIA
 			pReceiver->Add(*this);
 			m_pReceiver = pReceiver;
 		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC BL NetworkHandle::Send(const GAIA::U8* p, GAIA::UM uSize)
+		{
+			GAIA_ASSERT(p != GNULL);
+			GAIA_ASSERT(uSize > 0);
+			if(p == GNULL || uSize == 0)
+				return GAIA::False;
+
+			return GAIA::True;
+		}
 		/* NetworkListener's implement. */
 
 		/* NetworkSender's implement. */
-
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkSender::Begin()
+		{
+			if(this->IsBegin())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkSender::End()
+		{
+			if(!this->IsBegin())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::GVOID NetworkSender::WorkProcedule()
+		{
+		}
 		/* NetworkReceiver's implement. */
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkReceiver::Begin()
+		{
+			if(this->IsBegin())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkReceiver::End()
+		{
+			if(!this->IsBegin())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::GVOID NetworkReceiver::WorkProcedule()
+		{
+		}
 	};
 };
 

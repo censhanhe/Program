@@ -18,6 +18,34 @@ namespace GAIA
 			typedef BasicSet<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
 		public:
+			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
+			{
+			public:
+				GINL BidirectionalIterator(){}
+				GINL virtual ~BidirectionalIterator(){}
+				GINL virtual GAIA::BL empty() const{}
+				GINL virtual _DataType& operator * (){}
+				GINL virtual const _DataType& operator * () const{}
+				GINL virtual Iterator& operator ++ (){}
+				GINL virtual Iterator& operator -- (){}
+			private:
+				GINL virtual Iterator& operator ++ (GAIA::N32){}
+				GINL virtual Iterator& operator -- (GAIA::N32){}
+			};
+			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
+			{
+			public:
+				GINL ConstBidirectionalIterator(){}
+				GINL virtual ~ConstBidirectionalIterator(){}
+				GINL virtual GAIA::BL empty() const{}
+				GINL virtual const _DataType& operator * () const{}
+				GINL virtual ConstIterator& operator ++ (){}
+				GINL virtual ConstIterator& operator -- (){}
+			private:
+				GINL virtual ConstIterator& operator ++ (GAIA::N32){}
+				GINL virtual ConstIterator& operator -- (GAIA::N32){}
+			};
+		public:
 			GINL BasicSet(){}
 			GINL BasicSet(const __MyType& src){this->operator = (src);}
 			GINL ~BasicSet(){}

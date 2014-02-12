@@ -155,7 +155,7 @@ namespace GAIA
 			{
 			public:
 				NetworkAddress addr;
-				GAIA::U8 bStabilityLink : 1;
+				GAIA::N8 bStabilityLink : 1;
 			};
 		public:
 			GAIA_DEBUG_CODEPURE_MEMFUNC NetworkHandle(){this->init();}
@@ -171,9 +171,15 @@ namespace GAIA
 			GINL NetworkSender* GetSender() const{return m_pSender;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetReceiver(NetworkReceiver* pReceiver);
 			GINL NetworkReceiver* GetReceiver() const{return m_pReceiver;}
-			template <typename _SizeType> GINL BL Send(const GAIA::U8* p, const _SizeType& t);
+			GAIA_DEBUG_CODEPURE_MEMFUNC BL Send(const GAIA::U8* p, GAIA::UM uSize);
 			template <typename _DataType> GINL GAIA::BL Send(const _DataType& t);
 			template <typename _DataType> GINL GAIA::BL operator << (const _DataType& t);
+			GINL GAIA::BL operator == (const NetworkHandle& src) const{return m_h == src.m_h;}
+			GINL GAIA::BL operator != (const NetworkHandle& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator >= (const NetworkHandle& src) const{return m_h <= src.m_h;}
+			GINL GAIA::BL operator <= (const NetworkHandle& src) const{return m_h >= src.m_h;}
+			GINL GAIA::BL operator > (const NetworkHandle& src) const{return !(this->operator <= (src));}
+			GINL GAIA::BL operator < (const NetworkHandle& src) const{return !(this->operator >= (src));}
 		private:
 			GINL GAIA::GVOID init()
 			{
@@ -200,54 +206,110 @@ namespace GAIA
 				NetworkAddress addr;
 			};
 		public:
-			GINL NetworkListener(){}
-			GINL ~NetworkListener(){}
-			GINL GAIA::GVOID SetDesc(const ListenDesc& desc){}
-			GINL const ListenDesc& GetDesc() const{}
+			GINL NetworkListener(){this->init();}
+			GINL ~NetworkListener(){if(this->IsBegin()) this->End();}
+			GINL GAIA::GVOID SetDesc(const ListenDesc& desc){m_desc = desc;}
+			GINL const ListenDesc& GetDesc() const{return m_desc;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Begin();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
-			GINL GAIA::BL IsBegin() const{}
+			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		protected: // Interface for derived class callback.
 			virtual GAIA::BL Accept(const NetworkHandle& h) const = 0;
 			virtual GAIA::GVOID WorkProcedule();
 		private:
+			GINL GAIA::GVOID init(){}
+		private:
+			ListenDesc m_desc;
+			GAIA::N8 m_bBegin : 1;
 		};
 		class NetworkSender : public GAIA::THREAD::Thread
 		{
 		private:
 			friend class NetworkHandle;
+		private:
+			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle>> __HandleSetType;
 		public:
-			GINL NetworkSender(){}
-			GINL ~NetworkSender(){}
+			GINL NetworkSender(){this->init();}
+			GINL ~NetworkSender(){if(this->IsBegin()) this->End();}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Begin();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
-			GINL GAIA::BL IsBegin() const{}
+			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		private:
-			GINL GAIA::BL Add(NetworkHandle& h){}
-			GINL GAIA::BL Remove(NetworkHandle& h){}
-			GINL GAIA::GVOID RemoveAll(){}
+			GINL GAIA::BL Add(NetworkHandle& h)
+			{
+				__HandleSetType::_datatype finder = &h;
+				GAIA::SYNC::AutoLock al(m_lock);
+				if(m_hs.find(finder) != GNULL)
+					return GAIA::False;
+				h.Reference();
+				m_hs.insert(&h);
+				return GAIA::True;
+			}
+			GINL GAIA::BL Remove(NetworkHandle& h)
+			{
+				__HandleSetType::_datatype finder = &h;
+				GAIA::SYNC::AutoLock al(m_lock);
+				if(!m_hs.erase(finder))
+					return GAIA::False;
+				h.Release();
+				return GAIA::True;
+			}
+			GINL GAIA::GVOID RemoveAll()
+			{
+			}
 		protected:
-			virtual GAIA::GVOID WorkProcedule();
+			GINL virtual GAIA::GVOID WorkProcedule();
 		private:
+			GINL GAIA::GVOID init(){m_bBegin = GAIA::False;}
+		private:
+			__HandleSetType m_hs;
+			GAIA::SYNC::Lock m_lock;
+			GAIA::N8 m_bBegin;
 		};
 		class NetworkReceiver : public GAIA::THREAD::Thread
 		{
 		private:
 			friend class NetworkHandle;
+		private:
+			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle>> __HandleSetType;
 		public:
-			GINL NetworkReceiver(){}
-			GINL ~NetworkReceiver(){}
+			GINL NetworkReceiver(){this->init();}
+			GINL ~NetworkReceiver(){if(this->IsBegin()) this->End();}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Begin();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
-			GINL GAIA::BL IsBegin() const{}
+			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		private:
-			GINL GAIA::BL Add(NetworkHandle& h){}
-			GINL GAIA::BL Remove(NetworkHandle& h){}
-			GINL GAIA::GVOID RemoveAll(){}
+			GINL GAIA::BL Add(NetworkHandle& h)
+			{
+				__HandleSetType::_datatype finder = &h;
+				GAIA::SYNC::AutoLock al(m_lock);
+				if(m_hs.find(finder) != GNULL)
+					return GAIA::False;
+				h.Reference();
+				m_hs.insert(&h);
+				return GAIA::True;
+			}
+			GINL GAIA::BL Remove(NetworkHandle& h)
+			{
+				__HandleSetType::_datatype finder = &h;
+				GAIA::SYNC::AutoLock al(m_lock);
+				if(!m_hs.erase(finder))
+					return GAIA::False;
+				h.Release();
+				return GAIA::True;
+			}
+			GINL GAIA::GVOID RemoveAll()
+			{
+			}
 		protected: // Interface for derived class callback.
 			virtual GAIA::BL Receive(const NetworkSender& s, const GAIA::U8* p, GAIA::U32 size) const = 0;
-			virtual GAIA::GVOID WorkProcedule();
+			GINL virtual GAIA::GVOID WorkProcedule();
 		private:
+			GINL GAIA::GVOID init(){m_bBegin = GAIA::False;}
+		private:
+			__HandleSetType m_hs;
+			GAIA::SYNC::Lock m_lock;
+			GAIA::N8 m_bBegin;
 		};
 	};
 };

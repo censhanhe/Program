@@ -32,7 +32,7 @@ namespace GAIA
 			private:
 				_DataType m_t;
 				BasicVector<Node*, _SizeType, _SizeIncreaserType> m_links;
-				GAIA::BL m_traveling : 1;
+				GAIA::N8 m_traveling : 1;
 			};
 		public:
 			typedef _DataType _datatype;

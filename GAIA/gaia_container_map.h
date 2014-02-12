@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		
+		template <typename _DataType, typename _KeyType> class Map : public BasicMap<_DataType, _KeyType, GAIA::NM, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM>, 1000>{public:};
 	};
 };
 

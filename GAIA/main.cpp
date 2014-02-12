@@ -33,6 +33,10 @@
 
 #include "gaia.h"
 
+#if GAIA_OS == GAIA_OS_WINDOWS
+#	pragma comment(lib, "ws2_32.lib")
+#endif
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #	define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
@@ -94,6 +98,25 @@ GAIA::N32 main()
 #else
 	static const GAIA::N32 SAMPLE_COUNT = 100000;
 #endif
+
+	//{
+	//	WSADATA wsadata;
+	//	WSAStartup(MAKEWORD(2,2), &wsadata);
+
+	//	GAIA::NETWORK::NetworkHandle::ConnectDesc cdesc;
+	//	cdesc.addr.FromString("218.6.173.53:21");
+	//	cdesc.bStabilityLink = GAIA::True;
+	//	GAIA::NETWORK::NetworkHandle h;
+	//	if(h.Connect(cdesc))
+	//	{
+	//		
+	//	}
+	//	else
+	//	{
+	//	}
+
+	//	WSACleanup();
+	//}
 
 	GAIA::BL bFunctionSuccess = GAIA::True;
 

@@ -121,17 +121,24 @@ namespace GAIA
 			GAIA::U32 u[4];
 		};
 	};
+
+	/* Global constants. */
+	static GAIA_DEBUG_CONST GAIA::BL ALWAYSTRUE = GAIA::True;
+	static GAIA_DEBUG_CONST GAIA::BL ALWAYSFALSE = GAIA::False;
+
 	/* Class Base. All class's parent. */
 	class Base
 	{
 	public:
 	};
+
 	/* Class Object. It's the all class's base(except high-performance container and math class. */
 	class Object : public Base
 	{
 	public:
 		virtual ~Object(){}
 	};
+
 	/* Class RefObject. If a class need a reference function, it will derived from here. */
 	class RefObject : public Object
 	{
@@ -143,12 +150,16 @@ namespace GAIA
 	protected:
 		virtual GAIA::GVOID Destruct(){}
 	private:
+		GINL RefObject& operator = (const RefObject& src){return *this;}
+	private:
 		GAIA::N32 m_nRef;
 		GAIA::N8 m_bDestructing : 1;
 	};
+
 	/* Common constants. */
 	#define GNULL 0
 	#define GINVALID (~0)
+
 	/* Undefine origin type. */
 #ifdef GAIA_DEBUG_CODEPURE
 #	ifndef GAIA_NOCANCEL_ORIGINTYPE
@@ -166,10 +177,6 @@ namespace GAIA
 #		define unsigned 1
 #	endif
 #endif
-
-	/* Global constants. */
-	static GAIA_DEBUG_CONST GAIA::BL ALWAYSTRUE = GAIA::True;
-	static GAIA_DEBUG_CONST GAIA::BL ALWAYSFALSE = GAIA::False;
 }
 
 #endif
