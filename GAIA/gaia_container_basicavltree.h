@@ -14,6 +14,12 @@ namespace GAIA
 			class Node
 			{
 			public:
+				GINL GAIA::BL operator == (const Node& src) const{return t == src.t;}
+				GINL GAIA::BL operator != (const Node& src) const{return t != src.t;}
+				GINL GAIA::BL operator >= (const Node& src) const{return t >= src.t;}
+				GINL GAIA::BL operator <= (const Node& src) const{return t <= src.t;}
+				GINL GAIA::BL operator > (const Node& src) const{return t > src.t;}
+				GINL GAIA::BL operator < (const Node& src) const{return t < src.t;}
 				_DataType t;
 				_HeightType h;
 				Node* pPrev;
@@ -85,10 +91,10 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) == 0;}
+				GINL GAIA::BL operator == (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) == 0;}
 				GINL GAIA::BL operator != (const BidirectionalIterator& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) >= 0;}
-				GINL GAIA::BL operator <= (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) <= 0;}
+				GINL GAIA::BL operator >= (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) >= 0;}
+				GINL GAIA::BL operator <= (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const BidirectionalIterator& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const BidirectionalIterator& src) const{return !(*this >= src);}
 				GINL BidirectionalIterator& operator = (const BidirectionalIterator& src){m_pNode = src.m_pNode; m_pAVLTree = src.m_pAVLTree; return *this;}
