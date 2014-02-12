@@ -79,6 +79,7 @@
 #include	"gaia_container_basicgraph.h"
 #include 	"gaia_container_basicnet.h"
 #include	"gaia_container_basicdictionary.h"
+#include	"gaia_container_basicheap.h"
 
 #include 	"gaia_container_vari.h"
 

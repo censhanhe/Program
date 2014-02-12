@@ -599,6 +599,14 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="HEAP"
+							>
+							<File
+								RelativePath=".\gaia_container_basicheap.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
