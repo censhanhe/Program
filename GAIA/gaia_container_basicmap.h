@@ -47,11 +47,11 @@ namespace GAIA
 				GINL virtual GAIA::BL empty() const{}
 				GINL virtual _DataType& operator * (){}
 				GINL virtual const _DataType& operator * () const{}
-				GINL virtual Iterator& operator ++ (){}
-				GINL virtual Iterator& operator -- (){}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (){}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (){}
 			private:
-				GINL virtual Iterator& operator ++ (GAIA::N32){}
-				GINL virtual Iterator& operator -- (GAIA::N32){}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){}
 			};
 			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
@@ -60,11 +60,11 @@ namespace GAIA
 				GINL virtual ~ConstBidirectionalIterator(){}
 				GINL virtual GAIA::BL empty() const{}
 				GINL virtual const _DataType& operator * () const{}
-				GINL virtual ConstIterator& operator ++ (){}
-				GINL virtual ConstIterator& operator -- (){}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){}
 			private:
-				GINL virtual ConstIterator& operator ++ (GAIA::N32){}
-				GINL virtual ConstIterator& operator -- (GAIA::N32){}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){}
 			};
 		public:
 			GINL BasicMap(){}

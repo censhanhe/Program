@@ -36,9 +36,10 @@
 #		include <windows.h>
 #		include <time.h>
 #	else
-#		include <pthread.h>
 #		include <unistd.h>
+#		include <pthread.h>
 #		include <time.h>
+#		include <sys/time.h>
 #		include <sys/socket.h>
 #		include <netinet/in.h>
 #	endif
