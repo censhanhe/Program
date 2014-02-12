@@ -10,7 +10,7 @@ namespace GAIA
 		public:
 			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(u, 0, 6);}
 			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmp(u, 0, 6) == 0;}
-			GINL GAIA::BL FromString(const GAIA::GCH* psz)
+			GINL GAIA::GVOID FromString(const GAIA::GCH* psz)
 			{
 				const GAIA::GCH* p = psz;
 				GAIA::UM uDotCnt = GAIA::ALGORITHM::strcnt(psz, '.');
@@ -34,11 +34,8 @@ namespace GAIA
 					}
 					GAIA::ALGORITHM::str2int(p, u[5]);
 				}
-				else
-					return GAIA::False;
-				return GAIA::True;
 			}
-			GINL GAIA::GVOID ToString(GAIA::GCH* psz)
+			GINL GAIA::GVOID ToString(GAIA::GCH* psz) const
 			{
 				GAIA::GCH* p = psz;
 				GAIA::N32 nPart = (u4 == 0 && u5 == 0) ? 4 : 6;
@@ -67,9 +64,23 @@ namespace GAIA
 		{
 		public:
 			GINL GAIA::GVOID Invalid(){ip.Invalid(); uPort = 0;}
-			GINL GAIA::BL IsInvalid() const{ return ip.IsInvalid() || uPort == 0;}
-			GINL GAIA::BL FromString(const GAIA::GCH* psz){}
-			GINL GAIA::GVOID ToString(GAIA::GCH* psz) const{}
+			GINL GAIA::BL IsInvalid() const{return ip.IsInvalid() || uPort == 0;}
+			GINL GAIA::GVOID FromString(const GAIA::GCH* psz)
+			{
+				ip.FromString(psz);
+				const GAIA::GCH* p = GAIA::ALGORITHM::strch(psz, ':');
+				++p;
+				GAIA::ALGORITHM::str2int(p, uPort);
+			}
+			GINL GAIA::GVOID ToString(GAIA::GCH* psz) const
+			{
+				ip.ToString(psz);
+				GAIA::GCH* p = GAIA::ALGORITHM::strend(psz);
+				*p = ':';
+				++p;
+				p = GAIA::ALGORITHM::int2str(uPort, p);
+				*(p - 1) = 0;
+			}
 			IP ip;
 			GAIA::U16 uPort;
 		};

@@ -19,6 +19,22 @@ namespace GAIA
 		template <typename _DataType> GAIA::BL isalpha(const _DataType& c){if(c < 'A' || c > 'z') return GAIA::False; if(c <= 'Z' || c >= 'a') return GAIA::True; return GAIA::False;}
 		template <typename _DataType> GAIA::BL ispunctuation(const _DataType& c){if(c > ' ' && !GAIA::ALGORITHM::isalpha(c) && !GAIA::ALGORITHM::isdigit(c) && c < 0xFF) return GAIA::True; return GAIA::False;}
 		template <typename _DataType> GAIA::BL isspecial(const _DataType& c){if(c < ' ') return GAIA::True; return GAIA::False;}
+		template <typename _DataType> _DataType* strend(const _DataType* p)
+		{
+			while(*p != 0)
+				++p;
+			return const_cast<_DataType*>(p);
+		}
+		template <typename _DataType> _DataType* strch(const _DataType* p, const _DataType& c)
+		{
+			while(*p != 0)
+			{
+				if(*p == c)
+					return const_cast<_DataType*>(p);
+				++p;
+			}
+			return GNULL;
+		}
 		template <typename _DataType> GAIA::UM strlen(const _DataType* p){GAIA_ASSERT(p != GNULL); GAIA::UM ret = 0; while(p[ret] != 0) ret++; return ret;}
 		template <typename _DataType1, typename _DataType2> GAIA::UM strcnt(const _DataType1* p, const _DataType2& key)
 		{
@@ -112,7 +128,7 @@ namespace GAIA
 					++p;
 				}
 				if(*p == 0)
-					return (_DataType*)p1;
+					return const_cast<_DataType*>(p1);
 				++p1;
 			}
 			return GNULL;
@@ -133,7 +149,7 @@ namespace GAIA
 					++p;
 				}
 				if(*p == 0)
-					return (_DataType*)p1;
+					return const_cast<_DataType*>(p1);
 				++p1;
 			}
 			return GNULL;
@@ -152,7 +168,7 @@ namespace GAIA
 				++p2;
 			}
 			if(*p2 == 0)
-				return (_DataType*)p1;
+				return const_cast<_DataType*>(p1);
 			return GNULL;
 		}
 		template <typename _DataType> _DataType* strimch(const _DataType* p1, const _DataType* p2)
@@ -169,7 +185,7 @@ namespace GAIA
 				++p2;
 			}
 			if(*p2 == 0)
-				return (_DataType*)p1;
+				return const_cast<_DataType*>(p1);
 			return GNULL;
 		}
 		template <typename _SrcDataType, typename _DstDataType> _DstDataType* int2str(const _SrcDataType& src, _DstDataType* pDst)

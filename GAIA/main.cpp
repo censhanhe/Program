@@ -603,7 +603,8 @@ GAIA::N32 main()
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			listGAIA.push_back(GAIA::MATH::random());
 		PERF_START("GAIA sort use");
-		GAIA::ALGORITHM::sort(&listGAIA[0], &listGAIA[listGAIA.size() - 1]);
+		if(!listGAIA.empty())
+			GAIA::ALGORITHM::sort(&listGAIA[0], &listGAIA[listGAIA.size() - 1]);
 		PERF_END;
 
 		PERF_START("STL bsearch use");
@@ -1454,12 +1455,39 @@ GAIA::N32 main()
 	
 	// Network test.
 	{
-		GAIA::NETWORK::IP ip;
-		ip.Invalid();
-		ip.FromString("192.168.1.1");
+		BEGIN_TEST("Network function test");
+		
+		bFunctionSuccess = GAIA::True;
+		
 		GAIA::GCH szTemp[64];
-		ip.ToString(szTemp);
-		ip.IsInvalid();
+		{
+			GAIA::NETWORK::IP ip;
+			ip.Invalid();
+			ip.FromString("192.168.1.1");
+			if(ip.u0 != 192 || ip.u1 != 168 || ip.u2 != 1 || ip.u3 != 1)
+				bFunctionSuccess = GAIA::False;
+			ip.ToString(szTemp);
+			if(GAIA::ALGORITHM::strcmp(szTemp, "192.168.1.1") != 0)
+				bFunctionSuccess = GAIA::False;
+			ip.IsInvalid();
+		}
+		
+		{
+			GAIA::NETWORK::NetworkAddress na;
+			na.Invalid();
+			na.FromString("192.168.1.8:4321");
+			if(na.ip.u0 != 192 || na.ip.u1 != 168 || na.ip.u2 != 1 || na.ip.u3 != 8)
+				bFunctionSuccess = GAIA::False;
+			na.ToString(szTemp);
+			if(GAIA::ALGORITHM::strcmp(szTemp, "192.168.1.8:4321") != 0)
+				bFunctionSuccess = GAIA::False;
+			na.IsInvalid();
+		}
+		
+		if(bFunctionSuccess)
+			TEXT_TEST("IPAddress to or from string convert SUCCESSFULLY!");
+		else
+			TEXT_TEST("IPAddress to or from string convert FAILED!");
 	}
 
 	// Basic factory test 1.
