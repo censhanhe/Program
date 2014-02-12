@@ -20,7 +20,7 @@ namespace GAIA
 			if(this->IsConnected())
 				this->Disconnect();
 			
-			if(!desc.addr.IsInvalid())
+			if(desc.addr.IsInvalid())
 				return GAIA::False;
 
 			if(desc.addr.ip.u4 == 0 && desc.addr.ip.u5 == 0)
@@ -51,7 +51,7 @@ namespace GAIA
 					m_h = GINVALID;
 					return GAIA::False;
 				}
-				
+				m_conndesc = desc;
 				return GAIA::True;
 			}
 			else
@@ -67,7 +67,6 @@ namespace GAIA
 				GAIA::ALGORITHM::memset(&sinaddr6, 0, sizeof(sinaddr6));
 				sinaddr6.sin6_family = AF_INET6;
 				sinaddr6.sin6_port = htons(desc.addr.uPort);
-
 				if(connect(m_h, (sockaddr*)&sinaddr6, sizeof(sinaddr6)) == GINVALID)
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS
@@ -78,8 +77,8 @@ namespace GAIA
 					m_h = GINVALID;
 					return GAIA::False;
 				}
-				
-				return GAIA::False;
+				m_conndesc = desc;
+				return GAIA::True;
 			}
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GINL GAIA::BL NetworkHandle::Disconnect()
