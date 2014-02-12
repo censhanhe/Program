@@ -21,6 +21,7 @@
 #else
 #	define GAIA_DEBUG_CONST const
 #endif
+
 #ifdef GAIA_DEBUG_CODEPURE
 #	define GAIA_DEBUG_CODEPURE_FUNC extern
 #	define GAIA_DEBUG_CODEPURE_MEMFUNC

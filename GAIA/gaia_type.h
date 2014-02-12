@@ -148,6 +148,7 @@ namespace GAIA
 	};
 	/* Common constants. */
 	#define GNULL 0
+	#define GINVALID (~0)
 	/* Undefine origin type. */
 #ifdef GAIA_DEBUG_CODEPURE
 #	ifndef GAIA_NOCANCEL_ORIGINTYPE
