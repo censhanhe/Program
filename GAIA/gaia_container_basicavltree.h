@@ -5,11 +5,11 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicAVLTree
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicAVLTree
 		{
 		private:
-			friend class BidirectionalIterator;
-			friend class ConstBidirectionalIterator;
+			friend class it;
+			friend class const_it;
 		private:
 			class Node
 			{
@@ -37,13 +37,13 @@ namespace GAIA
 			typedef BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
 		public:
-			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
+			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
 				friend class BasicAVLTree;
 			public:
-				GINL BidirectionalIterator(){m_pNode = GNULL; m_pAVLTree = GNULL;}
-				GINL virtual ~BidirectionalIterator(){}
+				GINL it(){m_pNode = GNULL; m_pAVLTree = GNULL;}
+				GINL virtual ~it(){}
 				GINL virtual GAIA::BL empty() const{if(m_pNode == GNULL) return GAIA::True; return GAIA::False;}
 				GINL virtual _DataType& operator * (){return m_pNode->t;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
@@ -61,7 +61,7 @@ namespace GAIA
 					m_pNode = this->select_prev(m_pNode);
 					return *this;
 				}
-				GINL BidirectionalIterator& operator += (const _SizeType& c)
+				GINL it& operator += (const _SizeType& c)
 				{
 					for(_SizeType x = 0; x < c; ++x)
 					{
@@ -70,7 +70,7 @@ namespace GAIA
 					}
 					return *this;
 				}
-				GINL BidirectionalIterator& operator -= (const _SizeType& c)
+				GINL it& operator -= (const _SizeType& c)
 				{
 					for(_SizeType x = 0; x < c; ++x)
 					{
@@ -79,25 +79,25 @@ namespace GAIA
 					}
 					return *this;
 				}
-				GINL BidirectionalIterator operator + (const _SizeType& c) const
+				GINL it operator + (const _SizeType& c) const
 				{
-					BidirectionalIterator ret = *this;
+					it ret = *this;
 					ret += c;
 					return ret;
 				}
-				GINL BidirectionalIterator operator - (const _SizeType& c) const
+				GINL it operator - (const _SizeType& c) const
 				{
-					BidirectionalIterator ret = *this;
+					it ret = *this;
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) == 0;}
-				GINL GAIA::BL operator != (const BidirectionalIterator& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) >= 0;}
-				GINL GAIA::BL operator <= (const BidirectionalIterator& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) <= 0;}
-				GINL GAIA::BL operator > (const BidirectionalIterator& src) const{return !(*this <= src);}
-				GINL GAIA::BL operator < (const BidirectionalIterator& src) const{return !(*this >= src);}
-				GINL BidirectionalIterator& operator = (const BidirectionalIterator& src){m_pNode = src.m_pNode; m_pAVLTree = src.m_pAVLTree; return *this;}
+				GINL GAIA::BL operator == (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) == 0;}
+				GINL GAIA::BL operator != (const it& src) const{return !(*this == src);}
+				GINL GAIA::BL operator >= (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) >= 0;}
+				GINL GAIA::BL operator <= (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) <= 0;}
+				GINL GAIA::BL operator > (const it& src) const{return !(*this <= src);}
+				GINL GAIA::BL operator < (const it& src) const{return !(*this >= src);}
+				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pAVLTree = src.m_pAVLTree; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
@@ -159,13 +159,13 @@ namespace GAIA
 				Node* m_pNode;
 				__MyType* m_pAVLTree;
 			};
-			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
+			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			private:
 				friend class BasicAVLTree;
 			public:
-				GINL ConstBidirectionalIterator(){m_pNode = GNULL; m_pAVLTree = GNULL;}
-				GINL virtual ~ConstBidirectionalIterator(){}
+				GINL const_it(){m_pNode = GNULL; m_pAVLTree = GNULL;}
+				GINL virtual ~const_it(){}
 				GINL virtual GAIA::BL empty() const{if(m_pNode == GNULL) return GAIA::True; return GAIA::False;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ()
@@ -182,37 +182,37 @@ namespace GAIA
 					m_pNode = this->select_prev(m_pNode);
 					return *this;
 				}
-				GINL ConstBidirectionalIterator& operator += (const _SizeType& c)
+				GINL const_it& operator += (const _SizeType& c)
 				{
 					for(_SizeType x = 0; x < c; ++x)
 						++(*this);
 					return *this;
 				}
-				GINL ConstBidirectionalIterator& operator -= (const _SizeType& c)
+				GINL const_it& operator -= (const _SizeType& c)
 				{
 					for(_SizeType x = 0; x < c; ++x)
 						--(*this);
 					return *this;
 				}
-				GINL ConstBidirectionalIterator operator + (const _SizeType& c) const
+				GINL const_it operator + (const _SizeType& c) const
 				{
-					ConstBidirectionalIterator ret = *this;
+					const_it ret = *this;
 					ret += c;
 					return ret;
 				}
-				GINL ConstBidirectionalIterator operator - (const _SizeType& c) const
+				GINL const_it operator - (const _SizeType& c) const
 				{
-					ConstBidirectionalIterator ret = *this;
+					const_it ret = *this;
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const ConstBidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) == 0;}
-				GINL GAIA::BL operator != (const ConstBidirectionalIterator& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const ConstBidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) >= 0;}
-				GINL GAIA::BL operator <= (const ConstBidirectionalIterator& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) <= 0;}
-				GINL GAIA::BL operator > (const ConstBidirectionalIterator& src) const{return !(*this <= src);}
-				GINL GAIA::BL operator < (const ConstBidirectionalIterator& src) const{return !(*this >= src);}
-				GINL ConstBidirectionalIterator& operator = (const ConstBidirectionalIterator& src){m_pNode = src.m_pNode; m_pAVLTree = src.m_pAVLTree; return *this;}
+				GINL GAIA::BL operator == (const const_it& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) == 0;}
+				GINL GAIA::BL operator != (const const_it& src) const{return !(*this == src);}
+				GINL GAIA::BL operator >= (const const_it& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) >= 0;}
+				GINL GAIA::BL operator <= (const const_it& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) <= 0;}
+				GINL GAIA::BL operator > (const const_it& src) const{return !(*this <= src);}
+				GINL GAIA::BL operator < (const const_it& src) const{return !(*this >= src);}
+				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pAVLTree = src.m_pAVLTree; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
@@ -315,9 +315,9 @@ namespace GAIA
 					return GNULL;
 				return this->find_node(m_pRoot, t);
 			}
-			GINL BidirectionalIterator lower_bound(const _DataType& t)
+			GINL it lower_bound(const _DataType& t)
 			{
-				BidirectionalIterator iter;
+				it iter;
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
@@ -329,9 +329,9 @@ namespace GAIA
 					iter.m_pAVLTree = this;
 				return iter;
 			}
-			GINL BidirectionalIterator upper_bound(const _DataType& t)
+			GINL it upper_bound(const _DataType& t)
 			{
-				BidirectionalIterator iter;
+				it iter;
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
@@ -343,9 +343,9 @@ namespace GAIA
 					iter.m_pAVLTree = this;
 				return iter;
 			}
-			GINL ConstBidirectionalIterator lower_bound(const _DataType& t) const
+			GINL const_it lower_bound(const _DataType& t) const
 			{
-				ConstBidirectionalIterator iter;
+				const_it iter;
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
@@ -357,9 +357,9 @@ namespace GAIA
 					iter.m_pAVLTree = this;
 				return iter;
 			}
-			GINL ConstBidirectionalIterator upper_bound(const _DataType& t) const
+			GINL const_it upper_bound(const _DataType& t) const
 			{
-				ConstBidirectionalIterator iter;
+				const_it iter;
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
@@ -375,9 +375,9 @@ namespace GAIA
 			GINL _DataType* minimize(){if(m_pRoot == GNULL) return GNULL; return &this->findmin(m_pRoot);}
 			GINL const _DataType* maximize() const{if(m_pRoot == GNULL) return GNULL; return &this->findmax(m_pRoot);}
 			GINL _DataType* maximize(){if(m_pRoot == GNULL) return GNULL; return &this->findmax(m_pRoot);}
-			GINL BidirectionalIterator front_iterator()
+			GINL it front_it()
 			{
-				BidirectionalIterator iter;
+				it iter;
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
@@ -390,9 +390,9 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL BidirectionalIterator back_iterator()
+			GINL it back_it()
 			{
-				BidirectionalIterator iter;
+				it iter;
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
@@ -405,9 +405,9 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL ConstBidirectionalIterator const_front_iterator() const
+			GINL const_it const_front_it() const
 			{
-				ConstBidirectionalIterator iter;
+				const_it iter;
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
@@ -420,9 +420,9 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL ConstBidirectionalIterator const_back_iterator() const
+			GINL const_it const_back_it() const
 			{
-				ConstBidirectionalIterator iter;
+				const_it iter;
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
@@ -435,18 +435,18 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL GAIA::GVOID front_prev_iterator(){}
-			GINL GAIA::GVOID back_prev_iterator(){}
-			GINL GAIA::GVOID front_mid_iterator(){}
-			GINL GAIA::GVOID back_mid_iterator(){}
-			GINL GAIA::GVOID front_next_iterator(){}
-			GINL GAIA::GVOID back_next_iterator(){}
-			GINL GAIA::GVOID const_front_prev_iterator(){}
-			GINL GAIA::GVOID const_back_prev_iterator(){}
-			GINL GAIA::GVOID const_front_mid_iterator(){}
-			GINL GAIA::GVOID const_back_mid_iterator(){}
-			GINL GAIA::GVOID const_front_next_iterator(){}
-			GINL GAIA::GVOID const_back_next_iterator(){}
+			GINL GAIA::GVOID front_prev_it(){}
+			GINL GAIA::GVOID back_prev_it(){}
+			GINL GAIA::GVOID front_mid_it(){}
+			GINL GAIA::GVOID back_mid_it(){}
+			GINL GAIA::GVOID front_next_it(){}
+			GINL GAIA::GVOID back_next_it(){}
+			GINL GAIA::GVOID const_front_prev_it(){}
+			GINL GAIA::GVOID const_back_prev_it(){}
+			GINL GAIA::GVOID const_front_mid_it(){}
+			GINL GAIA::GVOID const_back_mid_it(){}
+			GINL GAIA::GVOID const_front_next_it(){}
+			GINL GAIA::GVOID const_back_next_it(){}
 		private:
 			GINL GAIA::GVOID rotate_prev(Node*& pNode)
 			{

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicPriQueue
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicPriQueue
 		{
 		public:
 			typedef _DataType _datatype;

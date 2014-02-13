@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, _SizeType _Size> class BasicArray
+		template<typename _DataType, typename _SizeType, _SizeType _Size> class BasicArray
 		{
 		public:
 			typedef _DataType _datatype;
@@ -23,15 +23,15 @@ namespace GAIA
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL GAIA::BL push_back(const _DataType& t){if(this->size() < _Size){m_data[m_size++] = t; return GAIA::True;} else return GAIA::False;}
 			GINL GAIA::BL pop_back(){if(this->size() > 0){m_size--; return GAIA::True;} else return GAIA::False;}
-			GINL const _DataType& front() const{GAIA_ASSERT(this->size() > 0); this->operator[](0);}
-			GINL _DataType& front(){GAIA_ASSERT(this->size() > 0); return this->operator[](0);}
-			GINL const _DataType& back() const{GAIA_ASSERT(this->size() > 0); this->operator[](this->size() - 1);}
-			GINL _DataType& back(){GAIA_ASSERT(this->size() > 0); return this->operator[](this->size() - 1);}
-			GINL const _DataType* front_ptr() const{GAIA_ASSERT(this->size() > 0); return &this->operator[](0);}
-			GINL _DataType* front_ptr(){GAIA_ASSERT(this->size() > 0); return &this->operator[](0);}
-			GINL const _DataType* back_ptr() const{GAIA_ASSERT(this->size() > 0); return &this->operator[](this->size() - 1);}
-			GINL _DataType* back_ptr(){GAIA_ASSERT(this->size() > 0); return &this->operator[](this->size() - 1);}
-			GINL GAIA::GVOID resize(const _SizeType& size){GAIA_ASSERT(size >= 0 && size <= _Size); m_size = size;}
+			GINL const _DataType& front() const{GAIA_AST(this->size() > 0); this->operator[](0);}
+			GINL _DataType& front(){GAIA_AST(this->size() > 0); return this->operator[](0);}
+			GINL const _DataType& back() const{GAIA_AST(this->size() > 0); this->operator[](this->size() - 1);}
+			GINL _DataType& back(){GAIA_AST(this->size() > 0); return this->operator[](this->size() - 1);}
+			GINL const _DataType* front_ptr() const{GAIA_AST(this->size() > 0); return &this->operator[](0);}
+			GINL _DataType* front_ptr(){GAIA_AST(this->size() > 0); return &this->operator[](0);}
+			GINL const _DataType* back_ptr() const{GAIA_AST(this->size() > 0); return &this->operator[](this->size() - 1);}
+			GINL _DataType* back_ptr(){GAIA_AST(this->size() > 0); return &this->operator[](this->size() - 1);}
+			GINL GAIA::GVOID resize(const _SizeType& size){GAIA_AST(size >= 0 && size <= _Size); m_size = size;}
 			GINL GAIA::GVOID reset(const _DataType& t){for(_SizeType x = 0; x < this->size(); ++x) m_data[x] = t;}
 			GINL _SizeType count(const _DataType& t) const
 			{
@@ -99,7 +99,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL erase(const _SizeType& index)
 			{
-				GAIA_ASSERT(index >= 0);
+				GAIA_AST(index >= 0);
 				if(this->empty())
 					return GAIA::False;
 				if(index >= this->size())

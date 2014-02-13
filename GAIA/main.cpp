@@ -41,7 +41,7 @@
 #	define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
 
-template <typename _DataType> class SNode
+template<typename _DataType> class SNode
 {
 public:
 	typedef _DataType _datatype;
@@ -335,7 +335,7 @@ GAIA::N32 main()
 		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bv;
 		bv.push_back(10);
 		bv.push_back(20);
-		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>>::BidirectionalIterator iter = bv.front_iterator();
+		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>>::it iter = bv.front_it();
 		while(!iter.empty())
 			++iter;
 		bv.clear();
@@ -499,7 +499,7 @@ GAIA::N32 main()
 		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
 			que.pop();
 		que.front();
-		GAIA_ASSERT(que.size() == 50);
+		GAIA_AST(que.size() == 50);
 		__QueueType newque = que;
 	}
 
@@ -652,7 +652,7 @@ GAIA::N32 main()
 			__ListType list;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.push_back(x);
-			__ListType::BidirectionalIterator iter = list.front_iterator();
+			__ListType::it iter = list.front_it();
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.erase(iter);
 			list.destroy();
@@ -663,7 +663,7 @@ GAIA::N32 main()
 				list.pop_front();
 			if(!list.empty())
 				LINE_TEST("list front push pop operator FAILED!");
-			iter = list.front_iterator();
+			iter = list.front_it();
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.insert(iter, x);
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
@@ -684,7 +684,7 @@ GAIA::N32 main()
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::BL bResult = btr.insert(x);
-			GAIA_ASSERT(bResult);
+			GAIA_AST(bResult);
 			if(!bResult)
 				bFunctionSuccess = GAIA::False;
 		}
@@ -694,14 +694,14 @@ GAIA::N32 main()
 			LINE_TEST("Insert by key operator is FAILED!");
 		GAIA::BL bCheckParent = btr.dbg_check_parent();
 		bCheckParent = true;
-		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100>::BidirectionalIterator iter = btr.front_iterator();
+		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100>::it iter = btr.front_it();
 		while(!iter.empty())
 		{
 			GAIA::N32 n = *iter;
 			n = 0;
 			++iter;
 		}
-		iter = btr.back_iterator();
+		iter = btr.back_it();
 		while(!iter.empty())
 		{
 			GAIA::N32 n = *iter;
@@ -713,7 +713,7 @@ GAIA::N32 main()
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::N32* pFinded = btr.find(x);
-			GAIA_ASSERT(pFinded != GNULL);
+			GAIA_AST(pFinded != GNULL);
 			if(pFinded == GNULL)
 				bFunctionSuccess = GAIA::False;
 		}
@@ -726,7 +726,7 @@ GAIA::N32 main()
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::BL bResult = btr.erase(x);
-			GAIA_ASSERT(bResult);
+			GAIA_AST(bResult);
 			bResult = GAIA::True;
 			if(!bResult)
 				bFunctionSuccess = GAIA::False;
@@ -792,7 +792,7 @@ GAIA::N32 main()
 			__AVLTreeType av;
 			for(GAIA::N32 x = 0; x < 100; ++x)
 				av.insert(x);
-			__AVLTreeType::BidirectionalIterator iter = av.lower_bound(32);
+			__AVLTreeType::it iter = av.lower_bound(32);
 			GAIA::N32 nCount = 0;
 			while(!iter.empty())
 			{
@@ -874,7 +874,7 @@ GAIA::N32 main()
 		GAIA::N32* pMaximize = mavlt.maximize();
 		if(pMaximize == GNULL)
 			bFunctionSuccess = GAIA::False;
-		__MAVLTreeType::BidirectionalIterator iter = mavlt.front_iterator();
+		__MAVLTreeType::it iter = mavlt.front_it();
 		if(iter.empty())
 			bFunctionSuccess = GAIA::False;
 		while(!iter.empty())
@@ -1105,8 +1105,8 @@ GAIA::N32 main()
 			st.insert(12);
 			st.insert(2);
 			st.insert(3);
-			__SetType::BidirectionalIterator iterl = st.lower_bound(4);
-			__SetType::BidirectionalIterator iteru = st.upper_bound(16);
+			__SetType::it iterl = st.lower_bound(4);
+			__SetType::it iteru = st.upper_bound(16);
 			if(*iterl != 5)
 				bFunctionSuccess = GAIA::False;
 			if(*iteru != 12)
@@ -1186,14 +1186,14 @@ GAIA::N32 main()
 			*mp["a"] = 22;
 			*mp["d"] = 1;
 			*mp["f"] = 2;
-			__MapType::BidirectionalIterator iterl = mp.lower_bound("f");
-			__MapType::BidirectionalIterator iteru = mp.lower_bound("b");
+			__MapType::it iterl = mp.lower_bound("f");
+			__MapType::it iteru = mp.lower_bound("b");
 			if(*iterl != 2)
 				bFunctionSuccess = GAIA::False;
 			if(*iteru != 16)
 				bFunctionSuccess = GAIA::False;
-			iterl = mp.front_iterator();
-			iteru = mp.back_iterator();
+			iterl = mp.front_it();
+			iteru = mp.back_it();
 			if(*iterl != 22)
 				bFunctionSuccess = GAIA::False;
 			if(*iteru != 2)
@@ -1334,9 +1334,9 @@ GAIA::N32 main()
 					for(_MyGraphType::__PathTreeType::__PathListType::_datatype::_sizetype y = 0; y < path.size(); ++y)
 					{
 						_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
-						GAIA_ASSERT(pTreeNode != GNULL);
+						GAIA_AST(pTreeNode != GNULL);
 						_MyGraphType::Node* pNode = **pTreeNode;
-						GAIA_ASSERT(pNode != GNULL);
+						GAIA_AST(pNode != GNULL);
 						if(pNode != GNULL)
 						{
 							_MyGraphType::_datatype data = **pNode;
@@ -1410,9 +1410,9 @@ GAIA::N32 main()
 					for(_MyGraphType::__PathTreeType::__PathListType::_datatype::_sizetype y = 0; y < path.size(); ++y)
 					{
 						_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
-						GAIA_ASSERT(pTreeNode != GNULL);
+						GAIA_AST(pTreeNode != GNULL);
 						_MyGraphType::Node* pNode = **pTreeNode;
-						GAIA_ASSERT(pNode != GNULL);
+						GAIA_AST(pNode != GNULL);
 						if(pNode != GNULL)
 						{
 							_MyGraphType::_datatype data = **pNode;
@@ -1484,7 +1484,7 @@ GAIA::N32 main()
 		MyThread thread;
 		thread.Run();
 		thread.Wait();
-		GAIA_ASSERT(thread.IsRuned());
+		GAIA_AST(thread.IsRuned());
 	}
 
 	// File test.

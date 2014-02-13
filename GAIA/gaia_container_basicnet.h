@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _WeightType, typename _SizeIncreaserType, typename _GroupElementSize> class BasicNet
+		template<typename _DataType, typename _SizeType, typename _WeightType, typename _SizeIncreaserType, typename _GroupElementSize> class BasicNet
 		{
 		public:
 		private:

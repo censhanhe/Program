@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ITERATOR
 	{
-		template <typename _DataType> class Iterator
+		template<typename _DataType> class Iterator
 		{
 		public:
 			GINL virtual ~Iterator(){}
@@ -19,7 +19,7 @@ namespace GAIA
 			GINL virtual Iterator& operator -- (GAIA::N32) = 0;
 		};
 
-		template <typename _DataType> class ConstIterator
+		template<typename _DataType> class ConstIterator
 		{
 		public:
 			GINL virtual ~ConstIterator(){}

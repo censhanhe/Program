@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _SizeIncreaserType, typename _SizeType> class BasicBuffer
+		template<typename _SizeIncreaserType, typename _SizeType> class BasicBuffer
 		{
 		public:
 			typedef _SizeIncreaserType _sizeincreasertype;
@@ -26,12 +26,12 @@ namespace GAIA
 			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){delete[] m_pFront; m_pFront = m_pBack = m_pCur = GNULL;}}
 			GINL _SizeType capacity() const{return static_cast<_SizeType>(m_pBack - m_pFront);}
 			GINL _SizeType size() const{return static_cast<_SizeType>(m_pCur - m_pFront);}
-			template <typename ObjType> GINL GAIA::GVOID push(const ObjType& obj)
+			template<typename ObjType> GINL GAIA::GVOID push(const ObjType& obj)
 			{
 				GAIA::U8* pNew = this->alloc(sizeof(obj));
 				GAIA::ALGORITHM::memcpy(pNew, &obj, sizeof(obj));
 			}
-			template <typename ObjType> GINL GAIA::BL pop(ObjType& obj)
+			template<typename ObjType> GINL GAIA::BL pop(ObjType& obj)
 			{
 				if(sizeof(obj) > m_pCur - m_pFront)
 					return GAIA::False;
@@ -39,8 +39,8 @@ namespace GAIA
 				m_pCur -= sizeof(obj);
 				return GAIA::True;
 			}
-			template <typename ObjType> GINL BasicBuffer& operator << (const ObjType& obj){this->push(obj); return *this;}
-			template <typename ObjType> GINL BasicBuffer& operator >> (ObjType& obj){this->pop(obj); return *this;}
+			template<typename ObjType> GINL BasicBuffer& operator << (const ObjType& obj){this->push(obj); return *this;}
+			template<typename ObjType> GINL BasicBuffer& operator >> (ObjType& obj){this->pop(obj); return *this;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->destroy();

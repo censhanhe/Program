@@ -6,7 +6,7 @@ namespace GAIA
 	namespace ERROR_MANAGEMENT
 	{
 		#define GAIA_DECL_ERRORNUM(num, info) \
-					template <GAIA::UM _ErrorNumber##num> class ERRORNUM##num\
+					template<GAIA::UM _ErrorNumber##num> class ERRORNUM##num\
 					{\
 					public:\
 						const GAIA::GTCH* GetErrorInfoW() const{return L##info;}\

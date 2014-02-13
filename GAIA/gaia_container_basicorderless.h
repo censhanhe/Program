@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _DataType _DefaultValue> class BasicOrderless
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _DataType _DefaultValue> class BasicOrderless
 		{
 		public:
 			typedef _DataType _datatype;

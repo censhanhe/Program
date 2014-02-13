@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType> class Ref
+		template<typename _DataType> class Ref
 		{
 		public:
 			typedef _DataType _datatype;
@@ -21,8 +21,8 @@ namespace GAIA
 			GINL __MyType& operator = (_DataType* p){m_p = p; return *this;}
 			GINL _DataType& operator * (){return *m_p;}
 			GINL const _DataType& operator * () const{return *m_p;}
-			template <typename _ParamSizeType> GINL _DataType& operator [] (const _ParamSizeType& index){return m_p[index];}
-			template <typename _ParamSizeType> GINL const _DataType& operator [] (const _ParamSizeType& index) const{return m_p[index];}
+			template<typename _ParamSizeType> GINL _DataType& operator [] (const _ParamSizeType& index){return m_p[index];}
+			template<typename _ParamSizeType> GINL const _DataType& operator [] (const _ParamSizeType& index) const{return m_p[index];}
 			GINL GAIA::BL operator == (const __MyType& src) const{return GAIA::ALGORITHM::cmpp(m_p, src.m_p) == 0;}
 			GINL GAIA::BL operator != (const __MyType& src) const{return GAIA::ALGORITHM::cmpp(m_p, src.m_p) != 0;}
 			GINL GAIA::BL operator >= (const __MyType& src) const{return GAIA::ALGORITHM::cmpp(m_p, src.m_p) >= 0;}

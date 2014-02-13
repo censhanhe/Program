@@ -42,7 +42,7 @@ namespace GAIA
 	{
 	public:
 		GINL X128& operator = (const X128& src){u0 = src.u0; u1 = src.u1; u2 = src.u2; u3 = src.u3;return *this;}
-		template <typename _DataType> GINL X128& operator = (const _DataType* p)
+		template<typename _DataType> GINL X128& operator = (const _DataType* p)
 		{
 			u0 = u1 = u2 = u3 = 0;
 			for(GAIA::U32 x = 0; x < 32; ++x)

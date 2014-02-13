@@ -7,7 +7,7 @@ namespace GAIA
 	{
 		#define GAIA_BITSET_SRC (m_pFront[index / 8])
 		#define GAIA_BITSET_CUR (1 << (index % 8))
-		template <typename _SizeType> class BasicBitset
+		template<typename _SizeType> class BasicBitset
 		{
 		public:
 			typedef _SizeType _sizetype;
@@ -25,10 +25,10 @@ namespace GAIA
 			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){delete[] m_pFront; m_pFront = GNULL;} m_size = m_capacity = 0;}
 			GINL GAIA::U8* front_ptr(){return m_pFront;}
 			GINL const GAIA::U8* front_ptr() const{return m_pFront;}
-			GINL GAIA::BL exist(const _SizeType& index) const{GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return GAIA::False; return (GAIA_BITSET_SRC & GAIA_BITSET_CUR) != 0;}
-			GINL GAIA::GVOID set(const _SizeType& index){GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_BITSET_SRC |= GAIA_BITSET_CUR;}
-			GINL GAIA::GVOID reset(const _SizeType& index){GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_BITSET_SRC &= ~GAIA_BITSET_CUR;}
-			GINL GAIA::GVOID inverse(const _SizeType& index){GAIA_ASSERT(index / 8 < this->size()); if(index / 8 >= this->size()) return; if(this->exist(index)) this->reset(index); else this->set(index);}
+			GINL GAIA::BL exist(const _SizeType& index) const{GAIA_AST(index / 8 < this->size()); if(index / 8 >= this->size()) return GAIA::False; return (GAIA_BITSET_SRC & GAIA_BITSET_CUR) != 0;}
+			GINL GAIA::GVOID set(const _SizeType& index){GAIA_AST(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_BITSET_SRC |= GAIA_BITSET_CUR;}
+			GINL GAIA::GVOID reset(const _SizeType& index){GAIA_AST(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_BITSET_SRC &= ~GAIA_BITSET_CUR;}
+			GINL GAIA::GVOID inverse(const _SizeType& index){GAIA_AST(index / 8 < this->size()); if(index / 8 >= this->size()) return; if(this->exist(index)) this->reset(index); else this->set(index);}
 			GINL GAIA::GVOID resize(const _SizeType& size)
 			{
 				if(size < this->size())
@@ -53,7 +53,7 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID reverse(const _SizeType& size)
 			{
-				GAIA_ASSERT(size >= 0);
+				GAIA_AST(size >= 0);
 				this->destroy();
 				if(size > 0)
 				{
@@ -106,7 +106,7 @@ namespace GAIA
 			GINL GAIA::GVOID init(){m_pFront = GNULL; m_size = m_capacity = 0;}
 			GINL GAIA::GVOID exten(const _SizeType& size)
 			{
-				GAIA_ASSERT(size >= 0);
+				GAIA_AST(size >= 0);
 				if(size == 0)
 					return;
 				GAIA::U8* pNew = new GAIA::U8[this->capacity() + size];

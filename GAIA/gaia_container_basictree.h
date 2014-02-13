@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicTree
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicTree
 		{
 		public:
 			class Node
@@ -62,7 +62,7 @@ namespace GAIA
 				}
 				else
 				{
-					GAIA_ASSERT(m_pRoot != GNULL);
+					GAIA_AST(m_pRoot != GNULL);
 					this->link(*pNode, *pNew);
 				}
 				return pNew;

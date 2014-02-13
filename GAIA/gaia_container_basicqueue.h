@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicQueue
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicQueue
 		{
 		public:
 			typedef _DataType _datatype;
@@ -109,7 +109,7 @@ namespace GAIA
 			}
 			GINL _DataType& operator[](const _SizeType& index)
 			{
-				GAIA_ASSERT(index < this->size());
+				GAIA_AST(index < this->size());
 				if(m_pFront < m_pBack)
 					return m_pFront[index];
 				else
@@ -122,7 +122,7 @@ namespace GAIA
 			}
 			GINL const _DataType& operator[](const _SizeType& index) const
 			{
-				GAIA_ASSERT(index < this->size());
+				GAIA_AST(index < this->size());
 				if(m_pFront < m_pBack)
 					return m_pFront[index];
 				else

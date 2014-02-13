@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template <typename _SizeType> class TwiceSizeIncreaser
+		template<typename _SizeType> class TwiceSizeIncreaser
 		{
 		public:
 			GINL _SizeType Increase(_SizeType size) const{return size * 2 + 1;}

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicStack
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicStack
 		{
 		public:
 			typedef _DataType _datatype;
@@ -64,12 +64,12 @@ namespace GAIA
 			}
 			GINL _DataType& operator[](const _SizeType& index)
 			{
-				GAIA_ASSERT(index < m_size);
+				GAIA_AST(index < m_size);
 				return m_pData[index];
 			}
 			GINL const _DataType& operator[](const _SizeType& index) const
 			{
-				GAIA_ASSERT(index < m_size);
+				GAIA_AST(index < m_size);
 				return m_pData[index];
 			}
 		private:

@@ -24,9 +24,9 @@ namespace GAIA
 			GINL GAIA::GVOID clear(){}
 			GINL GAIA::GVOID destroy(){}
 			GINL __MyType operator << (const __BufferType& t){return *this;}
-			template <typename _ParamType> GINL __MyType& operator << (const _ParamType& t){return *this;}
+			template<typename _ParamType> GINL __MyType& operator << (const _ParamType& t){return *this;}
 			GINL __MyType operator >> (__BufferType& t){return *this;}
-			template <typename _ParamType> GINL __MyType& operator >> (const _ParamType& t){return *this;}
+			template<typename _ParamType> GINL __MyType& operator >> (const _ParamType& t){return *this;}
 			GINL __MyType& operator = (const __MyType& src){return *this;}
 		private:
 			GINL GAIA::GVOID init(){m_esize = 0;}

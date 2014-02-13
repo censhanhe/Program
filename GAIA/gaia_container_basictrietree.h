@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicTrieTree
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicTrieTree
 		{
 		public:
 			class Node;
@@ -90,15 +90,15 @@ namespace GAIA
 			GINL GAIA::GVOID destroy(){this->init(); m_root.m_links.destroy(); m_pool.destroy();}
 			GINL GAIA::GVOID insert(const _DataType* p, const _SizeType& size)
 			{
-				GAIA_ASSERT(p != GNULL);
-				GAIA_ASSERT(size > 0);
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
 				if(this->insert_node(m_root, p, size))
 					++m_root.m_category_count;
 			}
 			GINL GAIA::BL erase(const _DataType* p, const _SizeType& size)
 			{
-				GAIA_ASSERT(p != GNULL);
-				GAIA_ASSERT(size > 0);
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
 				Node* pNode = this->match_node(m_root, p, size);
 				if(pNode == GNULL)
 					return GAIA::False;
@@ -133,8 +133,8 @@ namespace GAIA
 			}
 			GINL GAIA::BL exist(const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_ASSERT(p != GNULL);
-				GAIA_ASSERT(size > 0);
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
 				Node* pFinded = this->match_node(m_root, p, size);
 				if(pFinded == GNULL)
 					return GAIA::False;
@@ -142,8 +142,8 @@ namespace GAIA
 			}
 			GINL GAIA::BL leaf(const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_ASSERT(p != GNULL);
-				GAIA_ASSERT(size > 0);
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
 				Node* pFinded = this->match_node(m_root, p, size);
 				if(pFinded != GNULL)
 				{
@@ -156,14 +156,14 @@ namespace GAIA
 			}
 			GINL Node* find(const Node* pNode, const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_ASSERT(p != GNULL);
-				GAIA_ASSERT(size > 0);
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
 				return this->match_node(pNode == GNULL? m_root : *pNode, p, size);
 			}
 			GINL GAIA::GVOID paths(const Node* pNode, const _DataType* p, const _SizeType& size, __PathListType& result) const
 			{
-				GAIA_ASSERT(p != GNULL);
-				GAIA_ASSERT(size > 0);
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
 				Node* pTempNode = this->match_node(pNode == GNULL ? m_root : *pNode, p, size);
 				if(pTempNode == GNULL)
 					return;
@@ -220,8 +220,8 @@ namespace GAIA
 			}
 			GINL Node* match_node(const Node& n, const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_ASSERT(p != GNULL);
-				GAIA_ASSERT(size > 0);
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
 				const _DataType* pTemp = p;
 				_SizeType sizetemp = size;
 				const Node* pNodeTemp = &n;

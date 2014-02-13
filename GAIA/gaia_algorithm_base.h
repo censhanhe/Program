@@ -5,8 +5,8 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template <typename _DataType1, typename _DataType2> GAIA::GVOID move(_DataType1& dst, const _DataType2& src){dst = src;}
-		template <typename _DataType, typename _SizeType> GAIA::GVOID move_prev(_DataType* p, const _SizeType& size)
+		template<typename _DataType1, typename _DataType2> GAIA::GVOID move(_DataType1& dst, const _DataType2& src){dst = src;}
+		template<typename _DataType, typename _SizeType> GAIA::GVOID move_prev(_DataType* p, const _SizeType& size)
 		{
 			for(_SizeType x = 0; x < size; ++x)
 			{
@@ -14,7 +14,7 @@ namespace GAIA
 				++p;
 			}
 		}
-		template <typename _DataType, typename _SizeType> GAIA::GVOID move_next(_DataType* p, const _SizeType& size)
+		template<typename _DataType, typename _SizeType> GAIA::GVOID move_next(_DataType* p, const _SizeType& size)
 		{
 			for(_SizeType x = 0; x < size; ++x)
 			{
@@ -22,7 +22,7 @@ namespace GAIA
 				--p;
 			}
 		}
-		template <typename _DataType1, typename _DataType2, typename _SizeType> GAIA::GVOID move_prev(_DataType1* dst, const _DataType2* src, const _SizeType& size)
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::GVOID move_prev(_DataType1* dst, const _DataType2* src, const _SizeType& size)
 		{
 			_SizeType sizetemp = size;
 			while(sizetemp > 0)
@@ -33,7 +33,7 @@ namespace GAIA
 				--sizetemp;
 			}
 		}
-		template <typename _DataType1, typename _DataType2, typename _SizeType> GAIA::GVOID move_next(_DataType1* dst, const _DataType2* src, const _SizeType& size)
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::GVOID move_next(_DataType1* dst, const _DataType2* src, const _SizeType& size)
 		{
 			_SizeType sizetemp = size;
 			while(sizetemp > 0)
@@ -44,13 +44,13 @@ namespace GAIA
 				--sizetemp;
 			}
 		}
-		template <typename _DataType1, typename _DataType2> GAIA::GVOID swap(_DataType1& t1, _DataType2& t2)
+		template<typename _DataType1, typename _DataType2> GAIA::GVOID swap(_DataType1& t1, _DataType2& t2)
 		{
 			typename DATATYPE::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType t = t2;
 			t2 = t1;
 			t1 = t;
 		}
-		template <typename _DataType> GAIA::GVOID inverse(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GAIA::GVOID inverse(_DataType* pBegin, _DataType* pEnd)
 		{
 			if(pBegin >= pEnd)
 				return;

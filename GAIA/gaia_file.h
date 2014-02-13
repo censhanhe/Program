@@ -27,9 +27,9 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Close();
 			GINL GAIA::BL IsOpen() const{if(m_pFile == GNULL) return GAIA::False; return GAIA::True;}
 			GINL GAIA::N64 Size() const{return m_size;}
-			template <typename _ObjType> GINL GAIA::BL Read(_ObjType& obj)
+			template<typename _ObjType> GINL GAIA::BL Read(_ObjType& obj)
 			{
-				GAIA_ASSERT(m_pFile != GNULL); 
+				GAIA_AST(m_pFile != GNULL); 
 				if(m_pFile == GNULL)
 					return GAIA::False;
 				if(this->Read(&obj, sizeof(obj)) != sizeof(obj))
@@ -37,21 +37,21 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Read(GAIA::GVOID* pDst, const GAIA::N64& size);
-			template <typename _ObjType> GINL GAIA::BL Write(const _ObjType& obj)
+			template<typename _ObjType> GINL GAIA::BL Write(const _ObjType& obj)
 			{
-				GAIA_ASSERT(m_pFile != GNULL);
+				GAIA_AST(m_pFile != GNULL);
 				if(m_pFile == GNULL)
 					return GAIA::False;
 				if(this->Write(&obj, sizeof(obj)) != sizeof(obj))
 					return GAIA::False;
 				return GAIA::True;
 			}
-			template <typename _ParamType> GAIA::N64 WriteText(const _ParamType* pszText){return this->Write(pszText, GAIA::ALGORITHM::strlen(pszText));}
+			template<typename _ParamType> GAIA::N64 WriteText(const _ParamType* pszText){return this->Write(pszText, GAIA::ALGORITHM::strlen(pszText));}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Seek(FILE_SEEK_TYPE seektype, const GAIA::N64& offset);
 			GINL const GAIA::N64& Tell() const{return m_offset;}
-			template <typename _ObjType> GINL File& operator >> (_ObjType& t){this->Read(t); return *this;}
-			template <typename _ObjType> GINL File& operator << (const _ObjType& t){this->Write(t); return *this;}
+			template<typename _ObjType> GINL File& operator >> (_ObjType& t){this->Read(t); return *this;}
+			template<typename _ObjType> GINL File& operator << (const _ObjType& t){this->Write(t); return *this;}
 		private:
 			GAIA::UM m_fileopentype;
 			GAIA::N64 m_size;

@@ -181,8 +181,8 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetReceiver(NetworkReceiver* pReceiver);
 			GINL NetworkReceiver* GetReceiver() const{return m_pReceiver;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC BL Send(const GAIA::U8* p, GAIA::UM uSize);
-			template <typename _DataType> GINL GAIA::BL Send(const _DataType& t);
-			template <typename _DataType> GINL GAIA::BL operator << (const _DataType& t);
+			template<typename _DataType> GINL GAIA::BL Send(const _DataType& t);
+			template<typename _DataType> GINL GAIA::BL operator << (const _DataType& t);
 			GINL GAIA::BL operator == (const NetworkHandle& src) const{return m_h == src.m_h;}
 			GINL GAIA::BL operator != (const NetworkHandle& src) const{return !(this->operator == (src));}
 			GINL GAIA::BL operator >= (const NetworkHandle& src) const{return m_h <= src.m_h;}

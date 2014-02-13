@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _KeyType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicMap
+		template<typename _DataType, typename _KeyType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicMap
 		{
 		public:
 			class Node
@@ -43,13 +43,13 @@ namespace GAIA
 			typedef BasicMap<_DataType, _KeyType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicAVLTree<Node, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
 		public:
-			class BidirectionalIterator : public GAIA::ITERATOR::Iterator<_DataType>
+			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
 				friend class BasicMap;
 			public:
-				GINL BidirectionalIterator(){}
-				GINL virtual ~BidirectionalIterator(){}
+				GINL it(){}
+				GINL virtual ~it(){}
 				GINL virtual GAIA::BL empty() const{return m_iter.empty();}
 				GINL virtual _DataType& operator * (){return (*m_iter).data();}
 				GINL virtual const _DataType& operator * () const{return (*m_iter).data();}
@@ -59,15 +59,15 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				typename __AVLTreeType::BidirectionalIterator m_iter;
+				typename __AVLTreeType::it m_iter;
 			};
-			class ConstBidirectionalIterator : public GAIA::ITERATOR::ConstIterator<_DataType>
+			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			private:
 				friend class BasicMap;
 			public:
-				GINL ConstBidirectionalIterator(){}
-				GINL virtual ~ConstBidirectionalIterator(){}
+				GINL const_it(){}
+				GINL virtual ~const_it(){}
 				GINL virtual GAIA::BL empty() const{return m_iter.empty();}
 				GINL virtual const _DataType& operator * () const{return (*m_iter).data();}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){++m_iter; return *this;}
@@ -76,7 +76,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				typename __AVLTreeType::ConstBidirectionalIterator m_iter;
+				typename __AVLTreeType::const_it m_iter;
 			};
 		public:
 			GINL BasicMap(){}
@@ -115,14 +115,14 @@ namespace GAIA
 				return pNode->m_data;
 			}
 			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
-			GINL BidirectionalIterator lower_bound(const _KeyType& key){BidirectionalIterator ret; Node f; f.m_key = key; ret.m_iter = m_avltree.lower_bound(f); return ret;}
-			GINL BidirectionalIterator upper_bound(const _KeyType& key){BidirectionalIterator ret; Node f; f.m_key = key; ret.m_iter = m_avltree.upper_bound(f); return ret;}
-			GINL ConstBidirectionalIterator lower_bound(const _KeyType& key) const{ConstBidirectionalIterator ret; Node f; f.m_key = key; ret.m_iter = m_avltree.lower_bound(f); return ret;}
-			GINL ConstBidirectionalIterator upper_bound(const _KeyType& key) const{ConstBidirectionalIterator ret; Node f; f.m_key = key; ret.m_iter = m_avltree.upper_bound(f); return ret;}
-			GINL BidirectionalIterator front_iterator(){BidirectionalIterator ret; ret.m_iter = m_avltree.front_iterator(); return ret;}
-			GINL BidirectionalIterator back_iterator(){BidirectionalIterator ret; ret.m_iter = m_avltree.back_iterator(); return ret;}
-			GINL ConstBidirectionalIterator const_front_iterator() const{ConstBidirectionalIterator ret; ret.m_iter = m_avltree.front_iterator(); return ret;}
-			GINL ConstBidirectionalIterator const_back_iterator() const{ConstBidirectionalIterator ret; ret.m_iter = m_avltree.back_iterator(); return ret;}
+			GINL it lower_bound(const _KeyType& key){it ret; Node f; f.m_key = key; ret.m_iter = m_avltree.lower_bound(f); return ret;}
+			GINL it upper_bound(const _KeyType& key){it ret; Node f; f.m_key = key; ret.m_iter = m_avltree.upper_bound(f); return ret;}
+			GINL const_it lower_bound(const _KeyType& key) const{const_it ret; Node f; f.m_key = key; ret.m_iter = m_avltree.lower_bound(f); return ret;}
+			GINL const_it upper_bound(const _KeyType& key) const{const_it ret; Node f; f.m_key = key; ret.m_iter = m_avltree.upper_bound(f); return ret;}
+			GINL it front_it(){it ret; ret.m_iter = m_avltree.front_it(); return ret;}
+			GINL it back_it(){it ret; ret.m_iter = m_avltree.back_it(); return ret;}
+			GINL const_it const_front_it() const{const_it ret; ret.m_iter = m_avltree.front_it(); return ret;}
+			GINL const_it const_back_it() const{const_it ret; ret.m_iter = m_avltree.back_it(); return ret;}
 		private:
 			__AVLTreeType m_avltree;
 		};

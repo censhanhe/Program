@@ -13,14 +13,14 @@ namespace GAIA
 			GINL ~Transmission(){this->RemoveRouteAll();}
 			GINL virtual GAIA::BL AddRoute(GAIA::DATATRAFFIC::Route* pRoute)
 			{
-				GAIA_ASSERT(pRoute != GNULL);
+				GAIA_AST(pRoute != GNULL);
 				pRoute->Reference();
 				m_routes.insert(pRoute);
 				return GAIA::True;
 			}
 			GINL virtual GAIA::BL RemoveRoute(GAIA::DATATRAFFIC::Route* pRoute)
 			{
-				GAIA_ASSERT(pRoute != GNULL);
+				GAIA_AST(pRoute != GNULL);
 				pRoute->Release();
 				return m_routes.erase(pRoute);
 			}
@@ -35,7 +35,7 @@ namespace GAIA
 			}
 			GINL virtual GAIA::BL IsExistRoute(GAIA::DATATRAFFIC::Route* pRoute) const
 			{
-				GAIA_ASSERT(pRoute != GNULL);
+				GAIA_AST(pRoute != GNULL);
 				if(m_routes.find(pRoute) == 0)
 					return GAIA::False;
 				return GAIA::True;

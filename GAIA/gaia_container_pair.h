@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _FrontDataType, typename _BackDataType> class Pair
+		template<typename _FrontDataType, typename _BackDataType> class Pair
 		{
 		public:
 			typedef _FrontDataType _frontdatatype;

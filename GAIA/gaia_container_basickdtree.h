@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <
+		template<
 			typename _DataType, 
 			typename _SizeType, 
 			typename _HeightType,
@@ -72,7 +72,7 @@ namespace GAIA
 				if(pGlobalRec == GNULL)
 					return GAIA::False;
 				Node* pNode = pGlobalRec->back();
-				GAIA_ASSERT(pNode != GNULL);
+				GAIA_AST(pNode != GNULL);
 				GAIA::BL ret = pNode->m_avltree.erase(&pGlobalRec->front());
 				if(ret)
 					--m_size;

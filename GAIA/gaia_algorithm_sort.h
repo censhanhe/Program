@@ -5,11 +5,11 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template <typename _DataType> GAIA::GVOID qsort(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GAIA::GVOID qsort(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_ASSERT(pBegin != GNULL);
-			GAIA_ASSERT(pEnd != GNULL);
-			GAIA_ASSERT(pBegin < pEnd);
+			GAIA_AST(pBegin != GNULL);
+			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(pBegin < pEnd);
 			if(pBegin >= pEnd)
 				return;
 			_DataType* pBeginT = pBegin;
@@ -28,11 +28,11 @@ namespace GAIA
 			GAIA::ALGORITHM::qsort(pBegin, pMid - 1);
 			GAIA::ALGORITHM::qsort(pMid + 1, pEnd);
 		}
-		template <typename _DataType> GAIA::GVOID bsort(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GAIA::GVOID bsort(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_ASSERT(pBegin != GNULL);
-			GAIA_ASSERT(pEnd != GNULL);
-			GAIA_ASSERT(pBegin < pEnd);
+			GAIA_AST(pBegin != GNULL);
+			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(pBegin < pEnd);
 			while(pBegin < pEnd)
 			{
 				_DataType* pTemp = pBegin + 1;
@@ -45,27 +45,27 @@ namespace GAIA
 				++pBegin;
 			}
 		}
-		template <typename _DataType> GAIA::GVOID esort(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GAIA::GVOID esort(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_ASSERT(pBegin != GNULL);
-			GAIA_ASSERT(pEnd != GNULL);
-			GAIA_ASSERT(pBegin < pEnd);
+			GAIA_AST(pBegin != GNULL);
+			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(pBegin < pEnd);
 		}
-		template <typename _DataType> GAIA::GVOID sort(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GAIA::GVOID sort(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_ASSERT(pBegin != GNULL);
-			GAIA_ASSERT(pEnd != GNULL);
-			GAIA_ASSERT(pBegin < pEnd);
+			GAIA_AST(pBegin != GNULL);
+			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(pBegin < pEnd);
 			if(pEnd - pBegin < 10)
 				bsort(pBegin, pEnd);
 			else
 				qsort(pBegin, pEnd);
 		}
-		template <typename _DataType> GAIA::BL issorted(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GAIA::BL issorted(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_ASSERT(pBegin != GNULL);
-			GAIA_ASSERT(pEnd != GNULL);
-			GAIA_ASSERT(pBegin < pEnd);
+			GAIA_AST(pBegin != GNULL);
+			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(pBegin < pEnd);
 			while(pBegin != pEnd)
 			{
 				if(*pBegin > *(pBegin + 1))

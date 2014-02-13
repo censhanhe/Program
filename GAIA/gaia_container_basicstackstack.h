@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template <typename _DataType, typename _SizeType, _SizeType _Size> class BasicStackStack
+		template<typename _DataType, typename _SizeType, _SizeType _Size> class BasicStackStack
 		{
 		public:
 			typedef _DataType _datatype;
@@ -21,7 +21,7 @@ namespace GAIA
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
 			GINL _SizeType size() const{return m_size;}
 			GINL _SizeType capacity() const{return _Size;}
-			GINL _SizeType resize(const _SizeType& size){GAIA_ASSERT(size <= this->capacity()); m_size = size;}
+			GINL _SizeType resize(const _SizeType& size){GAIA_AST(size <= this->capacity()); m_size = size;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL _DataType* front_ptr(){return m_data;}
 			GINL const _DataType* front_ptr() const{return m_data;}
