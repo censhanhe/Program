@@ -1099,6 +1099,18 @@ GAIA::N32 main()
 			if(n != 3)
 				bFunctionSuccess = GAIA::False;
 			n = 0;
+			st.clear();
+			st.insert(1);
+			st.insert(5);
+			st.insert(12);
+			st.insert(2);
+			st.insert(3);
+			__SetType::BidirectionalIterator iterl = st.lower_bound(4);
+			__SetType::BidirectionalIterator iteru = st.upper_bound(16);
+			if(*iterl != 5)
+				bFunctionSuccess = GAIA::False;
+			if(*iteru != 12)
+				bFunctionSuccess = GAIA::False;
 			if(bFunctionSuccess)
 				LINE_TEST("BasicSet function test SUCCESSFULLY!");
 			else
@@ -1169,6 +1181,23 @@ GAIA::N32 main()
 			mp.erase("Arm");
 			mp.clear();
 			mp.destroy();
+			*mp["c"] = 32;
+			*mp["b"] = 16;
+			*mp["a"] = 22;
+			*mp["d"] = 1;
+			*mp["f"] = 2;
+			__MapType::BidirectionalIterator iterl = mp.lower_bound("f");
+			__MapType::BidirectionalIterator iteru = mp.lower_bound("b");
+			if(*iterl != 2)
+				bFunctionSuccess = GAIA::False;
+			if(*iteru != 16)
+				bFunctionSuccess = GAIA::False;
+			iterl = mp.front_iterator();
+			iteru = mp.back_iterator();
+			if(*iterl != 22)
+				bFunctionSuccess = GAIA::False;
+			if(*iteru != 2)
+				bFunctionSuccess = GAIA::False;
 			if(bFunctionSuccess)
 				LINE_TEST("BasicMap function test SUCCESSFULLY!");
 			else
