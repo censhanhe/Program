@@ -26,7 +26,7 @@
 #define TEXT_TEST(text)		do{logfile.WriteText(text);}while(0)
 #define PERF_START(name)	uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
 #define PERF_END 			uPerfEnd = GAIA::TIME::clock_time();\
-							sprintf(szPerf, "%d(MS)", uPerfEnd - uPerfStart);\
+							sprintf(szPerf, "%f(MS)", (GAIA::F64)(GAIA::U64)(uPerfEnd - uPerfStart) * 0.001);\
 							TEXT_TEST("\t");\
 							TEXT_TEST(szPerfName);\
 							LINE_TEST(szPerf);
@@ -121,19 +121,24 @@ GAIA::N32 main()
 	GAIA::BL bFunctionSuccess = GAIA::True;
 
 	//
-	GAIA::MATH::random_seed(GAIA::TIME::clock_time());
+	GAIA::MATH::random_seed((GAIA::U32)(GAIA::TIME::clock_time() / 1000));
 
 	//
 	GAIA::GCH szPerf[256];
 	GAIA::GCH szPerfName[256];
-	GAIA::U32 uPerfStart, uPerfEnd;
+	GAIA::U64 uPerfStart, uPerfEnd;
 	GAIA::FILESYSTEM::File logfile;
 #if GAIA_OS == GAIA_OS_WINDOWS
 	logfile.Open("../gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 #else
 	logfile.Open("/users/armterla/gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 #endif
-	logfile.WriteText("[GAIA TEST BEGIN]\r\n\r\n");
+	
+#ifdef _DEBUG
+	logfile.WriteText("[GAIA TEST BEGIN(DEBUG)]\r\n\r\n");
+#else
+	logfile.WriteText("[GAIA TEST BEGIN(RELEASE)]\r\n\r\n");
+#endif
 
 	// Real number float equal test.
 	{
@@ -1507,7 +1512,7 @@ GAIA::N32 main()
 	
 	// Network test.
 	{
-		BEGIN_TEST("Network function test");
+		BEGIN_TEST("<Network function test>");
 		
 		bFunctionSuccess = GAIA::True;
 		
@@ -1537,9 +1542,9 @@ GAIA::N32 main()
 		}
 		
 		if(bFunctionSuccess)
-			TEXT_TEST("IPAddress to or from string convert SUCCESSFULLY!");
+			LINE_TEST("IPAddress to or from string convert SUCCESSFULLY!");
 		else
-			TEXT_TEST("IPAddress to or from string convert FAILED!");
+			LINE_TEST("IPAddress to or from string convert FAILED!");
 	}
 
 	// Basic factory test 1.

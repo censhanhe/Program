@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace TIME
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U32 clock_time();
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 clock_time();
 	};
 };
 
