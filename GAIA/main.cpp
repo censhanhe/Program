@@ -14,7 +14,7 @@
 #	include <algorithm>
 #	include <iostream>
 #	define PERF_PRINT_NAME(name) std::cout<<name<<std::endl;
-#	define PERF_PRINT_TIME std::cout<<'\t'<<"TIME-LOST="<<uPerfEnd - uPerfStart<<"(MS)"<<std::endl;
+#	define PERF_PRINT_TIME std::cout<<'\t'<<"TIME-LOST="<<(GAIA::F64)(uPerfEnd - uPerfStart) * 0.001<<"(MS)"<<std::endl;
 #else
 #	define PERF_PRINT_NAME(name)
 #	define PERF_PRINT_TIME
@@ -26,7 +26,7 @@
 #define TEXT_TEST(text)		do{logfile.WriteText(text);}while(0)
 #define PERF_START(name)	uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
 #define PERF_END 			uPerfEnd = GAIA::TIME::clock_time();\
-							sprintf(szPerf, "%f(MS)", (GAIA::F64)(GAIA::U64)(uPerfEnd - uPerfStart) * 0.001);\
+							sprintf(szPerf, "%f(MS)", (GAIA::F64)(uPerfEnd - uPerfStart) * 0.001);\
 							TEXT_TEST("\t");\
 							TEXT_TEST(szPerfName);\
 							LINE_TEST(szPerf);
