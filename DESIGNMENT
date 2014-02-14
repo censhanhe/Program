@@ -1,5 +1,4 @@
 
-
 	Base Coding
 
 		typedef's use.
@@ -234,10 +233,27 @@
 
 	[MNEMOSYNE]
 
-		Mnemosyne is a database system.
+		MNEMOSYNE is a storage system.
 
+		[Main Features]
 
+			
 
+	[ATHENA]
+
+		ATHENA is a database system.
+
+		[Main Features]
+
+			Abstract data transport supported.
+
+			Data change reflection supported.
+
+			Transaction supported.
+
+			Sub version supported.
+
+			Right management.
 
 
 
