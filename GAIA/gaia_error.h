@@ -24,8 +24,7 @@ namespace GAIA
 		GINL ERROR_MODE		GetErrorMode();
 		GINL GAIA::GVOID	RaiseError(const GAIA::UM& errornumber);
 		GINL const GAIA::UM&PeekError();
-		GINL GAIA::GVOID	PopError();
-		
+		GINL GAIA::GVOID	PopError();		
 	};
 };
 

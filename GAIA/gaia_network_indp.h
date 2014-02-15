@@ -25,8 +25,9 @@ namespace GAIA
 			if(desc.addr.IsInvalid())
 				return GAIA::False;
 
-			if(desc.addr.ip.u4 == 0 && desc.addr.ip.u5 == 0)
+			if(desc.addr.ip.u4 == 0 && desc.addr.ip.u5 == 0) // IPv4 version dispatch.
 			{
+				// Create socket.
 				if(this->IsStabilityLink())
 					m_h = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 				else
@@ -34,6 +35,7 @@ namespace GAIA
 				if(m_h == GINVALID)
 					return GAIA::False;
 		
+				// Connect.
 				sockaddr_in sinaddr;
 				GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
 				sinaddr.sin_family = AF_INET;
@@ -56,19 +58,22 @@ namespace GAIA
 				m_conndesc = desc;
 				return GAIA::True;
 			}
-			else
+			else // IPv6 version dispatch.
 			{
+				// Create socket.
 				if(this->IsStabilityLink())
 					m_h = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
 				else
 					m_h = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
 				if(m_h == GINVALID)
 					return GAIA::False;
-				
+
+				// Connect.
 				sockaddr_in6 sinaddr6;
 				GAIA::ALGORITHM::memset(&sinaddr6, 0, sizeof(sinaddr6));
 				sinaddr6.sin6_family = AF_INET6;
 				sinaddr6.sin6_port = htons(desc.addr.uPort);
+				// TODO : IPv6 convert.
 				if(connect(m_h, (sockaddr*)&sinaddr6, sizeof(sinaddr6)) == GINVALID)
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS
@@ -143,11 +148,17 @@ namespace GAIA
 		GINL GAIA::GVOID NetworkListener::WorkProcedule()
 		{
 			GAIA::N32 listensock = GINVALID;
-			if(m_desc.addr.ip.u4 == 0 && m_desc.addr.ip.u5 == 0)
+			if(m_desc.addr.ip.u4 == 0 && m_desc.addr.ip.u5 == 0) // IPv4 version dispatch.
 			{
+				// Create socket.
 				listensock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+				if(listensock == GINVALID)
+					return;
+
+				// Bind.
 				sockaddr_in addr;
 				GAIA::ALGORITHM::memset(&addr, 0, sizeof(addr));
+				addr.sin_family = AF_INET;
 				addr.sin_port = htons(m_desc.addr.uPort);
 				addr.sin_addr.s_addr =
 					(m_desc.addr.ip.u0 << 0) |
@@ -163,7 +174,8 @@ namespace GAIA
 				#endif
 					return;
 				}
-				
+
+				// Listen.
 				if(listen(listensock, SOMAXCONN) < 0)
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS
@@ -175,12 +187,18 @@ namespace GAIA
 				#endif
 					return;
 				}
-				
+
+				// Accept.
 				for(;;)
 				{
 					sockaddr_in addrnew;
-					GAIA::U32 uSizeAddrNew;
-					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &uSizeAddrNew);
+				#if GAIA_OS == GAIA_OS_WINDOWS
+					GAIA::N32 newsize;
+					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
+				#else
+					GAIA::U32 newsize;
+					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
+				#endif
 					if(newsock != GINVALID)
 					{
 						NetworkHandle* h = new NetworkHandle;
@@ -196,9 +214,64 @@ namespace GAIA
 					}
 				}
 			}
-			else
+			else // IPv6 version dispatch.
 			{
+				// Create socket.
 				listensock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+				if(listensock == GINVALID)
+					return;
+
+				// Bind.
+				sockaddr_in6 addr;
+				GAIA::ALGORITHM::memset(&addr, 0, sizeof(addr));
+				addr.sin6_family = AF_INET6;
+				addr.sin6_port = htons(m_desc.addr.uPort);
+				// TODO : IPv6 convert.
+				if(bind(listensock, (sockaddr*)&addr, sizeof(addr)) < 0)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS
+					closesocket(listensock);
+				#else
+					close(listensock);
+				#endif
+					return;
+				}
+
+				// Listen.
+				if(listen(listensock, SOMAXCONN) < 0)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS
+					shutdown(listensock, SD_BOTH);
+					closesocket(listensock);
+				#else
+					shutdown(listensock, SHUT_RDWR);
+					close(listensock);
+				#endif
+					return;
+				}
+
+				// Accept.
+				for(;;)
+				{
+					sockaddr_in addrnew;
+				#if GAIA_OS == GAIA_OS_WINDOWS
+					GAIA::N32 newsize;
+					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
+				#else
+					GAIA::U32 newsize;
+					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
+				#endif
+					if(newsock != GINVALID)
+					{
+						NetworkHandle* h = new NetworkHandle;
+						h->m_h = newsock;
+						h->m_addr_self = m_desc.addr;
+						// TODO : IPv6 convert.
+						h->m_addr_self.uPort = ntohs(addrnew.sin_port);
+						this->Accept(*h);
+						h->Release();
+					}
+				}
 			}
 		}
 		/* NetworkSender's implement. */
