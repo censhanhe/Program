@@ -11,7 +11,7 @@ namespace GAIA
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
 		public:
-			static const _SizeType _pagetype = _PageType;
+			static const _SizeType _pagesize = _PageSize;
 		public:
 			typedef Storage<_DataType, _KeyType, _SizeType, _PageSize> __MyType;
 		public:

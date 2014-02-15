@@ -181,8 +181,19 @@ namespace GAIA
 					sockaddr_in addrnew;
 					GAIA::U32 uSizeAddrNew;
 					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &uSizeAddrNew);
-					NetworkHandle h;
-					
+					if(newsock != GINVALID)
+					{
+						NetworkHandle* h = new NetworkHandle;
+						h->m_h = newsock;
+						h->m_addr_self = m_desc.addr;
+						h->m_conndesc.addr.ip.u0 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x000000FF) >> 0);
+						h->m_conndesc.addr.ip.u1 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x0000FF00) >> 8);
+						h->m_conndesc.addr.ip.u2 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x00FF0000) >> 16);
+						h->m_conndesc.addr.ip.u3 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0xFF000000) >> 24);
+						h->m_addr_self.uPort = ntohs(addrnew.sin_port);
+						this->Accept(*h);
+						h->Release();
+					}
 				}
 			}
 			else
