@@ -5,15 +5,14 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _KeyType, typename _SizeType, _SizeType _PageSize> class Storage
+		template<typename _KeyType, typename _SizeType, _SizeType _PageSize> class Storage
 		{
 		public:
-			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
 		public:
 			static const _SizeType _pagesize = _PageSize;
 		public:
-			typedef Storage<_DataType, _KeyType, _SizeType, _PageSize> __MyType;
+			typedef Storage<_KeyType, _SizeType, _PageSize> __MyType;
 		public:
 			class Node
 			{
@@ -24,9 +23,6 @@ namespace GAIA
 				GINL ~Node();
 				GINL _SizeType size() const;
 				GINL _SizeType capacity() const;
-				GINL GAIA::BL reposition(const _SizeType& size);
-				GINL _SizeType read(_DataType* pResult, const _SizeType& size) const;
-				GINL _SizeType write(const _DataType* pResult, const _SizeType& size);
 				GINL Storage* storage() const;
 			private:
 				GINL GAIA::GVOID init(){}
