@@ -607,6 +607,22 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="STORAGE"
+							>
+							<File
+								RelativePath=".\gaia_container_storage.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="ACCESSER"
+							>
+							<File
+								RelativePath=".\gaia_container_accesser.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
