@@ -159,6 +159,8 @@ namespace GAIA
 		class NetworkReceiver;
 		class NetworkHandle : public RefObject
 		{
+		private:
+			friend class NetworkListener;
 		public:
 			class ConnectDesc
 			{
@@ -223,8 +225,8 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Accept(const NetworkHandle& h) const = 0;
-			virtual GAIA::GVOID WorkProcedule();
+			virtual GAIA::BL Accept(const NetworkHandle& h) const{return GAIA::False;};
+			GINL virtual GAIA::GVOID WorkProcedule();
 		private:
 			GINL GAIA::GVOID init(){}
 		private:
@@ -265,6 +267,15 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID RemoveAll()
 			{
+				__HandleSetType::it iter = m_hs.front_it();
+				while(!iter.empty())
+				{
+					NetworkHandle* pHandle = *iter;
+					GAIA_AST(pHandle != GNULL);
+					pHandle->Release();
+					++iter;
+				}
+				m_hs.destroy();
 			}
 		protected:
 			GINL virtual GAIA::GVOID WorkProcedule();
@@ -309,9 +320,18 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID RemoveAll()
 			{
+				__HandleSetType::it iter = m_hs.front_it();
+				while(!iter.empty())
+				{
+					NetworkHandle* pHandle = *iter;
+					GAIA_AST(pHandle != GNULL);
+					pHandle->Release();
+					++iter;
+				}
+				m_hs.destroy();
 			}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Receive(const NetworkSender& s, const GAIA::U8* p, GAIA::U32 size) const = 0;
+			virtual GAIA::BL Receive(const NetworkSender& s, const GAIA::U8* p, GAIA::U32 size) const{return GAIA::False;}
 			GINL virtual GAIA::GVOID WorkProcedule();
 		private:
 			GINL GAIA::GVOID init(){m_bBegin = GAIA::False;}
