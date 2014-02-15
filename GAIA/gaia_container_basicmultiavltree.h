@@ -340,7 +340,7 @@ namespace GAIA
 				{
 					Pair<_DataType, _SizeType> pr(*iter, index);
 					result.push_back(pr);
-					index++;
+					++index;
 					++iter;
 				}
 				return GAIA::True;

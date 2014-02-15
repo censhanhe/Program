@@ -5,13 +5,13 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _SizeIncreaserType, typename _SizeType> class BasicBuffer
+		template<typename _SizeType, typename _SizeIncreaserType> class BasicBuffer
 		{
 		public:
-			typedef _SizeIncreaserType _sizeincreasertype;
 			typedef _SizeType _sizetype;
+			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			typedef BasicBuffer<_SizeIncreaserType, _SizeType> __MyType;
+			typedef BasicBuffer<_SizeType, _SizeIncreaserType> __MyType;
 		public:
 			GINL BasicBuffer(){this->init();}
 			GINL BasicBuffer(const __MyType& src){this->init(); this->operator = (src);}

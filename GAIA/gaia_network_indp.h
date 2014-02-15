@@ -34,6 +34,15 @@ namespace GAIA
 					m_h = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 				if(m_h == GINVALID)
 					return GAIA::False;
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
+				setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
+				GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
+			#else
+				setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
+				setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
+				GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
+			#endif
 		
 				// Connect.
 				sockaddr_in sinaddr;
@@ -92,13 +101,13 @@ namespace GAIA
 		{
 			if(!this->IsConnected())
 				return GAIA::False;
-		#if GAIA_OS == GAIA_OS_WINDOWS
+#if GAIA_OS == GAIA_OS_WINDOWS
 			shutdown(m_h, SD_BOTH);
 			closesocket(m_h);
-		#else
+#else
 			shutdown(m_h, SHUT_RDWR);
 			close(m_h);
-		#endif
+#endif
 			this->init();
 			return GAIA::True;
 		}
@@ -126,7 +135,95 @@ namespace GAIA
 			GAIA_AST(uSize > 0);
 			if(p == GNULL || uSize == 0)
 				return GAIA::False;
+			GAIA::U8* pNew = new GAIA::U8[uSize];
+			GAIA::ALGORITHM::memcpy(pNew, p, uSize);
+			GAIA::SYNC::AutoLock al(m_lock);
+			SendRec r;
+			r.p = pNew;
+			r.uSize = uSize;
+			m_sendque.push(r);
+			return GAIA::True;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkHandle::FlushSendQueue()
+		{
+			GAIA_AST(m_h != GINVALID);
 
+			// Swap send queue to temp send vector.
+			{
+				GAIA::SYNC::AutoLock al(m_lock);
+				if(m_sendque.empty())
+					return GAIA::False;
+				m_tempsendlist.clear();
+				while(!m_sendque.empty())
+				{
+					m_tempsendlist.push_back(m_sendque.front());
+					m_sendque.pop();
+				}
+			}
+
+			// Send temp send vector.
+			{
+				for(GAIA::N32 x = 0; x < m_tempsendlist.size(); ++x)
+				{
+					SendRec& r = m_tempsendlist[x];
+					GAIA_AST(r.p != GNULL);
+					GAIA::U8* p = r.p;
+					GAIA::UM uSize = r.uSize;
+					while(uSize > 0)
+					{
+						GAIA::N32 nSended = send(m_h, (const GAIA::GCH*)p, uSize, 0);
+						if(nSended == GINVALID)
+						{
+						#if GAIA_OS == GAIA_OS_WINDOWS
+							GAIA::N32 nLastError = ::WSAGetLastError();
+							if(nLastError == WSAEWOULDBLOCK){}
+							else
+							{
+								this->Reference();
+								{
+									this->Disconnect(GAIA::False);
+									if(this->IsConnected())
+										this->Disconnect();
+								}
+								this->Release();
+								break;
+							}
+						#else
+							GAIA::N32 nLastError = ::WSAGetLastError();
+							if(nLastError == WSAEWOULDBLOCK){}
+							else
+							{
+								this->Reference();
+								{
+									this->Disconnect(GAIA::False);
+									if(this->IsConnected())
+										this->Disconnect();
+								}
+								this->Release();
+								break;
+							}
+						#endif
+						}
+						else if(nSended == 0)
+						{
+							this->Reference();
+							{
+								this->Disconnect(GAIA::False);
+								if(this->IsConnected())
+									this->Disconnect();
+							}
+							this->Release();
+							break;
+						}
+						else
+						{
+							p += nSended;
+							uSize -= nSended;
+						}
+					}
+					delete[] r.p;
+				}
+			}
 			return GAIA::True;
 		}
 		/* NetworkListener's implement. */
@@ -142,10 +239,13 @@ namespace GAIA
 		{
 			if(!this->IsBegin())
 				return GAIA::False;
+			m_bStopCmd = GAIA::True;
 			this->Wait();
+			m_bStopCmd = GAIA::False;
+			m_bBegin = GAIA::False;
 			return GAIA::True;
 		}
-		GINL GAIA::GVOID NetworkListener::WorkProcedule()
+		GINL GAIA::GVOID NetworkListener::WorkProcedure()
 		{
 			GAIA::N32 listensock = GINVALID;
 			if(m_desc.addr.ip.u4 == 0 && m_desc.addr.ip.u5 == 0) // IPv4 version dispatch.
@@ -287,11 +387,51 @@ namespace GAIA
 		{
 			if(!this->IsBegin())
 				return GAIA::False;
+			m_bStopCmd = GAIA::True;
 			this->Wait();
+			m_bStopCmd = GAIA::False;
+			m_bBegin = GAIA::False;
 			return GAIA::True;
 		}
-		GINL GAIA::GVOID NetworkSender::WorkProcedule()
+		GINL GAIA::GVOID NetworkSender::WorkProcedure()
 		{
+			for(;;)
+			{
+				// 
+				GAIA::BL bExistWork = GAIA::False;
+
+				// Copy network handle to handle list.
+				{
+					GAIA::SYNC::AutoLock al(m_lock);
+					m_hl.clear();
+					__HandleSetType::it iter = m_hs.front_it();
+					while(!iter.empty())
+					{
+						NetworkHandle* pHandle = *iter;
+						GAIA_AST(pHandle != GNULL);
+						pHandle->Reference();
+						m_hl.push_back(pHandle);
+						++iter;
+					}
+				}
+
+				// Flush all send buffer which in the handle list.
+				{
+					__HandleListType::it iter = m_hl.front_it();
+					while(!iter.empty())
+					{
+						NetworkHandle* pHandle = *iter;
+						if(pHandle->FlushSendQueue())
+							bExistWork = GAIA::True;
+						pHandle->Release();
+						++iter;
+					}
+				}
+
+				//
+				if(!bExistWork)
+					GAIA::SYNC::sleep(1);
+			}
 		}
 		/* NetworkReceiver's implement. */
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkReceiver::Begin()
@@ -306,11 +446,111 @@ namespace GAIA
 		{
 			if(!this->IsBegin())
 				return GAIA::False;
+			m_bStopCmd = GAIA::True;
 			this->Wait();
+			m_bStopCmd = GAIA::False;
+			m_bBegin = GAIA::False;
 			return GAIA::True;
 		}
-		GINL GAIA::GVOID NetworkReceiver::WorkProcedule()
+		GINL GAIA::GVOID NetworkReceiver::WorkProcedure()
 		{
+			for(;;)
+			{
+				//
+				GAIA::BL bExistWork = GAIA::False;
+
+				// Copy network handle to handle list.
+				{
+					GAIA::SYNC::AutoLock al(m_lock);
+					m_hl.clear();
+					__HandleSetType::it iter = m_hs.front_it();
+					while(!iter.empty())
+					{
+						NetworkHandle* pHandle = *iter;
+						GAIA_AST(pHandle != GNULL);
+						pHandle->Reference();
+						m_hl.push_back(pHandle);
+						++iter;
+					}
+				}
+
+				// Receive all socket which in the handle list.
+				{
+					__HandleListType::it iter = m_hl.front_it();
+					while(!iter.empty())
+					{
+						NetworkHandle* pHandle = *iter;
+						GAIA::BL bNeedRelease = GAIA::True;
+						for(;;)
+						{
+							GAIA::N32 nRecv = (GAIA::N32)recv(pHandle->m_h, (GAIA::N8*)m_buf.front_ptr(), (GAIA::N32)m_buf.size(), 0);
+							if(nRecv == GINVALID)
+							{
+							#if GAIA_OS == GAIA_OS_WINDOWS
+								GAIA::N32 nLastError = ::WSAGetLastError();
+								if(nLastError == WSAEWOULDBLOCK){}
+								else
+								{
+									pHandle->Reference();
+									{
+										if(this->Remove(*pHandle))
+											bNeedRelease = GAIA::False;
+										pHandle->Disconnect(GAIA::True);
+										if(pHandle->IsConnected())
+											pHandle->Disconnect();
+									}
+									pHandle->Release();
+									break;
+								}
+							#else
+								GAIA::N32 nLastError = ::WSAGetLastError();
+								if(nLastError == WSAEWOULDBLOCK){}
+								else
+								{
+									pHandle->Reference();
+									{
+										if(this->Remove(*pHandle))
+											bNeedRelease = GAIA::False;
+										pHandle->Disconnect(GAIA::True);
+										if(pHandle->IsConnected())
+											pHandle->Disconnect();
+									}
+									pHandle->Release();
+									break;
+								}
+							#endif
+							}
+							else if(nRecv == 0)
+							{
+								pHandle->Reference();
+								{
+									if(this->Remove(*pHandle))
+										bNeedRelease = GAIA::False;
+									pHandle->Disconnect(GAIA::True);
+									if(pHandle->IsConnected())
+										pHandle->Disconnect();
+								}
+								pHandle->Release();
+								break;
+							}
+							else
+							{
+								this->Receive(*pHandle, m_buf.front_ptr(), (GAIA::U32)nRecv);
+								bExistWork = GAIA::True;
+								if(nRecv < m_buf.size())
+									break;
+							}
+						}
+						if(bNeedRelease)
+							pHandle->Release();
+						++iter;
+					}
+				}
+
+				//
+				if(!bExistWork)
+					GAIA::SYNC::sleep(1);
+			}
 		}
 	};
 };

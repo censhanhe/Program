@@ -99,25 +99,6 @@ GAIA::N32 main()
 	static const GAIA::N32 SAMPLE_COUNT = 100000;
 #endif
 
-	//{
-	//	WSADATA wsadata;
-	//	WSAStartup(MAKEWORD(2,2), &wsadata);
-
-	//	GAIA::NETWORK::NetworkHandle::ConnectDesc cdesc;
-	//	cdesc.addr.FromString("218.6.173.53:21");
-	//	cdesc.bStabilityLink = GAIA::True;
-	//	GAIA::NETWORK::NetworkHandle h;
-	//	if(h.Connect(cdesc))
-	//	{
-	//		
-	//	}
-	//	else
-	//	{
-	//	}
-
-	//	WSACleanup();
-	//}
-
 	GAIA::BL bFunctionSuccess = GAIA::True;
 
 	//
@@ -394,10 +375,10 @@ GAIA::N32 main()
 		for(GAIA::N32 x = 0; x < sizeof(arr) / sizeof(GAIA::N32); ++x)
 			arr[x] = x;
 
-		GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32> buf;
+		GAIA::CONTAINER::BasicBuffer<GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> buf;
 		buf.push(arr);
 		buf.push(48);
-		GAIA::U64 size = buf.size();
+		GAIA::U32 size = buf.size();
 		size = 0;
 	}
 
@@ -1500,7 +1481,7 @@ GAIA::N32 main()
 		bResult = file.Close();
 		bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
 		GAIA::U64 uFileSize = file.Size();
-		GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>, GAIA::U64> buf;
+		GAIA::CONTAINER::BasicBuffer<GAIA::U64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>> buf;
 		buf.resize(uFileSize);
 		file.Read(buf.front_ptr(), buf.size());
 		const GAIA::GWCH* p = (GAIA::GWCH*)buf.front_ptr();
@@ -1539,6 +1520,13 @@ GAIA::N32 main()
 			if(GAIA::ALGORITHM::strcmp(szTemp, "192.168.1.8:4321") != 0)
 				bFunctionSuccess = GAIA::False;
 			na.IsInvalid();
+		}
+
+		{
+			GAIA::NETWORK::NetworkHandle h;
+			GAIA::NETWORK::NetworkListener l;
+			GAIA::NETWORK::NetworkSender s;
+			GAIA::NETWORK::NetworkReceiver r;
 		}
 		
 		if(bFunctionSuccess)

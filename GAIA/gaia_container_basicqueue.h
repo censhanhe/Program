@@ -57,7 +57,7 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			GINL GAIA::GVOID push(const _DataType& obj)
+			GINL GAIA::GVOID push(const _DataType& t)
 			{
 				if(this->capacity() == 0)
 				{
@@ -85,8 +85,18 @@ namespace GAIA
 					m_pBack = m_pData;
 				if(m_pFront == m_pData + this->capacity())
 					m_pFront = m_pData;
-				*m_pBack++ = obj;
+				*m_pBack++ = t;
 				++m_size;
+			}
+			GINL __MyType& operator << (const _DataType& t){this->push(t); return *this;}
+			GINL __MyType& operator << (const __MyType& src)
+			{
+				while(!src.empty())
+				{
+					this->push(src.front());
+					src.pop();
+				}
+				return *this;
 			}
 			GINL const __MyType& operator = (const __MyType& src)
 			{

@@ -161,10 +161,27 @@ namespace GAIA
 		{
 		private:
 			friend class NetworkListener;
+			friend class NetworkSender;
+			friend class NetworkReceiver;
+		private:
+			class SendRec
+			{
+			public:
+				GAIA::U8* p;
+				GAIA::UM uSize;
+			};
+		private:
+			typedef GAIA::CONTAINER::Queue<SendRec> __SendQueueType;
+			typedef GAIA::CONTAINER::Vector<SendRec> __SendListType;
 		public:
 			class ConnectDesc
 			{
 			public:
+				GINL GAIA::GVOID Reset()
+				{
+					addr.Invalid();
+					bStabilityLink = GAIA::True;
+				}
 				NetworkAddress addr;
 				GAIA::N8 bStabilityLink : 1;
 			};
@@ -183,8 +200,8 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetReceiver(NetworkReceiver* pReceiver);
 			GINL NetworkReceiver* GetReceiver() const{return m_pReceiver;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC BL Send(const GAIA::U8* p, GAIA::UM uSize);
-			template<typename _DataType> GINL GAIA::BL Send(const _DataType& t);
-			template<typename _DataType> GINL GAIA::BL operator << (const _DataType& t);
+			template<typename _DataType> GINL GAIA::BL Send(const _DataType& t){return this->Send(&t, sizeof(t));}
+			template<typename _DataType> GINL GAIA::BL operator << (const _DataType& t){return this->Send(t);}
 			GINL GAIA::BL operator == (const NetworkHandle& src) const{return m_h == src.m_h;}
 			GINL GAIA::BL operator != (const NetworkHandle& src) const{return !(this->operator == (src));}
 			GINL GAIA::BL operator >= (const NetworkHandle& src) const{return m_h <= src.m_h;}
@@ -196,17 +213,25 @@ namespace GAIA
 			{
 				m_h = GINVALID;
 				m_addr_self.Invalid();
-				m_conndesc.addr.Invalid();
-				m_conndesc.bStabilityLink = GAIA::True;
+				m_conndesc.Reset();
 				m_pSender = GNULL;
 				m_pReceiver = GNULL;
+				m_nSendBufferSize = 1024 * 128;
+				m_nRecvBufferSize = 1024 * 128;
 			}
+			GINL virtual GAIA::GVOID Disconnect(GAIA::BL bRecvTrueSendFalse){}
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL FlushSendQueue();
 		private:
 			GAIA::N32 m_h;
 			NetworkAddress m_addr_self;
 			ConnectDesc m_conndesc;
 			NetworkSender* m_pSender;
 			NetworkReceiver* m_pReceiver;
+			GAIA::SYNC::Lock m_lock;
+			__SendQueueType m_sendque;
+			__SendListType m_tempsendlist;
+			GAIA::N32 m_nSendBufferSize;
+			GAIA::N32 m_nRecvBufferSize;
 		};
 		class NetworkListener : public GAIA::THREAD::Thread
 		{
@@ -214,6 +239,7 @@ namespace GAIA
 			class ListenDesc
 			{
 			public:
+				GINL GAIA::GVOID Reset(){addr.Invalid();}
 				NetworkAddress addr;
 			};
 		public:
@@ -226,12 +252,13 @@ namespace GAIA
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		protected: // Interface for derived class callback.
 			virtual GAIA::BL Accept(const NetworkHandle& h) const{return GAIA::False;};
-			GINL virtual GAIA::GVOID WorkProcedule();
+			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
-			GINL GAIA::GVOID init(){}
+			GINL GAIA::GVOID init(){m_desc.Reset(); m_bBegin = GAIA::False; m_bStopCmd = GAIA::False;}
 		private:
 			ListenDesc m_desc;
 			GAIA::N8 m_bBegin : 1;
+			GAIA::N8 m_bStopCmd : 1;
 		};
 		class NetworkSender : public GAIA::THREAD::Thread
 		{
@@ -239,6 +266,7 @@ namespace GAIA
 			friend class NetworkHandle;
 		private:
 			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle>> __HandleSetType;
+			typedef GAIA::CONTAINER::Vector<NetworkHandle*> __HandleListType;
 		public:
 			GINL NetworkSender(){this->init();}
 			GINL ~NetworkSender(){if(this->IsBegin()) this->End();}
@@ -267,6 +295,7 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID RemoveAll()
 			{
+				GAIA::SYNC::AutoLock al(m_lock);
 				__HandleSetType::it iter = m_hs.front_it();
 				while(!iter.empty())
 				{
@@ -278,13 +307,15 @@ namespace GAIA
 				m_hs.destroy();
 			}
 		protected:
-			GINL virtual GAIA::GVOID WorkProcedule();
+			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
-			GINL GAIA::GVOID init(){m_bBegin = GAIA::False;}
+			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_bStopCmd = GAIA::False;}
 		private:
 			__HandleSetType m_hs;
 			GAIA::SYNC::Lock m_lock;
 			GAIA::N8 m_bBegin;
+			GAIA::N8 m_bStopCmd : 1;
+			__HandleListType m_hl;
 		};
 		class NetworkReceiver : public GAIA::THREAD::Thread
 		{
@@ -292,6 +323,8 @@ namespace GAIA
 			friend class NetworkHandle;
 		private:
 			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle>> __HandleSetType;
+			typedef GAIA::CONTAINER::Vector<NetworkHandle*> __HandleListType;
+			typedef GAIA::CONTAINER::Buffer __BufferType;
 		public:
 			GINL NetworkReceiver(){this->init();}
 			GINL ~NetworkReceiver(){if(this->IsBegin()) this->End();}
@@ -320,6 +353,7 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID RemoveAll()
 			{
+				GAIA::SYNC::AutoLock al(m_lock);
 				__HandleSetType::it iter = m_hs.front_it();
 				while(!iter.empty())
 				{
@@ -331,14 +365,17 @@ namespace GAIA
 				m_hs.destroy();
 			}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Receive(const NetworkSender& s, const GAIA::U8* p, GAIA::U32 size) const{return GAIA::False;}
-			GINL virtual GAIA::GVOID WorkProcedule();
+			virtual GAIA::BL Receive(const NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size) const{return GAIA::False;}
+			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
-			GINL GAIA::GVOID init(){m_bBegin = GAIA::False;}
+			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_bStopCmd = GAIA::False; m_buf.resize(4096);}
 		private:
 			__HandleSetType m_hs;
 			GAIA::SYNC::Lock m_lock;
 			GAIA::N8 m_bBegin;
+			GAIA::N8 m_bStopCmd : 1;
+			__HandleListType m_hl;
+			__BufferType m_buf;
 		};
 	};
 };
