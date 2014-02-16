@@ -7,6 +7,9 @@
 #	include <ws2tcpip.h>
 #	include <windows.h>
 #else
+#	include <sys/errno.h>
+#	include <sys/ioctl.h>
+#	include <sys/fcntl.h>
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <netinet/in.h>
@@ -41,7 +44,9 @@ namespace GAIA
 			#else
 				setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
 				setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
-				GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
+				//GAIA::UM bNotBlockModeEnable = 1; ioctl(m_h, FIONBIO, &bNotBlockModeEnable);
+				GAIA::N32 flags = fcntl(m_h, F_GETFL, 0);
+				fcntl(m_h, F_SETFL, flags | O_NONBLOCK);
 			#endif
 		
 				// Connect.
@@ -101,13 +106,13 @@ namespace GAIA
 		{
 			if(!this->IsConnected())
 				return GAIA::False;
-#if GAIA_OS == GAIA_OS_WINDOWS
+		#if GAIA_OS == GAIA_OS_WINDOWS
 			shutdown(m_h, SD_BOTH);
 			closesocket(m_h);
-#else
+		#else
 			shutdown(m_h, SHUT_RDWR);
 			close(m_h);
-#endif
+		#endif
 			this->init();
 			return GAIA::True;
 		}
@@ -171,7 +176,7 @@ namespace GAIA
 					GAIA::UM uSize = r.uSize;
 					while(uSize > 0)
 					{
-						GAIA::N32 nSended = send(m_h, (const GAIA::GCH*)p, uSize, 0);
+						GAIA::N32 nSended = static_cast<GAIA::N32>(send(m_h, (const GAIA::GCH*)p, uSize, 0));
 						if(nSended == GINVALID)
 						{
 						#if GAIA_OS == GAIA_OS_WINDOWS
@@ -189,8 +194,7 @@ namespace GAIA
 								break;
 							}
 						#else
-							GAIA::N32 nLastError = ::WSAGetLastError();
-							if(nLastError == WSAEWOULDBLOCK){}
+							if(errno == EAGAIN){}
 							else
 							{
 								this->Reference();
@@ -503,8 +507,7 @@ namespace GAIA
 									break;
 								}
 							#else
-								GAIA::N32 nLastError = ::WSAGetLastError();
-								if(nLastError == WSAEWOULDBLOCK){}
+								if(errno == EAGAIN){}
 								else
 								{
 									pHandle->Reference();
