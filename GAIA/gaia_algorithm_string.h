@@ -72,8 +72,8 @@ namespace GAIA
 		}
 		template<typename _DataType> GAIA::N32 strcmp(const _DataType* p1, const _DataType* p2)
 		{
-			GAIA_AST(dst != GNULL);
-			GAIA_AST(src != GNULL);
+			GAIA_AST(p1 != GNULL);
+			GAIA_AST(p2 != GNULL);
 			while(GAIA::ALWAYSTRUE)
 			{
 				if(*p1 < *p2)

@@ -31,7 +31,6 @@ namespace GAIA
 		template<typename _SizeType> GINL GAIA::GVOID* memset(GAIA::GVOID* dst, GAIA::N8 ch, const _SizeType& size)
 		{
 			GAIA_AST(dst != GNULL);
-			GAIA_AST(src != GNULL);
 			GAIA_AST(size != 0);
 			_SizeType sizet = size;
 			GAIA::UM clean = 0;
@@ -54,8 +53,8 @@ namespace GAIA
 		}
 		template<typename _SizeType> GINL GAIA::N32 memcmp(const GAIA::GVOID* p1, const GAIA::GVOID* p2, const _SizeType& size)
 		{
-			GAIA_AST(dst != GNULL);
-			GAIA_AST(src != GNULL);
+			GAIA_AST(p1 != GNULL);
+			GAIA_AST(p2 != GNULL);
 			GAIA_AST(size != 0);
 			_SizeType sizet = size;
 			while(sizet > sizeof(GAIA::UM))

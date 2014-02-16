@@ -145,8 +145,8 @@ namespace GAIA
 	public:
 		GINL RefObject(){m_nRef = 1; m_bDestructing = GAIA::False;}
 		GINL ~RefObject(){}
-		GINL GAIA::GVOID Reference(){m_nRef++;}
-		GINL GAIA::GVOID Release(){m_nRef--; if(m_nRef == 0 && !m_bDestructing){m_bDestructing = true; this->Destruct(); delete this;}}
+		GINL GAIA::GVOID Reference(){++m_nRef;}
+		GINL GAIA::GVOID Release(){--m_nRef; if(m_nRef == 0 && !m_bDestructing){m_bDestructing = true; this->Destruct(); delete this;}}
 		GINL GAIA::N32 GetRef() const{return m_nRef;}
 	protected:
 		virtual GAIA::GVOID Destruct(){}

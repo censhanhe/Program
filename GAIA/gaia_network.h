@@ -284,7 +284,7 @@ namespace GAIA
 			typedef GAIA::CONTAINER::Vector<NetworkHandle*> __HandleListType;
 		public:
 			GINL NetworkSender(){this->init();}
-			GINL ~NetworkSender(){if(this->IsBegin()) this->End();}
+			GINL ~NetworkSender(){if(this->IsBegin()) this->End(); this->RemoveAll();}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Begin();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
@@ -342,7 +342,7 @@ namespace GAIA
 			typedef GAIA::CONTAINER::Buffer __BufferType;
 		public:
 			GINL NetworkReceiver(){this->init();}
-			GINL ~NetworkReceiver(){if(this->IsBegin()) this->End();}
+			GINL ~NetworkReceiver(){if(this->IsBegin()) this->End(); this->RemoveAll();}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Begin();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
