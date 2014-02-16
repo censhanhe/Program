@@ -5,6 +5,10 @@
 #	include	<stdlib.h>
 #	include	<stdio.h>
 #	include	<crtdbg.h>
+#	include <assert.h>
+#	define HEAPCHECK assert(_CrtCheckMemory());
+#else
+#	define HEAPCHECK
 #endif
 
 #define PERFORMANCE_COMPARE
@@ -144,7 +148,8 @@ GAIA::N32 main()
 		WSAData wsadata;
 		WSAStartup(MAKEWORD(2, 2), &wsadata);
 
-		MyNetworkHandle h;
+		MyNetworkHandle* pNewHandle = new MyNetworkHandle;
+		MyNetworkHandle& h = *pNewHandle;
 		MyNetworkListener l;
 		GAIA::NETWORK::NetworkSender s;
 		MyNetworkReceiver r;
@@ -165,10 +170,11 @@ GAIA::N32 main()
 		h.Connect(descConn);
 
 		h.SetSender(&s);
-		//h.SetReceiver(&r);
+		h.SetReceiver(&r);
 
 		while(s_pNH == GNULL)
 			GAIA::SYNC::sleep(1000);
+
 		s_pNH->SetSender(&s);
 		s_pNH->SetReceiver(&r);
 
@@ -181,14 +187,18 @@ GAIA::N32 main()
 		l.End();
 
 		h.SetSender(GNULL);
-		//h.SetReceiver(GNULL);
+		h.SetReceiver(GNULL);
 
 		s_pNH->SetSender(GNULL);
 		s_pNH->SetReceiver(GNULL);
 
+		h.Release();
 		s_pNH->Release();
 
 		WSACleanup();
+
+		if(GAIA::ALWAYSTRUE)
+			return 0;
 	}
 
 	GAIA::BL bFunctionSuccess = GAIA::True;

@@ -111,7 +111,7 @@ namespace GAIA
 			shutdown(m_h, SD_BOTH);
 			closesocket(m_h);
 		#else
-			shutdown(m_h, SHUT_RDWR); 
+			shutdown(m_h, SHUT_RDWR);
 			close(m_h);
 		#endif
 			this->init();
@@ -316,13 +316,13 @@ namespace GAIA
 			// Listen.
 			if(listen(listensock, SOMAXCONN) < 0)
 			{
-#if GAIA_OS == GAIA_OS_WINDOWS
+			#if GAIA_OS == GAIA_OS_WINDOWS
 				shutdown(listensock, SD_BOTH);
 				closesocket(listensock);
-#else
+			#else
 				shutdown(listensock, SHUT_RDWR);
 				close(listensock);
-#endif
+			#endif
 				return;
 			}
 
@@ -374,7 +374,7 @@ namespace GAIA
 			shutdown(listensock, SD_BOTH);
 			closesocket(listensock);
 		#else
-			shutdown(listensock, SHUT_RDWR); 
+			shutdown(listensock, SHUT_RDWR);
 			close(listensock);
 		#endif
 		}
