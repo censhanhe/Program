@@ -13,8 +13,9 @@
 #	include <set>
 #	include <algorithm>
 #	include <iostream>
-#	define PERF_PRINT_NAME(name) std::cout<<name<<std::endl;
+#	define PERF_PRINT_NAME(name) std::cout<<(name)<<std::endl;
 #	define PERF_PRINT_TIME std::cout<<'\t'<<"TIME-LOST="<<(GAIA::F64)(uPerfEnd - uPerfStart) * 0.001<<"(MS)"<<std::endl;
+#	define PERF_PRINT_TYPE(type) std::cout<<(type);
 #else
 #	define PERF_PRINT_NAME(name)
 #	define PERF_PRINT_TIME
@@ -85,6 +86,46 @@ private:
 	GAIA::BL m_bRuned;
 };
 
+class MyNetworkHandle : public GAIA::NETWORK::NetworkHandle
+{
+public:
+	GINL virtual GAIA::GVOID Disconnect(GAIA::BL bRecvTrueSendFalse)
+	{
+		PERF_PRINT_NAME("NetworkHandle : Disconnect CallBack!");
+	}
+};
+
+static GAIA::NETWORK::NetworkHandle* s_pNH = GNULL;
+class MyNetworkListener : public GAIA::NETWORK::NetworkListener
+{
+public:
+	virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h)
+	{
+		PERF_PRINT_NAME("NetworkListener : Accept CallBack!");
+		if(s_pNH == GNULL)
+		{
+			h.Reference();
+			s_pNH = &h;
+		}
+		return GAIA::True;
+	}
+};
+
+class MyNetworkReceiver : public GAIA::NETWORK::NetworkReceiver
+{
+public:
+	virtual GAIA::BL Receive(const GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
+	{
+		PERF_PRINT_NAME("NetworkReceiver : Receive CallBack!");
+		for(GAIA::U32 x = 0; x < size; ++x)
+		{
+			PERF_PRINT_TYPE((GAIA::GCH)p[x]);
+			PERF_PRINT_TYPE(" ");
+		}
+		return GAIA::True;
+	}
+};
+
 GAIA::N32 main()
 {
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -98,6 +139,57 @@ GAIA::N32 main()
 #else
 	static const GAIA::N32 SAMPLE_COUNT = 100000;
 #endif
+
+	{
+		WSAData wsadata;
+		WSAStartup(MAKEWORD(2, 2), &wsadata);
+
+		MyNetworkHandle h;
+		MyNetworkListener l;
+		GAIA::NETWORK::NetworkSender s;
+		MyNetworkReceiver r;
+
+		s.Begin();
+		r.Begin();
+
+		MyNetworkListener::ListenDesc descListen;
+		descListen.addr.FromString("192.168.1.101:8765");
+		l.SetDesc(descListen);
+		l.Begin();
+
+		GAIA::SYNC::sleep(1000);
+
+		MyNetworkHandle::ConnectDesc descConn;
+		descConn.addr.FromString("192.168.1.101:8765");
+		descConn.bStabilityLink = GAIA::True;
+		h.Connect(descConn);
+
+		h.SetSender(&s);
+		//h.SetReceiver(&r);
+
+		while(s_pNH == GNULL)
+			GAIA::SYNC::sleep(1000);
+		s_pNH->SetSender(&s);
+		s_pNH->SetReceiver(&r);
+
+		h.Send((const GAIA::U8*)"Hello Kitty!", sizeof("Hello Kitty!"));
+
+		GAIA::SYNC::sleep(1000);
+
+		s.End();
+		r.End();
+		l.End();
+
+		h.SetSender(GNULL);
+		//h.SetReceiver(GNULL);
+
+		s_pNH->SetSender(GNULL);
+		s_pNH->SetReceiver(GNULL);
+
+		s_pNH->Release();
+
+		WSACleanup();
+	}
 
 	GAIA::BL bFunctionSuccess = GAIA::True;
 

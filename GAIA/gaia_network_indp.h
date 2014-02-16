@@ -31,24 +31,13 @@ namespace GAIA
 			if(desc.addr.ip.u4 == 0 && desc.addr.ip.u5 == 0) // IPv4 version dispatch.
 			{
 				// Create socket.
-				if(this->IsStabilityLink())
+				if(desc.bStabilityLink)
 					m_h = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 				else
 					m_h = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 				if(m_h == GINVALID)
 					return GAIA::False;
-			#if GAIA_OS == GAIA_OS_WINDOWS
-				setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
-				setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
-				GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
-			#else
-				setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
-				setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
-				//GAIA::UM bNotBlockModeEnable = 1; ioctl(m_h, FIONBIO, &bNotBlockModeEnable);
-				GAIA::N32 flags = fcntl(m_h, F_GETFL, 0);
-				fcntl(m_h, F_SETFL, flags | O_NONBLOCK);
-			#endif
-		
+
 				// Connect.
 				sockaddr_in sinaddr;
 				GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
@@ -69,13 +58,11 @@ namespace GAIA
 					m_h = GINVALID;
 					return GAIA::False;
 				}
-				m_conndesc = desc;
-				return GAIA::True;
 			}
 			else // IPv6 version dispatch.
 			{
 				// Create socket.
-				if(this->IsStabilityLink())
+				if(desc.bStabilityLink)
 					m_h = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
 				else
 					m_h = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
@@ -98,9 +85,23 @@ namespace GAIA
 					m_h = GINVALID;
 					return GAIA::False;
 				}
-				m_conndesc = desc;
-				return GAIA::True;
 			}
+
+			//
+			m_conndesc = desc;
+
+			// Setup socket.
+			setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
+			setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
+		#else
+			//GAIA::UM bNotBlockModeEnable = 1; ioctl(m_h, FIONBIO, &bNotBlockModeEnable);
+			GAIA::N32 flags = fcntl(m_h, F_GETFL, 0);
+			fcntl(m_h, F_SETFL, flags | O_NONBLOCK);
+		#endif
+
+			return GAIA::True;
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkHandle::Disconnect()
 		{
@@ -110,7 +111,7 @@ namespace GAIA
 			shutdown(m_h, SD_BOTH);
 			closesocket(m_h);
 		#else
-			shutdown(m_h, SHUT_RDWR);
+			shutdown(m_h, SHUT_RDWR); 
 			close(m_h);
 		#endif
 			this->init();
@@ -122,7 +123,8 @@ namespace GAIA
 				return;
 			if(m_pSender != GNULL)
 				m_pSender->Remove(*this);
-			pSender->Add(*this);
+			if(pSender != GNULL)
+				pSender->Add(*this);
 			m_pSender = pSender;
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID NetworkHandle::SetReceiver(NetworkReceiver* pReceiver)
@@ -131,7 +133,8 @@ namespace GAIA
 				return;
 			if(m_pReceiver != GNULL)
 				m_pReceiver->Remove(*this);
-			pReceiver->Add(*this);
+			if(pReceiver != GNULL)
+				pReceiver->Add(*this);
 			m_pReceiver = pReceiver;
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC BL NetworkHandle::Send(const GAIA::U8* p, GAIA::UM uSize)
@@ -244,7 +247,14 @@ namespace GAIA
 			if(!this->IsBegin())
 				return GAIA::False;
 			m_bStopCmd = GAIA::True;
-			this->Wait();
+			{
+				NetworkHandle::ConnectDesc descConn;
+				descConn.addr = m_desc.addr;
+				descConn.bStabilityLink = GAIA::True;
+				NetworkHandle h;
+				h.Connect(descConn);
+				this->Wait();
+			}
 			m_bStopCmd = GAIA::False;
 			m_bBegin = GAIA::False;
 			return GAIA::True;
@@ -278,45 +288,6 @@ namespace GAIA
 				#endif
 					return;
 				}
-
-				// Listen.
-				if(listen(listensock, SOMAXCONN) < 0)
-				{
-				#if GAIA_OS == GAIA_OS_WINDOWS
-					shutdown(listensock, SD_BOTH);
-					closesocket(listensock);
-				#else
-					shutdown(listensock, SHUT_RDWR);
-					close(listensock);
-				#endif
-					return;
-				}
-
-				// Accept.
-				for(;;)
-				{
-					sockaddr_in addrnew;
-				#if GAIA_OS == GAIA_OS_WINDOWS
-					GAIA::N32 newsize;
-					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
-				#else
-					GAIA::U32 newsize;
-					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
-				#endif
-					if(newsock != GINVALID)
-					{
-						NetworkHandle* h = new NetworkHandle;
-						h->m_h = newsock;
-						h->m_addr_self = m_desc.addr;
-						h->m_conndesc.addr.ip.u0 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x000000FF) >> 0);
-						h->m_conndesc.addr.ip.u1 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x0000FF00) >> 8);
-						h->m_conndesc.addr.ip.u2 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x00FF0000) >> 16);
-						h->m_conndesc.addr.ip.u3 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0xFF000000) >> 24);
-						h->m_addr_self.uPort = ntohs(addrnew.sin_port);
-						this->Accept(*h);
-						h->Release();
-					}
-				}
 			}
 			else // IPv6 version dispatch.
 			{
@@ -340,43 +311,72 @@ namespace GAIA
 				#endif
 					return;
 				}
+			}
 
-				// Listen.
-				if(listen(listensock, SOMAXCONN) < 0)
-				{
-				#if GAIA_OS == GAIA_OS_WINDOWS
-					shutdown(listensock, SD_BOTH);
-					closesocket(listensock);
-				#else
-					shutdown(listensock, SHUT_RDWR);
-					close(listensock);
-				#endif
-					return;
-				}
+			// Listen.
+			if(listen(listensock, SOMAXCONN) < 0)
+			{
+#if GAIA_OS == GAIA_OS_WINDOWS
+				shutdown(listensock, SD_BOTH);
+				closesocket(listensock);
+#else
+				shutdown(listensock, SHUT_RDWR);
+				close(listensock);
+#endif
+				return;
+			}
+
+			// Accept.
+			for(;;)
+			{
+				// Stop command.
+				if(m_bStopCmd)
+					break;
 
 				// Accept.
-				for(;;)
+				sockaddr_in addrnew;
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				GAIA::N32 newsize = sizeof(addrnew);
+				GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
+			#else
+				GAIA::U32 newsize;
+				GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
+			#endif
+				if(newsock != GINVALID)
 				{
-					sockaddr_in addrnew;
+					// Setup socket.
+					setsockopt(newsock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
+					setsockopt(newsock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
 				#if GAIA_OS == GAIA_OS_WINDOWS
-					GAIA::N32 newsize;
-					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
+					GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(newsock, FIONBIO, &bNotBlockModeEnable);
 				#else
-					GAIA::U32 newsize;
-					GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
+					//GAIA::UM bNotBlockModeEnable = 1; ioctl(m_h, FIONBIO, &bNotBlockModeEnable);
+					GAIA::N32 flags = fcntl(newsock, F_GETFL, 0);
+					fcntl(newsock, F_SETFL, flags | O_NONBLOCK);
 				#endif
-					if(newsock != GINVALID)
-					{
-						NetworkHandle* h = new NetworkHandle;
-						h->m_h = newsock;
-						h->m_addr_self = m_desc.addr;
-						// TODO : IPv6 convert.
-						h->m_addr_self.uPort = ntohs(addrnew.sin_port);
-						this->Accept(*h);
-						h->Release();
-					}
+
+					//
+					NetworkHandle* h = new NetworkHandle;
+					h->m_h = newsock;
+					h->m_addr_self = m_desc.addr;
+					h->m_conndesc.addr.ip.u0 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x000000FF) >> 0);
+					h->m_conndesc.addr.ip.u1 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x0000FF00) >> 8);
+					h->m_conndesc.addr.ip.u2 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x00FF0000) >> 16);
+					h->m_conndesc.addr.ip.u3 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0xFF000000) >> 24);
+					h->m_addr_self.uPort = ntohs(addrnew.sin_port);
+					this->Accept(*h);
+					h->Release();
 				}
 			}
+
+			// Close listen socket.
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			shutdown(listensock, SD_BOTH);
+			closesocket(listensock);
+		#else
+			shutdown(listensock, SHUT_RDWR); 
+			close(listensock);
+		#endif
 		}
 		/* NetworkSender's implement. */
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkSender::Begin()
@@ -401,6 +401,10 @@ namespace GAIA
 		{
 			for(;;)
 			{
+				// Stop command.
+				if(m_bStopCmd)
+					break;
+
 				// 
 				GAIA::BL bExistWork = GAIA::False;
 
@@ -460,6 +464,10 @@ namespace GAIA
 		{
 			for(;;)
 			{
+				// Stop command.
+				if(m_bStopCmd)
+					break;
+
 				//
 				GAIA::BL bExistWork = GAIA::False;
 
@@ -492,7 +500,8 @@ namespace GAIA
 							{
 							#if GAIA_OS == GAIA_OS_WINDOWS
 								GAIA::N32 nLastError = ::WSAGetLastError();
-								if(nLastError == WSAEWOULDBLOCK){}
+								if(nLastError == WSAEWOULDBLOCK)
+									break;
 								else
 								{
 									pHandle->Reference();
@@ -507,7 +516,8 @@ namespace GAIA
 									break;
 								}
 							#else
-								if(errno == EAGAIN){}
+								if(errno == EAGAIN)
+									break;
 								else
 								{
 									pHandle->Reference();

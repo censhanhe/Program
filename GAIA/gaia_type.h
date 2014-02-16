@@ -144,6 +144,7 @@ namespace GAIA
 	{
 	public:
 		GINL RefObject(){m_nRef = 1; m_bDestructing = GAIA::False;}
+		GINL ~RefObject(){}
 		GINL GAIA::GVOID Reference(){m_nRef++;}
 		GINL GAIA::GVOID Release(){m_nRef--; if(m_nRef == 0 && !m_bDestructing){m_bDestructing = true; this->Destruct(); delete this;}}
 		GINL GAIA::N32 GetRef() const{return m_nRef;}
@@ -153,7 +154,7 @@ namespace GAIA
 		GINL RefObject& operator = (const RefObject& src){return *this;}
 	private:
 		GAIA::N32 m_nRef;
-		GAIA::N8 m_bDestructing : 1;
+		GAIA::U8 m_bDestructing : 1;
 	};
 
 	/* Common constants. */

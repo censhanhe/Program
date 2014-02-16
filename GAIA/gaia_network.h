@@ -183,7 +183,7 @@ namespace GAIA
 					bStabilityLink = GAIA::True;
 				}
 				NetworkAddress addr;
-				GAIA::N8 bStabilityLink : 1;
+				GAIA::U8 bStabilityLink : 1;
 			};
 		public:
 			GAIA_DEBUG_CODEPURE_MEMFUNC NetworkHandle(){this->init();}
@@ -218,6 +218,12 @@ namespace GAIA
 				m_pReceiver = GNULL;
 				m_nSendBufferSize = 1024 * 128;
 				m_nRecvBufferSize = 1024 * 128;
+				while(!m_sendque.empty())
+				{
+					SendRec sr = m_sendque.front();
+					delete[] sr.p;
+					m_sendque.pop();
+				}
 			}
 			GINL virtual GAIA::GVOID Disconnect(GAIA::BL bRecvTrueSendFalse){}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL FlushSendQueue();
@@ -251,14 +257,23 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Accept(const NetworkHandle& h) const{return GAIA::False;};
+			virtual GAIA::BL Accept(NetworkHandle& h){return GAIA::False;}
 			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
-			GINL GAIA::GVOID init(){m_desc.Reset(); m_bBegin = GAIA::False; m_bStopCmd = GAIA::False;}
+			GINL GAIA::GVOID init()
+			{
+				m_desc.Reset();
+				m_bBegin = GAIA::False;
+				m_bStopCmd = GAIA::False;
+				m_nSendBufferSize = 1024 * 128;
+				m_nRecvBufferSize = 1024 * 128;
+			}
 		private:
 			ListenDesc m_desc;
-			GAIA::N8 m_bBegin : 1;
-			GAIA::N8 m_bStopCmd : 1;
+			GAIA::U8 m_bBegin : 1;
+			GAIA::U8 m_bStopCmd : 1;
+			GAIA::N32 m_nSendBufferSize;
+			GAIA::N32 m_nRecvBufferSize;
 		};
 		class NetworkSender : public GAIA::THREAD::Thread
 		{
@@ -313,8 +328,8 @@ namespace GAIA
 		private:
 			__HandleSetType m_hs;
 			GAIA::SYNC::Lock m_lock;
-			GAIA::N8 m_bBegin;
-			GAIA::N8 m_bStopCmd : 1;
+			GAIA::U8 m_bBegin : 1;
+			GAIA::U8 m_bStopCmd : 1;
 			__HandleListType m_hl;
 		};
 		class NetworkReceiver : public GAIA::THREAD::Thread
@@ -365,15 +380,15 @@ namespace GAIA
 				m_hs.destroy();
 			}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Receive(const NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size) const{return GAIA::False;}
+			virtual GAIA::BL Receive(const NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size){return GAIA::False;}
 			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
 			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_bStopCmd = GAIA::False; m_buf.resize(4096);}
 		private:
 			__HandleSetType m_hs;
 			GAIA::SYNC::Lock m_lock;
-			GAIA::N8 m_bBegin;
-			GAIA::N8 m_bStopCmd : 1;
+			GAIA::U8 m_bBegin : 1;
+			GAIA::U8 m_bStopCmd : 1;
 			__HandleListType m_hl;
 			__BufferType m_buf;
 		};
