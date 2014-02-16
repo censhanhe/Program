@@ -42,7 +42,7 @@
 #ifdef _MSC_VER
 #	define GAIA_OS GAIA_OS_WINDOWS
 #else
-#	define GAIA_OS 0
+#	define GAIA_OS GAIA_OS_OSX
 #endif
 
 /* Language code flag. */

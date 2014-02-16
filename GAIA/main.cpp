@@ -131,14 +131,14 @@ public:
 };
 
 GAIA::N32 main()
-{
+{	
 #if defined(_MSC_VER) && defined(_DEBUG)
 #	if defined(_DEBUG)
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #	endif
 #endif
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(DEBUG)
 	static const GAIA::N32 SAMPLE_COUNT = 10000;
 #else
 	static const GAIA::N32 SAMPLE_COUNT = 100000;
@@ -160,7 +160,7 @@ GAIA::N32 main()
 	logfile.Open("/users/armterla/gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 #endif
 	
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(DEBUG)
 	logfile.WriteText("[GAIA TEST BEGIN(DEBUG)]\r\n\r\n");
 #else
 	logfile.WriteText("[GAIA TEST BEGIN(RELEASE)]\r\n\r\n");
@@ -1574,9 +1574,12 @@ GAIA::N32 main()
 			GAIA::NETWORK::NetworkReceiver r;
 		}
 
+		if(GAIA::ALWAYSFALSE)
 		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
 			WSAData wsadata;
 			WSAStartup(MAKEWORD(2, 2), &wsadata);
+		#endif
 
 			MyNetworkHandle* pNewHandle = new MyNetworkHandle;
 			MyNetworkHandle& h = *pNewHandle;
@@ -1588,14 +1591,14 @@ GAIA::N32 main()
 			r.Begin();
 
 			MyNetworkListener::ListenDesc descListen;
-			descListen.addr.FromString("192.168.1.101:8765");
+			descListen.addr.FromString("127.0.0.1:8765");
 			l.SetDesc(descListen);
 			l.Begin();
 
 			GAIA::SYNC::sleep(1000);
 
 			MyNetworkHandle::ConnectDesc descConn;
-			descConn.addr.FromString("192.168.1.101:8765");
+			descConn.addr.FromString("127.0.0.1:8765");
 			descConn.bStabilityLink = GAIA::True;
 			h.Connect(descConn);
 
@@ -1624,8 +1627,9 @@ GAIA::N32 main()
 
 			h.Release();
 			s_pNH->Release();
-
+		#if GAIA_OS == GAIA_OS_WINDOWS
 			WSACleanup();
+		#endif
 		}
 
 		if(bFunctionSuccess)

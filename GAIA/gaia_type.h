@@ -175,7 +175,17 @@ namespace GAIA
 	private:
 		GINL RefObject& operator = (const RefObject& src){return *this;}
 	private:
+	#if GAIA_OS == GAIA_OS_WINDOWS
 		volatile GAIA::NM m_nRef;
+	#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
+		#if GAIA_MACHINE == GAIA_MACHINE64
+			volatile GAIA::N64 m_nRef;
+		#else
+			volatile GAIA::N32 m_nRef;
+		#endif
+	#else
+		volatile GAIA::N32 m_nRef;
+	#endif
 		GAIA::U8 m_bDestructing : 1;
 	};
 };

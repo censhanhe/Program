@@ -47,7 +47,7 @@
 #		include <sys/socket.h>
 #		include <netinet/in.h>
 #		if GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
-			
+#			include <libkern/OSAtomic.h>
 #		else
 #			include <asm/atomic.h>
 #		endif
