@@ -99,6 +99,7 @@
 #include	"gaia_dataphase_xml.h"
 
 #include	"gaia_sync_base.h"
+#include	"gaia_sync_atomic.h"
 #include	"gaia_sync_lock.h"
 #include 	"gaia_sync_autolock.h"
 #include	"gaia_sync_event.h"

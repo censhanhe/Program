@@ -1,7 +1,5 @@
-#if defined(_MSC_VER) && defined(_DEBUG)
-#	ifdef		_DEBUG
-#		define	_CRTDBG_MAP_ALLOC
-#	endif
+#if defined(_MSC_VER) && GAIA_PROFILE == GAIA_PROFILE_DEBUG
+#	define	_CRTDBG_MAP_ALLOC
 #	include	<stdlib.h>
 #	include	<stdio.h>
 #	include	<crtdbg.h>
@@ -42,7 +40,7 @@
 #	pragma comment(lib, "ws2_32.lib")
 #endif
 
-#if defined(_MSC_VER) && defined(_DEBUG)
+#if GAIA_OS == GAIA_OS_WINDOWS && GAIA_PROFILE == GAIA_PROFILE_DEBUG
 #	define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
 
@@ -132,13 +130,11 @@ public:
 
 GAIA::N32 main()
 {	
-#if defined(_MSC_VER) && defined(_DEBUG)
-#	if defined(_DEBUG)
-		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-#	endif
+#if defined(_MSC_VER) && GAIA_PROFILE == GAIA_PROFILE_DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-#if defined(_DEBUG) || defined(DEBUG)
+#if GAIA_PROFILE == GAIA_PROFILE_DEBUG
 	static const GAIA::N32 SAMPLE_COUNT = 10000;
 #else
 	static const GAIA::N32 SAMPLE_COUNT = 100000;
@@ -160,7 +156,7 @@ GAIA::N32 main()
 	logfile.Open("/users/armterla/gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 #endif
 	
-#if defined(_DEBUG) || defined(DEBUG)
+#if GAIA_PROFILE == GAIA_PROFILE_DEBUG
 	logfile.WriteText("[GAIA TEST BEGIN(DEBUG)]\r\n\r\n");
 #else
 	logfile.WriteText("[GAIA TEST BEGIN(RELEASE)]\r\n\r\n");
@@ -1574,7 +1570,6 @@ GAIA::N32 main()
 			GAIA::NETWORK::NetworkReceiver r;
 		}
 
-		if(GAIA::ALWAYSFALSE)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			WSAData wsadata;

@@ -1,7 +1,6 @@
 #ifndef		__GAIA_SYS_CONFIG_H__
 #define		__GAIA_SYS_CONFIG_H__
 
-
 #define GAIA_VERSION_MAJOR		0 // unsigned int type. 0 is not a valid version.
 #define GAIA_VERSION_RELEASE	0 // unsigned int type. 0 is not a valid version.
 #define GAIA_VERSION_MINOR		0 // unsigned int type. 0 is not a valid version.
@@ -43,6 +42,25 @@
 #	define GAIA_OS GAIA_OS_WINDOWS
 #else
 #	define GAIA_OS GAIA_OS_OSX
+#endif
+
+/* Compiler profile. */
+#define GAIA_PROFILE_DEBUG 1
+#define GAIA_PROFILE_RELEASE 2
+#if GAIA_OS == GAIA_OS_WINDOWS
+#	ifdef _DEBUG
+#		define GAIA_PROFILE GAIA_PROFILE_DEBUG
+#	else
+#		define GAIA_PROFILE GAIA_PROFILE_RELEASE
+#	endif
+#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
+#	ifdef DEBUG
+#		define GAIA_PROFILE GAIA_PROFILE_DEBUG
+#	else
+#		define GAIA_PROFILE GAIA_PROFILE_RELEASE
+#	endif
+#else
+#	define GAIA_PROFILE GAIA_PROFILE_RELEASE
 #endif
 
 /* Language code flag. */
