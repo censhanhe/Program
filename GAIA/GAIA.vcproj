@@ -261,13 +261,29 @@
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_type_convert.h"
+						RelativePath=".\gaia_type_indp.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_type_traits2.h"
+						RelativePath=".\gaia_type_indp.h"
 						>
 					</File>
+					<Filter
+						Name="CONVERT"
+						>
+						<File
+							RelativePath=".\gaia_type_convert.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="TRAITS"
+						>
+						<File
+							RelativePath=".\gaia_type_traits2.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="CONTAINER"

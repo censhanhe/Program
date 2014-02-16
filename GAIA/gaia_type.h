@@ -126,37 +126,6 @@ namespace GAIA
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSTRUE = GAIA::True;
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSFALSE = GAIA::False;
 
-	/* Class Base. All class's parent. */
-	class Base
-	{
-	public:
-	};
-
-	/* Class Object. It's the all class's base(except high-performance container and math class. */
-	class Object : public Base
-	{
-	public:
-		virtual ~Object(){}
-	};
-
-	/* Class RefObject. If a class need a reference function, it will derived from here. */
-	class RefObject : public Object
-	{
-	public:
-		GINL RefObject(){m_nRef = 1; m_bDestructing = GAIA::False;}
-		GINL ~RefObject(){}
-		GINL GAIA::GVOID Reference(){++m_nRef;}
-		GINL GAIA::GVOID Release(){--m_nRef; if(m_nRef == 0 && !m_bDestructing){m_bDestructing = true; this->Destruct(); delete this;}}
-		GINL GAIA::N32 GetRef() const{return m_nRef;}
-	protected:
-		virtual GAIA::GVOID Destruct(){}
-	private:
-		GINL RefObject& operator = (const RefObject& src){return *this;}
-	private:
-		GAIA::N32 m_nRef;
-		GAIA::U8 m_bDestructing : 1;
-	};
-
 	/* Common constants. */
 	#define GNULL 0
 	#define GINVALID (~0)
@@ -178,6 +147,41 @@ namespace GAIA
 #		define unsigned 1
 #	endif
 #endif
-}
+
+	/* Class Base. All class's parent. */
+	class Base
+	{
+	public:
+	};
+
+	/* Class Object. It's the all class's base(except high-performance container and math class. */
+	class Object : public Base
+	{
+	public:
+		virtual ~Object(){}
+	};
+
+	/* Class RefObject. If a class need a reference function, it will derived from here. */
+	class RefObject : public Object
+	{
+	public:
+		GINL RefObject(){m_nRef = 1; m_bDestructing = GAIA::False;}
+		GINL ~RefObject(){}
+		GINL GAIA::NM Reference();
+		GINL GAIA::NM Release();
+		GINL GAIA::NM GetRef() const{return m_nRef;}
+	protected:
+		virtual GAIA::GVOID Destruct(){}
+	private:
+		GINL RefObject& operator = (const RefObject& src){return *this;}
+	private:
+		volatile GAIA::NM m_nRef;
+		GAIA::U8 m_bDestructing : 1;
+	};
+};
+
+#ifndef GAIA_DEBUG_CODEPURE
+#	include "gaia_type_indp.h"
+#endif
 
 #endif

@@ -175,8 +175,8 @@ GAIA::N32 main()
 		while(s_pNH == GNULL)
 			GAIA::SYNC::sleep(1000);
 
-		//s_pNH->SetSender(&s);
-		//s_pNH->SetReceiver(&r);
+		s_pNH->SetSender(&s);
+		s_pNH->SetReceiver(&r);
 
 		h.Send((const GAIA::U8*)"Hello Kitty!", sizeof("Hello Kitty!"));
 
@@ -189,8 +189,8 @@ GAIA::N32 main()
 		h.SetSender(GNULL);
 		h.SetReceiver(GNULL);
 
-		//s_pNH->SetSender(GNULL);
-		//s_pNH->SetReceiver(GNULL);
+		s_pNH->SetSender(GNULL);
+		s_pNH->SetReceiver(GNULL);
 
 		h.Release();
 		s_pNH->Release();
