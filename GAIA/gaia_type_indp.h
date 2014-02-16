@@ -6,18 +6,33 @@
 #	include <winsock2.h>
 #	include <ws2tcpip.h>
 #	include <windows.h>
+#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
+	
 #else
+#	include <asm/atomic.h>
 #endif
 
 namespace GAIA
 {
 	GINL GAIA::NM RefObject::Reference()
 	{
-		return ::InterlockedIncrement(&m_nRef);
+	#if GAIA_OS == GAIA_OS_WINDOWS
+		return InterlockedIncrement(&m_nRef);
+	#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
+		
+	#else
+		return atomic_inc_return(&m_nRef);
+	#endif
 	}
 	GINL GAIA::NM RefObject::Release()
 	{
-		GAIA::NM nNew = ::InterlockedIncrement(&m_nRef);
+	#if GAIA_OS == GAIA_OS_WINDOWS
+		GAIA::NM nNew = InterlockedIncrement(&m_nRef);
+	#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
+		
+	#else
+		GAIA::NM nNew = atomic_dec_return(&m_nRef);
+	#endif
 		if(nNew == 0 && !m_bDestructing)
 		{
 			m_bDestructing = true;

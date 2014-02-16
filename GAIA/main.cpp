@@ -144,63 +144,6 @@ GAIA::N32 main()
 	static const GAIA::N32 SAMPLE_COUNT = 100000;
 #endif
 
-	{
-		WSAData wsadata;
-		WSAStartup(MAKEWORD(2, 2), &wsadata);
-
-		MyNetworkHandle* pNewHandle = new MyNetworkHandle;
-		MyNetworkHandle& h = *pNewHandle;
-		MyNetworkListener l;
-		GAIA::NETWORK::NetworkSender s;
-		MyNetworkReceiver r;
-
-		s.Begin();
-		r.Begin();
-
-		MyNetworkListener::ListenDesc descListen;
-		descListen.addr.FromString("192.168.1.101:8765");
-		l.SetDesc(descListen);
-		l.Begin();
-
-		GAIA::SYNC::sleep(1000);
-
-		MyNetworkHandle::ConnectDesc descConn;
-		descConn.addr.FromString("192.168.1.101:8765");
-		descConn.bStabilityLink = GAIA::True;
-		h.Connect(descConn);
-
-		h.SetSender(&s);
-		h.SetReceiver(&r);
-
-		while(s_pNH == GNULL)
-			GAIA::SYNC::sleep(1000);
-
-		s_pNH->SetSender(&s);
-		s_pNH->SetReceiver(&r);
-
-		h.Send((const GAIA::U8*)"Hello Kitty!", sizeof("Hello Kitty!"));
-
-		GAIA::SYNC::sleep(1000);
-
-		s.End();
-		r.End();
-		l.End();
-
-		h.SetSender(GNULL);
-		h.SetReceiver(GNULL);
-
-		s_pNH->SetSender(GNULL);
-		s_pNH->SetReceiver(GNULL);
-
-		h.Release();
-		s_pNH->Release();
-
-		WSACleanup();
-
-		if(GAIA::ALWAYSTRUE)
-			return 0;
-	}
-
 	GAIA::BL bFunctionSuccess = GAIA::True;
 
 	//
@@ -1630,7 +1573,61 @@ GAIA::N32 main()
 			GAIA::NETWORK::NetworkSender s;
 			GAIA::NETWORK::NetworkReceiver r;
 		}
-		
+
+		{
+			WSAData wsadata;
+			WSAStartup(MAKEWORD(2, 2), &wsadata);
+
+			MyNetworkHandle* pNewHandle = new MyNetworkHandle;
+			MyNetworkHandle& h = *pNewHandle;
+			MyNetworkListener l;
+			GAIA::NETWORK::NetworkSender s;
+			MyNetworkReceiver r;
+
+			s.Begin();
+			r.Begin();
+
+			MyNetworkListener::ListenDesc descListen;
+			descListen.addr.FromString("192.168.1.101:8765");
+			l.SetDesc(descListen);
+			l.Begin();
+
+			GAIA::SYNC::sleep(1000);
+
+			MyNetworkHandle::ConnectDesc descConn;
+			descConn.addr.FromString("192.168.1.101:8765");
+			descConn.bStabilityLink = GAIA::True;
+			h.Connect(descConn);
+
+			h.SetSender(&s);
+			h.SetReceiver(&r);
+
+			while(s_pNH == GNULL)
+				GAIA::SYNC::sleep(1000);
+
+			s_pNH->SetSender(&s);
+			s_pNH->SetReceiver(&r);
+
+			h.Send((const GAIA::U8*)"Hello Kitty!", sizeof("Hello Kitty!"));
+
+			GAIA::SYNC::sleep(1000);
+
+			s.End();
+			r.End();
+			l.End();
+
+			h.SetSender(GNULL);
+			h.SetReceiver(GNULL);
+
+			s_pNH->SetSender(GNULL);
+			s_pNH->SetReceiver(GNULL);
+
+			h.Release();
+			s_pNH->Release();
+
+			WSACleanup();
+		}
+
 		if(bFunctionSuccess)
 			LINE_TEST("IPAddress to or from string convert SUCCESSFULLY!");
 		else

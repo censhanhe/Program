@@ -21,7 +21,7 @@ namespace GAIA
 		#	else
 				GAIA::GCH m_head[48];
 		#	endif
-		#elif GAIA_OS == GAIA_OS_OSX
+		#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
 			GAIA::GCH m_head[64];
 		#else
 			GAIA::GCH m_head[64];

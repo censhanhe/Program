@@ -46,6 +46,11 @@
 #		include <sys/types.h>
 #		include <sys/socket.h>
 #		include <netinet/in.h>
+#		if GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
+			
+#		else
+#			include <asm/atomic.h>
+#		endif
 #	endif
 #endif
 #include "gaia.h"
