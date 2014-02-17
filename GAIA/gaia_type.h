@@ -152,6 +152,13 @@ namespace GAIA
 	class Base
 	{
 	public:
+		ENUM_BEGIN(BASE_FEATURE)
+			BASE_FEATURE_CAPACITY,
+			BASE_FEATURE_SIZE,
+		ENUM_END(BASE_FEATURE)
+	public:
+		virtual GAIA::BL base_statistics(BASE_FEATURE of, GAIA::GVOID* pResult) const{return GAIA::False;}
+		virtual GAIA::BL base_optimize(BASE_FEATURE of, GAIA::GVOID* pResult){return GAIA::False;}
 	};
 
 	/* Class Object. It's the all class's base(except high-performance container and math class. */
