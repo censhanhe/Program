@@ -22,7 +22,7 @@ namespace GAIA
 			#if GAIA_MACHINE == GAIA_MACHINE64
 				return InterlockedIncrement(&m_n);
 			#else
-				return InterlockedIncrement((GAIA::N32*)&m_n);
+				return InterlockedIncrement((volatile GAIA::NM*)&m_n);
 			#endif
 		#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
 			return OSAtomicIncrement64(&m_n);
@@ -36,7 +36,7 @@ namespace GAIA
 			#if GAIA_MACHINE == GAIA_MACHINE64
 				return InterlockedDecrement(&m_n);
 			#else
-				return InterlockedDecrement((GAIA::N32*)&m_n);
+				return InterlockedDecrement((volatile GAIA::NM*)&m_n);
 			#endif
 		#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
 			return OSAtomicDecrement64(&m_n);

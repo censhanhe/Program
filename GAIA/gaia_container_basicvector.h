@@ -147,7 +147,6 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID reserve(const _SizeType& size)
 			{
-				GAIA_AST(size > 0);
 				if(this->capacity() == size)
 					return;
 				this->destroy();

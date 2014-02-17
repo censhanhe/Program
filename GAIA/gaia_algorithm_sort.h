@@ -9,7 +9,6 @@ namespace GAIA
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);
-			GAIA_AST(pBegin < pEnd);
 			if(pBegin >= pEnd)
 				return;
 			_DataType* pBeginT = pBegin;
@@ -32,7 +31,6 @@ namespace GAIA
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);
-			GAIA_AST(pBegin < pEnd);
 			while(pBegin < pEnd)
 			{
 				_DataType* pTemp = pBegin + 1;
@@ -55,7 +53,6 @@ namespace GAIA
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);
-			GAIA_AST(pBegin < pEnd);
 			if(pEnd - pBegin < 10)
 				bsort(pBegin, pEnd);
 			else

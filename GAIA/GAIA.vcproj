@@ -896,6 +896,22 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="ATOMIC"
+						>
+						<File
+							RelativePath=".\gaia_sync_atomic.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_sync_atomic_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_sync_atomic_indp.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="MODEL"
