@@ -1576,6 +1576,17 @@ GAIA::N32 main()
 			WSAStartup(MAKEWORD(2, 2), &wsadata);
 		#endif
 
+			GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listResult;
+			GAIA::GCH szHostName[128];
+			GAIA::NETWORK::GetHostName(szHostName, 128);
+			GAIA::NETWORK::GetHostIPList(szHostName, listResult);
+			for(GAIA::N32 x = 0; x < listResult.size(); ++x)
+			{
+				GAIA::GCH szIP[128];
+				listResult[x].ToString(szIP);
+				PERF_PRINT_NAME(szIP);
+			}
+			
 			MyNetworkHandle* pNewHandle = new MyNetworkHandle;
 			MyNetworkHandle& h = *pNewHandle;
 			MyNetworkListener l;
@@ -1606,7 +1617,8 @@ GAIA::N32 main()
 			s_pNH->SetSender(&s);
 			s_pNH->SetReceiver(&r);
 
-			h.Send((const GAIA::U8*)"Hello Kitty!", sizeof("Hello Kitty!"));
+			for(GAIA::U32 x = 0; x < 10; x++)
+				h.Send((const GAIA::U8*)"Hello Kitty!", sizeof("Hello Kitty!"));
 
 			GAIA::SYNC::sleep(1000);
 

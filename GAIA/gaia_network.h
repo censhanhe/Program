@@ -155,6 +155,8 @@ namespace GAIA
 			IP ip;
 			GAIA::U16 uPort;
 		};
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::UM& size);
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::GCH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult);
 		class NetworkSender;
 		class NetworkReceiver;
 		class NetworkHandle : public RefObject

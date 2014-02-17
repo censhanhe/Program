@@ -8,11 +8,11 @@
 #	include <windows.h>
 #else
 #	include <sys/errno.h>
-#	include <sys/ioctl.h>
 #	include <sys/fcntl.h>
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <netinet/in.h>
+#	include <netdb.h>
 #endif
 
 namespace GAIA
@@ -39,24 +39,27 @@ namespace GAIA
 					return GAIA::False;
 
 				// Connect.
-				sockaddr_in sinaddr;
-				GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
-				sinaddr.sin_family = AF_INET;
-				sinaddr.sin_port = htons(desc.addr.uPort);
-				sinaddr.sin_addr.s_addr =
-					(desc.addr.ip.u0 << 0) |
-					(desc.addr.ip.u1 << 8) |
-					(desc.addr.ip.u2 << 16) |
-					(desc.addr.ip.u3 << 24);
-				if(connect(m_h, (sockaddr*)&sinaddr, sizeof(sinaddr)) == GINVALID)
+				if(desc.bStabilityLink)
 				{
-				#if GAIA_OS == GAIA_OS_WINDOWS
-					closesocket(m_h);
-				#else
-					close(m_h);
-				#endif
-					m_h = GINVALID;
-					return GAIA::False;
+					sockaddr_in sinaddr;
+					GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
+					sinaddr.sin_family = AF_INET;
+					sinaddr.sin_port = htons(desc.addr.uPort);
+					sinaddr.sin_addr.s_addr =
+						(desc.addr.ip.u0 << 0) |
+						(desc.addr.ip.u1 << 8) |
+						(desc.addr.ip.u2 << 16) |
+						(desc.addr.ip.u3 << 24);
+					if(connect(m_h, (sockaddr*)&sinaddr, sizeof(sinaddr)) == GINVALID)
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS
+						closesocket(m_h);
+					#else
+						close(m_h);
+					#endif
+						m_h = GINVALID;
+						return GAIA::False;
+					}
 				}
 			}
 			else // IPv6 version dispatch.
@@ -70,20 +73,23 @@ namespace GAIA
 					return GAIA::False;
 
 				// Connect.
-				sockaddr_in6 sinaddr6;
-				GAIA::ALGORITHM::memset(&sinaddr6, 0, sizeof(sinaddr6));
-				sinaddr6.sin6_family = AF_INET6;
-				sinaddr6.sin6_port = htons(desc.addr.uPort);
-				// TODO : IPv6 convert.
-				if(connect(m_h, (sockaddr*)&sinaddr6, sizeof(sinaddr6)) == GINVALID)
+				if(desc.bStabilityLink)
 				{
-				#if GAIA_OS == GAIA_OS_WINDOWS
-					closesocket(m_h);
-				#else
-					close(m_h);
-				#endif
-					m_h = GINVALID;
-					return GAIA::False;
+					sockaddr_in6 sinaddr6;
+					GAIA::ALGORITHM::memset(&sinaddr6, 0, sizeof(sinaddr6));
+					sinaddr6.sin6_family = AF_INET6;
+					sinaddr6.sin6_port = htons(desc.addr.uPort);
+					// TODO : IPv6 convert.
+					if(connect(m_h, (sockaddr*)&sinaddr6, sizeof(sinaddr6)) == GINVALID)
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS
+						closesocket(m_h);
+					#else
+						close(m_h);
+					#endif
+						m_h = GINVALID;
+						return GAIA::False;
+					}
 				}
 			}
 
@@ -96,7 +102,6 @@ namespace GAIA
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
 		#else
-			//GAIA::UM bNotBlockModeEnable = 1; ioctl(m_h, FIONBIO, &bNotBlockModeEnable);
 			GAIA::N32 flags = fcntl(m_h, F_GETFL, 0);
 			fcntl(m_h, F_SETFL, flags | O_NONBLOCK);
 		#endif
@@ -179,7 +184,11 @@ namespace GAIA
 					GAIA::UM uSize = r.uSize;
 					while(uSize > 0)
 					{
+					#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
+						GAIA::N32 nSended = static_cast<GAIA::N32>(send(m_h, (const GAIA::GCH*)p, uSize, MSG_NOSIGNAL));
+					#else
 						GAIA::N32 nSended = static_cast<GAIA::N32>(send(m_h, (const GAIA::GCH*)p, uSize, 0));
+					#endif
 						if(nSended == GINVALID)
 						{
 						#if GAIA_OS == GAIA_OS_WINDOWS
@@ -232,6 +241,37 @@ namespace GAIA
 				}
 			}
 			return GAIA::True;
+		}
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::UM& size)
+		{
+			return gethostname(pszResult, size) != GINVALID;
+		}
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::GCH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult)
+		{
+			hostent* pHostEnt = gethostbyname(pszHostName);
+			if(pHostEnt != GNULL)
+			{
+				GAIA::N32 nIndex = 0;
+				while(pHostEnt->h_addr_list[nIndex] != GNULL)
+				{
+					if(pHostEnt->h_addrtype == AF_INET)
+					{
+						in_addr* addr = (in_addr*)pHostEnt->h_addr_list[nIndex];
+						IP ip;
+						ip.Invalid();
+						ip.u0 = (GAIA::U8)((GAIA::U32)((*(GAIA::U32*)addr) & 0x000000FF) >> 0);
+						ip.u1 = (GAIA::U8)((GAIA::U32)((*(GAIA::U32*)addr) & 0x0000FF00) >> 8);
+						ip.u2 = (GAIA::U8)((GAIA::U32)((*(GAIA::U32*)addr) & 0x00FF0000) >> 16);
+						ip.u3 = (GAIA::U8)((GAIA::U32)((*(GAIA::U32*)addr) & 0xFF000000) >> 24);
+						listResult.push_back(ip);
+						++nIndex;
+					}
+					else if(pHostEnt->h_addrtype == AF_INET6)
+					{
+						// TODO : IPv6 convert.
+					}
+				}
+			}
 		}
 		/* NetworkListener's implement. */
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkListener::Begin()
@@ -350,7 +390,6 @@ namespace GAIA
 				#if GAIA_OS == GAIA_OS_WINDOWS
 					GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(newsock, FIONBIO, &bNotBlockModeEnable);
 				#else
-					//GAIA::UM bNotBlockModeEnable = 1; ioctl(m_h, FIONBIO, &bNotBlockModeEnable);
 					GAIA::N32 flags = fcntl(newsock, F_GETFL, 0);
 					fcntl(newsock, F_SETFL, flags | O_NONBLOCK);
 				#endif

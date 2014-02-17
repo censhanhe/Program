@@ -41,11 +41,11 @@
 #		include <time.h>
 #		include <sys/time.h>
 #		include <sys/errno.h>
-#		include <sys/ioctl.h>
 #		include <sys/fcntl.h>
 #		include <sys/types.h>
 #		include <sys/socket.h>
 #		include <netinet/in.h>
+#		include <netdb.h>
 #		if GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
 #			include <libkern/OSAtomic.h>
 #		else
