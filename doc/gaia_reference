@@ -50,6 +50,7 @@
 		SYNC
 			sleep usleep
 			Lock(Lock Unlock) AutoLock Event(Fire Wait)
+			Atomic(Increase Decrease)
 
 		THREAD
 
@@ -62,6 +63,13 @@
 		PROCESS
 
 		NETWORK
+			IP(Invalid IsInvalid FromString ToString = == != >= <= > <)
+			NetworkAddress(Invalid IsInvalid FromString ToString = == != >= <= > <)
+			GetHostName/GetHostIPList
+			NetworkHandle : From(RefObject), CallBack(Disconnect), (Connect Disconnect IsConnected Set/GetSelfAddress GetRemoteAddress IsStabilityLink Set/GetSender Set/GetReceiver Send == != >= <= > <)
+			NetworkListener : From(Thread), CallBack(Accept), (Set/GetDesc Begin End IsBegin)
+			NetworkReceiver : From(Thread), CallBack(Receive), (Begin End IsBegin)
+			NetworkSender : From(Thread), (Begin End IsBegin)
 
 		RENDER
 
