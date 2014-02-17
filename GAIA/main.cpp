@@ -525,8 +525,9 @@ GAIA::N32 main()
 			que.push(x);
 		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
 			que.pop();
+		que.push(10);
 		que.front();
-		GAIA_AST(que.size() == 50);
+		GAIA_AST(que.size() == 1);
 		__QueueType newque = que;
 	}
 
