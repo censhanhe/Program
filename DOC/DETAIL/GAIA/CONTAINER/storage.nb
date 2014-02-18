@@ -10,20 +10,20 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      9587,        287]
-NotebookOptionsPosition[      8744,        253]
-NotebookOutlinePosition[      9100,        269]
-CellTagsIndexPosition[      9057,        266]
+NotebookDataLength[      9451,        279]
+NotebookOptionsPosition[      8606,        245]
+NotebookOutlinePosition[      8962,        261]
+CellTagsIndexPosition[      8919,        258]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 
 Cell[CellGroupData[{
-Cell["GAIA::Container::BasicStorage", "Title",
+Cell["GAIA::Container::Storage", "Title",
  CellChangeTimes->{{3.6016427524210095`*^9, 3.6016427667668304`*^9}, {
   3.6016428054650435`*^9, 3.601642823619082*^9}, {3.6016505979537487`*^9, 
-  3.601650602506009*^9}}],
+  3.601650602506009*^9}, {3.6017212093067017`*^9, 3.6017212099377375`*^9}}],
 
 Cell["Data Structure", "Subtitle",
  CellChangeTimes->{{3.601643436119115*^9, 3.601643438216235*^9}}],
@@ -79,29 +79,25 @@ Cell[TextData[{
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\n\npatch split (1 to 2) or (1 to 1).\t\t\t\[TildeTilde]\t",
  Cell[BoxData[
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\[Times]3\n\tInsert the splited new patch to free_s\t\t\[TildeTilde] \t",
  Cell[BoxData[
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\n\tErase the splited patch from free_s\t\t\t\[TildeTilde]\t",
  Cell[BoxData[
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\n",
  StyleBox["\tModify the splited new patch to free_a\t\t\[TildeTilde]\t1\n",
   FontFamily->"Gill Sans MT",
@@ -111,8 +107,7 @@ Cell[TextData[{
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\n"
 }], "Subsubtitle",
  CellChangeTimes->{{3.6016432742538567`*^9, 3.6016433497101727`*^9}, {
@@ -152,15 +147,13 @@ Cell[TextData[{
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\n\nerase patch in using_a.\t\t\t\t\[TildeTilde]\t",
  Cell[BoxData[
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\n\n",
  StyleBox["patch combine in free_a.\t\t\t\t\[TildeTilde]\t",
   FontFamily->"Gill Sans MT",
@@ -180,7 +173,6 @@ Cell[TextData[{
    RowBox[{"O", "(", 
     RowBox[{
      SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm",
   FontFamily->"Gill Sans MT",
   FontVariations->{"StrikeThrough"->True}],
  StyleBox["\n\t2 to 1(Modify)\t\t\t\t\t\t\[TildeTilde]\t1\n\t1 to 1(Insert)\t\
@@ -192,7 +184,6 @@ Cell[TextData[{
    RowBox[{"O", "(", 
     RowBox[{
      SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm",
   FontFamily->"Gill Sans MT",
   FontVariations->{"StrikeThrough"->True}],
  "\n\npush to free_s.\t\t\t\t\t\[TildeTilde]\t",
@@ -200,29 +191,25 @@ Cell[TextData[{
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\[Times]2\n\t3 to 1(Erase 2 Insert 1)\t\t\t\t\[TildeTilde]\t",
  Cell[BoxData[
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\[Times]3\n\t2 to 1(Erase 1 Insert 1)\t\t\t\t\[TildeTilde]\t",
  Cell[BoxData[
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\[Times]2\n\t1 to 1(Insert 1)\t\t\t\t\t\[TildeTilde]\t",
  Cell[BoxData[
   FormBox[
    RowBox[{"O", "(", 
     RowBox[{
-     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     SubscriptBox["log", "2"], "(", "n", ")"}], ")"}], TraditionalForm]]],
  "\t\n"
 }], "Subsubtitle",
  CellChangeTimes->{{3.601645676181239*^9, 3.6016457129373417`*^9}, {
@@ -244,15 +231,20 @@ Cell[TextData[{
  StyleBox["Optimize For",
   FontWeight->"Bold"],
  " massive fast insert and erase.(Execute insert and erase in for loop and \
-etc.)\n"
+etc.)\n\tTODO:\n",
+ StyleBox["Optimize For",
+  FontWeight->"Bold"],
+ " record fragmentation.\n\tTODO:\n"
 }], "Subsubtitle",
  CellChangeTimes->{{3.6016504192685285`*^9, 3.6016505062545033`*^9}, {
-  3.6016505455877533`*^9, 3.601650553244191*^9}}]
+  3.6016505455877533`*^9, 3.601650553244191*^9}, {3.6017213721340146`*^9, 
+  3.6017213779893494`*^9}, {3.601721693073371*^9, 3.601721721091974*^9}, {
+  3.6017353138146005`*^9, 3.601735326165307*^9}}]
 }, Open  ]]
 }, Open  ]]
 },
-WindowSize->{960, 1002},
-WindowMargins->{{Automatic, 199}, {0, Automatic}},
+WindowSize->{960, 958},
+WindowMargins->{{Automatic, 119}, {Automatic, 27}},
 FrontEndVersion->"9.0 for Microsoft Windows (32-bit) (2013\:5e742\:670813\
 \:65e5)",
 StyleDefinitions->"Default.nb"
@@ -269,24 +261,24 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[579, 22, 218, 3, 101, "Title"],
-Cell[800, 27, 100, 1, 56, "Subtitle"],
-Cell[903, 30, 768, 13, 129, "Subsubtitle"],
+Cell[579, 22, 263, 3, 101, "Title"],
+Cell[845, 27, 100, 1, 56, "Subtitle"],
+Cell[948, 30, 768, 13, 129, "Subsubtitle"],
 Cell[CellGroupData[{
-Cell[1696, 47, 97, 1, 56, "Subtitle"],
-Cell[1796, 50, 143, 4, 57, "Subsubtitle"]
+Cell[1741, 47, 97, 1, 56, "Subtitle"],
+Cell[1841, 50, 143, 4, 57, "Subsubtitle"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[1976, 59, 451, 14, 56, "Subtitle"],
-Cell[2430, 75, 2138, 52, 211, "Subsubtitle"]
+Cell[2021, 59, 451, 14, 56, "Subtitle"],
+Cell[2475, 75, 1973, 47, 211, "Subsubtitle"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[4605, 132, 517, 14, 56, "Subtitle"],
-Cell[5125, 148, 3167, 86, 366, "Subsubtitle"]
+Cell[4485, 127, 517, 14, 56, "Subtitle"],
+Cell[5005, 143, 2903, 78, 366, "Subsubtitle"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[8329, 239, 94, 1, 56, "Subtitle"],
-Cell[8426, 242, 290, 7, 57, "Subsubtitle"]
+Cell[7945, 226, 94, 1, 56, "Subtitle"],
+Cell[8042, 229, 536, 12, 129, "Subsubtitle"]
 }, Open  ]]
 }, Open  ]]
 }
