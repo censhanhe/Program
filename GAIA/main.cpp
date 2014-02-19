@@ -213,6 +213,23 @@ GAIA::N32 main()
 		END_TEST;
 	}
 
+	// String algorithm.
+	{
+		BEGIN_TEST("<String algorithm function test>");
+		{
+			bFunctionSuccess = GAIA::True;
+			if(GAIA::ALGORITHM::strwrd("Hello World!", "lo") != GNULL)
+				bFunctionSuccess = GAIA::False;
+			if(GAIA::ALGORITHM::strwrd("Hello World!", "d") != GNULL)
+				bFunctionSuccess = GAIA::False;
+			if(bFunctionSuccess)
+				LINE_TEST("String algorithm function test SUCCESSFULLY!");
+			else
+				LINE_TEST("String algorithm function test FAILED!");
+		}
+		END_TEST;
+	}
+	
 	// String convert function test.
 	{
 		BEGIN_TEST("<String convert function test>");

@@ -35,6 +35,16 @@ namespace GAIA
 			}
 			return GNULL;
 		}
+		template<typename _DataType> _DataType* strich(const _DataType* p, const _DataType& c)
+		{
+			while(*p != 0)
+			{
+				if(tolower(*p) == tolower(c))
+					return const_cast<_DataType*>(p);
+				++p;
+			}
+			return GNULL;
+		}
 		template<typename _DataType> GAIA::UM strlen(const _DataType* p){GAIA_AST(p != GNULL); GAIA::UM ret = 0; while(p[ret] != 0) ret++; return ret;}
 		template<typename _DataType1, typename _DataType2> GAIA::UM strcnt(const _DataType1* p, const _DataType2& key)
 		{
@@ -151,6 +161,54 @@ namespace GAIA
 				if(*p == 0)
 					return const_cast<_DataType*>(p1);
 				++p1;
+			}
+			return GNULL;
+		}
+		template<typename _DataType> _DataType* strwrd(const _DataType* p1, const _DataType* p2)
+		{
+			const _DataType* p = p1;
+			while((p = strstr(p, p2)) != GNULL)
+			{
+				if(p != p1)
+				{
+					_DataType t = *(p - 1);
+					if(isalpha(t) || isdigit(t))
+					{
+						++p;
+						continue;
+					}
+				}
+				_DataType t = *(p + GAIA::ALGORITHM::strlen(p2));
+				if(isalpha(t) || isdigit(t))
+				{
+					++p;
+					continue;
+				}
+				return const_cast<_DataType*>(p);
+			}
+			return GNULL;
+		}
+		template<typename _DataType> _DataType* striwrd(const _DataType* p1, const _DataType* p2)
+		{
+			const _DataType* p = p1;
+			while((p = stristr(p, p2)) != GNULL)
+			{
+				if(p != p1)
+				{
+					_DataType t = *(p - 1);
+					if(isalpha(t) || isdigit(t))
+					{
+						++p;
+						continue;
+					}
+				}
+				_DataType t = *(p + _tcslen(p2));
+				if(isalpha(t) || isdigit(t))
+				{
+					++p;
+					continue;
+				}
+				return const_cast<_DataType*>(p);
 			}
 			return GNULL;
 		}
