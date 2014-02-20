@@ -44,6 +44,98 @@
 #	define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
 
+GINL GAIA::GVOID LanguageInfo()
+{
+	GAIA::CONTAINER::AString strFileName;
+#if GAIA_OS == GAIA_OS_WINDOWS
+#	if GAIA_MACHINE == GAIA_MACHINE32
+		strFileName = "../li/li_windows_32.txt";
+#	elif GAIA_MACHINE == GAIA_MACHINE64
+		strFileName = "../li/li_windows_64.txt";
+#	endif
+#elif GAIA_OS == GAIA_OS_OSX
+#	if GAIA_MACHINE == GAIA_MACHINE32
+		strFileName = "../li/li_osx_32.txt";
+#	elif GAIA_MACHINE == GAIA_MACHINE64
+		strFileName = "../li/li_osx_64.txt";
+#	endif
+#elif GAIA_OS == GAIA_OS_IOS
+#	if GAIA_MACHINE == GAIA_MACHINE32
+		strFileName = "../li/li_ios_32.txt";
+#	elif GAIA_MACHINE == GAIA_MACHINE64
+		strFileName = "../li/li_ios_64.txt";
+#	endif
+#elif GAIA_OS == GAIA_OS_ANDROID
+#	if GAIA_MACHINE == GAIA_MACHINE32
+		strFileName = "../li/li_android_32.txt";
+#	elif GAIA_MACHINE == GAIA_MACHINE64
+		strFileName = "../li/li_android_64.txt";
+#	endif
+#elif GAIA_OS == GAIA_OS_LINUX
+#	if GAIA_MACHINE == GAIA_MACHINE32
+		strFileName = "../li/li_linux_32.txt";
+#	elif GAIA_MACHINE == GAIA_MACHINE64
+		strFileName = "../li/li_linux_64.txt";
+#	endif
+#elif GAIA_OS == GAIA_OS_UNIX
+#	if GAIA_MACHINE == GAIA_MACHINE32
+		strFileName = "../li/li_unix_32.txt";
+#	elif GAIA_MACHINE == GAIA_MACHINE64
+		strFileName = "../li/li_unix_64.txt";
+#	endif
+#else
+#	if GAIA_MACHINE == GAIA_MACHINE32
+		strFileName = "../li/li_other_32.txt";
+#	elif GAIA_MACHINE == GAIA_MACHINE64
+		strFileName = "../li/li_other_64.txt";
+#	endif
+#endif
+	if(strFileName.empty())
+		return;
+	GAIA::FILESYSTEM::File file;
+	if(!file.Open(strFileName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE))
+		return;
+
+#define WRITE_TEXT(name, size) {\
+	GAIA::CONTAINER::AString str;\
+	str = (name);\
+	file.WriteText(str.front_ptr());\
+	str = (int)size;\
+	file.WriteText(str.front_ptr());\
+	file.WriteText("\r\n");}
+	file.WriteText("[Basic Type Size]\r\n");
+	WRITE_TEXT("    BL=", sizeof(GAIA::BL));
+	WRITE_TEXT("    N8=", sizeof(GAIA::N8));
+	WRITE_TEXT("    U8=", sizeof(GAIA::U8));
+	WRITE_TEXT("   N16=", sizeof(GAIA::N16));
+	WRITE_TEXT("   U16=", sizeof(GAIA::U16));
+	WRITE_TEXT("   N32=", sizeof(GAIA::N32));
+	WRITE_TEXT("   U32=", sizeof(GAIA::U32));
+	WRITE_TEXT("   N64=", sizeof(GAIA::N64));
+	WRITE_TEXT("   U64=", sizeof(GAIA::U64));
+	WRITE_TEXT("    NM=", sizeof(GAIA::NM));
+	WRITE_TEXT("    UM=", sizeof(GAIA::UM));
+	WRITE_TEXT("   GCH=", sizeof(GAIA::GCH));
+	WRITE_TEXT("  GWCH=", sizeof(GAIA::GWCH));
+	WRITE_TEXT("GVOID*=", sizeof(GAIA::GVOID*));
+	WRITE_TEXT("   F32=", sizeof(GAIA::F32));
+	WRITE_TEXT("   F64=", sizeof(GAIA::F64));
+	file.WriteText("\r\n");
+
+	file.WriteText("[GAIA Basic Type Size]\r\n");
+	WRITE_TEXT("  Vector<N32>=", sizeof(GAIA::CONTAINER::Vector<GAIA::N32>));
+	WRITE_TEXT("   Stack<N32>=", sizeof(GAIA::CONTAINER::Stack<GAIA::N32>));
+	WRITE_TEXT("   Queue<N32>=", sizeof(GAIA::CONTAINER::Queue<GAIA::N32>));
+	WRITE_TEXT("    List<N32>=", sizeof(GAIA::CONTAINER::List<GAIA::N32, 1000>));
+	WRITE_TEXT("    Pool<N32>=", sizeof(GAIA::CONTAINER::Pool<GAIA::N32, 1000>));
+	file.WriteText("\r\n");
+
+	file.WriteText("[GAIA Advance Type Size]\r\n");
+	file.WriteText("\r\n");
+#undef WRITE_TEXT
+	file.Close();
+}
+
 template<typename _DataType> class SNode
 {
 public:
@@ -133,6 +225,8 @@ GAIA::N32 main()
 #if defined(_MSC_VER) && GAIA_PROFILE == GAIA_PROFILE_DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
+
+	LanguageInfo();
 
 #if GAIA_PROFILE == GAIA_PROFILE_DEBUG
 	static const GAIA::N32 SAMPLE_COUNT = 10000;

@@ -1,0 +1,27 @@
+[Basic Type Size]
+    BL=1
+    N8=1
+    U8=1
+   N16=2
+   U16=2
+   N32=4
+   U32=4
+   N64=8
+   U64=8
+    NM=4
+    UM=4
+   GCH=1
+  GWCH=2
+GVOID*=4
+   F32=4
+   F64=8
+
+[GAIA Basic Type Size]
+  Vector<N32>=12
+   Stack<N32>=12
+   Queue<N32>=20
+    List<N32>=40
+    Pool<N32>=32
+
+[GAIA Advance Type Size]
+
