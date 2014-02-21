@@ -1458,8 +1458,8 @@ GAIA::N32 main()
 			if(!listResult1.empty() && !listResult2.empty())
 			{
 				_MyGraphType::__NodeListType listResultNode;
-				graph.navpath<GAIA::REAL, 5>(*listResult1[0], *listResult2[0], listResultNode);
-				graph.navpath<GAIA::REAL, 5>(*listResult1[0], 4.0F, listResultNode);
+				graph.navpath<GAIA::REAL, 5>(*listResult1[0], *listResult2[0], 3, listResultNode);
+				graph.navpath<GAIA::REAL, 5>(*listResult1[0], 4.0F, 3, listResultNode);
 
 				_MyGraphType::__PathTreeType treeResult;
 				graph.paths(*listResult1[0], *listResult2[0], treeResult);
