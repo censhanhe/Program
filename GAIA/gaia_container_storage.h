@@ -54,7 +54,7 @@ namespace GAIA
 				GINL GAIA::BL operator > (const NodeSize& src) const{return m_n.size() > src.m_n.size();}
 				GINL GAIA::BL operator < (const NodeSize& src) const{return m_n.size() < src.m_n.size();}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+				GINL GAIA::GVOID init(){}
 			private:
 				Node m_n;
 			};
@@ -75,7 +75,7 @@ namespace GAIA
 					return GAIA::False;
 				Node n;
 				n.m_head = start;
-				__AddrAVLTreeType::it it = m_origin_a.lower_bound(n);
+				typename __AddrAVLTreeType::it it = m_origin_a.lower_bound(n);
 				if(!it.empty())
 				{
 					if(start + size > (*it).head())
@@ -98,7 +98,7 @@ namespace GAIA
 				m_size = 0;
 				m_using_a.clear();
 				m_free_s.clear();
-				__AddrAVLTreeType::it it = m_origin_a.front_it();
+				typename __AddrAVLTreeType::it it = m_origin_a.front_it();
 				while(!it.empty())
 				{
 					Node& n = *it;
