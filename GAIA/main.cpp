@@ -23,8 +23,25 @@
 #	define PERF_PRINT_TIME
 #endif
 
-#define TEST_BEGIN(name)		PERF_PRINT_LINE(name); do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0) ;PERF_START("TIME-LOST")
-#define TEST_END				PERF_END; PERF_PRINT_TIME; do{logfile.WriteText("\r\n\r\n");}while(0)
+#define TEST_CURRENT			""
+#define TEST_BEGIN(name)		if(GAIA::ALGORITHM::strcmp(TEST_CURRENT, "") == 0 || GAIA::ALGORITHM::strcmp((name), TEST_CURRENT) == 0)\
+								{\
+									PERF_PRINT_LINE(name);\
+									do\
+									{\
+										logfile.WriteText(name);\
+										logfile.WriteText("\r\n");\
+									}\
+									while(0);\
+									PERF_START("TIME-LOST");
+#define TEST_END					PERF_END;\
+									PERF_PRINT_TIME;\
+									do\
+									{\
+										logfile.WriteText("\r\n\r\n");\
+									}\
+									while(0);\
+								}
 #define TEST_FILE_LINE(text)	do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n");}while(0)
 #define TEST_FILE_TEXT(text)	do{logfile.WriteText(text);}while(0)
 #define PERF_START(name)		uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
@@ -579,72 +596,72 @@ GAIA::N32 main()
 	// Chars class test.
 	{
 		TEST_BEGIN("<Chars class test>");
+		{
+			GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars;
+			chars = "abc";
+			chars += "123";
+			chars = 123.456F;
+			GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars1;
+			chars1 = "3.4";
+			GAIA::UM u = chars.find('3', 0);
+			u = chars.find(chars1, 0);
+			u = chars.rfind('4', chars.size() - 1);
+			chars.clear();
+			chars1.clear();
 
-		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars;
-		chars = "abc";
-		chars += "123";
-		chars = 123.456F;
-		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars1;
-		chars1 = "3.4";
-		GAIA::UM u = chars.find('3', 0);
-		u = chars.find(chars1, 0);
-		u = chars.rfind('4', chars.size() - 1);
-		chars.clear();
-		chars1.clear();
-
-		bFunctionSuccess = GAIA::True;
-		chars = "abc";
-		chars.insert('m', 1);
-		if(chars != "ambc")
-			bFunctionSuccess = GAIA::False;
-		chars.clear();
-		chars.insert('a', 0);
-		if(chars != "a")
-			bFunctionSuccess = GAIA::False;
-		chars.insert('b', 1);
-		if(chars != "ab")
-			bFunctionSuccess = GAIA::False;
-		if(bFunctionSuccess)
-			TEST_FILE_LINE("insert test SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("insert test FAILED!");
-
+			bFunctionSuccess = GAIA::True;
+			chars = "abc";
+			chars.insert('m', 1);
+			if(chars != "ambc")
+				bFunctionSuccess = GAIA::False;
+			chars.clear();
+			chars.insert('a', 0);
+			if(chars != "a")
+				bFunctionSuccess = GAIA::False;
+			chars.insert('b', 1);
+			if(chars != "ab")
+				bFunctionSuccess = GAIA::False;
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("insert test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("insert test FAILED!");
+		}
 		TEST_END;
 	}
 
 	// String class test.
 	{
 		TEST_BEGIN("<String class test>");
+		{
+			GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str;
+			str = L"Hello world!";
+			str += L" Hello kitty!";
+			str = 32;
+			str = 123.456;
+			GAIA::UM u = str.find('2', 0);
+			u = str.find(L"3.4", 0);
+			GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str1 = L"3.4";
+			u = str.find(str1, 0);
+			GAIA::REAL r = str;
+			r = 0.0F;
 
-		GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str;
-		str = L"Hello world!";
-		str += L" Hello kitty!";
-		str = 32;
-		str = 123.456;
-		GAIA::UM u = str.find('2', 0);
-		u = str.find(L"3.4", 0);
-		GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str1 = L"3.4";
-		u = str.find(str1, 0);
-		GAIA::REAL r = str;
-		r = 0.0F;
-
-		bFunctionSuccess = GAIA::True;
-		str = L"abc";
-		str.insert('m', 1);
-		if(str != L"ambc")
-			bFunctionSuccess = GAIA::False;
-		str.clear();
-		str.insert('a', 0);
-		if(str != L"a")
-			bFunctionSuccess = GAIA::False;
-		str.insert('b', 1);
-		if(str != L"ab")
-			bFunctionSuccess = GAIA::False;
-		if(bFunctionSuccess)
-			TEST_FILE_LINE("insert test SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("insert test FAILED!");
-
+			bFunctionSuccess = GAIA::True;
+			str = L"abc";
+			str.insert('m', 1);
+			if(str != L"ambc")
+				bFunctionSuccess = GAIA::False;
+			str.clear();
+			str.insert('a', 0);
+			if(str != L"a")
+				bFunctionSuccess = GAIA::False;
+			str.insert('b', 1);
+			if(str != L"ab")
+				bFunctionSuccess = GAIA::False;
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("insert test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("insert test FAILED!");
+		}
 		TEST_END;
 	}
 
@@ -785,32 +802,32 @@ GAIA::N32 main()
 	{
 #ifdef PERFORMANCE_COMPARE
 		TEST_BEGIN("<Sort function performance>");
+		{
+			std::vector<GAIA::N32> listSTL;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				listSTL.push_back(GAIA::MATH::random());
+			PERF_START("STL sort use");
+			std::sort(listSTL.begin(), listSTL.end());
+			PERF_END;
 
-		std::vector<GAIA::N32> listSTL;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-			listSTL.push_back(GAIA::MATH::random());
-		PERF_START("STL sort use");
-		std::sort(listSTL.begin(), listSTL.end());
-		PERF_END;
+			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				listGAIA.push_back(GAIA::MATH::random());
+			PERF_START("GAIA sort use");
+			if(!listGAIA.empty())
+				GAIA::ALGORITHM::sort(&listGAIA[0], &listGAIA[listGAIA.size() - 1]);
+			PERF_END;
 
-		GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-			listGAIA.push_back(GAIA::MATH::random());
-		PERF_START("GAIA sort use");
-		if(!listGAIA.empty())
-			GAIA::ALGORITHM::sort(&listGAIA[0], &listGAIA[listGAIA.size() - 1]);
-		PERF_END;
+			PERF_START("STL bsearch use");
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				binary_search(listSTL.begin(), listSTL.end(), listSTL[x]);
+			PERF_END;
 
-		PERF_START("STL bsearch use");
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-			binary_search(listSTL.begin(), listSTL.end(), listSTL[x]);
-		PERF_END;
-
-		PERF_START("GAIA bsearch use");
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-			GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]);
-		PERF_END;
-
+			PERF_START("GAIA bsearch use");
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]);
+			PERF_END;
+		}
 		TEST_END;
 #endif
 	}
@@ -848,141 +865,141 @@ GAIA::N32 main()
 	// BasicAVLTree test.
 	{
 		TEST_BEGIN("<BasicAVLTree Function Test>");
-
-		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
-
-		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::BL bResult = btr.insert(x);
-			GAIA_AST(bResult);
-			if(!bResult)
-				bFunctionSuccess = GAIA::False;
-		}
-		if(bFunctionSuccess)
-			TEST_FILE_LINE("Insert by key operator is SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("Insert by key operator is FAILED!");
-		GAIA::BL bCheckParent = btr.dbg_check_parent();
-		bCheckParent = true;
-		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100>::it iter = btr.front_it();
-		while(!iter.empty())
-		{
-			GAIA::N32 n = *iter;
-			n = 0;
-			++iter;
-		}
-		iter = btr.back_it();
-		while(!iter.empty())
-		{
-			GAIA::N32 n = *iter;
-			n = 0;
-			--iter;
-		}
+			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
 
-		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-		{
-			GAIA::N32* pFinded = btr.find(x);
-			GAIA_AST(pFinded != GNULL);
-			if(pFinded == GNULL)
-				bFunctionSuccess = GAIA::False;
-		}
-		if(bFunctionSuccess)
-			TEST_FILE_LINE("Exist by key operator is SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("Exist by key operator is FAILED!");
-
-		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-		{
-			GAIA::BL bResult = btr.erase(x);
-			GAIA_AST(bResult);
-			bResult = GAIA::True;
-			if(!bResult)
-				bFunctionSuccess = GAIA::False;
-		}
-		if(bFunctionSuccess)
-			TEST_FILE_LINE("Erase element by key operator is SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("Erase element by key operator is FAILED!");
-
-		btr.clear();
-		GAIA::CONTAINER::Vector<GAIA::N32> listSample;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-		{
-			GAIA::N32 nRand = GAIA::MATH::random();
-			btr.insert(nRand);
-			listSample.push_back(nRand);
-		}
-		bFunctionSuccess = GAIA::True;
-		for(GAIA::N32 x = 0; x < listSample.size(); ++x)
-		{
-			if(btr.find(listSample[x]) == GNULL)
-				bFunctionSuccess = GAIA::False;
-		}
-		if(bFunctionSuccess)
-			TEST_FILE_LINE("Random data insertion and find AVL-Tree function check SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("Random data insertion and find AVL-Tree function check FAILED!");
-
-		for(GAIA::N32 x = 0; x < listSample.size(); x += 10)
-			btr.erase(listSample[x]);
-
-		if(btr.dbg_check_balance())
-			TEST_FILE_LINE("Check AVL-Tree balance SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("Check AVL-Tree balance FAILED!");
-
-		if(btr.dbg_check_parent())
-			TEST_FILE_LINE("Check AVL-Tree parent SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("Check AVL-Tree parent FAILED!");
-
-		for(GAIA::N32 x = 0; x < listSample.size(); x += 10)
-			btr.insert(listSample[x]);
-
-		listSample.sort();
-		bFunctionSuccess = GAIA::True;
-		GAIA::N32 n = -1;
-		for(GAIA::N32 x = 0; x < listSample.size(); ++x)
-		{
-			if(listSample[x] == n)
-				continue;
-			if(!btr.erase(listSample[x]))
-				bFunctionSuccess = GAIA::False;
-			n = listSample[x];
-		}
-		if(bFunctionSuccess)
-			TEST_FILE_LINE("Random data insertion and erase AVL-Tree function check SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("Random data insertion and erase AVL-Tree function check FAILED!");
-
-		{
-			typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __AVLTreeType;
-			__AVLTreeType av;
-			for(GAIA::N32 x = 0; x < 100; ++x)
-				av.insert(x);
-			__AVLTreeType::it iter = av.lower_bound(32);
-			GAIA::N32 nCount = 0;
+			bFunctionSuccess = GAIA::True;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				GAIA::BL bResult = btr.insert(x);
+				GAIA_AST(bResult);
+				if(!bResult)
+					bFunctionSuccess = GAIA::False;
+			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("Insert by key operator is SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("Insert by key operator is FAILED!");
+			GAIA::BL bCheckParent = btr.dbg_check_parent();
+			bCheckParent = true;
+			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100>::it iter = btr.front_it();
 			while(!iter.empty())
 			{
+				GAIA::N32 n = *iter;
+				n = 0;
 				++iter;
-				++nCount;
 			}
-			if(nCount != 68)
-				TEST_FILE_LINE("Lower bound function FAILED!");
-			iter = av.upper_bound(32);
-			nCount = 0;
+			iter = btr.back_it();
 			while(!iter.empty())
 			{
+				GAIA::N32 n = *iter;
+				n = 0;
 				--iter;
-				++nCount;
 			}
-			if(nCount != 33)
-				TEST_FILE_LINE("Upper bound function FAILED!");
+
+			bFunctionSuccess = GAIA::True;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				GAIA::N32* pFinded = btr.find(x);
+				GAIA_AST(pFinded != GNULL);
+				if(pFinded == GNULL)
+					bFunctionSuccess = GAIA::False;
+			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("Exist by key operator is SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("Exist by key operator is FAILED!");
+
+			bFunctionSuccess = GAIA::True;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				GAIA::BL bResult = btr.erase(x);
+				GAIA_AST(bResult);
+				bResult = GAIA::True;
+				if(!bResult)
+					bFunctionSuccess = GAIA::False;
+			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("Erase element by key operator is SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("Erase element by key operator is FAILED!");
+
+			btr.clear();
+			GAIA::CONTAINER::Vector<GAIA::N32> listSample;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				GAIA::N32 nRand = GAIA::MATH::random();
+				btr.insert(nRand);
+				listSample.push_back(nRand);
+			}
+			bFunctionSuccess = GAIA::True;
+			for(GAIA::N32 x = 0; x < listSample.size(); ++x)
+			{
+				if(btr.find(listSample[x]) == GNULL)
+					bFunctionSuccess = GAIA::False;
+			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("Random data insertion and find AVL-Tree function check SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("Random data insertion and find AVL-Tree function check FAILED!");
+
+			for(GAIA::N32 x = 0; x < listSample.size(); x += 10)
+				btr.erase(listSample[x]);
+
+			if(btr.dbg_check_balance())
+				TEST_FILE_LINE("Check AVL-Tree balance SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("Check AVL-Tree balance FAILED!");
+
+			if(btr.dbg_check_parent())
+				TEST_FILE_LINE("Check AVL-Tree parent SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("Check AVL-Tree parent FAILED!");
+
+			for(GAIA::N32 x = 0; x < listSample.size(); x += 10)
+				btr.insert(listSample[x]);
+
+			listSample.sort();
+			bFunctionSuccess = GAIA::True;
+			GAIA::N32 n = -1;
+			for(GAIA::N32 x = 0; x < listSample.size(); ++x)
+			{
+				if(listSample[x] == n)
+					continue;
+				if(!btr.erase(listSample[x]))
+					bFunctionSuccess = GAIA::False;
+				n = listSample[x];
+			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("Random data insertion and erase AVL-Tree function check SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("Random data insertion and erase AVL-Tree function check FAILED!");
+
+			{
+				typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __AVLTreeType;
+				__AVLTreeType av;
+				for(GAIA::N32 x = 0; x < 100; ++x)
+					av.insert(x);
+				__AVLTreeType::it iter = av.lower_bound(32);
+				GAIA::N32 nCount = 0;
+				while(!iter.empty())
+				{
+					++iter;
+					++nCount;
+				}
+				if(nCount != 68)
+					TEST_FILE_LINE("Lower bound function FAILED!");
+				iter = av.upper_bound(32);
+				nCount = 0;
+				while(!iter.empty())
+				{
+					--iter;
+					++nCount;
+				}
+				if(nCount != 33)
+					TEST_FILE_LINE("Upper bound function FAILED!");
+			}
 		}
-		
 		TEST_END;
 	}
 
@@ -990,19 +1007,19 @@ GAIA::N32 main()
 	{
 #ifdef PERFORMANCE_COMPARE
 		TEST_BEGIN("<BasicAVLTree performance>");
+		{
+			PERF_START("STL set use");
+			std::set<GAIA::N32> setSTL;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				setSTL.insert(GAIA::MATH::random());
+			PERF_END;
 
-		PERF_START("STL set use");
-		std::set<GAIA::N32> setSTL;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-			setSTL.insert(GAIA::MATH::random());
-		PERF_END;
-
-		PERF_START("GAIA BasicAVLTree use");
-		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> avltree;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-			avltree.insert(GAIA::MATH::random());
-		PERF_END;
-
+			PERF_START("GAIA BasicAVLTree use");
+			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> avltree;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				avltree.insert(GAIA::MATH::random());
+			PERF_END;
+		}
 		TEST_END;
 #endif
 	}
@@ -1010,51 +1027,51 @@ GAIA::N32 main()
 	// BasicMultiAVLTree function test.
 	{
 		TEST_BEGIN("<BasicMultiAVLTree function test>");
-
-		bFunctionSuccess = GAIA::True;
-		typedef GAIA::CONTAINER::BasicMultiAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 32> __MAVLTreeType;
-		__MAVLTreeType mavlt;
-		if(!mavlt.insert(32))
-			bFunctionSuccess = GAIA::False;
-		if(!mavlt.insert(32))
-			bFunctionSuccess = GAIA::False;
-		if(mavlt.empty())
-			bFunctionSuccess = GAIA::False;
-		if(mavlt.size() != 2)
-			bFunctionSuccess = GAIA::False;
-		if(mavlt.capacity() == 0)
-			bFunctionSuccess = GAIA::False;
-		if(mavlt.find(32) == GNULL)
-			bFunctionSuccess = GAIA::False;
-		if(!mavlt.erase(32))
-			bFunctionSuccess = GAIA::False;
-		if(mavlt.erase(32))
-			bFunctionSuccess = GAIA::False;
-		mavlt.clear();
-		mavlt.destroy();
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			if(!mavlt.insert(x))
+			bFunctionSuccess = GAIA::True;
+			typedef GAIA::CONTAINER::BasicMultiAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 32> __MAVLTreeType;
+			__MAVLTreeType mavlt;
+			if(!mavlt.insert(32))
 				bFunctionSuccess = GAIA::False;
-			if(!mavlt.insert(x))
+			if(!mavlt.insert(32))
 				bFunctionSuccess = GAIA::False;
+			if(mavlt.empty())
+				bFunctionSuccess = GAIA::False;
+			if(mavlt.size() != 2)
+				bFunctionSuccess = GAIA::False;
+			if(mavlt.capacity() == 0)
+				bFunctionSuccess = GAIA::False;
+			if(mavlt.find(32) == GNULL)
+				bFunctionSuccess = GAIA::False;
+			if(!mavlt.erase(32))
+				bFunctionSuccess = GAIA::False;
+			if(mavlt.erase(32))
+				bFunctionSuccess = GAIA::False;
+			mavlt.clear();
+			mavlt.destroy();
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				if(!mavlt.insert(x))
+					bFunctionSuccess = GAIA::False;
+				if(!mavlt.insert(x))
+					bFunctionSuccess = GAIA::False;
+			}
+			GAIA::N32* pMinimize = mavlt.minimize();
+			if(pMinimize == GNULL)
+				bFunctionSuccess = GAIA::False;
+			GAIA::N32* pMaximize = mavlt.maximize();
+			if(pMaximize == GNULL)
+				bFunctionSuccess = GAIA::False;
+			__MAVLTreeType::it iter = mavlt.front_it();
+			if(iter.empty())
+				bFunctionSuccess = GAIA::False;
+			while(!iter.empty())
+				++iter;
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("BasicMultiAVLTree function test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("BasicMultiAVLTree function test FAILED!");
 		}
-		GAIA::N32* pMinimize = mavlt.minimize();
-		if(pMinimize == GNULL)
-			bFunctionSuccess = GAIA::False;
-		GAIA::N32* pMaximize = mavlt.maximize();
-		if(pMaximize == GNULL)
-			bFunctionSuccess = GAIA::False;
-		__MAVLTreeType::it iter = mavlt.front_it();
-		if(iter.empty())
-			bFunctionSuccess = GAIA::False;
-		while(!iter.empty())
-			++iter;
-		if(bFunctionSuccess)
-			TEST_FILE_LINE("BasicMultiAVLTree function test SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("BasicMultiAVLTree function test FAILED!");
-
 		TEST_END;
 	}
 
@@ -1169,49 +1186,49 @@ GAIA::N32 main()
 	// BasicTree function test.
 	{
 		TEST_BEGIN("<BasicTree function test>");
+		{
+			typedef GAIA::CONTAINER::BasicTree<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> _MyTreeType;
+			_MyTreeType tree;
+			_MyTreeType::Node* pNode = tree.insert(10, GNULL);
+			tree.insert(20, pNode);
+			_MyTreeType::Node* pChildNode = tree.insert(30, pNode);
+			tree.insert(40, pNode);
+			_MyTreeType::Node* pChildChild = tree.insert(40, pChildNode);
+			_MyTreeType::__NodeListType listResult;
 
-		typedef GAIA::CONTAINER::BasicTree<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> _MyTreeType;
-		_MyTreeType tree;
-		_MyTreeType::Node* pNode = tree.insert(10, GNULL);
-		tree.insert(20, pNode);
-		_MyTreeType::Node* pChildNode = tree.insert(30, pNode);
-		tree.insert(40, pNode);
-		_MyTreeType::Node* pChildChild = tree.insert(40, pChildNode);
-		_MyTreeType::__NodeListType listResult;
+			tree.find(GNULL, 40, listResult);
+			if(listResult.size() == 2)
+				TEST_FILE_LINE("basic tree find SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("basic tree find FAILED!");
 
-		tree.find(GNULL, 40, listResult);
-		if(listResult.size() == 2)
-			TEST_FILE_LINE("basic tree find SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("basic tree find FAILED!");
+			GAIA::BL bResult = tree.link(*pNode, *pChildChild);
+			if(bResult)
+				TEST_FILE_LINE("basic tree link function SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("basic tree link function FAILED!");
 
-		GAIA::BL bResult = tree.link(*pNode, *pChildChild);
-		if(bResult)
-			TEST_FILE_LINE("basic tree link function SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("basic tree link function FAILED!");
+			bResult = tree.unlink(*pNode, *pChildChild);
+			if(bResult)
+				TEST_FILE_LINE("basic tree unlink function SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("basic tree unlink function FAILED!");
 
-		bResult = tree.unlink(*pNode, *pChildChild);
-		if(bResult)
-			TEST_FILE_LINE("basic tree unlink function SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("basic tree unlink function FAILED!");
+			bResult = tree.islinked(*pNode, *pChildChild);
+			if(!bResult)
+				TEST_FILE_LINE("basic tree islinked function SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("basic tree islinked function FAILED!");
 
-		bResult = tree.islinked(*pNode, *pChildChild);
-		if(!bResult)
-			TEST_FILE_LINE("basic tree islinked function SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("basic tree islinked function FAILED!");
+			bResult = tree.link(*pNode, *pChildChild);
+			if(bResult)
+				TEST_FILE_LINE("basic tree link function SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("basic tree link function FAILED!");
 
-		bResult = tree.link(*pNode, *pChildChild);
-		if(bResult)
-			TEST_FILE_LINE("basic tree link function SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("basic tree link function FAILED!");
-
-		tree.erase(*pChildChild);
-		tree.erase(*pNode);
-
+			tree.erase(*pChildChild);
+			tree.erase(*pNode);
+		}
 		TEST_END;
 	}
 	
@@ -1421,223 +1438,223 @@ GAIA::N32 main()
 	// BasicGraph function test.
 	{
 		TEST_BEGIN("<BasicGraph function test>");
-		
-		typedef GAIA::CONTAINER::BasicGraph<GAIA::REAL, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> _MyGraphType;
-		_MyGraphType graph;
-		_MyGraphType::Node* pNode = GNULL;
-		for(GAIA::N32 x = 0; x < 100; ++x)
-			pNode = graph.insert((GAIA::REAL)x, pNode);
-		_MyGraphType::__NodeListType listResult;
-		graph.find(GNULL, 3.0, listResult);
-		if(listResult.empty())
-			TEST_FILE_LINE("basic graph find FAILED!");
-		else
-			TEST_FILE_LINE("basic graph find SUCCESSFULLY!");
-
 		{
-			listResult.clear();
-			graph.find(GNULL, 8.0F, listResult);
-			if(!listResult.empty())
+			typedef GAIA::CONTAINER::BasicGraph<GAIA::REAL, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> _MyGraphType;
+			_MyGraphType graph;
+			_MyGraphType::Node* pNode = GNULL;
+			for(GAIA::N32 x = 0; x < 100; ++x)
+				pNode = graph.insert((GAIA::REAL)x, pNode);
+			_MyGraphType::__NodeListType listResult;
+			graph.find(GNULL, 3.0, listResult);
+			if(listResult.empty())
+				TEST_FILE_LINE("basic graph find FAILED!");
+			else
+				TEST_FILE_LINE("basic graph find SUCCESSFULLY!");
+
 			{
-				_MyGraphType::Node* pNode1 = listResult[0];
-				if(pNode1 == GNULL)
+				listResult.clear();
+				graph.find(GNULL, 8.0F, listResult);
+				if(!listResult.empty())
+				{
+					_MyGraphType::Node* pNode1 = listResult[0];
+					if(pNode1 == GNULL)
+						TEST_FILE_LINE("basic graph find FAILED!");
+					graph.insert(80.0F, listResult[0]);
+				}
+				else
 					TEST_FILE_LINE("basic graph find FAILED!");
-				graph.insert(80.0F, listResult[0]);
-			}
-			else
-				TEST_FILE_LINE("basic graph find FAILED!");
-			listResult.clear();
-			graph.find(GNULL, 80.0F, listResult);
-			if(!listResult.empty())
-			{
-				_MyGraphType::Node* pNode2 = listResult[1];
-				if(pNode2 == GNULL)
+				listResult.clear();
+				graph.find(GNULL, 80.0F, listResult);
+				if(!listResult.empty())
+				{
+					_MyGraphType::Node* pNode2 = listResult[1];
+					if(pNode2 == GNULL)
+						TEST_FILE_LINE("basic graph find FAILED!");
+				}
+				else
 					TEST_FILE_LINE("basic graph find FAILED!");
 			}
-			else
-				TEST_FILE_LINE("basic graph find FAILED!");
-		}
 
-		{
-			/*
-			*	1-------2
-			*	|     / | \
-			*	|   /   |  3
-			*	| /     | /
-			*	5-------4
-			*/
-
-			graph.destroy();
-			_MyGraphType::Node* pNode0 = graph.insert(0.0F, GNULL);
-			_MyGraphType::Node* pNode1 = graph.insert(1.0F, GNULL);
-			_MyGraphType::Node* pNode2 = graph.insert(2.0F, GNULL);
-			_MyGraphType::Node* pNode3 = graph.insert(3.0F, GNULL);
-			_MyGraphType::Node* pNode4 = graph.insert(4.0F, GNULL);
-			_MyGraphType::Node* pNode5 = graph.insert(5.0F, GNULL);
-			graph.erase(*pNode0);
-			graph.root(pNode1);
-			graph.link(*pNode1, *pNode5);
-			graph.link(*pNode1, *pNode2);
-			graph.link(*pNode2, *pNode3);
-			graph.link(*pNode2, *pNode4);
-			graph.link(*pNode2, *pNode5);
-			graph.link(*pNode3, *pNode4);
-			graph.link(*pNode4, *pNode5);
-			_MyGraphType::__NodeListType listResult1;
-			graph.find(GNULL, 5.0F, listResult1);
-			_MyGraphType::__NodeListType listResult2;
-			graph.find(GNULL, 3.0F, listResult2);
-			if(!listResult1.empty() && !listResult2.empty())
 			{
-				_MyGraphType::__NodeListType listResultNode;
-				graph.navpath<GAIA::REAL, 5>(*listResult1[0], *listResult2[0], 3, listResultNode);
-				graph.navpath<GAIA::REAL, 5>(*listResult1[0], 4.0F, 3, listResultNode);
+				/*
+				 *	1-------2
+				 *	|     / | \
+				 *	|   /   |  3
+				 *	| /     | /
+				 *	5-------4
+				 */
 
-				_MyGraphType::__PathTreeType treeResult;
-				graph.paths(*listResult1[0], *listResult2[0], treeResult);
-				if(treeResult.empty())
-					TEST_FILE_LINE("basic graph path from one node to another FAILED!");
-				_MyGraphType::__PathTreeType::__PathListType pathlist;
-				treeResult.paths(GNULL, pathlist);
-				for(_MyGraphType::__PathTreeType::__PathListType::_sizetype x = 0; x < pathlist.size(); ++x)
+				graph.destroy();
+				_MyGraphType::Node* pNode0 = graph.insert(0.0F, GNULL);
+				_MyGraphType::Node* pNode1 = graph.insert(1.0F, GNULL);
+				_MyGraphType::Node* pNode2 = graph.insert(2.0F, GNULL);
+				_MyGraphType::Node* pNode3 = graph.insert(3.0F, GNULL);
+				_MyGraphType::Node* pNode4 = graph.insert(4.0F, GNULL);
+				_MyGraphType::Node* pNode5 = graph.insert(5.0F, GNULL);
+				graph.erase(*pNode0);
+				graph.root(pNode1);
+				graph.link(*pNode1, *pNode5);
+				graph.link(*pNode1, *pNode2);
+				graph.link(*pNode2, *pNode3);
+				graph.link(*pNode2, *pNode4);
+				graph.link(*pNode2, *pNode5);
+				graph.link(*pNode3, *pNode4);
+				graph.link(*pNode4, *pNode5);
+				_MyGraphType::__NodeListType listResult1;
+				graph.find(GNULL, 5.0F, listResult1);
+				_MyGraphType::__NodeListType listResult2;
+				graph.find(GNULL, 3.0F, listResult2);
+				if(!listResult1.empty() && !listResult2.empty())
 				{
-					_MyGraphType::__PathTreeType::__PathListType::_datatype& path = pathlist[x];
-					for(_MyGraphType::__PathTreeType::__PathListType::_datatype::_sizetype y = 0; y < path.size(); ++y)
+					_MyGraphType::__NodeListType listResultNode;
+					graph.navpath<GAIA::REAL, 5>(*listResult1[0], *listResult2[0], 3, listResultNode);
+					graph.navpath<GAIA::REAL, 5>(*listResult1[0], 4.0F, 3, listResultNode);
+
+					_MyGraphType::__PathTreeType treeResult;
+					graph.paths(*listResult1[0], *listResult2[0], treeResult);
+					if(treeResult.empty())
+						TEST_FILE_LINE("basic graph path from one node to another FAILED!");
+					_MyGraphType::__PathTreeType::__PathListType pathlist;
+					treeResult.paths(GNULL, pathlist);
+					for(_MyGraphType::__PathTreeType::__PathListType::_sizetype x = 0; x < pathlist.size(); ++x)
 					{
-						_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
-						GAIA_AST(pTreeNode != GNULL);
-						_MyGraphType::Node* pNode = **pTreeNode;
-						GAIA_AST(pNode != GNULL);
-						if(pNode != GNULL)
+						_MyGraphType::__PathTreeType::__PathListType::_datatype& path = pathlist[x];
+						for(_MyGraphType::__PathTreeType::__PathListType::_datatype::_sizetype y = 0; y < path.size(); ++y)
 						{
-							_MyGraphType::_datatype data = **pNode;
-						#ifdef PERFORMANCE_COMPARE
-							std::cout << data << " ";
-						#endif
-							GAIA::N32 nDebug = 0;
-							nDebug = 0;
+							_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
+							GAIA_AST(pTreeNode != GNULL);
+							_MyGraphType::Node* pNode = **pTreeNode;
+							GAIA_AST(pNode != GNULL);
+							if(pNode != GNULL)
+							{
+								_MyGraphType::_datatype data = **pNode;
+#ifdef PERFORMANCE_COMPARE
+								std::cout << data << " ";
+#endif
+								GAIA::N32 nDebug = 0;
+								nDebug = 0;
+							}
 						}
+#ifdef PERFORMANCE_COMPARE
+						std::cout << std::endl;
+#endif
 					}
-				#ifdef PERFORMANCE_COMPARE
-					std::cout << std::endl;
-				#endif
+					if(pathlist.size() != 6)
+						TEST_FILE_LINE("basic graph paths FAILED!");
 				}
-				if(pathlist.size() != 6)
-					TEST_FILE_LINE("basic graph paths FAILED!");
+				else
+					TEST_FILE_LINE("basic graph find FAILED!");
+
+				_MyGraphType::__LinkListType listLinkResult;
+				graph.collect_link_list(listLinkResult);
+				if(listLinkResult.size() == 0)
+					TEST_FILE_LINE("collect graph link list FAILED!");
 			}
-			else
-				TEST_FILE_LINE("basic graph find FAILED!");
 
-			_MyGraphType::__LinkListType listLinkResult;
-			graph.collect_link_list(listLinkResult);
-			if(listLinkResult.size() == 0)
-				TEST_FILE_LINE("collect graph link list FAILED!");
-		}
-
-		{
-			/*
-			*	3
-			*     \
-			*		1-------2
-			*		|     / | \
-			*		|   /   |  3
-			*		| /     | /
-			*		5-------4
-			*/
-		#ifdef PERFORMANCE_COMPARE
-			std::cout << std::endl;
-		#endif
-			graph.destroy();
-			_MyGraphType::Node* pNode0 = graph.insert(0.0F, GNULL);
-			_MyGraphType::Node* pNode1 = graph.insert(1.0F, GNULL);
-			_MyGraphType::Node* pNode2 = graph.insert(2.0F, GNULL);
-			_MyGraphType::Node* pNode3 = graph.insert(3.0F, GNULL);
-			_MyGraphType::Node* pNode4 = graph.insert(4.0F, GNULL);
-			_MyGraphType::Node* pNode5 = graph.insert(5.0F, GNULL);
-			_MyGraphType::Node* pNode33= graph.insert(3.0F, GNULL);
-			graph.erase(*pNode0);
-			graph.root(pNode1);
-			graph.link(*pNode1, *pNode5);
-			graph.link(*pNode1, *pNode2);
-			graph.link(*pNode2, *pNode3);
-			graph.link(*pNode2, *pNode4);
-			graph.link(*pNode2, *pNode5);
-			graph.link(*pNode3, *pNode4);
-			graph.link(*pNode4, *pNode5);
-			graph.link(*pNode1, *pNode33);
-			_MyGraphType::__NodeListType listResult1;
-			graph.find(GNULL, 5.0F, listResult1);
-			if(!listResult1.empty())
 			{
-				_MyGraphType::__PathTreeType treeResult;
-				graph.paths(*listResult1[0], 3.0F, treeResult);
-				if(treeResult.empty())
-					TEST_FILE_LINE("basic graph path from one node to another FAILED!");
-				_MyGraphType::__PathTreeType::__PathListType pathlist;
-				treeResult.paths(GNULL, pathlist);
-				for(_MyGraphType::__PathTreeType::__PathListType::_sizetype x = 0; x < pathlist.size(); ++x)
+				/*
+				 *	3
+				 *     \
+				 *		1-------2
+				 *		|     / | \
+				 *		|   /   |  3
+				 *		| /     | /
+				 *		5-------4
+				 */
+#ifdef PERFORMANCE_COMPARE
+				std::cout << std::endl;
+#endif
+				graph.destroy();
+				_MyGraphType::Node* pNode0 = graph.insert(0.0F, GNULL);
+				_MyGraphType::Node* pNode1 = graph.insert(1.0F, GNULL);
+				_MyGraphType::Node* pNode2 = graph.insert(2.0F, GNULL);
+				_MyGraphType::Node* pNode3 = graph.insert(3.0F, GNULL);
+				_MyGraphType::Node* pNode4 = graph.insert(4.0F, GNULL);
+				_MyGraphType::Node* pNode5 = graph.insert(5.0F, GNULL);
+				_MyGraphType::Node* pNode33= graph.insert(3.0F, GNULL);
+				graph.erase(*pNode0);
+				graph.root(pNode1);
+				graph.link(*pNode1, *pNode5);
+				graph.link(*pNode1, *pNode2);
+				graph.link(*pNode2, *pNode3);
+				graph.link(*pNode2, *pNode4);
+				graph.link(*pNode2, *pNode5);
+				graph.link(*pNode3, *pNode4);
+				graph.link(*pNode4, *pNode5);
+				graph.link(*pNode1, *pNode33);
+				_MyGraphType::__NodeListType listResult1;
+				graph.find(GNULL, 5.0F, listResult1);
+				if(!listResult1.empty())
 				{
-					_MyGraphType::__PathTreeType::__PathListType::_datatype& path = pathlist[x];
-					for(_MyGraphType::__PathTreeType::__PathListType::_datatype::_sizetype y = 0; y < path.size(); ++y)
+					_MyGraphType::__PathTreeType treeResult;
+					graph.paths(*listResult1[0], 3.0F, treeResult);
+					if(treeResult.empty())
+						TEST_FILE_LINE("basic graph path from one node to another FAILED!");
+					_MyGraphType::__PathTreeType::__PathListType pathlist;
+					treeResult.paths(GNULL, pathlist);
+					for(_MyGraphType::__PathTreeType::__PathListType::_sizetype x = 0; x < pathlist.size(); ++x)
 					{
-						_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
-						GAIA_AST(pTreeNode != GNULL);
-						_MyGraphType::Node* pNode = **pTreeNode;
-						GAIA_AST(pNode != GNULL);
-						if(pNode != GNULL)
+						_MyGraphType::__PathTreeType::__PathListType::_datatype& path = pathlist[x];
+						for(_MyGraphType::__PathTreeType::__PathListType::_datatype::_sizetype y = 0; y < path.size(); ++y)
 						{
-							_MyGraphType::_datatype data = **pNode;
-						#ifdef PERFORMANCE_COMPARE
-							std::cout << data << " ";
-						#endif
-							GAIA::N32 nDebug = 0;
-							nDebug = 0;
+							_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
+							GAIA_AST(pTreeNode != GNULL);
+							_MyGraphType::Node* pNode = **pTreeNode;
+							GAIA_AST(pNode != GNULL);
+							if(pNode != GNULL)
+							{
+								_MyGraphType::_datatype data = **pNode;
+#ifdef PERFORMANCE_COMPARE
+								std::cout << data << " ";
+#endif
+								GAIA::N32 nDebug = 0;
+								nDebug = 0;
+							}
 						}
+#ifdef PERFORMANCE_COMPARE
+						std::cout << std::endl;
+#endif
 					}
-				#ifdef PERFORMANCE_COMPARE
-					std::cout << std::endl;
-				#endif
+					if(pathlist.size() != 9)
+						TEST_FILE_LINE("basic graph paths FAILED!");
 				}
-				if(pathlist.size() != 9)
-					TEST_FILE_LINE("basic graph paths FAILED!");
-			}
-			else
-				TEST_FILE_LINE("basic graph find FAILED!");
+				else
+					TEST_FILE_LINE("basic graph find FAILED!");
 
-			_MyGraphType::__PoolType::__IndexListType listIndex;
-			graph.collect_valid_index_list(listIndex);
-			for(_MyGraphType::__PoolType::__IndexListType::_sizetype x = 0; x < listIndex.size(); ++x)
-			{
-				_MyGraphType::__PoolType::__IndexListType::_sizetype index = listIndex[x];
-				_MyGraphType::Node& n = graph[index];
-				if(*n == 5.0F)
+				_MyGraphType::__PoolType::__IndexListType listIndex;
+				graph.collect_valid_index_list(listIndex);
+				for(_MyGraphType::__PoolType::__IndexListType::_sizetype x = 0; x < listIndex.size(); ++x)
 				{
+					_MyGraphType::__PoolType::__IndexListType::_sizetype index = listIndex[x];
+					_MyGraphType::Node& n = graph[index];
+					if(*n == 5.0F)
+					{
+					}
 				}
+				_MyGraphType::_sizetype k = _MyGraphType::_groupelementsize;
+				k = 0;
 			}
-			_MyGraphType::_sizetype k = _MyGraphType::_groupelementsize;
-			k = 0;
+
+			if(graph.dbg_check_traveling())
+				TEST_FILE_LINE("basic graph debug check traveling SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("basic graph debug check traveling FAILED!");
+
+			if(graph.dbg_check_relation())
+				TEST_FILE_LINE("basic graph debug check relation SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("basic graph debug check relation FAILED!");
 		}
-
-		if(graph.dbg_check_traveling())
-			TEST_FILE_LINE("basic graph debug check traveling SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("basic graph debug check traveling FAILED!");
-
-		if(graph.dbg_check_relation())
-			TEST_FILE_LINE("basic graph debug check relation SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("basic graph debug check relation FAILED!");
-
 		TEST_END;
 	}
 
 	// Basic math test.
 	{
 		TEST_BEGIN("<Basic math test>");
-
-		GAIA::REAL f = GAIA::MATH::xcos(10.0F);
-		f = 0.0F;
-
+		{
+			GAIA::REAL f = GAIA::MATH::xcos(10.0F);
+			f = 0.0F;
+		}
 		TEST_END;
 	}
 	
@@ -1657,189 +1674,191 @@ GAIA::N32 main()
 	// Thread test.
 	{
 		TEST_BEGIN("<Thread test>");
-
-		MyThread thread;
-		thread.Run();
-		thread.Wait();
-		GAIA_AST(thread.IsRuned());
-
+		{
+			MyThread thread;
+			thread.Run();
+			thread.Wait();
+			GAIA_AST(thread.IsRuned());
+		}
 		TEST_END;
 	}
 
 	// File test.
 	{
 		TEST_BEGIN("<File test>");
-
-		GAIA::FILESYSTEM::File file;
-		GAIA::BL bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
-		file.Write(L"My name is Armterla!");
-		bResult = file.Close();
-		bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
-		GAIA::U64 uFileSize = file.Size();
-		GAIA::CONTAINER::BasicBuffer<GAIA::U64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>> buf;
-		buf.resize(uFileSize);
-		file.Read(buf.front_ptr(), buf.size());
-		const GAIA::GWCH* p = (GAIA::GWCH*)buf.front_ptr();
-		GAIA::GWCH szTemp[1024];
-		GAIA::ALGORITHM::strcpy(szTemp, p);
-		GAIA::N32 nDebug = 0;
-		nDebug = 0;
-
+		{
+			GAIA::FILESYSTEM::File file;
+			GAIA::BL bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
+			file.Write(L"My name is Armterla!");
+			bResult = file.Close();
+			bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
+			GAIA::U64 uFileSize = file.Size();
+			GAIA::CONTAINER::BasicBuffer<GAIA::U64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>> buf;
+			buf.resize(uFileSize);
+			file.Read(buf.front_ptr(), buf.size());
+			const GAIA::GWCH* p = (GAIA::GWCH*)buf.front_ptr();
+			GAIA::GWCH szTemp[1024];
+			GAIA::ALGORITHM::strcpy(szTemp, p);
+			GAIA::N32 nDebug = 0;
+			nDebug = 0;
+		}
 		TEST_END;
 	}
 	
 	// Network test.
 	{
 		TEST_BEGIN("<Network function test>");
-		
-		bFunctionSuccess = GAIA::True;
-		
-		GAIA::GCH szTemp[64];
 		{
-			GAIA::NETWORK::IP ip;
-			ip.Invalid();
-			ip.FromString("192.168.1.1");
-			if(ip.u0 != 192 || ip.u1 != 168 || ip.u2 != 1 || ip.u3 != 1)
-				bFunctionSuccess = GAIA::False;
-			ip.ToString(szTemp);
-			if(GAIA::ALGORITHM::strcmp(szTemp, "192.168.1.1") != 0)
-				bFunctionSuccess = GAIA::False;
-			ip.IsInvalid();
-		}
-		
-		{
-			GAIA::NETWORK::NetworkAddress na;
-			na.Invalid();
-			na.FromString("192.168.1.8:4321");
-			if(na.ip.u0 != 192 || na.ip.u1 != 168 || na.ip.u2 != 1 || na.ip.u3 != 8)
-				bFunctionSuccess = GAIA::False;
-			na.ToString(szTemp);
-			if(GAIA::ALGORITHM::strcmp(szTemp, "192.168.1.8:4321") != 0)
-				bFunctionSuccess = GAIA::False;
-			na.IsInvalid();
-		}
+			bFunctionSuccess = GAIA::True;
 
-		{
-			GAIA::NETWORK::NetworkHandle h;
-			GAIA::NETWORK::NetworkListener l;
-			GAIA::NETWORK::NetworkSender s;
-			GAIA::NETWORK::NetworkReceiver r;
-		}
-
-		{
-		#if GAIA_OS == GAIA_OS_WINDOWS
-			WSAData wsadata;
-			WSAStartup(MAKEWORD(2, 2), &wsadata);
-		#endif
-
-			GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listResult;
-			GAIA::GCH szHostName[128];
-			GAIA::NETWORK::GetHostName(szHostName, 128);
-			GAIA::NETWORK::GetHostIPList(szHostName, listResult);
-			for(GAIA::N32 x = 0; x < listResult.size(); ++x)
+			GAIA::GCH szTemp[64];
 			{
-				GAIA::GCH szIP[128];
-				listResult[x].ToString(szIP);
-				PERF_PRINT_LINE(szIP);
+				GAIA::NETWORK::IP ip;
+				ip.Invalid();
+				ip.FromString("192.168.1.1");
+				if(ip.u0 != 192 || ip.u1 != 168 || ip.u2 != 1 || ip.u3 != 1)
+					bFunctionSuccess = GAIA::False;
+				ip.ToString(szTemp);
+				if(GAIA::ALGORITHM::strcmp(szTemp, "192.168.1.1") != 0)
+					bFunctionSuccess = GAIA::False;
+				ip.IsInvalid();
 			}
-			
-			MyNetworkHandle* pNewHandle = new MyNetworkHandle;
-			MyNetworkHandle& h = *pNewHandle;
-			MyNetworkListener l;
-			GAIA::NETWORK::NetworkSender s;
-			MyNetworkReceiver r;
 
-			s.Begin();
-			r.Begin();
+			{
+				GAIA::NETWORK::NetworkAddress na;
+				na.Invalid();
+				na.FromString("192.168.1.8:4321");
+				if(na.ip.u0 != 192 || na.ip.u1 != 168 || na.ip.u2 != 1 || na.ip.u3 != 8)
+					bFunctionSuccess = GAIA::False;
+				na.ToString(szTemp);
+				if(GAIA::ALGORITHM::strcmp(szTemp, "192.168.1.8:4321") != 0)
+					bFunctionSuccess = GAIA::False;
+				na.IsInvalid();
+			}
 
-			MyNetworkListener::ListenDesc descListen;
-			descListen.addr.FromString("127.0.0.1:8765");
-			l.SetDesc(descListen);
-			l.Begin();
+			{
+				GAIA::NETWORK::NetworkHandle h;
+				GAIA::NETWORK::NetworkListener l;
+				GAIA::NETWORK::NetworkSender s;
+				GAIA::NETWORK::NetworkReceiver r;
+			}
 
-			GAIA::SYNC::sleep(1000);
+			{
+#if GAIA_OS == GAIA_OS_WINDOWS
+				WSAData wsadata;
+				WSAStartup(MAKEWORD(2, 2), &wsadata);
+#endif
 
-			MyNetworkHandle::ConnectDesc descConn;
-			descConn.addr.FromString("127.0.0.1:8765");
-			descConn.bStabilityLink = GAIA::True;
-			h.Connect(descConn);
+				GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listResult;
+				GAIA::GCH szHostName[128];
+				GAIA::NETWORK::GetHostName(szHostName, 128);
+				GAIA::NETWORK::GetHostIPList(szHostName, listResult);
+				for(GAIA::N32 x = 0; x < listResult.size(); ++x)
+				{
+					GAIA::GCH szIP[128];
+					listResult[x].ToString(szIP);
+					PERF_PRINT_LINE(szIP);
+				}
 
-			h.SetSender(&s);
-			h.SetReceiver(&r);
+				MyNetworkHandle* pNewHandle = new MyNetworkHandle;
+				MyNetworkHandle& h = *pNewHandle;
+				MyNetworkListener l;
+				GAIA::NETWORK::NetworkSender s;
+				MyNetworkReceiver r;
 
-			while(s_pNH == GNULL)
+				s.Begin();
+				r.Begin();
+
+				MyNetworkListener::ListenDesc descListen;
+				descListen.addr.FromString("127.0.0.1:8765");
+				l.SetDesc(descListen);
+				l.Begin();
+
 				GAIA::SYNC::sleep(1000);
 
-			s_pNH->SetSender(&s);
-			s_pNH->SetReceiver(&r);
+				MyNetworkHandle::ConnectDesc descConn;
+				descConn.addr.FromString("127.0.0.1:8765");
+				descConn.bStabilityLink = GAIA::True;
+				h.Connect(descConn);
 
-			for(GAIA::U32 x = 0; x < 10; x++)
-				h.Send((const GAIA::U8*)"Hello Kitty!", sizeof("Hello Kitty!"));
+				h.SetSender(&s);
+				h.SetReceiver(&r);
 
-			GAIA::SYNC::sleep(1000);
+				while(s_pNH == GNULL)
+					GAIA::SYNC::sleep(1000);
 
-			s.End();
-			r.End();
-			l.End();
+				s_pNH->SetSender(&s);
+				s_pNH->SetReceiver(&r);
 
-			h.SetSender(GNULL);
-			h.SetReceiver(GNULL);
+				for(GAIA::U32 x = 0; x < 10; x++)
+					h.Send((const GAIA::U8*)"Hello Kitty!", sizeof("Hello Kitty!"));
 
-			s_pNH->SetSender(GNULL);
-			s_pNH->SetReceiver(GNULL);
+				GAIA::SYNC::sleep(1000);
 
-			h.Release();
-			s_pNH->Release();
-		#if GAIA_OS == GAIA_OS_WINDOWS
-			WSACleanup();
-		#endif
+				s.End();
+				r.End();
+				l.End();
+
+				h.SetSender(GNULL);
+				h.SetReceiver(GNULL);
+
+				s_pNH->SetSender(GNULL);
+				s_pNH->SetReceiver(GNULL);
+
+				h.Release();
+				s_pNH->Release();
+#if GAIA_OS == GAIA_OS_WINDOWS
+				WSACleanup();
+#endif
+			}
+
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("IPAddress to or from string convert SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("IPAddress to or from string convert FAILED!");
 		}
-
-		if(bFunctionSuccess)
-			TEST_FILE_LINE("IPAddress to or from string convert SUCCESSFULLY!");
-		else
-			TEST_FILE_LINE("IPAddress to or from string convert FAILED!");
-
 		TEST_END;
 	}
 
 	// Basic factory test 1.
 	{
 		TEST_BEGIN("<Data traffic test>");
-		GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
-		
-		GAIA::DATATRAFFIC::TransmissionIDM* pTrans = dynamic_cast<GAIA::DATATRAFFIC::TransmissionIDM*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM, GNULL));
-		GAIA::DATATRAFFIC::GatewayMem* pGateway1 = dynamic_cast<GAIA::DATATRAFFIC::GatewayMem*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_GATEWAY_MEM, GNULL));
-		GAIA::DATATRAFFIC::GatewayMem* pGateway2 = dynamic_cast<GAIA::DATATRAFFIC::GatewayMem*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_GATEWAY_MEM, GNULL));
-		GAIA::DATATRAFFIC::RouteMem* pRoute = dynamic_cast<GAIA::DATATRAFFIC::RouteMem*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_ROUTE_MEM, GNULL));
-
-		pRoute->AddGateway(pGateway1);
-		pRoute->AddGateway(pGateway2);
-		pGateway1->AddRoute(pRoute);
-		pGateway2->AddRoute(pRoute);
-		pTrans->AddRoute(pRoute);
-
-		pTrans->Run();
-		pTrans->Wait();
-
-		pRoute->RemoveGateway(pGateway1);
-		pRoute->RemoveGateway(pGateway2);
-		pGateway1->RemoveRoute(pRoute);
-
-		GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*> listResult;
-		pGateway2->CollectRoutes(listResult);
-		for(GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype x = 0; x < listResult.size(); ++x)
 		{
-			pGateway2->RemoveRoute(listResult[x]);
-			listResult[x]->Release();
+			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
+
+			GAIA::DATATRAFFIC::TransmissionIDM* pTrans = dynamic_cast<GAIA::DATATRAFFIC::TransmissionIDM*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM, GNULL));
+			GAIA::DATATRAFFIC::GatewayMem* pGateway1 = dynamic_cast<GAIA::DATATRAFFIC::GatewayMem*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_GATEWAY_MEM, GNULL));
+			GAIA::DATATRAFFIC::GatewayMem* pGateway2 = dynamic_cast<GAIA::DATATRAFFIC::GatewayMem*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_GATEWAY_MEM, GNULL));
+			GAIA::DATATRAFFIC::RouteMem* pRoute = dynamic_cast<GAIA::DATATRAFFIC::RouteMem*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_ROUTE_MEM, GNULL));
+
+			pRoute->AddGateway(pGateway1);
+			pRoute->AddGateway(pGateway2);
+			pGateway1->AddRoute(pRoute);
+			pGateway2->AddRoute(pRoute);
+			pTrans->AddRoute(pRoute);
+
+			pTrans->Run();
+			pTrans->Wait();
+
+			pRoute->RemoveGateway(pGateway1);
+			pRoute->RemoveGateway(pGateway2);
+			pGateway1->RemoveRoute(pRoute);
+
+			GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*> listResult;
+			pGateway2->CollectRoutes(listResult);
+			for(GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype x = 0; x < listResult.size(); ++x)
+			{
+				pGateway2->RemoveRoute(listResult[x]);
+				listResult[x]->Release();
+			}
+
+			pTrans->Release();
+			pGateway1->Release();
+			pGateway2->Release();
+			pRoute->Release();
+
+			delete pFactory;
 		}
-
-		pTrans->Release();
-		pGateway1->Release();
-		pGateway2->Release();
-		pRoute->Release();
-
-		delete pFactory;
 		TEST_END;
 	}
 
