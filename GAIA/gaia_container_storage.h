@@ -101,24 +101,25 @@ namespace GAIA
 			GINL GAIA::BL empty() const{return m_size == 0;}
 			GINL _SizeType size() const{return m_size;}
 			GINL _SizeType capacity() const{return m_capacity;}
-			GINL GAIA::BL increase_reserve(const _SizeType& start, const _SizeType& size)
+			GINL GAIA::BL increase_reserve(const _SizeType& head, const _SizeType& size)
 			{
-				if(size == 0)
+				GAIA_AST(size > 0);
+				if(size <= 0)
 					return GAIA::False;
 				if(size % _PageSize != 0)
 					return GAIA::False;
 				Node n;
-				n.m_head = start;
+				n.m_head = head;
 				typename __AddrAVLTreeType::it it = m_origin_a.lower_bound(n);
 				if(!it.empty())
 				{
-					if(start + size > (*it).head())
+					if(head + size > (*it).head())
 						return GAIA::False;
 				}
 				it = m_origin_a.upper_bound(n);
 				if(!it.empty())
 				{
-					if((*it).m_head + (*it).m_capacity > start)
+					if((*it).m_head + (*it).m_capacity > head)
 						return GAIA::False;
 				}
 				n.m_size = 0;
@@ -126,6 +127,8 @@ namespace GAIA
 				NodeSize ns;
 				ns.m_n = n;
 				m_free_s.insert(ns);
+				m_free_a.insert(n);
+				m_origin_a.insert(n);
 				m_capacity += size;
 				return GAIA::True;
 			}
@@ -138,9 +141,9 @@ namespace GAIA
 				typename __AddrAVLTreeType::it it = m_origin_a.front_it();
 				while(!it.empty())
 				{
-					Node& n = *it;
-					m_free_a.insert(n);
-					NodeSize ns = n;
+					NodeSize ns;
+					ns.m_n = *it;
+					m_free_a.insert(ns.m_n);
 					m_free_s.insert(ns);
 					++it;
 				}
@@ -153,69 +156,66 @@ namespace GAIA
 				m_free_s.destroy();
 				this->init();
 			}
-			GINL Node* insert(const _SizeType& size)
+			GINL GAIA::BL insert(const _SizeType& size, Node& result)
 			{
 				NodeSize ns;
+				ns.m_n.m_size = size;
 				ns.m_n.m_capacity = this->alignpage(size);
 				typename __SizeAVLTreeType::it it = m_free_s.upper_bound(ns);
 				if(it.empty())
-					return GNULL;
-				const NodeSize& nsr = *it;
+					return GAIA::False;
+				NodeSize nsr = *it;
+				ns.m_n.m_head = nsr.m_n.m_head;
+				if(!m_using_a.insert(ns.m_n))
+					return GAIA::False;
+				m_free_s.erase(nsr);
 				if(nsr.m_n.m_capacity == ns.m_n.m_capacity)
 				{
-					typename __AddrAVLTreeType::Node* p_an = m_using_a.insert(nsr.m_n);
-					if(p_an == GNULL)
-						return GNULL;
-					ns.m_n.m_head = nsr.m_n.m_head;
-					m_free_s.erase(ns);
 					m_free_a.erase(ns.m_n);
-					return &p_an->t;
+					result = ns.m_n;
+					m_size -= ns.m_n.m_capacity;
+					GAIA_AST(m_size >= 0);
+					return GAIA::True;
 				}
 				else
 				{
-					Node newn;
-					newn.m_head = nsr.m_n.m_head;
-					newn.m_size = size;
-					newn.m_capacity = ns.m_n.m_capacity;
-					typename __AddrAVLTreeType::Node* p_an = m_using_a.insert(newn);
-					if(p_an == GNULL)
-						return GNULL;
-					NodeSize freens = nsr;
-					ns.m_n.m_head = nsr.m_n.m_head;
-					m_free_s.erase(ns);
-					freens.m_n.m_head += newn.m_capacity;
-					freens.m_n.m_capacity -= newn.m_capacity;
+					NodeSize freens = ns;
+					freens.m_n.m_head += ns.m_n.m_capacity;
+					freens.m_n.m_capacity -= ns.m_n.m_capacity;	
+					freens.m_n.m_size = 0;
 					m_free_s.insert(freens);
-					typename __AddrAVLTreeType::Node* p_ana = m_free_a.find(ns.m_n);
-					GAIA_AST(p_ana != GNULL);
-					p_ana->t.m_head = freens.m_n.m_head;
-					p_ana->t.m_capacity = freens.m_n.m_capacity;
-					return &p_an->t;
+					Node* p = m_free_a.find(nsr.m_n);
+					GAIA_AST(p != GNULL);
+					p->m_head = freens.m_n.m_head;
+					p->m_capacity = freens.m_n.m_capacity;
+					result = ns.m_n;
+					m_size -= ns.m_n.m_capacity;
+					GAIA_AST(m_size >= 0);
+					return GAIA::True;
 				}
 			}
 			GINL GAIA::BL erase(const _SizeType& head)
 			{
 				NodeSize ns;
 				ns.m_n.m_head = head;
-				typename __AddrAVLTreeType::it it = m_using_a.find(ns.m_n);
-				if(it.empty())
+				Node* pNode = m_using_a.find(ns.m_n);
+				if(pNode == GNULL)
 					return GAIA::False;
-				ns.m_n.m_size = (*it).m_size;
-				ns.m_n.m_capacity = (*it).m_capacity;
+				ns.m_n.m_size = 0;
+				ns.m_n.m_capacity = pNode->m_capacity;
 				if(!m_using_a.erase(ns.m_n))
 					return GAIA::False;
-				typename __AddrAVLTreeType::it ita = m_free_a.find(ns.m_n);
-				typename __AddrAVLTreeType::it ita_prev = ita; --ita_prev;
-				typename __AddrAVLTreeType::it ita_next = ita; ++ita_next;
+				typename __AddrAVLTreeType::it ita_prev = m_free_a.upper_bound(ns.m_n);
+				typename __AddrAVLTreeType::it ita_next = ita_prev; ++ita_next;
 				GAIA::BL bPrev = GAIA::True;
 				GAIA::BL bNext = GAIA::True;
 				if(ita_prev.empty())
 					bPrev = GAIA::False;
-				if((*ita_prev).m_n.m_head + (*ita_prev).m_n.m_capacity != ns.m_n.head)
+				if((*ita_prev).m_head + (*ita_prev).m_capacity != ns.m_n.m_head)
 					bPrev = GAIA::False;
 				if(ita_next.empty())
 					bNext = GAIA::False;
-				if((*ita_next).m_n.m_head != ns.m_n.head + ns.m_n.m_capacity)
+				if((*ita_next).m_head != ns.m_n.m_head + ns.m_n.m_capacity)
 					bNext = GAIA::False;
 				if(bPrev && bNext)
 				{
@@ -259,13 +259,15 @@ namespace GAIA
 					m_free_s.insert(ns);
 					m_free_a.insert(ns.m_n);
 				}
+				m_size += ns.m_n.m_capacity;
+				GAIA_AST(m_size <= m_capacity);
 				return GAIA::True;
 			}
-			GINL Node* find(const _SizeType& head) const
+			GINL const Node* find(const _SizeType& head) const
 			{
 				Node n;
 				n.m_head = head;
-				return m_using_a.find(head);
+				return m_using_a.find(n);
 			}
 			GINL GAIA::GVOID optimize()
 			{
