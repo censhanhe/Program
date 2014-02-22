@@ -161,7 +161,7 @@ namespace GAIA
 				NodeSize ns;
 				ns.m_n.m_size = size;
 				ns.m_n.m_capacity = this->alignpage(size);
-				typename __SizeAVLTreeType::it it = m_free_s.upper_bound(ns);
+				typename __SizeAVLTreeType::it it = m_free_s.lower_bound(ns);
 				if(it.empty())
 					return GAIA::False;
 				NodeSize nsr = *it;
@@ -288,8 +288,8 @@ namespace GAIA
 			{
 				_SizeType k = size % _PageSize;
 				if(k == 0)
-					return k;
-				return size / _PageSize + _PageSize;
+					return size;
+				return size / _PageSize * _PageSize + _PageSize;
 			}
 		private:
 			__AddrAVLTreeType m_origin_a;
