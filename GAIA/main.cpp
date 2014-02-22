@@ -464,96 +464,116 @@ GAIA::N32 main()
 
 	// Array test.
 	{
-		GAIA::CONTAINER::Array<GAIA::N32, 32> temp;
-		temp[0] = 10;
+		BEGIN_TEST("<Basic array test>");
+		{
+			GAIA::CONTAINER::Array<GAIA::N32, 32> temp;
+			temp[0] = 10;
+		}
+		END_TEST;
 	}
 
 	// Basic vector test.
 	{
-		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bv;
-		bv.push_back(10);
-		bv.push_back(20);
-		GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>>::it iter = bv.front_it();
-		while(!iter.empty())
-			++iter;
-		bv.clear();
-		bv.insert(0, 10);
-		bv.insert(0, 20);
-		bv.insert(2, 30);
-		bv.erase(1);
-		bv.clear();
-
-		bv.clear();
-		bv.push_back(0);
-		bv.push_back(1);
-		bv.push_back(2);
-		bv.push_back(4);
-		bv.push_back(2);
-		bv.push_back(3);
-		bv.sort();
-		GAIA::U32 uDropCount = bv.unique();
-		uDropCount = 0;
-		
+		BEGIN_TEST("<Basic vector test>");
 		{
-			typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
-			__VectorType v;
-			for(GAIA::N32 x = 0; x < 10000; ++x)
+			GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bv;
+			bv.push_back(10);
+			bv.push_back(20);
+			GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>>::it iter = bv.front_it();
+			while(!iter.empty())
+				++iter;
+			bv.clear();
+			bv.insert(0, 10);
+			bv.insert(0, 20);
+			bv.insert(2, 30);
+			bv.erase(1);
+			bv.clear();
+
+			bv.clear();
+			bv.push_back(0);
+			bv.push_back(1);
+			bv.push_back(2);
+			bv.push_back(4);
+			bv.push_back(2);
+			bv.push_back(3);
+			bv.sort();
+			GAIA::U32 uDropCount = bv.unique();
+			uDropCount = 0;
+
 			{
-				v.push_back(GAIA::MATH::random()%100);
+				typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
+				__VectorType v;
+				for(GAIA::N32 x = 0; x < 10000; ++x)
+				{
+					v.push_back(GAIA::MATH::random()%100);
+				}
+				v.sort();
+				GAIA::N32 nDrop = v.unique();
+				nDrop = 0;
+				v.sort();
 			}
-			v.sort();
-			GAIA::N32 nDrop = v.unique();
-			nDrop = 0;
-			v.sort();
 		}
+		END_TEST;
 	}
 
 	// Basic stack test.
 	{
-		GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bs;
-		bs.push(10);
-		bs.push(20);
-		GAIA::N32 n = bs.top();
-		bs.pop();
-		n = bs.top();
-		bs.pop();
-		GAIA::U32 uSize = bs.size();
-		uSize = 0;
+		BEGIN_TEST("<Basic stack test>");
+		{
+			GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bs;
+			bs.push(10);
+			bs.push(20);
+			GAIA::N32 n = bs.top();
+			bs.pop();
+			n = bs.top();
+			bs.pop();
+			GAIA::U32 uSize = bs.size();
+			uSize = 0;
+		}
+		END_TEST;
 	}
 
 	// BasicBuffer test.
 	{
-		GAIA::N32 arr[32];
-		for(GAIA::N32 x = 0; x < sizeof(arr) / sizeof(GAIA::N32); ++x)
-			arr[x] = x;
+		BEGIN_TEST("<Basic buffer test>");
+		{
+			GAIA::N32 arr[32];
+			for(GAIA::N32 x = 0; x < sizeof(arr) / sizeof(GAIA::N32); ++x)
+				arr[x] = x;
 
-		GAIA::CONTAINER::BasicBuffer<GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> buf;
-		buf.push(arr);
-		buf.push(48);
-		GAIA::U32 size = buf.size();
-		size = 0;
+			GAIA::CONTAINER::BasicBuffer<GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> buf;
+			buf.push(arr);
+			buf.push(48);
+			GAIA::U32 size = buf.size();
+			size = 0;
+		}
+		END_TEST;
 	}
 
 	// String algorithm test.
 	{
-		GAIA::GTCH ch = GAIA::ALGORITHM::tolower('A');
-		ch = 0;
-		GAIA::GTCH sz[128] = L"abcdefgABCDEFG1234567!@#$%^&";
-		GAIA::UM uLen = GAIA::ALGORITHM::strlen(sz);
-		uLen = 0;
-		GAIA::ALGORITHM::tolower(sz);
-		sz[0] = 0;
-		GAIA::N32 nCompare = GAIA::ALGORITHM::strcmp(L"Hello world", L"Hello kitty!");
-		nCompare = 0;
+		BEGIN_TEST("<String algorithm test>");
+		{
+			GAIA::GTCH ch = GAIA::ALGORITHM::tolower('A');
+			ch = 0;
+			GAIA::GTCH sz[128] = L"abcdefgABCDEFG1234567!@#$%^&";
+			GAIA::UM uLen = GAIA::ALGORITHM::strlen(sz);
+			uLen = 0;
+			GAIA::ALGORITHM::tolower(sz);
+			sz[0] = 0;
+			GAIA::N32 nCompare = GAIA::ALGORITHM::strcmp(L"Hello world", L"Hello kitty!");
+			nCompare = 0;
 
-		GAIA::ALGORITHM::strcpy(sz, L"Helloword");
-		GAIA::ALGORITHM::strcat(sz, L"My name is arm!");
-		GAIA::N32 nCmp = GAIA::ALGORITHM::strcmp(sz, L"Helloxitty");
-		nCmp = GAIA::ALGORITHM::strcmp(sz, sz);
-		GAIA::ALGORITHM::strcpy(sz, L"Helloworld");
-		GAIA::GTCH* pResult = GAIA::ALGORITHM::strstr(sz, L"lo");
-		pResult = GAIA::ALGORITHM::strmch(sz, L"Hel");
-		sz[0] = 0;
+			GAIA::ALGORITHM::strcpy(sz, L"Helloword");
+			GAIA::ALGORITHM::strcat(sz, L"My name is arm!");
+			GAIA::N32 nCmp = GAIA::ALGORITHM::strcmp(sz, L"Helloxitty");
+			nCmp = GAIA::ALGORITHM::strcmp(sz, sz);
+			GAIA::ALGORITHM::strcpy(sz, L"Helloworld");
+			GAIA::GTCH* pResult = GAIA::ALGORITHM::strstr(sz, L"lo");
+			pResult = GAIA::ALGORITHM::strmch(sz, L"Hel");
+			sz[0] = 0;
+		}
+		END_TEST;
 	}
 
 	// Chars class test.
@@ -630,36 +650,48 @@ GAIA::N32 main()
 
 	// BasicQueue test.
 	{
-		typedef GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> __QueueType;
-		__QueueType que;
-		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
-			que.push(x);
-		for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
-			que.pop();
-		que.push(10);
-		que.front();
-		GAIA_AST(que.size() == 1);
-		__QueueType newque = que;
+		BEGIN_TEST("<Basic queue test>");
+		{
+			typedef GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> __QueueType;
+			__QueueType que;
+			for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
+				que.push(x);
+			for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
+				que.pop();
+			que.push(10);
+			que.front();
+			GAIA_AST(que.size() == 1);
+			__QueueType newque = que;
+		}
+		END_TEST;
 	}
 
 	// BasicOrderless test.
 	{
-		GAIA::CONTAINER::BasicOrderless<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, (GAIA::U32)-1> ol;
-		GAIA::U32 u0 = ol.insert(32);
-		GAIA::U32 u1 = ol.insert(48);
-		ol.erase(u0);
-		ol.erase(u1);
+		BEGIN_TEST("<Basic orderless test>");
+		{
+			GAIA::CONTAINER::BasicOrderless<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, (GAIA::U32)-1> ol;
+			GAIA::U32 u0 = ol.insert(32);
+			GAIA::U32 u1 = ol.insert(48);
+			ol.erase(u0);
+			ol.erase(u1);
+		}
+		END_TEST;
 	}
 
 	// BasicPool test.
 	{
-		GAIA::CONTAINER::BasicPool<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 32> pool;
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-			pool.alloc();
-		pool.clear();
-		pool.destroy();
-		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-			pool.alloc();
+		BEGIN_TEST("<Basic pool test>");
+		{
+			GAIA::CONTAINER::BasicPool<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 32> pool;
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				pool.alloc();
+			pool.clear();
+			pool.destroy();
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				pool.alloc();
+		}
+		END_TEST;
 	}
 
 	// GAIA sort algorithm test.
@@ -1601,8 +1633,12 @@ GAIA::N32 main()
 
 	// Basic math test.
 	{
+		BEGIN_TEST("<Basic math test>");
+
 		GAIA::REAL f = GAIA::MATH::xcos(10.0F);
 		f = 0.0F;
+
+		END_TEST;
 	}
 	
 	// VEC2 math cookies test.
@@ -1620,14 +1656,20 @@ GAIA::N32 main()
 
 	// Thread test.
 	{
+		BEGIN_TEST("<Thread test>");
+
 		MyThread thread;
 		thread.Run();
 		thread.Wait();
 		GAIA_AST(thread.IsRuned());
+
+		END_TEST;
 	}
 
 	// File test.
 	{
+		BEGIN_TEST("<File test>");
+
 		GAIA::FILESYSTEM::File file;
 		GAIA::BL bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 		file.Write(L"My name is Armterla!");
@@ -1642,6 +1684,8 @@ GAIA::N32 main()
 		GAIA::ALGORITHM::strcpy(szTemp, p);
 		GAIA::N32 nDebug = 0;
 		nDebug = 0;
+
+		END_TEST;
 	}
 	
 	// Network test.
@@ -1755,10 +1799,13 @@ GAIA::N32 main()
 			LINE_TEST("IPAddress to or from string convert SUCCESSFULLY!");
 		else
 			LINE_TEST("IPAddress to or from string convert FAILED!");
+
+		END_TEST;
 	}
 
 	// Basic factory test 1.
 	{
+		BEGIN_TEST("<Data traffic test>");
 		GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 		
 		GAIA::DATATRAFFIC::TransmissionIDM* pTrans = dynamic_cast<GAIA::DATATRAFFIC::TransmissionIDM*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM, GNULL));
@@ -1793,12 +1840,9 @@ GAIA::N32 main()
 		pRoute->Release();
 
 		delete pFactory;
+		END_TEST;
 	}
 
-	// Basic factory test 2.
-	{
-	}
-		
 	logfile.WriteText("[GAIA TEST END]");
 	logfile.Close();
 
