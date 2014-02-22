@@ -211,11 +211,11 @@ namespace GAIA
 				GAIA::BL bNext = GAIA::True;
 				if(ita_prev.empty())
 					bPrev = GAIA::False;
-				if((*ita_prev).m_head + (*ita_prev).m_capacity != ns.m_n.m_head)
+				else if((*ita_prev).m_head + (*ita_prev).m_capacity != ns.m_n.m_head)
 					bPrev = GAIA::False;
 				if(ita_next.empty())
 					bNext = GAIA::False;
-				if((*ita_next).m_head != ns.m_n.m_head + ns.m_n.m_capacity)
+				else if((*ita_next).m_head != ns.m_n.m_head + ns.m_n.m_capacity)
 					bNext = GAIA::False;
 				if(bPrev && bNext)
 				{
