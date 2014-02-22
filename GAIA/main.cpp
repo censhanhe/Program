@@ -15,24 +15,24 @@
 #	include <set>
 #	include <algorithm>
 #	include <iostream>
-#	define PERF_PRINT_NAME(name) std::cout<<(name)<<std::endl;
+#	define PERF_PRINT_LINE(name) std::cout<<(name)<<std::endl;
 #	define PERF_PRINT_TIME std::cout<<'\t'<<"TIME-LOST="<<(GAIA::F64)(uPerfEnd - uPerfStart) * 0.001<<"(MS)"<<std::endl;
 #	define PERF_PRINT_TYPE(type) std::cout<<(type);
 #else
-#	define PERF_PRINT_NAME(name)
+#	define PERF_PRINT_LINE(name)
 #	define PERF_PRINT_TIME
 #endif
 
-#define BEGIN_TEST(name)	PERF_PRINT_NAME(name); do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0) ;PERF_START("TIME-LOST")
-#define END_TEST			PERF_END; PERF_PRINT_TIME; do{logfile.WriteText("\r\n\r\n");}while(0)
-#define LINE_TEST(text)		do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n");}while(0)
-#define TEXT_TEST(text)		do{logfile.WriteText(text);}while(0)
-#define PERF_START(name)	uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
-#define PERF_END 			uPerfEnd = GAIA::TIME::clock_time();\
-							sprintf(szPerf, "%f(MS)", (GAIA::F64)(uPerfEnd - uPerfStart) * 0.001);\
-							TEXT_TEST("\t");\
-							TEXT_TEST(szPerfName);\
-							LINE_TEST(szPerf);
+#define TEST_BEGIN(name)		PERF_PRINT_LINE(name); do{logfile.WriteText(name); logfile.WriteText("\r\n");}while(0) ;PERF_START("TIME-LOST")
+#define TEST_END				PERF_END; PERF_PRINT_TIME; do{logfile.WriteText("\r\n\r\n");}while(0)
+#define TEST_FILE_LINE(text)	do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n");}while(0)
+#define TEST_FILE_TEXT(text)	do{logfile.WriteText(text);}while(0)
+#define PERF_START(name)		uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
+#define PERF_END 				uPerfEnd = GAIA::TIME::clock_time();\
+								sprintf(szPerf, "%f(MS)", (GAIA::F64)(uPerfEnd - uPerfStart) * 0.001);\
+								TEST_FILE_TEXT("\t");\
+								TEST_FILE_TEXT(szPerfName);\
+								TEST_FILE_LINE(szPerf);
 
 #include "gaia.h"
 
@@ -185,7 +185,7 @@ class MyNetworkHandle : public GAIA::NETWORK::NetworkHandle
 public:
 	GINL virtual GAIA::GVOID Disconnect(GAIA::BL bRecvTrueSendFalse)
 	{
-		PERF_PRINT_NAME("NetworkHandle : Disconnect CallBack!");
+		PERF_PRINT_LINE("NetworkHandle : Disconnect CallBack!");
 	}
 };
 
@@ -195,7 +195,7 @@ class MyNetworkListener : public GAIA::NETWORK::NetworkListener
 public:
 	virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h)
 	{
-		PERF_PRINT_NAME("NetworkListener : Accept CallBack!");
+		PERF_PRINT_LINE("NetworkListener : Accept CallBack!");
 		if(s_pNH == GNULL)
 		{
 			h.Reference();
@@ -210,7 +210,7 @@ class MyNetworkReceiver : public GAIA::NETWORK::NetworkReceiver
 public:
 	virtual GAIA::BL Receive(const GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
 	{
-		PERF_PRINT_NAME("NetworkReceiver : Receive CallBack!");
+		PERF_PRINT_LINE("NetworkReceiver : Receive CallBack!");
 		for(GAIA::U32 x = 0; x < size; ++x)
 		{
 			PERF_PRINT_TYPE((GAIA::GCH)p[x]);
@@ -258,26 +258,26 @@ GAIA::N32 main()
 
 	// Real number float equal test.
 	{
-		BEGIN_TEST("<Float equal function test>");
+		TEST_BEGIN("<Float equal function test>");
 		{
 			GAIA::BL bEqual = GAIA::MATH::equal(0.1F, 0.100001F);
 			if(bEqual)
-				LINE_TEST("equal(2) convert SUCCESSFULLY!");
+				TEST_FILE_LINE("equal(2) convert SUCCESSFULLY!");
 			else
-				LINE_TEST("equal(2) convert FAILED!");
+				TEST_FILE_LINE("equal(2) convert FAILED!");
 
 			bEqual = GAIA::MATH::equal(0.1F, 0.11F, 0.1F);
 			if(bEqual)
-				LINE_TEST("equal(3) convert SUCCESSFULLY!");
+				TEST_FILE_LINE("equal(3) convert SUCCESSFULLY!");
 			else
-				LINE_TEST("equal(3) convert FAILED!");
+				TEST_FILE_LINE("equal(3) convert FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// X128 test.
 	{
-		BEGIN_TEST("<X128 test>");
+		TEST_BEGIN("<X128 test>");
 		{
 			GAIA::X128 id;
 			id = "0123456789ABCDEF0123456789ABCDEF";
@@ -287,29 +287,29 @@ GAIA::N32 main()
 			tid.u2 = 0x01234567;
 			tid.u3 = 0x89ABCDEF;
 			if(tid == id)
-				LINE_TEST("X128 type convert and compare SUCCESSFULLY!");
+				TEST_FILE_LINE("X128 type convert and compare SUCCESSFULLY!");
 			else
-				LINE_TEST("X128 type convert and compare FAILED!");
+				TEST_FILE_LINE("X128 type convert and compare FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// Unique test.
 	{
-		BEGIN_TEST("<Unique algorithm test>");
+		TEST_BEGIN("<Unique algorithm test>");
 		{
 			GAIA::N32 listNum[] = {3,1,4,5,2,1,6,8,1,3,2,6,4,9,7,0};
 			GAIA::N32* pNew = GAIA::ALGORITHM::unique_noorder(listNum, &listNum[sizeof(listNum) / sizeof(listNum[0]) - 1]);
 			GAIA::N64 nCount = pNew - listNum + 1;
 			if(nCount != 10)
-				LINE_TEST("unique_noorder FAILED!");
+				TEST_FILE_LINE("unique_noorder FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// String algorithm.
 	{
-		BEGIN_TEST("<String algorithm function test>");
+		TEST_BEGIN("<String algorithm function test>");
 		{
 			bFunctionSuccess = GAIA::True;
 			if(GAIA::ALGORITHM::strwrd("Hello World!", "lo") != GNULL)
@@ -317,30 +317,30 @@ GAIA::N32 main()
 			if(GAIA::ALGORITHM::strwrd("Hello World!", "d") != GNULL)
 				bFunctionSuccess = GAIA::False;
 			if(bFunctionSuccess)
-				LINE_TEST("String algorithm function test SUCCESSFULLY!");
+				TEST_FILE_LINE("String algorithm function test SUCCESSFULLY!");
 			else
-				LINE_TEST("String algorithm function test FAILED!");
+				TEST_FILE_LINE("String algorithm function test FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 	
 	// String convert function test.
 	{
-		BEGIN_TEST("<String convert function test>");
+		TEST_BEGIN("<String convert function test>");
 		{
 			GAIA::NM n;
 			GAIA::ALGORITHM::str2int("-123456789", n);
 			if(n != -123456789)
-				LINE_TEST("str2int convert FAILED!");
+				TEST_FILE_LINE("str2int convert FAILED!");
 			else
-				LINE_TEST("str2int convert SUCCESSFULLY!");
+				TEST_FILE_LINE("str2int convert SUCCESSFULLY!");
 
 			GAIA::REAL r;
 			GAIA::ALGORITHM::str2real("-.1234", r);
 			if(!GAIA::MATH::equal(r, -0.1234))
-				LINE_TEST("str2real convert FAILED!");
+				TEST_FILE_LINE("str2real convert FAILED!");
 			else
-				LINE_TEST("str2real convert SUCCESSFULLY!");
+				TEST_FILE_LINE("str2real convert SUCCESSFULLY!");
 
 			bFunctionSuccess = GAIA::True;
 			n = -1234;
@@ -353,9 +353,9 @@ GAIA::N32 main()
 			if(GAIA::ALGORITHM::strcmp(szTemp, L"0") != 0)
 				bFunctionSuccess = GAIA::False;
 			if(!bFunctionSuccess)
-				LINE_TEST("int2str convert FAILED!");
+				TEST_FILE_LINE("int2str convert FAILED!");
 			else
-				LINE_TEST("int2str convert SUCCESSFULLY!");
+				TEST_FILE_LINE("int2str convert SUCCESSFULLY!");
 
 			bFunctionSuccess = GAIA::True;
 			r = -1.2;
@@ -367,9 +367,9 @@ GAIA::N32 main()
 			if(GAIA::ALGORITHM::strcmp(szTemp, L"0.0") != 0)
 				bFunctionSuccess = GAIA::False;
 			if(!bFunctionSuccess)
-				LINE_TEST("real2str convert FAILED!");
+				TEST_FILE_LINE("real2str convert FAILED!");
 			else
-				LINE_TEST("real2str convert SUCCESSFULLY!");
+				TEST_FILE_LINE("real2str convert SUCCESSFULLY!");
 
 			n = GAIA::ALGORITHM::string_cast<GAIA::U8>("-124.456");
 			r = GAIA::ALGORITHM::string_cast<GAIA::REAL>("-123.456");
@@ -378,26 +378,26 @@ GAIA::N32 main()
 
 			n = 0;
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// Pair test.
 	{
-		BEGIN_TEST("<Pair test>");
+		TEST_BEGIN("<Pair test>");
 		{
 			GAIA::CONTAINER::Pair<const GAIA::GCH*, GAIA::N32> pair("abc", 123);
 			GAIA::CONTAINER::Pair<const GAIA::GCH*, GAIA::N32> newpair = pair;
 			if(newpair != pair)
-				LINE_TEST("Pair equal function test FAILED!");
+				TEST_FILE_LINE("Pair equal function test FAILED!");
 			GAIA::N32 nDebug = 0;
 			nDebug++;
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// Basic stack bitset test.
 	{
-		BEGIN_TEST("<Basic stack bitset test>");
+		TEST_BEGIN("<Basic stack bitset test>");
 		{
 			bFunctionSuccess = GAIA::True;
 			GAIA::CONTAINER::BasicStackBitset<GAIA::U32, 32> bs;
@@ -411,9 +411,9 @@ GAIA::N32 main()
 			if(bs.capacity() != 32)
 				bFunctionSuccess = GAIA::False;
 			if(bFunctionSuccess)
-				LINE_TEST("multi and operation test SUCCESSFULLY!");
+				TEST_FILE_LINE("multi and operation test SUCCESSFULLY!");
 			else
-				LINE_TEST("multi and operation test FAILED!");
+				TEST_FILE_LINE("multi and operation test FAILED!");
 			bs.clear();
 
 			bs = 0;
@@ -428,16 +428,16 @@ GAIA::N32 main()
 			bs = 48;
 			bs.inverse(48);
 			if(bs == 48)
-				LINE_TEST("inverse operation test FAILED!");
+				TEST_FILE_LINE("inverse operation test FAILED!");
 			else
-				LINE_TEST("inverse operation test SUCCESSFULLY!");
+				TEST_FILE_LINE("inverse operation test SUCCESSFULLY!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// Basic array test
 	{
-		BEGIN_TEST("<Basic array test>");
+		TEST_BEGIN("<Basic array test>");
 		{
 			GAIA::CONTAINER::BasicArray<GAIA::U32, GAIA::U32, 100> ba;
 			for(GAIA::CONTAINER::BasicArray<GAIA::U32, GAIA::U32, 100>::_sizetype x = 0; x < ba.capacity(); ++x)
@@ -459,22 +459,22 @@ GAIA::N32 main()
 				v.sort();
 			}
 		}
-		END_TEST;
+		TEST_END;
 	};
 
 	// Array test.
 	{
-		BEGIN_TEST("<Basic array test>");
+		TEST_BEGIN("<Basic array test>");
 		{
 			GAIA::CONTAINER::Array<GAIA::N32, 32> temp;
 			temp[0] = 10;
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// Basic vector test.
 	{
-		BEGIN_TEST("<Basic vector test>");
+		TEST_BEGIN("<Basic vector test>");
 		{
 			GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bv;
 			bv.push_back(10);
@@ -513,12 +513,12 @@ GAIA::N32 main()
 				v.sort();
 			}
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// Basic stack test.
 	{
-		BEGIN_TEST("<Basic stack test>");
+		TEST_BEGIN("<Basic stack test>");
 		{
 			GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bs;
 			bs.push(10);
@@ -530,12 +530,12 @@ GAIA::N32 main()
 			GAIA::U32 uSize = bs.size();
 			uSize = 0;
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// BasicBuffer test.
 	{
-		BEGIN_TEST("<Basic buffer test>");
+		TEST_BEGIN("<Basic buffer test>");
 		{
 			GAIA::N32 arr[32];
 			for(GAIA::N32 x = 0; x < sizeof(arr) / sizeof(GAIA::N32); ++x)
@@ -547,12 +547,12 @@ GAIA::N32 main()
 			GAIA::U32 size = buf.size();
 			size = 0;
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// String algorithm test.
 	{
-		BEGIN_TEST("<String algorithm test>");
+		TEST_BEGIN("<String algorithm test>");
 		{
 			GAIA::GTCH ch = GAIA::ALGORITHM::tolower('A');
 			ch = 0;
@@ -573,12 +573,12 @@ GAIA::N32 main()
 			pResult = GAIA::ALGORITHM::strmch(sz, L"Hel");
 			sz[0] = 0;
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// Chars class test.
 	{
-		BEGIN_TEST("<Chars class test>");
+		TEST_BEGIN("<Chars class test>");
 
 		GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars;
 		chars = "abc";
@@ -605,16 +605,16 @@ GAIA::N32 main()
 		if(chars != "ab")
 			bFunctionSuccess = GAIA::False;
 		if(bFunctionSuccess)
-			LINE_TEST("insert test SUCCESSFULLY!");
+			TEST_FILE_LINE("insert test SUCCESSFULLY!");
 		else
-			LINE_TEST("insert test FAILED!");
+			TEST_FILE_LINE("insert test FAILED!");
 
-		END_TEST;
+		TEST_END;
 	}
 
 	// String class test.
 	{
-		BEGIN_TEST("<String class test>");
+		TEST_BEGIN("<String class test>");
 
 		GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str;
 		str = L"Hello world!";
@@ -641,16 +641,16 @@ GAIA::N32 main()
 		if(str != L"ab")
 			bFunctionSuccess = GAIA::False;
 		if(bFunctionSuccess)
-			LINE_TEST("insert test SUCCESSFULLY!");
+			TEST_FILE_LINE("insert test SUCCESSFULLY!");
 		else
-			LINE_TEST("insert test FAILED!");
+			TEST_FILE_LINE("insert test FAILED!");
 
-		END_TEST;
+		TEST_END;
 	}
 
 	// BasicQueue test.
 	{
-		BEGIN_TEST("<Basic queue test>");
+		TEST_BEGIN("<Basic queue test>");
 		{
 			typedef GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> __QueueType;
 			__QueueType que;
@@ -663,12 +663,12 @@ GAIA::N32 main()
 			GAIA_AST(que.size() == 1);
 			__QueueType newque = que;
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// BasicOrderless test.
 	{
-		BEGIN_TEST("<Basic orderless test>");
+		TEST_BEGIN("<Basic orderless test>");
 		{
 			GAIA::CONTAINER::BasicOrderless<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, (GAIA::U32)-1> ol;
 			GAIA::U32 u0 = ol.insert(32);
@@ -676,12 +676,12 @@ GAIA::N32 main()
 			ol.erase(u0);
 			ol.erase(u1);
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// BasicPool test.
 	{
-		BEGIN_TEST("<Basic pool test>");
+		TEST_BEGIN("<Basic pool test>");
 		{
 			GAIA::CONTAINER::BasicPool<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 32> pool;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
@@ -691,12 +691,12 @@ GAIA::N32 main()
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				pool.alloc();
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// GAIA sort algorithm test.
 	{
-		BEGIN_TEST("<Sort algorithm test>");
+		TEST_BEGIN("<Sort algorithm test>");
 		{
 			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
 			for(GAIA::N32 x = 0; x < 100; ++x)
@@ -713,9 +713,9 @@ GAIA::N32 main()
 				nOldValue = listGAIA[x];
 			}
 			if(bFunctionSuccess)
-				LINE_TEST("GAIA bsort is SUCCESSFULLY!");
+				TEST_FILE_LINE("GAIA bsort is SUCCESSFULLY!");
 			else
-				LINE_TEST("GAIA bsort is FAILED!");
+				TEST_FILE_LINE("GAIA bsort is FAILED!");
 
 			GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::N32, 2> arrGAIA;
 			arrGAIA.push_back(2);
@@ -730,12 +730,12 @@ GAIA::N32 main()
 			arrGAIA.push_back(1);
 			arrGAIA.sort();
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// GAIA sort and search function test.
 	{
-		BEGIN_TEST("<Sort function test>");
+		TEST_BEGIN("<Sort function test>");
 		{
 			bFunctionSuccess = GAIA::True;
 			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
@@ -753,13 +753,13 @@ GAIA::N32 main()
 				nOldValue = listGAIA[x];
 			}
 			if(bFunctionSuccess)
-				LINE_TEST("GAIA vector's sort is SUCCESSFULLY!");
+				TEST_FILE_LINE("GAIA vector's sort is SUCCESSFULLY!");
 			else
-				LINE_TEST("GAIA vector's sort is FAILED!");
+				TEST_FILE_LINE("GAIA vector's sort is FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 
-		BEGIN_TEST("<Search function test>");
+		TEST_BEGIN("<Search function test>");
 		{
 			bFunctionSuccess = GAIA::True;
 			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
@@ -774,17 +774,17 @@ GAIA::N32 main()
 				}
 			}
 			if(bFunctionSuccess)
-				LINE_TEST("GAIA search is SUCCESSFULLY!");
+				TEST_FILE_LINE("GAIA search is SUCCESSFULLY!");
 			else
-				LINE_TEST("GAIA search is FAILED!");
+				TEST_FILE_LINE("GAIA search is FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// Sort and search function performance compare.
 	{
 #ifdef PERFORMANCE_COMPARE
-		BEGIN_TEST("<Sort function performance>");
+		TEST_BEGIN("<Sort function performance>");
 
 		std::vector<GAIA::N32> listSTL;
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
@@ -811,13 +811,13 @@ GAIA::N32 main()
 			GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]);
 		PERF_END;
 
-		END_TEST;
+		TEST_END;
 #endif
 	}
 
 	// BasicList function test.
 	{
-		BEGIN_TEST("<BasicList Function Test>");
+		TEST_BEGIN("<BasicList Function Test>");
 		{
 			typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __ListType;
 			__ListType list;
@@ -833,21 +833,21 @@ GAIA::N32 main()
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.pop_front();
 			if(!list.empty())
-				LINE_TEST("list front push pop operator FAILED!");
+				TEST_FILE_LINE("list front push pop operator FAILED!");
 			iter = list.front_it();
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.insert(iter, x);
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.pop_back();
 			if(!list.empty())
-				LINE_TEST("list back push pop operator FAILED!");
+				TEST_FILE_LINE("list back push pop operator FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 	
 	// BasicAVLTree test.
 	{
-		BEGIN_TEST("<BasicAVLTree Function Test>");
+		TEST_BEGIN("<BasicAVLTree Function Test>");
 
 		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100> btr;
 
@@ -860,9 +860,9 @@ GAIA::N32 main()
 				bFunctionSuccess = GAIA::False;
 		}
 		if(bFunctionSuccess)
-			LINE_TEST("Insert by key operator is SUCCESSFULLY!");
+			TEST_FILE_LINE("Insert by key operator is SUCCESSFULLY!");
 		else
-			LINE_TEST("Insert by key operator is FAILED!");
+			TEST_FILE_LINE("Insert by key operator is FAILED!");
 		GAIA::BL bCheckParent = btr.dbg_check_parent();
 		bCheckParent = true;
 		GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 100>::it iter = btr.front_it();
@@ -889,9 +889,9 @@ GAIA::N32 main()
 				bFunctionSuccess = GAIA::False;
 		}
 		if(bFunctionSuccess)
-			LINE_TEST("Exist by key operator is SUCCESSFULLY!");
+			TEST_FILE_LINE("Exist by key operator is SUCCESSFULLY!");
 		else
-			LINE_TEST("Exist by key operator is FAILED!");
+			TEST_FILE_LINE("Exist by key operator is FAILED!");
 
 		bFunctionSuccess = GAIA::True;
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
@@ -903,9 +903,9 @@ GAIA::N32 main()
 				bFunctionSuccess = GAIA::False;
 		}
 		if(bFunctionSuccess)
-			LINE_TEST("Erase element by key operator is SUCCESSFULLY!");
+			TEST_FILE_LINE("Erase element by key operator is SUCCESSFULLY!");
 		else
-			LINE_TEST("Erase element by key operator is FAILED!");
+			TEST_FILE_LINE("Erase element by key operator is FAILED!");
 
 		btr.clear();
 		GAIA::CONTAINER::Vector<GAIA::N32> listSample;
@@ -922,22 +922,22 @@ GAIA::N32 main()
 				bFunctionSuccess = GAIA::False;
 		}
 		if(bFunctionSuccess)
-			LINE_TEST("Random data insertion and find AVL-Tree function check SUCCESSFULLY!");
+			TEST_FILE_LINE("Random data insertion and find AVL-Tree function check SUCCESSFULLY!");
 		else
-			LINE_TEST("Random data insertion and find AVL-Tree function check FAILED!");
+			TEST_FILE_LINE("Random data insertion and find AVL-Tree function check FAILED!");
 
 		for(GAIA::N32 x = 0; x < listSample.size(); x += 10)
 			btr.erase(listSample[x]);
 
 		if(btr.dbg_check_balance())
-			LINE_TEST("Check AVL-Tree balance SUCCESSFULLY!");
+			TEST_FILE_LINE("Check AVL-Tree balance SUCCESSFULLY!");
 		else
-			LINE_TEST("Check AVL-Tree balance FAILED!");
+			TEST_FILE_LINE("Check AVL-Tree balance FAILED!");
 
 		if(btr.dbg_check_parent())
-			LINE_TEST("Check AVL-Tree parent SUCCESSFULLY!");
+			TEST_FILE_LINE("Check AVL-Tree parent SUCCESSFULLY!");
 		else
-			LINE_TEST("Check AVL-Tree parent FAILED!");
+			TEST_FILE_LINE("Check AVL-Tree parent FAILED!");
 
 		for(GAIA::N32 x = 0; x < listSample.size(); x += 10)
 			btr.insert(listSample[x]);
@@ -954,9 +954,9 @@ GAIA::N32 main()
 			n = listSample[x];
 		}
 		if(bFunctionSuccess)
-			LINE_TEST("Random data insertion and erase AVL-Tree function check SUCCESSFULLY!");
+			TEST_FILE_LINE("Random data insertion and erase AVL-Tree function check SUCCESSFULLY!");
 		else
-			LINE_TEST("Random data insertion and erase AVL-Tree function check FAILED!");
+			TEST_FILE_LINE("Random data insertion and erase AVL-Tree function check FAILED!");
 
 		{
 			typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __AVLTreeType;
@@ -971,7 +971,7 @@ GAIA::N32 main()
 				++nCount;
 			}
 			if(nCount != 68)
-				LINE_TEST("Lower bound function FAILED!");
+				TEST_FILE_LINE("Lower bound function FAILED!");
 			iter = av.upper_bound(32);
 			nCount = 0;
 			while(!iter.empty())
@@ -980,16 +980,16 @@ GAIA::N32 main()
 				++nCount;
 			}
 			if(nCount != 33)
-				LINE_TEST("Upper bound function FAILED!");
+				TEST_FILE_LINE("Upper bound function FAILED!");
 		}
 		
-		END_TEST;
+		TEST_END;
 	}
 
 	// BasicAVLTree performance compare.
 	{
 #ifdef PERFORMANCE_COMPARE
-		BEGIN_TEST("<BasicAVLTree performance>");
+		TEST_BEGIN("<BasicAVLTree performance>");
 
 		PERF_START("STL set use");
 		std::set<GAIA::N32> setSTL;
@@ -1003,13 +1003,13 @@ GAIA::N32 main()
 			avltree.insert(GAIA::MATH::random());
 		PERF_END;
 
-		END_TEST;
+		TEST_END;
 #endif
 	}
 	
 	// BasicMultiAVLTree function test.
 	{
-		BEGIN_TEST("<BasicMultiAVLTree function test>");
+		TEST_BEGIN("<BasicMultiAVLTree function test>");
 
 		bFunctionSuccess = GAIA::True;
 		typedef GAIA::CONTAINER::BasicMultiAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 32> __MAVLTreeType;
@@ -1051,16 +1051,16 @@ GAIA::N32 main()
 		while(!iter.empty())
 			++iter;
 		if(bFunctionSuccess)
-			LINE_TEST("BasicMultiAVLTree function test SUCCESSFULLY!");
+			TEST_FILE_LINE("BasicMultiAVLTree function test SUCCESSFULLY!");
 		else
-			LINE_TEST("BasicMultiAVLTree function test FAILED!");
+			TEST_FILE_LINE("BasicMultiAVLTree function test FAILED!");
 
-		END_TEST;
+		TEST_END;
 	}
 
 	// BasicTrieTree function test.
 	{
-		BEGIN_TEST("<BasicTrieTree function test>");
+		TEST_BEGIN("<BasicTrieTree function test>");
 		{
 			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> __TrieTree;
 			__TrieTree tt;
@@ -1081,13 +1081,13 @@ GAIA::N32 main()
 			bExist = GAIA::True;
 			pNode = GNULL;
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// BasicTrieTree performance test.
 	{
 	#ifdef PERFORMANCE_COMPARE
-		BEGIN_TEST("<BasicTrieTree performance test>");
+		TEST_BEGIN("<BasicTrieTree performance test>");
 		{
 			typedef GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::N64>, GAIA::N64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>> __StringList;
 			__StringList listString;
@@ -1162,13 +1162,13 @@ GAIA::N32 main()
 			}
 			PERF_END;
 		}
-		END_TEST;
+		TEST_END;
 	#endif
 	}
 
 	// BasicTree function test.
 	{
-		BEGIN_TEST("<BasicTree function test>");
+		TEST_BEGIN("<BasicTree function test>");
 
 		typedef GAIA::CONTAINER::BasicTree<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> _MyTreeType;
 		_MyTreeType tree;
@@ -1181,43 +1181,43 @@ GAIA::N32 main()
 
 		tree.find(GNULL, 40, listResult);
 		if(listResult.size() == 2)
-			LINE_TEST("basic tree find SUCCESSFULLY!");
+			TEST_FILE_LINE("basic tree find SUCCESSFULLY!");
 		else
-			LINE_TEST("basic tree find FAILED!");
+			TEST_FILE_LINE("basic tree find FAILED!");
 
 		GAIA::BL bResult = tree.link(*pNode, *pChildChild);
 		if(bResult)
-			LINE_TEST("basic tree link function SUCCESSFULLY!");
+			TEST_FILE_LINE("basic tree link function SUCCESSFULLY!");
 		else
-			LINE_TEST("basic tree link function FAILED!");
+			TEST_FILE_LINE("basic tree link function FAILED!");
 
 		bResult = tree.unlink(*pNode, *pChildChild);
 		if(bResult)
-			LINE_TEST("basic tree unlink function SUCCESSFULLY!");
+			TEST_FILE_LINE("basic tree unlink function SUCCESSFULLY!");
 		else
-			LINE_TEST("basic tree unlink function FAILED!");
+			TEST_FILE_LINE("basic tree unlink function FAILED!");
 
 		bResult = tree.islinked(*pNode, *pChildChild);
 		if(!bResult)
-			LINE_TEST("basic tree islinked function SUCCESSFULLY!");
+			TEST_FILE_LINE("basic tree islinked function SUCCESSFULLY!");
 		else
-			LINE_TEST("basic tree islinked function FAILED!");
+			TEST_FILE_LINE("basic tree islinked function FAILED!");
 
 		bResult = tree.link(*pNode, *pChildChild);
 		if(bResult)
-			LINE_TEST("basic tree link function SUCCESSFULLY!");
+			TEST_FILE_LINE("basic tree link function SUCCESSFULLY!");
 		else
-			LINE_TEST("basic tree link function FAILED!");
+			TEST_FILE_LINE("basic tree link function FAILED!");
 
 		tree.erase(*pChildChild);
 		tree.erase(*pNode);
 
-		END_TEST;
+		TEST_END;
 	}
 	
 	// BasicPriQueue function test.
 	{
-		BEGIN_TEST("<BasicPriQueue function test>");
+		TEST_BEGIN("<BasicPriQueue function test>");
 		{
 			typedef GAIA::CONTAINER::BasicPriQueue<SNode<GAIA::N32>, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __PriQueueType;
 			typedef GAIA::CONTAINER::BasicVector<SNode<GAIA::N32>, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
@@ -1238,16 +1238,16 @@ GAIA::N32 main()
 				pq.pop_front();
 			}
 			if(bFunctionSuccess)
-				LINE_TEST("BasicPriQueue insert and pop_front SUCCESSFULLY!");
+				TEST_FILE_LINE("BasicPriQueue insert and pop_front SUCCESSFULLY!");
 			else
-				LINE_TEST("BasicPriQueue insert and pop_front FAILED!");
+				TEST_FILE_LINE("BasicPriQueue insert and pop_front FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 	
 	// BasicSet function test.
 	{
-		BEGIN_TEST("<BasicSet function test>");
+		TEST_BEGIN("<BasicSet function test>");
 		{
 			bFunctionSuccess = GAIA::True;
 			typedef GAIA::CONTAINER::BasicSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __SetType;
@@ -1283,16 +1283,16 @@ GAIA::N32 main()
 			if(*iteru != 12)
 				bFunctionSuccess = GAIA::False;
 			if(bFunctionSuccess)
-				LINE_TEST("BasicSet function test SUCCESSFULLY!");
+				TEST_FILE_LINE("BasicSet function test SUCCESSFULLY!");
 			else
-				LINE_TEST("BasicSet function test FAILED!");
+				TEST_FILE_LINE("BasicSet function test FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// BasicMultiSet function test.
 	{
-		BEGIN_TEST("<BasicMultiSet function test>");
+		TEST_BEGIN("<BasicMultiSet function test>");
 		{
 			bFunctionSuccess = GAIA::True;
 			typedef GAIA::CONTAINER::BasicMultiSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 256> __MultiSetType;
@@ -1322,16 +1322,16 @@ GAIA::N32 main()
 			nSize = 0;
 			nCapacity = 0;
 			if(bFunctionSuccess)
-				LINE_TEST("BasicMultiSet function test SUCCESSFULLY!");
+				TEST_FILE_LINE("BasicMultiSet function test SUCCESSFULLY!");
 			else
-				LINE_TEST("BasicMultiSet function test FAILED!");
+				TEST_FILE_LINE("BasicMultiSet function test FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 	
 	// BasicMap function test.
 	{
-		BEGIN_TEST("<BasicMap function test>");
+		TEST_BEGIN("<BasicMap function test>");
 		{
 			bFunctionSuccess = GAIA::True;
 			typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __MapType;
@@ -1370,9 +1370,9 @@ GAIA::N32 main()
 			if(*iteru != 2)
 				bFunctionSuccess = GAIA::False;
 			if(bFunctionSuccess)
-				LINE_TEST("BasicMap function test SUCCESSFULLY!");
+				TEST_FILE_LINE("BasicMap function test SUCCESSFULLY!");
 			else
-				LINE_TEST("BasicMap function test FAILED!");
+				TEST_FILE_LINE("BasicMap function test FAILED!");
 
 			{
 				bFunctionSuccess = GAIA::True;
@@ -1393,12 +1393,12 @@ GAIA::N32 main()
 				}
 			}
 		}
-		END_TEST;
+		TEST_END;
 	}
 
 	// BasicMultiMap function test.
 	{
-		BEGIN_TEST("<BasicMultiMap function test>");
+		TEST_BEGIN("<BasicMultiMap function test>");
 		{
 			bFunctionSuccess = GAIA::True;
 			typedef GAIA::CONTAINER::BasicMultiMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 256> __MultiMapType;
@@ -1411,16 +1411,16 @@ GAIA::N32 main()
 			mmp.clear();
 			mmp.destroy();
 			if(bFunctionSuccess)
-				LINE_TEST("BasicMultiMap function test SUCCESSFULLY!");
+				TEST_FILE_LINE("BasicMultiMap function test SUCCESSFULLY!");
 			else
-				LINE_TEST("BasicMultiMap function test FAILED!");
+				TEST_FILE_LINE("BasicMultiMap function test FAILED!");
 		}
-		END_TEST;
+		TEST_END;
 	}
 	
 	// BasicGraph function test.
 	{
-		BEGIN_TEST("<BasicGraph function test>");
+		TEST_BEGIN("<BasicGraph function test>");
 		
 		typedef GAIA::CONTAINER::BasicGraph<GAIA::REAL, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> _MyGraphType;
 		_MyGraphType graph;
@@ -1430,9 +1430,9 @@ GAIA::N32 main()
 		_MyGraphType::__NodeListType listResult;
 		graph.find(GNULL, 3.0, listResult);
 		if(listResult.empty())
-			LINE_TEST("basic graph find FAILED!");
+			TEST_FILE_LINE("basic graph find FAILED!");
 		else
-			LINE_TEST("basic graph find SUCCESSFULLY!");
+			TEST_FILE_LINE("basic graph find SUCCESSFULLY!");
 
 		{
 			listResult.clear();
@@ -1441,21 +1441,21 @@ GAIA::N32 main()
 			{
 				_MyGraphType::Node* pNode1 = listResult[0];
 				if(pNode1 == GNULL)
-					LINE_TEST("basic graph find FAILED!");
+					TEST_FILE_LINE("basic graph find FAILED!");
 				graph.insert(80.0F, listResult[0]);
 			}
 			else
-				LINE_TEST("basic graph find FAILED!");
+				TEST_FILE_LINE("basic graph find FAILED!");
 			listResult.clear();
 			graph.find(GNULL, 80.0F, listResult);
 			if(!listResult.empty())
 			{
 				_MyGraphType::Node* pNode2 = listResult[1];
 				if(pNode2 == GNULL)
-					LINE_TEST("basic graph find FAILED!");
+					TEST_FILE_LINE("basic graph find FAILED!");
 			}
 			else
-				LINE_TEST("basic graph find FAILED!");
+				TEST_FILE_LINE("basic graph find FAILED!");
 		}
 
 		{
@@ -1496,7 +1496,7 @@ GAIA::N32 main()
 				_MyGraphType::__PathTreeType treeResult;
 				graph.paths(*listResult1[0], *listResult2[0], treeResult);
 				if(treeResult.empty())
-					LINE_TEST("basic graph path from one node to another FAILED!");
+					TEST_FILE_LINE("basic graph path from one node to another FAILED!");
 				_MyGraphType::__PathTreeType::__PathListType pathlist;
 				treeResult.paths(GNULL, pathlist);
 				for(_MyGraphType::__PathTreeType::__PathListType::_sizetype x = 0; x < pathlist.size(); ++x)
@@ -1523,15 +1523,15 @@ GAIA::N32 main()
 				#endif
 				}
 				if(pathlist.size() != 6)
-					LINE_TEST("basic graph paths FAILED!");
+					TEST_FILE_LINE("basic graph paths FAILED!");
 			}
 			else
-				LINE_TEST("basic graph find FAILED!");
+				TEST_FILE_LINE("basic graph find FAILED!");
 
 			_MyGraphType::__LinkListType listLinkResult;
 			graph.collect_link_list(listLinkResult);
 			if(listLinkResult.size() == 0)
-				LINE_TEST("collect graph link list FAILED!");
+				TEST_FILE_LINE("collect graph link list FAILED!");
 		}
 
 		{
@@ -1572,7 +1572,7 @@ GAIA::N32 main()
 				_MyGraphType::__PathTreeType treeResult;
 				graph.paths(*listResult1[0], 3.0F, treeResult);
 				if(treeResult.empty())
-					LINE_TEST("basic graph path from one node to another FAILED!");
+					TEST_FILE_LINE("basic graph path from one node to another FAILED!");
 				_MyGraphType::__PathTreeType::__PathListType pathlist;
 				treeResult.paths(GNULL, pathlist);
 				for(_MyGraphType::__PathTreeType::__PathListType::_sizetype x = 0; x < pathlist.size(); ++x)
@@ -1599,10 +1599,10 @@ GAIA::N32 main()
 				#endif
 				}
 				if(pathlist.size() != 9)
-					LINE_TEST("basic graph paths FAILED!");
+					TEST_FILE_LINE("basic graph paths FAILED!");
 			}
 			else
-				LINE_TEST("basic graph find FAILED!");
+				TEST_FILE_LINE("basic graph find FAILED!");
 
 			_MyGraphType::__PoolType::__IndexListType listIndex;
 			graph.collect_valid_index_list(listIndex);
@@ -1619,26 +1619,26 @@ GAIA::N32 main()
 		}
 
 		if(graph.dbg_check_traveling())
-			LINE_TEST("basic graph debug check traveling SUCCESSFULLY!");
+			TEST_FILE_LINE("basic graph debug check traveling SUCCESSFULLY!");
 		else
-			LINE_TEST("basic graph debug check traveling FAILED!");
+			TEST_FILE_LINE("basic graph debug check traveling FAILED!");
 
 		if(graph.dbg_check_relation())
-			LINE_TEST("basic graph debug check relation SUCCESSFULLY!");
+			TEST_FILE_LINE("basic graph debug check relation SUCCESSFULLY!");
 		else
-			LINE_TEST("basic graph debug check relation FAILED!");
+			TEST_FILE_LINE("basic graph debug check relation FAILED!");
 
-		END_TEST;
+		TEST_END;
 	}
 
 	// Basic math test.
 	{
-		BEGIN_TEST("<Basic math test>");
+		TEST_BEGIN("<Basic math test>");
 
 		GAIA::REAL f = GAIA::MATH::xcos(10.0F);
 		f = 0.0F;
 
-		END_TEST;
+		TEST_END;
 	}
 	
 	// VEC2 math cookies test.
@@ -1656,19 +1656,19 @@ GAIA::N32 main()
 
 	// Thread test.
 	{
-		BEGIN_TEST("<Thread test>");
+		TEST_BEGIN("<Thread test>");
 
 		MyThread thread;
 		thread.Run();
 		thread.Wait();
 		GAIA_AST(thread.IsRuned());
 
-		END_TEST;
+		TEST_END;
 	}
 
 	// File test.
 	{
-		BEGIN_TEST("<File test>");
+		TEST_BEGIN("<File test>");
 
 		GAIA::FILESYSTEM::File file;
 		GAIA::BL bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
@@ -1685,12 +1685,12 @@ GAIA::N32 main()
 		GAIA::N32 nDebug = 0;
 		nDebug = 0;
 
-		END_TEST;
+		TEST_END;
 	}
 	
 	// Network test.
 	{
-		BEGIN_TEST("<Network function test>");
+		TEST_BEGIN("<Network function test>");
 		
 		bFunctionSuccess = GAIA::True;
 		
@@ -1740,7 +1740,7 @@ GAIA::N32 main()
 			{
 				GAIA::GCH szIP[128];
 				listResult[x].ToString(szIP);
-				PERF_PRINT_NAME(szIP);
+				PERF_PRINT_LINE(szIP);
 			}
 			
 			MyNetworkHandle* pNewHandle = new MyNetworkHandle;
@@ -1796,16 +1796,16 @@ GAIA::N32 main()
 		}
 
 		if(bFunctionSuccess)
-			LINE_TEST("IPAddress to or from string convert SUCCESSFULLY!");
+			TEST_FILE_LINE("IPAddress to or from string convert SUCCESSFULLY!");
 		else
-			LINE_TEST("IPAddress to or from string convert FAILED!");
+			TEST_FILE_LINE("IPAddress to or from string convert FAILED!");
 
-		END_TEST;
+		TEST_END;
 	}
 
 	// Basic factory test 1.
 	{
-		BEGIN_TEST("<Data traffic test>");
+		TEST_BEGIN("<Data traffic test>");
 		GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 		
 		GAIA::DATATRAFFIC::TransmissionIDM* pTrans = dynamic_cast<GAIA::DATATRAFFIC::TransmissionIDM*>(pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM, GNULL));
@@ -1840,7 +1840,7 @@ GAIA::N32 main()
 		pRoute->Release();
 
 		delete pFactory;
-		END_TEST;
+		TEST_END;
 	}
 
 	logfile.WriteText("[GAIA TEST END]");
