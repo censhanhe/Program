@@ -23,7 +23,7 @@
 #	define PERF_PRINT_TIME
 #endif
 
-#define TEST_CURRENT			""
+#define TEST_CURRENT			"<Storage test>"
 #define TEST_BEGIN(name)		if(GAIA::ALGORITHM::strcmp(TEST_CURRENT, "") == 0 || GAIA::ALGORITHM::strcmp((name), TEST_CURRENT) == 0)\
 								{\
 									PERF_PRINT_LINE(name);\
@@ -1640,6 +1640,30 @@ GAIA::N32 main()
 				TEST_FILE_LINE("basic graph debug check relation SUCCESSFULLY!");
 			else
 				TEST_FILE_LINE("basic graph debug check relation FAILED!");
+		}
+		TEST_END;
+	}
+
+	// Storage test.
+	{
+		TEST_BEGIN("<Storage test>");
+		{
+			typedef GAIA::CONTAINER::Storage<GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM>, 32, 1000> __StorageType;
+			__StorageType st;
+			bFunctionSuccess = GAIA::True;
+			if(!st.increase_reserve(10000, 1024 * 1024 * __StorageType::_pagesize))
+				bFunctionSuccess = GAIA::False;
+			__StorageType::Node n;
+			if(!st.insert(40, n))
+				bFunctionSuccess = GAIA::False;
+			if(!st.erase(n.head()))
+				bFunctionSuccess = GAIA::False;
+			if(st.capacity() != 1024 * 1024 * __StorageType::_pagesize)
+				bFunctionSuccess = GAIA::False;
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("storage function test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("storage function test FAILED!");
 		}
 		TEST_END;
 	}
