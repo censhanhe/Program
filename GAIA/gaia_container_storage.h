@@ -50,16 +50,16 @@ namespace GAIA
 				GINL NodeSize& operator = (const Node& src){m_n = src; return *this;}
 				GINL GAIA::BL operator == (const NodeSize& src) const
 				{
-					if(m_n == src.m_n && m_n.m_head == src.m_n.m_head)
+					if(m_n.m_capacity == src.m_n.m_capacity && m_n.m_head == src.m_n.m_head)
 						return GAIA::True;
 					return GAIA::False;
 				}
 				GINL GAIA::BL operator != (const NodeSize& src) const{return !(this->operator == (src));}
 				GINL GAIA::BL operator >= (const NodeSize& src) const
 				{
-					if(m_n < src.m_n)
+					if(m_n.m_capacity < src.m_n.m_capacity)
 						return GAIA::False;
-					else if(m_n > src.m_n)
+					else if(m_n.m_capacity > src.m_n.m_capacity)
 						return GAIA::True;
 					else
 					{
@@ -71,9 +71,9 @@ namespace GAIA
 				}
 				GINL GAIA::BL operator <= (const NodeSize& src) const
 				{
-					if(m_n > src.m_n)
+					if(m_n.m_capacity > src.m_n.m_capacity)
 						return GAIA::False;
-					else if(m_n < src.m_n)
+					else if(m_n.m_capacity < src.m_n.m_capacity)
 						return GAIA::True;
 					else
 					{
@@ -179,7 +179,7 @@ namespace GAIA
 				}
 				else
 				{
-					NodeSize freens = ns;
+					NodeSize freens = nsr;
 					freens.m_n.m_head += ns.m_n.m_capacity;
 					freens.m_n.m_capacity -= ns.m_n.m_capacity;	
 					freens.m_n.m_size = 0;
@@ -206,7 +206,14 @@ namespace GAIA
 				if(!m_using_a.erase(ns.m_n))
 					return GAIA::False;
 				typename __AddrAVLTreeType::it ita_prev = m_free_a.upper_bound(ns.m_n);
-				typename __AddrAVLTreeType::it ita_next = ita_prev; ++ita_next;
+				typename __AddrAVLTreeType::it ita_next;
+				if(ita_prev.empty())
+					ita_next = m_free_a.lower_bound(ns.m_n);
+				else
+				{
+					ita_next = ita_prev;
+					++ita_next;
+				}
 				GAIA::BL bPrev = GAIA::True;
 				GAIA::BL bNext = GAIA::True;
 				if(ita_prev.empty())

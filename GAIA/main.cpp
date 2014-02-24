@@ -18,9 +18,12 @@
 #	define PERF_PRINT_LINE(name) std::cout<<(name)<<std::endl;
 #	define PERF_PRINT_TIME std::cout<<'\t'<<"TIME-LOST="<<(GAIA::F64)(uPerfEnd - uPerfStart) * 0.001<<"(MS)"<<std::endl;
 #	define PERF_PRINT_TYPE(type) std::cout<<(type);
+#	define PERF_PRINT_TEXT(text) std::cout<<text;
 #else
 #	define PERF_PRINT_LINE(name)
 #	define PERF_PRINT_TIME
+#	define PERF_PRINT_TYPE(type)
+#	define PERF_PRINT_TEXT(text)
 #endif
 
 #define TEST_CURRENT			"<Storage test>"
@@ -42,8 +45,8 @@
 									}\
 									while(0);\
 								}
-#define TEST_FILE_LINE(text)	do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n");}while(0)
-#define TEST_FILE_TEXT(text)	do{logfile.WriteText(text);}while(0)
+#define TEST_FILE_LINE(text)	do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n"); PERF_PRINT_LINE(text);}while(0)
+#define TEST_FILE_TEXT(text)	do{logfile.WriteText(text); PERF_PRINT_TEXT(text);}while(0)
 #define PERF_START(name)		uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
 #define PERF_END 				uPerfEnd = GAIA::TIME::clock_time();\
 								sprintf(szPerf, "%f(MS)", (GAIA::F64)(uPerfEnd - uPerfStart) * 0.001);\
@@ -1660,6 +1663,16 @@ GAIA::N32 main()
 				bFunctionSuccess = GAIA::False;
 			if(st.capacity() != 1024 * 1024 * __StorageType::_pagesize)
 				bFunctionSuccess = GAIA::False;
+			st.clear();
+			typedef GAIA::CONTAINER::Vector<GAIA::NM> __VectorType;
+			__VectorType vt;
+			for(GAIA::N32 x = 0; x < 100000; ++x)
+			{
+				GAIA::N32 nSize = GAIA::MATH::random() % (__StorageType::_pagesize * 2);
+				if(!st.insert(nSize, n))
+					bFunctionSuccess = GAIA::False;
+				vt.push_back(n.head());
+			}
 			if(bFunctionSuccess)
 				TEST_FILE_LINE("storage function test SUCCESSFULLY!");
 			else
