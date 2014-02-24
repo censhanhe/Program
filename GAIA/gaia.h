@@ -82,6 +82,8 @@
 #include	"gaia_container_basicheap.h"
 #include	"gaia_container_accesser.h"
 #include	"gaia_container_storage.h"
+#include	"gaia_container_basicstackpackage.h"
+#include	"gaia_container_basicpackage.h"
 
 #include 	"gaia_container_vari.h"
 

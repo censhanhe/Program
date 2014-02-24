@@ -5,34 +5,28 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _SizeIncreaserType, typename _SizeType> BasicPackage
+		template<typename _SizeType, typename _SizeIncreaserType> class BasicPackage
 		{
 		public:
-			typedef _SizeIncreaserType _sizeincreasertype;
 			typedef _SizeType _sizetype;
+			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			typedef BasicPackage<_SizeIncreaserType, _SizeType> __MyType;
-			typedef BasicBuffer<_SizeIncreaserType, _SizeType> __BufferType;
+			typedef BasicBuffer<_SizeType, _SizeIncreaserType> __BufferType;
+			typedef BasicPackage<_SizeType, _SizeIncreaserType> __MyType;
 		public:
-			GINL Package(){this->init();}
-			GINL Package(const __MyType& src){this->init();}
-			GINL ~Package(){}
-			GINL GAIA::BL empty() const{}
-			GINL _SizeType size() const{}
-			GINL _SizeType element_size() const{}
-			GINL _SizeType capacity() const{}
-			GINL GAIA::GVOID clear(){}
-			GINL GAIA::GVOID destroy(){}
-			GINL __MyType operator << (const __BufferType& t){return *this;}
-			template<typename _ParamType> GINL __MyType& operator << (const _ParamType& t){return *this;}
-			GINL __MyType operator >> (__BufferType& t){return *this;}
-			template<typename _ParamType> GINL __MyType& operator >> (const _ParamType& t){return *this;}
-			GINL __MyType& operator = (const __MyType& src){return *this;}
-		private:
-			GINL GAIA::GVOID init(){m_esize = 0;}
+			GINL BasicPackage(){}
+			GINL BasicPackage(const __MyType& src){this->operator = (src);}
+			GINL ~BasicPackage(){}
+			GINL GAIA::BL empty(){return m_buf.empty();}
+			GINL _SizeType size() const{return m_buf.size();}
+			GINL _SizeType capacity() const{return m_buf.capacity();}
+			GINL GAIA::GVOID clear(){return m_buf.clear();}
+			GINL GAIA::GVOID destroy(){return m_buf.destroy();}
+			GINL GAIA::GVOID resize(const _SizeType& size){m_buf.resize(size);}
+			GINL GAIA::GVOID reserve(const _SizeType& size){m_buf.reserve(size);}
+			GINL __MyType& operator = (const __MyType& src){m_buf = src.m_buf; return *this;}
 		private:
 			__BufferType m_buf;
-			_SizeType m_esize;
 		};
 	};
 };

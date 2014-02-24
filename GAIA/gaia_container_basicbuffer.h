@@ -26,6 +26,7 @@ namespace GAIA
 			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){delete[] m_pFront; m_pFront = m_pBack = m_pCur = GNULL;}}
 			GINL _SizeType capacity() const{return static_cast<_SizeType>(m_pBack - m_pFront);}
 			GINL _SizeType size() const{return static_cast<_SizeType>(m_pCur - m_pFront);}
+			GINL GAIA::BL empty() const{return this->size() == 0;}
 			template<typename ObjType> GINL GAIA::GVOID push(const ObjType& obj)
 			{
 				GAIA::U8* pNew = this->alloc(sizeof(obj));
