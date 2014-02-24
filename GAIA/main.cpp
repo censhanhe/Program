@@ -1668,11 +1668,31 @@ GAIA::N32 main()
 			__VectorType vt;
 			for(GAIA::N32 x = 0; x < 100000; ++x)
 			{
-				GAIA::N32 nSize = GAIA::MATH::random() % (__StorageType::_pagesize * 2);
+				GAIA::N32 nSize = GAIA::MATH::random() % 256 + 1;
 				if(!st.insert(nSize, n))
 					bFunctionSuccess = GAIA::False;
 				vt.push_back(n.head());
 			}
+			for(GAIA::N32 x = 0; x < vt.size(); x += 2)
+			{
+				if(!st.erase(vt[x]))
+				{
+					std::cout << x << std::endl;
+					bFunctionSuccess = GAIA::False;
+					break;
+				}
+			}
+			for(GAIA::N32 x = 1; x < vt.size(); x += 2)
+			{
+				if(!st.erase(vt[x]))
+				{
+					std::cout << x << std::endl;
+					bFunctionSuccess = GAIA::False;
+					break;
+				}
+			}
+			if(st.capacity() != 1024 * 1024 * __StorageType::_pagesize)
+				bFunctionSuccess = GAIA::False;
 			if(bFunctionSuccess)
 				TEST_FILE_LINE("storage function test SUCCESSFULLY!");
 			else

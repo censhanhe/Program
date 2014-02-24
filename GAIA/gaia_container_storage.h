@@ -106,6 +106,7 @@ namespace GAIA
 				GAIA_AST(size > 0);
 				if(size <= 0)
 					return GAIA::False;
+				GAIA_AST(size % _PageSize == 0);
 				if(size % _PageSize != 0)
 					return GAIA::False;
 				Node n;
@@ -158,6 +159,9 @@ namespace GAIA
 			}
 			GINL GAIA::BL insert(const _SizeType& size, Node& result)
 			{
+				GAIA_AST(size > 0);
+				if(size <= 0)
+					return GAIA::False;
 				NodeSize ns;
 				ns.m_n.m_size = size;
 				ns.m_n.m_capacity = this->alignpage(size);
