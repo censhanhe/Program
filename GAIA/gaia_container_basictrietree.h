@@ -64,29 +64,37 @@ namespace GAIA
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			public:
-				GINL it(){}
+				GINL it(){this->init();}
 				GINL virtual ~it(){}
-				GINL virtual GAIA::BL empty() const;
-				GINL virtual _DataType& operator * ();
-				GINL virtual const _DataType& operator * () const;
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual _DataType& operator * (){return *m_pNode;}
+				GINL virtual const _DataType& operator * () const{return *m_pNode;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ();
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ();
 			private:
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32);
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32);
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
+			private:
+				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+			private:
+				Node* m_pNode;
 			};
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			public:
-				GINL const_it(){}
+				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
-				GINL virtual GAIA::BL empty() const;
-				GINL virtual const _DataType& operator * () const;
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual const _DataType& operator * () const{return *m_pNode;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ();
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- ();
 			private:
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32);
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32);
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
+			private:
+				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+			private:
+				Node* m_pNode;
 			};
 		public:
 			typedef BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
