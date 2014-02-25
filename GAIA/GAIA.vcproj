@@ -629,6 +629,10 @@
 					<Filter
 						Name="DATARECORD"
 						>
+						<File
+							RelativePath=".\gaia_container_datarecord.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
