@@ -68,6 +68,7 @@ namespace GAIA
 				return GAIA::False;
 			}
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Remove(const GAIA::GCH* pszName, GAIA::BL bOverlapped)
@@ -119,6 +120,7 @@ namespace GAIA
 				return GAIA::False;
 			}
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::RemoveFile(const GAIA::GCH* pszName)
@@ -130,6 +132,7 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Copy(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst)
@@ -143,6 +146,7 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Move(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst)
@@ -156,6 +160,7 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Collect(const GAIA::GCH* pszName, const GAIA::GCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult)
@@ -190,7 +195,7 @@ namespace GAIA
 			::FindClose(hFF);
 			return GAIA::True;
 		#else
-
+			return GAIA::False;
 		#endif
 		}
 	};

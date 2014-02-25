@@ -75,7 +75,7 @@ namespace GAIA
 					}
 					else
 					{
-						__NodeListType::it it = m_pNode->m_links.front_it();
+						typename __NodeListType::it it = m_pNode->m_links.front_it();
 						while(!it.empty())
 						{
 							if(*it != GNULL)
@@ -122,7 +122,7 @@ namespace GAIA
 					}
 					else
 					{
-						__NodeListType::it it = m_pNode->m_links.back_it();
+						typename __NodeListType::it it = m_pNode->m_links.back_it();
 						while(!it.empty())
 						{
 							if(*it != GNULL)
@@ -164,7 +164,7 @@ namespace GAIA
 							m_pNode = GNULL;
 							return *this;
 						}
-						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode);
+						_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode));
 						GAIA_AST(index != GINVALID);
 						for(_SizeType x = index + 1; x < m_pNode->m_pParent->m_links.size(); ++x)
 						{
@@ -179,7 +179,7 @@ namespace GAIA
 					}
 					else
 					{
-						__NodeListType::const_it it = m_pNode->m_links.const_front_it();
+						typename __NodeListType::const_it it = m_pNode->m_links.const_front_it();
 						while(!it.empty())
 						{
 							if(*it != GNULL)
@@ -204,7 +204,7 @@ namespace GAIA
 							m_pNode = GNULL;
 							return *this;
 						}
-						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode);
+						_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode));
 						GAIA_AST(index != GINVALID);
 						if(index > 0)
 						{
@@ -226,7 +226,7 @@ namespace GAIA
 					}
 					else
 					{
-						__NodeListType::const_it it = m_pNode->m_links.const_back_it();
+						typename __NodeListType::const_it it = m_pNode->m_links.const_back_it();
 						while(!it.empty())
 						{
 							if(*it != GNULL)
@@ -369,7 +369,7 @@ namespace GAIA
 				Node* pNode = m_pRoot;
 				for(;;)
 				{
-					__NodeListType::it it = pNode->m_links.back_it();
+					typename __NodeListType::it it = pNode->m_links.back_it();
 					GAIA::BL bExistChild = GAIA::False;
 					while(!it.empty())
 					{
@@ -399,7 +399,7 @@ namespace GAIA
 				const Node* pNode = m_pRoot;
 				for(;;)
 				{
-					__NodeListType::const_it it = pNode->m_links.const_back_it();
+					typename __NodeListType::const_it it = pNode->m_links.const_back_it();
 					GAIA::BL bExistChild = GAIA::False;
 					while(!it.empty())
 					{
