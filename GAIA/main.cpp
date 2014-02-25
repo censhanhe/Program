@@ -26,7 +26,7 @@
 #	define PERF_PRINT_TEXT(text)
 #endif
 
-#define TEST_CURRENT			"<Storage test>"
+#define TEST_CURRENT			""
 #define TEST_BEGIN(name)		if(GAIA::ALGORITHM::strcmp(TEST_CURRENT, "") == 0 || GAIA::ALGORITHM::strcmp((name), TEST_CURRENT) == 0)\
 								{\
 									PERF_PRINT_LINE(name);\

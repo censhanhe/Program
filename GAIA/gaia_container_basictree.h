@@ -367,22 +367,25 @@ namespace GAIA
 			GINL it back_it()
 			{
 				Node* pNode = m_pRoot;
-				for(;;)
+				if(pNode != GNULL)
 				{
-					typename __NodeListType::it it = pNode->m_links.back_it();
-					GAIA::BL bExistChild = GAIA::False;
-					while(!it.empty())
+					for(;;)
 					{
-						if(*it != GNULL)
+						typename __NodeListType::it it = pNode->m_links.back_it();
+						GAIA::BL bExistChild = GAIA::False;
+						while(!it.empty())
 						{
-							pNode = *it;
-							bExistChild = GAIA::True;
-							break;
+							if(*it != GNULL)
+							{
+								pNode = *it;
+								bExistChild = GAIA::True;
+								break;
+							}
+							--it;
 						}
-						--it;
+						if(!bExistChild)
+							break;
 					}
-					if(!bExistChild)
-						break;
 				}
 				it iter;
 				iter.m_pNode = pNode;
@@ -397,22 +400,25 @@ namespace GAIA
 			GINL const_it const_back_it() const
 			{
 				const Node* pNode = m_pRoot;
-				for(;;)
+				if(pNode != GNULL)
 				{
-					typename __NodeListType::const_it it = pNode->m_links.const_back_it();
-					GAIA::BL bExistChild = GAIA::False;
-					while(!it.empty())
+					for(;;)
 					{
-						if(*it != GNULL)
+						typename __NodeListType::const_it it = pNode->m_links.const_back_it();
+						GAIA::BL bExistChild = GAIA::False;
+						while(!it.empty())
 						{
-							pNode = *it;
-							bExistChild = GAIA::True;
-							break;
+							if(*it != GNULL)
+							{
+								pNode = *it;
+								bExistChild = GAIA::True;
+								break;
+							}
+							--it;
 						}
-						--it;
+						if(!bExistChild)
+							break;
 					}
-					if(!bExistChild)
-						break;
 				}
 				const_it iter;
 				iter.m_pNode = pNode;
