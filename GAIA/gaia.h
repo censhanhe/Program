@@ -99,6 +99,8 @@
 #include	"gaia_log.h"
 
 #include	"gaia_dataphase_xml.h"
+#include 	"gaia_dataphase_bdiff.h"
+#include 	"gaia_dataphase_tdiff.h"
 
 #include	"gaia_sync_base.h"
 #include	"gaia_sync_atomic.h"
