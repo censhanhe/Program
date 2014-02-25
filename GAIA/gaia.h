@@ -29,6 +29,7 @@
 #include 	"gaia_algorithm_search.h"
 #include 	"gaia_algorithm_unique.h"
 
+#include 	"gaia_container_datarecord.h"
 #include 	"gaia_container_ref.h"
 #include	"gaia_container_ptr.h"
 #include	"gaia_container_pair.h"
