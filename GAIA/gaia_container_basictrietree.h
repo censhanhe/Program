@@ -75,6 +75,34 @@ namespace GAIA
 		public:
 			static const _SizeType _groupelementsize = _GroupElementSize;
 		public:
+			class it : public GAIA::ITERATOR::Iterator<_DataType>
+			{
+			public:
+				GINL it(){}
+				GINL virtual ~it(){}
+				GINL virtual GAIA::BL empty() const;
+				GINL virtual _DataType& operator * ();
+				GINL virtual const _DataType& operator * () const;
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ();
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ();
+			private:
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32);
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32);
+			};
+			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
+			{
+			public:
+				GINL const_it(){}
+				GINL virtual ~const_it(){}
+				GINL virtual GAIA::BL empty() const;
+				GINL virtual const _DataType& operator * () const;
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ();
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- ();
+			private:
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32);
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32);
+			};
+		public:
 			typedef BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
 		public:

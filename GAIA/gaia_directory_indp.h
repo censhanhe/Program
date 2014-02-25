@@ -52,7 +52,7 @@ namespace GAIA
 					GAIA::GCH sz[MAX_PATH];
 					GAIA::ALGORITHM::memcpy(sz, pszName, (p - pszName + 1) * sizeof(GAIA::GCH));
 					sz[p - pszName + 1] = 0;
-					if(!::CreateDirectoryA(sz, NULL))
+					if(!::CreateDirectoryA(sz, GNULL))
 						return GAIA::False;
 					if(*p == 0)
 						break;

@@ -79,7 +79,7 @@ namespace GAIA
 				GINL virtual ~const_it(){}
 				GINL virtual GAIA::BL empty() const{if(m_pVector == GNULL || m_index >= m_pVector->size()) return GAIA::True; return GAIA::False;}
 				GINL virtual const _DataType& operator * () const{GAIA_AST(m_pVector != GNULL); return (*m_pVector)[m_index];}
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){GAIA_AST(m_pVector != GNULL); if(m_index < m_pVector->size()) +m_index; return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){GAIA_AST(m_pVector != GNULL); if(m_index < m_pVector->size()) ++m_index; return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){GAIA_AST(m_pVector != GNULL); if(m_index > 0) --m_index; return *this;}
 				GINL const_it& operator += (const _SizeType& c)
 				{
@@ -119,7 +119,7 @@ namespace GAIA
 				GINL GAIA::BL operator < (const const_it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index < src.m_index;}
 				GINL const_it& operator = (const const_it& src){m_index = src.m_index; m_pVector = src.m_pVector; return *this;}
 			private:
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){GAIA_AST(m_pVector != GNULL); if(m_index < m_pVector->size()) +m_index; return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){GAIA_AST(m_pVector != GNULL); if(m_index < m_pVector->size()) ++m_index; return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){GAIA_AST(m_pVector != GNULL); if(m_index > 0) --m_index; return *this;}
 			private:
 				_SizeType m_index;

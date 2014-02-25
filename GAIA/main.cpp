@@ -1227,6 +1227,10 @@ GAIA::N32 main()
 
 			tree.erase(*pChildChild);
 			tree.erase(*pNode);
+			_MyTreeType::it fit = tree.front_it(); ++fit; --fit;
+			_MyTreeType::it bit = tree.back_it(); ++bit; --bit;
+			_MyTreeType::const_it cfit = tree.const_front_it(); ++cfit; --cfit;
+			_MyTreeType::const_it cbit = tree.const_back_it(); ++cbit; --cbit;
 		}
 		TEST_END;
 	}

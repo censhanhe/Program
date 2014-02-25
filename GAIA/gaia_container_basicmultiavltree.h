@@ -173,7 +173,7 @@ namespace GAIA
 				GINL virtual ~const_it(){}
 				GINL virtual GAIA::BL empty() const{return m_iter_d.empty();}
 				GINL virtual const _DataType& operator * () const{return *m_iter_d;}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ()
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ()
 				{
 					++m_iter_d;
 					if(m_iter_d.empty())
@@ -184,7 +184,7 @@ namespace GAIA
 					}
 					return *this;
 				}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ()
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- ()
 				{
 					--m_iter_d;
 					if(m_iter_d.empty())
@@ -258,8 +258,8 @@ namespace GAIA
 				GINL GAIA::BL operator < (const const_it& src) const{return !(*this >= src);}
 				GINL const_it& operator = (const const_it& src){m_iter_n = src.m_iter_n; m_iter_d = src.m_iter_d; return *this;}
 			private:
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){--(*this); return *this;}
 			private:
 				typename __AVLTreeType::const_it m_iter_n;
 				typename Node::__DataListType::const_it m_iter_d;

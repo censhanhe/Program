@@ -71,6 +71,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				UseFAT32Workaround="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -147,6 +148,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				UseFAT32Workaround="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -623,6 +625,10 @@
 							RelativePath=".\gaia_container_vari.h"
 							>
 						</File>
+					</Filter>
+					<Filter
+						Name="DATARECORD"
+						>
 					</Filter>
 				</Filter>
 				<Filter

@@ -8,9 +8,13 @@ namespace GAIA
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicTree
 		{
 		public:
+			class Node;
+			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			class Node
 			{
 			private:
+				friend class it;
+				friend class const_it;
 				friend class BasicTree;
 			public:
 			#ifdef GAIA_DEBUG_INTERNALROUTINE
@@ -21,7 +25,7 @@ namespace GAIA
 			private:
 				_DataType m_t;
 				Node* m_pParent;
-				BasicVector<Node*, _SizeType, _SizeIncreaserType> m_links;
+				__NodeListType m_links;
 			};
 		public:
 			typedef _DataType _datatype;
@@ -31,9 +35,218 @@ namespace GAIA
 			static const _SizeType _groupelementsize = _GroupElementSize;
 		public:
 			typedef BasicTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicVector<__NodeListType, _SizeType, _SizeIncreaserType> __PathListType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
+		public:
+			class it : public GAIA::ITERATOR::Iterator<_DataType>
+			{
+			private:
+				friend class BasicTree;
+			public:
+				GINL it(){this->init();}
+				GINL virtual ~it(){}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual _DataType& operator * (){return **m_pNode;}
+				GINL virtual const _DataType& operator * () const{return **m_pNode;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ()
+				{
+					if(m_pNode == GNULL)
+						return *this;
+					if(m_pNode->m_links.size() == 0)
+					{
+					NEXT_LOOP:
+						if(m_pNode->m_pParent == GNULL)
+						{
+							m_pNode = GNULL;
+							return *this;
+						}
+						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode);
+						GAIA_AST(index != GINVALID);
+						for(_SizeType x = index + 1; x < m_pNode->m_pParent->m_links.size(); ++x)
+						{
+							if(m_pNode->m_pParent->m_links[x] != GNULL)
+							{
+								m_pNode = m_pNode->m_pParent->m_links[x];
+								return *this;
+							}
+						}
+						m_pNode = m_pNode->m_pParent;
+						goto NEXT_LOOP;
+					}
+					else
+					{
+						__NodeListType::it it = m_pNode->m_links.front_it();
+						while(!it.empty())
+						{
+							if(*it != GNULL)
+							{
+								m_pNode = *it;
+								return *this;
+							}
+							++it;
+						}
+					}
+					return *this;
+				}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ()
+				{
+					if(m_pNode == GNULL)
+						return *this;
+					if(m_pNode->m_links.size() == 0)
+					{
+					NEXT_LOOP:
+						if(m_pNode->m_pParent == GNULL)
+						{
+							m_pNode = GNULL;
+							return *this;
+						}
+						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode);
+						GAIA_AST(index != GINVALID);
+						if(index > 0)
+						{
+							_SizeType x = index - 1;
+							for(;;)
+							{
+								if(m_pNode->m_pParent->m_links[x] != GNULL)
+								{
+									m_pNode = m_pNode->m_pParent->m_links[x];
+									return *this;
+								}
+								if(x == 0)
+									break;
+								--x;
+							}
+						}
+						m_pNode = m_pNode->m_pParent;
+						goto NEXT_LOOP;
+					}
+					else
+					{
+						__NodeListType::it it = m_pNode->m_links.back_it();
+						while(!it.empty())
+						{
+							if(*it != GNULL)
+							{
+								m_pNode = *it;
+								return *this;
+							}
+							--it;
+						}
+					}
+					return *this;
+				}
+			private:
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
+			private:
+				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+			private:
+				Node* m_pNode;
+			};
+			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
+			{
+			private:
+				friend class BasicTree;
+			public:
+				GINL const_it(){this->init();}
+				GINL virtual ~const_it(){}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual const _DataType& operator * () const{return **m_pNode;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ()
+				{
+					if(m_pNode == GNULL)
+						return *this;
+					if(m_pNode->m_links.size() == 0)
+					{
+						NEXT_LOOP:
+						if(m_pNode->m_pParent == GNULL)
+						{
+							m_pNode = GNULL;
+							return *this;
+						}
+						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode);
+						GAIA_AST(index != GINVALID);
+						for(_SizeType x = index + 1; x < m_pNode->m_pParent->m_links.size(); ++x)
+						{
+							if(m_pNode->m_pParent->m_links[x] != GNULL)
+							{
+								m_pNode = m_pNode->m_pParent->m_links[x];
+								return *this;
+							}
+						}
+						m_pNode = m_pNode->m_pParent;
+						goto NEXT_LOOP;
+					}
+					else
+					{
+						__NodeListType::const_it it = m_pNode->m_links.const_front_it();
+						while(!it.empty())
+						{
+							if(*it != GNULL)
+							{
+								m_pNode = *it;
+								return *this;
+							}
+							++it;
+						}
+					}
+					return *this;
+				}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- ()
+				{
+					if(m_pNode == GNULL)
+						return *this;
+					if(m_pNode->m_links.size() == 0)
+					{
+					NEXT_LOOP:
+						if(m_pNode->m_pParent == GNULL)
+						{
+							m_pNode = GNULL;
+							return *this;
+						}
+						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode);
+						GAIA_AST(index != GINVALID);
+						if(index > 0)
+						{
+							_SizeType x = index - 1;
+							for(;;)
+							{
+								if(m_pNode->m_pParent->m_links[x] != GNULL)
+								{
+									m_pNode = m_pNode->m_pParent->m_links[x];
+									return *this;
+								}
+								if(x == 0)
+									break;
+								--x;
+							}
+						}
+						m_pNode = m_pNode->m_pParent;
+						goto NEXT_LOOP;
+					}
+					else
+					{
+						__NodeListType::const_it it = m_pNode->m_links.const_back_it();
+						while(!it.empty())
+						{
+							if(*it != GNULL)
+							{
+								m_pNode = *it;
+								return *this;
+							}
+							--it;
+						}
+					}
+					return *this;
+				}
+			private:
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
+			private:
+				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+			private:
+				const Node* m_pNode;
+			};
 		public:
 			GINL BasicTree(){this->init();}
 			GINL BasicTree(const __MyType& src){this->init(); this->operator = (src);}
@@ -107,6 +320,8 @@ namespace GAIA
 				Node** pFinded = GAIA::ALGORITHM::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), &child);
 				*pFinded = GNULL;
 				child.m_pParent = GNULL;
+				if(parent.m_links.count(GNULL) == parent.m_links.size())
+					parent.m_links.clear();
 				return GAIA::True;
 			}
 			GINL GAIA::BL islinked(const Node& parent, const Node& child) const{if(child.m_pParent == &parent) return GAIA::True; return GAIA::False;}
@@ -143,11 +358,73 @@ namespace GAIA
 					return;
 				this->paths_node(*pSrc, *pSrc, result);
 			}
+			GINL it front_it()
+			{
+				it iter;
+				iter.m_pNode = m_pRoot;
+				return iter;
+			}
+			GINL it back_it()
+			{
+				Node* pNode = m_pRoot;
+				for(;;)
+				{
+					__NodeListType::it it = pNode->m_links.back_it();
+					GAIA::BL bExistChild = GAIA::False;
+					while(!it.empty())
+					{
+						if(*it != GNULL)
+						{
+							pNode = *it;
+							bExistChild = GAIA::True;
+							break;
+						}
+						--it;
+					}
+					if(!bExistChild)
+						break;
+				}
+				it iter;
+				iter.m_pNode = pNode;
+				return iter;
+			}
+			GINL const_it const_front_it() const
+			{
+				const_it iter;
+				iter.m_pNode = m_pRoot;
+				return iter;
+			}
+			GINL const_it const_back_it() const
+			{
+				const Node* pNode = m_pRoot;
+				for(;;)
+				{
+					__NodeListType::const_it it = pNode->m_links.const_back_it();
+					GAIA::BL bExistChild = GAIA::False;
+					while(!it.empty())
+					{
+						if(*it != GNULL)
+						{
+							pNode = *it;
+							bExistChild = GAIA::True;
+							break;
+						}
+						--it;
+					}
+					if(!bExistChild)
+						break;
+				}
+				const_it iter;
+				iter.m_pNode = pNode;
+				return iter;
+			}
 			GINL GAIA::GVOID collect_valid_index_list(typename __PoolType::__IndexListType& result) const{m_pool.collect_valid_index_list(result);}
 			GINL Node& operator[](const _SizeType& index){return m_pool[index];}
 			GINL const Node& operator[](const _SizeType& index) const{return m_pool[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
+				m_pRoot = src.m_pRoot;
+				m_pool = src.m_pool;
 				return *this;
 			}
 		public:

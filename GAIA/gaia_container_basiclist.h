@@ -126,7 +126,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){m_pNode = m_pNode->pNext; return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){m_pNode = m_pNode->pPrev; return *this;}
 			private:
-				Node* m_pNode;
+				const Node* m_pNode;
 			};
 		public:
 			GINL BasicList(){this->init();}
