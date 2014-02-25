@@ -9,8 +9,8 @@ namespace GAIA
 		{
 		public:
 			class Node;
-			typedef BasicVector<Ref<Node>, _SizeType, _SizeIncreaserType> __NodeListType;
-			typedef BasicVector<__NodeListType, _SizeType, _SizeIncreaserType> __PathListType;
+			typedef BasicAVLTree<Ref<Node>, _SizeType, _SizeType, _SizeIncreaserType, _GroupElementSize> __NodeTreeType;
+			typedef BasicVector<__NodeTreeType, _SizeType, _SizeIncreaserType> __PathListType;
 		public:
 			class Node
 			{
@@ -36,33 +36,19 @@ namespace GAIA
 				GINL GAIA::BL operator > (const Node& src) const{return m_t > src.m_t;}
 				GINL GAIA::BL operator < (const Node& src) const{return m_t < src.m_t;}
 			private:
-				GINL GAIA::BL match_linked_index(const _DataType& t, _SizeType& result) const
+				GINL Node* find_child_node(const _DataType& t) const
 				{
-					for(_SizeType x = 0; x < m_links.size(); ++x)
-					{
-						if((const Node*)m_links[x] == GNULL)
-							continue;
-						if(**m_links[x] == t)
-						{
-							result = x;
-							return GAIA::True;
-						}
-					}
-					return GAIA::False;
-				}
-				GINL GAIA::BL free_linked_index(_SizeType& result) const
-				{
-					if(m_links.empty())
-						return GAIA::False;
-					typename __NodeListType::_datatype* pTemp = GAIA::ALGORITHM::find(m_links.front_ptr(), m_links.back_ptr(), (typename __NodeListType::_datatype)GNULL);
-					if(pTemp == GNULL)
-						return GAIA::False;
-					GAIA::ALGORITHM::index(m_links.front_ptr(), pTemp, result);
-					return GAIA::True;
+					Node n;
+					n.m_t = t;
+					Ref<Node> rn = &n;
+					Ref<Node>* pResult = const_cast<Ref<Node>*>(m_links.find(rn));
+					if(pResult == GNULL)
+						return GNULL;
+					return *pResult;
 				}
 			private:
 				Node* m_pParent;
-				__NodeListType m_links;
+				__NodeTreeType m_links;
 				_DataType m_t;
 				_SizeType m_count;
 				_SizeType m_category_count;
@@ -142,16 +128,7 @@ namespace GAIA
 						if(pNode->m_count == 0 && pNode->m_category_count == 0 && pNode->m_full_count == 0)
 						{
 							if(pNode->m_pParent != GNULL)
-							{
-								for(_SizeType x = 0; x < pNode->m_pParent->m_links.size(); ++x)
-								{
-									if(pNode->m_pParent->m_links[x] == pNode)
-									{
-										pNode->m_pParent->m_links[x] = GNULL;
-										break;
-									}
-								}
-							}
+								pNode->m_pParent->m_links.erase(pNode);
 							m_pool.release(pNode);
 						}
 						pNode = pNode->m_pParent;
@@ -175,7 +152,7 @@ namespace GAIA
 				Node* pFinded = this->match_node(m_root, p, size);
 				if(pFinded != GNULL)
 				{
-					if(pFinded->m_links.size() == pFinded->m_links.count(GNULL))
+					if(pFinded->m_links.empty())
 						return GAIA::True;
 					else
 						return GAIA::False;
@@ -219,10 +196,10 @@ namespace GAIA
 					return ret;
 				}
 				++n.m_full_count;
-				_SizeType index;
-				if(n.match_linked_index(*p, index))
+				Node* pFinded = n.find_child_node(*p);
+				if(pFinded != GNULL)
 				{
-					if(this->insert_node(*n.m_links[index], p + 1, size - 1))
+					if(this->insert_node(*pFinded, p + 1, size - 1))
 					{
 						++n.m_category_count;
 						ret = GAIA::True;
@@ -236,10 +213,7 @@ namespace GAIA
 					pNew->m_t = *p;
 					pNew->m_count = 0;
 					pNew->m_category_count = 1;
-					if(n.free_linked_index(index))
-						n.m_links[index] = pNew;
-					else
-						n.m_links.push_back(pNew);
+					n.m_links.insert(pNew);
 					ret = GAIA::True;
 					this->insert_node(*pNew, p + 1, size - 1);
 					pNew->m_full_count = 1;
@@ -255,17 +229,17 @@ namespace GAIA
 				const Node* pNodeTemp = &n;
 				while(GAIA::ALWAYSTRUE)
 				{
-					_SizeType index;
-					if(pNodeTemp->match_linked_index(*pTemp, index))
+					Node* pFinded = pNodeTemp->find_child_node(*pTemp);
+					if(pFinded != GNULL)
 					{
-						pNodeTemp = pNodeTemp->m_links[index];
+						pNodeTemp = pFinded;
 						++pTemp;
 						--sizetemp;
+						if(sizetemp == 0)
+							return const_cast<Node*>(pNodeTemp);
 					}
 					else
 						return GNULL;
-					if(sizetemp == 0)
-						return const_cast<Node*>(pNodeTemp);
 				}
 				return GNULL;
 			}

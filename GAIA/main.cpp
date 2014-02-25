@@ -48,11 +48,15 @@
 #define TEST_FILE_LINE(text)	do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n"); PERF_PRINT_LINE(text);}while(0)
 #define TEST_FILE_TEXT(text)	do{logfile.WriteText(text); PERF_PRINT_TEXT(text);}while(0)
 #define PERF_START(name)		uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
-#define PERF_END 				uPerfEnd = GAIA::TIME::clock_time();\
-								sprintf(szPerf, "%f(MS)", (GAIA::F64)(uPerfEnd - uPerfStart) * 0.001);\
-								TEST_FILE_TEXT("\t");\
-								TEST_FILE_TEXT(szPerfName);\
-								TEST_FILE_LINE(szPerf);
+#define PERF_END 				if(szPerfName[0] != 0)\
+								{\
+									uPerfEnd = GAIA::TIME::clock_time();\
+									sprintf(szPerf, "%f(MS)", (GAIA::F64)(uPerfEnd - uPerfStart) * 0.001);\
+									TEST_FILE_TEXT("\t");\
+									TEST_FILE_TEXT(szPerfName);\
+									TEST_FILE_LINE(szPerf);\
+									szPerfName[0] = 0;\
+								}
 
 #include "gaia.h"
 
@@ -1078,7 +1082,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<BasicTrieTree function test>");
 		{
-			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 1000> __TrieTree;
+			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __TrieTree;
 			__TrieTree tt;
 			tt.insert("hello", 5);
 			tt.insert("world", 5);
@@ -1152,7 +1156,7 @@ GAIA::N32 main()
 				file.Close();
 			}
 
-			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, 10000> __TrieTree;
+			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 10> __TrieTree;
 			__TrieTree tt;
 
 			PERF_START("TrieTree Insert");
@@ -1174,6 +1178,8 @@ GAIA::N32 main()
 						__TrieTree::_sizetype fc = tt.full_count(*pNode);
 						c = cc = fc = 0;
 					}
+					else
+						GAIA_AST(GAIA::False);
 				}
 			}
 			PERF_END;
@@ -1670,7 +1676,7 @@ GAIA::N32 main()
 			st.clear();
 			typedef GAIA::CONTAINER::Vector<GAIA::NM> __VectorType;
 			__VectorType vt;
-			for(GAIA::N32 x = 0; x < 100000; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			{
 				GAIA::N32 nSize = GAIA::MATH::random() % 256 + 1;
 				if(!st.insert(nSize, n))
