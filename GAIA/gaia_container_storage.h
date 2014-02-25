@@ -177,8 +177,8 @@ namespace GAIA
 				{
 					m_free_a.erase(ns.m_n);
 					result = ns.m_n;
-					m_size -= ns.m_n.m_capacity;
-					GAIA_AST(m_size >= 0);
+					m_size += ns.m_n.m_capacity;
+					GAIA_AST(m_size <= m_capacity);
 					return GAIA::True;
 				}
 				else
@@ -193,8 +193,8 @@ namespace GAIA
 					p->m_head = freens.m_n.m_head;
 					p->m_capacity = freens.m_n.m_capacity;
 					result = ns.m_n;
-					m_size -= ns.m_n.m_capacity;
-					GAIA_AST(m_size >= 0);
+					m_size += ns.m_n.m_capacity;
+					GAIA_AST(m_size <= m_capacity);
 					return GAIA::True;
 				}
 			}
@@ -270,8 +270,8 @@ namespace GAIA
 					m_free_s.insert(ns);
 					m_free_a.insert(ns.m_n);
 				}
-				m_size += ns.m_n.m_capacity;
-				GAIA_AST(m_size <= m_capacity);
+				m_size -= ns.m_n.m_capacity;
+				GAIA_AST(m_size >= 0);
 				return GAIA::True;
 			}
 			GINL const Node* find(const _SizeType& head) const

@@ -129,24 +129,25 @@ namespace GAIA
 	/* Common constants. */
 	#define GNULL 0
 	#define GINVALID (~0)
+	#define GAIA_DEFAULT_GROUPELEMENTSIZE 1000
 
 	/* Undefine origin type. */
-#ifdef GAIA_DEBUG_CODEPURE
-#	ifndef GAIA_NOCANCEL_ORIGINTYPE
-#		define bool 1
-#		define true 1
-#		define false 1
-#		define char 1
-#		define short 1
-#		define int 1
-#		define long 1
-#		define float 1
-#		define double 1
-#		define wchar_t 1
-#		define __wchar_t 1
-#		define unsigned 1
-#	endif
-#endif
+	#ifdef GAIA_DEBUG_CODEPURE
+	#	ifndef GAIA_NOCANCEL_ORIGINTYPE
+	#		define bool 1
+	#		define true 1
+	#		define false 1
+	#		define char 1
+	#		define short 1
+	#		define int 1
+	#		define long 1
+	#		define float 1
+	#		define double 1
+	#		define wchar_t 1
+	#		define __wchar_t 1
+	#		define unsigned 1
+	#	endif
+	#endif
 
 	/* Class Base. All class's parent. */
 	class Base
@@ -195,6 +196,76 @@ namespace GAIA
 	#endif
 		GAIA::U8 m_bDestructing : 1;
 	};
+
+	/* Type id declaration. */
+	ENUM_BEGIN(TYPEID)
+		TYPEID_NM,
+		TYPEID_UM,
+		TYPEID_BL,
+		TYPEID_N8,
+		TYPEID_U8,
+		TYPEID_N16,
+		TYPEID_U16,
+		TYPEID_N32,
+		TYPEID_U32,
+		TYPEID_N64,
+		TYPEID_U64,
+		TYPEID_X128,
+		TYPEID_F32,
+		TYPEID_F64,
+		TYPEID_GCH,
+		TYPEID_GWCH,
+	ENUM_END(TYPEID)
+
+	static const GAIA::GCH* TYPEID_ANAME[] = 
+	{
+		"Invalid",
+		"NM",
+		"UM",
+		"BL",
+		"N8",
+		"U8",
+		"N16",
+		"U16",
+		"N32",
+		"U32",
+		"N64",
+		"U64",
+		"X128",
+		"F32",
+		"F64",
+		"GCH",
+		"GWCH",
+	};
+
+	static const GAIA::GWCH* TYPEID_WNAME[] = 
+	{
+		L"Invalid",
+		L"NM",
+		L"UM",
+		L"BL",
+		L"N8",
+		L"U8",
+		L"N16",
+		L"U16",
+		L"N32",
+		L"U32",
+		L"N64",
+		L"U64",
+		L"X128",
+		L"F32",
+		L"F64",
+		L"GCH",
+		L"GWCH",
+	};
+
+	/* Seek type. */
+	ENUM_BEGIN(SEEK_TYPE)
+		SEEK_TYPE_BEGIN,
+		SEEK_TYPE_END,
+		SEEK_TYPE_FORWARD,
+		SEEK_TYPE_BACKWARD,
+	ENUM_END(SEEK_TYPE)
 };
 
 #ifndef GAIA_DEBUG_CODEPURE

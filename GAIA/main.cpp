@@ -241,7 +241,7 @@ public:
 };
 
 GAIA::N32 main()
-{	
+{
 #if defined(_MSC_VER) && GAIA_PROFILE == GAIA_PROFILE_DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
@@ -558,9 +558,9 @@ GAIA::N32 main()
 				arr[x] = x;
 
 			GAIA::CONTAINER::BasicBuffer<GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> buf;
-			buf.push(arr);
-			buf.push(48);
-			GAIA::U32 size = buf.size();
+			buf.write(arr);
+			buf.write(48);
+			GAIA::U32 size = buf.write_size();
 			size = 0;
 		}
 		TEST_END;
@@ -1748,7 +1748,7 @@ GAIA::N32 main()
 			GAIA::U64 uFileSize = file.Size();
 			GAIA::CONTAINER::BasicBuffer<GAIA::U64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>> buf;
 			buf.resize(uFileSize);
-			file.Read(buf.front_ptr(), buf.size());
+			file.Read(buf.front_ptr(), buf.write_size());
 			const GAIA::GWCH* p = (GAIA::GWCH*)buf.front_ptr();
 			GAIA::GWCH szTemp[1024];
 			GAIA::ALGORITHM::strcpy(szTemp, p);

@@ -92,7 +92,7 @@
 
 /* Enum helper. */
 #define ENUM_BEGIN(name) enum name{name##_INVALID = 0,
-#define ENUM_END(name) name##_FORCE=GAIA_MAX_UNSIGNED_INTEGER,};
+#define ENUM_END(name) name##_COUNT,name##_FORCEUNSIGNEDINTEGER=GAIA_MAX_UNSIGNED_INTEGER,};
 
 /* Warning adjust. */
 #ifdef GAIA_DEBUG_WARNING

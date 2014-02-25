@@ -81,21 +81,21 @@ namespace GAIA
 			}
 			return 0;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Seek(FILE_SEEK_TYPE seektype, const GAIA::N64& offset)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Seek(SEEK_TYPE seektype, const GAIA::N64& offset)
 		{
 			if(m_pFile == GNULL)
 				return GAIA::False;
-			if(seektype == FILE_SEEK_TYPE_BEGIN)
+			if(seektype == SEEK_TYPE_BEGIN)
 			{
 				if(fseek((FILE*)m_pFile, GAIA::MATH::clamp(offset, 0, m_size), SEEK_SET) == 0)
 					return GAIA::True;
 			}
-			else if(seektype == FILE_SEEK_TYPE_END)
+			else if(seektype == SEEK_TYPE_END)
 			{
 				if(fseek((FILE*)m_pFile, GAIA::MATH::clamp(m_size - offset, 0, m_size), SEEK_SET) == 0)
 					return GAIA::True;
 			}
-			else if(seektype == FILE_SEEK_TYPE_FORWARD)
+			else if(seektype == SEEK_TYPE_FORWARD)
 			{
 				if(fseek((FILE*)m_pFile, GAIA::MATH::clamp(m_offset + offset, 0, m_size), SEEK_SET) == 0)
 				{
@@ -103,7 +103,7 @@ namespace GAIA
 					return GAIA::True;
 				}
 			}
-			else if(seektype == FILE_SEEK_TYPE_BACKWARD)
+			else if(seektype == SEEK_TYPE_BACKWARD)
 			{
 				if(fseek((FILE*)m_pFile, GAIA::MATH::clamp(m_offset - offset, 0, m_size), SEEK_SET) == 0)
 				{

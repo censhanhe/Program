@@ -534,7 +534,7 @@ namespace GAIA
 						GAIA::BL bNeedRelease = GAIA::True;
 						for(;;)
 						{
-							GAIA::N32 nRecv = (GAIA::N32)recv(pHandle->m_h, (GAIA::N8*)m_buf.front_ptr(), (GAIA::N32)m_buf.size(), 0);
+							GAIA::N32 nRecv = (GAIA::N32)recv(pHandle->m_h, (GAIA::N8*)m_buf.front_ptr(), (GAIA::N32)m_buf.write_size(), 0);
 							if(nRecv == GINVALID)
 							{
 							#if GAIA_OS == GAIA_OS_WINDOWS
@@ -589,7 +589,7 @@ namespace GAIA
 							{
 								this->Receive(*pHandle, m_buf.front_ptr(), (GAIA::U32)nRecv);
 								bExistWork = GAIA::True;
-								if(nRecv < m_buf.size())
+								if(nRecv < m_buf.write_size())
 									break;
 							}
 						}
