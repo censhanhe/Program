@@ -19,10 +19,15 @@ namespace GAIA
 		template<typename _DataType> GAIA::BL isalpha(const _DataType& c){if(c < 'A' || c > 'z') return GAIA::False; if(c <= 'Z' || c >= 'a') return GAIA::True; return GAIA::False;}
 		template<typename _DataType> GAIA::BL ispunctuation(const _DataType& c){if(c > ' ' && !GAIA::ALGORITHM::isalpha(c) && !GAIA::ALGORITHM::isdigit(c) && c < 0xFF) return GAIA::True; return GAIA::False;}
 		template<typename _DataType> GAIA::BL isspecial(const _DataType& c){if(c < ' ') return GAIA::True; return GAIA::False;}
+		template<typename _DataType> GAIA::BL stremp(const _DataType* p)
+		{
+			if(p == GNULL || p[0] == 0)
+				return GAIA::True;
+			return GAIA::False;
+		}
 		template<typename _DataType> _DataType* strend(const _DataType* p)
 		{
-			while(*p != 0)
-				++p;
+			while(*p != 0) ++p;
 			return const_cast<_DataType*>(p);
 		}
 		template<typename _DataType> _DataType* strch(const _DataType* p, const _DataType& c)
@@ -45,10 +50,10 @@ namespace GAIA
 			}
 			return GNULL;
 		}
-		template<typename _DataType> GAIA::UM strlen(const _DataType* p){GAIA_AST(p != GNULL); GAIA::UM ret = 0; while(p[ret] != 0) ret++; return ret;}
-		template<typename _DataType1, typename _DataType2> GAIA::UM strcnt(const _DataType1* p, const _DataType2& key)
+		template<typename _DataType> GAIA::NM strlen(const _DataType* p){GAIA_AST(p != GNULL); GAIA::NM ret = 0; while(p[ret] != 0) ret++; return ret;}
+		template<typename _DataType1, typename _DataType2> GAIA::NM strcnt(const _DataType1* p, const _DataType2& key)
 		{
-			GAIA::UM ret = 0;
+			GAIA::NM ret = 0;
 			while(*p != 0)
 			{
 				if(*p == key)
@@ -244,6 +249,76 @@ namespace GAIA
 			}
 			if(*p2 == 0)
 				return const_cast<_DataType*>(p1);
+			return GNULL;
+		}
+		template<typename _DataType1, typename _DataType2> const _DataType1* strdrop(const _DataType1* p, const _DataType2* keys)
+		{
+			const _DataType1* p1 = p;
+			while(*p1 != 0)
+			{
+				const _DataType2* p2 = keys;
+				while(*p2 != 0)
+				{
+					if(*p1 == *p2)
+						return p1;
+					++p2;
+				}
+				++p1;
+			}
+			return GNULL;
+		}
+		template<typename _DataType1, typename _DataType2> const _DataType1* stridrop(const _DataType1* p, const _DataType2* keys)
+		{
+			const _DataType1* p1 = p;
+			while(*p1 != 0)
+			{
+				const _DataType2* p2 = keys;
+				while(*p2 != 0)
+				{
+					if(GAIA::ALGORITHM::tolower(*p1) == GAIA::ALGORITHM::tolower(*p2))
+						return p1;
+					++p2;
+				}
+				++p1;
+			}
+			return GNULL;
+		}
+		template<typename _DataType1, typename _DataType2> _DataType1* strdropr(_DataType1* p, const _DataType2* keys)
+		{
+			_DataType1* p1 = GAIA::ALGORITHM::strend(p);
+			while(p1 > p)
+			{
+				const _DataType2* p2 = keys;
+				while(*p2 != 0)
+				{
+					if(*p1 == *p2)
+					{
+						*(p1 + 1) = 0;
+						return p1;
+					}
+					++p2;
+				}
+				--p1;
+			}
+			return GNULL;
+		}
+		template<typename _DataType1, typename _DataType2> _DataType1* stridropr(_DataType1* p, const _DataType2* keys)
+		{
+			_DataType1* p1 = GAIA::ALGORITHM::strend(p);
+			while(p1 > p)
+			{
+				const _DataType2* p2 = keys;
+				while(*p2 != 0)
+				{
+					if(GAIA::ALGORITHM::tolower(*p1) == GAIA::ALGORITHM::tolower(*p2))
+					{
+						*(p1 + 1) = 0;
+						return p1;
+					}
+					++p2;
+				}
+				--p1;
+			}
 			return GNULL;
 		}
 		template<typename _SrcDataType, typename _DstDataType> _DstDataType* int2str(const _SrcDataType& src, _DstDataType* pDst)

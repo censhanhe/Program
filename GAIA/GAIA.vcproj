@@ -232,10 +232,6 @@
 				<Filter
 					Name="FILESYSTEM"
 					>
-					<File
-						RelativePath=".\gaia_directory.h"
-						>
-					</File>
 					<Filter
 						Name="FILE"
 						>
@@ -249,6 +245,22 @@
 						</File>
 						<File
 							RelativePath=".\gaia_file_indp.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="DIRECTORY"
+						>
+						<File
+							RelativePath=".\gaia_directory.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_directory_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_directory_indp.h"
 							>
 						</File>
 					</Filter>
