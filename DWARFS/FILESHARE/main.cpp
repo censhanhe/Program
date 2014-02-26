@@ -5,6 +5,9 @@ using namespace std;
 
 int main()
 {
+	FSHA::FileShare fsha;
+	FSHA::FileShare::FileShareDesc desc;
+	fsha.Initialize(desc);
 	cout << "Welcome FileShare" << endl;
 	for(;;)
 	{
@@ -25,16 +28,17 @@ int main()
 					break;
 				string str_cmd_cur = str_cmd.substr(0, nIndex);
 				str_cmd.erase(0, nIndex + 1);
-
 				if(str_cmd_cur == "q")
 					goto FUNCTION_END;
 				else
 				{
-					cout << "Invalid command!" << endl;
+					if(!fsha.Command(str_cmd_cur.c_str()))
+						cout << "Invalid command!" << endl;
 				}
 			}
 		}
 	}
 FUNCTION_END:
+	fsha.Release();
 	return 0;
 }
