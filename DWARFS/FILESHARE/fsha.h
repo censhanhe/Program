@@ -16,6 +16,8 @@
 #	pragma warning(disable : 4244)
 #	pragma warning(disable : 4018)
 #	pragma warning(disable : 4251)
+#else
+#	define __DWARFS_FILESHARE_API
 #endif
 
 #include 	"../../GAIA/gaia.h"
@@ -61,6 +63,7 @@ namespace FSHA
 		{
 			m_files.destroy();
 			m_filesbtr.destroy();
+			return GAIA::True;
 		}
 		const GAIA::UM& GetRecCount() const{return m_files.size();}
 		const GAIA::GCH* GetRec(const GAIA::UM& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
@@ -117,6 +120,7 @@ namespace FSHA
 		}
 		GAIA::BL Build()
 		{
+			return GAIA::True;
 		}
 		const FILEID* GetIDByName(const GAIA::GCH* pszFileName)
 		{
