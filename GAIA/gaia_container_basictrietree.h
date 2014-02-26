@@ -15,6 +15,8 @@ namespace GAIA
 			class Node
 			{
 			private:
+				friend class it;
+				friend class const_it;
 				friend class BasicTrieTree;
 			public:
 				GINL _DataType& operator * (){return m_t;}
@@ -63,14 +65,70 @@ namespace GAIA
 		public:
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
+			private:
+				friend class BasicTrieTree;
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
 				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
-				GINL virtual _DataType& operator * (){return *m_pNode;}
-				GINL virtual const _DataType& operator * () const{return *m_pNode;}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ();
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ();
+				GINL virtual _DataType& operator * (){return m_pNode->m_t;}
+				GINL virtual const _DataType& operator * () const{return m_pNode->m_t;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ()
+				{
+					if(m_pNode == GNULL)
+						return *this;
+					if(m_pNode->m_links.size() == 0)
+					{
+					NEXT_LOOP:
+						if(m_pNode->m_pParent == GNULL)
+						{
+							m_pNode = GNULL;
+							return *this;
+						}
+						Ref<Node>* pMaximize = m_pNode->m_pParent->m_links.maximize();
+						GAIA_AST(pMaximize != GNULL);
+						if(*pMaximize != m_pNode)
+						{
+							m_pNode = *pMaximize;
+							return *this;
+						}
+						m_pNode = m_pNode->m_pParent;
+						goto NEXT_LOOP;
+					}
+					else
+					{
+						m_pNode = *m_pNode->m_links.front_it();
+						return *this;
+					}
+				}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ()
+				{
+					if(m_pNode == GNULL)
+						return *this;
+					if(m_pNode->m_links.size() == 0)
+					{
+					NEXT_LOOP:
+						if(m_pNode->m_pParent == GNULL)
+						{
+							m_pNode = GNULL;
+							return *this;
+						}
+						Ref<Node>* pMinimize = m_pNode->m_pParent->m_links.minimize();
+						GAIA_AST(pMinimize != GNULL);
+						if(*pMinimize != m_pNode)
+						{
+							m_pNode = *pMinimize;
+							return *this;
+						}
+						m_pNode = m_pNode->m_pParent;
+						goto NEXT_LOOP;
+					}
+					else
+					{
+						m_pNode = *m_pNode->m_links.back_it();
+						return *this;
+					}
+				}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
@@ -81,20 +139,76 @@ namespace GAIA
 			};
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
+			private:
+				friend class BasicTrieTree;
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
 				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
-				GINL virtual const _DataType& operator * () const{return *m_pNode;}
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ();
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- ();
+				GINL virtual const _DataType& operator * () const{return m_pNode->m_t;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ()
+				{
+					if(m_pNode == GNULL)
+						return *this;
+					if(m_pNode->m_links.size() == 0)
+					{
+					NEXT_LOOP:
+						if(m_pNode->m_pParent == GNULL)
+						{
+							m_pNode = GNULL;
+							return *this;
+						}
+						const Ref<Node>* pMaximize = m_pNode->m_pParent->m_links.maximize();
+						GAIA_AST(pMaximize != GNULL);
+						if(*pMaximize != m_pNode)
+						{
+							m_pNode = *pMaximize;
+							return *this;
+						}
+						m_pNode = m_pNode->m_pParent;
+						goto NEXT_LOOP;
+					}
+					else
+					{
+						m_pNode = *m_pNode->m_links.const_front_it();
+						return *this;
+					}
+				}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- ()
+				{
+					if(m_pNode == GNULL)
+						return *this;
+					if(m_pNode->m_links.size() == 0)
+					{
+					NEXT_LOOP:
+						if(m_pNode->m_pParent == GNULL)
+						{
+							m_pNode = GNULL;
+							return *this;
+						}
+						const Ref<Node>* pMinimize = m_pNode->m_pParent->m_links.minimize();
+						GAIA_AST(pMinimize != GNULL);
+						if(*pMinimize != m_pNode)
+						{
+							m_pNode = *pMinimize;
+							return *this;
+						}
+						m_pNode = m_pNode->m_pParent;
+						goto NEXT_LOOP;
+					}
+					else
+					{
+						m_pNode = *m_pNode->m_links.const_back_it();
+						return *this;
+					}
+				}
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
 				GINL GAIA::GVOID init(){m_pNode = GNULL;}
 			private:
-				Node* m_pNode;
+				const Node* m_pNode;
 			};
 		public:
 			typedef BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
@@ -184,6 +298,28 @@ namespace GAIA
 			GINL _SizeType count(Node& n) const{return n.m_count;}
 			GINL _SizeType catagory_count(Node& n) const{return n.m_category_count;}
 			GINL _SizeType full_count(Node& n) const{return n.m_full_count;}
+			GINL it front_it()
+			{
+				it iter;
+				iter.m_pNode = &m_root;
+				return iter;
+			}
+			GINL it back_it()
+			{
+				it iter;
+				return iter;
+			}
+			GINL const_it const_front_it()
+			{
+				const_it iter;
+				iter.m_pNode = &m_root;
+				return iter;
+			}
+			GINL const_it const_back_it()
+			{
+				const_it iter;
+				return iter;
+			}
 			GINL __MyType& operator = (const __MyType& src){return *this;}
 		private:
 			GINL GAIA::GVOID init()

@@ -216,10 +216,10 @@ namespace GAIA
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){--(*this); return *this;}
-				GINL Node* select_next(Node* pNode)
+				GINL const Node* select_next(const Node* pNode)
 				{
 					if(pNode->pNext != GNULL)
-						return this->select_prev(pNode->pNext);
+						pNode = m_pAVLTree->front_node(pNode->pNext);
 					else
 					{
 						while(GAIA::ALWAYSTRUE)
@@ -232,17 +232,21 @@ namespace GAIA
 							else
 							{
 								if(pNode == pNode->pParent->pPrev)
-									return this->select_next(pNode->pParent);
+								{
+									pNode = pNode->pParent;
+									break;
+								}
 								else
 									pNode = pNode->pParent;
 							}
 						}
 					}
+					return pNode;
 				}
-				GINL Node* select_prev(Node* pNode)
+				GINL const Node* select_prev(const Node* pNode)
 				{
 					if(pNode->pPrev != GNULL)
-						return this->select_next(pNode->pPrev);
+						pNode = m_pAVLTree->back_node(pNode->pPrev);
 					else
 					{
 						while(GAIA::ALWAYSTRUE)
@@ -255,12 +259,16 @@ namespace GAIA
 							else
 							{
 								if(pNode == pNode->pParent->pNext)
-									return this->select_prev(pNode->pParent);
+								{
+									pNode = pNode->pParent;
+									break;
+								}
 								else
 									pNode = pNode->pParent;
 							}
 						}
 					}
+					return pNode;
 				}
 			private:
 				const Node* m_pNode;

@@ -1100,6 +1100,10 @@ GAIA::N32 main()
 			bErase = GAIA::True;
 			bExist = GAIA::True;
 			pNode = GNULL;
+			__TrieTree::it fit = tt.front_it(); ++fit; --fit;
+			__TrieTree::it bit = tt.back_it(); ++bit; --bit;
+			__TrieTree::const_it cfit = tt.const_front_it(); ++cfit; --cfit;
+			__TrieTree::const_it cbit = tt.const_back_it(); ++cbit; --cbit;
 		}
 		TEST_END;
 	}
