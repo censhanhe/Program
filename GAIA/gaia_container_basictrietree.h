@@ -226,8 +226,6 @@ namespace GAIA
 			GINL GAIA::BL empty() const{return m_pool.empty();}
 			GINL _SizeType size() const{return m_pool.size();}
 			GINL _SizeType capacity() const{return m_pool.capacity();}
-			GINL GAIA::GVOID resize(const _SizeType& size) const{}
-			GINL GAIA::GVOID reserve(const _SizeType& size){}
 			GINL GAIA::GVOID clear(){this->init(); m_root.m_links.clear(); m_pool.clear();}
 			GINL GAIA::GVOID destroy(){this->init(); m_root.m_links.destroy(); m_pool.destroy();}
 			GINL GAIA::GVOID insert(const _DataType* p, const _SizeType& size)
@@ -287,22 +285,30 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
+			GINL GAIA::BL leaf(const it& iter) const{if(iter.empty()) return GAIA::False; return iter.m_pNode->m_links.size() == 0;}
+			GINL GAIA::BL leaf(const const_it& iter) const{if(iter.empty()) return GAIA::False; return iter.m_pNode->m_links.size() == 0;}
+			GINL GAIA::BL root(const it& iter) const{return iter->m_pNode == &m_root;}
+			GINL GAIA::BL root(const const_it& iter) const{return iter->m_pNode == &m_root;}
+			GINL it root(){it iter; it.m_pNode = &m_root; return iter;}
+			GINL const_it root() const{const_it iter; iter.m_pNode = &m_root; return iter;}
+			GINL it parent(const it& iter){it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; return ret;}
+			GINL const_it parent(const const_it& iter) const{const_it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; return ret;}
 			GINL Node* find(const Node* pNode, const _DataType* p, const _SizeType& size) const
 			{
 				GAIA_AST(p != GNULL);
 				GAIA_AST(size > 0);
 				return this->match_node(pNode == GNULL? m_root : *pNode, p, size);
 			}
-			GINL it lower_bound()
+			GINL it lower_bound(const _DataType* p, const _SizeType& size)
 			{
 			}
-			GINL it upper_bound()
+			GINL it upper_bound(const _DataType* p, const _SizeType& size)
 			{
 			}
-			GINL const_it lower_bound() const
+			GINL const_it lower_bound(const _DataType* p, const _SizeType& size) const
 			{
 			}
-			GINL const_it upper_bound() const
+			GINL const_it upper_bound(const _DataType* p, const _SizeType& size) const
 			{
 			}
 			GINL GAIA::GVOID paths(const Node* pNode, const _DataType* p, const _SizeType& size, __PathListType& result) const

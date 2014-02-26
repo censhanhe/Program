@@ -260,6 +260,8 @@ namespace GAIA
 			GINL GAIA::GVOID reserve(const _SizeType& size){}
 			GINL Node* root(){return m_pRoot;}
 			GINL const Node* root() const{return m_pRoot;}
+			GINL Node* parent(Node* p){if(p != GNULL) return p->m_pParent; return GNULL;}
+			GINL const Node* parent(Node* p) const{if(p != GNULL) return p->m_pParent; return GNULL;}
 			GINL Node* insert(const _DataType& t, Node* pNode)
 			{
 				Node* pNew = m_pool.alloc();

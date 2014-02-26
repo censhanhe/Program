@@ -293,6 +293,10 @@ namespace FSHA
 		{
 			if(it.empty())
 				return GAIA::False;
+			MAP_INDEX_TYPE* p = pMapIndex;
+			while(!it.empty())
+				*p++ = (*it).m_mapindex;
+			GAIA::ALGORITHM::inverse(pMapIndex, p - 1);
 			return GAIA::True;
 		}
 	private:
@@ -364,6 +368,9 @@ namespace FSHA
 		const GAIA::U64& GetMaxDownloadSpeed() const{return m_uDSpeed;}
 		GAIA::BL Command(const GAIA::GCH* pszCmd)
 		{
+			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
+			if(GAIA::ALGORITHM::stremp(pszCmd))
+				return GAIA::False;
 			return GAIA::True;
 		}
 	private:

@@ -17,7 +17,7 @@
 
 			tolower toupper islower isupper isexistlower isexistupper isalllower isallupper
 			isdigit isalpha ispunctuation isspecial
-			strlen strcpy strcat strcmp stricmp strstr stristr strmch strimch
+			strlen strcpy strcat strcmp stricmp strstr stristr strend strmch strimch strwrd striwrd
 			stremp strdrop stridrop strdropr stridropr
 			int2str real2str str2int str2real
 
@@ -25,6 +25,9 @@
 
 		CONTAINER
 
+			Pair<>
+			Ref<>
+			Ptr<>
 			BasicStackBitset<>(clear capacity exist set reset inverse = += -= == != ~ [])
 			BasicBitset<>(empty size capacity resize reverse clear destroy exist set reset inverse += -= == != ~ [])
 			BasicArray<>(empty size clear resize reset count sort unique unique_noorder erase push/pop_back [] = << >>)
@@ -34,19 +37,21 @@
 			BasicStackStack<>(empty size resize clear count push pop top = [])
 			BasicStack<>(empty size capacity resize reserve count push pop top = [])
 			BasicTree<>(empty size capacity clear destroy root insert erase link unlink islinked parent getlinksize getlink leaf find path)
-			BasicAVLTree<>iterator(empty size capacity clear destroy insert erase find lower/upper_bound min/maximize)
+			BasicAVLTree<>iterator(empty size capacity clear destroy insert erase find lower/upper_bound minimize maximize front/back/const_front/const_back_it)
+			BasicTrieTree<>iterator(empty size capacity clear destroy insert erase find exist leaf root parent lower/upper_bound count catagory_count full_count front/back/const_front/const_back_it)
 			BasicMultiAVLTree<>iterator(empty size capacity clear destroy insert erase find)
-			BasicMap<>(empty size capacity clear destroy erase [] =)
+			BasicMap<>iterator(empty size capacity clear destroy erase [] =)
 			BasicMultiMap<>(empty size capacity clear destroy insert erase find =)
-			BasicSet<>(empty size capacity clear destroy insert erase find =)
+			BasicSet<>iterator(empty size capacity clear destroy insert erase find =)
 			BasicMultiSet<>(empty size capacity clear destroy insert erase count find =)
 			BasicGraph<>iterator(empty size capacity clear destroy resize reverse root insert erase link unlink islinked getlinksize getlink exist count find path anypath navpath)
-			BasicChars<>(empty size capacity resize clear inverse insert erase find rfind left right mid trim_left/right/mid = += == != >= <= > < [])
-			BasicString<>(empty size capacity resize reverse clear destroy inverse insert erase find rfind replace left right mid trim_left/right/mid = += == != >= <= > < [])
+			BasicChars<>(empty size capacity resize clear inverse insert erase find rfind left right mid trim_left/right/mid tolower/upper isexistlower/upper isalllower/upper = += == != >= <= > < [])
+			BasicString<>(empty size capacity resize reverse clear destroy inverse insert erase find rfind replace left right mid trim_left/right/mid tolower/upper isexistlower/upper isalllower/upper = += == != >= <= > < [])
 
 		FILE
 
 			File(Open Close IsOpen Size Read Write Seek Tell << >> WriteText)
+			Directory(GetWorkingDirectory GetBinaryDirectory Create Remove RemoveFile Copy Move Collect)
 
 		SYNC
 			sleep usleep

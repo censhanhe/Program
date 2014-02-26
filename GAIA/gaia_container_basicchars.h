@@ -272,6 +272,12 @@ namespace GAIA
 			{
 				return GAIA::True;
 			}
+			GINL GAIA::GVOID tolower(){if(m_chars != GNULL) GAIA::ALGORITHM::tolower(m_chars);}
+			GINL GAIA::GVOID toupper(){if(m_chars != GNULL) GAIA::ALGORITHM::toupper(m_chars);}
+			GINL GAIA::BL isexistlower() const{if(m_chars != GNULL) return GAIA::ALGORITHM::isexistlower(m_chars); return GAIA::False;}
+			GINL GAIA::BL isexistupper() const{if(m_chars != GNULL) return GAIA::ALGORITHM::isexistupper(m_chars); return GAIA::False;}
+			GINL GAIA::BL isalllower() const{if(m_chars != GNULL) return GAIA::ALGORITHM::isalllower(m_chars); return GAIA::False;}
+			GINL GAIA::BL isallupper() const{if(m_chars != GNULL) return GAIA::ALGORITHM::isallupper(m_chars); return GAIA::False;}
 			GINL __MyType& operator = (const __MyType& src){this->assign(src.front_ptr(), src.size()); return *this;}
 			GINL __MyType& operator = (const _DataType* p){this->assign(p, GAIA::ALGORITHM::strlen(p)); return *this;}
 			GINL __MyType& operator = (const GAIA::N8& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
