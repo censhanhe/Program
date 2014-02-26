@@ -1,15 +1,20 @@
 #ifndef 	__FILE_SHARE_H__
 #define 	__FILE_SHARE_H__
 
-#include 	"../../GAIA/gaia.h"
-
 #ifdef _MSC_VER
 #	ifdef FILESHARE_EXPORT
 #		define __DWARFS_FILESHARE_API __declspec(dllexport)
 #	else
 #		define __DWARFS_FILESHARE_API __declspec(dllimport)
 #	endif
+#	pragma warning(disable : 4996)
+#	pragma warning(disable : 4800)
+#	pragma warning(disable : 4244)
+#	pragma warning(disable : 4018)
+#	pragma warning(disable : 4251)
 #endif
+
+#include 	"../../GAIA/gaia.h"
 
 namespace FSHA
 {
@@ -38,13 +43,13 @@ namespace FSHA
 			if(m_filesbtr.find(str) != GNULL)
 				return GAIA::False;
 			m_files.push_back(str);
-			m_filebstr.insert(str);
+			m_filesbtr.insert(str);
 			return GAIA::True;
 		}
 		GAIA::BL DeleteAll()
 		{
 			m_files.destroy();
-			m_filebstr.destroy();
+			m_filesbtr.destroy();
 		}
 		const GAIA::UM& GetRecCount() const{return m_files.size();}
 		const GAIA::GCH* GetRec(const GAIA::UM& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
@@ -88,7 +93,7 @@ namespace FSHA
 	class __DWARFS_FILESHARE_API FileShare
 	{
 	public:
-		class FileShareDesc
+		class __DWARFS_FILESHARE_API FileShareDesc
 		{
 		public:
 			FileShareDesc()
@@ -96,7 +101,7 @@ namespace FSHA
 				m_maxthreadcnt = 0xFF;
 			}
 			GAIA::U32 m_maxthreadcnt;
-		}
+		};
 
 	public:
 		FileShare(){this->init();}
@@ -165,7 +170,7 @@ namespace FSHA
 			m_bStartuped = GAIA::False;
 		}
 	private:	
-		FileShareDesc m_dese;
+		FileShareDesc m_desc;
 		GAIA::BL m_bInitialized;
 		GAIA::BL m_bStartuped;
 		GAIA::U64 m_uUSpeed;
