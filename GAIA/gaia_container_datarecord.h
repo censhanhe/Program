@@ -22,38 +22,7 @@ namespace GAIA
 			GINL GAIA::GVOID front_ptr(GAIA::GVOID* p){m_pFront = p;}
 			GINL operator GAIA::GVOID*(){return m_pFront;}
 			GINL DataRecord& operator = (const DataRecord& src){m_pFront = src.m_pFront; m_size = src.m_size; return *this;}
-			GINL GAIA::BL operator == (const __MyType& src) const{if(m_pFront == src.m_pFront && m_size == src.m_size) return GAIA::True; return GAIA::False;}
-			GINL GAIA::BL operator != (const __MyType& src) const{return this->operator == (src);}
-			GINL GAIA::BL operator >= (const __MyType& src) const
-			{
-				if(m_pFront < src.m_pFront)
-					return GAIA::False;
-				else if(m_pFront > src.m_pFront)
-					return GAIA::True;
-				else
-				{
-					if(m_size < src.m_size)
-						return GAIA::False;
-					else
-						return GAIA::True;
-				}
-			}
-			GINL GAIA::BL operator <= (const __MyType& src) const
-			{
-				if(m_pFront > src.m_pFront)
-					return GAIA::False;
-				else if(m_pFront < src.m_pFront)
-					return GAIA::True;
-				else
-				{
-					if(m_size > src.m_size)
-						return GAIA::False;
-					else
-						return GAIA::True;
-				}
-			}
-			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
+			GAIA_CLASS_OPERATOR_COMPARE2(m_pFront, m_pFront, m_size, m_size, DataRecord);
 		private:
 			GINL GAIA::GVOID init(){m_pFront = GNULL; m_size = 0;}
 		private:

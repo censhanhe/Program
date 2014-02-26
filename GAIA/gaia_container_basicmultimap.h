@@ -15,12 +15,7 @@ namespace GAIA
 			public:
 				GINL Node(){}
 				GINL ~Node(){}
-				GINL GAIA::BL operator == (const Node& src) const{if(m_key == src.m_key) return GAIA::True; return GAIA::False;}
-				GINL GAIA::BL operator != (const Node& src) const{return !(this->operator == (src));}
-				GINL GAIA::BL operator >= (const Node& src) const{return !(this->operator > (src));}
-				GINL GAIA::BL operator <= (const Node& src) const{return !(this->operator < (src));}
-				GINL GAIA::BL operator > (const Node& src) const{if(m_key > src.m_key) return GAIA::True; return GAIA::False;}
-				GINL GAIA::BL operator < (const Node& src) const{if(m_key < src.m_key) return GAIA::True; return GAIA::False;}
+				GAIA_CLASS_OPERATOR_COMPARE(m_key, m_key, Node);
 				GINL Node& operator = (const Node& src){m_key = src.m_key; m_data = src.m_data; return *this;}
 			private:
 				_KeyType m_key;

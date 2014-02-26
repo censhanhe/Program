@@ -31,12 +31,7 @@ namespace GAIA
 					m_full_count = src.m_full_count;
 					return *this;
 				}
-				GINL GAIA::BL operator == (const Node& src) const{return m_t == src.m_t;}
-				GINL GAIA::BL operator != (const Node& src) const{return m_t != src.m_t;}
-				GINL GAIA::BL operator >= (const Node& src) const{return m_t >= src.m_t;}
-				GINL GAIA::BL operator <= (const Node& src) const{return m_t <= src.m_t;}
-				GINL GAIA::BL operator > (const Node& src) const{return m_t > src.m_t;}
-				GINL GAIA::BL operator < (const Node& src) const{return m_t < src.m_t;}
+				GAIA_CLASS_OPERATOR_COMPARE(m_t, m_t, Node);
 			private:
 				GINL Node* find_child_node(const _DataType& t) const
 				{

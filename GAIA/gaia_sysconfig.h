@@ -103,6 +103,51 @@
 			GINL GAIA::BL operator > (const anothertype& src) const{return (self) > (src.another);}\
 			GINL GAIA::BL operator < (const anothertype& src) const{return (self) < (src.another);}
 
+
+#define GAIA_CLASS_OPERATOR_COMPARE2(self, another, self2, another2, anothertype) \
+			GINL GAIA::BL operator == (const anothertype& src) const\
+			{\
+				if(self == another && self2 == another2)\
+					return GAIA::True;\
+				return GAIA::False;\
+			}\
+			GINL GAIA::BL operator != (const anothertype& src) const\
+			{\
+				if(self != another || self2 != another2)\
+					return GAIA::True;\
+				return GAIA::False;\
+			}\
+			GINL GAIA::BL operator >= (const anothertype& src) const\
+			{\
+				if(self > another)\
+					return GAIA::True;\
+				else if(self < another)\
+					return GAIA::False;\
+				else\
+				{\
+					if(self2 >= another2)\
+						return GAIA::True;\
+					else\
+						return GAIA::False;\
+				}\
+			}\
+			GINL GAIA::BL operator <= (const anothertype& src) const\
+			{\
+				if(self < another)\
+					return GAIA::True;\
+				else if(self > another)\
+					return GAIA::False;\
+				else\
+				{\
+					if(self2 <= another2)\
+						return GAIA::True;\
+					else\
+						return GAIA::False;\
+				}\
+			}\
+			GINL GAIA::BL operator > (const anothertype& src) const{return !(*this <= src);}\
+			GINL GAIA::BL operator < (const anothertype& src) const{return !(*this >= src);}
+
 /* Warning adjust. */
 #ifdef GAIA_DEBUG_WARNING
 #	if GAIA_OS == GAIA_OS_WINDOWS

@@ -56,13 +56,8 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index == src.m_index;}
-				GINL GAIA::BL operator != (const it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index != src.m_index;}
-				GINL GAIA::BL operator >= (const it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index >= src.m_index;}
-				GINL GAIA::BL operator <= (const it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index <= src.m_index;}
-				GINL GAIA::BL operator > (const it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index > src.m_index;}
-				GINL GAIA::BL operator < (const it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index < src.m_index;}
 				GINL it& operator = (const it& src){m_index = src.m_index; m_pVector = src.m_pVector; return *this;}
+				GAIA_CLASS_OPERATOR_COMPARE(m_index, m_index, it);
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){GAIA_AST(m_pVector != GNULL); if(m_index < m_pVector->size()) ++m_index; return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){GAIA_AST(m_pVector != GNULL); if(m_index > 0) --m_index; return *this;}
@@ -111,13 +106,8 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const const_it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index == src.m_index;}
-				GINL GAIA::BL operator != (const const_it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index != src.m_index;}
-				GINL GAIA::BL operator >= (const const_it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index >= src.m_index;}
-				GINL GAIA::BL operator <= (const const_it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index <= src.m_index;}
-				GINL GAIA::BL operator > (const const_it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index > src.m_index;}
-				GINL GAIA::BL operator < (const const_it& src) const{GAIA_AST(m_pVector != GNULL); GAIA_AST(m_pVector == src.m_pVector); return m_index < src.m_index;}
 				GINL const_it& operator = (const const_it& src){m_index = src.m_index; m_pVector = src.m_pVector; return *this;}
+				GAIA_CLASS_OPERATOR_COMPARE(m_index, m_index, const_it);
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){GAIA_AST(m_pVector != GNULL); if(m_index < m_pVector->size()) ++m_index; return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){GAIA_AST(m_pVector != GNULL); if(m_index > 0) --m_index; return *this;}

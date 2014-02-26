@@ -14,12 +14,7 @@ namespace GAIA
 			class Node
 			{
 			public:
-				GINL GAIA::BL operator == (const Node& src) const{return t == src.t;}
-				GINL GAIA::BL operator != (const Node& src) const{return t != src.t;}
-				GINL GAIA::BL operator >= (const Node& src) const{return t >= src.t;}
-				GINL GAIA::BL operator <= (const Node& src) const{return t <= src.t;}
-				GINL GAIA::BL operator > (const Node& src) const{return t > src.t;}
-				GINL GAIA::BL operator < (const Node& src) const{return t < src.t;}
+				GAIA_CLASS_OPERATOR_COMPARE(t, t, Node);
 				_DataType t;
 				_HeightType h;
 				Node* pPrev;

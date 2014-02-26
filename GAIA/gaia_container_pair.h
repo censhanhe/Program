@@ -25,42 +25,7 @@ namespace GAIA
 			GINL _BackDataType& back(){return m_back;}
 			GINL const _BackDataType& back() const{return m_back;}
 			GINL __MyType& operator = (const __MyType& src){m_front = src.m_front; m_back = src.m_back; return *this;}
-			GINL GAIA::BL operator == (const __MyType& src) const{if(m_front == src.m_front && m_back == src.m_back) return GAIA::True; return GAIA::False;}
-			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
-			GINL GAIA::BL operator >= (const __MyType& src) const
-			{
-				if(m_front > src.m_front)
-					return GAIA::True;
-				else if(m_front < src.m_front)
-					return GAIA::False;
-				else
-				{
-					if(m_back > src.m_back)
-						return GAIA::True;
-					else if(m_back < src.m_back)
-						return GAIA::False;
-					else
-						return GAIA::True;
-				}
-			}
-			GINL GAIA::BL operator <= (const __MyType& src) const
-			{
-				if(m_front < src.m_front)
-					return GAIA::True;
-				else if(m_front > src.m_front)
-					return GAIA::False;
-				else
-				{
-					if(m_back < src.m_back)
-						return GAIA::True;
-					else if(m_back > src.m_back)
-						return GAIA::False;
-					else
-						return GAIA::True;
-				}
-			}
-			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
+			GAIA_CLASS_OPERATOR_COMPARE2(m_front, m_front, m_back, m_back, __MyType);
 		private:
 			_FrontDataType m_front;
 			_BackDataType m_back;

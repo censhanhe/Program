@@ -25,12 +25,7 @@ namespace GAIA
 				GINL const _SizeType& size() const{return m_size;}
 				GINL const _SizeType& capacity() const{return m_capacity;}
 				GINL Node& operator = (const Node& src){m_head = src.m_head; m_size = src.m_size; m_capacity = src.m_capacity; return *this;}
-				GINL GAIA::BL operator == (const Node& src) const{return m_head == src.m_head;}
-				GINL GAIA::BL operator != (const Node& src) const{return m_head != src.m_head;}
-				GINL GAIA::BL operator >= (const Node& src) const{return m_head >= src.m_head;}
-				GINL GAIA::BL operator <= (const Node& src) const{return m_head <= src.m_head;}
-				GINL GAIA::BL operator > (const Node& src) const{return m_head > src.m_head;}
-				GINL GAIA::BL operator < (const Node& src) const{return m_head < src.m_head;}
+				GAIA_CLASS_OPERATOR_COMPARE(m_head, m_head, Node);
 			private:
 				_SizeType m_head;
 				_SizeType m_size;
@@ -48,43 +43,7 @@ namespace GAIA
 				GINL const Node& node() const{return m_n;}
 				GINL NodeSize& operator = (const NodeSize& src){m_n = src.m_n; return *this;}
 				GINL NodeSize& operator = (const Node& src){m_n = src; return *this;}
-				GINL GAIA::BL operator == (const NodeSize& src) const
-				{
-					if(m_n.m_capacity == src.m_n.m_capacity && m_n.m_head == src.m_n.m_head)
-						return GAIA::True;
-					return GAIA::False;
-				}
-				GINL GAIA::BL operator != (const NodeSize& src) const{return !(this->operator == (src));}
-				GINL GAIA::BL operator >= (const NodeSize& src) const
-				{
-					if(m_n.m_capacity < src.m_n.m_capacity)
-						return GAIA::False;
-					else if(m_n.m_capacity > src.m_n.m_capacity)
-						return GAIA::True;
-					else
-					{
-						if(m_n.m_head < src.m_n.m_head)
-							return GAIA::False;
-						else
-							return GAIA::True;
-					}
-				}
-				GINL GAIA::BL operator <= (const NodeSize& src) const
-				{
-					if(m_n.m_capacity > src.m_n.m_capacity)
-						return GAIA::False;
-					else if(m_n.m_capacity < src.m_n.m_capacity)
-						return GAIA::True;
-					else
-					{
-						if(m_n.m_head > src.m_n.m_head)
-							return GAIA::False;
-						else
-							return GAIA::True;
-					}
-				} 
-				GINL GAIA::BL operator > (const NodeSize& src) const{return !(this->operator <= (src));}
-				GINL GAIA::BL operator < (const NodeSize& src) const{return !(this->operator >= (src));}
+				GAIA_CLASS_OPERATOR_COMPARE2(m_n.m_capacity, m_n.m_capacity, m_n.m_head, m_n.m_head, NodeSize);
 			private:
 				GINL GAIA::GVOID init(){}
 			private:

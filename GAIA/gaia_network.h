@@ -52,38 +52,7 @@ namespace GAIA
 			}
 			GINL IP& operator = (const IP& src){uIPv4 = src.uIPv4; uIPv6 = src.uIPv6; return *this;}
 			GINL IP& operator = (const GAIA::GCH* psz){this->FromString(psz); return *this;}
-			GINL GAIA::BL operator == (const IP& src) const{return uIPv4 == src.uIPv4 && uIPv6 == src.uIPv6;}
-			GINL GAIA::BL operator != (const IP& src) const{return !(this->operator == (src));}
-			GINL GAIA::BL operator >= (const IP& src) const
-			{
-				if(uIPv4 < src.uIPv4)
-					return GAIA::False;
-				else if(uIPv4 > src.uIPv4)
-					return GAIA::True;
-				else
-				{
-					if(uIPv6 < src.uIPv6)
-						return GAIA::False;
-					else
-						return GAIA::True;
-				}
-			}
-			GINL GAIA::BL operator <= (const IP& src) const
-			{
-				if(uIPv4 > src.uIPv4)
-					return GAIA::False;
-				else if(uIPv4 < src.uIPv4)
-					return GAIA::True;
-				else
-				{
-					if(uIPv6 > src.uIPv6)
-						return GAIA::False;
-					else
-						return GAIA::True;
-				}
-			}
-			GINL GAIA::BL operator > (const IP& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const IP& src) const{return !(this->operator >= (src));}
+			GAIA_CLASS_OPERATOR_COMPARE2(uIPv4, uIPv4, uIPv6, uIPv6, IP);
 		public:
 			union
 			{
@@ -119,38 +88,7 @@ namespace GAIA
 				*(p - 1) = 0;
 			}
 			GINL NetworkAddress& operator = (const NetworkAddress& src){ip = src.ip; uPort = src.uPort; return *this;}
-			GINL GAIA::BL operator == (const NetworkAddress& src) const{return ip == src.ip && uPort == src.uPort;}
-			GINL GAIA::BL operator != (const NetworkAddress& src) const{return !(this->operator == (src));}
-			GINL GAIA::BL operator >= (const NetworkAddress& src) const
-			{
-				if(ip < src.ip)
-					return GAIA::False;
-				else if(ip > src.ip)
-					return GAIA::True;
-				else
-				{
-					if(uPort < src.uPort)
-						return GAIA::False;
-					else
-						return GAIA::True;
-				}
-			}
-			GINL GAIA::BL operator <= (const NetworkAddress& src) const
-			{
-				if(ip > src.ip)
-					return GAIA::False;
-				else if(ip < src.ip)
-					return GAIA::True;
-				else
-				{
-					if(uPort > src.uPort)
-						return GAIA::False;
-					else
-						return GAIA::True;
-				}
-			}
-			GINL GAIA::BL operator > (const NetworkAddress& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const NetworkAddress& src) const{return !(this->operator >= (src));}
+			GAIA_CLASS_OPERATOR_COMPARE2(ip, ip, uPort, uPort, NetworkAddress);
 		public:
 			IP ip;
 			GAIA::U16 uPort;
@@ -204,12 +142,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC BL Send(const GAIA::U8* p, GAIA::UM uSize);
 			template<typename _DataType> GINL GAIA::BL Send(const _DataType& t){return this->Send(&t, sizeof(t));}
 			template<typename _DataType> GINL GAIA::BL operator << (const _DataType& t){return this->Send(t);}
-			GINL GAIA::BL operator == (const NetworkHandle& src) const{return m_h == src.m_h;}
-			GINL GAIA::BL operator != (const NetworkHandle& src) const{return !(this->operator == (src));}
-			GINL GAIA::BL operator >= (const NetworkHandle& src) const{return m_h <= src.m_h;}
-			GINL GAIA::BL operator <= (const NetworkHandle& src) const{return m_h >= src.m_h;}
-			GINL GAIA::BL operator > (const NetworkHandle& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const NetworkHandle& src) const{return !(this->operator >= (src));}
+			GAIA_CLASS_OPERATOR_COMPARE(m_h, m_h, NetworkHandle);
 		private:
 			GINL GAIA::GVOID init()
 			{

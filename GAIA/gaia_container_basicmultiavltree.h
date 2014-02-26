@@ -20,27 +20,12 @@ namespace GAIA
 			public:
 				typedef BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __DataListType;
 			public:
-				GINL GAIA::BL operator == (const Node& src) const
-				{
-					if(m_datas.front() == src.m_datas.front())
-						return GAIA::True;
-					return GAIA::False;
-				}
+				GINL GAIA::BL operator == (const Node& src) const{return m_datas.front() == src.m_datas.front();}
 				GINL GAIA::BL operator != (const Node& src) const{return !(this->operator == (src));}
 				GINL GAIA::BL operator >= (const Node& src) const{return !(this->operator < (src));}
 				GINL GAIA::BL operator <= (const Node& src) const{return !(this->operator > (src));}
-				GINL GAIA::BL operator > (const Node& src) const
-				{
-					if(m_datas.front() > src.m_datas.front())
-						return GAIA::True;
-					return GAIA::False;
-				}
-				GINL GAIA::BL operator < (const Node& src) const
-				{
-					if(m_datas.front() < src.m_datas.front())
-						return GAIA::True;
-					return GAIA::False;
-				}
+				GINL GAIA::BL operator > (const Node& src) const{return m_datas.front() > src.m_datas.front();}
+				GINL GAIA::BL operator < (const Node& src) const{return m_datas.front() < src.m_datas.front();}
 				GINL Node& operator = (const Node& src){m_datas = src.m_datas; return *this;}
 			private:
 				__DataListType m_datas;
@@ -119,44 +104,8 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const it& src) const
-				{
-					if(m_iter_n == src.m_iter_n && m_iter_d == src.m_iter_d)
-						return GAIA::True;
-					return GAIA::False;
-				}
-				GINL GAIA::BL operator != (const it& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const it& src) const
-				{
-					if(m_iter_n > src.m_iter_n)
-						return GAIA::True;
-					else if(m_iter_n < src.m_iter_n)
-						return GAIA::False;
-					else
-					{
-						if(m_iter_d >= src.m_iter_d)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
-				GINL GAIA::BL operator <= (const it& src) const
-				{
-					if(m_iter_n < src.m_iter_n)
-						return GAIA::True;
-					else if(m_iter_n > src.m_iter_n)
-						return GAIA::False;
-					else
-					{
-						if(m_iter_d <= src.m_iter_d)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
-				GINL GAIA::BL operator > (const it& src) const{return !(*this <= src);}
-				GINL GAIA::BL operator < (const it& src) const{return !(*this >= src);}
 				GINL it& operator = (const it& src){m_iter_n = src.m_iter_n; m_iter_d = src.m_iter_d; return *this;}
+				GAIA_CLASS_OPERATOR_COMPARE2(m_iter_n, m_iter_n, m_iter_d, m_iter_d, it);
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
@@ -219,44 +168,8 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const const_it& src) const
-				{
-					if(m_iter_n == src.m_iter_n && m_iter_d == src.m_iter_d)
-						return GAIA::True;
-					return GAIA::False;
-				}
-				GINL GAIA::BL operator != (const const_it& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const const_it& src) const
-				{
-					if(m_iter_n > src.m_iter_n)
-						return GAIA::True;
-					else if(m_iter_n < src.m_iter_n)
-						return GAIA::False;
-					else
-					{
-						if(m_iter_d >= src.m_iter_d)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
-				GINL GAIA::BL operator <= (const const_it& src) const
-				{
-					if(m_iter_n < src.m_iter_n)
-						return GAIA::True;
-					else if(m_iter_n > src.m_iter_n)
-						return GAIA::False;
-					else
-					{
-						if(m_iter_d <= src.m_iter_d)
-							return GAIA::True;
-						else
-							return GAIA::False;
-					}
-				}
-				GINL GAIA::BL operator > (const const_it& src) const{return !(*this <= src);}
-				GINL GAIA::BL operator < (const const_it& src) const{return !(*this >= src);}
 				GINL const_it& operator = (const const_it& src){m_iter_n = src.m_iter_n; m_iter_d = src.m_iter_d; return *this;}
+				GAIA_CLASS_OPERATOR_COMPARE2(m_iter_n, m_iter_n, m_iter_d, m_iter_d, const_it);
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){--(*this); return *this;}
