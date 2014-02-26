@@ -18,6 +18,7 @@
 			tolower toupper islower isupper isexistlower isexistupper isalllower isallupper
 			isdigit isalpha ispunctuation isspecial
 			strlen strcpy strcat strcmp stricmp strstr stristr strmch strimch
+			stremp
 			int2str real2str str2int str2real
 
 			unique_order unique_noorder
