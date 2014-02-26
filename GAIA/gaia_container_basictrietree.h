@@ -287,6 +287,18 @@ namespace GAIA
 				GAIA_AST(size > 0);
 				return this->match_node(pNode == GNULL? m_root : *pNode, p, size);
 			}
+			GINL it lower_bound()
+			{
+			}
+			GINL it upper_bound()
+			{
+			}
+			GINL const_it lower_bound() const
+			{
+			}
+			GINL const_it upper_bound() const
+			{
+			}
 			GINL GAIA::GVOID paths(const Node* pNode, const _DataType* p, const _SizeType& size, __PathListType& result) const
 			{
 				GAIA_AST(p != GNULL);
