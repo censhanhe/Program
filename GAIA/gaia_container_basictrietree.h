@@ -85,11 +85,12 @@ namespace GAIA
 							m_pNode = GNULL;
 							return *this;
 						}
-						Ref<Node>* pMaximize = m_pNode->m_pParent->m_links.maximize();
-						GAIA_AST(pMaximize != GNULL);
-						if(*pMaximize != m_pNode)
+						typename __NodeTreeType::it it = m_pNode->m_pParent->m_links.lower_bound(Ref<Node>(m_pNode));
+						GAIA_AST(!it.empty());
+						++it;
+						if(!it.empty())
 						{
-							m_pNode = *pMaximize;
+							m_pNode = *it;
 							return *this;
 						}
 						m_pNode = m_pNode->m_pParent;
@@ -105,27 +106,27 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.size() == 0)
+					if(m_pNode->m_pParent != GNULL)
 					{
-					NEXT_LOOP:
-						if(m_pNode->m_pParent == GNULL)
+						typename __NodeTreeType::it it = m_pNode->m_pParent->m_links.lower_bound(Ref<Node>(m_pNode));
+						GAIA_AST(!it.empty());
+						--it;
+						if(!it.empty())
 						{
-							m_pNode = GNULL;
+							m_pNode = *it;
 							return *this;
 						}
-						Ref<Node>* pMinimize = m_pNode->m_pParent->m_links.minimize();
-						GAIA_AST(pMinimize != GNULL);
-						if(*pMinimize != m_pNode)
+						else
 						{
-							m_pNode = *pMinimize;
+							m_pNode = m_pNode->m_pParent;
+							if(m_pNode->m_pParent == GNULL)
+								m_pNode = GNULL;
 							return *this;
 						}
-						m_pNode = m_pNode->m_pParent;
-						goto NEXT_LOOP;
 					}
 					else
 					{
-						m_pNode = *m_pNode->m_links.back_it();
+						m_pNode = GNULL;
 						return *this;
 					}
 				}
@@ -158,11 +159,14 @@ namespace GAIA
 							m_pNode = GNULL;
 							return *this;
 						}
-						const Ref<Node>* pMaximize = m_pNode->m_pParent->m_links.maximize();
-						GAIA_AST(pMaximize != GNULL);
-						if(*pMaximize != m_pNode)
+						typename __NodeTreeType::const_it it = 
+							(const_cast<const Node*>(m_pNode->m_pParent))->m_links.lower_bound(
+								Ref<Node>(const_cast<Node*>(m_pNode)));
+						GAIA_AST(!it.empty());
+						++it;
+						if(!it.empty())
 						{
-							m_pNode = *pMaximize;
+							m_pNode = *it;
 							return *this;
 						}
 						m_pNode = m_pNode->m_pParent;
@@ -178,27 +182,29 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.size() == 0)
+					if(m_pNode->m_pParent != GNULL)
 					{
-					NEXT_LOOP:
-						if(m_pNode->m_pParent == GNULL)
+						typename __NodeTreeType::const_it it = 
+							(const_cast<const Node*>(m_pNode->m_pParent))->m_links.lower_bound(
+								Ref<Node>(const_cast<Node*>(m_pNode)));
+						GAIA_AST(!it.empty());
+						--it;
+						if(!it.empty())
 						{
-							m_pNode = GNULL;
+							m_pNode = *it;
 							return *this;
 						}
-						const Ref<Node>* pMinimize = m_pNode->m_pParent->m_links.minimize();
-						GAIA_AST(pMinimize != GNULL);
-						if(*pMinimize != m_pNode)
+						else
 						{
-							m_pNode = *pMinimize;
+							m_pNode = m_pNode->m_pParent;
+							if(m_pNode->m_pParent == GNULL)
+								m_pNode = GNULL;
 							return *this;
 						}
-						m_pNode = m_pNode->m_pParent;
-						goto NEXT_LOOP;
 					}
 					else
 					{
-						m_pNode = *m_pNode->m_links.const_back_it();
+						m_pNode = GNULL;
 						return *this;
 					}
 				}
@@ -313,23 +319,73 @@ namespace GAIA
 			GINL it front_it()
 			{
 				it iter;
-				iter.m_pNode = &m_root;
+				typename __NodeTreeType::it itf = m_root.m_links.front_it();
+				if(!itf.empty())
+					iter.m_pNode = *itf;
 				return iter;
 			}
 			GINL it back_it()
 			{
+				Node* pNode = &m_root;
+				if(pNode != GNULL)
+				{
+					for(;;)
+					{
+						typename __NodeTreeType::it it = pNode->m_links.back_it();
+						GAIA::BL bExistChild = GAIA::False;
+						while(!it.empty())
+						{
+							if(*it != (const Node*)GNULL)
+							{
+								pNode = *it;
+								bExistChild = GAIA::True;
+								break;
+							}
+							--it;
+						}
+						if(!bExistChild)
+							break;
+					}
+				}
 				it iter;
+				if(pNode != &m_root)
+					iter.m_pNode = pNode;
 				return iter;
 			}
 			GINL const_it const_front_it()
 			{
 				const_it iter;
-				iter.m_pNode = &m_root;
+				typename __NodeTreeType::const_it itf = m_root.m_links.const_front_it();
+				if(!itf.empty())
+					iter.m_pNode = *itf;
 				return iter;
 			}
 			GINL const_it const_back_it()
 			{
+				const Node* pNode = &m_root;
+				if(pNode != GNULL)
+				{
+					for(;;)
+					{
+						typename __NodeTreeType::const_it it = pNode->m_links.const_back_it();
+						GAIA::BL bExistChild = GAIA::False;
+						while(!it.empty())
+						{
+							if(*it != (const Node*)GNULL)
+							{
+								pNode = *it;
+								bExistChild = GAIA::True;
+								break;
+							}
+							--it;
+						}
+						if(!bExistChild)
+							break;
+					}
+				}
 				const_it iter;
+				if(pNode != &m_root)
+					iter.m_pNode = pNode;
 				return iter;
 			}
 			GINL __MyType& operator = (const __MyType& src){return *this;}
