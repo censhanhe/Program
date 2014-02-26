@@ -94,6 +94,15 @@
 #define ENUM_BEGIN(name) enum name{name##_INVALID = 0,
 #define ENUM_END(name) name##_COUNT,name##_FORCEUNSIGNEDINTEGER=GAIA_MAX_UNSIGNED_INTEGER,};
 
+/* Class helper. */
+#define GAIA_CLASS_OPERATOR_COMPARE(self, another, anothertype) \
+			GINL GAIA::BL operator == (const anothertype& src) const{return (self) == (src.another);}\
+			GINL GAIA::BL operator != (const anothertype& src) const{return (self) != (src.another);}\
+			GINL GAIA::BL operator >= (const anothertype& src) const{return (self) >= (src.another);}\
+			GINL GAIA::BL operator <= (const anothertype& src) const{return (self) <= (src.another);}\
+			GINL GAIA::BL operator > (const anothertype& src) const{return (self) > (src.another);}\
+			GINL GAIA::BL operator < (const anothertype& src) const{return (self) < (src.another);}
+
 /* Warning adjust. */
 #ifdef GAIA_DEBUG_WARNING
 #	if GAIA_OS == GAIA_OS_WINDOWS

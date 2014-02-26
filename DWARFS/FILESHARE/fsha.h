@@ -171,12 +171,7 @@ namespace FSHA
 		{
 		public:
 			GINL TrieNode& operator = (const TrieNode& src){m_mapindex = src.m_mapindex; return *this;}
-			GINL GAIA::BL operator == (const TrieNode& src) const{return m_mapindex == src.m_mapindex;}
-			GINL GAIA::BL operator != (const TrieNode& src) const{return m_mapindex != src.m_mapindex;}
-			GINL GAIA::BL operator >= (const TrieNode& src) const{return m_mapindex >= src.m_mapindex;}
-			GINL GAIA::BL operator <= (const TrieNode& src) const{return m_mapindex <= src.m_mapindex;}
-			GINL GAIA::BL operator > (const TrieNode& src) const{return m_mapindex > src.m_mapindex;}
-			GINL GAIA::BL operator < (const TrieNode& src) const{return m_mapindex < src.m_mapindex;}
+			GAIA_CLASS_OPERATOR_COMPARE(m_mapindex, m_mapindex, TrieNode);
 			MAP_INDEX_TYPE m_mapindex;
 			FILEID m_id;
 		};
@@ -186,24 +181,14 @@ namespace FSHA
 		class NameMap
 		{
 		public:
-			GINL GAIA::BL operator == (const NameMap& src) const{return m_name == src.m_name;}
-			GINL GAIA::BL operator != (const NameMap& src) const{return m_name != src.m_name;}
-			GINL GAIA::BL operator >= (const NameMap& src) const{return m_name >= src.m_name;}
-			GINL GAIA::BL operator <= (const NameMap& src) const{return m_name <= src.m_name;}
-			GINL GAIA::BL operator > (const NameMap& src) const{return m_name > src.m_name;}
-			GINL GAIA::BL operator < (const NameMap& src) const{return m_name < src.m_name;}
+			GAIA_CLASS_OPERATOR_COMPARE(m_name, m_name, NameMap);
 			FSTR m_name;
 		};
 		class FileRec
 		{
 		public:
 			GINL FileRec& operator = (const FileRec& src){m_id = src.m_id; m_it = src.m_it; return *this;}
-			GINL GAIA::BL operator == (const FileRec& src) const{return m_id == src.m_id;}
-			GINL GAIA::BL operator != (const FileRec& src) const{return m_id != src.m_id;}
-			GINL GAIA::BL operator >= (const FileRec& src) const{return m_id >= src.m_id;}
-			GINL GAIA::BL operator <= (const FileRec& src) const{return m_id <= src.m_id;}
-			GINL GAIA::BL operator > (const FileRec& src) const{return m_id > src.m_id;}
-			GINL GAIA::BL operator < (const FileRec& src) const{return m_id < src.m_id;}
+			GAIA_CLASS_OPERATOR_COMPARE(m_id, m_id, FileRec);
 			FILEID m_id;
 			__FileTreeType::const_it m_it;
 			GAIA::U32 m_uSequence;
@@ -313,6 +298,77 @@ namespace FSHA
 		__FileRecIDListType m_recids; // Sorted by file id.
 		__FileStateListType m_states; // Sorted as file id list.
 		__FileTreeType m_ftree; // Sorted by file name section.
+	};
+
+	/* User group class. */
+	class __DWARFS_FILESHARE_API UserGroup
+	{
+	public:
+		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, 16> __UserNameType;
+		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, 16> __PasswordType;
+		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, 16> __GroupNameType;
+		typedef GAIA::CONTAINER::Vector<__UserNameType> __UserNameListType;
+		typedef GAIA::CONTAINER::Vector<__GroupNameType> __GroupNameListType;
+	private:
+		class Right
+		{
+		public:
+			Right(){this->Reset();}
+			GINL GAIA::GVOID Reset()
+			{
+				m_bRead = GAIA::False;
+				m_bWrite = GAIA::False;
+			}
+			GAIA::U8 m_bRead : 1;
+			GAIA::U8 m_bWrite : 1;
+		};
+		class Group;
+		class User
+		{
+		public:
+			typedef GAIA::CONTAINER::Vector<Group*> __GroupRefListType;
+		public:
+			GAIA_CLASS_OPERATOR_COMPARE(m_name, m_name, User);
+			__UserNameType m_name;
+			__PasswordType m_pwd;
+			__GroupRefListType m_refgroups;
+		};
+		class Group
+		{
+		public:
+			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User>> __UserRefListType;
+		public:
+			GAIA_CLASS_OPERATOR_COMPARE(m_name, m_name, Group);
+			__GroupNameType m_name;
+			__UserRefListType m_refusers;
+			Right m_right;
+		};
+	private:
+		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User>> __UserSetType;
+		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<Group>> __GroupSetType;
+		typedef GAIA::CONTAINER::Pool<User, 100> __UserPoolType;
+		typedef GAIA::CONTAINER::Pool<Group, 100> __GroupPoolType;
+	public:
+		GINL GAIA::BL Load(const GAIA::GCH* pszFileName);
+		GINL GAIA::BL Save(const GAIA::GCH* pszFileName);
+		GINL GAIA::BL AddUser(const __UserNameType& name);
+		GINL GAIA::BL DeleteUser(const __UserNameType& name);
+		GINL GAIA::GVOID DeleteUserAll();
+		GINL GAIA::BL FindUser(const __UserNameType& name) const;
+		GINL GAIA::BL AddGroup(const __GroupNameType& name);
+		GINL GAIA::BL DeleteGroup(const __GroupNameType& name);
+		GINL GAIA::GVOID DeleteGroupAll();
+		GINL GAIA::BL FindGroup(const __GroupNameType& name) const;
+		GINL GAIA::BL AddGroupUser(const __GroupNameType& gname, const __UserNameType& uname);
+		GINL GAIA::BL DeleteGroupUser(const __GroupNameType& anem, const __UserNameType& uname);
+		GINL GAIA::BL DeleteGroupUserAll();
+		GINL GAIA::BL EnumUserGroup(const __UserNameType& name, __GroupNameListType& result) const;
+		GINL GAIA::BL EnumGroupUser(const __GroupNameType& name, __UserNameListType& result) const;
+	private:
+		__UserSetType m_users; // Sorted by user name.
+		__GroupSetType m_groups; // Sorted by group name.
+		__UserPoolType m_upool;
+		__GroupPoolType m_gpool;
 	};
 
 	/* File share class. */
