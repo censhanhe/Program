@@ -83,6 +83,16 @@ namespace FSHA
 			GAIA::FILESYSTEM::File file;
 			if(!file.Open(pszFileName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
 				return GAIA::False;
+			// Load name map list.
+			{
+			}
+			// Load file tree.
+			{
+				// Load id.
+				// Load file chunk progress.
+				// Load file sequence.
+				// Load file map index list.
+			}
 			return GAIA::True;
 		}
 		GAIA::BL Save(const GAIA::GCH* pszFileName)
@@ -93,6 +103,16 @@ namespace FSHA
 			GAIA::FILESYSTEM::File file;
 			if(!file.Open(pszFileName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE))
 				return GAIA::False;
+			// Save name map list.
+			{
+			}
+			// Save file tree.
+			{
+				// Save id.
+				// Save file chunk progress.
+				// Save file sequence.
+				// Save file map index list.
+			}
 			return GAIA::True;
 		}
 		GAIA::BL Build()
@@ -103,15 +123,23 @@ namespace FSHA
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GNULL;
-			__FileRecNameListType::_datatype f;
-			__FileRecIDListType::_datatype frec;
-			f.m_pRec = &frec;
-			if(!this->NameToMapIndex(pszFileName, f.m_pRec->m_mapindex))
+			MAP_INDEX_TYPE mapindex[MAX_DEPTH];
+			if(!this->NameToMapIndex(pszFileName, mapindex))
 				return GNULL;
-			GAIA::UM uIndex = m_recnames.find(f);
-			if(uIndex == GINVALID)
+			TrieNode tnlist[MAX_DEPTH];
+			MAP_INDEX_TYPE* p = mapindex;
+			for(;;)
+			{
+				if(*p == 0)
+					break;
+				TrieNode& tn = tnlist[p - mapindex];
+				tn.m_mapindex = *p;
+			}
+			GAIA_AST(p != mapindex);
+			__FileTreeType::Node* pNode = m_ftree.find(GNULL, tnlist, p - mapindex);
+			if(pNode == GNULL)
 				return GNULL;
-			return &m_recnames[uIndex].m_pRec->m_id;
+			return &(**pNode).m_id;
 		}
 		GAIA::BL GetName(const FILEID& id, GAIA::GCH* pResult)
 		{
@@ -120,7 +148,10 @@ namespace FSHA
 			GAIA::UM uIndex = m_recids.find(f);
 			if(uIndex == GINVALID)
 				return GAIA::False;
-			return this->MapIndexToName(m_recids[uIndex].m_mapindex, pResult);
+			MAP_INDEX_TYPE mapindex[MAX_DEPTH];
+			if(!this->GenerateMapIndex(m_recids[uIndex].m_it, mapindex))
+				return GAIA::False;
+			return this->MapIndexToName(mapindex, pResult);
 		}
 		CHUNKPROGRESS GetChunkType(const FILEID& id) const
 		{
@@ -131,6 +162,57 @@ namespace FSHA
 				return (CHUNKPROGRESS)GINVALID;
 			return m_states[uIndex].m_chunkprogress;
 		}
+	private:
+		class TrieNode
+		{
+		public:
+			GINL TrieNode& operator = (const TrieNode& src){m_mapindex = src.m_mapindex; return *this;}
+			GINL GAIA::BL operator == (const TrieNode& src) const{return m_mapindex == src.m_mapindex;}
+			GINL GAIA::BL operator != (const TrieNode& src) const{return m_mapindex != src.m_mapindex;}
+			GINL GAIA::BL operator >= (const TrieNode& src) const{return m_mapindex >= src.m_mapindex;}
+			GINL GAIA::BL operator <= (const TrieNode& src) const{return m_mapindex <= src.m_mapindex;}
+			GINL GAIA::BL operator > (const TrieNode& src) const{return m_mapindex > src.m_mapindex;}
+			GINL GAIA::BL operator < (const TrieNode& src) const{return m_mapindex < src.m_mapindex;}
+			MAP_INDEX_TYPE m_mapindex;
+			FILEID m_id;
+		};
+	public:
+		typedef GAIA::CONTAINER::BasicTrieTree<TrieNode, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 10> __FileTreeType;
+	private:
+		class NameMap
+		{
+		public:
+			GINL GAIA::BL operator == (const NameMap& src) const{return m_name == src.m_name;}
+			GINL GAIA::BL operator != (const NameMap& src) const{return m_name != src.m_name;}
+			GINL GAIA::BL operator >= (const NameMap& src) const{return m_name >= src.m_name;}
+			GINL GAIA::BL operator <= (const NameMap& src) const{return m_name <= src.m_name;}
+			GINL GAIA::BL operator > (const NameMap& src) const{return m_name > src.m_name;}
+			GINL GAIA::BL operator < (const NameMap& src) const{return m_name < src.m_name;}
+			FSTR m_name;
+		};
+		class FileRec
+		{
+		public:
+			GINL FileRec& operator = (const FileRec& src){m_id = src.m_id; m_it = src.m_it; return *this;}
+			GINL GAIA::BL operator == (const FileRec& src) const{return m_id == src.m_id;}
+			GINL GAIA::BL operator != (const FileRec& src) const{return m_id != src.m_id;}
+			GINL GAIA::BL operator >= (const FileRec& src) const{return m_id >= src.m_id;}
+			GINL GAIA::BL operator <= (const FileRec& src) const{return m_id <= src.m_id;}
+			GINL GAIA::BL operator > (const FileRec& src) const{return m_id > src.m_id;}
+			GINL GAIA::BL operator < (const FileRec& src) const{return m_id < src.m_id;}
+			FILEID m_id;
+			__FileTreeType::const_it m_it;
+			GAIA::U32 m_uSequence;
+		};
+		class FileState
+		{
+		public:
+			CHUNKPROGRESS m_chunkprogress;
+		};
+	public:
+		typedef GAIA::CONTAINER::Vector<NameMap> __NameMapType;
+		typedef GAIA::CONTAINER::Vector<FileRec> __FileRecIDListType;
+		typedef GAIA::CONTAINER::Vector<FileState> __FileStateListType;
 	private:
 		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAP_INDEX_TYPE* pResult) const
 		{
@@ -207,58 +289,15 @@ namespace FSHA
 			}
 			return GAIA::True;
 		}
-	private:
-		class NameMap
+		GAIA::BL GenerateMapIndex(__FileTreeType::const_it it, MAP_INDEX_TYPE* pMapIndex) const
 		{
-		public:
-			GINL GAIA::BL operator == (const NameMap& src) const{return m_name == src.m_name;}
-			GINL GAIA::BL operator != (const NameMap& src) const{return m_name != src.m_name;}
-			GINL GAIA::BL operator >= (const NameMap& src) const{return m_name >= src.m_name;}
-			GINL GAIA::BL operator <= (const NameMap& src) const{return m_name <= src.m_name;}
-			GINL GAIA::BL operator > (const NameMap& src) const{return m_name > src.m_name;}
-			GINL GAIA::BL operator < (const NameMap& src) const{return m_name < src.m_name;}
-			FSTR m_name;
-		};
-		class FileRec
-		{
-		public:
-			GINL FileRec& operator = (const FileRec& src){m_id = src.m_id; GAIA::ALGORITHM::strcpy(m_mapindex, src.m_mapindex); return *this;}
-			GINL GAIA::BL operator == (const FileRec& src) const{return m_id == src.m_id;}
-			GINL GAIA::BL operator != (const FileRec& src) const{return m_id != src.m_id;}
-			GINL GAIA::BL operator >= (const FileRec& src) const{return m_id >= src.m_id;}
-			GINL GAIA::BL operator <= (const FileRec& src) const{return m_id <= src.m_id;}
-			GINL GAIA::BL operator > (const FileRec& src) const{return m_id > src.m_id;}
-			GINL GAIA::BL operator < (const FileRec& src) const{return m_id < src.m_id;}
-			FILEID m_id;
-			MAP_INDEX_TYPE m_mapindex[MAX_DEPTH];
-			GAIA::U32 m_uSequence;
-		};
-		class FileRecName
-		{
-		public:
-			GINL GAIA::BL operator == (const FileRecName& src) const{return GAIA::ALGORITHM::strcmp(m_pRec->m_mapindex, src.m_pRec->m_mapindex) == 0;}
-			GINL GAIA::BL operator != (const FileRecName& src) const{return !(this->operator != (src));}
-			GINL GAIA::BL operator >= (const FileRecName& src) const{return GAIA::ALGORITHM::strcmp(m_pRec->m_mapindex, src.m_pRec->m_mapindex) >= 0;}
-			GINL GAIA::BL operator <= (const FileRecName& src) const{return GAIA::ALGORITHM::strcmp(m_pRec->m_mapindex, src.m_pRec->m_mapindex) <= 0;}
-			GINL GAIA::BL operator > (const FileRecName& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const FileRecName& src) const{return !(this->operator >= (src));}
-			FileRec* m_pRec;
-		};
-		class FileState
-		{
-		public:
-			CHUNKPROGRESS m_chunkprogress;
-		};
-	public:
-		typedef GAIA::CONTAINER::Vector<NameMap> __NameMapType;
-		typedef GAIA::CONTAINER::Vector<FileRec> __FileRecIDListType;
-		typedef GAIA::CONTAINER::Vector<FileRecName> __FileRecNameListType;
-		typedef GAIA::CONTAINER::Vector<FileState> __FileStateListType;
-		typedef GAIA::CONTAINER::BasicTrieTree<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 10> __FileTreeType;
+			if(it.empty())
+				return GAIA::False;
+			return GAIA::True;
+		}
 	private:
 		__NameMapType m_names; // Sorted by file name.
 		__FileRecIDListType m_recids; // Sorted by file id.
-		__FileRecNameListType m_recnames; // Sorted by file name.
 		__FileStateListType m_states; // Sorted as file id list.
 		__FileTreeType m_ftree; // Sorted by file name section.
 	};
