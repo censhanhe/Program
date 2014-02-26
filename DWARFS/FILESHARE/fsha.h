@@ -299,7 +299,12 @@ namespace FSHA
 				return GAIA::False;
 			MAP_INDEX_TYPE* p = pMapIndex;
 			while(!it.empty())
+			{
 				*p++ = (*it).m_mapindex;
+				it = m_ftree.parent(it);
+				if(m_ftree.root(it))
+					it = m_ftree.parent(it);
+			}
 			GAIA::ALGORITHM::inverse(pMapIndex, p - 1);
 			return GAIA::True;
 		}
