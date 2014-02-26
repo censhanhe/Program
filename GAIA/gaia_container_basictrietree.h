@@ -287,8 +287,8 @@ namespace GAIA
 			}
 			GINL GAIA::BL leaf(const it& iter) const{if(iter.empty()) return GAIA::False; return iter.m_pNode->m_links.size() == 0;}
 			GINL GAIA::BL leaf(const const_it& iter) const{if(iter.empty()) return GAIA::False; return iter.m_pNode->m_links.size() == 0;}
-			GINL GAIA::BL root(const it& iter) const{return iter->m_pNode == &m_root;}
-			GINL GAIA::BL root(const const_it& iter) const{return iter->m_pNode == &m_root;}
+			GINL GAIA::BL root(const it& iter) const{return iter.m_pNode == &m_root;}
+			GINL GAIA::BL root(const const_it& iter) const{return iter.m_pNode == &m_root;}
 			GINL it root(){it iter; iter.m_pNode = &m_root; return iter;}
 			GINL const_it root() const{const_it iter; iter.m_pNode = &m_root; return iter;}
 			GINL it parent(const it& iter){it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; return ret;}
