@@ -349,21 +349,153 @@ namespace FSHA
 		typedef GAIA::CONTAINER::Pool<User, 100> __UserPoolType;
 		typedef GAIA::CONTAINER::Pool<Group, 100> __GroupPoolType;
 	public:
-		GINL GAIA::BL Load(const GAIA::GCH* pszFileName);
-		GINL GAIA::BL Save(const GAIA::GCH* pszFileName);
-		GINL GAIA::BL AddUser(const __UserNameType& name);
-		GINL GAIA::BL DeleteUser(const __UserNameType& name);
-		GINL GAIA::GVOID DeleteUserAll();
-		GINL GAIA::BL FindUser(const __UserNameType& name) const;
-		GINL GAIA::BL AddGroup(const __GroupNameType& name);
-		GINL GAIA::BL DeleteGroup(const __GroupNameType& name);
-		GINL GAIA::GVOID DeleteGroupAll();
-		GINL GAIA::BL FindGroup(const __GroupNameType& name) const;
-		GINL GAIA::BL AddGroupUser(const __GroupNameType& gname, const __UserNameType& uname);
-		GINL GAIA::BL DeleteGroupUser(const __GroupNameType& anem, const __UserNameType& uname);
-		GINL GAIA::BL DeleteGroupUserAll();
-		GINL GAIA::BL EnumUserGroup(const __UserNameType& name, __GroupNameListType& result) const;
-		GINL GAIA::BL EnumGroupUser(const __GroupNameType& name, __UserNameListType& result) const;
+		GINL GAIA::BL Load(const GAIA::GCH* pszFileName)
+		{
+			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
+			if(GAIA::ALGORITHM::stremp(pszFileName))
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::BL Save(const GAIA::GCH* pszFileName)
+		{
+			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
+			if(GAIA::ALGORITHM::stremp(pszFileName))
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::BL AddUser(const __UserNameType& name)
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			if(this->FindUser(name))
+				return GAIA::False;
+			User* pUser = m_upool.alloc();
+			__UserSetType::_datatype ru = pUser;
+			pUser->m_name = name;
+			return m_users.insert(pUser);
+		}
+		GINL GAIA::BL SetUserPassword(const __UserNameType& name, const __PasswordType& pwd)
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			User* pUser = this->FindUserInternal(name);
+			if(pUser == GNULL)
+				return GAIA::False;
+			pUser->m_pwd = pwd;
+			return GAIA::True;
+		}
+		GINL const GAIA::GCH* GetUserPassword(const __UserNameType& name) const
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GNULL;
+			const User* pUser = this->FindUserInternal(name);
+			if(pUser == GNULL)
+				return GNULL;
+			return pUser->m_pwd;
+		}
+		GINL GAIA::BL DeleteUser(const __UserNameType& name)
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::GVOID DeleteUserAll()
+		{
+		}
+		GINL GAIA::BL FindUser(const __UserNameType& name) const
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			const User* pUser = this->FindUserInternal(name);
+			if(pUser == GNULL)
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::BL AddGroup(const __GroupNameType& name)
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::BL DeleteGroup(const __GroupNameType& name)
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::GVOID DeleteGroupAll()
+		{
+		}
+		GINL GAIA::BL FindGroup(const __GroupNameType& name) const
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::BL AddGroupUser(const __GroupNameType& gname, const __UserNameType& uname)
+		{
+			GAIA_AST(!gname.empty());
+			if(gname.empty())
+				return GAIA::False;
+			GAIA_AST(!uname.empty());
+			if(uname.empty())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::BL DeleteGroupUser(const __GroupNameType& gname, const __UserNameType& uname)
+		{
+			GAIA_AST(!gname.empty());
+			if(gname.empty())
+				return GAIA::False;
+			GAIA_AST(!uname.empty());
+			if(uname.empty())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::BL DeleteGroupUserAll()
+		{
+		}
+		GINL GAIA::BL EnumUserGroup(const __UserNameType& name, __GroupNameListType& result) const
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			return GAIA::True;
+		}
+		GINL GAIA::BL EnumGroupUser(const __GroupNameType& name, __UserNameListType& result) const
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			return GAIA::True;
+		}
+	private:
+		GINL const User* FindUserInternal(const __UserNameType& name) const
+		{
+			User finder;
+			finder.m_name = name;
+			const __UserSetType::_datatype* pFinded = m_users.find(&finder);
+			if(pFinded == GNULL)
+				return GNULL;
+			return *pFinded;
+		}
+		GINL User* FindUserInternal(const __UserNameType& name)
+		{
+			User finder;
+			finder.m_name = name;
+			__UserSetType::_datatype* pFinded = m_users.find(&finder);
+			if(pFinded == GNULL)
+				return GNULL;
+			return *pFinded;
+		}
 	private:
 		__UserSetType m_users; // Sorted by user name.
 		__GroupSetType m_groups; // Sorted by group name.
