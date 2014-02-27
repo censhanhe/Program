@@ -65,7 +65,7 @@ namespace GAIA
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL || m_pNode->m_pParent == GNULL;}
 				GINL virtual _DataType& operator * (){return m_pNode->m_t;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->m_t;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ()
@@ -140,7 +140,7 @@ namespace GAIA
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL || m_pNode->m_pParent == GNULL;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->m_t;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ()
 				{
@@ -296,15 +296,93 @@ namespace GAIA
 			}
 			GINL it lower_bound(const _DataType* p, const _SizeType& size)
 			{
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
+				Node* pNode = &m_root;
+				for(_SizeType x = 0; x < size; ++x)
+				{
+					Node n;
+					n.m_t = p[x];
+					Ref<Node> rn = &n;
+					__NodeTreeType::it itsub = pNode->m_links.lower_bound(rn);
+					if(itsub.empty())
+					{
+						if(pNode->m_pParent == GNULL)
+							break;
+						__NodeTreeType::it itsubb = pNode->m_links.back_it();
+						it itertemp;
+						if(itsubb.empty())
+							itertemp.m_pNode = pNode;
+						else
+							itertemp.m_pNode = *itsubb;
+						++itertemp;
+						pNode = itertemp.m_pNode;
+						break;
+					}
+					else
+					{
+						pNode = *itsub;
+						if((**pNode) != p[x])
+							break;
+					}
+				}
+				it iter;
+				if(pNode != GNULL && pNode != &m_root)
+					iter.m_pNode = pNode;
+				return iter;
 			}
 			GINL it upper_bound(const _DataType* p, const _SizeType& size)
 			{
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
+				it iter = lower_bound(p, size);
+				--iter;
+				return iter;
 			}
 			GINL const_it lower_bound(const _DataType* p, const _SizeType& size) const
 			{
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
+				const Node* pNode = &m_root;
+				for(_SizeType x = 0; x < size; ++x)
+				{
+					Node n;
+					n.m_t = p[x];
+					Ref<Node> rn = &n;
+					__NodeTreeType::const_it itsub = pNode->m_links.lower_bound(rn);
+					if(itsub.empty())
+					{
+						if(pNode->m_pParent == GNULL)
+							break;
+						__NodeTreeType::const_it itsubb = pNode->m_links.const_back_it();
+						const_it itertemp;
+						if(itsubb.empty())
+							itertemp.m_pNode = pNode;
+						else
+							itertemp.m_pNode = *itsubb;
+						++itertemp;
+						pNode = itertemp.m_pNode;
+						break;
+					}
+					else
+					{
+						pNode = *itsub;
+						if((**pNode) != p[x])
+							break;
+					}
+				}
+				const_it iter;
+				if(pNode != GNULL && pNode != &m_root)
+					iter.m_pNode = pNode;
+				return iter;
 			}
 			GINL const_it upper_bound(const _DataType* p, const _SizeType& size) const
 			{
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
+				const_it iter = lower_bound(p, size);
+				--iter;
+				return iter;
 			}
 			GINL GAIA::GVOID paths(const Node* pNode, const _DataType* p, const _SizeType& size, __PathListType& result) const
 			{

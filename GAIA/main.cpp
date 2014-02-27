@@ -1087,6 +1087,16 @@ GAIA::N32 main()
 			tt.insert("hello", 5);
 			tt.insert("world", 5);
 			tt.insert("kitty", 5);
+			{
+				__TrieTree::it fit = tt.front_it(); ++fit; --fit;
+				__TrieTree::it bit = tt.back_it(); ++bit; --bit;
+				__TrieTree::const_it cfit = tt.const_front_it(); ++cfit; --cfit;
+				__TrieTree::const_it cbit = tt.const_back_it(); ++cbit; --cbit;
+				__TrieTree::it lb_it = tt.lower_bound("he", 2);
+				__TrieTree::it ub_it = tt.upper_bound("he", 2);
+				__TrieTree::const_it clb_it = (*(const __TrieTree*)&tt).lower_bound("he", 2);
+				__TrieTree::const_it cub_it = (*(const __TrieTree*)&tt).upper_bound("he", 2);
+			}
 			GAIA::BL bErase = tt.erase("hello", 5);
 			GAIA::BL bExist = tt.exist("hello", 5);
 			__TrieTree::Node* pNode = tt.find(GNULL, "hello", 5);
@@ -1100,10 +1110,16 @@ GAIA::N32 main()
 			bErase = GAIA::True;
 			bExist = GAIA::True;
 			pNode = GNULL;
-			__TrieTree::it fit = tt.front_it(); ++fit; --fit;
-			__TrieTree::it bit = tt.back_it(); ++bit; --bit;
-			__TrieTree::const_it cfit = tt.const_front_it(); ++cfit; --cfit;
-			__TrieTree::const_it cbit = tt.const_back_it(); ++cbit; --cbit;
+			{
+				__TrieTree::it fit = tt.front_it(); ++fit; --fit;
+				__TrieTree::it bit = tt.back_it(); ++bit; --bit;
+				__TrieTree::const_it cfit = tt.const_front_it(); ++cfit; --cfit;
+				__TrieTree::const_it cbit = tt.const_back_it(); ++cbit; --cbit;
+				__TrieTree::it lb_it = tt.lower_bound("he", 2);
+				__TrieTree::it ub_it = tt.upper_bound("he", 2);
+				__TrieTree::const_it clb_it = (*(const __TrieTree*)&tt).lower_bound("he", 2);
+				__TrieTree::const_it cub_it = (*(const __TrieTree*)&tt).upper_bound("he", 2);
+			}
 		}
 		TEST_END;
 	}

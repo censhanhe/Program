@@ -41,6 +41,12 @@ namespace GAIA
 			GINL GAIA::BL operator <= (_DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) <= 0;}
 			GINL GAIA::BL operator > (_DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) > 0;}
 			GINL GAIA::BL operator < (_DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) < 0;}
+			GINL GAIA::BL operator == (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) == 0;}
+			GINL GAIA::BL operator != (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) != 0;}
+			GINL GAIA::BL operator >= (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) >= 0;}
+			GINL GAIA::BL operator <= (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) <= 0;}
+			GINL GAIA::BL operator > (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) > 0;}
+			GINL GAIA::BL operator < (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) < 0;}
 			GINL operator const _DataType*() const{return m_p;}
 			GINL operator _DataType*(){return m_p;}
 		private:
