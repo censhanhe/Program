@@ -26,7 +26,7 @@
 #	define PERF_PRINT_TEXT(text)
 #endif
 
-#define TEST_CURRENT			""
+#define TEST_CURRENT			"<BasicTrieTree function test>"
 #define TEST_BEGIN(name)		if(GAIA::ALGORITHM::strcmp(TEST_CURRENT, "") == 0 || GAIA::ALGORITHM::strcmp((name), TEST_CURRENT) == 0)\
 								{\
 									PERF_PRINT_LINE(name);\
@@ -1157,6 +1157,31 @@ GAIA::N32 main()
 				__TrieTree::it ub_it = tt.upper_bound("he", 2);
 				__TrieTree::const_it clb_it = (*(const __TrieTree*)&tt).lower_bound("he", 2);
 				__TrieTree::const_it cub_it = (*(const __TrieTree*)&tt).upper_bound("he", 2);
+			}
+			tt.destroy();
+			tt.insert("hello", 5);
+			tt.insert("world", 5);
+			tt.insert("you", 3);
+			tt.insert("are", 3);
+			tt.insert("not", 3);
+			tt.insert("prepared", 8);
+			tt.insert("pre", 3);
+			tt.insert("product", 7);
+			__TrieTree::it iter = tt.upper_bound("product", 7);
+			while(!iter.empty())
+			{
+				__TrieTree::it itertemp = iter;
+				GAIA::GCH szTemp[240];
+				GAIA::GCH* p = szTemp;
+				while(!itertemp.empty())
+				{
+					*p++ = *itertemp;
+					itertemp = tt.parent(itertemp);
+				}
+				GAIA::ALGORITHM::inverse(szTemp, p - 1);
+				szTemp[p - szTemp] = 0;
+				PERF_PRINT_LINE(szTemp);
+				--iter;
 			}
 		}
 		TEST_END;

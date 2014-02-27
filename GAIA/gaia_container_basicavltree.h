@@ -510,14 +510,28 @@ namespace GAIA
 					this->rotate_prev(pNode);
 				}
 			}
-			GINL Node* front_node(Node* pNode) const
+			GINL Node* front_node(Node* pNode)
 			{
 				if(pNode->pPrev != GNULL)
 					return this->front_node(pNode->pPrev);
 				else
 					return pNode;
 			}
-			GINL Node* back_node(Node* pNode) const
+			GINL Node* back_node(Node* pNode)
+			{
+				if(pNode->pNext != GNULL)
+					return this->back_node(pNode->pNext);
+				else
+					return pNode;
+			}
+			GINL const Node* front_node(const Node* pNode) const
+			{
+				if(pNode->pPrev != GNULL)
+					return this->front_node(pNode->pPrev);
+				else
+					return pNode;
+			}
+			GINL const Node* back_node(const Node* pNode) const
 			{
 				if(pNode->pNext != GNULL)
 					return this->back_node(pNode->pNext);

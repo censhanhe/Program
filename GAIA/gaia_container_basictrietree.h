@@ -58,6 +58,9 @@ namespace GAIA
 		public:
 			static const _SizeType _groupelementsize = _GroupElementSize;
 		public:
+			typedef BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
+			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
+		public:
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
@@ -108,7 +111,7 @@ namespace GAIA
 						--it;
 						if(!it.empty())
 						{
-							m_pNode = *it;
+							m_pNode = m_pTrieTree->back_node(*it);
 							return *this;
 						}
 						else
@@ -125,13 +128,15 @@ namespace GAIA
 						return *this;
 					}
 				}
+				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pTrieTree = src.m_pTrieTree; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pTrieTree = GNULL;}
 			private:
 				Node* m_pNode;
+				__MyType* m_pTrieTree;
 			};
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
@@ -161,7 +166,7 @@ namespace GAIA
 						++it;
 						if(!it.empty())
 						{
-							m_pNode = *it;
+							m_pNode = m_pTrieTree->back_node(*it);
 							return *this;
 						}
 						m_pNode = m_pNode->m_pParent;
@@ -203,17 +208,16 @@ namespace GAIA
 						return *this;
 					}
 				}
+				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pTrieTree = src.m_pTrieTree; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pTrieTree = GNULL;}
 			private:
 				const Node* m_pNode;
+				const __MyType* m_pTrieTree;
 			};
-		public:
-			typedef BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
 		public:
 			GINL BasicTrieTree(){this->init();}
 			GINL BasicTrieTree(const __MyType& src){this->init(); this->operator = (src);}
@@ -284,10 +288,10 @@ namespace GAIA
 			GINL GAIA::BL leaf(const const_it& iter) const{if(iter.empty()) return GAIA::False; return iter.m_pNode->m_links.size() == 0;}
 			GINL GAIA::BL root(const it& iter) const{return iter.m_pNode == &m_root;}
 			GINL GAIA::BL root(const const_it& iter) const{return iter.m_pNode == &m_root;}
-			GINL it root(){it iter; iter.m_pNode = &m_root; return iter;}
-			GINL const_it root() const{const_it iter; iter.m_pNode = &m_root; return iter;}
-			GINL it parent(const it& iter){it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; return ret;}
-			GINL const_it parent(const const_it& iter) const{const_it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; return ret;}
+			GINL it root(){it iter; iter.m_pNode = &m_root; iter.m_pTrieTree = this; return iter;}
+			GINL const_it root() const{const_it iter; iter.m_pNode = &m_root; iter.m_pTrieTree = this; return iter;}
+			GINL it parent(const it& iter){it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; ret.m_pTrieTree = this; return ret;}
+			GINL const_it parent(const const_it& iter) const{const_it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; ret.m_pTrieTree = this; return ret;}
 			GINL Node* find(const Node* pNode, const _DataType* p, const _SizeType& size) const
 			{
 				GAIA_AST(p != GNULL);
@@ -311,6 +315,7 @@ namespace GAIA
 							break;
 						__NodeTreeType::it itsubb = pNode->m_links.back_it();
 						it itertemp;
+						itertemp.m_pTrieTree = this;
 						if(itsubb.empty())
 							itertemp.m_pNode = pNode;
 						else
@@ -328,15 +333,37 @@ namespace GAIA
 				}
 				it iter;
 				if(pNode != GNULL && pNode != &m_root)
+				{
 					iter.m_pNode = pNode;
+					iter.m_pTrieTree = this;
+				}
 				return iter;
 			}
 			GINL it upper_bound(const _DataType* p, const _SizeType& size)
 			{
 				GAIA_AST(p != GNULL);
 				GAIA_AST(size > 0);
-				it iter = lower_bound(p, size);
-				--iter;
+				it iter = this->lower_bound(p, size);
+				GAIA::BL bMatch = GAIA::True;
+				it itertemp = iter;
+				for(_SizeType x = 0; x < size; ++x)
+				{
+					if(itertemp.empty())
+					{
+						bMatch = GAIA::False;
+						break;
+					}
+					if(*itertemp != p[size - x - 1])
+					{
+						bMatch = GAIA::False;
+						break;
+					}
+					itertemp = this->parent(itertemp);
+				}
+				if(!itertemp.empty())
+					bMatch = GAIA::False;
+				if(!bMatch)
+					--iter;
 				return iter;
 			}
 			GINL const_it lower_bound(const _DataType* p, const _SizeType& size) const
@@ -356,6 +383,7 @@ namespace GAIA
 							break;
 						__NodeTreeType::const_it itsubb = pNode->m_links.const_back_it();
 						const_it itertemp;
+						itertemp.m_pTrieTree = this;
 						if(itsubb.empty())
 							itertemp.m_pNode = pNode;
 						else
@@ -373,15 +401,37 @@ namespace GAIA
 				}
 				const_it iter;
 				if(pNode != GNULL && pNode != &m_root)
+				{
 					iter.m_pNode = pNode;
+					iter.m_pTrieTree = this;
+				}
 				return iter;
 			}
 			GINL const_it upper_bound(const _DataType* p, const _SizeType& size) const
 			{
 				GAIA_AST(p != GNULL);
 				GAIA_AST(size > 0);
-				const_it iter = lower_bound(p, size);
-				--iter;
+				const_it iter = this->lower_bound(p, size);
+				GAIA::BL bMatch = GAIA::True;
+				const_it itertemp = iter;
+				for(_SizeType x = 0; x < size; ++x)
+				{
+					if(itertemp.empty())
+					{
+						bMatch = GAIA::False;
+						break;
+					}
+					if(*itertemp != p[size - x - 1])
+					{
+						bMatch = GAIA::False;
+						break;
+					}
+					itertemp = this->parent(itertemp);
+				}
+				if(!itertemp.empty())
+					bMatch = GAIA::False;
+				if(!bMatch)
+					--iter;
 				return iter;
 			}
 			GINL GAIA::GVOID paths(const Node* pNode, const _DataType* p, const _SizeType& size, __PathListType& result) const
@@ -400,7 +450,10 @@ namespace GAIA
 				it iter;
 				typename __NodeTreeType::it itf = m_root.m_links.front_it();
 				if(!itf.empty())
+				{
 					iter.m_pNode = *itf;
+					iter.m_pTrieTree = this;
+				}
 				return iter;
 			}
 			GINL it back_it()
@@ -428,7 +481,10 @@ namespace GAIA
 				}
 				it iter;
 				if(pNode != &m_root)
+				{
 					iter.m_pNode = pNode;
+					iter.m_pTrieTree = this;
+				}
 				return iter;
 			}
 			GINL const_it const_front_it()
@@ -436,7 +492,10 @@ namespace GAIA
 				const_it iter;
 				typename __NodeTreeType::const_it itf = m_root.m_links.const_front_it();
 				if(!itf.empty())
+				{
 					iter.m_pNode = *itf;
+					iter.m_pTrieTree = this;
+				}
 				return iter;
 			}
 			GINL const_it const_back_it()
@@ -464,7 +523,10 @@ namespace GAIA
 				}
 				const_it iter;
 				if(pNode != &m_root)
+				{
 					iter.m_pNode = pNode;
+					iter.m_pTrieTree = this;
+				}
 				return iter;
 			}
 			GINL __MyType& operator = (const __MyType& src){return *this;}
@@ -533,6 +595,38 @@ namespace GAIA
 						return GNULL;
 				}
 				return GNULL;
+			}
+			GINL Node* front_node(Node* pNode)
+			{
+				__NodeTreeType::it iter = pNode->m_links.front_it();
+				if(iter.empty())
+					return pNode;
+				else
+					return this->front_node(*iter);
+			}
+			GINL Node* back_node(Node* pNode)
+			{
+				__NodeTreeType::it iter = pNode->m_links.back_it();
+				if(iter.empty())
+					return pNode;
+				else
+					return this->back_node(*iter);
+			}
+			GINL const Node* front_node(const Node* pNode) const
+			{
+				__NodeTreeType::const_it iter = pNode->m_links.const_front_it();
+				if(iter.empty())
+					return pNode;
+				else
+					return this->front_node(*iter);
+			}
+			GINL const Node* back_node(const Node* pNode) const
+			{
+				__NodeTreeType::const_it iter = pNode->m_links.const_back_it();
+				if(iter.empty())
+					return pNode;
+				else
+					return this->back_node(*iter);
 			}
 		private:
 			Node m_root;
