@@ -308,12 +308,12 @@ namespace GAIA
 					Node n;
 					n.m_t = p[x];
 					Ref<Node> rn = &n;
-					__NodeTreeType::it itsub = pNode->m_links.lower_bound(rn);
+					typename __NodeTreeType::it itsub = pNode->m_links.lower_bound(rn);
 					if(itsub.empty())
 					{
 						if(pNode->m_pParent == GNULL)
 							break;
-						__NodeTreeType::it itsubb = pNode->m_links.back_it();
+						typename __NodeTreeType::it itsubb = pNode->m_links.back_it();
 						it itertemp;
 						itertemp.m_pTrieTree = this;
 						if(itsubb.empty())
@@ -376,12 +376,12 @@ namespace GAIA
 					Node n;
 					n.m_t = p[x];
 					Ref<Node> rn = &n;
-					__NodeTreeType::const_it itsub = pNode->m_links.lower_bound(rn);
+					typename __NodeTreeType::const_it itsub = pNode->m_links.lower_bound(rn);
 					if(itsub.empty())
 					{
 						if(pNode->m_pParent == GNULL)
 							break;
-						__NodeTreeType::const_it itsubb = pNode->m_links.const_back_it();
+						typename __NodeTreeType::const_it itsubb = pNode->m_links.const_back_it();
 						const_it itertemp;
 						itertemp.m_pTrieTree = this;
 						if(itsubb.empty())
@@ -598,7 +598,7 @@ namespace GAIA
 			}
 			GINL Node* front_node(Node* pNode)
 			{
-				__NodeTreeType::it iter = pNode->m_links.front_it();
+				typename __NodeTreeType::it iter = pNode->m_links.front_it();
 				if(iter.empty())
 					return pNode;
 				else
@@ -606,7 +606,7 @@ namespace GAIA
 			}
 			GINL Node* back_node(Node* pNode)
 			{
-				__NodeTreeType::it iter = pNode->m_links.back_it();
+				typename __NodeTreeType::it iter = pNode->m_links.back_it();
 				if(iter.empty())
 					return pNode;
 				else
@@ -614,7 +614,7 @@ namespace GAIA
 			}
 			GINL const Node* front_node(const Node* pNode) const
 			{
-				__NodeTreeType::const_it iter = pNode->m_links.const_front_it();
+				typename __NodeTreeType::const_it iter = pNode->m_links.const_front_it();
 				if(iter.empty())
 					return pNode;
 				else
@@ -622,7 +622,7 @@ namespace GAIA
 			}
 			GINL const Node* back_node(const Node* pNode) const
 			{
-				__NodeTreeType::const_it iter = pNode->m_links.const_back_it();
+				typename __NodeTreeType::const_it iter = pNode->m_links.const_back_it();
 				if(iter.empty())
 					return pNode;
 				else
