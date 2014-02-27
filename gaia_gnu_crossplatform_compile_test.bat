@@ -1,1 +1,0 @@
-g++ -o gaia.exe gaia/gaia_math_basic_indp.cpp gaia/gaia_thread_indp.cpp gaia/gaia_file_indp.cpp gaia/main.cpp gaia/preheader.cpp gaia/gaia_time_indp.cpp gaia/gaia_sync_base_indp.cpp -lpthread.a -fmax-errors=5 -std=c++11
