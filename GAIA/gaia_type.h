@@ -153,10 +153,10 @@ namespace GAIA
 	class Base
 	{
 	public:
-		ENUM_BEGIN(BASE_FEATURE)
+		GAIA_ENUM_BEGIN(BASE_FEATURE)
 			BASE_FEATURE_CAPACITY,
 			BASE_FEATURE_SIZE,
-		ENUM_END(BASE_FEATURE)
+		GAIA_ENUM_END(BASE_FEATURE)
 	public:
 		virtual GAIA::BL base_statistics(BASE_FEATURE of, GAIA::GVOID* pResult) const{return GAIA::False;}
 		virtual GAIA::BL base_optimize(BASE_FEATURE of, GAIA::GVOID* pResult){return GAIA::False;}
@@ -198,7 +198,7 @@ namespace GAIA
 	};
 
 	/* Type id declaration. */
-	ENUM_BEGIN(TYPEID)
+	GAIA_ENUM_BEGIN(TYPEID)
 		TYPEID_NM,
 		TYPEID_UM,
 		TYPEID_BL,
@@ -215,7 +215,7 @@ namespace GAIA
 		TYPEID_F64,
 		TYPEID_GCH,
 		TYPEID_GWCH,
-	ENUM_END(TYPEID)
+	GAIA_ENUM_END(TYPEID)
 
 	static const GAIA::GCH* TYPEID_ANAME[] = 
 	{
@@ -260,12 +260,12 @@ namespace GAIA
 	};
 
 	/* Seek type. */
-	ENUM_BEGIN(SEEK_TYPE)
+	GAIA_ENUM_BEGIN(SEEK_TYPE)
 		SEEK_TYPE_BEGIN,
 		SEEK_TYPE_END,
 		SEEK_TYPE_FORWARD,
 		SEEK_TYPE_BACKWARD,
-	ENUM_END(SEEK_TYPE)
+	GAIA_ENUM_END(SEEK_TYPE)
 };
 
 #ifndef GAIA_DEBUG_CODEPURE

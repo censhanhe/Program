@@ -415,6 +415,44 @@ GAIA::N32 main()
 		TEST_END;
 	}
 
+	// Ptr test.
+	{
+		TEST_BEGIN("<Ptr test>");
+		{
+			GAIA::CONTAINER::Ptr<SNode<GAIA::N32>> pn1, pn2;
+			SNode<GAIA::N32> n1, n2;
+			pn1 = &n1;
+			pn2 = &n2;
+			GAIA::BL b = pn1 == pn2;
+			b = pn1 != pn2;
+			b = pn1 >= pn2;
+			b = pn1 <= pn2;
+			b = pn1 > pn2;
+			b = pn1 < pn2;
+			b = GAIA::False;
+		}
+		TEST_END;
+	}
+
+	// Ref test.
+	{
+		TEST_BEGIN("<Ref test>");
+		{
+			GAIA::CONTAINER::Ref<SNode<GAIA::N32>> rn1, rn2;
+			SNode<GAIA::N32> n1, n2;
+			rn1 = &n1;
+			rn2 = &n2;
+			GAIA::BL b = rn1 == rn2;
+			b = rn1 != rn2;
+			b = rn1 >= rn2;
+			b = rn1 <= rn2;
+			b = rn1 > rn2;
+			b = rn1 < rn2;
+			b = GAIA::False;
+		}
+		TEST_END;
+	}
+
 	// Basic stack bitset test.
 	{
 		TEST_BEGIN("<Basic stack bitset test>");

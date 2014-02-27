@@ -8,10 +8,10 @@ namespace GAIA
 		class ClsID
 		{
 		public:
-			ENUM_BEGIN(FLAG)
+			GAIA_ENUM_BEGIN(FLAG)
 				FLAG_SYSDEFINE = 0x00000001,
 				FLAG_USERDEFINE = 0x00000002,
-			ENUM_END(FLAG)
+			GAIA_ENUM_END(FLAG)
 		public:
 			GINL ClsID(){}
 			GINL ClsID(const ClsID& src){this->operator = (src);}

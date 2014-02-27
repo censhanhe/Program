@@ -8,7 +8,7 @@ namespace GAIA
 		class Vari
 		{
 		public:
-			ENUM_BEGIN(VARI_TYPE)
+			GAIA_ENUM_BEGIN(VARI_TYPE)
 				VARI_TYPE_BL,
 				VARI_TYPE_N8,
 				VARI_TYPE_N16,
@@ -22,7 +22,7 @@ namespace GAIA
 				VARI_TYPE_F32,
 				VARI_TYPE_F64,
 				VARI_TYPE_REAL,
-			ENUM_END(VARI_TYPE)
+			GAIA_ENUM_END(VARI_TYPE)
 
 		public:
 			GINL Vari();

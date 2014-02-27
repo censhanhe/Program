@@ -9,10 +9,10 @@ namespace GAIA
 		class HD // Handle class.
 		{
 		public:
-			ENUM_BEGIN(RIGHT)
+			GAIA_ENUM_BEGIN(RIGHT)
 				RIGHT_READ			= 0x00000001,
 				RIGHT_WRITE			= 0x00000002,
-			ENUM_END(RIGHT)
+			GAIA_ENUM_END(RIGHT)
 		public:
 			GINL HD();
 			GINL HD(const HD& src); // Auto reference count increase.
