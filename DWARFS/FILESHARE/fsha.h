@@ -401,10 +401,39 @@ namespace FSHA
 			GAIA_AST(!name.empty());
 			if(name.empty())
 				return GAIA::False;
+			User* pUser = this->FindUserInternal(name);
+			if(pUser == GNULL)
+				return GAIA::False;
+			User::__GroupRefListType::it it = pUser->m_refgroups.front_it();
+			while(!it.empty())
+			{
+				Group* pGroup = *it;
+				if(pGroup != GNULL)
+					pGroup->m_refusers.erase(pUser);
+				++it;
+			}
+			m_users.erase(pUser);
+			m_upool.release(pUser);
 			return GAIA::True;
 		}
 		GINL GAIA::GVOID DeleteUserAll()
 		{
+			__GroupSetType::it it_g = m_groups.front_it();
+			while(!it_g.empty())
+			{
+				Group* pGroup = *it_g;
+				if(pGroup != GNULL)
+					pGroup->m_refusers.clear();
+				++it_g;
+			}
+			__UserSetType::it it_u = m_users.front_it();
+			while(!it_u.empty())
+			{
+				User* pUser = *it_u;
+				m_upool.release(pUser);
+				++it_u;
+			}
+			m_users.clear();
 		}
 		GINL GAIA::BL FindUser(const __UserNameType& name) const
 		{
@@ -412,15 +441,18 @@ namespace FSHA
 			if(name.empty())
 				return GAIA::False;
 			const User* pUser = this->FindUserInternal(name);
-			if(pUser == GNULL)
-				return GAIA::False;
-			return GAIA::True;
+			return pUser != GNULL;
 		}
 		GINL GAIA::BL AddGroup(const __GroupNameType& name)
 		{
 			GAIA_AST(!name.empty());
 			if(name.empty())
 				return GAIA::False;
+			if(this->FindGroup(name))
+				return GAIA::False;
+			Group* pGroup = m_gpool.alloc();
+			pGroup->m_name = name;
+			m_groups.insert(pGroup);
 			return GAIA::True;
 		}
 		GINL GAIA::BL DeleteGroup(const __GroupNameType& name)
@@ -428,17 +460,27 @@ namespace FSHA
 			GAIA_AST(!name.empty());
 			if(name.empty())
 				return GAIA::False;
+TODO : 
 			return GAIA::True;
 		}
 		GINL GAIA::GVOID DeleteGroupAll()
 		{
+			__GroupSetType::it it = m_groups.front_it();
+			while(!it.empty())
+			{
+				Group* pGroup = *it;
+				if(pGroup != GNULL)
+					m_gpool.release(pGroup);
+				++it;
+			}
 		}
 		GINL GAIA::BL FindGroup(const __GroupNameType& name) const
 		{
 			GAIA_AST(!name.empty());
 			if(name.empty())
 				return GAIA::False;
-			return GAIA::True;
+			const Group* pGroup = this->FindGroupInternal(name);
+			return pGroup != GNULL;
 		}
 		GINL GAIA::BL AddGroupUser(const __GroupNameType& gname, const __UserNameType& uname)
 		{
@@ -462,6 +504,7 @@ namespace FSHA
 		}
 		GINL GAIA::BL DeleteGroupUserAll()
 		{
+			return GAIA::True;
 		}
 		GINL GAIA::BL EnumUserGroup(const __UserNameType& name, __GroupNameListType& result) const
 		{
@@ -492,6 +535,24 @@ namespace FSHA
 			User finder;
 			finder.m_name = name;
 			__UserSetType::_datatype* pFinded = m_users.find(&finder);
+			if(pFinded == GNULL)
+				return GNULL;
+			return *pFinded;
+		}
+		GINL const Group* FindGroupInternal(const __GroupNameType& name) const
+		{
+			Group finder;
+			finder.m_name = name;
+			const __GroupSetType::_datatype* pFinded = m_groups.find(&finder);
+			if(pFinded == GNULL)
+				return GNULL;
+			return *pFinded;
+		}
+		GINL Group* FindGroupInternal(const __GroupNameType& name)
+		{
+			Group finder;
+			finder.m_name = name;
+			__GroupSetType::_datatype* pFinded = m_groups.find(&finder);
 			if(pFinded == GNULL)
 				return GNULL;
 			return *pFinded;
