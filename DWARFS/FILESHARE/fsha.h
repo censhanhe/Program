@@ -460,7 +460,28 @@ namespace FSHA
 			GAIA_AST(!name.empty());
 			if(name.empty())
 				return GAIA::False;
-TODO : 
+			Group* pGroup = this->FindGroupInternal(name);
+			if(pGroup == GNULL)
+				return GAIA::False;
+			Group::__UserRefListType::it it = pGroup->m_refusers.front_it();
+			while(!it.empty())
+			{
+				User* pUser = *it;
+				if(pUser != GNULL)
+				{
+					User::__GroupRefListType::it itu = pUser->m_refgroups.front_it();
+					while(!itu.empty())
+					{
+						if(*itu != GNULL && *itu == pGroup)
+						{
+							*itu = GNULL;
+							break;
+						}
+						++itu;
+					}
+				}
+				++it;
+			}
 			return GAIA::True;
 		}
 		GINL GAIA::GVOID DeleteGroupAll()
