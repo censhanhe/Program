@@ -1,15 +1,15 @@
-#ifndef 	__GAIA_OBJECT_MEMIO_H__
-#define 	__GAIA_OBJECT_MEMIO_H__
+#ifndef		__GAIA_OBJECT_SCREEN_IO_H__
+#define		__GAIA_OBJECT_SCREEN_IO_H__
 
 namespace GAIA
 {
 	namespace OBJECT
 	{
-		class MemIO : public IO
+		class ScreenIO : public IO
 		{
 		public:
-			GINL MemIO();
-			GINL ~MemIO();
+			GINL ScreenIO();
+			GINL ~ScreenIO();
 			virtual GAIA::BL Open(const GAIA::GCH* pszIOName);
 			virtual GAIA::BL Close();
 			virtual GAIA::BL IsOpen() const;

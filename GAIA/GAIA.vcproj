@@ -1346,6 +1346,10 @@
 						RelativePath=".\gaia_object_memio.h"
 						>
 					</File>
+					<File
+						RelativePath=".\gaia_object_screenio.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter

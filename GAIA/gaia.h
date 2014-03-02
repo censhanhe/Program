@@ -123,6 +123,7 @@
 #include 	"gaia_object_io.h"
 #include 	"gaia_object_fileio.h"
 #include 	"gaia_object_memio.h"
+#include	"gaia_object_screenio.h"
 
 #include 	"gaia_object_serializer.h"
 
