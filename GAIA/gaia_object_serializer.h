@@ -10,7 +10,7 @@ namespace GAIA
 		public:
 			GINL Serializer(){this->init();}
 			GINL ~Serializer(){}
-			GINL GAIA::BL BindIO(const GAIA::OBJECT::IO* pIO){m_pIO = pIO; return GAIA::True;}
+			GINL GAIA::BL BindIO(GAIA::OBJECT::IO* pIO){m_pIO = pIO; return GAIA::True;}
 			GINL GAIA::OBJECT::IO* GetBindIO() const{return m_pIO;}
 			template<typename _ParamType> GINL Serializer& operator << (const _ParamType& t)
 			{

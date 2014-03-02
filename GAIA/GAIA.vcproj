@@ -634,6 +634,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="PACKAGE"
+						>
+						<File
+							RelativePath=".\gaia_container_basicpackage.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_container_basicstackpackage.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ALGORITHM"
@@ -710,6 +722,14 @@
 				<Filter
 					Name="DATAPHASE"
 					>
+					<File
+						RelativePath=".\gaia_dataphase_bdiff.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_dataphase_tdiff.h"
+						>
+					</File>
 					<File
 						RelativePath=".\gaia_dataphase_xml.h"
 						>
@@ -1311,6 +1331,22 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="IO"
+					>
+					<File
+						RelativePath=".\gaia_object_fileio.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_object_io.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_object_memio.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="FRAMEWORK_LAYER"
@@ -1340,7 +1376,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_serializer.h"
+					RelativePath=".\gaia_object_serializer.h"
 					>
 				</File>
 			</Filter>
