@@ -19,6 +19,8 @@
 
 		All container's += = == != >= <= > < operator implement.
 
+		All container's iterator = == != >= <= > < operator implement.
+
 		Device-independent link-style container.
 
 		Device-independent random-access container.
