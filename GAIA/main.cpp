@@ -26,7 +26,7 @@
 #	define PERF_PRINT_TEXT(text)
 #endif
 
-#define TEST_CURRENT			"<BasicTrieTree function test>"
+#define TEST_CURRENT			""
 #define TEST_BEGIN(name)		if(GAIA::ALGORITHM::strcmp(TEST_CURRENT, "") == 0 || GAIA::ALGORITHM::strcmp((name), TEST_CURRENT) == 0)\
 								{\
 									PERF_PRINT_LINE(name);\
@@ -578,7 +578,8 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<Basic stack test>");
 		{
-			GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bs;
+			typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> __StackType;
+			__StackType bs;
 			bs.push(10);
 			bs.push(20);
 			GAIA::N32 n = bs.top();
@@ -587,6 +588,18 @@ GAIA::N32 main()
 			bs.pop();
 			GAIA::U32 uSize = bs.size();
 			uSize = 0;
+			__StackType::it fit = bs.front_it();
+			__StackType::const_it cfit = bs.const_front_it();
+			__StackType::it bit = bs.back_it();
+			__StackType::const_it cbit = bs.const_back_it();
+			++fit;
+			--fit;
+			++cfit;
+			--cfit;
+			++bit;
+			--bit;
+			++cbit;
+			--cbit;
 		}
 		TEST_END;
 	}
@@ -720,6 +733,19 @@ GAIA::N32 main()
 			que.front();
 			GAIA_AST(que.size() == 1);
 			__QueueType newque = que;
+
+			__QueueType::it fit = newque.front_it();
+			__QueueType::const_it cfit = newque.const_front_it();
+			__QueueType::it bit = newque.back_it();
+			__QueueType::const_it cbit = newque.const_back_it();
+			++fit;
+			--fit;
+			++cfit;
+			--cfit;
+			++bit;
+			--bit;
+			++cbit;
+			--cbit;
 		}
 		TEST_END;
 	}
@@ -2003,6 +2029,97 @@ GAIA::N32 main()
 			pGateway2->Release();
 			pRoute->Release();
 
+			delete pFactory;
+		}
+		TEST_END;
+	}
+
+	// Serializer test.
+	{
+		TEST_BEGIN("<Serializer test>");
+		{
+			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
+			{
+				{
+					GAIA::SERIALIZER::Serializer* pSerializer = (GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
+					{
+						GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, GNULL);	
+						pFileIO->Open("io.tmp", GAIA::IO::IO::IO_TYPE_WRITE);
+
+						pSerializer->BindIO(pFileIO);
+						pFileIO->Release();
+
+						GAIA::SERIALIZER::Serializer& sr = *pSerializer;
+						GAIA::N32 n = 32;
+						sr << n;
+
+						typedef GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::N32, 32> __ArrayType;
+						__ArrayType at;
+						for(__ArrayType::_sizetype x = 0; x < 100; ++x)
+							at.push_back(x);
+						sr << at;
+
+						typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
+						__VectorType vt;
+						for(__VectorType::_sizetype x = 0; x < 100; ++x)
+							vt.push_back(x);
+						sr << vt;
+
+						typedef GAIA::CONTAINER::AString __AStringType;
+						__AStringType astr = "Hello World!";
+						sr << astr;
+
+						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __StackType;
+						__StackType st;
+						for(__StackType::_sizetype x = 0; x < 100; ++x)
+							st.push(x);
+						sr << st;
+
+						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __QueueType;
+						__QueueType qt;
+						for(__QueueType::_sizetype x = 0; x < 100; ++x)
+							qt.push(x);
+						sr << qt;
+					}
+					pSerializer->Release();
+				}
+
+				{
+					GAIA::SERIALIZER::Serializer* pSerializer = (GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
+					{
+						GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, GNULL);
+						pFileIO->Open("io.tmp", GAIA::IO::IO::IO_TYPE_READ);
+
+						pSerializer->BindIO(pFileIO);
+						pFileIO->Release();
+
+						GAIA::SERIALIZER::Serializer& sr = *pSerializer;
+						GAIA::N32 n = 32;
+						sr >> n;
+
+						typedef GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::N32, 32> __ArrayType;
+						__ArrayType at;
+						sr >> at;
+
+						typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
+						__VectorType vt;
+						sr >> vt;
+
+						typedef GAIA::CONTAINER::AString __AStringType;
+						__AStringType astr;
+						sr >> astr;
+
+						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __StackType;
+						__StackType st;
+						sr >> st;
+
+						typedef GAIA::CONTAINER::BasicQueue<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __QueueType;
+						__StackType qt;
+						sr >> qt;
+					}
+					pSerializer->Release();
+				}
+			}
 			delete pFactory;
 		}
 		TEST_END;

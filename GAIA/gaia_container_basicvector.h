@@ -124,16 +124,14 @@ namespace GAIA
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
 			GINL GAIA::GVOID resize(const _SizeType& size)
 			{
-				GAIA_AST(size > 0);
+				GAIA_AST(size >= 0);
 				if(size <= this->capacity())
 				{
 					m_size = size;
 					return;
 				}
-				this->destroy();
-				m_capacity = m_size = size;
-				if(size != 0)
-					m_pData = new _DataType[size];
+				this->reserve(size);
+				m_size = size;
 			}
 			GINL GAIA::GVOID reserve(const _SizeType& size)
 			{

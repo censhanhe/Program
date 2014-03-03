@@ -45,6 +45,8 @@ namespace GAIA
 						this->reserve(size);
 					m_size = size + 1;
 				}
+				if(m_pFront != GNULL)
+					m_pFront[size] = 0;
 			}
 			GINL GAIA::GVOID reserve(const _SizeType& size)
 			{

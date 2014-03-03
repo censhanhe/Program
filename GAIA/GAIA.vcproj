@@ -1335,19 +1335,35 @@
 					Name="IO"
 					>
 					<File
-						RelativePath=".\gaia_object_fileio.h"
+						RelativePath=".\gaia_io_fileio.h"
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_object_io.h"
+						RelativePath=".\gaia_io_io.h"
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_object_memio.h"
+						RelativePath=".\gaia_io_memio.h"
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_object_screenio.h"
+						RelativePath=".\gaia_io_screenio.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="SERIALIZER"
+					>
+					<File
+						RelativePath=".\gaia_serialize_serializeproc.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_serialize_serializeproc_impl.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_serialize_serializer.h"
 						>
 					</File>
 				</Filter>
@@ -1377,10 +1393,6 @@
 				</File>
 				<File
 					RelativePath=".\gaia_instance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_object_serializer.h"
 					>
 				</File>
 			</Filter>

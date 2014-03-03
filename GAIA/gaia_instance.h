@@ -18,7 +18,7 @@ namespace GAIA
 		protected:
 			virtual GAIA::BL Begin(GAIA::GVOID* pParameter) = 0;
 			virtual GAIA::BL End() = 0;
-			virtual GAIA::BL IsBegin() const = 0;	
+			virtual GAIA::BL IsBegin() const = 0;
 		};
 	};
 };

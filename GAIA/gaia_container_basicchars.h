@@ -37,7 +37,7 @@ namespace GAIA
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
 			GINL _SizeType size() const{if(m_size == 0) return 0; return m_size - 1;}
 			GINL _SizeType capacity() const{return _Size;}
-			GINL GAIA::GVOID resize(const _SizeType& size){if(size > _Size) return; m_size = size + 1;}
+			GINL GAIA::GVOID resize(const _SizeType& size){if(size > _Size) return; m_size = size + 1; m_chars[size] = 0;}
 			GINL GAIA::GVOID clear(){m_size = 0; if(m_chars != GNULL) m_chars[0] = 0;}
 			GINL _DataType* front_ptr(){return m_chars;}
 			GINL const _DataType* front_ptr() const{return m_chars;}

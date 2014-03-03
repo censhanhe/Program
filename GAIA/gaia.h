@@ -120,12 +120,14 @@
 #include	"gaia_clsid.h"
 #include	"gaia_instance.h"
 
-#include 	"gaia_object_io.h"
-#include 	"gaia_object_fileio.h"
-#include 	"gaia_object_memio.h"
-#include	"gaia_object_screenio.h"
+#include 	"gaia_io_io.h"
+#include 	"gaia_io_fileio.h"
+#include 	"gaia_io_memio.h"
+#include	"gaia_io_screenio.h"
 
-#include 	"gaia_object_serializer.h"
+#include	"gaia_serialize_serializeproc.h"
+#include 	"gaia_serialize_serializer.h"
+#include	"gaia_serialize_serializeproc_impl.h"
 
 #include	"gaia_datatraffic_gateway.h"
 #include	"gaia_datatraffic_route.h"

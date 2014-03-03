@@ -15,11 +15,53 @@ namespace GAIA
 		public:
 			typedef BasicArray<_DataType, _SizeType, _Size> __MyType;
 		public:
+			class it : public GAIA::ITERATOR::Iterator<_DataType>
+			{
+			private:
+				friend class BasicArray;
+			public:
+				GINL it(){this->init();}
+				GINL virtual ~it(){}
+				GINL virtual GAIA::BL empty() const{if(m_pArray == GNULL || m_index >= m_pArray->size()) return GAIA::True; return GAIA::False;}
+				GINL virtual _DataType& operator * (){GAIA_AST(m_pArray != GNULL); return (*m_pArray)[m_index];}
+				GINL virtual const _DataType& operator * () const{GAIA_AST(m_pArray != GNULL); return (*m_pArray)[m_index];}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (){GAIA_AST(m_pArray != GNULL); if(m_index < m_pArray->size()) ++m_index; return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (){GAIA_AST(m_pArray != GNULL); if(m_index > 0) --m_index; return *this;}
+			private:
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){GAIA_AST(m_pArray != GNULL); if(m_index < m_pArray->size()) ++m_index; return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){GAIA_AST(m_pArray != GNULL); if(m_index > 0) --m_index; return *this;}
+			private:
+				GINL GAIA::GVOID init(){m_pArray = GNULL; m_index = 0;}
+			private:
+				_SizeType m_index;
+				__MyType* m_pArray;
+			};
+			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
+			{
+			private:
+				friend class BasicArray;
+			public:
+				GINL const_it(){this->init();}
+				GINL virtual ~const_it(){}
+				GINL virtual GAIA::BL empty() const{if(m_pArray == GNULL || m_index >= m_pArray->size()) return GAIA::True; return GAIA::False;}
+				GINL virtual const _DataType& operator * () const{GAIA_AST(m_pArray != GNULL); return (*m_pArray)[m_index];}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){GAIA_AST(m_pArray != GNULL); if(m_index < m_pArray->size()) ++m_index; return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){GAIA_AST(m_pArray != GNULL); if(m_index > 0) --m_index; return *this;}
+			private:
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){GAIA_AST(m_pArray != GNULL); if(m_index < m_pArray->size()) ++m_index; return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){GAIA_AST(m_pArray != GNULL); if(m_index > 0) --m_index; return *this;}
+			private:
+				GINL GAIA::GVOID init(){m_pArray = GNULL; m_index = 0;}
+			private:
+				_SizeType m_index;
+				const __MyType* m_pArray;
+			};
+		public:
 			GINL BasicArray(){this->init();}
 			GINL BasicArray(const __MyType& src){this->init(); this->operator = (src);}
 			GINL GAIA::BL empty(){if(this->size() == 0) return GAIA::True; return GAIA::False;}
-			GINL _SizeType size(){return m_size;}
-			GINL _SizeType capacity(){return _Size;}
+			GINL _SizeType size() const{return m_size;}
+			GINL _SizeType capacity() const{return _Size;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL GAIA::BL push_back(const _DataType& t){if(this->size() < _Size){m_data[m_size++] = t; return GAIA::True;} else return GAIA::False;}
 			GINL GAIA::BL pop_back(){if(this->size() > 0){m_size--; return GAIA::True;} else return GAIA::False;}
@@ -109,6 +151,10 @@ namespace GAIA
 				m_size--;
 				return GAIA::True;
 			}
+			GINL it front_it(){it ret; ret.m_index = 0; ret.m_pArray = this; return ret;}
+			GINL it back_it(){it ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pArray = this; return ret;}
+			GINL const_it const_front_it() const{const_it ret; ret.m_index = 0; ret.m_pArray = this; return ret;}
+			GINL const_it const_back_it() const{const_it ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pArray = this; return ret;}
 			GINL const _DataType& operator [] (const _SizeType& index) const{return m_data[index];}
 			GINL _DataType& operator [] (const _SizeType& index){return m_data[index];}
 			GINL BasicArray<_DataType, _SizeType, _Size>& operator << (const _DataType& t){this->push_back(t); return *this;}

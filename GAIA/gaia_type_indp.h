@@ -31,7 +31,7 @@ namespace GAIA
 	GINL GAIA::NM RefObject::Release()
 	{
 	#if GAIA_OS == GAIA_OS_WINDOWS
-		GAIA::NM nNew = InterlockedIncrement(&m_nRef);
+		GAIA::NM nNew = InterlockedDecrement(&m_nRef);
 	#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
 		#if GAIA_MACHINE == GAIA_MACHINE64
 			GAIA::NM nNew = OSAtomicDecrement64(&m_nRef);

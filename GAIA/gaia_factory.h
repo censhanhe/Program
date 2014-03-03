@@ -65,6 +65,14 @@ namespace GAIA
 					pRet = new GAIA::DATATRAFFIC::RouteNet;
 				else if(cid == GAIA_CLSID_TRANSMISSION_IDM)
 					pRet = new GAIA::DATATRAFFIC::TransmissionIDM;
+				else if(cid == GAIA_CLSID_FILEIO)
+					pRet = new GAIA::IO::FileIO;
+				else if(cid == GAIA_CLSID_MEMIO)
+					pRet = new GAIA::IO::MemIO;
+				else if(cid == GAIA_CLSID_SCREENIO)
+					pRet = new GAIA::IO::ScreenIO;
+				else if(cid == GAIA_CLSID_SERIALIZER)
+					pRet = new GAIA::SERIALIZER::Serializer;
 				if(pRet == GNULL)
 				{
 					for(LIST_CREATECALLBACK::_sizetype x = 0; x < m_listCreateCB.size(); ++x)

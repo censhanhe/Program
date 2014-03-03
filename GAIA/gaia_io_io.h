@@ -1,9 +1,9 @@
-#ifndef 	__GAIA_OBJECT_IO_H__
-#define 	__GAIA_OBJECT_IO_H__
+#ifndef 	__GAIA_IO_IO_H__
+#define 	__GAIA_IO_IO_H__
 
 namespace GAIA
 {
-	namespace OBJECT
+	namespace IO
 	{
 		class IO : public GAIA::FRAMEWORK::Instance
 		{
