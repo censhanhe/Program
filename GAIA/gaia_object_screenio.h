@@ -10,9 +10,10 @@ namespace GAIA
 		public:
 			GINL ScreenIO();
 			GINL ~ScreenIO();
-			virtual GAIA::BL Open(const GAIA::GCH* pszIOName);
+			virtual GAIA::BL Open(const GAIA::GCH* pszIOName, GAIA::UM uTypeMask);
 			virtual GAIA::BL Close();
-			virtual GAIA::BL IsOpen() const;
+			virtual GAIA::BL IsOpen() const;	
+			virtual GAIA::UM GetType() const;
 			virtual GAIA::BL Read(GAIA::GVOID* pData, GAIA::UM uSize);
 			virtual GAIA::BL Write(const GAIA::GVOID* pData, GAIA::UM uSize);
 		private:
