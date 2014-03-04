@@ -52,7 +52,7 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.size() == 0)
+					if(m_pNode->m_links.empty())
 					{
 					NEXT_LOOP:
 						if(m_pNode->m_pParent == GNULL)
@@ -92,7 +92,7 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.size() == 0)
+					if(m_pNode->m_links.empty())
 					{
 					NEXT_LOOP:
 						if(m_pNode->m_pParent == GNULL)
@@ -156,7 +156,7 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.size() == 0)
+					if(m_pNode->m_links.empty())
 					{
 						NEXT_LOOP:
 						if(m_pNode->m_pParent == GNULL)
@@ -196,7 +196,7 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.size() == 0)
+					if(m_pNode->m_links.empty())
 					{
 					NEXT_LOOP:
 						if(m_pNode->m_pParent == GNULL)

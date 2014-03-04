@@ -304,7 +304,7 @@ namespace GAIA
 					iter.m_iter_d = (*iter.m_iter_n).m_datas.back_it();
 				return iter;
 			}
-			GINL const_it const_front_it()
+			GINL const_it const_front_it() const
 			{
 				const_it iter;
 				iter.m_iter_n = m_avltree.const_front_it();
@@ -312,7 +312,7 @@ namespace GAIA
 					iter.m_iter_d = (*iter.m_iter_n).m_datas.const_front_it();
 				return iter;
 			}
-			GINL const_it const_back_it()
+			GINL const_it const_back_it() const
 			{
 				const_it iter;
 				iter.m_iter_n = m_avltree.const_back_it();

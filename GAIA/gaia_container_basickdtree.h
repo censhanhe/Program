@@ -97,7 +97,7 @@ namespace GAIA
 					}
 					else if(pNode != GNULL)
 					{
-						if(pNode->m_avltree.size() != 0)
+						if(!pNode->m_avltree.empty())
 							break;
 						pSplit = pNode->m_pParent;
 						m_nodepool.release(pNode);

@@ -63,12 +63,24 @@ namespace GAIA
 		/* BasicOrderless serialize */
 
 		/* BasicStackBitset serialize. */
+		template<typename _SizeType, _SizeType _Size> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicStackBitset<_SizeType, _Size>& t);
+		template<typename _SizeType, _SizeType _Size> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicStackBitset<_SizeType, _Size>& t);
 
 		/* BasicBitset serialize. */
+		template<typename _SizeType> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicBitset<_SizeType>& t);
+		template<typename _SizeType> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicBitset<_SizeType> &t);
 
 		/* BasicStorage serialize. */
 
 		/* BasicChars serialize. */
+		template<typename _DataType, typename _SizeType, _SizeType _Size> GINL GAIA::BL 
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicChars<_DataType, _SizeType, _Size>& t);
+		template<typename _DataType, typename _SizeType, _SizeType _Size> GINL GAIA::BL 
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicChars<_DataType, _SizeType, _Size>& t);
 
 		/* BasicString serialize. */
 		template<typename _DataType, typename _SizeType> GINL GAIA::BL 

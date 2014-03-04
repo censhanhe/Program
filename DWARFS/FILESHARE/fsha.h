@@ -12,6 +12,7 @@
 #		define __DWARFS_FILESHARE_API
 #	endif
 #	pragma warning(disable : 4996)
+#	pragma warning(disable : 4102)
 #	pragma warning(disable : 4800)
 #	pragma warning(disable : 4244)
 #	pragma warning(disable : 4018)
@@ -25,8 +26,16 @@
 namespace FSHA
 {
 	/* Constants. */
+	static const GAIA::GCH VERSION_STRING[] = "00.00.01.00";
+	static const GAIA::U32 VERSION = 0x00000100;
 	static const GAIA::NM MAX_DEPTH = 12;
 	static const GAIA::NM MAX_PATHLEN = 240;
+	static const GAIA::GCH FILE_USERGROUP[] = "usergroup";
+	static const GAIA::U32 FILE_USERGROUP_FLAG = 'FSUG';
+	static const GAIA::U32 FILE_USERGROUP_VERSION = 0;
+	static const GAIA::GCH FILE_FILELIST[] = "filelist";
+	static const GAIA::U32 FILE_FILELIST_FLAG = 'FSFL';
+	static const GAIA::U32 FILE_FILELIST_VERSION = 0;
 
 	/* Type declaration. */
 	typedef GAIA::U64 FILEID; // GINVALID means invalid id.
@@ -354,6 +363,70 @@ namespace FSHA
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GAIA::False;
+
+			/* Construct serializer. */
+			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
+			GAIA::SERIALIZER::Serializer* pSerializer = 
+				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
+			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, GNULL);	
+			if(!pFileIO->Open(FILE_USERGROUP, GAIA::IO::IO::IO_TYPE_READ))
+			{
+				pFileIO->Release();
+				pSerializer->Release();
+				delete pFactory;
+				return GAIA::False;
+			}
+			pSerializer->BindIO(pFileIO);
+			pFileIO->Release();
+			GAIA::SERIALIZER::Serializer& sr = *pSerializer;
+
+			/* Read file head. */
+			GAIA::U32 uFlag;
+			sr >> uFlag;
+			if(uFlag != FILE_USERGROUP_FLAG)
+				goto FUNCTION_END;
+			GAIA::U32 uVersion;
+			sr >> uVersion;
+			if(uVersion > FILE_USERGROUP_VERSION)
+				goto FUNCTION_END;
+
+			/* Read user information. */
+			__UserSetType::_sizetype user_cnt;
+			sr >> user_cnt;
+			for(__UserSetType::_sizetype x = 0; x < user_cnt; ++x)
+			{
+				__UserNameType uname;
+				sr >> uname;
+				__PasswordType pwd;
+				sr >> pwd;
+			}
+
+			/* Read group information. */
+			__GroupSetType::_sizetype group_cnt;
+			sr >> group_cnt;
+			for(__GroupSetType::_sizetype x = 0; x < group_cnt; ++x)
+			{
+				__GroupNameType gname;
+				sr >> gname;
+				this->AddGroup(gname);
+				Right right;
+				sr >> right;
+				this->SetGroupRightRead(gname, right.m_bRead);
+				this->SetGroupRightWrite(gname, right.m_bWrite);
+				Group::__UserRefListType::_sizetype user_cnt;
+				sr >> user_cnt;
+				for(Group::__UserRefListType::_sizetype y = 0; y < user_cnt; ++y)
+				{
+					__UserNameType uname;
+					sr >> uname;
+					this->AddGroupUser(gname, uname);
+				}
+			}
+
+		FUNCTION_END:
+			/* Destruct serializer */
+			pSerializer->Release();
+			delete pFactory;
 			return GAIA::True;
 		}
 		GINL GAIA::BL Save(const GAIA::GCH* pszFileName)
@@ -361,6 +434,70 @@ namespace FSHA
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GAIA::False;
+
+			/* Construct serializer. */
+			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
+			GAIA::SERIALIZER::Serializer* pSerializer = 
+				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
+			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, GNULL);	
+			if(!pFileIO->Open(FILE_USERGROUP, GAIA::IO::IO::IO_TYPE_WRITE))
+			{
+				pFileIO->Release();
+				pSerializer->Release();
+				delete pFactory;
+				return GAIA::False;
+			}
+			pSerializer->BindIO(pFileIO);
+			pFileIO->Release();
+			GAIA::SERIALIZER::Serializer& sr = *pSerializer;
+
+			/* Write file flag. */
+			sr << FILE_USERGROUP_FLAG;
+			sr << FILE_USERGROUP_VERSION;
+
+			/* Write user information. */
+			__UserSetType::_sizetype user_cnt = m_users.size();
+			sr << user_cnt;
+			__UserSetType::it it_u = m_users.front_it();
+			while(!it_u.empty())
+			{
+				User* pUser = *it_u;
+				if(pUser != GNULL)
+				{
+					sr << pUser->m_name;
+					sr << pUser->m_pwd;
+				}
+				++it_u;
+			}
+
+			/* Write group information. */
+			__GroupSetType::_sizetype group_cnt = m_groups.size();
+			sr << group_cnt;
+			__GroupSetType::it it_g = m_groups.front_it();
+			while(!it_g.empty())
+			{
+				Group* pGroup = *it_g;
+				if(pGroup != GNULL)
+				{
+					sr << pGroup->m_name;
+					sr << pGroup->m_right;
+					Group::__UserRefListType::_sizetype user_cnt = pGroup->m_refusers.size();
+					sr << user_cnt;
+					Group::__UserRefListType::it it = pGroup->m_refusers.front_it();
+					while(!it.empty())
+					{
+						User* pUser = *it;
+						sr << pUser->m_name;
+						++it;
+					}
+				}
+				++it_g;
+			}
+
+		FUNCTION_END:
+			/* Destruct serializer */
+			pSerializer->Release();
+			delete pFactory;
 			return GAIA::True;
 		}
 		GINL GAIA::BL AddUser(const __UserNameType& name)
@@ -503,6 +640,50 @@ namespace FSHA
 			const Group* pGroup = this->FindGroupInternal(name);
 			return pGroup != GNULL;
 		}
+		GINL GAIA::BL SetGroupRightRead(const __GroupNameType& name, GAIA::BL bRead)
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			Group* pGroup = this->FindGroupInternal(name);
+			if(pGroup == GNULL)
+				return GAIA::False;
+			pGroup->m_right.m_bRead = bRead;
+			return GAIA::True;
+		}
+		GINL GAIA::BL GetGroupRightRead(const __GroupNameType& name, GAIA::BL& bRead)
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			Group* pGroup = this->FindGroupInternal(name);
+			if(pGroup == GNULL)
+				return GAIA::False;
+			bRead = pGroup->m_right.m_bRead;
+			return GAIA::True;
+		}
+		GINL GAIA::BL SetGroupRightWrite(const __GroupNameType& name, GAIA::BL bWrite)
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			Group* pGroup = this->FindGroupInternal(name);
+			if(pGroup == GNULL)
+				return GAIA::False;
+			pGroup->m_right.m_bWrite = bWrite;
+			return GAIA::True;
+		}
+		GINL GAIA::BL GetGroupRightWrite(const __GroupNameType& name, GAIA::BL& bWrite)
+		{
+			GAIA_AST(!name.empty());
+			if(name.empty())
+				return GAIA::False;
+			Group* pGroup = this->FindGroupInternal(name);
+			if(pGroup == GNULL)
+				return GAIA::False;
+			bWrite = pGroup->m_right.m_bWrite;
+			return GAIA::True;
+		}
 		GINL GAIA::BL AddGroupUser(const __GroupNameType& gname, const __UserNameType& uname)
 		{
 			GAIA_AST(!gname.empty());
@@ -605,6 +786,8 @@ namespace FSHA
 		{
 			if(m_bInitialized)
 				return GAIA::False;
+			m_usergroup.Load(FILE_USERGROUP);
+			m_filelist.Load(FILE_FILELIST);
 			m_bInitialized = GAIA::True;
 			return GAIA::True;
 		}
@@ -650,6 +833,19 @@ namespace FSHA
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
 			if(GAIA::ALGORITHM::stremp(pszCmd))
 				return GAIA::False;
+			GAIA::CONTAINER::AString strCmd = pszCmd;
+			GAIA::CONTAINER::Vector<GAIA::CONTAINER::AString> listPart;
+			GAIA::CONTAINER::AString::_sizetype index;
+			while((index = strCmd.find(' ', GINVALID)) != GINVALID)
+			{
+				GAIA::CONTAINER::AString strTemp = strCmd;
+				strTemp.left(index);
+				listPart.push_back(strTemp);
+				strCmd.right(index);
+			}
+			if(!strCmd.empty())
+				listPart.push_back(strCmd);
+			strCmd.clear();
 			return GAIA::True;
 		}
 	private:
@@ -666,6 +862,8 @@ namespace FSHA
 		GAIA::BL m_bStartuped;
 		GAIA::U64 m_uUSpeed;
 		GAIA::U64 m_uDSpeed;
+		FileList m_filelist;
+		UserGroup m_usergroup;
 	};
 };
 

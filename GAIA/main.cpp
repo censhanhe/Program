@@ -1440,7 +1440,7 @@ GAIA::N32 main()
 				bFunctionSuccess = GAIA::False;
 			if(!mst.empty())
 				bFunctionSuccess = GAIA::False;
-			if(mst.size() != 0)
+			if(!mst.empty())
 				bFunctionSuccess = GAIA::False;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			{
@@ -1665,7 +1665,7 @@ GAIA::N32 main()
 
 				_MyGraphType::__LinkListType listLinkResult;
 				graph.collect_link_list(listLinkResult);
-				if(listLinkResult.size() == 0)
+				if(listLinkResult.empty())
 					TEST_FILE_LINE("collect graph link list FAILED!");
 			}
 
@@ -2069,6 +2069,10 @@ GAIA::N32 main()
 						__AStringType astr = "Hello World!";
 						sr << astr;
 
+						typedef GAIA::CONTAINER::AChars __ACharsType;
+						__ACharsType achars = "Hello World!";
+						sr << achars;
+
 						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __StackType;
 						__StackType st;
 						for(__StackType::_sizetype x = 0; x < 100; ++x)
@@ -2080,6 +2084,36 @@ GAIA::N32 main()
 						for(__QueueType::_sizetype x = 0; x < 100; ++x)
 							qt.push(x);
 						sr << qt;
+
+						typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __ListType;
+						__ListType lt;
+						for(__ListType::_sizetype x = 0; x < 100; ++x)
+							lt.push_back(x);
+						sr << lt;
+
+						typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __AVLTreeType;
+						__AVLTreeType avlt;
+						for(__AVLTreeType::_sizetype x = 100; x > 0; --x)
+							avlt.insert(x);
+						sr << avlt;
+
+						typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __TrieTreeType;
+						__TrieTreeType triet;
+						triet.insert("Hello World", sizeof("Hello World") - sizeof(GAIA::GCH));
+						triet.insert("Hello Kitty", sizeof("Hello Kitty") - sizeof(GAIA::GCH));
+						triet.insert("ThisIsGAIA", sizeof("ThisIsGAIA") - sizeof(GAIA::GCH));
+						sr << triet;
+
+						typedef GAIA::CONTAINER::BasicStackBitset<GAIA::N32, 32> __StackBitsetType;
+						__StackBitsetType sbitsett;
+						~sbitsett;
+						sr << sbitsett;
+
+						typedef GAIA::CONTAINER::BasicBitset<GAIA::N32> __BitsetType;
+						__BitsetType bitsett;
+						bitsett.resize(10);
+						~bitsett;
+						sr << bitsett;
 					}
 					pSerializer->Release();
 				}
@@ -2109,6 +2143,10 @@ GAIA::N32 main()
 						__AStringType astr;
 						sr >> astr;
 
+						typedef GAIA::CONTAINER::AChars __ACharsType;
+						__ACharsType achars;
+						sr >> achars;
+
 						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __StackType;
 						__StackType st;
 						sr >> st;
@@ -2116,6 +2154,29 @@ GAIA::N32 main()
 						typedef GAIA::CONTAINER::BasicQueue<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __QueueType;
 						__StackType qt;
 						sr >> qt;
+
+						typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __ListType;
+						__ListType lt;
+						sr >> lt;
+
+						typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __AVLTreeType;
+						__AVLTreeType avlt;
+						sr >> avlt;
+
+						typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 1000> __TrieTreeType;
+						__TrieTreeType triet;
+						sr >> triet;
+						__TrieTreeType::Node* pNode = triet.find(GNULL, "Hello World", sizeof("Hello World") - sizeof(GAIA::GCH));
+						pNode = triet.find(GNULL, "Hello Kitty", sizeof("Hello Kitty") - sizeof(GAIA::GCH));
+						pNode = triet.find(GNULL, "ThisIsGAIA", sizeof("ThisIsGAIA") - sizeof(GAIA::GCH));
+
+						typedef GAIA::CONTAINER::BasicStackBitset<GAIA::N32, 32> __StackBitsetType;
+						__StackBitsetType sbitsett;
+						sr >> sbitsett;
+
+						typedef GAIA::CONTAINER::BasicBitset<GAIA::N32> __BitsetType;
+						__BitsetType bitsett;
+						sr >> bitsett;
 					}
 					pSerializer->Release();
 				}

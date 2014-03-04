@@ -75,7 +75,7 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.size() == 0)
+					if(m_pNode->m_links.empty())
 					{
 					NEXT_LOOP:
 						if(m_pNode->m_pParent == GNULL)
@@ -151,7 +151,7 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.size() == 0)
+					if(m_pNode->m_links.empty())
 					{
 					NEXT_LOOP:
 						if(m_pNode->m_pParent == GNULL)
@@ -284,8 +284,8 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			GINL GAIA::BL leaf(const it& iter) const{if(iter.empty()) return GAIA::False; return iter.m_pNode->m_links.size() == 0;}
-			GINL GAIA::BL leaf(const const_it& iter) const{if(iter.empty()) return GAIA::False; return iter.m_pNode->m_links.size() == 0;}
+			GINL GAIA::BL leaf(const it& iter) const{if(iter.empty()) return GAIA::False; return iter.m_pNode->m_links.empty();}
+			GINL GAIA::BL leaf(const const_it& iter) const{if(iter.empty()) return GAIA::False; return iter.m_pNode->m_links.empty();}
 			GINL GAIA::BL root(const it& iter) const{return iter.m_pNode == &m_root;}
 			GINL GAIA::BL root(const const_it& iter) const{return iter.m_pNode == &m_root;}
 			GINL it root(){it iter; iter.m_pNode = &m_root; iter.m_pTrieTree = this; return iter;}
@@ -487,7 +487,7 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL const_it const_front_it()
+			GINL const_it const_front_it() const
 			{
 				const_it iter;
 				typename __NodeTreeType::const_it itf = m_root.m_links.const_front_it();
@@ -498,7 +498,7 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL const_it const_back_it()
+			GINL const_it const_back_it() const
 			{
 				const Node* pNode = &m_root;
 				if(pNode != GNULL)

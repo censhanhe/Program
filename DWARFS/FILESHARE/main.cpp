@@ -5,14 +5,16 @@ using namespace std;
 
 int main()
 {
+	cout << "Welcome FileShare(v" << FSHA::VERSION_STRING << ")" << endl;
 	FSHA::FileShare fsha;
 	FSHA::FileShare::FileShareDesc desc;
 	fsha.Initialize(desc);
-	cout << "Welcome FileShare" << endl;
-	for(;;)
+	fsha.Startup();
+	for(;;) // Work loop.
 	{
+		cout << ":";
 		string str_cmd;
-		for(;;)
+		for(;;) // Collect all word to command lines.
 		{
 			string str;
 			cin >> str;
@@ -21,9 +23,10 @@ int main()
 			if(!str_cmd.empty())
 				str_cmd += " ";
 			str_cmd += str;
-			for(;;)
+			GAIA::BL bExistCmd = GAIA::False;
+			for(;;) // If exist valid command line, execute it.
 			{
-				GAIA::N32 nIndex = str_cmd.find(';');
+				GAIA::N32 nIndex = (GAIA::N32)str_cmd.find(';');
 				if(nIndex == -1)
 					break;
 				string str_cmd_cur = str_cmd.substr(0, nIndex);
@@ -33,12 +36,16 @@ int main()
 				else
 				{
 					if(!fsha.Command(str_cmd_cur.c_str()))
-						cout << "Invalid command!" << endl;
+						cout << endl << "Invalid command!" << endl;
+					bExistCmd = GAIA::True;
 				}
 			}
+			if(bExistCmd)
+				cout << ":";
 		}
 	}
 FUNCTION_END:
+	fsha.Shutdown();
 	fsha.Release();
 	return 0;
 }

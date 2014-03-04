@@ -98,7 +98,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL pop()
 			{
-				if(this->size() != 0)
+				if(!this->empty())
 				{
 					if(m_pFront == m_pData + this->capacity())
 						m_pFront = m_pData;

@@ -23,8 +23,10 @@ namespace GAIA
 			GINL _SizeType size() const{return m_size;}
 			GINL _SizeType capacity() const{return m_capacity;}
 			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){delete[] m_pFront; m_pFront = GNULL;} m_size = m_capacity = 0;}
-			GINL GAIA::U8* front_ptr(){return m_pFront;}
-			GINL const GAIA::U8* front_ptr() const{return m_pFront;}
+			GINL GAIA::U8* front_ptr(){if(this->empty()) return GNULL; return m_pFront;}
+			GINL GAIA::U8* back_ptr(){if(this->empty()) return GNULL; return &m_pFront[this->size() - 1];}
+			GINL const GAIA::U8* front_ptr() const{if(this->empty()) return GNULL; return m_pFront;}
+			GINL const GAIA::U8* back_ptr() const{if(this->empty()) return GNULL; return &m_pFront[this->size() - 1];}
 			GINL GAIA::BL exist(const _SizeType& index) const{GAIA_AST(index / 8 < this->size()); if(index / 8 >= this->size()) return GAIA::False; return (GAIA_BITSET_SRC & GAIA_BITSET_CUR) != 0;}
 			GINL GAIA::GVOID set(const _SizeType& index){GAIA_AST(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_BITSET_SRC |= GAIA_BITSET_CUR;}
 			GINL GAIA::GVOID reset(const _SizeType& index){GAIA_AST(index / 8 < this->size()); if(index / 8 >= this->size()) return; GAIA_BITSET_SRC &= ~GAIA_BITSET_CUR;}
@@ -35,7 +37,7 @@ namespace GAIA
 					m_size = size;
 				else
 				{
-					if(this->size() > m_capacity)
+					if(size > this->capacity())
 					{
 						this->destroy();
 						this->reverse(size);
@@ -100,7 +102,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL operator != (const _SizeType& index){return !(this->operator == (index));}
 			GINL GAIA::BL operator != (const BasicBitset<_SizeType>& src){return !(this->operator == (src));}
-			GINL BasicBitset<_SizeType>& operator ~ (){for(_SizeType x = 0; x < this->size(); ++x) this->front_ptr()[x] ^ (GAIA::U8)-1; return *this;}
+			GINL BasicBitset<_SizeType>& operator ~ (){for(_SizeType x = 0; x < this->size(); ++x) this->front_ptr()[x] ^= (GAIA::U8)-1; return *this;}
 			GINL GAIA::BL operator[](const _SizeType& index) const{return this->exist(index);}
 		private:
 			GINL GAIA::GVOID init(){m_pFront = GNULL; m_size = m_capacity = 0;}
