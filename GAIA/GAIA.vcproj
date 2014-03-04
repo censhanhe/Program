@@ -983,6 +983,22 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="PRINT"
+					>
+					<File
+						RelativePath=".\gaia_print.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_print_indp.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_print_indp.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="FUNCTON_LAYER"

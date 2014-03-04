@@ -81,7 +81,7 @@ namespace FSHA
 		FSTRBTR m_filesbtr;
 	};
 
-	/* File list class.  */
+	/* File list class. */
 	class __DWARFS_FILESHARE_API FileList
 	{
 	public:
@@ -830,6 +830,7 @@ namespace FSHA
 		const GAIA::U64& GetMaxDownloadSpeed() const{return m_uDSpeed;}
 		GAIA::BL Command(const GAIA::GCH* pszCmd)
 		{
+			// Command analyze.
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
 			if(GAIA::ALGORITHM::stremp(pszCmd))
 				return GAIA::False;
@@ -846,6 +847,80 @@ namespace FSHA
 			if(!strCmd.empty())
 				listPart.push_back(strCmd);
 			strCmd.clear();
+
+			// Execute command.
+			static const GAIA::GCH* COMMAND_LIST[] = 
+			{
+				"Invalid",
+				"h",
+				"create_user",
+				"delete_user",
+				"delete_all_user",
+				"password",
+				"create_group",
+				"delete_group",
+				"delete_all_group",
+			};
+			GAIA_ENUM_BEGIN(COMMAND_LIST)
+				CMD_HELP,
+				CMD_CREATEUSER,
+				CMD_DELETEUSER,
+				CMD_DELETEALLUSER,
+				CMD_PASSWORD,
+				CMD_CREATEGROUP,
+				CMD_DELETEGROUP,
+				CMD_DELETEALLGROUP,
+			GAIA_ENUM_END(COMMAND_LIST)
+			#define CMD(e) (listPart[0] == COMMAND_LIST[e])
+			if(listPart.empty())
+				return GAIA::False;
+			if(CMD(CMD_HELP))
+			{
+			}
+			else if(CMD(CMD_CREATEUSER))
+			{
+				if(listPart.size() == 2)
+				{
+				}
+			}
+			else if(CMD(CMD_DELETEUSER))
+			{
+				if(listPart.size() == 2)
+				{
+				}
+			}
+			else if(CMD(CMD_DELETEALLUSER))
+			{
+				if(listPart.size() == 1)
+				{
+				}
+			}
+			else if(CMD(CMD_PASSWORD))
+			{
+				if(listPart.size() == 3)
+				{
+				}
+			}
+			else if(CMD(CMD_CREATEGROUP))
+			{
+				if(listPart.size() == 2)
+				{
+				}
+			}
+			else if(CMD(CMD_DELETEGROUP))
+			{
+				if(listPart.size() == 2)
+				{
+				}
+			}
+			else if(CMD(CMD_DELETEALLGROUP))
+			{
+				if(listPart.size() == 1)
+				{
+				}
+			}
+			else
+				return GAIA::False;
 			return GAIA::True;
 		}
 	private:

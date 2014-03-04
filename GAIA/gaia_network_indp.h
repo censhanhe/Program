@@ -100,7 +100,8 @@ namespace GAIA
 			setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
 			setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
+			GAIA::UM bNotBlockModeEnable = 1;
+			ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
 		#else
 			GAIA::N32 flags = fcntl(m_h, F_GETFL, 0);
 			fcntl(m_h, F_SETFL, flags | O_NONBLOCK);

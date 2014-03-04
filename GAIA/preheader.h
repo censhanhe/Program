@@ -29,6 +29,7 @@
 #	include <math.h>
 #	include <stdio.h>
 #	include <stdlib.h>
+#	include <iostream>
 #	if GAIA_OS == GAIA_OS_WINDOWS
 #		define NOMINMAX
 #		include <winsock2.h>
