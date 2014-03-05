@@ -1123,7 +1123,7 @@ namespace FSHA
 				"Invalid",				"Invalid.",
 				"h",					"show help information.",
 				"save",					"save config change.",
-				"build",				"build the path and generate file list, format = file_path file_ext_list."
+				"build",				"build the path and generate file list, format = file_path file_ext_list.",
 				"create_user",			"create a new user, format = create_user user_name.",
 				"delete_user",			"delete a exist user, format = delete_user user_name.",
 				"delete_all_user",		"delete all exist users.",
