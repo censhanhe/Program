@@ -116,8 +116,8 @@ namespace GAIA
 			GINL const_it upper_bound(const _KeyType& key) const{const_it ret; Node f; f.m_key = key; ret.m_iter = m_avltree.upper_bound(f); return ret;}
 			GINL it front_it(){it ret; ret.m_iter = m_avltree.front_it(); return ret;}
 			GINL it back_it(){it ret; ret.m_iter = m_avltree.back_it(); return ret;}
-			GINL const_it const_front_it() const{const_it ret; ret.m_iter = m_avltree.front_it(); return ret;}
-			GINL const_it const_back_it() const{const_it ret; ret.m_iter = m_avltree.back_it(); return ret;}
+			GINL const_it const_front_it() const{const_it ret; ret.m_iter = m_avltree.const_front_it(); return ret;}
+			GINL const_it const_back_it() const{const_it ret; ret.m_iter = m_avltree.const_back_it(); return ret;}
 		private:
 			__AVLTreeType m_avltree;
 		};

@@ -47,7 +47,8 @@ namespace FSHA
 			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 
 			GAIA_DEFAULT_GROUPELEMENTSIZE> FSTRBTR; 
 	typedef GAIA::U32 MAP_INDEX_TYPE; // 0 means invalid id.
-	typedef GAIA::CONTAINER::Array<GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAX_PATHLEN>, MAX_DEPTH> FNAMEPARTLISTTYPE;
+	typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAX_PATHLEN> FNAMETYPE;
+	typedef GAIA::CONTAINER::Array<FNAMETYPE, MAX_DEPTH> FNAMEPARTLISTTYPE;
 
 	/* File sequence. */
 	class __DWARFS_FILESHARE_API FileSequence
@@ -74,8 +75,8 @@ namespace FSHA
 			m_filesbtr.destroy();
 			return GAIA::True;
 		}
-		const GAIA::UM& GetRecCount() const{return m_files.size();}
-		const GAIA::GCH* GetRec(const GAIA::UM& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
+		const GAIA::NM& GetRecCount() const{return m_files.size();}
+		const GAIA::GCH* GetRec(const GAIA::NM& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
 	private:
 		FSTRLIST m_files;
 		FSTRBTR m_filesbtr;
@@ -85,26 +86,64 @@ namespace FSHA
 	class __DWARFS_FILESHARE_API FileList
 	{
 	public:
-		FileList(){}
+		FileList(){this->init();}
 		~FileList(){}
 		GAIA::BL Load(const GAIA::GCH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GAIA::False;
-			GAIA::FILESYSTEM::File file;
-			if(!file.Open(pszFileName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+
+			/* Construct serializer. */
+			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
+			GAIA::SERIALIZER::Serializer* pSerializer = 
+				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
+			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, GNULL);	
+			if(!pFileIO->Open(FILE_FILELIST, GAIA::IO::IO::IO_TYPE_READ))
+			{
+				pFileIO->Release();
+				pSerializer->Release();
+				delete pFactory;
 				return GAIA::False;
-			// Load name map list.
-			{
 			}
-			// Load file tree.
+			pSerializer->BindIO(pFileIO);
+			pFileIO->Release();
+			GAIA::SERIALIZER::Serializer& sr = *pSerializer;
+
+			/* Read file head. */
+			GAIA::U32 uFileFlag;
+			sr >> uFileFlag;
+			if(uFileFlag != FILE_FILELIST_FLAG)
+				goto FUNCTION_END;
+
+			GAIA::U32 uVersion;
+			sr >> uVersion;
+			if(uVersion > FILE_FILELIST_VERSION)
+				goto FUNCTION_END;
+
+			/* Read name map list. */
 			{
-				// Load id.
-				// Load file chunk progress.
-				// Load file sequence.
-				// Load file map index list.
+				__NameMapType::_sizetype size;
+				sr >> size;
+				for(__NameMapType::_sizetype x = 0; x < size; ++x)
+				{
+					__NameMapType::_datatype d;
+					sr >> d.m_name;
+					m_names.push_back(d);
+				}
 			}
+			/* Read file tree. */
+			{
+				/* Read id. */
+				/* Read file chunk progress. */
+				/* Read file sequence. */
+				/* Read file map index list. */
+			}
+
+		FUNCTION_END:
+			/* Destruct serializer */
+			pSerializer->Release();
+			delete pFactory;
 			return GAIA::True;
 		}
 		GAIA::BL Save(const GAIA::GCH* pszFileName)
@@ -112,23 +151,159 @@ namespace FSHA
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GAIA::False;
-			GAIA::FILESYSTEM::File file;
-			if(!file.Open(pszFileName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE))
+
+			/* Construct serializer. */
+			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
+			GAIA::SERIALIZER::Serializer* pSerializer = 
+				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
+			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, GNULL);	
+			if(!pFileIO->Open(FILE_FILELIST, GAIA::IO::IO::IO_TYPE_WRITE))
+			{
+				pFileIO->Release();
+				pSerializer->Release();
+				delete pFactory;
 				return GAIA::False;
-			// Save name map list.
-			{
 			}
-			// Save file tree.
+			pSerializer->BindIO(pFileIO);
+			pFileIO->Release();
+			GAIA::SERIALIZER::Serializer& sr = *pSerializer;
+
+			/* Write file head. */
+			sr << FILE_FILELIST_FLAG;
+			sr << FILE_FILELIST_VERSION;
+
+			/* Write name map list. */
 			{
-				// Save id.
-				// Save file chunk progress.
-				// Save file sequence.
-				// Save file map index list.
+				__NameMapType::_sizetype size = m_names.size();
+				sr << size;
+				__NameMapType::const_it it = m_names.const_front_it();
+				while(!it.empty())
+				{
+					const __NameMapType::_datatype& d = *it;
+					sr << d.m_name;
+					++it;
+				}
 			}
+			/* Write file tree. */
+			{
+				/* Write id. */
+				/* Write file chunk progress. */
+				/* Write file sequence. */
+				/* Write file map index list. */
+			}
+		FUNCTION_END:
+			/* Destruct serializer */
+			pSerializer->Release();
+			delete pFactory;
 			return GAIA::True;
 		}
-		GAIA::BL Build()
+		GAIA::BL Build(const GAIA::GCH* pszPathName, const GAIA::GCH* pszFilter)
 		{
+			GAIA::FILESYSTEM::Directory dir;
+			GAIA::FILESYSTEM::Directory::__ResultTree restree;
+			if(!dir.Collect(pszPathName, pszFilter, GAIA::True, restree))
+				return GAIA::False;
+
+			/* Build name list(m_names). */
+			{
+				m_names.clear();
+				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
+				while(!it.empty())
+				{
+					NameMap nm;
+					nm.m_name = (*it).front_ptr();
+					m_names.push_back(nm);
+					++it;
+				}
+				m_names.sort();
+			}
+
+			/* Generate file tree(m_ftree). */
+			{
+				m_ftree.clear();
+				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
+				typedef GAIA::CONTAINER::Vector<TrieNode> __TempInsertVector;
+				__TempInsertVector listInsert;
+				FILEID id = 0;
+				while(!it.empty())
+				{
+					if(restree.leaf(it))
+					{
+						listInsert.clear();
+						typedef GAIA::CONTAINER::Vector<GAIA::FILESYSTEM::Directory::__ResultTree::_datatype*> __TempPartComineVector;
+						__TempPartComineVector listTemp;
+						GAIA::FILESYSTEM::Directory::__ResultTree::it itt = it;
+						while(!itt.empty())
+						{
+							listTemp.push_back(&*itt);
+							itt = restree.parent(itt);
+							if(restree.root(itt))
+								itt = restree.parent(itt);
+						}
+						listTemp.inverse();
+						FNAMETYPE fname;
+						__TempPartComineVector::it itv = listTemp.front_it();
+						while(!itv.empty())
+						{
+							if(!fname.empty())
+								fname += "/";
+							fname += (*itv)->front_ptr();
+							++itv;
+						}
+						MAP_INDEX_TYPE mit[MAX_DEPTH];
+						if(this->NameToMapIndex(fname, mit))
+						{
+							MAP_INDEX_TYPE* pmit = mit;
+							while(*pmit != 0)
+							{
+								TrieNode n;
+								n.m_mapindex = *pmit;
+								n.m_id = GINVALID;
+								listInsert.push_back(n);
+								++pmit;
+							}
+						}						
+						else
+							GAIA_AST(GAIA::ALWAYSFALSE);
+						listInsert.back_ptr()->m_id = id++;
+						m_ftree.insert(listInsert.front_ptr(), listInsert.size());
+					}
+					++it;
+				}
+			}
+
+			/* Generate file record list. */
+			{
+				m_recids.clear();
+				__FileTreeType::const_it it = m_ftree.const_front_it();
+				while(!it.empty())
+				{
+					if(m_ftree.leaf(it))
+					{
+						const TrieNode& n = *it;
+						FileRec fr;
+						fr.m_id = n.m_id;
+						fr.m_it = it;
+						fr.m_uSequence = 0;
+						m_recids.push_back(fr);
+					}
+					++it;
+				}
+				m_recids.sort();
+			}
+
+			/* Generate file state list. */
+			{
+				m_states.clear();
+				__FileRecIDListType::_sizetype size = m_recids.size();
+				for(__FileRecIDListType::_sizetype x = 0; x < size; ++x)
+				{
+					FileState fs;
+					fs.m_chunkprogress = 0;
+					m_states.push_back(fs);
+				}
+			}
+
 			return GAIA::True;
 		}
 		const FILEID* GetIDByName(const GAIA::GCH* pszFileName)
@@ -158,11 +333,11 @@ namespace FSHA
 		{
 			__FileRecIDListType::_datatype f;
 			f.m_id = id;
-			GAIA::UM uIndex = m_recids.find(f);
-			if(uIndex == GINVALID)
+			GAIA::NM nIndex = m_recids.find(f);
+			if(nIndex == GINVALID)
 				return GAIA::False;
 			MAP_INDEX_TYPE mapindex[MAX_DEPTH];
-			if(!this->GenerateMapIndex(m_recids[uIndex].m_it, mapindex))
+			if(!this->GenerateMapIndex(m_recids[nIndex].m_it, mapindex))
 				return GAIA::False;
 			return this->MapIndexToName(mapindex, pResult);
 		}
@@ -170,16 +345,16 @@ namespace FSHA
 		{
 			__FileRecIDListType::_datatype f;
 			f.m_id = id;
-			GAIA::UM uIndex = m_recids.find(f);
-			if(uIndex == GINVALID)
+			GAIA::NM nIndex = m_recids.find(f);
+			if(nIndex == GINVALID)
 				return (CHUNKPROGRESS)GINVALID;
-			return m_states[uIndex].m_chunkprogress;
+			return m_states[nIndex].m_chunkprogress;
 		}
 	private:
 		class TrieNode
 		{
 		public:
-			GINL TrieNode& operator = (const TrieNode& src){m_mapindex = src.m_mapindex; return *this;}
+			GINL TrieNode& operator = (const TrieNode& src){m_mapindex = src.m_mapindex; m_id = src.m_id; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE(m_mapindex, m_mapindex, TrieNode);
 			MAP_INDEX_TYPE m_mapindex;
 			FILEID m_id;
@@ -212,6 +387,7 @@ namespace FSHA
 		typedef GAIA::CONTAINER::Vector<FileRec> __FileRecIDListType;
 		typedef GAIA::CONTAINER::Vector<FileState> __FileStateListType;
 	private:
+		GAIA::GVOID init(){m_LastMaxFileID = 0;}
 		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAP_INDEX_TYPE* pResult) const
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
@@ -231,7 +407,7 @@ namespace FSHA
 				GAIA::N32 n = m_names.find(f);
 				if(n == GINVALID)
 					return GAIA::False;
-				pResult[x] = n + 1;
+				pResult[x] = n;
 			}
 			pResult[namelist.size()] = 0;
 			return GAIA::True;
@@ -269,7 +445,7 @@ namespace FSHA
 					if(pNew == GNULL || *pNew == 0)
 					{
 						GAIA::GCH sz[MAX_PATHLEN];
-						GAIA::ALGORITHM::strcpy(sz, pNew);
+						GAIA::ALGORITHM::strcpy(sz, p);
 						if(sz[0] != 0)
 							listResult.push_back(sz);
 						break;
@@ -307,6 +483,7 @@ namespace FSHA
 		__FileRecIDListType m_recids; // Sorted by file id.
 		__FileStateListType m_states; // Sorted as file id list.
 		__FileTreeType m_ftree; // Sorted by file name section.
+		FILEID m_LastMaxFileID;
 	};
 
 	/* User group class. */
@@ -399,6 +576,8 @@ namespace FSHA
 				sr >> uname;
 				__PasswordType pwd;
 				sr >> pwd;
+				this->AddUser(uname);
+				this->SetUserPassword(uname, pwd);
 			}
 
 			/* Read group information. */
@@ -692,6 +871,21 @@ namespace FSHA
 			GAIA_AST(!uname.empty());
 			if(uname.empty())
 				return GAIA::False;
+			Group* pGroup = this->FindGroupInternal(gname);
+			if(pGroup == GNULL)
+				return GAIA::False;
+			User* pUser = this->FindUserInternal(uname);
+			if(pUser == GNULL)
+				return GAIA::False;
+			Group::__UserRefListType::_datatype* pFinded = pGroup->m_refusers.find(pUser);
+			if(pFinded != GNULL)
+				return GAIA::False;
+			pGroup->m_refusers.insert(pUser);
+			GAIA::NM nFreePos = pUser->m_refgroups.find(GNULL);
+			if(nFreePos == GINVALID)
+				pUser->m_refgroups.push_back(pGroup);
+			else
+				pUser->m_refgroups[nFreePos] = pGroup;
 			return GAIA::True;
 		}
 		GINL GAIA::BL DeleteGroupUser(const __GroupNameType& gname, const __UserNameType& uname)
@@ -702,17 +896,81 @@ namespace FSHA
 			GAIA_AST(!uname.empty());
 			if(uname.empty())
 				return GAIA::False;
+			Group* pGroup = this->FindGroupInternal(gname);
+			if(pGroup == GNULL)
+				return GAIA::False;
+			User* pUser = this->FindUserInternal(uname);
+			if(pUser == GNULL)
+				return GAIA::False;
+			User::__GroupRefListType::it itg = pUser->m_refgroups.front_it();
+			if(!itg.empty())
+			{
+				Group* pGroupTemp = *itg;
+				if(pGroupTemp == pGroup)
+					*itg = GNULL;
+				++itg;
+			}
+			pGroup->m_refusers.erase(pUser);
 			return GAIA::True;
 		}
-		GINL GAIA::BL DeleteGroupUserAll()
+		GINL GAIA::BL DeleteGroupUserAll(const __GroupNameType& name)
 		{
+			Group* pGroup = this->FindGroupInternal(name);
+			if(pGroup == GNULL)
+				return GAIA::False;
+			Group::__UserRefListType::it it = pGroup->m_refusers.front_it();
+			while(!it.empty())
+			{
+				User* pUser = *it;
+				User::__GroupRefListType::it itg = pUser->m_refgroups.front_it();
+				if(!itg.empty())
+				{
+					Group* pGroupTemp = *itg;
+					if(pGroupTemp == pGroup)
+						*itg = GNULL;
+					++itg;
+				}
+				++it;
+			}
+			pGroup->m_refusers.clear();
 			return GAIA::True;
+		}
+		GINL GAIA::GVOID EnumUser(__UserNameListType& result) const
+		{
+			__UserSetType::const_it it = m_users.const_front_it();
+			while(!it.empty())
+			{
+				const User* pUser = *it;
+				result.push_back(pUser->m_name);
+				++it;
+			}
+		}
+		GINL GAIA::GVOID EnumGroup(__GroupNameListType& result) const
+		{
+			__GroupSetType::const_it it = m_groups.const_front_it();
+			while(!it.empty())
+			{
+				const Group* pGroup = *it;
+				result.push_back(pGroup->m_name);
+				++it;
+			}
 		}
 		GINL GAIA::BL EnumUserGroup(const __UserNameType& name, __GroupNameListType& result) const
 		{
 			GAIA_AST(!name.empty());
 			if(name.empty())
 				return GAIA::False;
+			const User* pUser = this->FindUserInternal(name);
+			if(pUser == GNULL)
+				return GAIA::False;
+			User::__GroupRefListType::const_it it = pUser->m_refgroups.const_front_it();
+			while(!it.empty())
+			{
+				const Group* pGroup = *it;
+				if(pGroup != GNULL)
+					result.push_back(pGroup->m_name);
+				++it;
+			}
 			return GAIA::True;
 		}
 		GINL GAIA::BL EnumGroupUser(const __GroupNameType& name, __UserNameListType& result) const
@@ -720,6 +978,17 @@ namespace FSHA
 			GAIA_AST(!name.empty());
 			if(name.empty())
 				return GAIA::False;
+			const Group* pGroup = this->FindGroupInternal(name);
+			if(pGroup == GNULL)
+				return GAIA::False;
+			Group::__UserRefListType::const_it it = pGroup->m_refusers.const_front_it();
+			while(!it.empty())
+			{
+				const User* pUser = *it;
+				if(pUser != GNULL)
+					result.push_back(pUser->m_name);
+				++it;
+			}
 			return GAIA::True;
 		}
 	private:
@@ -851,18 +1120,30 @@ namespace FSHA
 			// Execute command.
 			static const GAIA::GCH* COMMAND_LIST[] = 
 			{
-				"Invalid",
-				"h",
-				"create_user",
-				"delete_user",
-				"delete_all_user",
-				"password",
-				"create_group",
-				"delete_group",
-				"delete_all_group",
+				"Invalid",				"Invalid.",
+				"h",					"show help information.",
+				"save",					"save config change.",
+				"build",				"build the path and generate file list, format = file_path file_ext_list."
+				"create_user",			"create a new user, format = create_user user_name.",
+				"delete_user",			"delete a exist user, format = delete_user user_name.",
+				"delete_all_user",		"delete all exist users.",
+				"password",				"set/get user's password. format = password user_name password | password user_name.",
+				"create_group",			"create a new group, format = create_group group name.",
+				"delete_group",			"delete a exist group, format = delete_group group_name.",
+				"delete_all_group",		"delete all exist groups.",
+				"right",				"set group right, format = group_name isread iswrite.",
+				"add_group_user",		"add a user to group, format = group_name user_name.",
+				"delete_group_user",	"delete exist user from group, format = group_name user_name.",
+				"delete_group_alluser",	"delete all exist users from group, format = group_name.",
+				"show_users",			"show all users",
+				"show_user",			"show user's information, format = show_user user_name.",
+				"show_groups",			"show all groups",
+				"show_group",			"show group's information, format = show_group group_name.",
 			};
 			GAIA_ENUM_BEGIN(COMMAND_LIST)
 				CMD_HELP,
+				CMD_SAVE,
+				CMD_BUILD,
 				CMD_CREATEUSER,
 				CMD_DELETEUSER,
 				CMD_DELETEALLUSER,
@@ -870,54 +1151,238 @@ namespace FSHA
 				CMD_CREATEGROUP,
 				CMD_DELETEGROUP,
 				CMD_DELETEALLGROUP,
+				CMD_RIGHT,
+				CMD_ADDGROUPUSER,
+				CMD_DELETEGROUPUSER,
+				CMD_DELETEALLGROUPUSER,
+				CMD_SHOWUSERS,
+				CMD_SHOWUSER,
+				CMD_SHOWGROUPS,
+				CMD_SHOWGROUP,
 			GAIA_ENUM_END(COMMAND_LIST)
-			#define CMD(e) (listPart[0] == COMMAND_LIST[e])
+			#define CMD(e) (listPart[0] == COMMAND_LIST[e * 2])
+			#define CMDFAILED do{m_prt << "Failed!\n";}while(GAIA::ALWAYSFALSE)
 			if(listPart.empty())
 				return GAIA::False;
 			if(CMD(CMD_HELP))
 			{
+				for(GAIA::N32 x = 0; x < sizeof(COMMAND_LIST) / sizeof(const GAIA::GCH*) / 2; ++x)
+					m_prt << "[" << x << "] " << COMMAND_LIST[x * 2] << " Info:" << COMMAND_LIST[x * 2 + 1] << "\n";
+			}
+			else if(CMD(CMD_SAVE))
+			{
+				if(listPart.size() == 1)
+				{
+					if(!m_filelist.Save(FILE_FILELIST))
+						CMDFAILED;
+					if(!m_usergroup.Save(FILE_USERGROUP))
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_BUILD))
+			{
+				if(listPart.size() == 3)
+				{
+					if(!m_filelist.Build(listPart[1].front_ptr(), listPart[2].front_ptr()))
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
 			}
 			else if(CMD(CMD_CREATEUSER))
 			{
 				if(listPart.size() == 2)
 				{
+					if(!m_usergroup.AddUser(listPart[1].front_ptr()))
+						CMDFAILED;
 				}
+				else
+					CMDFAILED;
 			}
 			else if(CMD(CMD_DELETEUSER))
 			{
 				if(listPart.size() == 2)
 				{
+					if(!m_usergroup.DeleteUser(listPart[1].front_ptr()))
+						CMDFAILED;
 				}
+				else
+					CMDFAILED;
 			}
 			else if(CMD(CMD_DELETEALLUSER))
 			{
 				if(listPart.size() == 1)
-				{
-				}
+					m_usergroup.DeleteUserAll();
+				else
+					CMDFAILED;
 			}
 			else if(CMD(CMD_PASSWORD))
 			{
 				if(listPart.size() == 3)
 				{
+					if(!m_usergroup.SetUserPassword(listPart[1].front_ptr(), listPart[2].front_ptr()))
+						CMDFAILED;
 				}
+				else
+					CMDFAILED;
 			}
 			else if(CMD(CMD_CREATEGROUP))
 			{
 				if(listPart.size() == 2)
 				{
+					if(!m_usergroup.AddGroup(listPart[1].front_ptr()))
+						CMDFAILED;
 				}
+				else
+					CMDFAILED;
 			}
 			else if(CMD(CMD_DELETEGROUP))
 			{
 				if(listPart.size() == 2)
 				{
+					if(!m_usergroup.DeleteGroup(listPart[1].front_ptr()))
+						CMDFAILED;
 				}
+				else
+					CMDFAILED;
 			}
 			else if(CMD(CMD_DELETEALLGROUP))
 			{
 				if(listPart.size() == 1)
+					m_usergroup.DeleteGroupAll();
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_RIGHT))
+			{
+				if(listPart.size() == 4)
 				{
+					if(!m_usergroup.SetGroupRightWrite(listPart[1].front_ptr(), (GAIA::BL)listPart[2].front_ptr()))
+						CMDFAILED;
+					else
+					{
+						if(!m_usergroup.SetGroupRightRead(listPart[1].front_ptr(), (GAIA::BL)listPart[3].front_ptr()))
+							CMDFAILED;
+					}
 				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_ADDGROUPUSER))
+			{
+				if(listPart.size() == 3)
+				{
+					if(!m_usergroup.AddGroupUser(listPart[1].front_ptr(), listPart[2].front_ptr()))
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_DELETEGROUPUSER))
+			{
+				if(listPart.size() == 3)
+				{
+					if(!m_usergroup.DeleteGroupUser(listPart[1].front_ptr(), listPart[2].front_ptr()))
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_DELETEALLGROUPUSER))
+			{
+				if(listPart.size() == 2)
+				{
+					if(!m_usergroup.DeleteGroupUserAll(listPart[1].front_ptr()))
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_SHOWUSERS))
+			{
+				if(listPart.size() == 1)
+				{
+					UserGroup::__UserNameListType listUser;
+					m_usergroup.EnumUser(listUser);
+					UserGroup::__UserNameListType::const_it it = listUser.const_front_it();
+					GAIA::N32 nIndex = 0;
+					while(!it.empty())
+					{
+						m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
+						++it;
+					}
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_SHOWUSER))
+			{
+				if(listPart.size() == 2)
+				{
+					const GAIA::GCH* pszPassword = m_usergroup.GetUserPassword(listPart[1].front_ptr());
+					if(pszPassword == GNULL)
+						CMDFAILED;
+					m_prt << "Password = " << pszPassword << "\n";
+
+					UserGroup::__GroupNameListType listGroup;
+					m_usergroup.EnumUserGroup(listPart[1].front_ptr(), listGroup);
+					UserGroup::__UserNameListType::const_it it = listGroup.const_front_it();
+					GAIA::N32 nIndex = 0;
+					while(!it.empty())
+					{
+						m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
+						++it;
+					}
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_SHOWGROUPS))
+			{
+				if(listPart.size() == 1)
+				{
+					UserGroup::__GroupNameListType listGroup;
+					m_usergroup.EnumGroup(listGroup);
+					UserGroup::__UserNameListType::const_it it = listGroup.const_front_it();
+					GAIA::N32 nIndex = 0;
+					while(!it.empty())
+					{
+						m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
+						++it;
+					}
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_SHOWGROUP))
+			{
+				if(listPart.size() == 2)
+				{
+					if(m_usergroup.FindGroup(listPart[1].front_ptr()))
+					{
+						GAIA::BL bWrite;
+						GAIA::BL bRead;
+						m_usergroup.GetGroupRightWrite(listPart[1].front_ptr(), bWrite);
+						m_usergroup.GetGroupRightRead(listPart[1].front_ptr(), bRead);
+						m_prt << "Right = " << bWrite << ", Read = " << bRead << "\n";
+
+						UserGroup::__UserNameListType listUser;
+						m_usergroup.EnumGroupUser(listPart[1].front_ptr(), listUser);
+						UserGroup::__UserNameListType::const_it it = listUser.const_front_it();
+						GAIA::N32 nIndex = 0;
+						while(!it.empty())
+						{
+							m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
+							++it;
+						}
+					}
+					else
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
 			}
 			else
 				return GAIA::False;
@@ -939,6 +1404,7 @@ namespace FSHA
 		GAIA::U64 m_uDSpeed;
 		FileList m_filelist;
 		UserGroup m_usergroup;
+		GAIA::PRINT::Print m_prt;
 	};
 };
 

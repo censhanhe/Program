@@ -321,6 +321,23 @@ namespace GAIA
 			}
 			return GNULL;
 		}
+		template<typename _DataType> const _DataType* strext(const _DataType* p)
+		{
+			const _DataType* pEnd = strend(p);
+			--pEnd;
+			while(pEnd >= p)
+			{
+				if(*pEnd == '\\' || *pEnd == '/')
+					return GNULL;
+				if(*pEnd == '.')
+				{
+					if(pEnd[1] != 0)
+						return &pEnd[1];
+				}
+				--pEnd;
+			}
+			return GNULL;
+		}
 		template<typename _SrcDataType, typename _DstDataType> _DstDataType* int2str(const _SrcDataType& src, _DstDataType* pDst)
 		{
 			GAIA_AST(pDst != GNULL);

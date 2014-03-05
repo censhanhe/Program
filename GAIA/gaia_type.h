@@ -129,7 +129,7 @@ namespace GAIA
 	/* Common constants. */
 	#define GNULL 0
 	#define GINVALID (~0)
-	#define GAIA_DEFAULT_GROUPELEMENTSIZE 1000
+	#define GAIA_DEFAULT_GROUPELEMENTSIZE 32
 
 	/* Undefine origin type. */
 	#ifdef GAIA_DEBUG_CODEPURE

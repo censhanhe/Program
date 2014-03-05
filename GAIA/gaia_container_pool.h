@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, GAIA::UM _GroupElementSize> class Pool : public BasicPool<_DataType, GAIA::UM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::UM>, _GroupElementSize>{public:};
+		template<typename _DataType, GAIA::NM _GroupElementSize> class Pool : public BasicPool<_DataType, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM>, _GroupElementSize>{public:};
 	};
 };
 

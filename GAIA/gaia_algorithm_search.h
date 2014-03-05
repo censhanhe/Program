@@ -34,6 +34,20 @@ namespace GAIA
 			}
 			return GNULL;
 		}
+		template<typename _DataType, typename _SizeType> GINL _DataType* finds(const _DataType* pBegin, const _DataType* pEnd, const _DataType* p, const _SizeType& size)
+		{
+			GAIA_AST(pBegin != GNULL);
+			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(p != GNULL);
+			GAIA_AST(size != 0);
+			while(pEnd - pBegin + 1 >= size)
+			{
+				if(equal(pBegin, p, size))
+					return const_cast<_DataType*>(pBegin);
+				++pBegin;
+			}
+			return GNULL;
+		}
 		template<typename _DataType> GINL _DataType* rfind(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
 		{
 			while(pBegin <= pEnd)
@@ -51,20 +65,6 @@ namespace GAIA
 				if(**pEnd == key)
 					return const_cast<_DataType**>(pEnd);
 				--pEnd;
-			}
-			return GNULL;
-		}
-		template<typename _DataType, typename _SizeType> GINL _DataType* finds(const _DataType* pBegin, const _DataType* pEnd, const _DataType* p, const _SizeType& size)
-		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
-			GAIA_AST(p != GNULL);
-			GAIA_AST(size != 0);
-			while(pEnd - pBegin + 1 >= size)
-			{
-				if(equal(pBegin, p, size))
-					return const_cast<_DataType*>(pBegin);
-				++pBegin;
 			}
 			return GNULL;
 		}
