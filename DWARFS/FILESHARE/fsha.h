@@ -132,6 +132,7 @@ namespace FSHA
 					m_names.push_back(d);
 				}
 			}
+
 			/* Read file tree. */
 			{
 				/* Read id. */
@@ -141,7 +142,7 @@ namespace FSHA
 			}
 
 		FUNCTION_END:
-			/* Destruct serializer */
+			/* Destruct serializer. */
 			pSerializer->Release();
 			delete pFactory;
 			return GAIA::True;
@@ -184,15 +185,14 @@ namespace FSHA
 					++it;
 				}
 			}
+
 			/* Write file tree. */
 			{
-				/* Write id. */
-				/* Write file chunk progress. */
-				/* Write file sequence. */
-				/* Write file map index list. */
+				__FileTreeType::Node& n = m_ftree.root();
+				this->SaveNode(sr, n);
 			}
 		FUNCTION_END:
-			/* Destruct serializer */
+			/* Destruct serializer. */
 			pSerializer->Release();
 			delete pFactory;
 			return GAIA::True;
@@ -236,9 +236,9 @@ namespace FSHA
 						while(!itt.empty())
 						{
 							listTemp.push_back(&*itt);
-							itt = restree.parent(itt);
+							itt = restree.parent_it(itt);
 							if(restree.root(itt))
-								itt = restree.parent(itt);
+								itt = restree.parent_it(itt);
 						}
 						listTemp.inverse();
 						FNAMETYPE fname;
@@ -299,7 +299,7 @@ namespace FSHA
 				for(__FileRecIDListType::_sizetype x = 0; x < size; ++x)
 				{
 					FileState fs;
-					fs.m_chunkprogress = 0;
+					fs.m_chunkprogress = GINVALID;
 					m_states.push_back(fs);
 				}
 			}
@@ -387,7 +387,7 @@ namespace FSHA
 		typedef GAIA::CONTAINER::Vector<FileRec> __FileRecIDListType;
 		typedef GAIA::CONTAINER::Vector<FileState> __FileStateListType;
 	private:
-		GAIA::GVOID init(){m_LastMaxFileID = 0;}
+		GAIA::GVOID init(){(*m_ftree.root()).m_id = GINVALID; (*m_ftree.root()).m_mapindex = GINVALID; m_LastMaxFileID = 0;}
 		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAP_INDEX_TYPE* pResult) const
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
@@ -471,12 +471,33 @@ namespace FSHA
 			while(!it.empty())
 			{
 				*p++ = (*it).m_mapindex;
-				it = m_ftree.parent(it);
+				it = m_ftree.parent_it(it);
 				if(m_ftree.root(it))
-					it = m_ftree.parent(it);
+					it = m_ftree.parent_it(it);
 			}
 			GAIA::ALGORITHM::inverse(pMapIndex, p - 1);
 			return GAIA::True;
+		}
+		GAIA::BL SaveNode(GAIA::SERIALIZER::Serializer& sr, __FileTreeType::Node& n)
+		{
+			/* Save node count. */
+			__FileTreeType::__NodeTreeType::_sizetype childcnt = m_ftree.childsize(n);
+			sr << childcnt;
+
+			/* Save node data. */
+			__FileTreeType::_datatype& data = *n;
+			sr << data.m_id;
+			sr << data.m_mapindex;
+
+			/* Save child node. */
+			__FileTreeType::__NodeTreeType::it it = m_ftree.child_front_it(n);
+			while(!it.empty())
+			{
+				__FileTreeType::Node* pNode = m_ftree.tonode(it);
+				this->SaveNode(sr, *pNode);
+				++it;
+			}
+			return GAIA::False;
 		}
 	private:
 		__NameMapType m_names; // Sorted by file name.

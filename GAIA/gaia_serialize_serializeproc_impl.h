@@ -450,7 +450,7 @@ namespace GAIA
 					typename __TrieTreeType::const_it subit = it;
 					while(!subit.empty())
 					{
-						subit = t.parent(subit);
+						subit = t.parent_it(subit);
 						++subsize;
 					}
 					if(!serializer_write_proc(p, subsize))
@@ -466,7 +466,7 @@ namespace GAIA
 							pIO->Release();
 							return GAIA::False;
 						}
-						subit = t.parent(subit);
+						subit = t.parent_it(subit);
 					}
 				}
 				++it;

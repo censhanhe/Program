@@ -1202,7 +1202,7 @@ GAIA::N32 main()
 				while(!itertemp.empty())
 				{
 					*p++ = *itertemp;
-					itertemp = tt.parent(itertemp);
+					itertemp = tt.parent_it(itertemp);
 				}
 				GAIA::ALGORITHM::inverse(szTemp, p - 1);
 				szTemp[p - szTemp] = 0;
