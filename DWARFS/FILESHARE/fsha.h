@@ -28,7 +28,7 @@ namespace FSHA
 	/* Constants. */
 	static const GAIA::GCH VERSION_STRING[] = "00.00.01.00";
 	static const GAIA::U32 VERSION = 0x00000100;
-	static const GAIA::NM MAX_DEPTH = 12;
+	static const GAIA::NM MAX_DEPTH = 24;
 	static const GAIA::NM MAX_PATHLEN = 240;
 	static const GAIA::GCH FILE_USERGROUP[] = "usergroup";
 	static const GAIA::U32 FILE_USERGROUP_FLAG = 'FSUG';
@@ -83,6 +83,9 @@ namespace FSHA
 	};
 
 	/* File list class. */
+	#define FILE_LIST_LOG(msg) do{GAIA::PRINT::Print pr; pr << (msg) << "\n";}while(GAIA::ALWAYSFALSE)
+	#define FILE_LIST_LOG2(msg1, msg2) do{GAIA::PRINT::Print pr; pr << (msg1) << (msg2) << "\n";}while(GAIA::ALWAYSFALSE)
+	#define FILE_LIST_LOG3(msg1, msg2, msg3) do{GAIA::PRINT::Print pr; pr << (msg1) << (msg2) << (msg3) << "\n";}while(GAIA::ALWAYSFALSE)
 	class __DWARFS_FILESHARE_API FileList
 	{
 	public:
@@ -199,12 +202,17 @@ namespace FSHA
 		}
 		GAIA::BL Build(const GAIA::GCH* pszPathName, const GAIA::GCH* pszFilter)
 		{
-			GAIA::FILESYSTEM::Directory dir;
+			FILE_LIST_LOG("Collision destination path files...");
 			GAIA::FILESYSTEM::Directory::__ResultTree restree;
-			if(!dir.Collect(pszPathName, pszFilter, GAIA::True, restree))
-				return GAIA::False;
+			{
+				GAIA::FILESYSTEM::Directory dir;
+				if(!dir.Collect(pszPathName, pszFilter, GAIA::True, restree))
+					return GAIA::False;
+			}
+			FILE_LIST_LOG3("There are ", restree.catagory_count(restree.root()), " files collected!");
 
 			/* Build name list(m_names). */
+			FILE_LIST_LOG("Build file name's string token list...");
 			{
 				m_names.clear();
 				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
@@ -219,6 +227,7 @@ namespace FSHA
 			}
 
 			/* Generate file tree(m_ftree). */
+			FILE_LIST_LOG("Generate file trie tree...");
 			{
 				m_ftree.clear();
 				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
@@ -273,6 +282,7 @@ namespace FSHA
 			}
 
 			/* Generate file record list. */
+			FILE_LIST_LOG("Generate file record list...");
 			{
 				m_recids.clear();
 				__FileTreeType::const_it it = m_ftree.const_front_it();
@@ -293,6 +303,7 @@ namespace FSHA
 			}
 
 			/* Generate file state list. */
+			FILE_LIST_LOG("Generate file state list...");
 			{
 				m_states.clear();
 				__FileRecIDListType::_sizetype size = m_recids.size();
@@ -333,7 +344,7 @@ namespace FSHA
 		{
 			__FileRecIDListType::_datatype f;
 			f.m_id = id;
-			GAIA::NM nIndex = m_recids.find(f);
+			GAIA::NM nIndex = m_recids.search(f);
 			if(nIndex == GINVALID)
 				return GAIA::False;
 			MAP_INDEX_TYPE mapindex[MAX_DEPTH];
@@ -345,7 +356,7 @@ namespace FSHA
 		{
 			__FileRecIDListType::_datatype f;
 			f.m_id = id;
-			GAIA::NM nIndex = m_recids.find(f);
+			GAIA::NM nIndex = m_recids.search(f);
 			if(nIndex == GINVALID)
 				return (CHUNKPROGRESS)GINVALID;
 			return m_states[nIndex].m_chunkprogress;
@@ -401,10 +412,11 @@ namespace FSHA
 				return GAIA::False;
 			NameMap f;
 			f.m_name.reserve(MAX_PATHLEN);
+			GAIA_AST(namelist.size() < MAX_DEPTH);
 			for(FNAMEPARTLISTTYPE::_sizetype x = 0; x < namelist.size(); ++x)
 			{
 				f.m_name = namelist[x].front_ptr();
-				GAIA::N32 n = m_names.find(f);
+				GAIA::N32 n = m_names.search(f);
 				if(n == GINVALID)
 					return GAIA::False;
 				pResult[x] = n;

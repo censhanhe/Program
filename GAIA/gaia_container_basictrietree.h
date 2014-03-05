@@ -457,9 +457,9 @@ namespace GAIA
 				if(pTempNode == GNULL)
 					return;
 			}
-			GINL _SizeType count(Node& n) const{return n.m_count;}
-			GINL _SizeType catagory_count(Node& n) const{return n.m_category_count;}
-			GINL _SizeType full_count(Node& n) const{return n.m_full_count;}
+			GINL _SizeType count(Node& n) const{return n.m_count;} // The insert element list stopped at parameter n's count.
+			GINL _SizeType catagory_count(Node& n) const{return n.m_category_count;} // The insert element list catagory count in the child tree, include self.
+			GINL _SizeType full_count(Node& n) const{return n.m_full_count;} // The insert element list pass at parameter n's count, include self.
 			GINL it front_it()
 			{
 				it iter;
@@ -569,7 +569,7 @@ namespace GAIA
 				{
 					if(this->insert_node(*pFinded, p + 1, size - 1))
 					{
-						++n.m_category_count;
+						++pFinded->m_category_count;
 						ret = GAIA::True;
 					}
 				}

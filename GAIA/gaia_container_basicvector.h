@@ -236,7 +236,7 @@ namespace GAIA
 				m_size = newsize;
 				return ret;
 			}
-			GINL _SizeType search(const _DataType& t)
+			GINL _SizeType search(const _DataType& t) const
 			{
 				if(this->size() <= 0)
 					return (_SizeType)GINVALID;
