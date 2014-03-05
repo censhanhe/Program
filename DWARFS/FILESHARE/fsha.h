@@ -177,6 +177,7 @@ namespace FSHA
 			sr << FILE_FILELIST_VERSION;
 
 			/* Write name map list. */
+			FILE_LIST_LOG("Save file name's string token list...");
 			{
 				__NameMapType::_sizetype size = m_names.size();
 				sr << size;
@@ -190,6 +191,7 @@ namespace FSHA
 			}
 
 			/* Write file tree. */
+			FILE_LIST_LOG("Save file trie tree...");
 			{
 				__FileTreeType::Node& n = m_ftree.root();
 				this->SaveNode(sr, n);
