@@ -118,7 +118,7 @@ namespace GAIA
 		public:
 			GINL BasicVector(){this->init();}
 			GINL BasicVector(const __MyType& src){this->init(); this->operator = (src);}
-			GINL ~BasicVector(){if(m_pData != GNULL) delete[] m_pData;}
+			GINL ~BasicVector(){if(m_pFront != GNULL) delete[] m_pFront;}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL const _SizeType& capacity() const{return m_capacity;}
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
@@ -141,15 +141,15 @@ namespace GAIA
 				m_capacity = size;
 				m_size = 0;
 				if(size != 0)
-					m_pData = new _DataType[size];
+					m_pFront = new _DataType[size];
 			}
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL GAIA::GVOID destroy()
 			{
-				if(m_pData != GNULL)
+				if(m_pFront != GNULL)
 				{
-					delete[] m_pData;
-					m_pData = GNULL;
+					delete[] m_pFront;
+					m_pFront = GNULL;
 					m_size = m_capacity = 0;
 				}
 			}
@@ -160,16 +160,16 @@ namespace GAIA
 					_SizeIncreaserType increaser;
 					_SizeType newsize = increaser.Increase(this->capacity());
 					_DataType* pTemp = new _DataType[newsize];
-					if(m_pData != GNULL)
+					if(m_pFront != GNULL)
 					{
 						for(_SizeType c = 0; c < this->size(); ++c)
-							pTemp[c] = m_pData[c];
-						delete[] m_pData;
+							pTemp[c] = m_pFront[c];
+						delete[] m_pFront;
 					}
-					m_pData = pTemp;
+					m_pFront = pTemp;
 					m_capacity = newsize;
 				}
-				m_pData[m_size++] = t;
+				m_pFront[m_size++] = t;
 			}
 			GINL GAIA::GVOID pop_back()
 			{
@@ -186,7 +186,7 @@ namespace GAIA
 				this->push_back(t);
 				if(this->size() == 1)
 					return GAIA::True;
-				GAIA::ALGORITHM::move_next(m_pData + this->size() - 1, m_pData + this->size() - 2, this->size() - index);
+				GAIA::ALGORITHM::move_next(m_pFront + this->size() - 1, m_pFront + this->size() - 2, this->size() - index);
 				this->operator[](index) = t;
 				return GAIA::True;
 			}
@@ -196,7 +196,7 @@ namespace GAIA
 				if(index >= this->size())
 					return GAIA::False;
 				if(index != this->size() - 1)
-					GAIA::ALGORITHM::move_prev(m_pData + index, m_pData + index + 1, this->size() - 1 - index);
+					GAIA::ALGORITHM::move_prev(m_pFront + index, m_pFront + index + 1, this->size() - 1 - index);
 				--m_size;
 				return GAIA::True;
 			}
@@ -215,7 +215,7 @@ namespace GAIA
 				GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret);
 				return ret;
 			}
-			GINL GAIA::GVOID sort(){if(this->empty()) return; GAIA::ALGORITHM::sort(m_pData, m_pData + this->size() - 1);}
+			GINL GAIA::GVOID sort(){if(this->empty()) return; GAIA::ALGORITHM::sort(m_pFront, m_pFront + this->size() - 1);}
 			GINL _SizeType unique()
 			{
 				if(this->empty())
@@ -240,14 +240,14 @@ namespace GAIA
 			{
 				if(this->size() <= 0)
 					return (_SizeType)GINVALID;
-				_DataType* pFinded = GAIA::ALGORITHM::search(m_pData, m_pData + this->size() - 1, t);
+				_DataType* pFinded = GAIA::ALGORITHM::search(m_pFront, m_pFront + this->size() - 1, t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
-				return pFinded - m_pData;
+				return pFinded - m_pFront;
 			}
 			GINL GAIA::BL swap(const _SizeType& index1, const _SizeType& index2){GAIA::ALGORITHM::swap(this->operator[](index1), this->operator[](index2));}
-			GINL const _DataType& operator[](const _SizeType& index) const{GAIA_AST(index >= 0 && index < this->size()); return m_pData[index];}
-			GINL _DataType& operator[](const _SizeType& index){GAIA_AST(index >= 0 && index < this->size()); return m_pData[index];}
+			GINL const _DataType& operator[](const _SizeType& index) const{GAIA_AST(index >= 0 && index < this->size()); return m_pFront[index];}
+			GINL _DataType& operator[](const _SizeType& index){GAIA_AST(index >= 0 && index < this->size()); return m_pFront[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->destroy();
@@ -269,9 +269,9 @@ namespace GAIA
 			GINL const_it const_front_it() const{const_it ret; ret.m_index = 0; ret.m_pVector = this; return ret;}
 			GINL const_it const_back_it() const{const_it ret; ret.m_index = this->size() > 0 ? this->size() - 1 : 0; ret.m_pVector = this; return ret;}
 		private:
-			GINL GAIA::GVOID init(){m_pData = GNULL; m_capacity = m_size = 0;}
+			GINL GAIA::GVOID init(){m_pFront = GNULL; m_capacity = m_size = 0;}
 		private:
-			_DataType* m_pData;
+			_DataType* m_pFront;
 			_SizeType m_capacity;
 			_SizeType m_size;
 		};
