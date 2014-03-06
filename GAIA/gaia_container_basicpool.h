@@ -20,7 +20,7 @@ namespace GAIA
 		public:
 			GINL BasicPool(){this->init();}
 			GINL ~BasicPool(){this->destroy();}
-			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return GAIA::False;}
+			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL GAIA::GVOID clear()
 			{
 				m_free.clear();
