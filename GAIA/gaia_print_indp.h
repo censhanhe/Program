@@ -12,6 +12,16 @@ namespace GAIA
 			std::cout << t;
 			return *this;
 		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::NM t)
+		{
+			std::cout << t;
+			return *this;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::UM t)
+		{
+			std::cout << t;
+			return *this;
+		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::N8 t)
 		{
 			std::cout << t;
@@ -82,6 +92,16 @@ namespace GAIA
 			return *this;
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::BL& t)
+		{
+			std::cin >> t;
+			return *this;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::NM& t)
+		{
+			std::cin >> t;
+			return *this;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::UM& t)
 		{
 			std::cin >> t;
 			return *this;

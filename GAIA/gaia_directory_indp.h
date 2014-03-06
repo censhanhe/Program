@@ -166,7 +166,7 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Collect(const GAIA::GCH* pszName, const GAIA::GCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszName));
-			if(GAIA::ALGORITHM::stremp(pszFilter))
+			if(GAIA::ALGORITHM::stremp(pszName))
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			/* Generate szFind for recursive file collection. */

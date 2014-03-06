@@ -7,7 +7,7 @@ namespace GAIA
 	{
 #ifdef GAIA_DEBUG_AST
 #	if GAIA_OS == GAIA_OS_WINDOWS
-#		if GAIA_MACHINE == GAIA_MACHINE32
+#		if GAIA_MACHINE == GAIA_MACHINE32 && defined(_DEBUG)
 #			define GAIA_AST(e)	do{if(!(e)){__asm INT 03H}}while(0)
 #		else
 #			define GAIA_AST(e)

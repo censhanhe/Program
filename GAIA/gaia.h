@@ -26,8 +26,8 @@
 #include	"gaia_algorithm_memory.h"
 #include	"gaia_algorithm_sizeincreaser.h"
 #include	"gaia_algorithm_string.h"
-#include 	"gaia_algorithm_sort.h"
 #include 	"gaia_algorithm_search.h"
+#include 	"gaia_algorithm_sort.h"
 #include 	"gaia_algorithm_unique.h"
 
 #include 	"gaia_container_datarecord.h"

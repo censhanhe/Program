@@ -266,7 +266,7 @@ GAIA::N32 main()
 	//
 	GAIA::GCH szPerf[256];
 	GAIA::GCH szPerfName[256];
-	GAIA::U64 uPerfStart, uPerfEnd;
+	GAIA::U64 uPerfStart = 0, uPerfEnd = 0;
 	GAIA::FILESYSTEM::File logfile;
 	logfile.Open("../gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
 	
@@ -508,9 +508,7 @@ GAIA::N32 main()
 				typedef GAIA::CONTAINER::BasicArray<GAIA::N64, GAIA::N64, 10000> __ArrayType;
 				__ArrayType v;
 				for(GAIA::N64 x = 0; x < 10000; ++x)
-				{
-					v.push_back(GAIA::MATH::random()%100);
-				}
+					v.push_back(GAIA::MATH::random() % 100);
 				v.sort();
 				GAIA::N64 nDrop = v.unique();
 				nDrop = 0;
@@ -871,14 +869,14 @@ GAIA::N32 main()
 		TEST_BEGIN("<Sort function performance>");
 		{
 			std::vector<GAIA::N32> listSTL;
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT * 100; ++x)
 				listSTL.push_back(GAIA::MATH::random());
 			PERF_START("STL sort use");
 			std::sort(listSTL.begin(), listSTL.end());
 			PERF_END;
 
 			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT * 100; ++x)
 				listGAIA.push_back(GAIA::MATH::random());
 			PERF_START("GAIA sort use");
 			if(!listGAIA.empty())
@@ -886,12 +884,12 @@ GAIA::N32 main()
 			PERF_END;
 
 			PERF_START("STL bsearch use");
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT * 100; ++x)
 				binary_search(listSTL.begin(), listSTL.end(), listSTL[x]);
 			PERF_END;
 
 			PERF_START("GAIA bsearch use");
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT * 100; ++x)
 				GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]);
 			PERF_END;
 		}

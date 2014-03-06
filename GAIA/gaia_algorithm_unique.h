@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template<typename _DataType> _DataType* unique_order(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GINL _DataType* unique_order(_DataType* pBegin, _DataType* pEnd)
 		{
 			GAIA_AST(pBegin <= pEnd);
 			_DataType* pLast = pBegin;
@@ -22,7 +22,7 @@ namespace GAIA
 			}
 			return pLast;
 		}
-		template<typename _DataType> _DataType* unique_noorder(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GINL _DataType* unique_noorder(_DataType* pBegin, _DataType* pEnd)
 		{
 			GAIA_AST(pBegin <= pEnd);
 			_DataType* pFirst = pBegin;

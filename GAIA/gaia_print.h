@@ -12,6 +12,8 @@ namespace GAIA
 			GINL ~Print(){}
 
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (GAIA::BL t);
+			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (GAIA::NM t);
+			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (GAIA::UM t);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (GAIA::N8 t);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (GAIA::N16 t);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (GAIA::N32 t);
@@ -28,6 +30,8 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (const GAIA::X128& t);
 
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (GAIA::BL& t);
+			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (GAIA::NM& t);
+			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (GAIA::UM& t);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (GAIA::N8& t);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (GAIA::N16& t);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (GAIA::N32& t);

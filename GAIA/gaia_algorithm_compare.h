@@ -219,7 +219,7 @@ namespace GAIA
 				}
 			}
 		}
-		template<typename _DataType1, typename _DataType2> GAIA::N32 cmpp(const _DataType1* p1, const _DataType2* p2)
+		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmpp(const _DataType1* p1, const _DataType2* p2)
 		{
 			if(p1 == GNULL && p2 == GNULL)
 				return 0;

@@ -5,29 +5,50 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template<typename _DataType> GAIA::GVOID qsort(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GINL GAIA::GVOID qsort(_DataType* pBegin, _DataType* pEnd)
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);
 			if(pBegin >= pEnd)
 				return;
-			_DataType* pBeginT = pBegin;
-			_DataType* pEndT = pEnd;
-			_DataType* pMid = pBegin; // pMid works as a cursor.
-			while(pBeginT < pEndT)
+
+			/* Inverse order optimize and find mid element. */
 			{
-				if(*pBeginT < *pEndT)
+				/* Inverse order optimize. */
+				GAIA::NM nIncreaseCnt = 0;
+				GAIA::NM nDecreaseCnt = 0;
+				_DataType* pCursor = pBegin;
+				while(pCursor < pEnd)
 				{
-					GAIA::ALGORITHM::swap(*pBeginT, *pMid);
-					++pMid;
+					if(*pCursor < *(pCursor + 1))
+						nIncreaseCnt++;
+					else if(*pCursor > *(pCursor + 1))
+						nDecreaseCnt++;
+					++pCursor;
 				}
-				++pBeginT;
+				if(nDecreaseCnt == 0)
+					return;
+				if(nDecreaseCnt > nIncreaseCnt * 2)
+					GAIA::ALGORITHM::inverse(pBegin, pEnd);
 			}
-			GAIA::ALGORITHM::swap(*pMid, *pEnd);
-			GAIA::ALGORITHM::qsort(pBegin, pMid - 1);
-			GAIA::ALGORITHM::qsort(pMid + 1, pEnd);
+
+			/* Standard quick sort algorithm. */
+			_DataType* pCursor = pBegin;
+			_DataType* pSplit = pBegin;
+			while(pCursor < pEnd)
+			{
+				if(*pCursor < *pEnd) // pEnd is the key.
+				{
+					GAIA::ALGORITHM::swap(*pCursor, *pSplit);
+					++pSplit;
+				}
+				++pCursor;
+			}
+			GAIA::ALGORITHM::swap(*pSplit, *pEnd);
+			GAIA::ALGORITHM::qsort(pBegin, pSplit - 1);
+			GAIA::ALGORITHM::qsort(pSplit + 1, pEnd);
 		}
-		template<typename _DataType> GAIA::GVOID bsort(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GINL GAIA::GVOID bsort(_DataType* pBegin, _DataType* pEnd)
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);
@@ -43,13 +64,13 @@ namespace GAIA
 				++pBegin;
 			}
 		}
-		template<typename _DataType> GAIA::GVOID esort(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GINL GAIA::GVOID esort(_DataType* pBegin, _DataType* pEnd)
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);
 			GAIA_AST(pBegin < pEnd);
 		}
-		template<typename _DataType> GAIA::GVOID sort(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GINL GAIA::GVOID sort(_DataType* pBegin, _DataType* pEnd)
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);
@@ -58,7 +79,7 @@ namespace GAIA
 			else
 				qsort(pBegin, pEnd);
 		}
-		template<typename _DataType> GAIA::BL issorted(_DataType* pBegin, _DataType* pEnd)
+		template<typename _DataType> GINL GAIA::BL issorted(_DataType* pBegin, _DataType* pEnd)
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);

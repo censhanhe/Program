@@ -28,7 +28,7 @@ namespace FSHA
 	/* Constants. */
 	static const GAIA::GCH VERSION_STRING[] = "00.00.01.00";
 	static const GAIA::U32 VERSION = 0x00000100;
-	static const GAIA::NM MAX_DEPTH = 24;
+	static const GAIA::NM MAX_DEPTH = 18;
 	static const GAIA::NM MAX_PATHLEN = 240;
 	static const GAIA::GCH FILE_USERGROUP[] = "usergroup";
 	static const GAIA::U32 FILE_USERGROUP_FLAG = 'FSUG';
@@ -126,8 +126,10 @@ namespace FSHA
 
 			/* Read name map list. */
 			{
+				m_names.clear();
 				__NameMapType::_sizetype size;
 				sr >> size;
+				m_names.reserve(size);
 				for(__NameMapType::_sizetype x = 0; x < size; ++x)
 				{
 					__NameMapType::_datatype d;
@@ -138,10 +140,25 @@ namespace FSHA
 
 			/* Read file tree. */
 			{
-				/* Read id. */
-				/* Read file chunk progress. */
-				/* Read file sequence. */
-				/* Read file map index list. */
+				m_ftree.clear();
+				m_recids.clear();
+				GAIA::CONTAINER::Stack<TrieNode> stack;
+				this->LoadNode(sr, stack);
+				m_recids.sort();
+				__FileTreeType::const_it it = m_ftree.const_front_it();
+				while(!it.empty())
+				{
+					if(m_ftree.leaf(it))
+					{
+						const TrieNode& n = *it;
+						FileRec fr;
+						fr.m_id = n.m_id;
+						GAIA::NM nFinded = m_recids.search(fr);
+						GAIA_AST(nFinded != GINVALID);
+						m_recids[nFinded].m_it = it;
+					}
+					++it;
+				}
 			}
 
 		FUNCTION_END:
@@ -217,12 +234,14 @@ namespace FSHA
 			FILE_LIST_LOG("Build file name's string token list...");
 			{
 				m_names.clear();
+				m_names.reserve(restree.catagory_count(restree.root()));
 				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
 				while(!it.empty())
 				{
 					NameMap nm;
-					nm.m_name = (*it).front_ptr();
 					m_names.push_back(nm);
+					m_names.back_ptr()->m_name = (*it).front_ptr();
+					m_names.back_ptr()->m_name.tolower();
 					++it;
 				}
 				m_names.sort();
@@ -261,11 +280,12 @@ namespace FSHA
 							fname += (*itv)->front_ptr();
 							++itv;
 						}
+						fname.tolower();
 						MAP_INDEX_TYPE mit[MAX_DEPTH];
 						if(this->NameToMapIndex(fname, mit))
 						{
 							MAP_INDEX_TYPE* pmit = mit;
-							while(*pmit != 0)
+							while(*pmit != GINVALID)
 							{
 								TrieNode n;
 								n.m_mapindex = *pmit;
@@ -297,24 +317,12 @@ namespace FSHA
 						fr.m_id = n.m_id;
 						fr.m_it = it;
 						fr.m_uSequence = 0;
+						fr.m_chunkprogress = GINVALID;
 						m_recids.push_back(fr);
 					}
 					++it;
 				}
 				m_recids.sort();
-			}
-
-			/* Generate file state list. */
-			FILE_LIST_LOG("Generate file state list...");
-			{
-				m_states.clear();
-				__FileRecIDListType::_sizetype size = m_recids.size();
-				for(__FileRecIDListType::_sizetype x = 0; x < size; ++x)
-				{
-					FileState fs;
-					fs.m_chunkprogress = GINVALID;
-					m_states.push_back(fs);
-				}
 			}
 
 			return GAIA::True;
@@ -324,17 +332,21 @@ namespace FSHA
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GNULL;
+			GAIA::GCH szLower[MAX_PATHLEN];
+			GAIA::ALGORITHM::strcpy(szLower, pszFileName);
+			GAIA::ALGORITHM::tolower(szLower);
 			MAP_INDEX_TYPE mapindex[MAX_DEPTH];
-			if(!this->NameToMapIndex(pszFileName, mapindex))
+			if(!this->NameToMapIndex(szLower, mapindex))
 				return GNULL;
 			TrieNode tnlist[MAX_DEPTH];
 			MAP_INDEX_TYPE* p = mapindex;
 			for(;;)
 			{
-				if(*p == 0)
+				if(*p == GINVALID)
 					break;
 				TrieNode& tn = tnlist[p - mapindex];
 				tn.m_mapindex = *p;
+				++p;
 			}
 			GAIA_AST(p != mapindex);
 			__FileTreeType::Node* pNode = m_ftree.find(GNULL, tnlist, p - mapindex);
@@ -361,7 +373,7 @@ namespace FSHA
 			GAIA::NM nIndex = m_recids.search(f);
 			if(nIndex == GINVALID)
 				return (CHUNKPROGRESS)GINVALID;
-			return m_states[nIndex].m_chunkprogress;
+			return m_recids[nIndex].m_chunkprogress;
 		}
 	private:
 		class TrieNode
@@ -384,21 +396,23 @@ namespace FSHA
 		class FileRec
 		{
 		public:
-			GINL FileRec& operator = (const FileRec& src){m_id = src.m_id; m_it = src.m_it; return *this;}
+			GINL FileRec& operator = (const FileRec& src)
+			{
+				m_id = src.m_id;
+				m_it = src.m_it;
+				m_uSequence = src.m_uSequence;
+				m_chunkprogress = src.m_chunkprogress;
+				return *this;
+			}
 			GAIA_CLASS_OPERATOR_COMPARE(m_id, m_id, FileRec);
 			FILEID m_id;
 			__FileTreeType::const_it m_it;
 			GAIA::U32 m_uSequence;
-		};
-		class FileState
-		{
-		public:
 			CHUNKPROGRESS m_chunkprogress;
 		};
 	public:
 		typedef GAIA::CONTAINER::Vector<NameMap> __NameMapType;
 		typedef GAIA::CONTAINER::Vector<FileRec> __FileRecIDListType;
-		typedef GAIA::CONTAINER::Vector<FileState> __FileStateListType;
 	private:
 		GAIA::GVOID init(){(*m_ftree.root()).m_id = GINVALID; (*m_ftree.root()).m_mapindex = GINVALID; m_LastMaxFileID = 0;}
 		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAP_INDEX_TYPE* pResult) const
@@ -423,7 +437,7 @@ namespace FSHA
 					return GAIA::False;
 				pResult[x] = n;
 			}
-			pResult[namelist.size()] = 0;
+			pResult[namelist.size()] = GINVALID;
 			return GAIA::True;
 		}
 		GAIA::BL MapIndexToName(const MAP_INDEX_TYPE* pResult, GAIA::GCH* pszFileName) const
@@ -436,12 +450,15 @@ namespace FSHA
 				return GAIA::False;
 			const MAP_INDEX_TYPE* p = pResult;
 			GAIA::GCH* pDst = pszFileName;
-			while(*p != 0)
+			while(*p != GINVALID)
 			{
+				if(pDst != pszFileName)
+					*pDst++ = '/';
 				GAIA::ALGORITHM::strcpy(pDst, m_names[*p].m_name.front_ptr());
 				pDst += m_names[*p].m_name.size();
 				++p;
 			}
+			*pDst++ = 0;
 			return GAIA::True;
 		}
 		GAIA::BL GenerateFileNamePartList(const GAIA::GCH* pszFileName, FNAMEPARTLISTTYPE& listResult) const
@@ -490,18 +507,68 @@ namespace FSHA
 					it = m_ftree.parent_it(it);
 			}
 			GAIA::ALGORITHM::inverse(pMapIndex, p - 1);
+			pMapIndex[p - pMapIndex] = GINVALID;
+			return GAIA::True;
+		}
+		GAIA::BL LoadNode(GAIA::SERIALIZER::Serializer& sr, GAIA::CONTAINER::Stack<TrieNode>& stack)
+		{
+			/* Load node data. */
+			TrieNode tn;
+			sr >> tn.m_id;
+			sr >> tn.m_mapindex;
+			FileRec fr;
+			sr >> fr.m_uSequence;
+			fr.m_id = tn.m_id;
+			sr >> fr.m_chunkprogress;
+			stack.push(tn);
+
+			/* Load node count. */
+			__FileTreeType::__NodeTreeType::_sizetype childcnt;
+			sr >> childcnt;
+
+			/* Insert. */
+			if(childcnt == 0)
+			{
+				if(stack.size() > 1)
+				{
+					GAIA_AST(stack.top().m_id != GINVALID);
+					m_ftree.insert(stack.front_ptr() + 1, stack.size() - 1);
+					m_recids.push_back(fr);
+				}
+			}
+
+			/* Load child node. */
+			for(__FileTreeType::__NodeTreeType::_sizetype x = 0; x < childcnt; ++x)
+				this->LoadNode(sr, stack);
+			stack.pop();
+
 			return GAIA::True;
 		}
 		GAIA::BL SaveNode(GAIA::SERIALIZER::Serializer& sr, __FileTreeType::Node& n)
 		{
-			/* Save node count. */
-			__FileTreeType::__NodeTreeType::_sizetype childcnt = m_ftree.childsize(n);
-			sr << childcnt;
-
 			/* Save node data. */
 			__FileTreeType::_datatype& data = *n;
 			sr << data.m_id;
 			sr << data.m_mapindex;
+			FileRec fr;
+			fr.m_id = data.m_id;
+			__FileRecIDListType::_sizetype findedindex = m_recids.search(fr);
+			if(findedindex != GINVALID)
+			{
+				sr << m_recids[findedindex].m_uSequence;
+				sr << m_recids[findedindex].m_chunkprogress;
+			}
+			else
+			{
+				GAIA::U32 uSequence = GINVALID;
+				CHUNKPROGRESS chunprogress = GINVALID;
+				sr << uSequence;
+				sr << chunprogress;
+			}
+
+			/* Save node count. */
+			__FileTreeType::__NodeTreeType::_sizetype childcnt = m_ftree.childsize(n);
+			sr << childcnt;
 
 			/* Save child node. */
 			__FileTreeType::__NodeTreeType::it it = m_ftree.child_front_it(n);
@@ -511,12 +578,11 @@ namespace FSHA
 				this->SaveNode(sr, *pNode);
 				++it;
 			}
-			return GAIA::False;
+			return GAIA::True;
 		}
 	private:
 		__NameMapType m_names; // Sorted by file name.
 		__FileRecIDListType m_recids; // Sorted by file id.
-		__FileStateListType m_states; // Sorted as file id list.
 		__FileTreeType m_ftree; // Sorted by file name section.
 		FILEID m_LastMaxFileID;
 	};
@@ -1174,6 +1240,9 @@ namespace FSHA
 				"show_user",			"show user's information, format = show_user user_name.",
 				"show_groups",			"show all groups",
 				"show_group",			"show group's information, format = show_group group_name.",
+				"filename",				"show filename by id, format = filename id.",
+				"fileid",				"show fileid by filename, format = fileid filename.",
+				"files",				"show file in the path, format = files filename isincludechild.",
 			};
 			GAIA_ENUM_BEGIN(COMMAND_LIST)
 				CMD_HELP,
@@ -1194,6 +1263,9 @@ namespace FSHA
 				CMD_SHOWUSER,
 				CMD_SHOWGROUPS,
 				CMD_SHOWGROUP,
+				CMD_FILENAME,
+				CMD_FILEID,
+				CMD_FILES,
 			GAIA_ENUM_END(COMMAND_LIST)
 			#define CMD(e) (listPart[0] == COMMAND_LIST[e * 2])
 			#define CMDFAILED do{m_prt << "Failed!\n";}while(GAIA::ALWAYSFALSE)
@@ -1220,7 +1292,10 @@ namespace FSHA
 			{
 				if(listPart.size() == 3)
 				{
-					if(!m_filelist.Build(listPart[1].front_ptr(), listPart[2].front_ptr()))
+					GAIA::GCH* psz = "";
+					if(listPart[2] != "NULL")
+						psz = listPart[2].front_ptr();
+					if(!m_filelist.Build(listPart[1].front_ptr(), psz))
 						CMDFAILED;
 				}
 				else
@@ -1415,6 +1490,41 @@ namespace FSHA
 					}
 					else
 						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_FILENAME))
+			{
+				if(listPart.size() == 2)
+				{
+					FILEID fid = listPart[1];
+					GAIA::GCH szFileName[MAX_PATHLEN];
+					if(m_filelist.GetName(fid, szFileName))
+						m_prt << szFileName << "\n";
+					else
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_FILEID))
+			{
+				if(listPart.size() == 2)
+				{
+					const FILEID* pFileID = m_filelist.GetIDByName(listPart[1]);
+					if(pFileID != GNULL)
+						m_prt << *pFileID << "\n";
+					else
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_FILES))
+			{
+				if(listPart.size() == 3)
+				{
 				}
 				else
 					CMDFAILED;
