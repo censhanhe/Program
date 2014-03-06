@@ -9,8 +9,7 @@ namespace GAIA
 			typename _DataType, 
 			typename _SizeType, 
 			typename _HeightType,
-			typename _SizeIncreaserType, 
-			_SizeType _GroupElementSize
+			typename _SizeIncreaserType
 		> class BasicKDTree
 		{
 		public:
@@ -32,7 +31,7 @@ namespace GAIA
 			private:
 				friend class BasicKDTree;
 			public:
-				typedef BasicAVLTree<_DataType*, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
+				typedef BasicAVLTree<_DataType*, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
 			public:
 				Node(){}
 				~Node(){}
@@ -47,12 +46,10 @@ namespace GAIA
 			typedef _HeightType _heighttype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			static const _SizeType _groupelementsize = _GroupElementSize;
-		public:
-			typedef BasicKDTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __NodePoolType;
-			typedef BasicPool<Split, _SizeType, _SizeIncreaserType, _GroupElementSize> __SplitPoolType;
-			typedef BasicAVLTree<Pair<_DataType, Node*>, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
+			typedef BasicKDTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __MyType;
+			typedef BasicPool<Node, _SizeType, _SizeIncreaserType> __NodePoolType;
+			typedef BasicPool<Split, _SizeType, _SizeIncreaserType> __SplitPoolType;
+			typedef BasicAVLTree<Pair<_DataType, Node*>, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
 		public:
 			GINL BasicKDTree(){this->init();}
 			GINL BasicKDTree(const __MyType& src){this->init(); this->operator = (src);}

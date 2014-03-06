@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _SizeType, typename _SizeIncreaserType, _SizeType _PageSize, _SizeType _GroupElementSize> class Storage
+		template<typename _SizeType, typename _SizeIncreaserType, _SizeType _PageSize> class Storage
 		{
 		public:
 			typedef _SizeType _sizetype;
@@ -50,9 +50,9 @@ namespace GAIA
 				Node m_n;
 			};
 		public:
-			typedef Storage<_SizeType, _SizeIncreaserType, _PageSize, _GroupElementSize> __MyType;
-			typedef BasicAVLTree<Node, _SizeType, _SizeType, _SizeIncreaserType, _GroupElementSize> __AddrAVLTreeType;
-			typedef BasicAVLTree<NodeSize, _SizeType, _SizeType, _SizeIncreaserType, _GroupElementSize> __SizeAVLTreeType;
+			typedef Storage<_SizeType, _SizeIncreaserType, _PageSize> __MyType;
+			typedef BasicAVLTree<Node, _SizeType, _SizeType, _SizeIncreaserType> __AddrAVLTreeType;
+			typedef BasicAVLTree<NodeSize, _SizeType, _SizeType, _SizeIncreaserType> __SizeAVLTreeType;
 		public:
 			GINL Storage(){this->init();}
 			GINL Storage(const __MyType& src){this->init(); this->operator = (src);}

@@ -5,16 +5,14 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicDictionary
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicDictionary
 		{
 		public:
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			static const _SizeType _groupelementsize = _GroupElementSize;
-		public:
-			typedef BasicDictionary<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
+			typedef BasicDictionary<_DataType, _SizeType, _SizeIncreaserType> __MyType;
 		public:
 			GINL BasicDictionary(){}
 			GINL BasicDictionary(const __MyType& src){}

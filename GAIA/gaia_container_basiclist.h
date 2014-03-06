@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicList
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicList
 		{
 		private:
 			class Node
@@ -20,10 +20,8 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			static const _SizeType _groupelementsize = _GroupElementSize;
-		public:
-			typedef BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
+			typedef BasicList<_DataType, _SizeType, _SizeIncreaserType> __MyType;
+			typedef BasicPool<Node, _SizeType, _SizeIncreaserType> __PoolType;
 		public:
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{

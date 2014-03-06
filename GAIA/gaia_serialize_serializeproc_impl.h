@@ -276,10 +276,10 @@ namespace GAIA
 		}
 
 		/* BasicList serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t)
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
-			typedef GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __ListType;
+			typedef GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType> __ListType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;
@@ -305,10 +305,10 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t)
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
-			typedef GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __ListType;
+			typedef GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType> __ListType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;
@@ -337,20 +337,20 @@ namespace GAIA
 		}
 
 		/* BasicTree serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t)
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
-			typedef GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __TreeType;
+			typedef GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType> __TreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t)
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
-			typedef GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __TreeType;
+			typedef GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType> __TreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;
@@ -360,10 +360,10 @@ namespace GAIA
 		}
 
 		/* BasicAVLTree serialize. */
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize>& t)
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t)
 		{
-			typedef GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
+			typedef GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;
@@ -389,10 +389,10 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize>& t)
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t)
 		{
-			typedef GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
+			typedef GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;
@@ -421,10 +421,10 @@ namespace GAIA
 		}
 
 		/* BasicTrieTree serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t)
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
-			typedef GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __TrieTreeType;
+			typedef GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType> __TrieTreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;
@@ -474,10 +474,10 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t)
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
-			typedef GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __TrieTreeType;
+			typedef GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType> __TrieTreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;

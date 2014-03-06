@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicMultiSet
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> class BasicMultiSet
 		{
 		public:
 			typedef _DataType _datatype;
@@ -13,10 +13,8 @@ namespace GAIA
 			typedef _HeightType _heighttype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			static const _SizeType _groupelementsize = _GroupElementSize;
-		public:
-			typedef BasicMultiSet<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicMultiAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MultiAVLTreeType;
+			typedef BasicMultiSet<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __MyType;
+			typedef BasicMultiAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __MultiAVLTreeType;
 			typedef BasicVector<Pair<_DataType, _SizeType>, _SizeType, _SizeIncreaserType> __DataListType;
 		public:
 			GINL BasicMultiSet(){}

@@ -5,17 +5,15 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicPriQueue
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicPriQueue
 		{
 		public:
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			static const _SizeType _groupelementsize = _GroupElementSize;
-		public:
-			typedef BasicPriQueue<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicAVLTree<_DataType, _SizeType, _SizeType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
+			typedef BasicPriQueue<_DataType, _SizeType, _SizeIncreaserType> __MyType;
+			typedef BasicAVLTree<_DataType, _SizeType, _SizeType, _SizeIncreaserType> __AVLTreeType;
 		public:
 			GINL BasicPriQueue(){this->init();}
 			GINL BasicPriQueue(const __MyType& src){this->init(); this->operator = (src);}

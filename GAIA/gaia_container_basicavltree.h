@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicAVLTree
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> class BasicAVLTree
 		{
 		private:
 			friend class it;
@@ -27,10 +27,8 @@ namespace GAIA
 			typedef _HeightType _heighttype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			static const _SizeType _groupelementsize = _GroupElementSize;
-		public:
-			typedef BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
+			typedef BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __MyType;
+			typedef BasicPool<Node, _SizeType, _SizeIncreaserType> __PoolType;
 		public:
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{

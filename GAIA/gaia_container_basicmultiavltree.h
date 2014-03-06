@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicMultiAVLTree
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> class BasicMultiAVLTree
 		{
 		private:
 			friend class it;
@@ -18,7 +18,7 @@ namespace GAIA
 				friend class it;
 				friend class const_it;
 			public:
-				typedef BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __DataListType;
+				typedef BasicList<_DataType, _SizeType, _SizeIncreaserType> __DataListType;
 			public:
 				GINL GAIA::BL operator == (const Node& src) const{return m_datas.front() == src.m_datas.front();}
 				GINL GAIA::BL operator != (const Node& src) const{return !(this->operator == (src));}
@@ -36,10 +36,8 @@ namespace GAIA
 			typedef _HeightType _heighttype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			static const _SizeType _groupelementsize = _GroupElementSize;
-		public:
-			typedef BasicMultiAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicAVLTree<Node, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __AVLTreeType;
+			typedef BasicMultiAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __MyType;
+			typedef BasicAVLTree<Node, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
 			typedef BasicVector<Pair<_DataType, _SizeType>, _SizeType, _SizeIncreaserType> __DataListType;
 		public:
 			class it : public GAIA::ITERATOR::Iterator<_DataType>

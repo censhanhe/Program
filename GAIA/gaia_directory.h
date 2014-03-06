@@ -8,7 +8,7 @@ namespace GAIA
 		class Directory
 		{
 		public:
-			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::CONTAINER::AString, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM>, GAIA_DEFAULT_GROUPELEMENTSIZE> __ResultTree;
+			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::CONTAINER::AString, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM>> __ResultTree;
 		public:
 			Directory(){}
 			~Directory(){}

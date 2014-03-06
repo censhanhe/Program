@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _KeyType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicMultiMap
+		template<typename _DataType, typename _KeyType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> class BasicMultiMap
 		{
 		public:
 			class Node
@@ -27,10 +27,8 @@ namespace GAIA
 			typedef _HeightType _heighttype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			static const _SizeType _groupelementsize = _GroupElementSize;
-		public:
-			typedef BasicMultiMap<_DataType, _KeyType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MyType;
-			typedef BasicMultiAVLTree<Node, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize> __MultiAVLTreeType;
+			typedef BasicMultiMap<_DataType, _KeyType, _SizeType, _HeightType, _SizeIncreaserType> __MyType;
+			typedef BasicMultiAVLTree<Node, _SizeType, _HeightType, _SizeIncreaserType> __MultiAVLTreeType;
 			typedef BasicVector<Pair<_DataType, _SizeType>, _SizeType, _SizeIncreaserType> __DataListType;
 		public:
 			GINL BasicMultiMap(){}

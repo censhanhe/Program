@@ -35,28 +35,28 @@ namespace GAIA
 			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 		/* BasicList serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t);
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t);
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t);
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 		/* BasicTree serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t);
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t);
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t);
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 		/* BasicAVLTree serialize. */
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize>& t);
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType, _GroupElementSize>& t);
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t);
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t);
 
 		/* BasicTrieTree serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t);
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> GINL GAIA::BL
-			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize>& t);
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_write_proc(Serializer* p, const GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t);
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+			serializer_read_proc(Serializer* p, GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 		/* BasicBuffer serialize. */
 

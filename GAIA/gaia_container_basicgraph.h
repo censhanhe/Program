@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _GroupElementSize> class BasicGraph
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicGraph
 		{
 		public:
 			class Node
@@ -39,12 +39,10 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			static const _SizeType _groupelementsize = _GroupElementSize;
-		public:
-			typedef BasicGraph<_DataType, _SizeType, _SizeIncreaserType, _GroupElementSize> __MyType;
+			typedef BasicGraph<_DataType, _SizeType, _SizeIncreaserType> __MyType;
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
-			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType, _GroupElementSize> __PathTreeType;
-			typedef BasicPool<Node, _SizeType, _SizeIncreaserType, _GroupElementSize> __PoolType;
+			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType> __PathTreeType;
+			typedef BasicPool<Node, _SizeType, _SizeIncreaserType> __PoolType;
 			typedef BasicVector<Pair<Node*, Node*>, _SizeType, GAIA::ALGORITHM::TwiceSizeIncreaser<_SizeType>> __LinkListType;
 			typedef BasicStack<Node*, _SizeType, _SizeIncreaserType> __TravelingStackType;
 		public:
