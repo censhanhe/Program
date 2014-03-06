@@ -44,8 +44,7 @@ namespace FSHA
 	typedef GAIA::CONTAINER::Vector<FSTR> FSTRLIST;
 	typedef GAIA::CONTAINER::BasicAVLTree<
 			FSTR, GAIA::N32, GAIA::N32, 
-			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 
-			GAIA_DEFAULT_GROUPELEMENTSIZE> FSTRBTR; 
+			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> FSTRBTR; 
 	typedef GAIA::U32 MAP_INDEX_TYPE; // 0 means invalid id.
 	typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAX_PATHLEN> FNAMETYPE;
 	typedef GAIA::CONTAINER::Array<FNAMETYPE, MAX_DEPTH> FNAMEPARTLISTTYPE;
@@ -385,7 +384,7 @@ namespace FSHA
 			FILEID m_id;
 		};
 	public:
-		typedef GAIA::CONTAINER::BasicTrieTree<TrieNode, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 10> __FileTreeType;
+		typedef GAIA::CONTAINER::BasicTrieTree<TrieNode, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __FileTreeType;
 	private:
 		class NameMap
 		{
@@ -633,8 +632,8 @@ namespace FSHA
 	private:
 		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User>> __UserSetType;
 		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<Group>> __GroupSetType;
-		typedef GAIA::CONTAINER::Pool<User, 100> __UserPoolType;
-		typedef GAIA::CONTAINER::Pool<Group, 100> __GroupPoolType;
+		typedef GAIA::CONTAINER::Pool<User> __UserPoolType;
+		typedef GAIA::CONTAINER::Pool<Group> __GroupPoolType;
 	public:
 		GINL GAIA::BL Load(const GAIA::GCH* pszFileName)
 		{
