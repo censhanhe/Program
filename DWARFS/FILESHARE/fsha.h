@@ -23,6 +23,10 @@
 
 #include 	"../../GAIA/gaia.h"
 
+#if GAIA_OS == GAIA_OS_WINDOWS
+#	pragma comment(lib, "ws2_32.lib")
+#endif
+
 namespace FSHA
 {
 	/* Constants. */
@@ -1135,6 +1139,50 @@ namespace FSHA
 		__GroupPoolType m_gpool;
 	};
 
+	/* Network handle. */
+	class NHandle : public GAIA::NETWORK::NetworkHandle
+	{
+	public:
+		GINL virtual GAIA::GVOID Disconnect(GAIA::BL bRecvTrueSendFalse)
+		{
+		}
+	};
+
+	/* Network listener. */
+	class NListener : public GAIA::NETWORK::NetworkListener
+	{
+	public:
+		virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h)
+		{
+			return GAIA::True;
+		}
+	};
+
+	/* Network receiver. */
+	class NReceiver : public GAIA::NETWORK::NetworkReceiver
+	{
+	public:
+		virtual GAIA::BL Receive(const GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
+		{
+			return GAIA::True;
+		}
+	};
+
+	/* Network sender. */
+	class NSender : public GAIA::NETWORK::NetworkSender
+	{
+	public:
+	};
+
+	/* Main work thread. */
+	class MainWorkThread : public GAIA::THREAD::Thread
+	{
+	public:
+		virtual GAIA::GVOID WorkProcedure()
+		{
+		}
+	};
+
 	/* File share class. */
 	class __DWARFS_FILESHARE_API FileShare
 	{
@@ -1155,8 +1203,17 @@ namespace FSHA
 		{
 			if(m_bInitialized)
 				return GAIA::False;
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			WSAData wsadata;
+			WSAStartup(MAKEWORD(2, 2), &wsadata);
+		#endif
 			m_usergroup.Load(FILE_USERGROUP);
 			m_filelist.Load(FILE_FILELIST);
+			m_pMWThread = new MainWorkThread;
+			m_pMWThread->SetStackSize(1024 * 128);
+			m_pNHRecv = new NHandle;
+			m_pNReceiver = new NReceiver;
+			m_pNListener = new NListener;
 			m_bInitialized = GAIA::True;
 			return GAIA::True;
 		}
@@ -1164,6 +1221,13 @@ namespace FSHA
 		{
 			if(!m_bInitialized)
 				return GAIA::False;
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			WSACleanup();
+		#endif
+			delete m_pMWThread;
+			m_pNHRecv->Release(); m_pNHRecv = GNULL;
+			delete m_pNReceiver;
+			delete m_pNListener;
 			m_bInitialized = GAIA::False;
 			return GAIA::True;
 		}
@@ -1179,6 +1243,7 @@ namespace FSHA
 		{
 			if(m_bStartuped)
 				return GAIA::False;
+			m_pMWThread->Run();
 			m_bStartuped = GAIA::True;
 			return GAIA::True;
 		}
@@ -1186,6 +1251,7 @@ namespace FSHA
 		{
 			if(!m_bStartuped)
 				return GAIA::False;
+			m_pMWThread->Wait();
 			m_bStartuped = GAIA::False;
 			return GAIA::True;
 		}
@@ -1539,6 +1605,10 @@ namespace FSHA
 			m_bStartuped = GAIA::False;
 			m_uUSpeed = (GAIA::U64)GINVALID;
 			m_uDSpeed = (GAIA::U64)GINVALID;
+			m_pMWThread = GNULL;
+			m_pNHRecv = GNULL;
+			m_pNReceiver = GNULL;
+			m_pNListener = GNULL;
 		}
 	private:	
 		FileShareDesc m_desc;
@@ -1548,6 +1618,11 @@ namespace FSHA
 		GAIA::U64 m_uDSpeed;
 		FileList m_filelist;
 		UserGroup m_usergroup;
+		MainWorkThread* m_pMWThread;
+		NHandle* m_pNHRecv;
+		NReceiver* m_pNReceiver;
+		GAIA::CONTAINER::Vector<NSender*> m_senders;
+		NListener* m_pNListener;
 		GAIA::PRINT::Print m_prt;
 	};
 };

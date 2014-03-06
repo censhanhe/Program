@@ -1912,10 +1912,10 @@ GAIA::N32 main()
 			}
 
 			{
-#if GAIA_OS == GAIA_OS_WINDOWS
+			#if GAIA_OS == GAIA_OS_WINDOWS
 				WSAData wsadata;
 				WSAStartup(MAKEWORD(2, 2), &wsadata);
-#endif
+			#endif
 
 				GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listResult;
 				GAIA::GCH szHostName[128];
@@ -1975,9 +1975,9 @@ GAIA::N32 main()
 
 				h.Release();
 				s_pNH->Release();
-#if GAIA_OS == GAIA_OS_WINDOWS
+			#if GAIA_OS == GAIA_OS_WINDOWS
 				WSACleanup();
-#endif
+			#endif
 			}
 
 			if(bFunctionSuccess)
