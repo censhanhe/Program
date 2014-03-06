@@ -869,14 +869,14 @@ GAIA::N32 main()
 		TEST_BEGIN("<Sort function performance>");
 		{
 			std::vector<GAIA::N32> listSTL;
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT * 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				listSTL.push_back(GAIA::MATH::random());
 			PERF_START("STL sort use");
 			std::sort(listSTL.begin(), listSTL.end());
 			PERF_END;
 
 			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT * 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				listGAIA.push_back(GAIA::MATH::random());
 			PERF_START("GAIA sort use");
 			if(!listGAIA.empty())
@@ -884,12 +884,12 @@ GAIA::N32 main()
 			PERF_END;
 
 			PERF_START("STL bsearch use");
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT * 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				binary_search(listSTL.begin(), listSTL.end(), listSTL[x]);
 			PERF_END;
 
 			PERF_START("GAIA bsearch use");
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT * 100; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]);
 			PERF_END;
 		}
