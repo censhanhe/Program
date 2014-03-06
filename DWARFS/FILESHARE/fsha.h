@@ -1292,7 +1292,7 @@ namespace FSHA
 			{
 				if(listPart.size() == 3)
 				{
-					GAIA::GCH* psz = "";
+					const GAIA::GCH* psz = "";
 					if(listPart[2] != "NULL")
 						psz = listPart[2].front_ptr();
 					if(!m_filelist.Build(listPart[1].front_ptr(), psz))
