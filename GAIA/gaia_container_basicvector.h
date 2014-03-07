@@ -243,7 +243,7 @@ namespace GAIA
 				_DataType* pFinded = GAIA::ALGORITHM::search(m_pFront, m_pFront + this->size() - 1, t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
-				return pFinded - m_pFront;
+				return (_SizeType)(pFinded - m_pFront);
 			}
 			GINL GAIA::BL swap(const _SizeType& index1, const _SizeType& index2){GAIA::ALGORITHM::swap(this->operator[](index1), this->operator[](index2));}
 			GINL const _DataType& operator[](const _SizeType& index) const{GAIA_AST(index >= 0 && index < this->size()); return m_pFront[index];}
