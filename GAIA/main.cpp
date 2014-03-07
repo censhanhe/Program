@@ -419,7 +419,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<Ptr test>");
 		{
-			GAIA::CONTAINER::Ptr<SNode<GAIA::N32>> pn1, pn2;
+			GAIA::CONTAINER::Ptr<SNode<GAIA::N32> > pn1, pn2;
 			SNode<GAIA::N32> n1, n2;
 			pn1 = &n1;
 			pn2 = &n2;
@@ -438,7 +438,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<Ref test>");
 		{
-			GAIA::CONTAINER::Ref<SNode<GAIA::N32>> rn1, rn2;
+			GAIA::CONTAINER::Ref<SNode<GAIA::N32> > rn1, rn2;
 			SNode<GAIA::N32> n1, n2;
 			rn1 = &n1;
 			rn2 = &n2;
@@ -532,10 +532,10 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<Basic vector test>");
 		{
-			GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> bv;
+			GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > bv;
 			bv.push_back(10);
 			bv.push_back(20);
-			GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>>::it iter = bv.front_it();
+			GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> >::it iter = bv.front_it();
 			while(!iter.empty())
 				++iter;
 			bv.clear();
@@ -557,7 +557,7 @@ GAIA::N32 main()
 			uDropCount = 0;
 
 			{
-				typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
+				typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __VectorType;
 				__VectorType v;
 				for(GAIA::N32 x = 0; x < 10000; ++x)
 				{
@@ -576,7 +576,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<Basic stack test>");
 		{
-			typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> __StackType;
+			typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > __StackType;
 			__StackType bs;
 			bs.push(10);
 			bs.push(20);
@@ -610,7 +610,7 @@ GAIA::N32 main()
 			for(GAIA::N32 x = 0; x < sizeof(arr) / sizeof(GAIA::N32); ++x)
 				arr[x] = x;
 
-			GAIA::CONTAINER::BasicBuffer<GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> buf;
+			GAIA::CONTAINER::BasicBuffer<GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > buf;
 			buf.write(arr);
 			buf.write(48);
 			GAIA::U32 size = buf.write_size();
@@ -721,7 +721,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<Basic queue test>");
 		{
-			typedef GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> __QueueType;
+			typedef GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > __QueueType;
 			__QueueType que;
 			for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
 				que.push(x);
@@ -765,7 +765,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<Basic pool test>");
 		{
-			GAIA::CONTAINER::BasicPool<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> pool;
+			GAIA::CONTAINER::BasicPool<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > pool;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				pool.alloc();
 			pool.clear();
@@ -901,7 +901,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<BasicList Function Test>");
 		{
-			typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __ListType;
+			typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __ListType;
 			__ListType list;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				list.push_back(x);
@@ -931,7 +931,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<BasicAVLTree Function Test>");
 		{
-			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> btr;
+			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > btr;
 
 			bFunctionSuccess = GAIA::True;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
@@ -947,7 +947,7 @@ GAIA::N32 main()
 				TEST_FILE_LINE("Insert by key operator is FAILED!");
 			GAIA::BL bCheckParent = btr.dbg_check_parent();
 			bCheckParent = true;
-			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>>::it iter = btr.front_it();
+			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16,GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> >::it iter = btr.front_it();
 			while(!iter.empty())
 			{
 				GAIA::N32 n = *iter;
@@ -1041,7 +1041,7 @@ GAIA::N32 main()
 				TEST_FILE_LINE("Random data insertion and erase AVL-Tree function check FAILED!");
 
 			{
-				typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __AVLTreeType;
+				typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __AVLTreeType;
 				__AVLTreeType av;
 				for(GAIA::N32 x = 0; x < 100; ++x)
 					av.insert(x);
@@ -1080,7 +1080,7 @@ GAIA::N32 main()
 			PERF_END;
 
 			PERF_START("GAIA BasicAVLTree use");
-			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> avltree;
+			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > avltree;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				avltree.insert(GAIA::MATH::random());
 			PERF_END;
@@ -1094,7 +1094,7 @@ GAIA::N32 main()
 		TEST_BEGIN("<BasicMultiAVLTree function test>");
 		{
 			bFunctionSuccess = GAIA::True;
-			typedef GAIA::CONTAINER::BasicMultiAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __MAVLTreeType;
+			typedef GAIA::CONTAINER::BasicMultiAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MAVLTreeType;
 			__MAVLTreeType mavlt;
 			if(!mavlt.insert(32))
 				bFunctionSuccess = GAIA::False;
@@ -1144,7 +1144,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<BasicTrieTree function test>");
 		{
-			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __TrieTree;
+			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __TrieTree;
 			__TrieTree tt;
 			tt.insert("hello", 5);
 			tt.insert("world", 5);
@@ -1216,7 +1216,7 @@ GAIA::N32 main()
 	#ifdef PERFORMANCE_COMPARE
 		TEST_BEGIN("<BasicTrieTree performance test>");
 		{
-			typedef GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::N64>, GAIA::N64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>> __StringList;
+			typedef GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::N64>, GAIA::N64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64> > __StringList;
 			__StringList listString;
 			GAIA::FILESYSTEM::File file;
 			if(file.Open("main.cpp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
@@ -1263,7 +1263,7 @@ GAIA::N32 main()
 				file.Close();
 			}
 
-			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __TrieTree;
+			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __TrieTree;
 			__TrieTree tt;
 
 			PERF_START("TrieTree Insert");
@@ -1299,7 +1299,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<BasicTree function test>");
 		{
-			typedef GAIA::CONTAINER::BasicTree<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> _MyTreeType;
+			typedef GAIA::CONTAINER::BasicTree<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > _MyTreeType;
 			_MyTreeType tree;
 			_MyTreeType::Node* pNode = tree.insert(10, GNULL);
 			tree.insert(20, pNode);
@@ -1352,8 +1352,8 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<BasicPriQueue function test>");
 		{
-			typedef GAIA::CONTAINER::BasicPriQueue<SNode<GAIA::N32>, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __PriQueueType;
-			typedef GAIA::CONTAINER::BasicVector<SNode<GAIA::N32>, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
+			typedef GAIA::CONTAINER::BasicPriQueue<SNode<GAIA::N32>, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __PriQueueType;
+			typedef GAIA::CONTAINER::BasicVector<SNode<GAIA::N32>, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __VectorType;
 			__PriQueueType pq;
 			__VectorType vr;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
@@ -1383,7 +1383,7 @@ GAIA::N32 main()
 		TEST_BEGIN("<BasicSet function test>");
 		{
 			bFunctionSuccess = GAIA::True;
-			typedef GAIA::CONTAINER::BasicSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __SetType;
+			typedef GAIA::CONTAINER::BasicSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __SetType;
 			__SetType st;
 			if(!st.insert(1))
 				bFunctionSuccess = GAIA::False;
@@ -1428,7 +1428,7 @@ GAIA::N32 main()
 		TEST_BEGIN("<BasicMultiSet function test>");
 		{
 			bFunctionSuccess = GAIA::True;
-			typedef GAIA::CONTAINER::BasicMultiSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __MultiSetType;
+			typedef GAIA::CONTAINER::BasicMultiSet<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MultiSetType;
 			__MultiSetType mst;
 			if(!mst.insert(32))
 				bFunctionSuccess = GAIA::False;
@@ -1467,7 +1467,7 @@ GAIA::N32 main()
 		TEST_BEGIN("<BasicMap function test>");
 		{
 			bFunctionSuccess = GAIA::True;
-			typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __MapType;
+			typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MapType;
 			__MapType mp;
 			*mp["Arm"] = 30;
 			*mp["Box"] = 30;
@@ -1509,7 +1509,7 @@ GAIA::N32 main()
 
 			{
 				bFunctionSuccess = GAIA::True;
-				typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __MapType;
+				typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MapType;
 				__MapType mp;
 				GAIA::MATH::random_seed(0);
 				for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
@@ -1534,7 +1534,7 @@ GAIA::N32 main()
 		TEST_BEGIN("<BasicMultiMap function test>");
 		{
 			bFunctionSuccess = GAIA::True;
-			typedef GAIA::CONTAINER::BasicMultiMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __MultiMapType;
+			typedef GAIA::CONTAINER::BasicMultiMap<GAIA::N32, GAIA::CONTAINER::AString, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MultiMapType;
 			__MultiMapType mmp;
 			mmp.insert("Arm", 30);
 			mmp.insert("Arm", 31);
@@ -1555,7 +1555,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<BasicGraph function test>");
 		{
-			typedef GAIA::CONTAINER::BasicGraph<GAIA::REAL, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>> _MyGraphType;
+			typedef GAIA::CONTAINER::BasicGraph<GAIA::REAL, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > _MyGraphType;
 			_MyGraphType graph;
 			_MyGraphType::Node* pNode = GNULL;
 			for(GAIA::N32 x = 0; x < 100; ++x)
@@ -1861,7 +1861,7 @@ GAIA::N32 main()
 			bResult = file.Close();
 			bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
 			GAIA::U64 uFileSize = file.Size();
-			GAIA::CONTAINER::BasicBuffer<GAIA::U64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64>> buf;
+			GAIA::CONTAINER::BasicBuffer<GAIA::U64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64> > buf;
 			buf.resize(uFileSize);
 			file.Read(buf.front_ptr(), buf.write_size());
 			const GAIA::GWCH* p = (GAIA::GWCH*)buf.front_ptr();
@@ -2055,7 +2055,7 @@ GAIA::N32 main()
 							at.push_back(x);
 						sr << at;
 
-						typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
+						typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __VectorType;
 						__VectorType vt;
 						for(__VectorType::_sizetype x = 0; x < 100; ++x)
 							vt.push_back(x);
@@ -2069,31 +2069,31 @@ GAIA::N32 main()
 						__ACharsType achars = "Hello World!";
 						sr << achars;
 
-						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __StackType;
+						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __StackType;
 						__StackType st;
 						for(__StackType::_sizetype x = 0; x < 100; ++x)
 							st.push(x);
 						sr << st;
 
-						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __QueueType;
+						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __QueueType;
 						__QueueType qt;
 						for(__QueueType::_sizetype x = 0; x < 100; ++x)
 							qt.push(x);
 						sr << qt;
 
-						typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __ListType;
+						typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __ListType;
 						__ListType lt;
 						for(__ListType::_sizetype x = 0; x < 100; ++x)
 							lt.push_back(x);
 						sr << lt;
 
-						typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __AVLTreeType;
+						typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __AVLTreeType;
 						__AVLTreeType avlt;
 						for(__AVLTreeType::_sizetype x = 100; x > 0; --x)
 							avlt.insert(x);
 						sr << avlt;
 
-						typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __TrieTreeType;
+						typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __TrieTreeType;
 						__TrieTreeType triet;
 						triet.insert("Hello World", sizeof("Hello World") - sizeof(GAIA::GCH));
 						triet.insert("Hello Kitty", sizeof("Hello Kitty") - sizeof(GAIA::GCH));
@@ -2131,7 +2131,7 @@ GAIA::N32 main()
 						__ArrayType at;
 						sr >> at;
 
-						typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
+						typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __VectorType;
 						__VectorType vt;
 						sr >> vt;
 
@@ -2143,23 +2143,23 @@ GAIA::N32 main()
 						__ACharsType achars;
 						sr >> achars;
 
-						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __StackType;
+						typedef GAIA::CONTAINER::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __StackType;
 						__StackType st;
 						sr >> st;
 
-						typedef GAIA::CONTAINER::BasicQueue<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __QueueType;
+						typedef GAIA::CONTAINER::BasicQueue<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __QueueType;
 						__StackType qt;
 						sr >> qt;
 
-						typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __ListType;
+						typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __ListType;
 						__ListType lt;
 						sr >> lt;
 
-						typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __AVLTreeType;
+						typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __AVLTreeType;
 						__AVLTreeType avlt;
 						sr >> avlt;
 
-						typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __TrieTreeType;
+						typedef GAIA::CONTAINER::BasicTrieTree<GAIA::GCH, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __TrieTreeType;
 						__TrieTreeType triet;
 						sr >> triet;
 						__TrieTreeType::Node* pNode = triet.find(GNULL, "Hello World", sizeof("Hello World") - sizeof(GAIA::GCH));

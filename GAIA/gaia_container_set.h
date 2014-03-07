@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType> class Set : public BasicSet<_DataType, GAIA::NM, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM>>{public:};
+		template<typename _DataType> class Set : public BasicSet<_DataType, GAIA::NM, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM> >{public:};
 	};
 };
 

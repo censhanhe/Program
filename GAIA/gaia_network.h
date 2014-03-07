@@ -210,7 +210,7 @@ namespace GAIA
 		private:
 			friend class NetworkHandle;
 		private:
-			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle>> __HandleSetType;
+			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle> > __HandleSetType;
 			typedef GAIA::CONTAINER::Vector<NetworkHandle*> __HandleListType;
 		public:
 			GINL NetworkSender(){this->init();}
@@ -267,7 +267,7 @@ namespace GAIA
 		private:
 			friend class NetworkHandle;
 		private:
-			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle>> __HandleSetType;
+			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle> > __HandleSetType;
 			typedef GAIA::CONTAINER::Vector<NetworkHandle*> __HandleListType;
 			typedef GAIA::CONTAINER::Buffer __BufferType;
 		public:

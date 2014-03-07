@@ -43,7 +43,7 @@ namespace GAIA
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType> __PathTreeType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType> __PoolType;
-			typedef BasicVector<Pair<Node*, Node*>, _SizeType, GAIA::ALGORITHM::TwiceSizeIncreaser<_SizeType>> __LinkListType;
+			typedef BasicVector<Pair<Node*, Node*>, _SizeType, GAIA::ALGORITHM::TwiceSizeIncreaser<_SizeType> > __LinkListType;
 			typedef BasicStack<Node*, _SizeType, _SizeIncreaserType> __TravelingStackType;
 		public:
 			GINL BasicGraph(){this->init();}

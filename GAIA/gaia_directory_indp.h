@@ -293,7 +293,7 @@ namespace GAIA
 							}
 							if(bExtMatch)
 							{
-								GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::AString, GAIA::N16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> listResult;
+								GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::AString, GAIA::N16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > listResult;
 								const GAIA::GCH* pFinal = szNext;
 								for(;;)
 								{
