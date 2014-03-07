@@ -11,10 +11,10 @@ namespace GAIA
 		template<typename _DataType> GINL _DataType* toupper(_DataType* p){GAIA_AST(p != GNULL); _DataType* ret = p; while(*p != 0){*p = GAIA::ALGORITHM::toupper(*p);p++;} return ret;}
 		template<typename _DataType> GINL GAIA::BL islower(const _DataType& c){if(c >= 'a' && c <= 'z') return GAIA::True; return GAIA::False;}
 		template<typename _DataType> GINL GAIA::BL isupper(const _DataType& c){if(c >= 'A' && c <= 'Z') return GAIA::True; return GAIA::False;}
-		template<typename _DataType> GINL GAIA::BL isexistlower(const _DataType* p){GAIA_AST(p != GNULL); while(*p != 0){if(islower(*p)) return GAIA::True; p++;} return GAIA::False;}
-		template<typename _DataType> GINL GAIA::BL isexistupper(const _DataType* p){GAIA_AST(p != GNULL); while(*p != 0){if(isupper(*p)) return GAIA::True; p++;} return GAIA::False;}
-		template<typename _DataType> GINL GAIA::BL isalllower(const _DataType* p){GAIA_AST(p != GNULL); while(*p != 0){if(!islower(*p)) return GAIA::False; p++;} return GAIA::True;}
-		template<typename _DataType> GINL GAIA::BL isallupper(const _DataType* p){GAIA_AST(p != GNULL); while(*p != 0){if(!isupper(*p)) return GAIA::False; p++;} return GAIA::True;}
+		template<typename _DataType> GINL GAIA::BL isexistlower(const _DataType* p){GAIA_AST(p != GNULL); while(*p != 0){if(GAIA::ALGORITHM::islower(*p)) return GAIA::True; p++;} return GAIA::False;}
+		template<typename _DataType> GINL GAIA::BL isexistupper(const _DataType* p){GAIA_AST(p != GNULL); while(*p != 0){if(GAIA::ALGORITHM::isupper(*p)) return GAIA::True; p++;} return GAIA::False;}
+		template<typename _DataType> GINL GAIA::BL isalllower(const _DataType* p){GAIA_AST(p != GNULL); while(*p != 0){if(!GAIA::ALGORITHM::islower(*p)) return GAIA::False; p++;} return GAIA::True;}
+		template<typename _DataType> GINL GAIA::BL isallupper(const _DataType* p){GAIA_AST(p != GNULL); while(*p != 0){if(!GAIA::ALGORITHM::isupper(*p)) return GAIA::False; p++;} return GAIA::True;}
 		template<typename _DataType> GINL GAIA::BL isdigit(const _DataType& c){if(c >= '0' && c <= '9') return GAIA::True; return GAIA::False;}
 		template<typename _DataType> GINL GAIA::BL isalpha(const _DataType& c){if(c < 'A' || c > 'z') return GAIA::False; if(c <= 'Z' || c >= 'a') return GAIA::True; return GAIA::False;}
 		template<typename _DataType> GINL GAIA::BL ispunctuation(const _DataType& c){if(c > ' ' && !GAIA::ALGORITHM::isalpha(c) && !GAIA::ALGORITHM::isdigit(c) && c < 0xFF) return GAIA::True; return GAIA::False;}
@@ -44,7 +44,7 @@ namespace GAIA
 		{
 			while(*p != 0)
 			{
-				if(tolower(*p) == tolower(c))
+				if(GAIA::ALGORITHM::tolower(*p) == GAIA::ALGORITHM::tolower(c))
 					return const_cast<_DataType*>(p);
 				++p;
 			}
@@ -111,8 +111,8 @@ namespace GAIA
 			GAIA_AST(src != GNULL);
 			while(GAIA::ALWAYSTRUE)
 			{
-				_DataType c1 = tolower(*p1);
-				_DataType c2 = tolower(*p2);
+				_DataType c1 = GAIA::ALGORITHM::tolower(*p1);
+				_DataType c2 = GAIA::ALGORITHM::tolower(*p2);
 				if(c1 < c2)
 					return -1;
 				else if(c1 > c2)
@@ -158,7 +158,7 @@ namespace GAIA
 				const _DataType* p = p2;
 				while(*po != 0 && *p != 0)
 				{
-					if(tolower(*p) != tolower(*po))
+					if(GAIA::ALGORITHM::tolower(*p) != GAIA::ALGORITHM::tolower(*po))
 						break;
 					++po;
 					++p;
@@ -172,19 +172,19 @@ namespace GAIA
 		template<typename _DataType> GINL _DataType* strwrd(const _DataType* p1, const _DataType* p2)
 		{
 			const _DataType* p = p1;
-			while((p = strstr(p, p2)) != GNULL)
+			while((p = GAIA::ALGORITHM::strstr(p, p2)) != GNULL)
 			{
 				if(p != p1)
 				{
 					_DataType t = *(p - 1);
-					if(isalpha(t) || isdigit(t))
+					if(GAIA::ALGORITHM::isalpha(t) || GAIA::ALGORITHM::isdigit(t))
 					{
 						++p;
 						continue;
 					}
 				}
 				_DataType t = *(p + GAIA::ALGORITHM::strlen(p2));
-				if(isalpha(t) || isdigit(t))
+				if(GAIA::ALGORITHM::isalpha(t) || GAIA::ALGORITHM::isdigit(t))
 				{
 					++p;
 					continue;
@@ -196,19 +196,19 @@ namespace GAIA
 		template<typename _DataType> GINL _DataType* striwrd(const _DataType* p1, const _DataType* p2)
 		{
 			const _DataType* p = p1;
-			while((p = stristr(p, p2)) != GNULL)
+			while((p = GAIA::ALGORITHM::stristr(p, p2)) != GNULL)
 			{
 				if(p != p1)
 				{
 					_DataType t = *(p - 1);
-					if(isalpha(t) || isdigit(t))
+					if(GAIA::ALGORITHM::isalpha(t) || GAIA::ALGORITHM::isdigit(t))
 					{
 						++p;
 						continue;
 					}
 				}
-				_DataType t = *(p + _tcslen(p2));
-				if(isalpha(t) || isdigit(t))
+				_DataType t = *(p + GAIA::ALGORITHM::strlen(p2));
+				if(GAIA::ALGORITHM::isalpha(t) || GAIA::ALGORITHM::isdigit(t))
 				{
 					++p;
 					continue;
@@ -240,7 +240,7 @@ namespace GAIA
 			GAIA_AST(p2 != GNULL);
 
 			const _DataType* p = p1;
-			while(tolower(*p) != 0 && tolower(*p2) != 0)
+			while(GAIA::ALGORITHM::tolower(*p) != 0 && GAIA::ALGORITHM::tolower(*p2) != 0)
 			{
 				if(*p2 != *p)
 					return GNULL;
@@ -323,7 +323,7 @@ namespace GAIA
 		}
 		template<typename _DataType> GINL const _DataType* strext(const _DataType* p)
 		{
-			const _DataType* pEnd = strend(p);
+			const _DataType* pEnd = GAIA::ALGORITHM::strend(p);
 			--pEnd;
 			while(pEnd >= p)
 			{
@@ -375,11 +375,11 @@ namespace GAIA
 			right = GAIA::MATH::abs(right);
 			while(right - (_SrcDataType)(GAIA::N64)right != 0)
 				right *= 10.0F;
-			_DstDataType* p = int2str(left, pDst);
+			_DstDataType* p = GAIA::ALGORITHM::int2str(left, pDst);
 			--p;
 			*p = '.';
 			++p;
-			p = int2str((GAIA::N64)right, p);
+			p = GAIA::ALGORITHM::int2str((GAIA::N64)right, p);
 			return p;
 		}
 		template<typename _SrcDataType, typename _DstDataType> GINL const _SrcDataType* str2int(const _SrcDataType* p, _DstDataType& dst)

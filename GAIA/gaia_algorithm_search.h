@@ -152,13 +152,13 @@ namespace GAIA
 			_DataType* pMid = pBegin + (pEnd - pBegin) / 2;
 			if(key <= *pMid)
 			{
-				_DataType* pRet = lower_bound(pBegin, pMid, key);
+				_DataType* pRet = GAIA::ALGORITHM::lower_bound(pBegin, pMid, key);
 				if(pRet != GNULL)
 					return pRet;
 			}
 			else if(key > *pMid)
 			{
-				_DataType* pRet = lower_bound(pMid + 1, pEnd, key);
+				_DataType* pRet = GAIA::ALGORITHM::lower_bound(pMid + 1, pEnd, key);
 				if(pRet != GNULL)
 					return pRet;
 			}
@@ -178,13 +178,13 @@ namespace GAIA
 			_DataType* pMid = pBegin + (pEnd - pBegin) / 2;
 			if(key > *pMid)
 			{
-				_DataType* pRet = lower_bound(pMid + 1, pEnd, key);
+				_DataType* pRet = GAIA::ALGORITHM::upper_bound(pMid + 1, pEnd, key);
 				if(pRet != GNULL)
 					return pRet;
 			}
 			else if(key <= *pMid)
 			{
-				_DataType* pRet = lower_bound(pBegin, pMid, key);
+				_DataType* pRet = GAIA::ALGORITHM::upper_bound(pBegin, pMid, key);
 				if(pRet != GNULL)
 					return pRet;
 			}
