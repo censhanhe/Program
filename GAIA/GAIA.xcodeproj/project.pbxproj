@@ -11,6 +11,7 @@
 		3B08820818A76CE300FF5280 /* gaia_sync_lock_indp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B08820618A76CE300FF5280 /* gaia_sync_lock_indp.cpp */; };
 		3B08820D18A77A0500FF5280 /* gaia_sync_event_indp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B08820C18A77A0500FF5280 /* gaia_sync_event_indp.cpp */; };
 		3B08BA1D18C4A82800C3C7F9 /* gaia_directory_indp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B08BA1118C4A82800C3C7F9 /* gaia_directory_indp.cpp */; };
+		3B1CBA6018C9FDA4007F7DD0 /* gaia_print_indp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B1CBA5D18C9FDA3007F7DD0 /* gaia_print_indp.cpp */; };
 		3BD55C7A187F1C3100FE89B5 /* gaia_math_random_indp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3BD55C72187F1C3000FE89B5 /* gaia_math_random_indp.cpp */; };
 		3BD55C7B187F1C3100FE89B5 /* gaia_sync_base_indp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3BD55C75187F1C3000FE89B5 /* gaia_sync_base_indp.cpp */; };
 		3BD55C7C187F1C3100FE89B5 /* gaia_time_indp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3BD55C77187F1C3000FE89B5 /* gaia_time_indp.cpp */; };
@@ -73,6 +74,9 @@
 		3B08BA1A18C4A82800C3C7F9 /* gaia_io_fileio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_io_fileio.h; sourceTree = SOURCE_ROOT; };
 		3B08BA1B18C4A82800C3C7F9 /* gaia_serialize_serializeproc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_serialize_serializeproc.h; sourceTree = SOURCE_ROOT; };
 		3B08BA1C18C4A82800C3C7F9 /* gaia_serialize_serializeproc_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_serialize_serializeproc_impl.h; sourceTree = SOURCE_ROOT; };
+		3B1CBA5D18C9FDA3007F7DD0 /* gaia_print_indp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gaia_print_indp.cpp; sourceTree = SOURCE_ROOT; };
+		3B1CBA5E18C9FDA3007F7DD0 /* gaia_print.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_print.h; sourceTree = SOURCE_ROOT; };
+		3B1CBA5F18C9FDA4007F7DD0 /* gaia_print_indp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_print_indp.h; sourceTree = SOURCE_ROOT; };
 		3B3E55CF188C295F00375D49 /* gaia_algorithm_unique.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_algorithm_unique.h; sourceTree = SOURCE_ROOT; };
 		3B3E55D0188C295F00375D49 /* gaia_container_basicstackstack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_container_basicstackstack.h; sourceTree = SOURCE_ROOT; };
 		3B3E55D1188C295F00375D49 /* gaia_container_pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gaia_container_pair.h; sourceTree = SOURCE_ROOT; };
@@ -258,6 +262,9 @@
 		3BFB13FA1877852C00A1731D /* GAIA */ = {
 			isa = PBXGroup;
 			children = (
+				3B1CBA5D18C9FDA3007F7DD0 /* gaia_print_indp.cpp */,
+				3B1CBA5E18C9FDA3007F7DD0 /* gaia_print.h */,
+				3B1CBA5F18C9FDA4007F7DD0 /* gaia_print_indp.h */,
 				3B08BA1118C4A82800C3C7F9 /* gaia_directory_indp.cpp */,
 				3B08BA1218C4A82800C3C7F9 /* gaia_directory_indp.h */,
 				3B08BA1318C4A82800C3C7F9 /* gaia_dataphase_bdiff.h */,
@@ -516,6 +523,7 @@
 				3BEB1AD118B1094200CD6271 /* gaia_type_indp.cpp in Sources */,
 				3BEB1AD618B118CD00CD6271 /* gaia_sync_atomic_indp.cpp in Sources */,
 				3B08BA1D18C4A82800C3C7F9 /* gaia_directory_indp.cpp in Sources */,
+				3B1CBA6018C9FDA4007F7DD0 /* gaia_print_indp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
