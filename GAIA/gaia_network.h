@@ -12,8 +12,8 @@ namespace GAIA
 			GINL IP(const IP& src){this->operator = (src);}
 			GINL IP(const GAIA::GCH* psz){this->operator = (psz);}
 			GINL ~IP(){}
-			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(u, 0, 6);}
-			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmp(u, 0, 6) == 0;}
+			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(u, 0, 4);}
+			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmp(u, 0, 4) == 0;}
 			GINL GAIA::GVOID FromString(const GAIA::GCH* psz)
 			{
 				const GAIA::GCH* p = psz;
@@ -26,40 +26,27 @@ namespace GAIA
 						++p;
 					}
 					GAIA::ALGORITHM::str2int(p, u[3]);
-					u[4] = 0;
-					u[5] = 0;
-				}
-				else if(uDotCnt == 5)
-				{
-					for(GAIA::N32 x = 0; x < 5; ++x)
-					{
-						p = GAIA::ALGORITHM::str2int(p, u[x]);
-						++p;
-					}
-					GAIA::ALGORITHM::str2int(p, u[5]);
 				}
 			}
 			GINL GAIA::GVOID ToString(GAIA::GCH* psz) const
 			{
 				GAIA::GCH* p = psz;
-				GAIA::N32 nPart = (u4 == 0 && u5 == 0) ? 4 : 6;
-				for(GAIA::N32 x = 0; x < nPart; ++x)
+				for(GAIA::N32 x = 0; x < 4; ++x)
 				{
 					p = GAIA::ALGORITHM::int2str(u[x], p);
 					*(p - 1) = '.';
 				}
 				*(p - 1) = 0;
 			}
-			GINL IP& operator = (const IP& src){uIPv4 = src.uIPv4; uIPv6 = src.uIPv6; return *this;}
+			GINL IP& operator = (const IP& src){uIPv4 = src.uIPv4; return *this;}
 			GINL IP& operator = (const GAIA::GCH* psz){this->FromString(psz); return *this;}
-			GAIA_CLASS_OPERATOR_COMPARE2(uIPv4, uIPv4, uIPv6, uIPv6, IP);
+			GAIA_CLASS_OPERATOR_COMPARE(uIPv4, uIPv4, IP);
 		public:
 			union
 			{
-				GAIA::U8 u[6];
-				struct{GAIA::U8 u0, u1, u2, u3, u4, u5;};
-				struct{GAIA::U8 uIPv4_0, uIPv4_1, uIPv4_2, uIPv4_3, uIPv6_0, uIPv6_1;};
-				struct{GAIA::U32 uIPv4; GAIA::U16 uIPv6;};
+				GAIA::U8 u[4];
+				struct{GAIA::U8 u0, u1, u2, u3;};
+				GAIA::U32 uIPv4;
 			};
 		};
 		class NetworkAddress
@@ -114,6 +101,7 @@ namespace GAIA
 			typedef GAIA::CONTAINER::Queue<SendRec> __SendQueueType;
 			typedef GAIA::CONTAINER::Vector<SendRec> __SendListType;
 		public:
+			static const GAIA::UM MAX_NOSTABILITY_SENDSIZE = 840;
 			class ConnectDesc
 			{
 			public:
@@ -140,8 +128,6 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetReceiver(NetworkReceiver* pReceiver);
 			GINL NetworkReceiver* GetReceiver() const{return m_pReceiver;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC BL Send(const GAIA::U8* p, GAIA::UM uSize);
-			template<typename _DataType> GINL GAIA::BL Send(const _DataType& t){return this->Send(&t, sizeof(t));}
-			template<typename _DataType> GINL GAIA::BL operator << (const _DataType& t){return this->Send(t);}
 			GAIA_CLASS_OPERATOR_COMPARE(m_h, m_h, NetworkHandle);
 		private:
 			GINL GAIA::GVOID init()
@@ -160,7 +146,7 @@ namespace GAIA
 					m_sendque.pop();
 				}
 			}
-			GINL virtual GAIA::GVOID Disconnect(GAIA::BL bRecvTrueSendFalse){}
+			GINL virtual GAIA::GVOID LostConnection(GAIA::BL bRecvTrueSendFalse){}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL FlushSendQueue();
 		private:
 			GAIA::N32 m_h;
@@ -183,11 +169,18 @@ namespace GAIA
 				GINL GAIA::GVOID Reset(){addr.Invalid();}
 				NetworkAddress addr;
 			};
+			class AcceptCallBack
+			{
+			public:
+				virtual NetworkHandle* CreateNetworkHandle() = 0;
+			};
 		public:
 			GINL NetworkListener(){this->init();}
 			GINL ~NetworkListener(){if(this->IsBegin()) this->End();}
 			GINL GAIA::GVOID SetDesc(const ListenDesc& desc){m_desc = desc;}
 			GINL const ListenDesc& GetDesc() const{return m_desc;}
+			GINL GAIA::GVOID SetAcceptCallBack(AcceptCallBack* pAcceptCallBack){m_pAcceptCallBack = pAcceptCallBack;}
+			GINL AcceptCallBack* GetAcceptCallBack() const{return m_pAcceptCallBack;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Begin();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
@@ -202,6 +195,7 @@ namespace GAIA
 				m_bStopCmd = GAIA::False;
 				m_nSendBufferSize = 1024 * 128;
 				m_nRecvBufferSize = 1024 * 128;
+				m_pAcceptCallBack = GNULL;
 			}
 		private:
 			ListenDesc m_desc;
@@ -209,6 +203,7 @@ namespace GAIA
 			GAIA::U8 m_bStopCmd : 1;
 			GAIA::N32 m_nSendBufferSize;
 			GAIA::N32 m_nRecvBufferSize;
+			AcceptCallBack* m_pAcceptCallBack;
 		};
 		class NetworkSender : public GAIA::THREAD::Thread
 		{
@@ -315,7 +310,7 @@ namespace GAIA
 				m_hs.destroy();
 			}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Receive(const NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size){return GAIA::False;}
+			virtual GAIA::BL Receive(NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size){return GAIA::False;}
 			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
 			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_bStopCmd = GAIA::False; m_buf.resize(4096);}

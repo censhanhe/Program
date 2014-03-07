@@ -28,68 +28,50 @@ namespace GAIA
 			if(desc.addr.IsInvalid())
 				return GAIA::False;
 
-			if(desc.addr.ip.u4 == 0 && desc.addr.ip.u5 == 0) // IPv4 version dispatch.
-			{
-				// Create socket.
-				if(desc.bStabilityLink)
-					m_h = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-				else
-					m_h = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-				if(m_h == GINVALID)
-					return GAIA::False;
+			// Create socket.
+			if(desc.bStabilityLink)
+				m_h = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+			else
+				m_h = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+			if(m_h == GINVALID)
+				return GAIA::False;
 
-				// Connect.
-				if(desc.bStabilityLink)
+			// Construct network address.
+			sockaddr_in sinaddr;
+			GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
+			sinaddr.sin_family = AF_INET;
+			sinaddr.sin_port = htons(desc.addr.uPort);
+			sinaddr.sin_addr.s_addr =
+				(desc.addr.ip.u0 << 0) |
+				(desc.addr.ip.u1 << 8) |
+				(desc.addr.ip.u2 << 16) |
+				(desc.addr.ip.u3 << 24);
+
+			// Connect.
+			if(desc.bStabilityLink)
+			{
+				if(connect(m_h, (sockaddr*)&sinaddr, sizeof(sinaddr)) == GINVALID)
 				{
-					sockaddr_in sinaddr;
-					GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
-					sinaddr.sin_family = AF_INET;
-					sinaddr.sin_port = htons(desc.addr.uPort);
-					sinaddr.sin_addr.s_addr =
-						(desc.addr.ip.u0 << 0) |
-						(desc.addr.ip.u1 << 8) |
-						(desc.addr.ip.u2 << 16) |
-						(desc.addr.ip.u3 << 24);
-					if(connect(m_h, (sockaddr*)&sinaddr, sizeof(sinaddr)) == GINVALID)
-					{
-					#if GAIA_OS == GAIA_OS_WINDOWS
-						closesocket(m_h);
-					#else
-						close(m_h);
-					#endif
-						m_h = GINVALID;
-						return GAIA::False;
-					}
+				#if GAIA_OS == GAIA_OS_WINDOWS
+					closesocket(m_h);
+				#else
+					close(m_h);
+				#endif
+					m_h = GINVALID;
+					return GAIA::False;
 				}
 			}
-			else // IPv6 version dispatch.
+			else
 			{
-				// Create socket.
-				if(desc.bStabilityLink)
-					m_h = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
-				else
-					m_h = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
-				if(m_h == GINVALID)
-					return GAIA::False;
-
-				// Connect.
-				if(desc.bStabilityLink)
+				if(bind(m_h, (sockaddr*)&sinaddr, sizeof(sinaddr)) < 0)
 				{
-					sockaddr_in6 sinaddr6;
-					GAIA::ALGORITHM::memset(&sinaddr6, 0, sizeof(sinaddr6));
-					sinaddr6.sin6_family = AF_INET6;
-					sinaddr6.sin6_port = htons(desc.addr.uPort);
-					// TODO : IPv6 convert.
-					if(connect(m_h, (sockaddr*)&sinaddr6, sizeof(sinaddr6)) == GINVALID)
-					{
-					#if GAIA_OS == GAIA_OS_WINDOWS
-						closesocket(m_h);
-					#else
-						close(m_h);
-					#endif
-						m_h = GINVALID;
-						return GAIA::False;
-					}
+				#if GAIA_OS == GAIA_OS_WINDOWS
+					closesocket(m_h);
+				#else
+					close(m_h);
+				#endif
+					m_h = GINVALID;
+					return GAIA::False;
 				}
 			}
 
@@ -149,6 +131,19 @@ namespace GAIA
 			GAIA_AST(uSize > 0);
 			if(p == GNULL || uSize == 0)
 				return GAIA::False;
+			if(!this->IsStabilityLink())
+			{
+				if(uSize <= sizeof(NetworkAddress))
+				{
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+				if(uSize > MAX_NOSTABILITY_SENDSIZE + sizeof(NetworkAddress))
+				{
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+			}
 			GAIA::U8* pNew = new GAIA::U8[uSize];
 			GAIA::ALGORITHM::memcpy(pNew, p, uSize);
 			GAIA::SYNC::AutoLock al(m_lock);
@@ -185,11 +180,39 @@ namespace GAIA
 					GAIA::UM uSize = r.uSize;
 					while(uSize > 0)
 					{
-					#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
-						GAIA::N32 nSended = static_cast<GAIA::N32>(send(m_h, (const GAIA::GCH*)p, uSize, MSG_NOSIGNAL));
-					#else
-						GAIA::N32 nSended = static_cast<GAIA::N32>(send(m_h, (const GAIA::GCH*)p, uSize, 0));
-					#endif
+						GAIA::N32 nSended;
+						if(this->IsStabilityLink())
+						{
+						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
+							nSended = static_cast<GAIA::N32>(send(
+								m_h, (const GAIA::GCH*)p, uSize, MSG_NOSIGNAL));
+						#else
+							nSended = static_cast<GAIA::N32>(send(
+								m_h, (const GAIA::GCH*)p, uSize, 0));
+						#endif
+						}
+						else
+						{
+							NetworkAddress& na = *(NetworkAddress*)p;
+							sockaddr_in sinaddr;
+							GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
+							sinaddr.sin_family = AF_INET;
+							sinaddr.sin_port = htons(na.uPort);
+							sinaddr.sin_addr.s_addr =
+								(na.ip.u0 << 0) |
+								(na.ip.u1 << 8) |
+								(na.ip.u2 << 16) |
+								(na.ip.u3 << 24);
+						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
+							nSended = static_cast<GAIA::N32>(sendto(
+								m_h, (const GAIA::GCH*)(p + sizeof(NetworkAddress)), uSize - sizeof(NetworkAddress), MSG_NOSIGNAL, 
+								(sockaddr*)&sinaddr, sizeof(sinaddr)));
+						#else
+							nSended = static_cast<GAIA::N32>(sendto(
+								m_h, (const GAIA::GCH*)(p + sizeof(NetworkAddress)), uSize - sizeof(NetworkAddress), 0, 
+								(sockaddr*)&sinaddr, sizeof(sinaddr)));
+						#endif
+						}
 						if(nSended == GINVALID)
 						{
 						#if GAIA_OS == GAIA_OS_WINDOWS
@@ -199,7 +222,7 @@ namespace GAIA
 							{
 								this->Reference();
 								{
-									this->Disconnect(GAIA::False);
+									this->LostConnection(GAIA::False);
 									if(this->IsConnected())
 										this->Disconnect();
 								}
@@ -212,7 +235,7 @@ namespace GAIA
 							{
 								this->Reference();
 								{
-									this->Disconnect(GAIA::False);
+									this->LostConnection(GAIA::False);
 									if(this->IsConnected())
 										this->Disconnect();
 								}
@@ -225,7 +248,7 @@ namespace GAIA
 						{
 							this->Reference();
 							{
-								this->Disconnect(GAIA::False);
+								this->LostConnection(GAIA::False);
 								if(this->IsConnected())
 									this->Disconnect();
 							}
@@ -243,10 +266,7 @@ namespace GAIA
 			}
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::UM& size)
-		{
-			return gethostname(pszResult, size) != GINVALID;
-		}
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::UM& size){return gethostname(pszResult, size) != GINVALID;}
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::GCH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult)
 		{
 			hostent* pHostEnt = gethostbyname(pszHostName);
@@ -269,7 +289,6 @@ namespace GAIA
 					}
 					else if(pHostEnt->h_addrtype == AF_INET6)
 					{
-						// TODO : IPv6 convert.
 					}
 				}
 			}
@@ -303,55 +322,30 @@ namespace GAIA
 		GINL GAIA::GVOID NetworkListener::WorkProcedure()
 		{
 			GAIA::N32 listensock = GINVALID;
-			if(m_desc.addr.ip.u4 == 0 && m_desc.addr.ip.u5 == 0) // IPv4 version dispatch.
-			{
-				// Create socket.
-				listensock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-				if(listensock == GINVALID)
-					return;
 
-				// Bind.
-				sockaddr_in addr;
-				GAIA::ALGORITHM::memset(&addr, 0, sizeof(addr));
-				addr.sin_family = AF_INET;
-				addr.sin_port = htons(m_desc.addr.uPort);
-				addr.sin_addr.s_addr =
-					(m_desc.addr.ip.u0 << 0) |
-					(m_desc.addr.ip.u1 << 8) |
-					(m_desc.addr.ip.u2 << 16) |
-					(m_desc.addr.ip.u3 << 24);
-				if(bind(listensock, (sockaddr*)&addr, sizeof(addr)) < 0)
-				{
-				#if GAIA_OS == GAIA_OS_WINDOWS
-					closesocket(listensock);
-				#else
-					close(listensock);
-				#endif
-					return;
-				}
-			}
-			else // IPv6 version dispatch.
-			{
-				// Create socket.
-				listensock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
-				if(listensock == GINVALID)
-					return;
+			// Create socket.
+			listensock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+			if(listensock == GINVALID)
+				return;
 
-				// Bind.
-				sockaddr_in6 addr;
-				GAIA::ALGORITHM::memset(&addr, 0, sizeof(addr));
-				addr.sin6_family = AF_INET6;
-				addr.sin6_port = htons(m_desc.addr.uPort);
-				// TODO : IPv6 convert.
-				if(bind(listensock, (sockaddr*)&addr, sizeof(addr)) < 0)
-				{
-				#if GAIA_OS == GAIA_OS_WINDOWS
-					closesocket(listensock);
-				#else
-					close(listensock);
-				#endif
-					return;
-				}
+			// Bind.
+			sockaddr_in addr;
+			GAIA::ALGORITHM::memset(&addr, 0, sizeof(addr));
+			addr.sin_family = AF_INET;
+			addr.sin_port = htons(m_desc.addr.uPort);
+			addr.sin_addr.s_addr =
+				(m_desc.addr.ip.u0 << 0) |
+				(m_desc.addr.ip.u1 << 8) |
+				(m_desc.addr.ip.u2 << 16) |
+				(m_desc.addr.ip.u3 << 24);
+			if(bind(listensock, (sockaddr*)&addr, sizeof(addr)) < 0)
+			{
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				closesocket(listensock);
+			#else
+				close(listensock);
+			#endif
+				return;
 			}
 
 			// Listen.
@@ -380,7 +374,7 @@ namespace GAIA
 				GAIA::N32 newsize = sizeof(addrnew);
 				GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
 			#else
-				GAIA::U32 newsize;
+				GAIA::U32 newsize = sizeof(addrnew);
 				GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
 			#endif
 				if(newsock != GINVALID)
@@ -396,16 +390,23 @@ namespace GAIA
 				#endif
 
 					//
-					NetworkHandle* h = new NetworkHandle;
-					h->m_h = newsock;
-					h->m_addr_self = m_desc.addr;
-					h->m_conndesc.addr.ip.u0 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x000000FF) >> 0);
-					h->m_conndesc.addr.ip.u1 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x0000FF00) >> 8);
-					h->m_conndesc.addr.ip.u2 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x00FF0000) >> 16);
-					h->m_conndesc.addr.ip.u3 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0xFF000000) >> 24);
-					h->m_addr_self.uPort = ntohs(addrnew.sin_port);
-					this->Accept(*h);
-					h->Release();
+					NetworkHandle* h = GNULL;
+					if(m_pAcceptCallBack != GNULL)
+						h = m_pAcceptCallBack->CreateNetworkHandle();
+					else
+						h = new NetworkHandle;
+					if(h != GNULL)
+					{
+						h->m_h = newsock;
+						h->m_addr_self = m_desc.addr;
+						h->m_conndesc.addr.ip.u0 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x000000FF) >> 0);
+						h->m_conndesc.addr.ip.u1 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x0000FF00) >> 8);
+						h->m_conndesc.addr.ip.u2 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x00FF0000) >> 16);
+						h->m_conndesc.addr.ip.u3 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0xFF000000) >> 24);
+						h->m_addr_self.uPort = ntohs(addrnew.sin_port);
+						this->Accept(*h);
+						h->Release();
+					}
 				}
 			}
 
@@ -502,6 +503,8 @@ namespace GAIA
 		}
 		GINL GAIA::GVOID NetworkReceiver::WorkProcedure()
 		{
+			sockaddr_in recvfrom_addr;
+			GAIA::ALGORITHM::memset(&recvfrom_addr, 0, sizeof(recvfrom_addr));
 			for(;;)
 			{
 				// Stop command.
@@ -535,7 +538,26 @@ namespace GAIA
 						GAIA::BL bNeedRelease = GAIA::True;
 						for(;;)
 						{
-							GAIA::N32 nRecv = (GAIA::N32)recv(pHandle->m_h, (GAIA::N8*)m_buf.front_ptr(), (GAIA::N32)m_buf.write_size(), 0);
+						#if GAIA_OS == GAIA_OS_WINDOWS
+							GAIA::N32 recvfrom_addr_len;
+						#else
+							GAIA::U32 recvfrom_addr_len;
+						#endif
+							GAIA::N32 nRecv;
+							if(pHandle->IsStabilityLink())
+								nRecv = (GAIA::N32)recv(pHandle->m_h, (GAIA::N8*)m_buf.front_ptr(), (GAIA::N32)m_buf.write_size(), 0);
+							else
+							{
+								recvfrom_addr_len = sizeof(recvfrom_addr);
+								GAIA::ALGORITHM::memset(&recvfrom_addr, 0, recvfrom_addr_len);
+								GAIA_AST(m_buf.write_size() > sizeof(NetworkAddress));
+								nRecv = (GAIA::N32)recvfrom(
+									pHandle->m_h, 
+									(GAIA::N8*)m_buf.front_ptr() + sizeof(NetworkAddress), 
+									(GAIA::N32)m_buf.write_size() - sizeof(NetworkAddress), 0, 
+									(sockaddr*)&recvfrom_addr, 
+									&recvfrom_addr_len);
+							}
 							if(nRecv == GINVALID)
 							{
 							#if GAIA_OS == GAIA_OS_WINDOWS
@@ -548,7 +570,7 @@ namespace GAIA
 									{
 										if(this->Remove(*pHandle))
 											bNeedRelease = GAIA::False;
-										pHandle->Disconnect(GAIA::True);
+										pHandle->LostConnection(GAIA::True);
 										if(pHandle->IsConnected())
 											pHandle->Disconnect();
 									}
@@ -564,7 +586,7 @@ namespace GAIA
 									{
 										if(this->Remove(*pHandle))
 											bNeedRelease = GAIA::False;
-										pHandle->Disconnect(GAIA::True);
+										pHandle->LostConnection(GAIA::True);
 										if(pHandle->IsConnected())
 											pHandle->Disconnect();
 									}
@@ -579,7 +601,7 @@ namespace GAIA
 								{
 									if(this->Remove(*pHandle))
 										bNeedRelease = GAIA::False;
-									pHandle->Disconnect(GAIA::True);
+									pHandle->LostConnection(GAIA::True);
 									if(pHandle->IsConnected())
 										pHandle->Disconnect();
 								}
@@ -588,7 +610,19 @@ namespace GAIA
 							}
 							else
 							{
-								this->Receive(*pHandle, m_buf.front_ptr(), (GAIA::U32)nRecv);
+								if(pHandle->IsStabilityLink())
+									this->Receive(*pHandle, m_buf.front_ptr(), (GAIA::U32)nRecv);
+								else
+								{
+									NetworkAddress na;
+									na.ip.u0 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
+									na.ip.u1 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
+									na.ip.u2 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
+									na.ip.u3 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
+									na.uPort = ntohs(recvfrom_addr.sin_port);
+									GAIA::ALGORITHM::memcpy(m_buf.front_ptr(), &na, sizeof(na));
+									this->Receive(*pHandle, m_buf.front_ptr(), (GAIA::U32)(nRecv + sizeof(NetworkAddress)));
+								}
 								bExistWork = GAIA::True;
 								if(nRecv < m_buf.write_size())
 									break;

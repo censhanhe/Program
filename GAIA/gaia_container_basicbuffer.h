@@ -51,6 +51,30 @@ namespace GAIA
 				m_pRead += src.write_size();
 				return GAIA::True;
 			}
+			template<typename _ParamObjType> GINL GAIA::GVOID write(const _ParamObjType* psz)
+			{
+				GAIA_AST(psz != GNULL);
+				if(psz == GNULL)
+					return;
+				const GAIA::NM bytes = GAIA::ALGORITHM::strlen(psz) * sizeof(_ParamObjType) + sizeof(_ParamObjType);
+				GAIA::U8* pNew = this->alloc(bytes);
+				GAIA::ALGORITHM::memcpy(pNew, psz, bytes);
+			}
+			template<typename _ParamObjType> GINL GAIA::BL read(_ParamObjType* psz)
+			{
+				if(m_pRead == m_pBack)
+					return GAIA::False;
+				_ParamObjType* p = psz;
+				while(m_pBack - m_pRead >= sizeof(_ParamObjType))
+				{
+					*p = *(_ParamObjType*)m_pRead;
+					m_pRead += sizeof(_ParamObjType);
+					if(*p == 0)
+						return GAIA::True;
+					++p;
+				}
+				return GAIA::False;
+			}
 			template<typename _ParamObjType> GINL GAIA::GVOID write(const _ParamObjType& obj)
 			{
 				GAIA::U8* pNew = this->alloc(sizeof(obj));
@@ -64,8 +88,6 @@ namespace GAIA
 				m_pRead += sizeof(obj);
 				return GAIA::True;
 			}
-			GINL __MyType& operator << (const __MyType& src){this->write(src); return *this;}
-			GINL __MyType& operator >> (const __MyType& src){this->read(src); return *this;}
 			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType& obj){this->write(obj); return *this;}
 			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType& obj){this->read(obj); return *this;}
 			GINL __MyType& operator = (const __MyType& src)
@@ -101,6 +123,7 @@ namespace GAIA
 				if(m_pFront != GNULL)
 					delete[] m_pFront;
 				m_pWrite = pNew + (m_pWrite - m_pFront);
+				m_pRead = pNew + (m_pRead - m_pFront);
 				m_pFront = pNew;
 				m_pBack = pNew + newsize;
 				U8* pRet = m_pWrite;

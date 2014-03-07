@@ -34,6 +34,10 @@ namespace FSHA
 	static const GAIA::U32 VERSION = 0x00000100;
 	static const GAIA::NM MAX_DEPTH = 18;
 	static const GAIA::NM MAX_PATHLEN = 240;
+	static const GAIA::U16 MAINRECVPORT = 7121;
+	static const GAIA::U16 DEFAULT_SEND_THREAD_COUNT = 4;
+	static const GAIA::U32 CHUNKSIZE = 100 * 1024;
+	static const GAIA::UM THREAD_STACK_SIZE = 1024 * 128;
 	static const GAIA::GCH FILE_USERGROUP[] = "usergroup";
 	static const GAIA::U32 FILE_USERGROUP_FLAG = 'FSUG';
 	static const GAIA::U32 FILE_USERGROUP_VERSION = 0;
@@ -59,7 +63,7 @@ namespace FSHA
 	public:
 		FileSequence(){}
 		~FileSequence(){}
-		GAIA::BL Add(const GAIA::GCH* pszFileName)
+		GINL GAIA::BL Add(const GAIA::GCH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -72,28 +76,30 @@ namespace FSHA
 			m_filesbtr.insert(str);
 			return GAIA::True;
 		}
-		GAIA::BL DeleteAll()
+		GINL GAIA::BL DeleteAll()
 		{
 			m_files.destroy();
 			m_filesbtr.destroy();
 			return GAIA::True;
 		}
-		const GAIA::NM& GetRecCount() const{return m_files.size();}
-		const GAIA::GCH* GetRec(const GAIA::NM& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
+		GINL const GAIA::NM& GetRecCount() const{return m_files.size();}
+		GINL const GAIA::GCH* GetRec(const GAIA::NM& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
 	private:
 		FSTRLIST m_files;
 		FSTRBTR m_filesbtr;
 	};
 
 	/* File list class. */
-	#define FILE_LIST_LOG(msg) do{GAIA::PRINT::Print pr; pr << (msg) << "\n";}while(GAIA::ALWAYSFALSE)
-	#define FILE_LIST_LOG2(msg1, msg2) do{GAIA::PRINT::Print pr; pr << (msg1) << (msg2) << "\n";}while(GAIA::ALWAYSFALSE)
-	#define FILE_LIST_LOG3(msg1, msg2, msg3) do{GAIA::PRINT::Print pr; pr << (msg1) << (msg2) << (msg3) << "\n";}while(GAIA::ALWAYSFALSE)
 	class __DWARFS_FILESHARE_API FileList
 	{
+	#define FILE_LIST_LOG(msg) do{if(m_pPr != GNULL){*m_pPr << (msg) << "\n";}}while(GAIA::ALWAYSFALSE)
+	#define FILE_LIST_LOG2(msg1, msg2) do{if(m_pPr != GNULL){*m_pPr << (msg1) << (msg2) << "\n";}}while(GAIA::ALWAYSFALSE)
+	#define FILE_LIST_LOG3(msg1, msg2, msg3) do{if(m_pPr != GNULL){*m_pPr << (msg1) << (msg2) << (msg3) << "\n";}}while(GAIA::ALWAYSFALSE)
 	public:
-		FileList(){this->init();}
-		~FileList(){}
+		GINL FileList(){this->init();}
+		GINL ~FileList(){}
+		GINL GAIA::GVOID SetPrint(GAIA::PRINT::Print* pPr){m_pPr = pPr;}
+		GINL GAIA::PRINT::Print* GetPrint() const{return m_pPr;}
 		GAIA::BL Load(const GAIA::GCH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
@@ -234,17 +240,25 @@ namespace FSHA
 			FILE_LIST_LOG3("There are ", restree.catagory_count(restree.root()), " files collected!");
 
 			/* Build name list(m_names). */
+			FNAMEPARTLISTTYPE listNamePart;
+			this->GenerateFileNamePartList(pszPathName, listNamePart);
 			FILE_LIST_LOG("Build file name's string token list...");
 			{
 				m_names.clear();
 				m_names.reserve(restree.catagory_count(restree.root()));
 				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
+				FNAMEPARTLISTTYPE::_sizetype nRootPart = listNamePart.size();
 				while(!it.empty())
 				{
-					NameMap nm;
-					m_names.push_back(nm);
-					m_names.back_ptr()->m_name = (*it).front_ptr();
-					m_names.back_ptr()->m_name.tolower();
+					if(nRootPart == 0)
+					{
+						NameMap nm;
+						m_names.push_back(nm);
+						m_names.back_ptr()->m_name = (*it).front_ptr();
+						m_names.back_ptr()->m_name.tolower();
+					}
+					else
+						--nRootPart;
 					++it;
 				}
 				m_names.sort();
@@ -273,6 +287,8 @@ namespace FSHA
 							if(restree.root(itt))
 								itt = restree.parent_it(itt);
 						}
+						GAIA_AST(listTemp.size() > listNamePart.size());
+						listTemp.resize(listTemp.size() - listNamePart.size());
 						listTemp.inverse();
 						FNAMETYPE fname;
 						__TempPartComineVector::it itv = listTemp.front_it();
@@ -417,7 +433,7 @@ namespace FSHA
 		typedef GAIA::CONTAINER::Vector<NameMap> __NameMapType;
 		typedef GAIA::CONTAINER::Vector<FileRec> __FileRecIDListType;
 	private:
-		GAIA::GVOID init(){(*m_ftree.root()).m_id = GINVALID; (*m_ftree.root()).m_mapindex = GINVALID; m_LastMaxFileID = 0;}
+		GINL GAIA::GVOID init(){(*m_ftree.root()).m_id = GINVALID; (*m_ftree.root()).m_mapindex = GINVALID; m_LastMaxFileID = 0; m_pPr = GNULL;}
 		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAP_INDEX_TYPE* pResult) const
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
@@ -588,6 +604,7 @@ namespace FSHA
 		__FileRecIDListType m_recids; // Sorted by file id.
 		__FileTreeType m_ftree; // Sorted by file name section.
 		FILEID m_LastMaxFileID;
+		GAIA::PRINT::Print* m_pPr;
 	};
 
 	/* User group class. */
@@ -1139,63 +1156,154 @@ namespace FSHA
 		__GroupPoolType m_gpool;
 	};
 
-	/* Network handle. */
-	class NHandle : public GAIA::NETWORK::NetworkHandle
-	{
-	public:
-		GINL virtual GAIA::GVOID Disconnect(GAIA::BL bRecvTrueSendFalse)
-		{
-		}
-	};
-
-	/* Network listener. */
-	class NListener : public GAIA::NETWORK::NetworkListener
-	{
-	public:
-		virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h)
-		{
-			return GAIA::True;
-		}
-	};
-
-	/* Network receiver. */
-	class NReceiver : public GAIA::NETWORK::NetworkReceiver
-	{
-	public:
-		virtual GAIA::BL Receive(const GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
-		{
-			return GAIA::True;
-		}
-	};
-
-	/* Network sender. */
-	class NSender : public GAIA::NETWORK::NetworkSender
-	{
-	public:
-	};
-
-	/* Main work thread. */
-	class MainWorkThread : public GAIA::THREAD::Thread
-	{
-	public:
-		virtual GAIA::GVOID WorkProcedure()
-		{
-		}
-	};
-
 	/* File share class. */
 	class __DWARFS_FILESHARE_API FileShare
 	{
 	public:
+		/* File share desc. */
 		class __DWARFS_FILESHARE_API FileShareDesc
 		{
 		public:
-			FileShareDesc()
+			GINL FileShareDesc()
 			{
-				m_maxthreadcnt = 0xFF;
+				m_sendthreadcnt = DEFAULT_SEND_THREAD_COUNT;
+				m_naddr.ip.FromString("127.0.0.1");
+				m_naddr.uPort = MAINRECVPORT;
 			}
-			GAIA::U16 m_maxthreadcnt;
+			GINL FileShareDesc& operator = (const FileShareDesc& src)
+			{
+				m_sendthreadcnt = src.m_sendthreadcnt;
+				m_naddr = src.m_naddr;
+				return *this;
+			}
+			GAIA::U16 m_sendthreadcnt;
+			GAIA::NETWORK::NetworkAddress m_naddr;
 		};
+
+		/* Network handle. */
+		class __DWARFS_FILESHARE_API NHandle : public GAIA::NETWORK::NetworkHandle
+		{
+		public:
+			GINL NHandle(){m_pFS = GNULL;}
+			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
+			GINL FileShare* GetFileShare() const{return m_pFS;}
+			GINL virtual GAIA::GVOID LostConnection(GAIA::BL bRecvTrueSendFalse)
+			{
+			}
+		private:
+			FileShare* m_pFS;
+		};
+
+		/* Network listen accept callback. */
+		class __DWARFS_FILESHARE_API NAcceptCallBack : public GAIA::NETWORK::NetworkListener::AcceptCallBack
+		{
+		public:
+			GINL NAcceptCallBack(){m_pFS = GNULL;}
+			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
+			GINL FileShare* GetFileShare() const{return m_pFS;}
+			virtual GAIA::NETWORK::NetworkHandle* CreateNetworkHandle(){return new NHandle;}
+		private:
+			FileShare* m_pFS;
+		};
+
+		/* Network listener. */
+		class __DWARFS_FILESHARE_API NListener : public GAIA::NETWORK::NetworkListener
+		{
+		public:
+			GINL NListener(){m_pFS = GNULL;}
+			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
+			GINL FileShare* GetFileShare() const{return m_pFS;}
+			virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h)
+			{
+				NHandle* pNHandle = (NHandle*)&h;
+				pNHandle->SetFileShare(this->GetFileShare());
+				return GAIA::True;
+			}
+		private:
+			FileShare* m_pFS;
+		};
+
+		/* Network receiver. */
+		class __DWARFS_FILESHARE_API NReceiver : public GAIA::NETWORK::NetworkReceiver
+		{
+		public:
+			GINL NReceiver(){m_pFS = GNULL;}
+			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
+			GINL FileShare* GetFileShare() const{return m_pFS;}
+			virtual GAIA::BL Receive(GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
+			{
+				return m_pFS->OnReceive(*(NHandle*)&s, p, size);
+			}
+		private:
+			FileShare* m_pFS;
+		};
+
+		/* Network sender. */
+		class __DWARFS_FILESHARE_API NSender : public GAIA::NETWORK::NetworkSender
+		{
+		public:
+			GINL NSender(){m_pFS = GNULL;}
+			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
+			GINL FileShare* GetFileShare() const{return m_pFS;}
+		private:
+			FileShare* m_pFS;
+		};
+
+		/* Main work thread. */
+		class __DWARFS_FILESHARE_API MainWorkThread : public GAIA::THREAD::Thread
+		{
+		public:
+			GINL MainWorkThread(){m_pFS = GNULL;}
+			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
+			GINL FileShare* GetFileShare() const{return m_pFS;}
+			virtual GAIA::GVOID WorkProcedure()
+			{
+			}
+		private:
+			FileShare* m_pFS;
+		};
+
+		/* Link object. */
+		class __DWARFS_FILESHARE_API NLink
+		{
+		public:
+			GAIA_ENUM_BEGIN(STATE)
+				STATE_CONNECTED, // after socket create.
+				STATE_READY, // after user password check up successfully.
+				STATE_ONLINE, // after logout.
+				STATE_DEAD, // after recv and send failed.
+			GAIA_ENUM_END(STATE)
+		public:
+			NLink()
+			{
+				state = STATE_INVALID;
+			}
+		public:
+			STATE state;
+		};
+	private:
+		typedef GAIA::U8 MSGID;
+		static const MSGID MSG_LOGIN			= 1;	// username + password.
+		static const MSGID MSG_LOGOUT			= 2;	// username.
+		static const MSGID MSG_NOOP				= 3;	// Nothing.
+		static const MSGID MSG_R_FILE			= 10;	// filecount(u8) * (fileid(u64) + fileoffset(u32)).
+		static const MSGID MSG_R_FILECHUNK		= 11;	// fileid(u64) + chunkindex(u16).
+		static const MSGID MSG_A_FILEHEAD		= 20;	// fileid(u64) + filecrcsize(u8) + filecrc(void*) + filesize(u32).
+		static const MSGID MSG_A_FILECHUNK		= 21;	// fileid(u64) + chunkindex(u16) + subchunkindex(u8) + filedatasize(u16) + filedata(void*).
+		static const MSGID MSG_A_FILECMPL		= 40;	// fileid(u64).
+		static const MSGID MSG_A_CNN			= 80;	// NetworkAddress + username + password.
+		static const MSGID MSG_A_ERROR			= 250;	// errno(u16).
+
+		typedef GAIA::U16 ERRNO;
+		static const ERRNO ERRNO_BUSY			= 1;
+		static const ERRNO ERRNO_SHUTDOWN		= 2;
+		static const ERRNO ERRNO_USERNAME		= 3;
+		static const ERRNO ERRNO_PASSWORD		= 4;
+
+	private:
+		typedef GAIA::CONTAINER::Vector<NSender*> __SenderListType;
+		typedef GAIA::CONTAINER::Set<NLink> __LinkListType;
+		typedef GAIA::CONTAINER::BasicBuffer<GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM>> __MsgType;
 	public:
 		FileShare(){this->init();}
 		~FileShare(){}
@@ -1209,11 +1317,18 @@ namespace FSHA
 		#endif
 			m_usergroup.Load(FILE_USERGROUP);
 			m_filelist.Load(FILE_FILELIST);
-			m_pMWThread = new MainWorkThread;
-			m_pMWThread->SetStackSize(1024 * 128);
-			m_pNHRecv = new NHandle;
-			m_pNReceiver = new NReceiver;
-			m_pNListener = new NListener;
+			m_pMWThread = new MainWorkThread; m_pMWThread->SetFileShare(this);
+			m_pMWThread->SetStackSize(THREAD_STACK_SIZE);
+			m_pNHRecv = new NHandle; m_pNHRecv->SetFileShare(this);
+			m_pNReceiver = new NReceiver; m_pNReceiver->SetFileShare(this); m_pNReceiver->SetStackSize(THREAD_STACK_SIZE);
+			for(GAIA::U16 x = 0; x < desc.m_sendthreadcnt; ++x)
+			{
+				m_senders.push_back(new NSender);
+				m_senders.back()->SetStackSize(THREAD_STACK_SIZE);
+			}
+			m_pNListener = new NListener; m_pNListener->SetFileShare(this); m_pNListener->SetStackSize(THREAD_STACK_SIZE);
+			m_pNListener->SetAcceptCallBack(&m_NAcceptCallBack); m_NAcceptCallBack.SetFileShare(this);
+			m_desc = desc;
 			m_bInitialized = GAIA::True;
 			return GAIA::True;
 		}
@@ -1227,15 +1342,18 @@ namespace FSHA
 			delete m_pMWThread;
 			m_pNHRecv->Release(); m_pNHRecv = GNULL;
 			delete m_pNReceiver;
+			for(__SenderListType::_sizetype x = 0; x < m_senders.size(); ++x)
+				delete m_senders[x];
+			m_senders.destroy();
 			delete m_pNListener;
 			m_bInitialized = GAIA::False;
 			return GAIA::True;
 		}
-		GAIA::BL IsInitialized() const
+		GINL GAIA::BL IsInitialized() const
 		{
 			return m_bInitialized;
 		}
-		const FileShareDesc& GetDesc() const
+		GINL const FileShareDesc& GetDesc() const
 		{
 			return m_desc;
 		}
@@ -1243,7 +1361,17 @@ namespace FSHA
 		{
 			if(m_bStartuped)
 				return GAIA::False;
+			m_pNHRecv->SetSelfAddress(m_desc.m_naddr);
+			GAIA::NETWORK::NetworkHandle::ConnectDesc cnndesc;
+			cnndesc.addr = m_desc.m_naddr;
+			cnndesc.bStabilityLink = GAIA::False;
+			if(!m_pNHRecv->Connect(cnndesc))
+				return GAIA::False;
+			m_pNHRecv->SetReceiver(m_pNReceiver);
+			m_pNReceiver->Begin();
 			m_pMWThread->Run();
+			for(GAIA::U16 x = 0; x < m_desc.m_sendthreadcnt; ++x)
+				m_senders[x]->Begin();
 			m_bStartuped = GAIA::True;
 			return GAIA::True;
 		}
@@ -1252,17 +1380,35 @@ namespace FSHA
 			if(!m_bStartuped)
 				return GAIA::False;
 			m_pMWThread->Wait();
+			for(GAIA::U16 x = 0; x < m_desc.m_sendthreadcnt; ++x)
+				m_senders[x]->End();
+			m_pNReceiver->End();
+			m_pNHRecv->SetReceiver(GNULL);
+			if(m_pNHRecv->IsConnected())
+				m_pNHRecv->Disconnect();
+			for(__LinkListType::it it = m_links.front_it(); !it.empty(); ++it)
+			{
+			}
+			m_links.clear();
+			for(__LinkListType::it it = m_linkeds.front_it(); !it.empty(); ++it)
+			{
+			}
+			m_linkeds.clear();
 			m_bStartuped = GAIA::False;
 			return GAIA::True;
 		}
-		GAIA::BL IsStartuped() const
+		GINL GAIA::BL IsStartuped() const
 		{
 			return m_bStartuped;
 		}
-		GAIA::GVOID SetMaxUploadSpeed(const GAIA::U64& uSpeed){m_uUSpeed = uSpeed;}
-		const GAIA::U64& GetMaxUploadSpeed() const{return m_uUSpeed;}
-		GAIA::GVOID SetMaxDownloadSpeed(const GAIA::U64& uSpeed){m_uDSpeed = uSpeed;}
-		const GAIA::U64& GetMaxDownloadSpeed() const{return m_uDSpeed;}
+		GINL GAIA::GVOID SetMaxUploadSpeed(const GAIA::U64& uSpeed){m_uUSpeed = uSpeed;}
+		GINL const GAIA::U64& GetMaxUploadSpeed() const{return m_uUSpeed;}
+		GINL GAIA::GVOID SetMaxDownloadSpeed(const GAIA::U64& uSpeed){m_uDSpeed = uSpeed;}
+		GINL const GAIA::U64& GetMaxDownloadSpeed() const{return m_uDSpeed;}
+		GINL GAIA::GVOID SetReadRootPath(const GAIA::GCH* pszPathName){m_readroot = pszPathName;}
+		GINL const GAIA::GCH* GetReadRootPath() const{return m_readroot.front_ptr();}
+		GINL GAIA::GVOID SetWriteRootPath(const GAIA::GCH* pszPathName){m_writeroot = pszPathName;}
+		GINL const GAIA::GCH* GetWriteRootPath() const{return m_writeroot.front_ptr();}
 		GAIA::BL Command(const GAIA::GCH* pszCmd)
 		{
 			// Command analyze.
@@ -1290,10 +1436,14 @@ namespace FSHA
 				"h",					"show help information.",
 				"save",					"save config change.",
 				"build",				"build the path and generate file list, format = file_path file_ext_list.",
+				"readroot",				"set read root path, format = readroot [file_path_name].",
+				"writeroot",			"set write root path, format = writeroot [file_path_name].",
+
 				"create_user",			"create a new user, format = create_user user_name.",
 				"delete_user",			"delete a exist user, format = delete_user user_name.",
 				"delete_all_user",		"delete all exist users.",
 				"password",				"set/get user's password. format = password user_name password | password user_name.",
+
 				"create_group",			"create a new group, format = create_group group name.",
 				"delete_group",			"delete a exist group, format = delete_group group_name.",
 				"delete_all_group",		"delete all exist groups.",
@@ -1308,15 +1458,22 @@ namespace FSHA
 				"filename",				"show filename by id, format = filename id.",
 				"fileid",				"show fileid by filename, format = fileid filename.",
 				"files",				"show file in the path, format = files filename isincludechild.",
+
+				"login",				"login to remote node, format = login username password ip port.",
+				"logout",				"logout from remote node, format = logout username ip port.",
 			};
 			GAIA_ENUM_BEGIN(COMMAND_LIST)
 				CMD_HELP,
 				CMD_SAVE,
 				CMD_BUILD,
+				CMD_READROOT,
+				CMD_WRITEROOT,
+
 				CMD_CREATEUSER,
 				CMD_DELETEUSER,
 				CMD_DELETEALLUSER,
 				CMD_PASSWORD,
+
 				CMD_CREATEGROUP,
 				CMD_DELETEGROUP,
 				CMD_DELETEALLGROUP,
@@ -1331,6 +1488,9 @@ namespace FSHA
 				CMD_FILENAME,
 				CMD_FILEID,
 				CMD_FILES,
+
+				CMD_LOGIN,
+				CMD_LOGOUT,
 			GAIA_ENUM_END(COMMAND_LIST)
 			#define CMD(e) (listPart[0] == COMMAND_LIST[e * 2])
 			#define CMDFAILED do{m_prt << "Failed!\n";}while(GAIA::ALWAYSFALSE)
@@ -1363,6 +1523,24 @@ namespace FSHA
 					if(!m_filelist.Build(listPart[1].front_ptr(), psz))
 						CMDFAILED;
 				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_READROOT))
+			{
+				if(listPart.size() == 2)
+					m_readroot = listPart[1].front_ptr();
+				else if(listPart.size() == 1)
+					m_prt << m_readroot.front_ptr() << "\n";
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_WRITEROOT))
+			{
+				if(listPart.size() == 2)
+					m_writeroot = listPart[1].front_ptr();
+				else if(listPart.size() == 1)
+					m_prt << m_writeroot.front_ptr() << "\n";
 				else
 					CMDFAILED;
 			}
@@ -1594,21 +1772,69 @@ namespace FSHA
 				else
 					CMDFAILED;
 			}
+			else if(CMD(CMD_LOGIN))
+			{
+				if(listPart.size() == 5)
+				{
+					GAIA::NETWORK::NetworkAddress na;
+					na.ip.FromString(listPart[3].front_ptr());
+					na.uPort = listPart[4];
+					if(!this->Login(na, listPart[1].front_ptr(), listPart[2].front_ptr()))
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_LOGOUT))
+			{
+				if(listPart.size() == 4)
+				{
+					GAIA::NETWORK::NetworkAddress na;
+					na.ip.FromString(listPart[2].front_ptr());
+					na.uPort = listPart[3];
+					if(!this->Logout(na, listPart[1].front_ptr()))
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
 			else
 				return GAIA::False;
 			return GAIA::True;
 		}
 	private:
-		GAIA::GVOID init()
+		GINL GAIA::GVOID init()
 		{
 			m_bInitialized = GAIA::False;
 			m_bStartuped = GAIA::False;
 			m_uUSpeed = (GAIA::U64)GINVALID;
 			m_uDSpeed = (GAIA::U64)GINVALID;
+			m_filelist.SetPrint(&m_prt);
 			m_pMWThread = GNULL;
 			m_pNHRecv = GNULL;
 			m_pNReceiver = GNULL;
 			m_pNListener = GNULL;
+		}
+		GINL GAIA::BL OnReceive(NHandle& s, const GAIA::U8* p, GAIA::U32 size)
+		{
+			return GAIA::True;
+		}
+		GINL GAIA::BL Login(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName, const GAIA::GCH* pszPassword)
+		{
+			__MsgType msg;
+			msg << na;
+			msg << MSG_LOGIN;
+			msg << pszUserName;
+			msg << pszPassword;
+			return GAIA::True;
+		}
+		GINL GAIA::BL Logout(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName)
+		{
+			return GAIA::True;
+		}
+		GINL GAIA::BL Request(const GAIA::NETWORK::NetworkAddress& na, GAIA::CONTAINER::Vector<FILEID>& listID)
+		{
+			return GAIA::True;
 		}
 	private:	
 		FileShareDesc m_desc;
@@ -1616,14 +1842,19 @@ namespace FSHA
 		GAIA::BL m_bStartuped;
 		GAIA::U64 m_uUSpeed;
 		GAIA::U64 m_uDSpeed;
-		FileList m_filelist;
-		UserGroup m_usergroup;
+		FileList m_filelist; GAIA::SYNC::Lock m_lr_filelist;
+		UserGroup m_usergroup; GAIA::SYNC::Lock m_lr_usergroup;
 		MainWorkThread* m_pMWThread;
 		NHandle* m_pNHRecv;
 		NReceiver* m_pNReceiver;
-		GAIA::CONTAINER::Vector<NSender*> m_senders;
+		__SenderListType m_senders;
 		NListener* m_pNListener;
+		NAcceptCallBack m_NAcceptCallBack;
 		GAIA::PRINT::Print m_prt;
+		FSTR m_readroot;
+		FSTR m_writeroot;
+		__LinkListType m_links; GAIA::SYNC::Lock m_lr_links;
+		__LinkListType m_linkeds; GAIA::SYNC::Lock m_lr_linkeds;
 	};
 };
 

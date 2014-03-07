@@ -207,9 +207,9 @@ private:
 class MyNetworkHandle : public GAIA::NETWORK::NetworkHandle
 {
 public:
-	GINL virtual GAIA::GVOID Disconnect(GAIA::BL bRecvTrueSendFalse)
+	GINL virtual GAIA::GVOID LostConnection(GAIA::BL bRecvTrueSendFalse)
 	{
-		PERF_PRINT_LINE("NetworkHandle : Disconnect CallBack!");
+		PERF_PRINT_LINE("NetworkHandle : LostConnection CallBack!");
 	}
 };
 
@@ -232,7 +232,7 @@ public:
 class MyNetworkReceiver : public GAIA::NETWORK::NetworkReceiver
 {
 public:
-	virtual GAIA::BL Receive(const GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
+	virtual GAIA::BL Receive(GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
 	{
 		PERF_PRINT_LINE("NetworkReceiver : Receive CallBack!");
 		for(GAIA::U32 x = 0; x < size; ++x)

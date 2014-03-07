@@ -79,11 +79,15 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const GAIA::GCH* p)
 		{
+			if(p == GNULL)
+				return *this;
 			std::cout << p;
 			return *this;
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const GAIA::GWCH* p)
 		{
+			if(p == GNULL)
+				return *this;
 			std::wcout << p;
 			return *this;
 		}
@@ -163,11 +167,15 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::GCH* p)
 		{
+			if(p == GNULL)
+				return *this;
 			std::cin >> p;
 			return *this;
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::GWCH* p)
 		{
+			if(p == GNULL)
+				return *this;
 			std::wcin >> p;
 			return *this;
 		}
