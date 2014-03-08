@@ -5,14 +5,14 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _DataType _DefaultValue> class BasicOrderless
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicOrderless
 		{
 		public:
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			typedef BasicOrderless<_DataType, _SizeType, _SizeIncreaserType, _DefaultValue> __MyType;
+			typedef BasicOrderless<_DataType, _SizeType, _SizeIncreaserType> __MyType;
 		public:
 			GINL BasicOrderless(){}
 			GINL BasicOrderless(const __MyType& src){this->operator = (src);}
@@ -37,7 +37,7 @@ namespace GAIA
 			GINL GAIA::BL erasei(const _SizeType& index)
 			{
 				m_free.push(index);
-				m_use[index] = _DefaultValue;
+				m_use[index] = GNULL;
 				return GAIA::True;
 			}
 			GINL GAIA::BL erase(const _DataType& t)

@@ -135,9 +135,11 @@ namespace GAIA
 			}
 			GINL GAIA::BL replace(const _DataType& t, const _SizeType& index)
 			{
+				return GAIA::False;
 			}
 			GINL GAIA::BL replace_all(const _DataType& t, const _SizeType& index)
 			{
+				return GAIA::False;
 			}
 			GINL GAIA::GVOID inverse(){GAIA::ALGORITHM::inverse(this->front_ptr(), this->back_ptr());}
 			GINL GAIA::BL insert(const _DataType& t, const _SizeType& index)

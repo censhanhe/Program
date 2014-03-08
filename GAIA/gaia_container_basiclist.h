@@ -67,10 +67,6 @@ namespace GAIA
 				}
 				GINL GAIA::BL operator == (const it& src) const{if(m_pNode == src.m_pNode) return GAIA::True; return GAIA::False;}
 				GINL GAIA::BL operator != (const it& src) const{return !(this->operator == (src));}
-				GINL GAIA::BL operator >= (const it& src) const{}
-				GINL GAIA::BL operator <= (const it& src) const{}
-				GINL GAIA::BL operator > (const it& src) const{}
-				GINL GAIA::BL operator < (const it& src) const{}
 				GINL it& operator = (const it& src){m_pNode = src.m_pNode; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){m_pNode = m_pNode->pNext; return *this;}
@@ -115,10 +111,6 @@ namespace GAIA
 				}
 				GINL GAIA::BL operator == (const const_it& src) const{if(m_pNode == src.m_pNode) return GAIA::True; return GAIA::False;}
 				GINL GAIA::BL operator != (const const_it& src) const{return !(this->operator == (src));}
-				GINL GAIA::BL operator >= (const const_it& src) const{}
-				GINL GAIA::BL operator <= (const const_it& src) const{}
-				GINL GAIA::BL operator > (const const_it& src) const{}
-				GINL GAIA::BL operator < (const const_it& src) const{}
 				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){m_pNode = m_pNode->pNext; return *this;}

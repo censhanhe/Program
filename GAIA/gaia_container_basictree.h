@@ -433,12 +433,6 @@ namespace GAIA
 				m_pool = src.m_pool;
 				return *this;
 			}
-		public:
-		#ifdef GAIA_DEBUG_INTERNALROUTINE
-			GINL GAIA::BL dbg_check_relation()
-			{
-			}
-		#endif
 		private:
 			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
 			GINL GAIA::GVOID paths_node(const Node& root, const Node& n, __PathListType& result) const

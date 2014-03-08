@@ -378,7 +378,7 @@ GAIA::N32 main()
 				TEST_FILE_LINE("int2str convert SUCCESSFULLY!");
 
 			bFunctionSuccess = GAIA::True;
-			r = -1.2;
+			r = -1.2F;
 			GAIA::ALGORITHM::real2str(r, szTemp);
 			if(GAIA::ALGORITHM::strmch(szTemp, L"-1.2") != szTemp)
 				bFunctionSuccess = GAIA::False;
@@ -752,7 +752,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<Basic orderless test>");
 		{
-			GAIA::CONTAINER::BasicOrderless<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, (GAIA::U32)-1> ol;
+			GAIA::CONTAINER::BasicOrderless<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > ol;
 			GAIA::U32 u0 = ol.insert(32);
 			GAIA::U32 u1 = ol.insert(48);
 			ol.erase(u0);

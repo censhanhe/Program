@@ -351,7 +351,7 @@ namespace GAIA
 			}
 			while(tsrc > 0)
 			{
-				*p = (tsrc % 10 + '0');
+				*p = (_DstDataType)(tsrc % 10 + '0');
 				tsrc /= 10;
 				++p;
 			}

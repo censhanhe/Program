@@ -90,19 +90,24 @@ namespace GAIA
 			}
 			GINL GAIA::BL erase(const _SizeType& index)
 			{
+				return GAIA::False;
 			}
 			GINL GAIA::BL erase(const _SizeType& index_start, const _SizeType& index_end)
 			{
+				return GAIA::False;
 			}
 			GINL GAIA::BL erase(const _DataType& t, const _SizeType& index)
 			{
+				return GAIA::False;
 			}
 			GINL GAIA::BL erase(const _DataType* p, const _SizeType& index)
 			{
 				GAIA_AST(p != GNULL);
+				return GAIA::False;
 			}
 			GINL GAIA::BL erase(const __MyType& src)
 			{
+				return GAIA::False;
 			}
 			GINL _SizeType find(const _DataType& t, const _SizeType& index) const
 			{
@@ -340,7 +345,7 @@ namespace GAIA
 			GINL operator GAIA::U16() const{return GAIA::ALGORITHM::string_cast<U16>(m_chars);}
 			GINL operator GAIA::U32() const{return GAIA::ALGORITHM::string_cast<U32>(m_chars);}
 			GINL operator GAIA::U64() const{return GAIA::ALGORITHM::string_cast<U64>(m_chars);}
-			GINL operator GAIA::X128() const{}
+			GINL operator GAIA::X128() const;
 			GINL operator GAIA::F32() const{return GAIA::ALGORITHM::string_cast<F32>(m_chars);}
 			GINL operator GAIA::F64() const{return GAIA::ALGORITHM::string_cast<F64>(m_chars);}
 			GINL operator GAIA::BL() const{return GAIA::ALGORITHM::string_cast<BL>(m_chars);}

@@ -15,7 +15,7 @@ namespace GAIA
 			GINL BDiff(){}
 			GINL BDiff(const __MyType& src){this->operator = (src);}
 			GINL ~BDiff(){}
-			GINL GAIA::BL empty() const{}
+			GINL GAIA::BL empty() const{return GAIA::False;}
 			GINL _SizeType size() const{}
 			GINL _SizeType capacity() const{}
 			GINL GAIA::GVOID reserve(const _SizeType& size){}
@@ -27,6 +27,7 @@ namespace GAIA
 					const GAIA::GVOID* p2, 
 					const _SizeType& size2)
 			{
+				return GAIA::False;
 			}
 			GINL GAIA::BL Patch(
 					const GAIA::GVOID* pSrc, 
@@ -37,6 +38,7 @@ namespace GAIA
 					const _SizeType& resbufsize,
 					_SizeType& ressize)
 			{
+				return GAIA::False;
 			}
 			GINL __MyType& operator = (const __MyType& src){return *this;}
 		};

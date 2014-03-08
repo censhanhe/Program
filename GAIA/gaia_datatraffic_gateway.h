@@ -9,7 +9,7 @@ namespace GAIA
 		class Gateway : public GAIA::FRAMEWORK::Instance
 		{
 		private:
-			typedef GAIA::CONTAINER::Orderless<Route*, static_cast<class GAIA::DATATRAFFIC::Route*>(GNULL)> OL_ROUTE;
+			typedef GAIA::CONTAINER::Orderless<Route*> OL_ROUTE;
 		public:
 			GINL ~Gateway(){this->RemoveRouteAll();}
 			GINL virtual GAIA::BL AddRoute(Route* pRoute); // Single direction connection.

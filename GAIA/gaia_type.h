@@ -147,6 +147,9 @@ namespace GAIA
 	#		define unsigned 1
 	#	endif
 	#endif
+	
+	/* Common operation. */
+	#define sizeofarray(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 	/* Class Base. All class's parent. */
 	class Base
@@ -257,6 +260,47 @@ namespace GAIA
 		L"GCH",
 		L"GWCH",
 	};
+
+	namespace GAIA_INTERNAL_NAMESPACE
+	{
+		template<typename _DataType> GINL GAIA::N32 typenamecmp(const _DataType* p1, const _DataType* p2)
+		{
+			while(GAIA::ALWAYSTRUE)
+			{
+				if(*p1 < *p2)
+					return -1;
+				else if(*p1 > *p2)
+					return +1;
+				else
+				{
+					if(*p1 == 0)
+						return 0;
+					++p1;
+					++p2;
+				}
+			}
+			return 0;
+		}
+	}
+	
+	GINL TYPEID nametotype(const GAIA::GCH* psz)
+	{
+		for(GAIA::NM x = 0; x < sizeofarray(TYPEID_ANAME); ++x)
+		{
+			if(GAIA_INTERNAL_NAMESPACE::typenamecmp(TYPEID_ANAME[x], psz) == 0)
+				return (TYPEID)x;
+		}
+		return TYPEID_INVALID;
+	}
+	GINL TYPEID nametotype(const GAIA::GWCH* psz)
+	{
+		for(GAIA::NM x = 0; x < sizeofarray(TYPEID_WNAME); ++x)
+		{
+			if(GAIA_INTERNAL_NAMESPACE::typenamecmp(TYPEID_WNAME[x], psz) == 0)
+				return (TYPEID)x;
+		}
+		return TYPEID_INVALID;
+	}
 
 	/* Seek type. */
 	GAIA_ENUM_BEGIN(SEEK_TYPE)

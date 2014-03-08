@@ -8,8 +8,8 @@ namespace GAIA
 		class Route : public GAIA::FRAMEWORK::Instance
 		{
 		private:
-			typedef GAIA::CONTAINER::Orderless<Route*, static_cast<class GAIA::DATATRAFFIC::Route*>(GNULL)> OL_ROUTE;
-			typedef GAIA::CONTAINER::Orderless<Gateway*, static_cast<class GAIA::DATATRAFFIC::Gateway*>(GNULL)> OL_GATEWAY;
+			typedef GAIA::CONTAINER::Orderless<Route*> OL_ROUTE;
+			typedef GAIA::CONTAINER::Orderless<Gateway*> OL_GATEWAY;
 		public:
 			GINL ~Route(){this->DisconnectAll(); this->RemoveGatewayAll();}
 			GINL virtual GAIA::BL Connect(Route* pRoute); // Single direction connection.

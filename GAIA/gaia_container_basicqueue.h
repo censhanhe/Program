@@ -122,7 +122,7 @@ namespace GAIA
 					_SizeIncreaserType increaser;
 					_SizeType newsize = increaser.Increase(this->capacity());
 					_DataType* pTemp = new _DataType[newsize];
-					_SizeType uLenHead = this->capacity() - (m_pFront - m_pData) / sizeof(_DataType);
+					_SizeType uLenHead = static_cast<_SizeType>(this->capacity() - (m_pFront - m_pData) / sizeof(_DataType));
 					for(_SizeType x = 0; x < uLenHead; ++x)
 						pTemp[x] = m_pFront[x];
 					_SizeType uLenTail = this->capacity() - uLenHead;

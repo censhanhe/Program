@@ -43,7 +43,7 @@ namespace GAIA
 			template<typename _ParamType> GINL const __MyType& operator *= (const _ParamType& v){x *= v; y *= v; return *this;}
 			template<typename _ParamType> GINL const __MyType& operator /= (const _ParamType& v){x /= v; y /= v; return *this;}
 			template<typename _ParamType> GINL const __MyType& operator = (const VEC2<_ParamType>& v){x = v.x; y = v.y; return *this;}
-			template<typename _ParamType> GINL const __MyType& operator = (const _ParamType& v){x = y = v; return *this;}
+			template<typename _ParamType> GINL const __MyType& operator = (const _ParamType& v){x = y = (_DataType)v; return *this;}
 			template<typename _ParamType> GINL const __MyType& operator = (const _ParamType* pV){x = pV[0]; y = pV[1]; return *this;}
 			template<typename _ParamType> GINL GAIA::BL operator == (const VEC2<_ParamType>& v) const{if(GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamType>::_datatype*)&v) == 0) return GAIA::True; return GAIA::False;}
 			template<typename _ParamType> GINL GAIA::BL operator != (const VEC2<_ParamType>& v) const{if(this->operator == (v)) return GAIA::False; return GAIA::True;}
@@ -89,7 +89,7 @@ namespace GAIA
 		{
 		public:
 			GINL GAIA::GVOID identity(){}
-			GINL GAIA::BL isidentity() const{}
+			GINL GAIA::BL isidentity() const;
 			GINL GAIA::GVOID inverse(){}
 			GINL GAIA::GVOID transpose(){}
 		};
