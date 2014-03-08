@@ -41,13 +41,13 @@ namespace GAIA
 			{
 				*(GAIA::UM*)dst = (GAIA::UM)clean;
 				dst = ((GAIA::UM*)dst) + 1;
-				sizet = size - (_SizeType)sizeof(GAIA::UM);
+				sizet = sizet - (_SizeType)sizeof(GAIA::UM);
 			}
 			while(sizet > 0)
 			{
 				*(GAIA::U8*)dst = (GAIA::U8)clean;
 				dst = ((GAIA::U8*)dst) + 1;
-				sizet = size - (_SizeType)sizeof(GAIA::U8);
+				sizet = sizet - (_SizeType)sizeof(GAIA::U8);
 			}
 			return pRet;
 		}
