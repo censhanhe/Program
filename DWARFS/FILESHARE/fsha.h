@@ -52,7 +52,7 @@ namespace FSHA
 	typedef GAIA::CONTAINER::Vector<FSTR> FSTRLIST;
 	typedef GAIA::CONTAINER::BasicAVLTree<
 			FSTR, GAIA::N32, GAIA::N32, 
-			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> FSTRBTR; 
+			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > FSTRBTR; 
 	typedef GAIA::U32 MAP_INDEX_TYPE; // 0 means invalid id.
 	typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAX_PATHLEN> FNAMETYPE;
 	typedef GAIA::CONTAINER::Array<FNAMETYPE, MAX_DEPTH> FNAMEPARTLISTTYPE;
@@ -404,7 +404,7 @@ namespace FSHA
 			FILEID m_id;
 		};
 	public:
-		typedef GAIA::CONTAINER::BasicTrieTree<TrieNode, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __FileTreeType;
+		typedef GAIA::CONTAINER::BasicTrieTree<TrieNode, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __FileTreeType;
 	private:
 		class NameMap
 		{
@@ -643,7 +643,7 @@ namespace FSHA
 		class Group
 		{
 		public:
-			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User>> __UserRefListType;
+			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User> > __UserRefListType;
 		public:
 			GAIA_CLASS_OPERATOR_COMPARE(m_name, m_name, Group);
 			__GroupNameType m_name;
@@ -651,8 +651,8 @@ namespace FSHA
 			Right m_right;
 		};
 	private:
-		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User>> __UserSetType;
-		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<Group>> __GroupSetType;
+		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User> > __UserSetType;
+		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<Group> > __GroupSetType;
 		typedef GAIA::CONTAINER::Pool<User> __UserPoolType;
 		typedef GAIA::CONTAINER::Pool<Group> __GroupPoolType;
 	public:
@@ -1282,17 +1282,26 @@ namespace FSHA
 			STATE state;
 		};
 	private:
-		typedef GAIA::U8 MSGID;
-		static const MSGID MSG_LOGIN			= 1;	// username + password.
-		static const MSGID MSG_LOGOUT			= 2;	// username.
-		static const MSGID MSG_NOOP				= 3;	// Nothing.
-		static const MSGID MSG_R_FILE			= 10;	// filecount(u8) * (fileid(u64) + fileoffset(u32)).
-		static const MSGID MSG_R_FILECHUNK		= 11;	// fileid(u64) + chunkindex(u16).
-		static const MSGID MSG_A_FILEHEAD		= 20;	// fileid(u64) + filecrcsize(u8) + filecrc(void*) + filesize(u32).
-		static const MSGID MSG_A_FILECHUNK		= 21;	// fileid(u64) + chunkindex(u16) + subchunkindex(u8) + filedatasize(u16) + filedata(void*).
-		static const MSGID MSG_A_FILECMPL		= 40;	// fileid(u64).
-		static const MSGID MSG_A_CNN			= 80;	// NetworkAddress + username + password.
-		static const MSGID MSG_A_ERROR			= 250;	// errno(u16).
+		#define MSG_LOGIN 			1
+		// username + password.
+		#define MSG_LOGOUT			2
+		// username.
+		#define MSG_NOOP			3
+		// Nothing.
+		#define MSG_R_FILE			10
+		// filecount(u8) * (fileid(u64) + fileoffset(u32)).
+		#define MSG_R_FILECHUNK		11
+		// fileid(u64) + chunkindex(u16).
+		#define MSG_A_FILEHEAD		20
+		// fileid(u64) + filecrcsize(u8) + filecrc(void*) + filesize(u32).
+		#define MSG_A_FILECHUNK		21
+		// fileid(u64) + chunkindex(u16) + subchunkindex(u8) + filedatasize(u16) + filedata(void*).
+		#define MSG_A_FILECMPL		40
+		// fileid(u64).
+		#define MSG_A_CNN			80
+		// NetworkAddress + username + password.
+		#define MSG_A_ERROR			250
+		// errno(u16).
 
 		typedef GAIA::U16 ERRNO;
 		static const ERRNO ERRNO_BUSY			= 1;
@@ -1303,7 +1312,7 @@ namespace FSHA
 	private:
 		typedef GAIA::CONTAINER::Vector<NSender*> __SenderListType;
 		typedef GAIA::CONTAINER::Set<NLink> __LinkListType;
-		typedef GAIA::CONTAINER::BasicBuffer<GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM>> __MsgType;
+		typedef GAIA::CONTAINER::BasicBuffer<GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM> > __MsgType;
 	public:
 		FileShare(){this->init();}
 		~FileShare(){}
