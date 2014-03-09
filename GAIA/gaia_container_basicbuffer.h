@@ -34,6 +34,31 @@ namespace GAIA
 			GINL GAIA::BL seek_read(const _SizeType& size, SEEK_TYPE seektype){return this->seek_ptr(size, seektype, m_pRead);}
 			GINL _SizeType write_size() const{return static_cast<_SizeType>(m_pWrite - m_pFront);}
 			GINL _SizeType read_size() const{return static_cast<_SizeType>(m_pRead - m_pFront);}
+			GINL GAIA::GVOID write(const GAIA::GVOID* p, const _SizeType& size)
+			{
+				GAIA_AST(p != GNULL);
+				if(p == GNULL)
+					return;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return;
+				GAIA::U8* pNew = this->alloc(size);
+				GAIA::ALGORITHM::memcpy(pNew, p, size);
+			}
+			GINL GAIA::BL read(GAIA::GVOID* p, const _SizeType& size)
+			{
+				GAIA_AST(p != GNULL);
+				if(p == GNULL)
+					return GAIA::False;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GAIA::False;
+				if(size > m_pBack - m_pRead)
+					return GAIA::False;
+				GAIA::ALGORITHM::memcpy(p, m_pRead, size);
+				m_pRead += size;
+				return GAIA::True;
+			}
 			GINL GAIA::GVOID write(const __MyType& src)
 			{
 				if(src.write_size() == 0)
@@ -44,7 +69,7 @@ namespace GAIA
 			GINL GAIA::BL read(__MyType& src)
 			{
 				if(src.write_size() == 0)
-					return GAIA::True;
+					return GAIA::False;
 				if(src.write_size() > m_pBack - m_pRead)
 					return GAIA::False;
 				GAIA::ALGORITHM::memcpy(src.front_ptr(), m_pRead, src.write_size());
@@ -62,6 +87,9 @@ namespace GAIA
 			}
 			template<typename _ParamObjType> GINL GAIA::BL read(_ParamObjType* psz)
 			{
+				GAIA_AST(psz != GNULL);
+				if(psz == GNULL)
+					return GAIA::False;
 				if(m_pRead == m_pBack)
 					return GAIA::False;
 				_ParamObjType* p = psz;
@@ -90,6 +118,8 @@ namespace GAIA
 			}
 			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType& obj){this->write(obj); return *this;}
 			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType& obj){this->read(obj); return *this;}
+			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType* obj){this->write(obj); return *this;}
+			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType* obj){this->read(obj); return *this;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->destroy();

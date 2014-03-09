@@ -38,6 +38,9 @@ namespace FSHA
 	static const GAIA::U16 DEFAULT_SEND_THREAD_COUNT = 4;
 	static const GAIA::U32 CHUNKSIZE = 100 * 1024;
 	static const GAIA::UM THREAD_STACK_SIZE = 1024 * 128;
+	static const GAIA::NM USERNAMELEN = 16;
+	static const GAIA::NM PASSWORDLEN = 16;
+	static const GAIA::NM GROUPNAMELEN = 16;
 	static const GAIA::GCH FILE_USERGROUP[] = "usergroup";
 	static const GAIA::U32 FILE_USERGROUP_FLAG = 'FSUG';
 	static const GAIA::U32 FILE_USERGROUP_VERSION = 0;
@@ -611,9 +614,9 @@ namespace FSHA
 	class __DWARFS_FILESHARE_API UserGroup
 	{
 	public:
-		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, 16> __UserNameType;
-		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, 16> __PasswordType;
-		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, 16> __GroupNameType;
+		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, USERNAMELEN> __UserNameType;
+		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, PASSWORDLEN> __PasswordType;
+		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, GROUPNAMELEN> __GroupNameType;
 		typedef GAIA::CONTAINER::Vector<__UserNameType> __UserNameListType;
 		typedef GAIA::CONTAINER::Vector<__GroupNameType> __GroupNameListType;
 	private:
@@ -1276,12 +1279,18 @@ namespace FSHA
 		public:
 			NLink()
 			{
+				na.Invalid();
 				state = STATE_INVALID;
+				bBeLink = GAIA::False;
 			}
 		public:
+			GAIA_CLASS_OPERATOR_COMPARE(na, na, NLink);
+			GAIA::NETWORK::NetworkAddress na;
 			STATE state;
+			GAIA::U8 bBeLink : 1;
 		};
 	private:
+		typedef GAIA::U8 MSGIDTYPE;
 		#define MSG_LOGIN 			1
 		// username + password.
 		#define MSG_LOGOUT			2
@@ -1399,10 +1408,6 @@ namespace FSHA
 			{
 			}
 			m_links.clear();
-			for(__LinkListType::it it = m_linkeds.front_it(); !it.empty(); ++it)
-			{
-			}
-			m_linkeds.clear();
 			m_bStartuped = GAIA::False;
 			return GAIA::True;
 		}
@@ -1826,6 +1831,63 @@ namespace FSHA
 		}
 		GINL GAIA::BL OnReceive(NHandle& s, const GAIA::U8* p, GAIA::U32 size)
 		{
+			__MsgType msg;
+			msg.write(p, size);
+			GAIA::NETWORK::NetworkAddress na;
+			MSGIDTYPE msgid;
+			msg >> na;
+			msg >> msgid;
+			switch(msgid)
+			{
+			case MSG_LOGIN:
+				{
+					UserGroup::__UserNameType uname;
+					UserGroup::__PasswordType password;
+					msg >> uname.front_ptr();
+					msg >> password.front_ptr();
+				}
+				break;
+			case MSG_LOGOUT:
+				{
+					UserGroup::__UserNameType uname;
+					msg >> uname.front_ptr();
+				}
+				break;
+			case MSG_NOOP:
+				{
+				}
+				break;
+			case MSG_R_FILE:
+				{
+				}
+				break;
+			case MSG_R_FILECHUNK:
+				{
+				}
+				break;
+			case MSG_A_FILEHEAD:
+				{
+				}
+				break;
+			case MSG_A_FILECHUNK:
+				{
+				}
+				break;
+			case MSG_A_FILECMPL:
+				{
+				}
+				break;
+			case MSG_A_CNN:
+				{
+				}
+				break;
+			case MSG_A_ERROR:
+				{
+				}
+				break;
+			default:
+				return GAIA::False;
+			}
 			return GAIA::True;
 		}
 		GINL GAIA::BL Login(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName, const GAIA::GCH* pszPassword)
@@ -1839,6 +1901,10 @@ namespace FSHA
 		}
 		GINL GAIA::BL Logout(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName)
 		{
+			__MsgType msg;
+			msg << na;
+			msg << MSG_LOGOUT;
+			msg << pszUserName;
 			return GAIA::True;
 		}
 		GINL GAIA::BL Request(const GAIA::NETWORK::NetworkAddress& na, GAIA::CONTAINER::Vector<FILEID>& listID)
@@ -1863,7 +1929,6 @@ namespace FSHA
 		FSTR m_readroot;
 		FSTR m_writeroot;
 		__LinkListType m_links; GAIA::SYNC::Lock m_lr_links;
-		__LinkListType m_linkeds; GAIA::SYNC::Lock m_lr_linkeds;
 	};
 };
 
