@@ -33,7 +33,7 @@ namespace GAIA
 				GAIA::GCH* p = psz;
 				for(GAIA::N32 x = 0; x < 4; ++x)
 				{
-					p = GAIA::ALGORITHM::int2str(u[x], p);
+					p = GAIA::ALGORITHM::int2str((GAIA::NM)u[x], p);
 					*(p - 1) = '.';
 				}
 				*(p - 1) = 0;
@@ -71,7 +71,7 @@ namespace GAIA
 				GAIA::GCH* p = GAIA::ALGORITHM::strend(psz);
 				*p = ':';
 				++p;
-				p = GAIA::ALGORITHM::int2str(uPort, p);
+				p = GAIA::ALGORITHM::int2str((GAIA::NM)uPort, p);
 				*(p - 1) = 0;
 			}
 			GINL NetworkAddress& operator = (const NetworkAddress& src){ip = src.ip; uPort = src.uPort; return *this;}
