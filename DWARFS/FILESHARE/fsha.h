@@ -1383,14 +1383,14 @@ namespace FSHA
 		#define MSG_A_ERROR			((MSGIDTYPE)250)
 		// errno(u16).
 		typedef GAIA::U16 ERRNO;
-		static const ERRNO ERRNO_NOERROR		= 0;
-		static const ERRNO ERRNO_BUSY			= 1;
-		static const ERRNO ERRNO_SHUTDOWN		= 2;
-		static const ERRNO ERRNO_USERNAME		= 3;
-		static const ERRNO ERRNO_PASSWORD		= 4;
-		static const ERRNO ERRNO_INVALIDPARAM	= 5;
-		static const ERRNO ERRNO_REPEATOP		= 6;
-		static const ERRNO ERRNO_NOTREADY		= 7;
+		#define ERRNO_NOERROR		((ERRNO)0)
+		#define ERRNO_BUSY			((ERRNO)1)
+		#define ERRNO_SHUTDOWN		((ERRNO)2)
+		#define ERRNO_USERNAME		((ERRNO)3)
+		#define ERRNO_PASSWORD		((ERRNO)4)
+		#define ERRNO_INVALIDPARAM	((ERRNO)5)
+		#define ERRNO_REPEATOP		((ERRNO)6)
+		#define ERRNO_NOTREADY		((ERRNO)7)
 		const GAIA::GCH* ErrorString(ERRNO en)
 		{
 			static const GAIA::GCH* ERRNO_STRING[] = 
