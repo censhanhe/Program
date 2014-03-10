@@ -106,25 +106,25 @@
 #define GAIA_CLASS_OPERATOR_COMPARE2(self, another, self2, another2, anothertype) \
 			GINL GAIA::BL operator == (const anothertype& src) const\
 			{\
-				if(self == another && self2 == another2)\
+				if(self == src.another && self2 == src.another2)\
 					return GAIA::True;\
 				return GAIA::False;\
 			}\
 			GINL GAIA::BL operator != (const anothertype& src) const\
 			{\
-				if(self != another || self2 != another2)\
+				if(self != src.another || self2 != src.another2)\
 					return GAIA::True;\
 				return GAIA::False;\
 			}\
 			GINL GAIA::BL operator >= (const anothertype& src) const\
 			{\
-				if(self > another)\
+				if(self > src.another)\
 					return GAIA::True;\
-				else if(self < another)\
+				else if(self < src.another)\
 					return GAIA::False;\
 				else\
 				{\
-					if(self2 >= another2)\
+					if(self2 >= src.another2)\
 						return GAIA::True;\
 					else\
 						return GAIA::False;\
@@ -132,13 +132,13 @@
 			}\
 			GINL GAIA::BL operator <= (const anothertype& src) const\
 			{\
-				if(self < another)\
+				if(self < src.another)\
 					return GAIA::True;\
-				else if(self > another)\
+				else if(self > src.another)\
 					return GAIA::False;\
 				else\
 				{\
-					if(self2 <= another2)\
+					if(self2 <= src.another2)\
 						return GAIA::True;\
 					else\
 						return GAIA::False;\

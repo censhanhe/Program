@@ -211,6 +211,7 @@ namespace GAIA
 							nSended = static_cast<GAIA::N32>(sendto(
 								m_h, (const GAIA::GCH*)(p + sizeof(NetworkAddress)), uSize - sizeof(NetworkAddress), 0, 
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
+							nSended += sizeof(NetworkAddress);
 						#endif
 						}
 						if(nSended == GINVALID)
