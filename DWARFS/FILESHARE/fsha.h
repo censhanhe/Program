@@ -1277,7 +1277,7 @@ namespace FSHA
 				{
 					if(m_bExitCmd)
 						break;
-					GAIA::BL bExecuted = GAIA::False;
+					GAIA::BL bExecuted = m_pFS->OnExecute();
 					if(!bExecuted)
 						GAIA::SYNC::sleep(1);
 				}
@@ -1300,7 +1300,7 @@ namespace FSHA
 				{
 					if(m_bExitCmd)
 						break;
-					GAIA::BL bExecuted = GAIA::False;
+					GAIA::BL bExecuted = m_pFS->OnHeartTick();
 					if(!bExecuted)
 						GAIA::SYNC::sleep(1);
 				}
@@ -1353,6 +1353,24 @@ namespace FSHA
 			GAIA_CLASS_OPERATOR_COMPARE2(nlink.uCmplFileCnt, nlink.uCmplFileCnt, nlink, nlink, NLinkPri);
 		public:
 			NLink nlink;
+		};
+		/* File cache. */
+		class __DWARFS_FILESHARE_API FileCache
+		{
+		public:
+			FSTR strFileName;
+			FileAccess* pFA;
+		};
+		/* Request file task. */
+		class __DWARFS_FILESHARE_API RequestTask
+		{
+		public:
+			GAIA::NETWORK::NetworkAddress na;
+		};
+		/* Send file task. */
+		class __DWARFS_FILESHARE_API SendTask
+		{
+		public:
 		};
 	private:
 		typedef GAIA::U8 MSGIDTYPE;
@@ -2027,6 +2045,14 @@ namespace FSHA
 			m_pNSender = GNULL;
 			m_pNListener = GNULL;
 			m_state = NLink::STATE_DISCONNECT;
+		}
+		GINL GAIA::BL OnExecute()
+		{
+			return GAIA::False;
+		}
+		GINL GAIA::BL OnHeartTick()
+		{
+			return GAIA::True;
 		}
 		GINL GAIA::BL OnReceive(NHandle& s, const GAIA::U8* p, GAIA::U32 size)
 		{
