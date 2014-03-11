@@ -39,7 +39,7 @@ namespace GAIA
 			GINL __MyType& operator -= (const _SizeType& index){this->reset(index); return *this;}
 			GINL __MyType& operator -= (const __MyType& src){for(_SizeType x = 0; x < _Size; ++x) m_bits[x] &= ~src.m_bits[x]; return *this;}
 			GINL GAIA::BL operator == (const _SizeType& index){return this->exist(index);}
-			GINL GAIA::BL operator == (const __MyType& src){return GAIA::ALGORITHM::memcmp(m_bits, src.m_bits, _Size) == 0}
+			GINL GAIA::BL operator == (const __MyType& src){return GAIA::ALGORITHM::memcmp(m_bits, src.m_bits, _Size) == 0;}
 			GINL GAIA::BL operator != (const _SizeType& index){return !(this->operator == (index));}
 			GINL GAIA::BL operator != (const __MyType& src){return !(this->operator == (src));}
 			GINL __MyType& operator ~ (){for(_SizeType x = 0; x < _Size; ++x) m_bits[x] ^= (GAIA::U8)-1; return *this;}
