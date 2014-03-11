@@ -1166,6 +1166,7 @@ namespace FSHA
 			virtual GAIA::NM Write(const GAIA::GVOID* p, GAIA::NM nSize) = 0;
 			virtual GAIA::BL Seek(GAIA::SEEK_TYPE st, GAIA::NM offset) = 0;
 			virtual GAIA::NM Tell() const = 0;
+			virtual GAIA::BL Flush() = 0;
 		};
 		/* Default file access. */
 		class __DWARFS_FILESHARE_API DefaultFileAccess : public FileAccess
@@ -1184,6 +1185,7 @@ namespace FSHA
 			virtual GAIA::NM Write(const GAIA::GVOID* p, GAIA::NM nSize){return m_file.Write(p, nSize);}
 			virtual GAIA::BL Seek(GAIA::SEEK_TYPE st, GAIA::NM offset){return m_file.Seek(st, offset);}
 			virtual GAIA::NM Tell() const{return m_file.Tell();}
+			virtual GAIA::BL Flush(){return m_file.Flush();}
 		private:
 			GAIA::FILESYSTEM::File m_file;
 		};

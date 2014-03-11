@@ -123,6 +123,14 @@ namespace GAIA
 			}
 			return GAIA::False;
 		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Flush()
+		{
+			if(m_pFile == GNULL)
+				return GAIA::False;
+			if(fflush((FILE*)m_pFile) == 0)
+				return GAIA::True;
+			return GAIA::False;
+		}
 	};
 };
 
