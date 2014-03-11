@@ -30,7 +30,7 @@ namespace GAIA
 			public:
 				GINL it(){m_pNode = GNULL;}
 				GINL virtual ~it(){}
-				GINL virtual GAIA::BL empty() const{if(m_pNode == GNULL) return GAIA::True; return GAIA::False;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual _DataType& operator * (){return m_pNode->t;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (){m_pNode = m_pNode->pNext; return *this;}
@@ -65,7 +65,7 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const it& src) const{if(m_pNode == src.m_pNode) return GAIA::True; return GAIA::False;}
+				GINL GAIA::BL operator == (const it& src) const{return m_pNode == src.m_pNode;}
 				GINL GAIA::BL operator != (const it& src) const{return !(this->operator == (src));}
 				GINL it& operator = (const it& src){m_pNode = src.m_pNode; return *this;}
 			private:
@@ -81,7 +81,7 @@ namespace GAIA
 			public:
 				GINL const_it(){m_pNode = GNULL;}
 				GINL virtual ~const_it(){}
-				GINL virtual GAIA::BL empty() const{if(m_pNode == GNULL) return GAIA::True; return GAIA::False;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){m_pNode = m_pNode->pNext; return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){m_pNode = m_pNode->pPrev; return *this;}
@@ -109,7 +109,7 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const const_it& src) const{if(m_pNode == src.m_pNode) return GAIA::True; return GAIA::False;}
+				GINL GAIA::BL operator == (const const_it& src) const{return m_pNode == src.m_pNode;}
 				GINL GAIA::BL operator != (const const_it& src) const{return !(this->operator == (src));}
 				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; return *this;}
 			private:

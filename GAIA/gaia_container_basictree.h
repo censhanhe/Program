@@ -324,7 +324,7 @@ namespace GAIA
 					parent.m_links.clear();
 				return GAIA::True;
 			}
-			GINL GAIA::BL islinked(const Node& parent, const Node& child) const{if(child.m_pParent == &parent) return GAIA::True; return GAIA::False;}
+			GINL GAIA::BL islinked(const Node& parent, const Node& child) const{return child.m_pParent == &parent;}
 			GINL Node* parent(const Node& n) const{return n.m_pParent;}
 			GINL _SizeType getlinksize(const Node& n) const{return n.m_links.size();}
 			GINL Node* getlink(const Node& n, const _SizeType& index) const{return n.m_links[index];}

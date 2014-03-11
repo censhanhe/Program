@@ -18,7 +18,7 @@ namespace GAIA
 			GINL virtual ~File(){if(this->IsOpen()) this->Close();}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Open(const GAIA::GCH* filekey, const GAIA::UM& opentype);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Close();
-			GINL GAIA::BL IsOpen() const{if(m_pFile == GNULL) return GAIA::False; return GAIA::True;}
+			GINL GAIA::BL IsOpen() const{return m_pFile != GNULL;}
 			GINL GAIA::N64 Size() const{return m_size;}
 			template<typename _ObjType> GINL GAIA::BL Read(_ObjType& obj)
 			{

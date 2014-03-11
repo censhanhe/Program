@@ -34,7 +34,7 @@ namespace GAIA
 			GINL BasicString(const GAIA::BL& t){this->init(); this->operator = (t);}
 			GINL BasicString(const _DataType* p1, const _SizeType& size1, const _DataType* p2, const _SizeType& size2){this->init(); this->combin(p1, size1, p2, size2);}
 			GINL ~BasicString(){this->destroy();}
-			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; if(this->front_ptr()[0] == 0) return GAIA::True; return GAIA::False;}
+			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return this->front_ptr()[0] == 0;}
 			GINL _SizeType size() const{if(m_size == 0) return 0; return m_size - 1;}
 			GINL _SizeType capacity() const{if(m_capacity == 0) return 0; return m_capacity - 1;}
 			GINL GAIA::GVOID resize(const _SizeType& size)
