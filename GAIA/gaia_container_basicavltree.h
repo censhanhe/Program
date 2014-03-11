@@ -37,7 +37,7 @@ namespace GAIA
 			public:
 				GINL it(){m_pNode = GNULL; m_pAVLTree = GNULL;}
 				GINL virtual ~it(){}
-				GINL virtual GAIA::BL empty() const{if(m_pNode == GNULL) return GAIA::True; return GAIA::False;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual _DataType& operator * (){return m_pNode->t;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ()
@@ -159,7 +159,7 @@ namespace GAIA
 			public:
 				GINL const_it(){m_pNode = GNULL; m_pAVLTree = GNULL;}
 				GINL virtual ~const_it(){}
-				GINL virtual GAIA::BL empty() const{if(m_pNode == GNULL) return GAIA::True; return GAIA::False;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ()
 				{

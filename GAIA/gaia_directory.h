@@ -16,10 +16,11 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID GetBinaryDirectory(GAIA::CONTAINER::AString& result) const;
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Create(const GAIA::GCH* pszName, GAIA::BL bOverlapped);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Remove(const GAIA::GCH* pszName, GAIA::BL bOverlapped);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Exist(const GAIA::GCH* pszName) const;
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL RemoveFile(const GAIA::GCH* pszName);
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Copy(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst);
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Move(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst);
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Collect(const GAIA::GCH* pszName, const GAIA::GCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL CopyFile(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL MoveFile(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL CollectFile(const GAIA::GCH* pszName, const GAIA::GCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult);
 		private:
 			GINL Directory& operator = (const Directory& src){return *this;}
 		};

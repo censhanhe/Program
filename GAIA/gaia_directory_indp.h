@@ -55,8 +55,11 @@ namespace GAIA
 					GAIA::GCH sz[MAX_PATH];
 					GAIA::ALGORITHM::memcpy(sz, pszName, (p - pszName + 1) * sizeof(GAIA::GCH));
 					sz[p - pszName + 1] = 0;
-					if(!::CreateDirectoryA(sz, GNULL))
-						return GAIA::False;
+					if(!this->Exist(sz))
+					{
+						if(!::CreateDirectoryA(sz, GNULL))
+							return GAIA::False;
+					}
 					if(*p == 0)
 						break;
 					else
@@ -126,6 +129,29 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Exist(const GAIA::GCH* pszName) const
+		{
+			if(GAIA::ALGORITHM::stremp(pszName))
+				return GAIA::False;
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			DWORD dwFileAttribute = ::GetFileAttributesA(pszName);
+			if(dwFileAttribute == INVALID_FILE_ATTRIBUTES)
+				return GAIA::False;
+			if(dwFileAttribute & FILE_ATTRIBUTE_DIRECTORY)
+				return GAIA::True;
+			return GAIA::False;
+		#else
+			struct stat s;
+			if(lstat(pszName, &s) >= 0)
+			{
+				if(S_ISDIR(s.st_mode))
+					return GAIA::True;
+				return GAIA::False;
+			}
+			return GAIA::False;
+		#endif
+			return GAIA::True;
+		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::RemoveFile(const GAIA::GCH* pszName)
 		{
 			if(GAIA::ALGORITHM::stremp(pszName))
@@ -138,7 +164,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Copy(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::CopyFile(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst)
 		{
 			if(GAIA::ALGORITHM::stremp(pszSrc))
 				return GAIA::False;
@@ -152,7 +178,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Move(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::MoveFile(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst)
 		{
 			if(GAIA::ALGORITHM::stremp(pszSrc))
 				return GAIA::False;
@@ -166,7 +192,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Collect(const GAIA::GCH* pszName, const GAIA::GCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::CollectFile(const GAIA::GCH* pszName, const GAIA::GCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszName));
 			if(GAIA::ALGORITHM::stremp(pszName))
@@ -198,7 +224,7 @@ namespace GAIA
 					GAIA::GCH szNext[MAX_PATH];
 					GAIA::ALGORITHM::strcpy(szNext, szFind);
 					GAIA::ALGORITHM::strcat(szNext, fdata.cFileName);
-					this->Collect(szNext, pszFilter, bOverlapped, treeResult);
+					this->CollectFile(szNext, pszFilter, bOverlapped, treeResult);
 				}
 				else
 				{
@@ -278,7 +304,7 @@ namespace GAIA
 						if(S_ISDIR(s.st_mode))
 						{
 							if(bOverlapped)
-								this->Collect(szNext, pszFilter, bOverlapped, treeResult);
+								this->CollectFile(szNext, pszFilter, bOverlapped, treeResult);
 						}
 						else
 						{

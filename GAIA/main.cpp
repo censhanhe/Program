@@ -586,6 +586,9 @@ GAIA::N32 main()
 			bs.pop();
 			GAIA::U32 uSize = bs.size();
 			uSize = 0;
+			bs.push(10);
+			bs.push(20);
+			GAIA_AST(bs.size() == 2);
 			__StackType::it fit = bs.front_it();
 			__StackType::const_it cfit = bs.const_front_it();
 			__StackType::it bit = bs.back_it();
@@ -594,10 +597,10 @@ GAIA::N32 main()
 			--fit;
 			++cfit;
 			--cfit;
-			++bit;
 			--bit;
-			++cbit;
+			++bit;
 			--cbit;
+			++cbit;
 		}
 		TEST_END;
 	}
@@ -728,8 +731,9 @@ GAIA::N32 main()
 			for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
 				que.pop();
 			que.push(10);
+			que.push(20);
 			que.front();
-			GAIA_AST(que.size() == 1);
+			GAIA_AST(que.size() == 2);
 			__QueueType newque = que;
 
 			__QueueType::it fit = newque.front_it();
@@ -740,10 +744,28 @@ GAIA::N32 main()
 			--fit;
 			++cfit;
 			--cfit;
-			++bit;
 			--bit;
-			++cbit;
+			++bit;
 			--cbit;
+			++cbit;
+
+			{
+				__QueueType qt;
+				for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				{
+					qt.push(123);
+					if(x % 2 == 0)
+					{
+						GAIA_AST(qt.front() == 123);
+						qt.pop();
+					}
+				}
+				while(!qt.empty())
+				{
+					GAIA_AST(qt.front() == 123);
+					qt.pop();
+				}
+			}
 		}
 		TEST_END;
 	}

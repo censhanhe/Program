@@ -103,24 +103,24 @@
 			GINL GAIA::BL operator > (const anothertype& src) const{return (self) > (src.another);}\
 			GINL GAIA::BL operator < (const anothertype& src) const{return (self) < (src.another);}
 
-#define GAIA_CLASS_OPERATOR_COMPARE2(self, another, self2, another2, anothertype) \
+#define GAIA_CLASS_OPERATOR_COMPARE2(self1, another1, self2, another2, anothertype) \
 			GINL GAIA::BL operator == (const anothertype& src) const\
 			{\
-				if(self == src.another && self2 == src.another2)\
+				if(self1 == src.another1 && self2 == src.another2)\
 					return GAIA::True;\
 				return GAIA::False;\
 			}\
 			GINL GAIA::BL operator != (const anothertype& src) const\
 			{\
-				if(self != src.another || self2 != src.another2)\
+				if(self1 != src.another1 || self2 != src.another2)\
 					return GAIA::True;\
 				return GAIA::False;\
 			}\
 			GINL GAIA::BL operator >= (const anothertype& src) const\
 			{\
-				if(self > src.another)\
+				if(self1 > src.another1)\
 					return GAIA::True;\
-				else if(self < src.another)\
+				else if(self1 < src.another1)\
 					return GAIA::False;\
 				else\
 				{\
@@ -132,9 +132,9 @@
 			}\
 			GINL GAIA::BL operator <= (const anothertype& src) const\
 			{\
-				if(self < src.another)\
+				if(self1 < src.another1)\
 					return GAIA::True;\
-				else if(self > src.another)\
+				else if(self1 > src.another1)\
 					return GAIA::False;\
 				else\
 				{\
@@ -142,6 +142,64 @@
 						return GAIA::True;\
 					else\
 						return GAIA::False;\
+				}\
+			}\
+			GINL GAIA::BL operator > (const anothertype& src) const{return !(*this <= src);}\
+			GINL GAIA::BL operator < (const anothertype& src) const{return !(*this >= src);}
+
+#define GAIA_CLASS_OPERATOR_COMPARE3(self1, another1, self2, another2, self3, another3, anothertype) \
+			GINL GAIA::BL operator == (const anothertype& src) const\
+			{\
+				if(self1 == src.another1 && self2 == src.another2 && self3 == another3)\
+					return GAIA::True;\
+				return GAIA::False;\
+			}\
+			GINL GAIA::BL operator != (const anothertype& src) const\
+			{\
+				if(self1 != src.another1 || self2 != src.another2 || self3 != another3)\
+					return GAIA::True;\
+				return GAIA::False;\
+			}\
+			GINL GAIA::BL operator >= (const anothertype& src) const\
+			{\
+				if(self1 > src.another1)\
+					return GAIA::True;\
+				else if(self1 < src.another1)\
+					return GAIA::False;\
+				else\
+				{\
+					if(self2 > src.another2)\
+						return GAIA::True;\
+					else if(self2 < src.another2)\
+						return GAIA::False;\
+					else\
+					{\
+						if(self3 >= another3)\
+							return GAIA::True;\
+						else\
+							return GAIA::False;\
+					}\
+				}\
+			}\
+			GINL GAIA::BL operator <= (const anothertype& src) const\
+			{\
+				if(self1 < src.another1)\
+					return GAIA::True;\
+				else if(self1 > src.another1)\
+					return GAIA::False;\
+				else\
+				{\
+					if(self2 < src.another2)\
+						return GAIA::True;\
+					else if(self2 > src.another2)\
+						return GAIA::False;\
+					else\
+					{\
+						if(self3 <= another3)\
+							return GAIA::True;\
+						else\
+							return GAIA::False;\
+					}\
 				}\
 			}\
 			GINL GAIA::BL operator > (const anothertype& src) const{return !(*this <= src);}\
