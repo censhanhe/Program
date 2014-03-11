@@ -35,7 +35,7 @@ namespace GAIA
 			private:
 				friend class BasicAVLTree;
 			public:
-				GINL it(){m_pNode = GNULL; m_pAVLTree = GNULL;}
+				GINL it(){m_pNode = GNULL; m_pContainer = GNULL;}
 				GINL virtual ~it(){}
 				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual _DataType& operator * (){return m_pNode->t;}
@@ -90,14 +90,14 @@ namespace GAIA
 				GINL GAIA::BL operator <= (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const it& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const it& src) const{return !(*this >= src);}
-				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pAVLTree = src.m_pAVLTree; return *this;}
+				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
 				GINL Node* select_next(Node* pNode)
 				{
 					if(pNode->pNext != GNULL)
-						pNode = m_pAVLTree->front_node(pNode->pNext);
+						pNode = m_pContainer->front_node(pNode->pNext);
 					else
 					{
 						while(GAIA::ALWAYSTRUE)
@@ -124,7 +124,7 @@ namespace GAIA
 				GINL Node* select_prev(Node* pNode)
 				{
 					if(pNode->pPrev != GNULL)
-						pNode = m_pAVLTree->back_node(pNode->pPrev);
+						pNode = m_pContainer->back_node(pNode->pPrev);
 					else
 					{
 						while(GAIA::ALWAYSTRUE)
@@ -150,14 +150,14 @@ namespace GAIA
 				}
 			private:
 				Node* m_pNode;
-				__MyType* m_pAVLTree;
+				__MyType* m_pContainer;
 			};
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			private:
 				friend class BasicAVLTree;
 			public:
-				GINL const_it(){m_pNode = GNULL; m_pAVLTree = GNULL;}
+				GINL const_it(){m_pNode = GNULL; m_pContainer = GNULL;}
 				GINL virtual ~const_it(){}
 				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
@@ -205,14 +205,14 @@ namespace GAIA
 				GINL GAIA::BL operator <= (const const_it& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const const_it& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const const_it& src) const{return !(*this >= src);}
-				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pAVLTree = src.m_pAVLTree; return *this;}
+				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){--(*this); return *this;}
 				GINL const Node* select_next(const Node* pNode)
 				{
 					if(pNode->pNext != GNULL)
-						pNode = m_pAVLTree->front_node(pNode->pNext);
+						pNode = m_pContainer->front_node(pNode->pNext);
 					else
 					{
 						while(GAIA::ALWAYSTRUE)
@@ -239,7 +239,7 @@ namespace GAIA
 				GINL const Node* select_prev(const Node* pNode)
 				{
 					if(pNode->pPrev != GNULL)
-						pNode = m_pAVLTree->back_node(pNode->pPrev);
+						pNode = m_pContainer->back_node(pNode->pPrev);
 					else
 					{
 						while(GAIA::ALWAYSTRUE)
@@ -265,7 +265,7 @@ namespace GAIA
 				}
 			private:
 				const Node* m_pNode;
-				const __MyType* m_pAVLTree;
+				const __MyType* m_pContainer;
 			};
 		public:
 			GINL BasicAVLTree(){m_pRoot = GNULL;}
@@ -322,12 +322,12 @@ namespace GAIA
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
-					iter.m_pAVLTree = GNULL;
+					iter.m_pContainer = GNULL;
 					return iter;
 				}
 				iter.m_pNode = this->lower_bound_node(m_pRoot, t);
 				if(iter.m_pNode != GNULL)
-					iter.m_pAVLTree = this;
+					iter.m_pContainer = this;
 				return iter;
 			}
 			GINL it upper_bound(const _DataType& t)
@@ -336,12 +336,12 @@ namespace GAIA
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
-					iter.m_pAVLTree = GNULL;
+					iter.m_pContainer = GNULL;
 					return iter;
 				}
 				iter.m_pNode = this->upper_bound_node(m_pRoot, t);
 				if(iter.m_pNode != GNULL)
-					iter.m_pAVLTree = this;
+					iter.m_pContainer = this;
 				return iter;
 			}
 			GINL const_it lower_bound(const _DataType& t) const
@@ -350,12 +350,12 @@ namespace GAIA
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
-					iter.m_pAVLTree = GNULL;
+					iter.m_pContainer = GNULL;
 					return iter;
 				}
 				iter.m_pNode = this->lower_bound_node(m_pRoot, t);
 				if(iter.m_pNode != GNULL)
-					iter.m_pAVLTree = this;
+					iter.m_pContainer = this;
 				return iter;
 			}
 			GINL const_it upper_bound(const _DataType& t) const
@@ -364,12 +364,12 @@ namespace GAIA
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
-					iter.m_pAVLTree = GNULL;
+					iter.m_pContainer = GNULL;
 					return iter;
 				}
 				iter.m_pNode = this->upper_bound_node(m_pRoot, t);
 				if(iter.m_pNode != GNULL)
-					iter.m_pAVLTree = this;
+					iter.m_pContainer = this;
 				return iter;
 			}
 			GINL const _DataType* minimize() const{if(m_pRoot == GNULL) return GNULL; return &this->findmin(m_pRoot);}
@@ -382,12 +382,12 @@ namespace GAIA
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
-					iter.m_pAVLTree = GNULL;
+					iter.m_pContainer = GNULL;
 				}
 				else
 				{
 					iter.m_pNode = this->front_node(m_pRoot);
-					iter.m_pAVLTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}
@@ -397,12 +397,12 @@ namespace GAIA
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
-					iter.m_pAVLTree = GNULL;
+					iter.m_pContainer = GNULL;
 				}
 				else
 				{
 					iter.m_pNode = this->back_node(m_pRoot);
-					iter.m_pAVLTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}
@@ -412,12 +412,12 @@ namespace GAIA
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
-					iter.m_pAVLTree = GNULL;
+					iter.m_pContainer = GNULL;
 				}
 				else
 				{
 					iter.m_pNode = this->front_node(m_pRoot);
-					iter.m_pAVLTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}
@@ -427,12 +427,12 @@ namespace GAIA
 				if(m_pRoot == GNULL)
 				{
 					iter.m_pNode = GNULL;
-					iter.m_pAVLTree = GNULL;
+					iter.m_pContainer = GNULL;
 				}
 				else
 				{
 					iter.m_pNode = this->back_node(m_pRoot);
-					iter.m_pAVLTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}

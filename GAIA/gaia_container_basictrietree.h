@@ -109,7 +109,7 @@ namespace GAIA
 						--it;
 						if(!it.empty())
 						{
-							m_pNode = m_pTrieTree->back_node(*it);
+							m_pNode = m_pContainer->back_node(*it);
 							return *this;
 						}
 						else
@@ -126,15 +126,15 @@ namespace GAIA
 						return *this;
 					}
 				}
-				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pTrieTree = src.m_pTrieTree; return *this;}
+				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pTrieTree = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pContainer = GNULL;}
 			private:
 				Node* m_pNode;
-				__MyType* m_pTrieTree;
+				__MyType* m_pContainer;
 			};
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
@@ -189,7 +189,7 @@ namespace GAIA
 						--it;
 						if(!it.empty())
 						{
-							m_pNode = m_pTrieTree->back_node(*it);
+							m_pNode = m_pContainer->back_node(*it);
 							return *this;
 						}
 						else
@@ -206,15 +206,15 @@ namespace GAIA
 						return *this;
 					}
 				}
-				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pTrieTree = src.m_pTrieTree; return *this;}
+				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pTrieTree = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pContainer = GNULL;}
 			private:
 				const Node* m_pNode;
-				const __MyType* m_pTrieTree;
+				const __MyType* m_pContainer;
 			};
 		public:
 			GINL BasicTrieTree(){this->init();}
@@ -288,12 +288,12 @@ namespace GAIA
 			GINL const Node& root() const{return m_root;}
 			GINL GAIA::BL root(const it& iter) const{return iter.m_pNode == &m_root;}
 			GINL GAIA::BL root(const const_it& iter) const{return iter.m_pNode == &m_root;}
-			GINL it root_it(){it iter; iter.m_pNode = &m_root; iter.m_pTrieTree = this; return iter;}
-			GINL const_it root_it() const{const_it iter; iter.m_pNode = &m_root; iter.m_pTrieTree = this; return iter;}
+			GINL it root_it(){it iter; iter.m_pNode = &m_root; iter.m_pContainer = this; return iter;}
+			GINL const_it root_it() const{const_it iter; iter.m_pNode = &m_root; iter.m_pContainer = this; return iter;}
 			GINL const Node* parent(const Node& n) const{return n.m_pParent;}
 			GINL Node* parent(Node& n){return n.m_pParent;}
-			GINL it parent_it(const it& iter){it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; ret.m_pTrieTree = this; return ret;}
-			GINL const_it parent_it(const const_it& iter) const{const_it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; ret.m_pTrieTree = this; return ret;}
+			GINL it parent_it(const it& iter){it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; ret.m_pContainer = this; return ret;}
+			GINL const_it parent_it(const const_it& iter) const{const_it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; ret.m_pContainer = this; return ret;}
 			GINL typename __NodeTreeType::_sizetype childsize(Node& n) const{return n.m_links.size();}
 			GINL typename __NodeTreeType::const_it child_const_front_it(const Node& n) const{return n.m_links.const_front_it();}
 			GINL typename __NodeTreeType::it child_front_it(Node& n){return n.m_links.front_it();}
@@ -303,8 +303,8 @@ namespace GAIA
 			GINL const Node* tonode(const const_it& it) const{return it.m_pNode;}
 			GINL Node* tonode(typename __NodeTreeType::it& it){return *it;}
 			GINL const Node* tonode(const typename __NodeTreeType::const_it& it) const{return *it;}
-			GINL it toit(Node& n){it iter; iter.m_pNode = &n; iter.m_pTrieTree = this; return iter;}
-			GINL const_it toit(const Node& n) const{const_it iter; iter.m_pNode = &n; iter.m_pTrieTree = this; return iter;}
+			GINL it toit(Node& n){it iter; iter.m_pNode = &n; iter.m_pContainer = this; return iter;}
+			GINL const_it toit(const Node& n) const{const_it iter; iter.m_pNode = &n; iter.m_pContainer = this; return iter;}
 			GINL Node* find(const Node* pNode, const _DataType* p, const _SizeType& size) const
 			{
 				GAIA_AST(p != GNULL);
@@ -328,7 +328,7 @@ namespace GAIA
 							break;
 						typename __NodeTreeType::it itsubb = pNode->m_links.back_it();
 						it itertemp;
-						itertemp.m_pTrieTree = this;
+						itertemp.m_pContainer = this;
 						if(itsubb.empty())
 							itertemp.m_pNode = pNode;
 						else
@@ -348,7 +348,7 @@ namespace GAIA
 				if(pNode != GNULL && pNode != &m_root)
 				{
 					iter.m_pNode = pNode;
-					iter.m_pTrieTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}
@@ -396,7 +396,7 @@ namespace GAIA
 							break;
 						typename __NodeTreeType::const_it itsubb = pNode->m_links.const_back_it();
 						const_it itertemp;
-						itertemp.m_pTrieTree = this;
+						itertemp.m_pContainer = this;
 						if(itsubb.empty())
 							itertemp.m_pNode = pNode;
 						else
@@ -416,7 +416,7 @@ namespace GAIA
 				if(pNode != GNULL && pNode != &m_root)
 				{
 					iter.m_pNode = pNode;
-					iter.m_pTrieTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}
@@ -465,7 +465,7 @@ namespace GAIA
 				if(!itf.empty())
 				{
 					iter.m_pNode = *itf;
-					iter.m_pTrieTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}
@@ -496,7 +496,7 @@ namespace GAIA
 				if(pNode != &m_root)
 				{
 					iter.m_pNode = pNode;
-					iter.m_pTrieTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}
@@ -507,7 +507,7 @@ namespace GAIA
 				if(!itf.empty())
 				{
 					iter.m_pNode = *itf;
-					iter.m_pTrieTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}
@@ -538,7 +538,7 @@ namespace GAIA
 				if(pNode != &m_root)
 				{
 					iter.m_pNode = pNode;
-					iter.m_pTrieTree = this;
+					iter.m_pContainer = this;
 				}
 				return iter;
 			}
