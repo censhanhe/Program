@@ -1523,7 +1523,7 @@ namespace FSHA
 				}
 				else if(end_ci < src.start_ci && end_ci + 1 == src.start_ci)
 				{
-					if(end_sci > end_sci + 1)
+					if(end_sci > (SUBCHUNKINDEX)(end_sci + 1))
 						return GAIA::True;
 				}
 				return GAIA::False;
@@ -2388,7 +2388,7 @@ namespace FSHA
 			m_state = NLink::STATE_DISCONNECT;
 			m_bEnableSequenceRequest = GAIA::False;
 			m_uSequenceRequestIndex = 0;
-			m_nMaxRequestFileCountSameTime = 10000;
+			m_nMaxRequestFileCountSameTime = 400;
 		}
 		GINL GAIA::BL OnExecute()
 		{
@@ -2456,6 +2456,7 @@ namespace FSHA
 		{
 			GAIA::BL bRet = GAIA::False;
 			GAIA::SYNC::AutoLock al1(m_lr_filesendtasks);
+			GAIA::CONTAINER::Vector<FileSendTask> listDelete;
 			for(__FileSendTaskListType::it it = m_filesendtasks.front_it(); !it.empty(); ++it)
 			{
 				FileSendTask& fst = *it;
@@ -2505,7 +2506,7 @@ namespace FSHA
 				if(bComplete)
 				{
 					m_statistics.nSendCmplFileCount++;
-					m_filesendtasks.erase(fst);
+					listDelete.push_back(fst);
 					pFRC->pFA->Close();
 					m_desc.m_pFAC->ReleaseFileAccess(pFRC->pFA);
 					pFRC->pFA = GNULL;
@@ -2517,12 +2518,18 @@ namespace FSHA
 					m_fcaches.erase(*pFRC);
 				}
 			}
+			for(GAIA::CONTAINER::Vector<FileSendTask>::it it = listDelete.front_it(); !it.empty(); ++it)
+			{
+				if(!m_filesendtasks.erase(*it))
+					GAIA_AST(GAIA::ALWAYSFALSE);
+			}
 			return bRet;
 		}
 		GINL GAIA::BL OnExecuteChunkSend()
 		{
 			GAIA::BL bRet = GAIA::False;
 			GAIA::SYNC::AutoLock al1(m_lr_chunksendtasks);
+			GAIA::CONTAINER::Vector<ChunkSendTask> listDelete;
 			for(__ChunkSendTaskListType::it it = m_chunksendtasks.front_it(); !it.empty(); ++it)
 			{
 				ChunkSendTask& cst = *it;
@@ -2559,7 +2566,12 @@ namespace FSHA
 					++cst.ci;
 				bRet = GAIA::True;
 				if(bComplete)
-					m_chunksendtasks.erase(cst);
+					listDelete.push_back(cst);
+			}
+			for(GAIA::CONTAINER::Vector<ChunkSendTask>::it it = listDelete.front_it(); !it.empty(); ++it)
+			{
+				if(!m_chunksendtasks.erase(*it))
+					GAIA_AST(GAIA::ALWAYSFALSE);
 			}
 			return bRet;
 		}
@@ -2580,7 +2592,10 @@ namespace FSHA
 				GAIA::SYNC::AutoLock al2(m_lr_fcaches);
 				FileRecCache* pFRC = this->RequestFileRecCache(fwt.fid, GAIA::True);
 				if(pFRC == GNULL)
+				{
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					continue;
+				}
 
 				/* Combin file chunk section. */
 				if(pFRC->pFCSL == GNULL)
@@ -3199,11 +3214,17 @@ namespace FSHA
 						if(!dir.Exist(szPath))
 						{
 							if(!dir.Create(szPath, GAIA::True))
+							{
+								GAIA_AST(GAIA::ALWAYSFALSE);
 								return GNULL;
+							}
 						}
 					}
 					if(!pFRC->pFA->Open(szFullName, !bWrite))
+					{
+						GAIA_AST(GAIA::ALWAYSFALSE);
 						return GNULL;
+					}
 					if(!bWrite)
 					{
 						pFRC->pFA->Seek(GAIA::SEEK_TYPE_END, 0);
