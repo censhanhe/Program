@@ -116,6 +116,10 @@ namespace GAIA
 		public:
 			GAIA_DEBUG_CODEPURE_MEMFUNC NetworkHandle(){this->init();}
 			GAIA_DEBUG_CODEPURE_MEMFUNC ~NetworkHandle(){if(this->IsConnected()) this->Disconnect(); this->init();}
+			GINL GAIA::BL SetSendBufSize(GAIA::N32 nSize){if(this->IsConnected()) return GAIA::False; m_nSendBufferSize = nSize; return GAIA::True;}
+			GINL GAIA::N32 GetSendBufSize() const{return m_nSendBufferSize;}
+			GINL GAIA::BL SetRecvBufSize(GAIA::N32 nSize){if(this->IsConnected()) return GAIA::False; m_nRecvBufferSize = nSize; return GAIA::True;}
+			GINL GAIA::N32 GetRecvBufSize() const{return m_nRecvBufferSize;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Connect(const ConnectDesc& desc);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Disconnect();
 			GINL GAIA::BL IsConnected() const{return m_h != GINVALID;}
@@ -137,8 +141,8 @@ namespace GAIA
 				m_conndesc.Reset();
 				m_pSender = GNULL;
 				m_pReceiver = GNULL;
-				m_nSendBufferSize = 1024 * 128;
-				m_nRecvBufferSize = 1024 * 128;
+				m_nSendBufferSize = 1024;
+				m_nRecvBufferSize = 1024;
 				while(!m_sendque.empty())
 				{
 					SendRec sr = m_sendque.front();
@@ -166,8 +170,19 @@ namespace GAIA
 			class ListenDesc
 			{
 			public:
-				GINL GAIA::GVOID Reset(){addr.Invalid();}
+				GINL GAIA::GVOID Reset()
+				{
+					addr.Invalid();
+					nListenSendBufSize = 1024;
+					nListenRecvBufSize = 1024;
+					nAcceptSendBufSize = 1024;
+					nAcceptRecvBufSize = 1024;
+				}
 				NetworkAddress addr;
+				GAIA::N32 nListenSendBufSize;
+				GAIA::N32 nListenRecvBufSize;
+				GAIA::N32 nAcceptSendBufSize;
+				GAIA::N32 nAcceptRecvBufSize;
 			};
 			class AcceptCallBack
 			{
@@ -193,16 +208,12 @@ namespace GAIA
 				m_desc.Reset();
 				m_bBegin = GAIA::False;
 				m_bStopCmd = GAIA::False;
-				m_nSendBufferSize = 1024 * 128;
-				m_nRecvBufferSize = 1024 * 128;
 				m_pAcceptCallBack = GNULL;
 			}
 		private:
 			ListenDesc m_desc;
 			GAIA::U8 m_bBegin : 1;
 			GAIA::U8 m_bStopCmd : 1;
-			GAIA::N32 m_nSendBufferSize;
-			GAIA::N32 m_nRecvBufferSize;
 			AcceptCallBack* m_pAcceptCallBack;
 		};
 		class NetworkSender : public GAIA::THREAD::Thread

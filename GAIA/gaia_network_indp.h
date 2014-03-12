@@ -332,6 +332,8 @@ namespace GAIA
 			listensock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 			if(listensock == GINVALID)
 				return;
+			setsockopt(listensock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_desc.nListenSendBufSize, sizeof(m_desc.nListenSendBufSize));
+			setsockopt(listensock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nListenRecvBufSize, sizeof(m_desc.nListenRecvBufSize));
 
 			// Bind.
 			sockaddr_in addr;
@@ -385,8 +387,8 @@ namespace GAIA
 				if(newsock != GINVALID)
 				{
 					// Setup socket.
-					setsockopt(newsock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
-					setsockopt(newsock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
+					setsockopt(newsock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_desc.nAcceptSendBufSize, sizeof(m_desc.nAcceptSendBufSize));
+					setsockopt(newsock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nAcceptRecvBufSize, sizeof(m_desc.nAcceptRecvBufSize));
 				#if GAIA_OS == GAIA_OS_WINDOWS
 					GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(newsock, FIONBIO, &bNotBlockModeEnable);
 				#else
