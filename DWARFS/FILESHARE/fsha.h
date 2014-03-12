@@ -1244,10 +1244,12 @@ namespace FSHA
 			virtual GAIA::BL Open(const GAIA::GCH* pszFileName, GAIA::BL bReadOnly) = 0;
 			virtual GAIA::BL Close() = 0;
 			virtual GAIA::BL IsOpen() const = 0;
-			virtual GAIA::NM Read(GAIA::GVOID* p, GAIA::NM nSize) = 0;
-			virtual GAIA::NM Write(const GAIA::GVOID* p, GAIA::NM nSize) = 0;
-			virtual GAIA::BL Seek(GAIA::SEEK_TYPE st, GAIA::NM offset) = 0;
-			virtual GAIA::NM Tell() const = 0;
+			virtual GAIA::N64 Read(GAIA::GVOID* p, GAIA::N64 nSize) = 0;
+			virtual GAIA::N64 Write(const GAIA::GVOID* p, GAIA::N64 nSize) = 0;
+			virtual GAIA::BL Seek(GAIA::SEEK_TYPE st, GAIA::N64 offset) = 0;
+			virtual GAIA::N64 Tell() const = 0;
+			virtual GAIA::N64 Size() const = 0;
+			virtual GAIA::BL Resize(GAIA::N64 size) = 0;
 			virtual GAIA::BL Flush() = 0;
 		};
 		/* Default file access. */
@@ -1268,10 +1270,12 @@ namespace FSHA
 			}
 			virtual GAIA::BL Close(){return m_file.Close();}
 			virtual GAIA::BL IsOpen() const{return m_file.IsOpen();}
-			virtual GAIA::NM Read(GAIA::GVOID* p, GAIA::NM nSize){return m_file.Read(p, nSize);}
-			virtual GAIA::NM Write(const GAIA::GVOID* p, GAIA::NM nSize){return m_file.Write(p, nSize);}
-			virtual GAIA::BL Seek(GAIA::SEEK_TYPE st, GAIA::NM offset){return m_file.Seek(st, offset);}
-			virtual GAIA::NM Tell() const{return m_file.Tell();}
+			virtual GAIA::N64 Read(GAIA::GVOID* p, GAIA::N64 nSize){return m_file.Read(p, nSize);}
+			virtual GAIA::N64 Write(const GAIA::GVOID* p, GAIA::N64 nSize){return m_file.Write(p, nSize);}
+			virtual GAIA::BL Seek(GAIA::SEEK_TYPE st, GAIA::N64 offset){return m_file.Seek(st, offset);}
+			virtual GAIA::N64 Tell() const{return m_file.Tell();}
+			virtual GAIA::N64 Size() const{return m_file.Size();}
+			virtual GAIA::BL Resize(GAIA::N64 size){return m_file.Resize(size);}
 			virtual GAIA::BL Flush(){return m_file.Flush();}
 		private:
 			GAIA::FILESYSTEM::File m_file;
@@ -1740,7 +1744,7 @@ namespace FSHA
 			m_pMWThread->SetStackSize(THREAD_STACK_SIZE);
 			m_pHeartTickThread = new HeartTickThread; m_pHeartTickThread->SetFileShare(this);
 			m_pHeartTickThread->SetStackSize(THREAD_STACK_SIZE);
-			m_pNH = new NHandle; m_pNH->SetFileShare(this);
+			m_pNH = new NHandle; m_pNH->SetFileShare(this); m_pNH->SetSendBufSize(1024 * 1024); m_pNH->SetRecvBufSize(1024 * 1024 * 100);
 			m_pNReceiver = new NReceiver; m_pNReceiver->SetFileShare(this); m_pNReceiver->SetStackSize(THREAD_STACK_SIZE);
 			m_pNSender = new NSender; m_pNSender->SetFileShare(this); m_pNSender->SetStackSize(THREAD_STACK_SIZE);
 			m_pNListener = new NListener; m_pNListener->SetFileShare(this); m_pNListener->SetStackSize(THREAD_STACK_SIZE);
@@ -2647,6 +2651,8 @@ namespace FSHA
 
 				/* Write file. */
 				FILESIZETYPE dstsize = fwt.ci * CHUNKSIZE + fwt.sci * SUBCHUNKSIZE;
+				if(pFRC->pFA->Size() < dstsize)
+					pFRC->pFA->Resize(dstsize);
 				pFRC->pFA->Seek(GAIA::SEEK_TYPE_BEGIN, dstsize);
 				pFRC->pFA->Write(fwt.buf, fwt.size);
 
