@@ -13,19 +13,33 @@ namespace GAIA
 				this->Close();
 			GAIA_AST(filekey != GNULL);
 			if(opentype & FILE_OPEN_TYPE_CREATEALWAYS)
-				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb");
+				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+"); // Create for read and write.
 			else if(opentype & FILE_OPEN_TYPE_WRITE)
-				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+");
+				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+"); // Open for read and write.
 			else if(opentype == FILE_OPEN_TYPE_READ)
-				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb");
+				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb"); // Open for read.
 			else
 				return GAIA::False;
 			if(m_pFile == GNULL)
 				return GAIA::False;
 			m_offset = 0;
-			fseek((FILE*)m_pFile, 0, SEEK_END);
+			if(fseek((FILE*)m_pFile, 0, SEEK_END) != 0)
+			{
+				this->Close();
+				return GAIA::False;
+			}
 			m_size = ftell((FILE*)m_pFile);
-			fseek((FILE*)m_pFile, 0, SEEK_SET);
+			GAIA_AST(m_size != -1);
+			if(m_size == -1)
+			{
+				this->Close();
+				return GAIA::False;
+			}
+			if(fseek((FILE*)m_pFile, 0, SEEK_SET) != 0)
+			{
+				this->Close();
+				return GAIA::False;
+			}
 			m_fileopentype = opentype;
 			return GAIA::True;
 		}
@@ -38,6 +52,34 @@ namespace GAIA
 				m_fileopentype = FILE_OPEN_TYPE_INVALID;
 				m_size = m_offset = 0;
 				return GAIA::True;
+			}
+			return GAIA::False;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Resize(const GAIA::N64& size)
+		{
+			if(m_pFile != GNULL)
+			{
+				if(size <= m_size)
+					return GAIA::False;
+				GAIA::N64 cur = ftell((FILE*)m_pFile);
+				GAIA_AST(cur != -1);
+				if(cur == -1)
+					return GAIA::False;
+				if(m_fileopentype & FILE_OPEN_TYPE_CREATEALWAYS || 
+					m_fileopentype & FILE_OPEN_TYPE_WRITE)
+				{
+					if(fseek((FILE*)m_pFile, size - 1, SEEK_SET) != 0)
+						return GAIA::False;
+					GAIA::U8 uEnd = 0;
+					if(!this->Write(&uEnd, sizeof(uEnd)))
+						return GAIA::False;
+					if(!this->Flush())
+						return GAIA::False;
+					if(fseek((FILE*)m_pFile, cur, SEEK_SET) != 0)
+						return GAIA::False;
+					m_size = size;
+					return GAIA::True;
+				}
 			}
 			return GAIA::False;
 		}

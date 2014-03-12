@@ -20,6 +20,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Close();
 			GINL GAIA::BL IsOpen() const{return m_pFile != GNULL;}
 			GINL GAIA::N64 Size() const{return m_size;}
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Resize(const GAIA::N64& size);
 			template<typename _ObjType> GINL GAIA::BL Read(_ObjType& obj)
 			{
 				GAIA_AST(m_pFile != GNULL); 

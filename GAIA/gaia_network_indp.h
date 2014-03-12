@@ -178,6 +178,11 @@ namespace GAIA
 					GAIA_AST(r.p != GNULL);
 					GAIA::U8* p = r.p;
 					GAIA::UM uSize = r.uSize;
+					if(!this->IsStabilityLink())
+					{
+						p += sizeof(NetworkAddress);
+						uSize -= sizeof(NetworkAddress);
+					}
 					while(uSize > 0)
 					{
 						GAIA::N32 nSended;
@@ -193,7 +198,7 @@ namespace GAIA
 						}
 						else
 						{
-							NetworkAddress& na = *(NetworkAddress*)p;
+							NetworkAddress& na = *(NetworkAddress*)r.p;
 							sockaddr_in sinaddr;
 							GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
 							sinaddr.sin_family = AF_INET;
@@ -205,13 +210,12 @@ namespace GAIA
 								(na.ip.u3 << 24);
 						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
 							nSended = static_cast<GAIA::N32>(sendto(
-								m_h, (const GAIA::GCH*)(p + sizeof(NetworkAddress)), uSize - sizeof(NetworkAddress), MSG_NOSIGNAL, 
+								m_h, (const GAIA::GCH*)p, uSize, MSG_NOSIGNAL, 
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
 						#else
 							nSended = static_cast<GAIA::N32>(sendto(
-								m_h, (const GAIA::GCH*)(p + sizeof(NetworkAddress)), uSize - sizeof(NetworkAddress), 0, 
+								m_h, (const GAIA::GCH*)p, uSize, 0, 
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
-							nSended += sizeof(NetworkAddress);
 						#endif
 						}
 						if(nSended == GINVALID)
