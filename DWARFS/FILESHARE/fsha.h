@@ -2384,7 +2384,7 @@ namespace FSHA
 			m_state = NLink::STATE_DISCONNECT;
 			m_bEnableSequenceRequest = GAIA::False;
 			m_uSequenceRequestIndex = 0;
-			m_nMaxRequestFileCountSameTime = 100;
+			m_nMaxRequestFileCountSameTime = 10000;
 		}
 		GINL GAIA::BL OnExecute()
 		{
