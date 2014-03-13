@@ -38,7 +38,7 @@
 *	------	----	---------	--------	------------	filewritetasks	fcaches		-----	--------	----
 *	------	----	---------	--------	------------	--------------	-------		links	prilinks	----
 *	------	----	usergroup	--------	------------	--------------	-------		links	prilinks	----
-*	------	----	---------	--------	------------	--------------	-------		-----	--------	send
+*	------	----	---------	--------	------------	--------------	-------		links	--------	send
 */
 
 namespace FSHA
@@ -62,6 +62,8 @@ namespace FSHA
 	static const GAIA::GCH FILE_FILELIST[] = "filelist";
 	static const GAIA::U32 FILE_FILELIST_FLAG = 'FSFL';
 	static const GAIA::U32 FILE_FILELIST_VERSION = 0;
+	static const GAIA::N32 DEFAULTMAXREQFILECOUNTSAMETIME = 200;
+	static const GAIA::U64 CMPLFILESNOTIFYFREQ = 400;
 
 	/* Type declaration. */
 	typedef GAIA::U32 FILEID; // GINVALID means invalid id.
@@ -73,6 +75,7 @@ namespace FSHA
 	typedef GAIA::U32 FILESIZETYPE;
 	typedef GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::U8> FSTR;
 	typedef GAIA::CONTAINER::Vector<FSTR> FSTRLIST;
+	typedef GAIA::CONTAINER::Vector<FILEID> FIDLIST;
 	typedef GAIA::CONTAINER::BasicAVLTree<
 			FSTR, GAIA::N32, GAIA::N32, 
 			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > FSTRBTR; 
@@ -542,9 +545,6 @@ namespace FSHA
 		}
 		GAIA::BL MapIndexToName(const MAP_INDEX_TYPE* pResult, GAIA::GCH* pszFileName) const
 		{
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
-			if(GAIA::ALGORITHM::stremp(pszFileName))
-				return GAIA::False;
 			GAIA_AST(pResult != GNULL);
 			if(pResult == GNULL)
 				return GAIA::False;
@@ -1652,6 +1652,8 @@ namespace FSHA
 				nRecvChunkCount = 0;
 				nNSendCount = 0;
 				nNRecvCount = 0;
+				uFrameCount = 0;
+				uValidFrameCount = 0;
 			}
 			GAIA::NM nRequestFileCount;
 			GAIA::NM nRequestFileCmplCount;
@@ -1661,6 +1663,8 @@ namespace FSHA
 			GAIA::NM nRecvChunkCount;
 			GAIA::NM nNSendCount;
 			GAIA::NM nNRecvCount;
+			GAIA::U64 uFrameCount;
+			GAIA::U64 uValidFrameCount;
 		};
 	private:
 		typedef GAIA::U8 MSGIDTYPE;
@@ -1681,9 +1685,9 @@ namespace FSHA
 		#define MSG_A_FILECMPL		((MSGIDTYPE)40)
 		// fileid(FILEID).
 		#define MSG_CMPLFILECOUNT	((MSGIDTYPE)50)
-		// filecount(FILEID)
+		// filecount(FILEID).
 		#define MSG_CMPLFILESECTION	((MSGIDTYPE)51)
-		// startindex(FILEID) + endindex(FILEID)
+		// startindex(FILEID) + endindex(FILEID).
 		#define MSG_A_CNN			((MSGIDTYPE)80)
 		// NetworkAddress + username + password.
 		#define MSG_A_OK			((MSGIDTYPE)200)
@@ -1843,6 +1847,7 @@ namespace FSHA
 			m_filewritetasks.clear();
 			m_reqs.clear();
 			m_reqeds.clear();
+			m_cmplfiles.clear();
 			m_statistics.init();
 			m_bStartuped = GAIA::False;
 			return GAIA::True;
@@ -1862,12 +1867,12 @@ namespace FSHA
 		GINL GAIA::GVOID SetFileCmpl(const FILEID& fileid, GAIA::BL bCmpl){GAIA::SYNC::AutoLock al(m_lr_filestate); m_filestate.set(fileid);}
 		GINL GAIA::BL GetFileCmpl(const FILEID& fileid) const{GAIA::SYNC::AutoLock al((const_cast<FileShare*>(this))->m_lr_filestate); return m_filestate.exist(fileid);}
 		GINL GAIA::GVOID SetAllFileCmpl(GAIA::BL bCmpl){GAIA::SYNC::AutoLock al(m_lr_filestate); if(m_filestate.size() > 0){GAIA::ALGORITHM::memset(m_filestate.front_ptr(), bCmpl ? 0xFF : 0x00, m_filestate.size());}}
-		GINL GAIA::GVOID SetMainServerNAddr(const GAIA::NETWORK::NetworkAddress& na){m_mainna = na;}
-		GINL const GAIA::NETWORK::NetworkAddress& GetMainServerNAddr() const{return m_mainna;}
-		GINL GAIA::BL Request(const GAIA::NETWORK::NetworkAddress& na, const GAIA::CONTAINER::Vector<FILEID>& listID)
+		GINL GAIA::GVOID SetMainNAddr(const GAIA::NETWORK::NetworkAddress& na){m_mainna = na;}
+		GINL const GAIA::NETWORK::NetworkAddress& GetMainNAddr() const{return m_mainna;}
+		GINL GAIA::BL Request(const GAIA::NETWORK::NetworkAddress& na, const FIDLIST& listID)
 		{
 			__MsgType msg;
-			for(GAIA::CONTAINER::Vector<FILEID>::const_it it = listID.const_front_it(); !it.empty(); ++it)
+			for(FIDLIST::const_it it = listID.const_front_it(); !it.empty(); ++it)
 			{
 				if(msg.write_size() == 0)
 				{
@@ -1878,7 +1883,7 @@ namespace FSHA
 				GAIA_AST(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - msg.write_size() >= sizeof(FILEID) + sizeof(CHUNKINDEX));
 				msg << *it;
 				msg << (CHUNKINDEX)0;
-				GAIA::CONTAINER::Vector<FILEID>::const_it itnext = it;
+				FIDLIST::const_it itnext = it;
 				++itnext;
 				if(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - msg.write_size() <= sizeof(FILEID) + sizeof(CHUNKINDEX) || itnext.empty())
 				{
@@ -2012,6 +2017,8 @@ namespace FSHA
 				m_prt << "RecvChunkCount = " << m_statistics.nRecvChunkCount << "\n";
 				m_prt << "NSendCount = " << m_statistics.nNSendCount << "\n";
 				m_prt << "NRecvCount = " << m_statistics.nNRecvCount << "\n";
+				m_prt << "FrameCount = " << m_statistics.uFrameCount << "\n";
+				m_prt << "ValidFrameCount = " << m_statistics.uValidFrameCount << "\n";
 			}
 			else if(CMD(CMD_SAVE))
 			{
@@ -2086,7 +2093,10 @@ namespace FSHA
 			else if(CMD(CMD_REQUESTALL))
 			{
 				if(listPart.size() == 2)
+				{
+					m_uSequenceRequestIndex = 0;
 					this->EnableSequenceRequest((GAIA::BL)(GAIA::N32)listPart[1]);
+				}
 				else
 					CMDFAILED;
 			}
@@ -2388,10 +2398,11 @@ namespace FSHA
 			m_state = NLink::STATE_DISCONNECT;
 			m_bEnableSequenceRequest = GAIA::False;
 			m_uSequenceRequestIndex = 0;
-			m_nMaxRequestFileCountSameTime = 400;
+			m_nMaxRequestFileCountSameTime = DEFAULTMAXREQFILECOUNTSAMETIME;
 		}
 		GINL GAIA::BL OnExecute()
 		{
+			m_statistics.uFrameCount++;
 			GAIA::BL bRet = GAIA::False;
 			if(this->OnExecuteRequest())
 				bRet = GAIA::True;
@@ -2401,10 +2412,12 @@ namespace FSHA
 				bRet = GAIA::True;
 			if(this->OnExecuteChunkSend())
 				bRet = GAIA::True;
-			if(this->OnExecuteRecycleFileCache())
-				bRet = GAIA::True;
 			if(this->OnExecuteFileWrite())
 				bRet = GAIA::True;
+			if(this->OnExecuteCmplFilesNotify())
+				bRet = GAIA::True;
+			if(bRet)
+				m_statistics.uValidFrameCount++;
 			return bRet;
 		}
 		GINL GAIA::BL OnExecuteRequest()
@@ -2414,7 +2427,7 @@ namespace FSHA
 			GAIA::SYNC::AutoLock al2(m_lr_reqs);
 			if(!m_reqs.empty())
 			{
-				GAIA::CONTAINER::Vector<FILEID> listFile;
+				FIDLIST listFile;
 				listFile.reserve(m_nMaxRequestFileCountSameTime);
 				if(m_reqeds.size() < m_nMaxRequestFileCountSameTime)
 				{
@@ -2426,7 +2439,7 @@ namespace FSHA
 							listFile.push_back(m_reqs.front());
 					}
 					this->Request(m_mainna, listFile);
-					for(GAIA::CONTAINER::Vector<FILEID>::it it = listFile.front_it(); !it.empty(); ++it)
+					for(FIDLIST::it it = listFile.front_it(); !it.empty(); ++it)
 						m_reqeds.insert(*it);
 				}
 			}
@@ -2566,18 +2579,24 @@ namespace FSHA
 					++cst.ci;
 				bRet = GAIA::True;
 				if(bComplete)
+				{
 					listDelete.push_back(cst);
+					pFRC->pFA->Close();
+					m_desc.m_pFAC->ReleaseFileAccess(pFRC->pFA);
+					pFRC->pFA = GNULL;
+					if(pFRC->pFCSL != GNULL)
+					{
+						delete pFRC->pFCSL;
+						pFRC->pFCSL = GNULL;
+					}
+					m_fcaches.erase(*pFRC);
+				}
 			}
 			for(GAIA::CONTAINER::Vector<ChunkSendTask>::it it = listDelete.front_it(); !it.empty(); ++it)
 			{
 				if(!m_chunksendtasks.erase(*it))
 					GAIA_AST(GAIA::ALWAYSFALSE);
 			}
-			return bRet;
-		}
-		GINL GAIA::BL OnExecuteRecycleFileCache()
-		{
-			GAIA::BL bRet = GAIA::False;
 			return bRet;
 		}
 		GINL GAIA::BL OnExecuteFileWrite()
@@ -2594,7 +2613,7 @@ namespace FSHA
 				if(pFRC == GNULL)
 				{
 					GAIA_AST(GAIA::ALWAYSFALSE);
-					continue;
+					break;
 				}
 
 				/* Combin file chunk section. */
@@ -2696,7 +2715,7 @@ namespace FSHA
 				m_statistics.nRequestFileCmplCount++;
 				/* Release FileRecCache. */
 				{
-					GAIA::SYNC::AutoLock al2(m_lr_fcaches);
+					GAIA::SYNC::AutoLock al(m_lr_fcaches);
 					FileRecCache* pFRC = m_fcaches.find(*it);
 					GAIA_AST(pFRC != GNULL);
 					if(pFRC->pFA != GNULL)
@@ -2715,8 +2734,60 @@ namespace FSHA
 				}
 				/* Remove from requested set. */
 				{
-					GAIA::SYNC::AutoLock al3(m_lr_reqeds);
+					GAIA::SYNC::AutoLock al(m_lr_reqeds);
 					m_reqeds.erase((*it).fid);
+				}
+				/* Add to complete file list. */
+				{
+					GAIA::SYNC::AutoLock al(m_lr_cmplfiles);
+					m_cmplfiles.push_back((*it).fid);
+				}
+			}
+			return bRet;
+		}
+		GINL GAIA::BL OnExecuteCmplFilesNotify()
+		{
+			GAIA::BL bRet = GAIA::False;
+			if(m_statistics.uFrameCount % CMPLFILESNOTIFYFREQ == 0)
+			{
+				GAIA::SYNC::AutoLock al(m_lr_cmplfiles);
+				if(!m_cmplfiles.empty())
+				{
+					m_cmplfiles.sort();
+					FILEID startindex = GINVALID; 
+					FILEID endindex = GINVALID;
+					for(FIDLIST::it it = m_cmplfiles.front_it(); !it.empty(); ++it)
+					{
+						if(startindex == GINVALID)
+							startindex = endindex = *it;
+						else
+						{
+							GAIA_AST((*it) > endindex);
+							if(endindex + 1 != *it)
+							{
+								__MsgType msg;
+								msg << m_mainna;
+								msg << MSG_CMPLFILESECTION;
+								msg << startindex;
+								msg << endindex;
+								this->SendToAll(msg.front_ptr(), msg.write_size());
+								startindex = endindex = GINVALID;
+							}
+							else
+								endindex = *it;
+						}
+					}
+					if(startindex != GINVALID)
+					{
+						__MsgType msg;
+						msg << m_mainna;
+						msg << MSG_CMPLFILESECTION;
+						msg << startindex;
+						msg << endindex;
+						this->SendToAll(msg.front_ptr(), msg.write_size());
+						startindex = endindex = GINVALID;
+					}
+					m_cmplfiles.clear();
 				}
 			}
 			return bRet;
@@ -2746,6 +2817,16 @@ namespace FSHA
 			MSGIDTYPE msgid;
 			msg >> na;
 			msg >> msgid;
+			if(msgid != MSG_LOGIN)
+			{
+				NLink nl;
+				nl.na = na;
+				nl.bBeLink = GAIA::True;
+				GAIA::SYNC::AutoLock al(m_lr_links);
+				NLink* pNL = m_links.find(nl);
+				if(pNL == GNULL || pNL->state != NLink::STATE_READY)
+					return GAIA::True; // Ignore not login's msg.
+			}
 			switch(msgid)
 			{
 			case MSG_LOGIN:
@@ -2951,48 +3032,16 @@ namespace FSHA
 						this->Send(msg.front_ptr(), msg.write_size());
 						break;
 					}
-					GAIA::CONTAINER::Set<FileIDSection>::it it = pNLink->pCmplFiles->lower_bound(fidsec);
-					if(it.empty())
+					np.nlink.uCmplFileCnt = pNLink->uCmplFileCnt;
+					FILEID uIncreaseFileCnt = 0;
+					this->CmplFileSectionRecursive(pNLink, fidsec, uIncreaseFileCnt);
+					if(uIncreaseFileCnt > 0)
 					{
-						it = pNLink->pCmplFiles->upper_bound(fidsec);
-						if(it.empty())
-							pNLink->pCmplFiles->insert(fidsec);
-						else
-						{
-							FileIDSection& fidsec_prev = *it;
-							if(fidsec_prev.uEnd + 1 == fidsec.uStart)
-								fidsec_prev.uEnd = fidsec.uEnd;
-							else
-								pNLink->pCmplFiles->insert(fidsec);
-						}
-					}
-					else
-					{
-						FileIDSection& fidsec_next = *it;
-						--it;
-						if(it.empty())
-						{
-							if(fidsec.uEnd + 1 == fidsec_next.uStart)
-								fidsec_next.uStart = fidsec.uStart;
-							else
-								pNLink->pCmplFiles->insert(fidsec);
-						}
-						else
-						{
-							FileIDSection& fidsec_prev = *it;
-							if(fidsec_prev.uEnd + 1 == fidsec.uStart && 
-								fidsec.uEnd + 1 == fidsec_next.uStart)
-							{
-								fidsec_prev.uEnd = fidsec_next.uEnd;
-								pNLink->pCmplFiles->erase(fidsec_next);
-							}
-							else if(fidsec_prev.uEnd + 1 == fidsec.uStart)
-								fidsec_prev.uEnd = fidsec.uEnd;
-							else if(fidsec.uEnd + 1 == fidsec_next.uStart)
-								fidsec_next.uStart = fidsec.uStart;
-							else
-								pNLink->pCmplFiles->insert(fidsec);
-						}
+						GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+						m_prilinks.erase(np);
+						np.nlink.uCmplFileCnt = np.nlink.uCmplFileCnt + uIncreaseFileCnt;
+						m_prilinks.insert(np);
+						pNLink->uCmplFileCnt = np.nlink.uCmplFileCnt;
 					}
 				}
 				break;
@@ -3027,7 +3076,7 @@ namespace FSHA
 									FileIDSection fidsec;
 									fidsec.uStart = startindex;
 									fidsec.uEnd = x - 1;
-									uFileCount += fidsec.uEnd - fidsec.uStart;
+									uFileCount += fidsec.uEnd - fidsec.uStart + 1;
 									fidseclist.push_back(fidsec);
 									startindex = GINVALID;
 								}
@@ -3038,7 +3087,7 @@ namespace FSHA
 							FileIDSection fidsec;
 							fidsec.uStart = startindex;
 							fidsec.uEnd = m_filelist.GetFileCount() - 1;
-							uFileCount += fidsec.uEnd - fidsec.uStart;
+							uFileCount += fidsec.uEnd - fidsec.uStart + 1;
 							fidseclist.push_back(fidsec);
 							startindex = GINVALID;
 						}
@@ -3237,12 +3286,129 @@ namespace FSHA
 		}
 		GINL GAIA::BL Send(const GAIA::GVOID* p, const GAIA::UM& size)
 		{
+			GAIA_AST(p != GNULL);
 			GAIA_AST(size > 0);
 			if(m_pNH == GNULL)
 				return GAIA::False;
 			GAIA::SYNC::AutoLock al(m_lr_send);
 			m_statistics.nNSendCount++;
 			return m_pNH->Send((const GAIA::U8*)p, size);
+		}
+		GINL GAIA::BL SendToAll(GAIA::GVOID* p, const GAIA::UM& size)
+		{
+			GAIA_AST(p != GNULL);
+			GAIA_AST(size > 0);
+			if(m_pNH == GNULL)
+				return GAIA::False;
+			GAIA::BL bRet = GAIA::True;
+			GAIA::SYNC::AutoLock al(m_lr_links);
+			for(__LinkListType::it it = m_links.front_it(); !it.empty(); ++it)
+			{
+				NLink& nl = *it;
+				if(nl.state == NLink::STATE_READY)
+				{
+					GAIA::ALGORITHM::memcpy(p, &nl.na, sizeof(nl.na));
+					if(!this->Send(p, size))
+						bRet = GAIA::False;
+				}
+			}
+			return bRet;
+		}
+		GINL GAIA::GVOID CmplFileSectionRecursive(NLink* pNLink, FileIDSection fidsec, FILEID& uIncreaseFileCnt)
+		{
+			GAIA::CONTAINER::Set<FileIDSection>::it it = pNLink->pCmplFiles->lower_bound(fidsec);
+			if(it.empty())
+			{
+				it = pNLink->pCmplFiles->upper_bound(fidsec);
+				if(it.empty())
+				{
+					pNLink->pCmplFiles->insert(fidsec);
+					uIncreaseFileCnt += fidsec.uEnd - fidsec.uStart + 1;
+				}
+				else
+				{
+					FileIDSection& fidsec_prev = *it;
+					if(fidsec_prev.uEnd + 1 >= fidsec.uStart)
+					{
+						if(fidsec.uEnd > fidsec_prev.uEnd)
+						{
+							uIncreaseFileCnt += fidsec.uEnd - fidsec_prev.uEnd;
+							fidsec_prev.uEnd = fidsec.uEnd;
+						}
+					}
+					else
+					{
+						pNLink->pCmplFiles->insert(fidsec);
+						uIncreaseFileCnt += fidsec.uEnd - fidsec.uStart + 1;
+					}
+				}
+			}
+			else
+			{
+				FileIDSection& fidsec_next = *it;
+				--it;
+				if(it.empty())
+				{
+					FileIDSection fidsecnew;
+					GAIA::N32 nSplitCnt = this->SplitFileIDSectionLeft(fidsec, fidsec_next, fidsecnew);
+					if(nSplitCnt == 0)
+					{
+						pNLink->pCmplFiles->insert(fidsec);
+						uIncreaseFileCnt += fidsec.uEnd - fidsec.uStart + 1;
+					}
+					else
+					{
+						uIncreaseFileCnt += fidsec_next.uStart - fidsec.uStart;
+						fidsec_next.uStart = fidsec.uStart;
+						if(nSplitCnt == 2)
+							this->CmplFileSectionRecursive(pNLink, fidsecnew, uIncreaseFileCnt);
+					}
+				}
+				else
+				{
+					FileIDSection& fidsec_prev = *it;
+					if(fidsec.uStart <= fidsec_prev.uEnd + 1 && 
+						fidsec.uEnd + 1 >= fidsec_next.uStart)
+					{
+						GAIA_AST(fidsec_next.uStart > fidsec_prev.uEnd);
+						uIncreaseFileCnt += fidsec_next.uStart - fidsec_prev.uEnd - 1;
+						fidsec_prev.uEnd = fidsec_next.uEnd;
+						pNLink->pCmplFiles->erase(fidsec_next);
+
+					}
+					if(fidsec.uStart < fidsec_prev.uStart)
+					{
+						FileIDSection fidsecnew;
+						fidsecnew.uStart = fidsec.uStart;
+						fidsec.uEnd = fidsec_prev.uStart - 1;
+						this->CmplFileSectionRecursive(pNLink, fidsecnew, uIncreaseFileCnt);
+					}
+					if(fidsec.uEnd > fidsec_next.uEnd)
+					{
+						FileIDSection fidsecnew;
+						fidsecnew.uStart = fidsec_next.uStart + 1;
+						fidsecnew.uEnd = fidsec.uEnd;
+						this->CmplFileSectionRecursive(pNLink, fidsecnew, uIncreaseFileCnt);
+					}
+				}
+			}
+		}
+		GINL GAIA::N32 SplitFileIDSectionLeft(FileIDSection& src, const FileIDSection& dst, FileIDSection& splitnew)
+		{
+			GAIA_AST(src.uStart <= dst.uStart);
+			if(src.uEnd + 1 >= dst.uStart)
+			{
+				if(src.uEnd <= dst.uEnd)
+					return 1;
+				else
+				{
+					splitnew.uStart = dst.uEnd + 1;
+					splitnew.uEnd = src.uEnd;
+					return 2;
+				}
+			}
+			else
+				return 0;
 		}
 	private:	
 		FileShareDesc m_desc;
@@ -3275,6 +3441,7 @@ namespace FSHA
 		__FileWriteTaskListType m_filewritetasks; GAIA::SYNC::Lock m_lr_filewritetasks;
 		__FILEQUEUETYPE m_reqs; GAIA::SYNC::Lock m_lr_reqs;
 		__FILESETTYPE m_reqeds; GAIA::SYNC::Lock m_lr_reqeds;
+		FIDLIST m_cmplfiles; GAIA::SYNC::Lock m_lr_cmplfiles;
 		GAIA::SYNC::Lock m_lr_send;
 		GAIA::NM m_nMaxRequestFileCountSameTime;
 		Statistics m_statistics;

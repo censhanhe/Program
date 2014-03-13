@@ -142,14 +142,13 @@ namespace GAIA
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);
-			GAIA_AST(pBegin <= pEnd);
 			if(pBegin == pEnd)
 			{
 				if(*pBegin >= key)
-					return pBegin;
+					return const_cast<_DataType*>(pBegin);
 				return GNULL;
 			}
-			_DataType* pMid = pBegin + (pEnd - pBegin) / 2;
+			const _DataType* pMid = pBegin + (pEnd - pBegin) / 2;
 			if(key <= *pMid)
 			{
 				_DataType* pRet = GAIA::ALGORITHM::lower_bound(pBegin, pMid, key);
@@ -168,14 +167,13 @@ namespace GAIA
 		{
 			GAIA_AST(pBegin != GNULL);
 			GAIA_AST(pEnd != GNULL);
-			GAIA_AST(pBegin < pEnd);
 			if(pBegin == pEnd)
 			{
 				if(*pEnd <= key)
-					return pEnd;
+					return const_cast<_DataType*>(pEnd);
 				return GNULL;
 			}
-			_DataType* pMid = pBegin + (pEnd - pBegin) / 2;
+			const _DataType* pMid = pBegin + (pEnd - pBegin) / 2;
 			if(key > *pMid)
 			{
 				_DataType* pRet = GAIA::ALGORITHM::upper_bound(pMid + 1, pEnd, key);
