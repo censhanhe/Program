@@ -2771,7 +2771,7 @@ namespace FSHA
 								msg << startindex;
 								msg << endindex;
 								this->SendToAll(msg.front_ptr(), msg.write_size());
-								startindex = endindex = GINVALID;
+								startindex = endindex = *it;
 							}
 							else
 								endindex = *it;
