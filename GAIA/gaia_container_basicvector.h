@@ -190,7 +190,7 @@ namespace GAIA
 				this->push_back(t);
 				if(this->size() == 1)
 					return GAIA::True;
-				GAIA::ALGORITHM::move_next(m_pFront + this->size() - 1, m_pFront + this->size() - 2, this->size() - index);
+				GAIA::ALGORITHM::move_next(this->back_ptr(), this->front_ptr() + this->size() - 2, this->size() - index);
 				this->operator[](index) = t;
 				return GAIA::True;
 			}
@@ -200,7 +200,7 @@ namespace GAIA
 				if(index >= this->size())
 					return GAIA::False;
 				if(index != this->size() - 1)
-					GAIA::ALGORITHM::move_prev(m_pFront + index, m_pFront + index + 1, this->size() - 1 - index);
+					GAIA::ALGORITHM::move_prev(this->front_ptr() + index, this->front_ptr() + index + 1, this->size() - 1 - index);
 				--m_size;
 				return GAIA::True;
 			}
@@ -219,7 +219,7 @@ namespace GAIA
 				GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret);
 				return ret;
 			}
-			GINL GAIA::GVOID sort(){if(this->empty()) return; GAIA::ALGORITHM::sort(m_pFront, m_pFront + this->size() - 1);}
+			GINL GAIA::GVOID sort(){if(this->empty()) return; GAIA::ALGORITHM::sort(this->front_ptr(), this->back_ptr());}
 			GINL _SizeType unique()
 			{
 				if(this->empty())
@@ -244,10 +244,10 @@ namespace GAIA
 			{
 				if(this->size() <= 0)
 					return (_SizeType)GINVALID;
-				_DataType* pFinded = GAIA::ALGORITHM::search(m_pFront, m_pFront + this->size() - 1, t);
+				_DataType* pFinded = GAIA::ALGORITHM::search(this->front_ptr(), this->back_ptr(), t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
-				return (_SizeType)(pFinded - m_pFront);
+				return (_SizeType)(pFinded - this->front_ptr());
 			}
 			GINL GAIA::GVOID swap(const _SizeType& index1, const _SizeType& index2){GAIA::ALGORITHM::swap(this->operator[](index1), this->operator[](index2));}
 			GINL it lower_bound(const _DataType& t)
