@@ -161,15 +161,17 @@ namespace FSHA
 
 			/* Read name map list. */
 			{
+				for(__NameMapType::it it = m_names.front_it(); !it.empty(); ++it)
+					m_namespool.release((__NameMapPool::_datatype*)(*it));
 				m_names.clear();
 				__NameMapType::_sizetype size;
 				sr >> size;
 				m_names.reserve(size);
 				for(__NameMapType::_sizetype x = 0; x < size; ++x)
 				{
-					__NameMapType::_datatype d;
-					sr >> d.m_name;
-					m_names.push_back(d);
+					__NameMapPool::_datatype* p = m_namespool.alloc();
+					sr >> p->m_name;
+					m_names.push_back(p);
 				}
 			}
 
@@ -251,7 +253,7 @@ namespace FSHA
 				while(!it.empty())
 				{
 					const __NameMapType::_datatype& d = *it;
-					sr << d.m_name;
+					sr << (*d).m_name;
 					++it;
 				}
 			}
@@ -284,6 +286,8 @@ namespace FSHA
 			this->GenerateFileNamePartList(pszPathName, listNamePart);
 			FILE_LIST_LOG("Build file name's string token list...");
 			{
+				for(__NameMapType::it it = m_names.front_it(); !it.empty(); ++it)
+					m_namespool.release((__NameMapPool::_datatype*)(*it));
 				m_names.clear();
 				m_names.reserve(restree.catagory_count(restree.root()));
 				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
@@ -292,10 +296,10 @@ namespace FSHA
 				{
 					if(nRootPart == 0)
 					{
-						NameMap nm;
+						NameMap* nm = m_namespool.alloc();
 						m_names.push_back(nm);
-						m_names.back_ptr()->m_name = (*it).front_ptr();
-						m_names.back_ptr()->m_name.tolower();
+						(**m_names.back_ptr()).m_name = (*it).front_ptr();
+						(**m_names.back_ptr()).m_name.tolower();
 					}
 					else
 						--nRootPart;
@@ -513,7 +517,8 @@ namespace FSHA
 			FileRec* m_pFileRec;
 		};
 	public:
-		typedef GAIA::CONTAINER::Vector<NameMap> __NameMapType;
+		typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::Ref<NameMap> > __NameMapType;
+		typedef GAIA::CONTAINER::Pool<NameMap> __NameMapPool;
 		typedef GAIA::CONTAINER::Vector<FileRec> __FileRecIDListType;
 		typedef GAIA::CONTAINER::Vector<FileRecSeq> __FileRecSeqListType;
 	private:
@@ -531,11 +536,12 @@ namespace FSHA
 				return GAIA::False;
 			NameMap f;
 			f.m_name.reserve(MAX_PATHLEN);
+			NameMap* p = &f;
 			GAIA_AST(namelist.size() < MAX_DEPTH);
 			for(FNAMEPARTLISTTYPE::_sizetype x = 0; x < namelist.size(); ++x)
 			{
-				f.m_name = namelist[x].front_ptr();
-				GAIA::N32 n = m_names.search(f);
+				p->m_name = namelist[x].front_ptr();
+				GAIA::N32 n = m_names.search(p);
 				if(n == GINVALID)
 					return GAIA::False;
 				pResult[x] = n;
@@ -554,8 +560,8 @@ namespace FSHA
 			{
 				if(pDst != pszFileName)
 					*pDst++ = '/';
-				GAIA::ALGORITHM::strcpy(pDst, m_names[*p].m_name.front_ptr());
-				pDst += m_names[*p].m_name.size();
+				GAIA::ALGORITHM::strcpy(pDst, (*m_names[*p]).m_name.front_ptr());
+				pDst += (*m_names[*p]).m_name.size();
 				++p;
 			}
 			*pDst++ = 0;
@@ -676,6 +682,7 @@ namespace FSHA
 		}
 	private:
 		__NameMapType m_names; // Sorted by file name.
+		__NameMapPool m_namespool;
 		__FileRecIDListType m_recids; // Sorted by file id.
 		__FileRecSeqListType m_recseqs; // Sorted by sequence and id.
 		__FileTreeType m_ftree; // Sorted by file name section.
