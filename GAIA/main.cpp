@@ -513,6 +513,9 @@ GAIA::N32 main()
 				GAIA::N64 nDrop = v.unique();
 				nDrop = 0;
 				v.sort();
+
+				__ArrayType::it it = v.lower_bound(50);
+				it = v.upper_bound(50);
 			}
 		}
 		TEST_END;
@@ -567,6 +570,9 @@ GAIA::N32 main()
 				GAIA::N32 nDrop = v.unique();
 				nDrop = 0;
 				v.sort();
+
+				__VectorType::it it = v.lower_bound(50);
+				it = v.upper_bound(50);
 			}
 		}
 		TEST_END;

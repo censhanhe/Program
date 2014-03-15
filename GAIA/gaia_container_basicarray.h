@@ -173,6 +173,50 @@ namespace GAIA
 				m_size--;
 				return GAIA::True;
 			}
+			GINL it lower_bound(const _DataType& t)
+			{
+				it iter;
+				if(!this->empty())
+				{
+					_DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
+					iter.m_pContainer = this;
+					iter.m_index = p - this->front_ptr();
+				}
+				return iter;
+			}
+			GINL const_it lower_bound(const _DataType& t) const
+			{
+				const_it iter;
+				if(!this->empty())
+				{
+					_DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
+					iter.m_pContainer = this;
+					iter.m_index = p - this->front_ptr();
+				}
+				return iter;
+			}
+			GINL it upper_bound(const _DataType& t)
+			{
+				it iter;
+				if(!this->empty())
+				{
+					_DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
+					iter.m_pContainer = this;
+					iter.m_index = p - this->front_ptr();
+				}
+				return iter;
+			}
+			GINL const_it upper_bound(const _DataType& t) const
+			{
+				const_it iter;
+				if(!this->empty())
+				{
+					_DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
+					iter.m_pContainer = this;
+					iter.m_index = p - this->front_ptr();
+				}
+				return iter;
+			}
 			GINL it front_it()
 			{
 				it ret;

@@ -250,6 +250,50 @@ namespace GAIA
 				return (_SizeType)(pFinded - m_pFront);
 			}
 			GINL GAIA::GVOID swap(const _SizeType& index1, const _SizeType& index2){GAIA::ALGORITHM::swap(this->operator[](index1), this->operator[](index2));}
+			GINL it lower_bound(const _DataType& t)
+			{
+				it iter;
+				if(!this->empty())
+				{
+					_DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
+					iter.m_pContainer = this;
+					iter.m_index = p - this->front_ptr();
+				}
+				return iter;
+			}
+			GINL const_it lower_bound(const _DataType& t) const
+			{
+				const_it iter;
+				if(!this->empty())
+				{
+					_DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
+					iter.m_pContainer = this;
+					iter.m_index = p - this->front_ptr();
+				}
+				return iter;
+			}
+			GINL it upper_bound(const _DataType& t)
+			{
+				it iter;
+				if(!this->empty())
+				{
+					_DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
+					iter.m_pContainer = this;
+					iter.m_index = p - this->front_ptr();
+				}
+				return iter;
+			}
+			GINL const_it upper_bound(const _DataType& t) const
+			{
+				const_it iter;
+				if(!this->empty())
+				{
+					_DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
+					iter.m_pContainer = this;
+					iter.m_index = p - this->front_ptr();
+				}
+				return iter;
+			}
 			GINL const _DataType& operator[](const _SizeType& index) const{GAIA_AST(index >= 0 && index < this->size()); return m_pFront[index];}
 			GINL _DataType& operator[](const _SizeType& index){GAIA_AST(index >= 0 && index < this->size()); return m_pFront[index];}
 			GINL __MyType& operator = (const __MyType& src)
