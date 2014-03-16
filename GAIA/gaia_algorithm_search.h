@@ -95,17 +95,9 @@ namespace GAIA
 			}
 			_DataType* pMid = const_cast<_DataType*>(pBegin + (pEnd - pBegin) / 2);
 			if(key <= *pMid)
-			{
-				_DataType* pRet = GAIA::ALGORITHM::bsearch(pBegin, pMid, key);
-				if(pRet != GNULL)
-					return pRet;
-			}
+				return GAIA::ALGORITHM::bsearch(pBegin, pMid, key);
 			else if(key > *pMid)
-			{
-				_DataType* pRet = GAIA::ALGORITHM::bsearch(pMid + 1, pEnd, key);
-				if(pRet != GNULL)
-					return pRet;
-			}	
+				return GAIA::ALGORITHM::bsearch(pMid + 1, pEnd, key);
 			return GNULL;
 		}
 		template<typename _DataType> GINL _DataType* ssearch(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
