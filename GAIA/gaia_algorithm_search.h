@@ -82,6 +82,19 @@ namespace GAIA
 			}
 			return GNULL;
 		}
+		template<typename _DataType> GINL _DataType* ssearch(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
+		{
+			GAIA_AST(pBegin != GNULL);
+			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(pBegin <= pEnd);
+			while(pBegin <= pEnd)
+			{
+				if(*pBegin == key)
+					return const_cast<_DataType*>(pBegin);
+				++pBegin;
+			}
+			return GNULL;
+		}
 		template<typename _DataType> GINL _DataType* bsearch(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
 		{
 			GAIA_AST(pBegin != GNULL);
@@ -93,24 +106,16 @@ namespace GAIA
 					return const_cast<_DataType*>(pBegin);
 				return GNULL;
 			}
+			else
+			{
+				if(pEnd - pBegin <= 16)
+					return ssearch(pBegin, pEnd, key);
+			}
 			_DataType* pMid = const_cast<_DataType*>(pBegin + (pEnd - pBegin) / 2);
 			if(key <= *pMid)
 				return GAIA::ALGORITHM::bsearch(pBegin, pMid, key);
 			else if(key > *pMid)
 				return GAIA::ALGORITHM::bsearch(pMid + 1, pEnd, key);
-			return GNULL;
-		}
-		template<typename _DataType> GINL _DataType* ssearch(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
-		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
-			GAIA_AST(pBegin <= pEnd);
-			while(pBegin != pEnd)
-			{
-				if(*pBegin == key)
-					return const_cast<_DataType*>(pBegin);
-				++pBegin;
-			}
 			return GNULL;
 		}
 		template<typename _DataType> GINL _DataType* search(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)
@@ -126,8 +131,6 @@ namespace GAIA
 					return const_cast<_DataType*>(pBegin);
 				return GNULL;
 			}
-			if(pEnd - pBegin < 10)
-				return ssearch(pBegin, pEnd, key);
 			return bsearch(pBegin, pEnd, key);
 		}
 		template<typename _DataType> GINL _DataType* lower_bound(const _DataType* pBegin, const _DataType* pEnd, const _DataType& key)

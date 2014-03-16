@@ -38,7 +38,7 @@ namespace GAIA
 				return;
 
 			// quick sort optimize.
-			if(pEnd - pBegin < 10)
+			if(pEnd - pBegin < 16)
 				return bsort(pBegin, pEnd);
 			GAIA::ALGORITHM::swap(*pEnd, *(pBegin + (pEnd - pBegin) / 2));
 

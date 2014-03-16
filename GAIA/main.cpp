@@ -922,7 +922,8 @@ GAIA::N32 main()
 			PERF_START("GAIA bsearch use");
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			{
-				if(*GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]) != listGAIA[x])
+				GAIA::N32* pFinded = GAIA::ALGORITHM::search(listGAIA.front_ptr(), listGAIA.back_ptr(), listGAIA[x]);
+				if(pFinded == GNULL || *pFinded != listGAIA[x])
 				{
 					PERF_START("GAIA bsearch failed!");
 					break;
