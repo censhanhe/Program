@@ -21,6 +21,15 @@ namespace GAIA
 				++pBegin;
 			}
 		}
+		template<typename _DataType> GINL GAIA::GVOID isort(_DataType* pBegin, _DataType* pEnd)
+		{
+		}
+		template<typename _DataType> GINL GAIA::GVOID ssort(_DataType* pBegin, _DataType* pEnd)
+		{
+		}
+		template<typename _DataType> GINL GAIA::GVOID hsort(_DataType* pBegin, _DataType* pEnd)
+		{
+		}
 		template<typename _DataType> GINL GAIA::GVOID qsort(_DataType* pBegin, _DataType* pEnd)
 		{
 			GAIA_AST(pBegin != GNULL);
@@ -31,6 +40,9 @@ namespace GAIA
 				return bsort(pBegin, pEnd);
 
 			/* Inverse order optimize and find mid element. */
+//#define INVERSE
+#ifdef INVERSE
+			if((pEnd - pBegin) * sizeof(_DataType) > 10000)
 			{
 				/* Inverse order optimize. */
 				GAIA::NM nIncreaseCnt = 0;
@@ -49,6 +61,9 @@ namespace GAIA
 				if(nDecreaseCnt > nIncreaseCnt * 2)
 					GAIA::ALGORITHM::inverse(pBegin, pEnd);
 			}
+#endif
+
+			GAIA::ALGORITHM::swap(*pEnd, *(pBegin + (pEnd - pBegin) / 2));
 
 			/* Standard quick sort algorithm. */
 			_DataType* pCursor = pBegin;
