@@ -36,33 +36,10 @@ namespace GAIA
 			GAIA_AST(pEnd != GNULL);
 			if(pBegin >= pEnd)
 				return;
+
+			// quick sort optimize.
 			if(pEnd - pBegin < 10)
 				return bsort(pBegin, pEnd);
-
-			/* Inverse order optimize and find mid element. */
-//#define INVERSE
-#ifdef INVERSE
-			if((pEnd - pBegin) * sizeof(_DataType) > 10000)
-			{
-				/* Inverse order optimize. */
-				GAIA::NM nIncreaseCnt = 0;
-				GAIA::NM nDecreaseCnt = 0;
-				_DataType* pCursor = pBegin;
-				while(pCursor < pEnd)
-				{
-					if(*pCursor < *(pCursor + 1))
-						nIncreaseCnt++;
-					else if(*pCursor > *(pCursor + 1))
-						nDecreaseCnt++;
-					++pCursor;
-				}
-				if(nDecreaseCnt == 0)
-					return;
-				if(nDecreaseCnt > nIncreaseCnt * 2)
-					GAIA::ALGORITHM::inverse(pBegin, pEnd);
-			}
-#endif
-
 			GAIA::ALGORITHM::swap(*pEnd, *(pBegin + (pEnd - pBegin) / 2));
 
 			/* Standard quick sort algorithm. */

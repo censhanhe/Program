@@ -897,15 +897,18 @@ GAIA::N32 main()
 		TEST_BEGIN("<Sort function performance>");
 		{
 			std::vector<GAIA::N32> listSTL;
+			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-				listSTL.push_back(GAIA::MATH::random());
+			{
+				GAIA::N32 n = GAIA::MATH::random();
+				listSTL.push_back(n);
+				listGAIA.push_back(n);
+			}
+
 			PERF_START("STL sort use");
 			std::sort(listSTL.begin(), listSTL.end());
 			PERF_END;
 
-			GAIA::CONTAINER::Vector<GAIA::N32> listGAIA;
-			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-				listGAIA.push_back(GAIA::MATH::random());
 			PERF_START("GAIA sort use");
 			if(!listGAIA.empty())
 				GAIA::ALGORITHM::sort(&listGAIA[0], &listGAIA[listGAIA.size() - 1]);
@@ -918,7 +921,13 @@ GAIA::N32 main()
 
 			PERF_START("GAIA bsearch use");
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
-				GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]);
+			{
+				if(*GAIA::ALGORITHM::search(&listGAIA[0], &listGAIA[listGAIA.size() - 1], listGAIA[x]) != listGAIA[x])
+				{
+					PERF_START("GAIA bsearch failed!");
+					break;
+				}
+			}
 			PERF_END;
 		}
 		TEST_END;
@@ -927,7 +936,7 @@ GAIA::N32 main()
 
 	// BasicList function test.
 	{
-		TEST_BEGIN("<BasicList Function Test>");
+		TEST_BEGIN("<BasicList function test>");
 		{
 			typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __ListType;
 			__ListType list;
@@ -957,7 +966,7 @@ GAIA::N32 main()
 	
 	// BasicAVLTree test.
 	{
-		TEST_BEGIN("<BasicAVLTree Function Test>");
+		TEST_BEGIN("<BasicAVLTree function test>");
 		{
 			GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > btr;
 
