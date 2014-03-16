@@ -2828,13 +2828,15 @@ namespace FSHA
 			msg >> msgid;
 			if(msgid != MSG_LOGIN)
 			{
+				GAIA::SYNC::AutoLock al(m_lr_links);
 				NLink nl;
 				nl.na = na;
 				nl.bBeLink = GAIA::True;
-				GAIA::SYNC::AutoLock al(m_lr_links);
+				NLink* pBeNL = m_links.find(nl);
+				nl.bBeLink = GAIA::False;
 				NLink* pNL = m_links.find(nl);
-				if(pNL == GNULL || pNL->state != NLink::STATE_READY)
-					return GAIA::True; // Ignore not login's msg.
+				if(pBeNL == GNULL && pNL == GNULL)
+					return GAIA::False; // Ignore not login's msg.
 			}
 			switch(msgid)
 			{
@@ -3065,6 +3067,36 @@ namespace FSHA
 					if(m_state == NLink::STATE_DISCONNECT || 
 						m_state == NLink::STATE_ONLINE)
 					{
+						// Change link state.
+						{
+							GAIA::SYNC::AutoLock al1(m_lr_links);
+							NLink nl;
+							nl.na = na;
+							nl.bBeLink = GAIA::False;
+							NLink* pNL = m_links.find(nl);
+							if(pNL != GNULL)
+							{
+								pNL->state = NLink::STATE_READY;
+								NLinkPri nlp;
+								nlp.nlink = *pNL;
+								GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+								NLinkPri* pNLP = m_prilinks.find(nlp);
+								if(pNLP != GNULL)
+									pNLP->nlink.state = NLink::STATE_READY;
+							}
+							else
+							{
+								GAIA_AST(GAIA::ALWAYSFALSE);
+								nl.state = NLink::STATE_READY;
+								nl.pCmplFiles = new GAIA::CONTAINER::Set<FileIDSection>;
+								m_links.insert(nl);
+								NLinkPri nlp;
+								nlp.nlink = nl;
+								GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+								m_prilinks.insert(nlp);
+							}
+						}
+
 						// Statistics file state.
 						FILEID uFileCount = 0;
 						m_state = NLink::STATE_READY;
@@ -3150,6 +3182,36 @@ namespace FSHA
 			msg << pszPassword;
 			if(m_mainna.IsInvalid())
 				m_mainna = na;
+
+			// Add new link.
+			{
+				GAIA::SYNC::AutoLock al1(m_lr_links);
+				NLink nl;
+				nl.na = na;
+				nl.bBeLink = GAIA::False;
+				NLink* pNL = m_links.find(nl);
+				if(pNL != GNULL)
+				{
+					pNL->state = NLink::STATE_DISCONNECT;
+					NLinkPri nlp;
+					nlp.nlink = *pNL;
+					GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+					NLinkPri* pNLP = m_prilinks.find(nlp);
+					if(pNLP != GNULL)
+						pNLP->nlink.state = NLink::STATE_DISCONNECT;
+				}
+				else
+				{
+					nl.state = NLink::STATE_DISCONNECT;
+					nl.pCmplFiles = new GAIA::CONTAINER::Set<FileIDSection>;
+					m_links.insert(nl);
+					NLinkPri nlp;
+					nlp.nlink = nl;
+					GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+					m_prilinks.insert(nlp);
+				}
+			}
+
 			return this->Send(msg.front_ptr(), msg.write_size());
 		}
 		GINL ERRNO BeLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName, const GAIA::GCH* pszPassword)
@@ -3174,12 +3236,18 @@ namespace FSHA
 			nl.na = na;
 			nl.bBeLink = GAIA::True;
 			GAIA::SYNC::AutoLock al1(m_lr_links);
-			NLink* pNLink = m_links.find(nl);
-			if(pNLink != GNULL)
+			NLink* pNL = m_links.find(nl);
+			if(pNL != GNULL)
 			{
-				if(pNLink->state == NLink::STATE_READY)
+				if(pNL->state == NLink::STATE_READY)
 					return ERRNO_REPEATOP;
-				pNLink->state = NLink::STATE_READY;
+				pNL->state = NLink::STATE_READY;
+				NLinkPri nlp;
+				nlp.nlink = *pNL;
+				GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+				NLinkPri* pNLP = m_prilinks.find(nlp);
+				if(pNLP != GNULL)
+					pNLP->nlink.state = NLink::STATE_READY;
 			}
 			else
 			{
@@ -3195,6 +3263,23 @@ namespace FSHA
 		}
 		GINL GAIA::BL NLogout(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName)
 		{
+			// Release a exist link.
+			{
+				GAIA::SYNC::AutoLock al1(m_lr_links);
+				NLink nl;
+				nl.na = na;
+				nl.bBeLink = GAIA::False;
+				NLink* pNL = m_links.find(nl);
+				if(pNL != GNULL)
+				{
+					NLinkPri nlp;
+					nlp.nlink = *pNL;
+					GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+					m_prilinks.erase(nlp);
+				}
+				m_links.erase(nl);
+			}
+
 			__MsgType msg;
 			msg << na;
 			msg << MSG_LOGOUT;
