@@ -1799,7 +1799,10 @@ namespace FSHA
 			for(GAIA::U16 uPort = 0; uPort < 10; ++uPort)
 			{
 				if(m_pNH->Connect(cnndesc))
+				{
+					m_pNH->SetSelfAddress(cnndesc.addr);
 					break;
+				}
 				++cnndesc.addr.uPort;
 			}
 			if(!m_pNH->IsConnected())
@@ -2390,8 +2393,7 @@ namespace FSHA
 		GINL GAIA::GVOID init()
 		{
 			m_bInitialized = GAIA::False;
-			m_mainna.ip.FromString("127.0.0.1");
-			m_mainna.uPort = MAINRECVPORT;
+			m_mainna.Invalid();
 			m_bStartuped = GAIA::False;
 			m_uUSpeed = (GAIA::U64)GINVALID;
 			m_uDSpeed = (GAIA::U64)GINVALID;
@@ -3146,6 +3148,8 @@ namespace FSHA
 			msg << MSG_LOGIN;
 			msg << pszUserName;
 			msg << pszPassword;
+			if(m_mainna.IsInvalid())
+				m_mainna = na;
 			return this->Send(msg.front_ptr(), msg.write_size());
 		}
 		GINL ERRNO BeLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName, const GAIA::GCH* pszPassword)

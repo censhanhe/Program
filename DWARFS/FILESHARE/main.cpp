@@ -5,9 +5,42 @@ using namespace std;
 
 int main()
 {
-	cout << "Welcome FileShare(v" << FSHA::VERSION_STRING << ")" << endl;
+#if GAIA_OS == GAIA_OS_WINDOWS
+	WSAData wsadata;
+	WSAStartup(MAKEWORD(2, 2), &wsadata);
+#endif
+
+	cout << "Welcome FileShare(v" << FSHA::VERSION_STRING << ")" << endl << endl;
 	FSHA::FileShare fsha;
 	FSHA::FileShare::FileShareDesc desc;
+
+	cout << "Local machine ip list:" << endl;
+	GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listIP;
+	GAIA::NETWORK::GetHostIPList(GNULL, listIP);
+	for(GAIA::N32 x = 0; x < listIP.size(); ++x)
+	{
+		GAIA::GCH szIP[128];
+		listIP[x].ToString(szIP);
+		cout << x << ") " << szIP << endl;
+	}
+	cout << "Default Port is " << FSHA::MAINRECVPORT << endl;
+	cout << endl;
+
+	GAIA::GCH szIP[128];
+INPUT_IP:
+	cout << "Input the ip address or select one of local ip:";
+	cin >> szIP;
+	if(szIP[1] == 0)
+	{
+		GAIA::NM index = szIP[0] - '0';
+		if(index >= listIP.size())
+			goto INPUT_IP;
+		desc.m_selfaddr.ip = listIP[index];
+		desc.m_selfaddr.uPort = FSHA::MAINRECVPORT;
+	}
+	else
+		desc.m_selfaddr.FromString(szIP);
+
 	fsha.Initialize(desc);
 	fsha.Startup();
 	for(;;) // Work loop.
@@ -47,5 +80,8 @@ int main()
 FUNCTION_END:
 	fsha.Shutdown();
 	fsha.Release();
+#if GAIA_OS == GAIA_OS_WINDOWS
+	WSACleanup();
+#endif
 	return 0;
 }
