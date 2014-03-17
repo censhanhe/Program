@@ -65,6 +65,8 @@ namespace FSHA
 	static const GAIA::N32 DEFAULTMAXREQFILECOUNTSAMETIME = 200;
 	static const GAIA::U64 CMPLFILESNOTIFYFREQ = 400;
 	static const GAIA::U64 LINKRECYCLETIME = 22000000;
+	static const GAIA::U32 JUMPDISTANCE = 100;
+	static const GAIA::U32 JUMPODDS = 90;
 
 	/* Type declaration. */
 	typedef GAIA::U32 FILEID; // GINVALID means invalid id.
@@ -1666,6 +1668,7 @@ namespace FSHA
 				nNRecvCount = 0;
 				uFrameCount = 0;
 				uValidFrameCount = 0;
+				uTotalCmplFileCount = 0;
 			}
 			GAIA::NM nRequestFileCount;
 			GAIA::NM nRequestFileCmplCount;
@@ -1677,6 +1680,7 @@ namespace FSHA
 			GAIA::NM nNRecvCount;
 			GAIA::U64 uFrameCount;
 			GAIA::U64 uValidFrameCount;
+			GAIA::U64 uTotalCmplFileCount;
 		};
 	private:
 		typedef GAIA::U8 MSGIDTYPE;
@@ -1694,6 +1698,8 @@ namespace FSHA
 		// fileid(FILEID) + filesize(FILESIZETYPE) + filecrcsize(CRCSIZETYPE) + filecrc(void*).
 		#define MSG_A_FILECHUNK		((MSGIDTYPE)21)
 		// fileid(FILEID) + chunkindex(CHUNKINDEX) + subchunkindex(SUBCHUNKINDEX) + filedatasize(SUBCHUNKSIZETYPE) + filedata(void*).
+		#define MSG_A_FILENOTEXIST	((MSGIDTYPE)22)
+		// fileid(FILEID).
 		#define MSG_A_FILECMPL		((MSGIDTYPE)40)
 		// fileid(FILEID).
 		#define MSG_CMPLFILECOUNT	((MSGIDTYPE)50)
@@ -1701,7 +1707,7 @@ namespace FSHA
 		#define MSG_CMPLFILESECTION	((MSGIDTYPE)51)
 		// startindex(FILEID) + endindex(FILEID).
 		#define MSG_A_CNN			((MSGIDTYPE)80)
-		// NetworkAddress + username + password.
+		// NetworkAddress + filecount(REQUESTFILECOUNTTYPE) * (fileid(FILEID) + chunkindex(CHUNKINDEX)).
 		#define MSG_A_OK			((MSGIDTYPE)200)
 		// nothing.
 		#define MSG_A_ERROR			((MSGIDTYPE)250)
@@ -2068,6 +2074,8 @@ namespace FSHA
 				m_prt << "NRecvCount = " << m_statistics.nNRecvCount << "\n";
 				m_prt << "FrameCount = " << m_statistics.uFrameCount << "\n";
 				m_prt << "ValidFrameCount = " << m_statistics.uValidFrameCount << "\n";
+				m_prt << "TotalCmplFileCount = " << m_statistics.uTotalCmplFileCount << "(" << 
+					(GAIA::F64)m_statistics.uTotalCmplFileCount / (GAIA::F64)(m_filelist.GetFileCount() * m_links.size()) << ")" << "\n";
 				m_prt << "OwnFile = " << m_uCmplFileCount << "/" << m_filelist.GetFileCount() << "\n";
 			}
 			else if(CMD(CMD_SAVE))
@@ -3072,26 +3080,40 @@ namespace FSHA
 				break;
 			case MSG_R_FILE:
 				{
-					REQUESTFILECOUNTTYPE fcnt;
-					msg >> fcnt;
-					for(REQUESTFILECOUNTTYPE x = 0; x < fcnt; ++x)
+					if(!this->Jump(na, msg.read_ptr(), msg.write_size() - msg.read_size()))
 					{
-						FileSendTask fst;
-						msg >> fst.fid;
-						msg >> fst.ci;
-						fst.na = na;
-						fst.bNeedHead = GAIA::True;
-						GAIA::SYNC::AutoLock al(m_lr_filesendtasks);
-						FileSendTask* pFST = m_filesendtasks.find(fst);
-						if(pFST == GNULL)
+						REQUESTFILECOUNTTYPE fcnt;
+						msg >> fcnt;
+						for(REQUESTFILECOUNTTYPE x = 0; x < fcnt; ++x)
 						{
-							if(m_filesendtasks.insert(fst))
-								m_statistics.nSendFileCount++;
+							FileSendTask fst;
+							msg >> fst.fid;
+							msg >> fst.ci;
+							fst.na = na;
+							fst.bNeedHead = GAIA::True;
+							if(fst.fid < m_filelist.GetFileCount() && m_filestate.exist(fst.fid))
+							{
+								GAIA::SYNC::AutoLock al(m_lr_filesendtasks);
+								FileSendTask* pFST = m_filesendtasks.find(fst);
+								if(pFST == GNULL)
+								{
+									if(m_filesendtasks.insert(fst))
+										m_statistics.nSendFileCount++;
+									else
+										GAIA_AST(GAIA::ALWAYSFALSE);
+								}
+								else
+									*pFST = fst;
+							}
 							else
-								GAIA_AST(GAIA::ALWAYSFALSE);
+							{
+								__MsgType newmsg;
+								newmsg << na;
+								newmsg << MSG_A_FILENOTEXIST;
+								newmsg << fst.fid;
+								this->Send(newmsg.front_ptr(), newmsg.write_size());
+							}
 						}
-						else
-							*pFST = fst;
 					}
 				}
 				break;
@@ -3136,6 +3158,10 @@ namespace FSHA
 						GAIA::SYNC::AutoLock al(m_lr_filewritetasks);
 						m_filewritetasks.push(fwt);
 					}
+				}
+				break;
+			case MSG_A_FILENOTEXIST:
+				{
 				}
 				break;
 			case MSG_A_FILECMPL:
@@ -3206,8 +3232,12 @@ namespace FSHA
 						this->Send(msg.front_ptr(), msg.write_size());
 						break;
 					}
+					GAIA::BL bExistStatistics = GAIA::False;
 					if(pBeLink != GNULL)
 					{
+						m_statistics.uTotalCmplFileCount += filecount - pBeLink->uCmplFileCnt;
+						bExistStatistics = GAIA::True;
+
 						np.nlink.uCmplFileCnt = pBeLink->uCmplFileCnt;
 						pBeLink->uCmplFileCnt = filecount;
 						GAIA::SYNC::AutoLock al2(m_lr_prilinks);
@@ -3217,6 +3247,12 @@ namespace FSHA
 					}
 					if(pLink != GNULL)
 					{
+						if(!bExistStatistics)
+						{
+							m_statistics.uTotalCmplFileCount += filecount - pLink->uCmplFileCnt;
+							bExistStatistics = GAIA::True;
+						}
+
 						np.nlink.uCmplFileCnt = pLink->uCmplFileCnt;
 						pLink->uCmplFileCnt = filecount;
 						GAIA::SYNC::AutoLock al2(m_lr_prilinks);
@@ -3252,9 +3288,11 @@ namespace FSHA
 					this->CmplFileSectionRecursive(pBeLink, fidsec, uIncreaseFileCnt);
 					if(uIncreaseFileCnt > 0)
 					{
+						FILEID uNewFileCount = GAIA::ALGORITHM::minimize(np.nlink.uCmplFileCnt + uIncreaseFileCnt, m_filelist.GetFileCount());
+						m_statistics.uTotalCmplFileCount += uNewFileCount - np.nlink.uCmplFileCnt;
 						GAIA::SYNC::AutoLock al2(m_lr_prilinks);
 						m_prilinks.erase(np);
-						np.nlink.uCmplFileCnt = GAIA::ALGORITHM::minimize(np.nlink.uCmplFileCnt + uIncreaseFileCnt, m_filelist.GetFileCount());
+						np.nlink.uCmplFileCnt = uNewFileCount;
 						m_prilinks.insert(np);
 						pBeLink->uCmplFileCnt = np.nlink.uCmplFileCnt;
 					}
@@ -3723,6 +3761,78 @@ namespace FSHA
 			}
 			else
 				return 0;
+		}
+		GINL GAIA::BL Jump(const GAIA::NETWORK::NetworkAddress& na, const GAIA::U8* p, GAIA::NM nSize)
+		{
+			GAIA_AST(p != GNULL);
+			GAIA_AST(nSize > 0);
+			if(GAIA::MATH::random() % 100 > JUMPODDS)
+				return GAIA::False;
+			GAIA::NETWORK::NetworkAddress jumpna;
+			{
+				GAIA::SYNC::AutoLock al1(m_lr_links);				
+				NLink nl;
+				nl.na = na;
+				nl.bBeLink = GAIA::True;
+				NLink* pNL = m_links.find(nl);
+				if(pNL == GNULL)
+					return GAIA::False;
+				NLinkPri nlp;
+				nlp.nlink = *pNL;
+				GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+				__LinkPriListType::it it = m_prilinks.lower_bound(nlp);
+				if(it.empty())
+					return GAIA::False;
+				++it;
+				if(it.empty())
+					return GAIA::False;
+				GAIA::N32 index = 0;
+				NLinkPri* linkListPri[JUMPDISTANCE];
+				while(!it.empty())
+				{
+					if(index >= JUMPDISTANCE)
+						break;
+					linkListPri[index++] = &(*it);
+					++it;
+				}
+				if(index == 0)
+					return GAIA::False;
+				jumpna = linkListPri[GAIA::MATH::random() % index]->nlink.na;
+			}
+			GAIA_AST(jumpna != na);
+			const REQUESTFILECOUNTTYPE& fcnt = *(const REQUESTFILECOUNTTYPE*)p;
+			__MsgType msg;
+			if(sizeof(na) + sizeof(MSGIDTYPE) + sizeof(jumpna) + nSize > GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE)
+			{
+				GAIA_AST(fcnt / 2 > 0);
+				GAIA::NM first = fcnt / 2;
+				GAIA::NM second = first + fcnt % 2 == 0 ? 0 : 1;
+				GAIA::NM nodesize = sizeof(FILEID) + sizeof(CHUNKINDEX);
+
+				msg << na;
+				msg << MSG_A_CNN;
+				msg << jumpna;
+				msg << (REQUESTFILECOUNTTYPE)first;
+				msg.write(p + sizeof(fcnt), first * nodesize);
+				this->Send(msg.front_ptr(), msg.write_size());
+
+				msg.clear();
+				msg << na;
+				msg << MSG_A_CNN;
+				msg << jumpna;
+				msg << (REQUESTFILECOUNTTYPE)second;
+				msg.write(p + sizeof(fcnt) + first * nodesize, second * nodesize);
+				this->Send(msg.front_ptr(), msg.write_size());
+			}
+			else
+			{
+				msg << na;
+				msg << MSG_A_CNN;
+				msg << jumpna;
+				msg.write(p, nSize);
+				this->Send(msg.front_ptr(), msg.write_size());
+			}
+			return GAIA::True;
 		}
 	private:	
 		FileShareDesc m_desc;
