@@ -50,7 +50,7 @@ namespace GAIA
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::GCH szPath[MAXPL];
 			::GetModuleFileNameA(GNULL, szPath, MAXPL);
-			GAIA::GCH* p = GAIA::ALGORITHM::stridropr(szPath, "\\/");
+			GAIA::GCH* p = GAIA::ALGORITHM::strdropr(szPath, "/\\");
 			result = szPath;
 		#else
 		#endif
@@ -64,11 +64,14 @@ namespace GAIA
 			if(bOverlapped)
 			{
 				const GAIA::GCH* p = pszName;
-				p = GAIA::ALGORITHM::stridrop(p, "\\/");
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				/* Jump after Windows-OS disk name. */
+				p = GAIA::ALGORITHM::strdrop(p, "/\\");
 				if(p == GNULL)
 					return GAIA::False;
 				++p;
-				while((p = GAIA::ALGORITHM::stridrop(p, "\\/\0")) != GNULL)
+			#endif
+				while((p = GAIA::ALGORITHM::strdrop(p, "/\\\0")) != GNULL)
 				{
 					GAIA::GCH sz[MAXPL];
 					GAIA::ALGORITHM::memcpy(sz, pszName, (p - pszName + 1) * sizeof(GAIA::GCH));
@@ -270,7 +273,7 @@ namespace GAIA
 						const GAIA::GCH* pFinal = szFinal;
 						for(;;)
 						{
-							const GAIA::GCH* pNew = GAIA::ALGORITHM::stridrop(pFinal, "/\\\0");
+							const GAIA::GCH* pNew = GAIA::ALGORITHM::strdrop(pFinal, "/\\\0");
 							if(pNew != pFinal)
 							{
 								if(pNew == GNULL || *pNew == 0)
@@ -346,7 +349,7 @@ namespace GAIA
 								const GAIA::GCH* pFinal = szNext;
 								for(;;)
 								{
-									const GAIA::GCH* pNew = GAIA::ALGORITHM::stridrop(pFinal, "/\\\0");
+									const GAIA::GCH* pNew = GAIA::ALGORITHM::strdrop(pFinal, "/\\\0");
 									if(pNew != pFinal)
 									{
 										if(pNew == GNULL || *pNew == 0)
