@@ -14,7 +14,7 @@ namespace GAIA
 			GINL ~IP(){}
 			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(u, 0, 4);}
 			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmp(u, 0, 4) == 0;}
-			GINL GAIA::GVOID FromString(const GAIA::GCH* psz)
+			GINL GAIA::BL FromString(const GAIA::GCH* psz)
 			{
 				const GAIA::GCH* p = psz;
 				GAIA::UM uDotCnt = GAIA::ALGORITHM::strcnt(psz, '.');
@@ -26,7 +26,9 @@ namespace GAIA
 						++p;
 					}
 					GAIA::ALGORITHM::str2int(p, u[3]);
+					return GAIA::True;
 				}
+				return GAIA::False;
 			}
 			GINL GAIA::GVOID ToString(GAIA::GCH* psz) const
 			{
@@ -58,12 +60,16 @@ namespace GAIA
 			GINL ~NetworkAddress(){}
 			GINL GAIA::GVOID Invalid(){ip.Invalid(); uPort = 0;}
 			GINL GAIA::BL IsInvalid() const{return ip.IsInvalid() || uPort == 0;}
-			GINL GAIA::GVOID FromString(const GAIA::GCH* psz)
+			GINL GAIA::BL FromString(const GAIA::GCH* psz)
 			{
-				ip.FromString(psz);
+				if(!ip.FromString(psz))
+					return GAIA::False;
 				const GAIA::GCH* p = GAIA::ALGORITHM::strch(psz, ':');
+				if(p == GNULL)
+					return GAIA::False;
 				++p;
 				GAIA::ALGORITHM::str2int(p, uPort);
+				return GAIA::True;
 			}
 			GINL GAIA::GVOID ToString(GAIA::GCH* psz) const
 			{
@@ -150,7 +156,7 @@ namespace GAIA
 					m_sendque.pop();
 				}
 			}
-			GINL virtual GAIA::GVOID LostConnection(GAIA::BL bRecvTrueSendFalse){}
+			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse){}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL FlushSendQueue();
 		private:
 			GAIA::N32 m_h;

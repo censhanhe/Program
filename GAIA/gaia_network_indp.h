@@ -225,39 +225,65 @@ namespace GAIA
 							if(nLastError == WSAEWOULDBLOCK){}
 							else
 							{
-								this->Reference();
+
+								if(this->IsStabilityLink())
 								{
-									this->LostConnection(GAIA::False);
-									if(this->IsConnected())
-										this->Disconnect();
+									this->Reference();
+									{
+										this->LostConnection(this->GetRemoteAddress(), GAIA::False);
+										if(this->IsConnected())
+											this->Disconnect();
+									}
+									this->Release();
 								}
-								this->Release();
+								else
+								{
+									NetworkAddress& na = *(NetworkAddress*)r.p;
+									this->LostConnection(na, GAIA::False);
+								}
 								break;
 							}
 						#else
 							if(errno == EAGAIN){}
 							else
 							{
-								this->Reference();
+								if(this->IsStabilityLink())
 								{
-									this->LostConnection(GAIA::False);
-									if(this->IsConnected())
-										this->Disconnect();
+									this->Reference();
+									{
+										this->LostConnection(this->GetRemoteAddress(), GAIA::False);
+										if(this->IsConnected())
+											this->Disconnect();
+									}
+									this->Release();
 								}
-								this->Release();
+								else
+								{
+									NetworkAddress& na = *(NetworkAddress*)r.p;
+									this->LostConnection(na, GAIA::False);
+								}
 								break;
 							}
 						#endif
 						}
 						else if(nSended == 0)
 						{
-							this->Reference();
+							if(this->IsStabilityLink())
 							{
-								this->LostConnection(GAIA::False);
-								if(this->IsConnected())
-									this->Disconnect();
+								this->Reference();
+								{
+									this->LostConnection(this->GetRemoteAddress(), GAIA::False);
+									if(this->IsConnected())
+										this->Disconnect();
+
+								}
+								this->Release();
 							}
-							this->Release();
+							else
+							{
+								NetworkAddress& na = *(NetworkAddress*)r.p;
+								this->LostConnection(na, GAIA::False);
+							}
 							break;
 						}
 						else
@@ -569,19 +595,31 @@ namespace GAIA
 							{
 							#if GAIA_OS == GAIA_OS_WINDOWS
 								GAIA::N32 nLastError = ::WSAGetLastError();
-								if(nLastError == WSAEWOULDBLOCK)
-									break;
+								if(nLastError == WSAEWOULDBLOCK)break;
 								else
 								{
-									pHandle->Reference();
+									if(pHandle->IsStabilityLink())
 									{
-										if(this->Remove(*pHandle))
-											bNeedRelease = GAIA::False;
-										pHandle->LostConnection(GAIA::True);
-										if(pHandle->IsConnected())
-											pHandle->Disconnect();
+										pHandle->Reference();
+										{
+											if(this->Remove(*pHandle))
+												bNeedRelease = GAIA::False;
+											pHandle->LostConnection(pHandle->GetRemoteAddress(), GAIA::True);
+											if(pHandle->IsConnected())
+												pHandle->Disconnect();
+										}
+										pHandle->Release();
 									}
-									pHandle->Release();
+									else
+									{
+										NetworkAddress na_recvfrom;
+										na_recvfrom.ip.u0 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
+										na_recvfrom.ip.u1 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
+										na_recvfrom.ip.u2 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
+										na_recvfrom.ip.u3 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
+										na_recvfrom.uPort = ntohs(recvfrom_addr.sin_port);
+										pHandle->LostConnection(na_recvfrom, GAIA::True);
+									}
 									break;
 								}
 							#else
@@ -589,30 +627,56 @@ namespace GAIA
 									break;
 								else
 								{
-									pHandle->Reference();
+									if(pHandle->IsStabilityLink())
 									{
-										if(this->Remove(*pHandle))
-											bNeedRelease = GAIA::False;
-										pHandle->LostConnection(GAIA::True);
-										if(pHandle->IsConnected())
-											pHandle->Disconnect();
+										pHandle->Reference();
+										{
+											if(this->Remove(*pHandle))
+												bNeedRelease = GAIA::False;
+											pHandle->LostConnection(pHandle->GetRemoteAddress(), GAIA::True);
+											if(pHandle->IsConnected())
+												pHandle->Disconnect();
+										}
+										pHandle->Release();
 									}
-									pHandle->Release();
+									else
+									{
+										NetworkAddress na_recvfrom;
+										na_recvfrom.ip.u0 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
+										na_recvfrom.ip.u1 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
+										na_recvfrom.ip.u2 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
+										na_recvfrom.ip.u3 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
+										na_recvfrom.uPort = ntohs(recvfrom_addr.sin_port);
+										pHandle->LostConnection(na_recvfrom, GAIA::True);
+									}
 									break;
 								}
 							#endif
 							}
 							else if(nRecv == 0)
 							{
-								pHandle->Reference();
+								if(pHandle->IsStabilityLink())
 								{
-									if(this->Remove(*pHandle))
-										bNeedRelease = GAIA::False;
-									pHandle->LostConnection(GAIA::True);
-									if(pHandle->IsConnected())
-										pHandle->Disconnect();
+									pHandle->Reference();
+									{
+										if(this->Remove(*pHandle))
+											bNeedRelease = GAIA::False;
+										pHandle->LostConnection(pHandle->GetRemoteAddress(), GAIA::True);
+										if(pHandle->IsConnected())
+											pHandle->Disconnect();
+									}
+									pHandle->Release();
 								}
-								pHandle->Release();
+								else
+								{
+									NetworkAddress na_recvfrom;
+									na_recvfrom.ip.u0 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
+									na_recvfrom.ip.u1 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
+									na_recvfrom.ip.u2 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
+									na_recvfrom.ip.u3 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
+									na_recvfrom.uPort = ntohs(recvfrom_addr.sin_port);
+									pHandle->LostConnection(na_recvfrom, GAIA::True);
+								}
 								break;
 							}
 							else

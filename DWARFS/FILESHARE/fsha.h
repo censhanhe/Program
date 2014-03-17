@@ -64,6 +64,7 @@ namespace FSHA
 	static const GAIA::U32 FILE_FILELIST_VERSION = 0;
 	static const GAIA::N32 DEFAULTMAXREQFILECOUNTSAMETIME = 200;
 	static const GAIA::U64 CMPLFILESNOTIFYFREQ = 400;
+	static const GAIA::U64 LINKRECYCLETIME = 22000000;
 
 	/* Type declaration. */
 	typedef GAIA::U32 FILEID; // GINVALID means invalid id.
@@ -1325,8 +1326,9 @@ namespace FSHA
 			GINL NHandle(){m_pFS = GNULL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
-			GINL virtual GAIA::GVOID LostConnection(GAIA::BL bRecvTrueSendFalse)
+			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse)
 			{
+				m_pFS->OnLostConnection(na, bRecvTrueSendFalse);
 			}
 		private:
 			FileShare* m_pFS;
@@ -1423,7 +1425,7 @@ namespace FSHA
 			{
 				for(;;)
 				{
-					for(GAIA::N32 x = 0; x < 40; ++x)
+					for(GAIA::N32 x = 0; x < 100; ++x)
 					{
 						if(m_bExitCmd)
 							break;
@@ -1465,6 +1467,7 @@ namespace FSHA
 				state = STATE_DISCONNECT;
 				uCmplFileCnt = 0;
 				pCmplFiles = GNULL;
+				uLastHeartTime = 0;
 				bBeLink = GAIA::False;
 			}
 			GAIA_CLASS_OPERATOR_COMPARE2(na, na, bBeLink, bBeLink, NLink);
@@ -1474,6 +1477,7 @@ namespace FSHA
 				state = src.state;
 				uCmplFileCnt = src.uCmplFileCnt;
 				pCmplFiles = src.pCmplFiles;
+				uLastHeartTime = src.uLastHeartTime;
 				bBeLink = src.bBeLink;
 				return *this;
 			}
@@ -1482,6 +1486,7 @@ namespace FSHA
 			STATE state;
 			FILEID uCmplFileCnt;
 			GAIA::CONTAINER::Set<FileIDSection>* pCmplFiles;
+			GAIA::U64 uLastHeartTime;
 			GAIA::U8 bBeLink : 1;
 		};
 		/* Link priority object. */
@@ -1710,6 +1715,7 @@ namespace FSHA
 		#define ERRNO_INVALIDPARAM	((ERRNO)5)
 		#define ERRNO_REPEATOP		((ERRNO)6)
 		#define ERRNO_NOTREADY		((ERRNO)7)
+		#define ERRNO_TIMEOUT		((ERRNO)8)
 		const GAIA::GCH* ErrorString(ERRNO en)
 		{
 			static const GAIA::GCH* ERRNO_STRING[] = 
@@ -1722,6 +1728,7 @@ namespace FSHA
 				"InvalidParam",
 				"RepeatOp",
 				"NotReady",
+				"Timeout",
 			};
 			if(en >= sizeofarray(ERRNO_STRING))
 				return GNULL;
@@ -1874,9 +1881,37 @@ namespace FSHA
 		GINL const GAIA::GCH* GetReadRootPath() const{return m_readroot.front_ptr();}
 		GINL GAIA::GVOID SetWriteRootPath(const GAIA::GCH* pszPathName){m_writeroot = pszPathName;}
 		GINL const GAIA::GCH* GetWriteRootPath() const{return m_writeroot.front_ptr();}
-		GINL GAIA::GVOID SetFileCmpl(const FILEID& fileid, GAIA::BL bCmpl){GAIA::SYNC::AutoLock al(m_lr_filestate); m_filestate.set(fileid);}
+		GINL GAIA::GVOID SetFileCmpl(const FILEID& fileid, GAIA::BL bCmpl)
+		{
+			GAIA::SYNC::AutoLock al(m_lr_filestate);
+			if(bCmpl)
+			{
+				if(!m_filestate.exist(fileid))
+				{
+					m_filestate.set(fileid);
+					++m_uCmplFileCount;
+				}
+			}
+			else
+			{
+				if(m_filestate.exist(fileid))
+				{
+					m_filestate.reset(fileid);
+					--m_uCmplFileCount;
+				}
+			}
+		}
 		GINL GAIA::BL GetFileCmpl(const FILEID& fileid) const{GAIA::SYNC::AutoLock al((const_cast<FileShare*>(this))->m_lr_filestate); return m_filestate.exist(fileid);}
-		GINL GAIA::GVOID SetAllFileCmpl(GAIA::BL bCmpl){GAIA::SYNC::AutoLock al(m_lr_filestate); if(m_filestate.size() > 0){GAIA::ALGORITHM::memset(m_filestate.front_ptr(), bCmpl ? 0xFF : 0x00, m_filestate.size());}}
+		GINL GAIA::GVOID SetAllFileCmpl(GAIA::BL bCmpl)
+		{
+			if(bCmpl)
+				m_uCmplFileCount = m_filelist.GetFileCount();
+			else
+				m_uCmplFileCount = 0;
+			GAIA::SYNC::AutoLock al(m_lr_filestate);
+			if(m_filestate.size() > 0)
+				GAIA::ALGORITHM::memset(m_filestate.front_ptr(), bCmpl ? 0xFF : 0x00, m_filestate.size());
+		}
 		GINL GAIA::GVOID SetMainNAddr(const GAIA::NETWORK::NetworkAddress& na){m_mainna = na;}
 		GINL const GAIA::NETWORK::NetworkAddress& GetMainNAddr() const{return m_mainna;}
 		GINL GAIA::BL Request(const GAIA::NETWORK::NetworkAddress& na, const FIDLIST& listID)
@@ -1971,6 +2006,8 @@ namespace FSHA
 
 				"login",				"login to remote node, format = login username password ip port.",
 				"logout",				"logout from remote node, format = logout username ip port.",
+
+				"l",					"show link state, format = l.",
 			};
 			GAIA_ENUM_BEGIN(COMMAND_LIST)
 				CMD_HELP,
@@ -2007,6 +2044,8 @@ namespace FSHA
 
 				CMD_LOGIN,
 				CMD_LOGOUT,
+
+				CND_LINK,
 			GAIA_ENUM_END(COMMAND_LIST)
 			#define CMD(e) (listPart[0] == COMMAND_LIST[e * 2])
 			#define CMDFAILED do{m_prt << "Failed!\n";}while(GAIA::ALWAYSFALSE)
@@ -2029,6 +2068,7 @@ namespace FSHA
 				m_prt << "NRecvCount = " << m_statistics.nNRecvCount << "\n";
 				m_prt << "FrameCount = " << m_statistics.uFrameCount << "\n";
 				m_prt << "ValidFrameCount = " << m_statistics.uValidFrameCount << "\n";
+				m_prt << "OwnFile = " << m_uCmplFileCount << "/" << m_filelist.GetFileCount() << "\n";
 			}
 			else if(CMD(CMD_SAVE))
 			{
@@ -2385,6 +2425,37 @@ namespace FSHA
 				else
 					CMDFAILED;
 			}
+			else if(CMD(CND_LINK))
+			{
+				if(listPart.size() == 1)
+				{
+					GAIA::SYNC::AutoLock al(m_lr_links);
+					GAIA::N32 nIndex = 0;
+					for(__LinkListType::it it = m_links.front_it(); !it.empty(); ++it)
+					{
+						NLink& nl = *it;
+						GAIA::GCH szText[128];
+						nl.na.ToString(szText);
+						m_prt << "[" << nIndex << "] " << szText << " ";
+						if(nl.bBeLink)
+							m_prt << "BeLink" << " ";
+						else
+							m_prt << "Link" << " ";
+						if(nl.state == NLink::STATE_DISCONNECT)
+							m_prt << "Disconnect" << " ";
+						else if(nl.state == NLink::STATE_READY)
+							m_prt << "Ready" << " ";
+						else if(nl.state == NLink::STATE_ONLINE)
+							m_prt << "Online" << " ";
+						else
+							m_prt << "Invalid" << " ";
+						m_prt << "Files[" << nl.uCmplFileCnt << "]";
+						m_prt << "\n";
+					}
+				}
+				else
+					CMDFAILED;
+			}
 			else
 				return GAIA::False;
 			return GAIA::True;
@@ -2404,6 +2475,7 @@ namespace FSHA
 			m_pNReceiver = GNULL;
 			m_pNSender = GNULL;
 			m_pNListener = GNULL;
+			m_uCmplFileCount = 0;
 			m_state = NLink::STATE_DISCONNECT;
 			m_bEnableSequenceRequest = GAIA::False;
 			m_uSequenceRequestIndex = 0;
@@ -2424,6 +2496,8 @@ namespace FSHA
 			if(this->OnExecuteFileWrite())
 				bRet = GAIA::True;
 			if(this->OnExecuteCmplFilesNotify())
+				bRet = GAIA::True;
+			if(this->OnExecuteRecycleLink())
 				bRet = GAIA::True;
 			if(bRet)
 				m_statistics.uValidFrameCount++;
@@ -2722,6 +2796,7 @@ namespace FSHA
 			for(GAIA::CONTAINER::Vector<FileRecCache>::it it = listComplete.front_it(); !it.empty(); ++it)
 			{
 				m_statistics.nRequestFileCmplCount++;
+				this->SetFileCmpl((*it).fid, GAIA::True);
 				/* Release FileRecCache. */
 				{
 					GAIA::SYNC::AutoLock al(m_lr_fcaches);
@@ -2817,6 +2892,96 @@ namespace FSHA
 			}
 			return GAIA::True;
 		}
+		GINL GAIA::BL OnExecuteRecycleLink()
+		{
+			GAIA::BL bRet = GAIA::False;
+
+			GAIA::U64 uCurrentTime = GAIA::TIME::clock_time();
+
+			// Recycle from link list and prilink list.
+			GAIA::CONTAINER::Vector<NLink> listRecycle;
+			{
+				GAIA::SYNC::AutoLock al1(m_lr_links);
+				GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+				for(__LinkListType::it it = m_links.front_it(); !it.empty(); ++it)
+				{
+					NLink& nl = *it;
+					if(uCurrentTime > nl.uLastHeartTime)
+					{
+						if(uCurrentTime - nl.uLastHeartTime > LINKRECYCLETIME)
+							listRecycle.push_back(nl);
+					}
+				}
+				for(GAIA::CONTAINER::Vector<NLink>::it it = listRecycle.front_it(); !it.empty(); ++it)
+				{
+					NLinkPri nlp;
+					nlp.nlink = *it;
+					__MsgType msg;
+					msg << nlp.nlink.na;
+					msg << MSG_A_ERROR;
+					msg << ERRNO_TIMEOUT;
+					this->Send(msg.front_ptr(), msg.write_size());
+					m_links.erase(nlp.nlink);
+					m_prilinks.erase(nlp);
+				}
+			}
+
+			if(listRecycle.size() > 0)
+			{
+				// Recycle all not sended file.
+				{
+					GAIA::SYNC::AutoLock al(m_lr_filesendtasks);
+					GAIA::CONTAINER::Vector<FileSendTask> listRecycleFST;
+					for(GAIA::CONTAINER::Vector<NLink>::it it = listRecycle.front_it(); !it.empty(); ++it)
+					{
+						NLink& nl = *it;
+						if(!nl.bBeLink)
+							continue;
+						FileSendTask fst;
+						fst.na = nl.na;
+						fst.fid = 0;
+						__FileSendTaskListType::it itc = m_filesendtasks.lower_bound(fst);
+						for(; !itc.empty(); ++itc)
+						{
+							FileSendTask& fstref = *itc;
+							if(fstref.na != fst.na)
+								break;
+							listRecycleFST.push_back(fstref);
+						}
+					}
+					for(GAIA::CONTAINER::Vector<FileSendTask>::it it = listRecycleFST.front_it(); !it.empty(); ++it)
+						m_filesendtasks.erase(*it);
+				}
+
+				// Recycle all not sended chunk.
+				{
+					GAIA::SYNC::AutoLock al(m_lr_chunksendtasks);
+					GAIA::CONTAINER::Vector<ChunkSendTask> listRecycleCST;
+					for(GAIA::CONTAINER::Vector<NLink>::it it = listRecycle.front_it(); !it.empty(); ++it)
+					{
+						NLink& nl = *it;
+						if(!nl.bBeLink)
+							continue;
+						ChunkSendTask cst;
+						cst.na = nl.na;
+						cst.fid = 0;
+						cst.ci = 0;
+						__ChunkSendTaskListType::it itc = m_chunksendtasks.lower_bound(cst);
+						for(; !itc.empty(); ++itc)
+						{
+							ChunkSendTask& cstref = *itc;
+							if(cstref.na != cst.na)
+								break;
+							listRecycleCST.push_back(cstref);
+						}
+					}
+					for(GAIA::CONTAINER::Vector<ChunkSendTask>::it it = listRecycleCST.front_it(); !it.empty(); ++it)
+						m_chunksendtasks.erase(*it);
+				}
+			}
+
+			return bRet;
+		}
 		GINL GAIA::BL OnReceive(NHandle& s, const GAIA::U8* p, GAIA::U32 size)
 		{
 			m_statistics.nNRecvCount++;
@@ -2878,6 +3043,31 @@ namespace FSHA
 				break;
 			case MSG_NOOP:
 				{
+					GAIA::U64 uClockTime = GAIA::TIME::clock_time();
+
+					GAIA::SYNC::AutoLock al1(m_lr_links);
+					GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+					NLink nl;
+					nl.na = na;
+					nl.bBeLink = GAIA::True;
+					NLink* pNL = m_links.find(nl);
+					if(pNL != GNULL)
+						pNL->uLastHeartTime = uClockTime;
+					nl.bBeLink = GAIA::False;
+					pNL = m_links.find(nl);
+					if(pNL != GNULL)
+						pNL->uLastHeartTime = uClockTime;
+
+					NLinkPri nlp;
+					nlp.nlink = nl;
+					nlp.nlink.bBeLink = GAIA::True;
+					NLinkPri* pNLP = m_prilinks.find(nlp);
+					if(pNLP != GNULL)
+						pNLP->nlink.uLastHeartTime = uClockTime;
+					nlp.nlink.bBeLink = GAIA::False;
+					pNLP = m_prilinks.find(nlp);
+					if(pNLP != GNULL)
+						pNLP->nlink.uLastHeartTime = uClockTime;
 				}
 				break;
 			case MSG_R_FILE:
@@ -3004,8 +3194,10 @@ namespace FSHA
 					np.nlink.na = na;
 					np.nlink.bBeLink = GAIA::True;
 					GAIA::SYNC::AutoLock al1(m_lr_links);
-					NLink* pNLink = m_links.find(np.nlink);
-					if(pNLink == GNULL)
+					NLink* pBeLink = m_links.find(np.nlink);
+					np.nlink.bBeLink = GAIA::False;
+					NLink* pLink = m_links.find(np.nlink);
+					if(pLink == GNULL && (pBeLink == GNULL || pBeLink->state != NLink::STATE_READY))
 					{
 						__MsgType msg;
 						msg << na;
@@ -3014,12 +3206,24 @@ namespace FSHA
 						this->Send(msg.front_ptr(), msg.write_size());
 						break;
 					}
-					np.nlink.uCmplFileCnt = pNLink->uCmplFileCnt;
-					pNLink->uCmplFileCnt = filecount;
-					GAIA::SYNC::AutoLock al2(m_lr_prilinks);
-					m_prilinks.erase(np);
-					np.nlink.uCmplFileCnt = filecount;
-					m_prilinks.insert(np);
+					if(pBeLink != GNULL)
+					{
+						np.nlink.uCmplFileCnt = pBeLink->uCmplFileCnt;
+						pBeLink->uCmplFileCnt = filecount;
+						GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+						m_prilinks.erase(np);
+						np.nlink.uCmplFileCnt = filecount;
+						m_prilinks.insert(np);
+					}
+					if(pLink != GNULL)
+					{
+						np.nlink.uCmplFileCnt = pLink->uCmplFileCnt;
+						pLink->uCmplFileCnt = filecount;
+						GAIA::SYNC::AutoLock al2(m_lr_prilinks);
+						m_prilinks.erase(np);
+						np.nlink.uCmplFileCnt = filecount;
+						m_prilinks.insert(np);
+					}
 				}
 				break;
 			case MSG_CMPLFILESECTION:
@@ -3033,8 +3237,8 @@ namespace FSHA
 					np.nlink.na = na;
 					np.nlink.bBeLink = GAIA::True;
 					GAIA::SYNC::AutoLock al(m_lr_links);
-					NLink* pNLink = m_links.find(np.nlink);
-					if(pNLink == GNULL)
+					NLink* pBeLink = m_links.find(np.nlink);
+					if(pBeLink == GNULL || pBeLink->state != NLink::STATE_READY)
 					{
 						__MsgType msg;
 						msg << na;
@@ -3043,16 +3247,16 @@ namespace FSHA
 						this->Send(msg.front_ptr(), msg.write_size());
 						break;
 					}
-					np.nlink.uCmplFileCnt = pNLink->uCmplFileCnt;
+					np.nlink.uCmplFileCnt = pBeLink->uCmplFileCnt;
 					FILEID uIncreaseFileCnt = 0;
-					this->CmplFileSectionRecursive(pNLink, fidsec, uIncreaseFileCnt);
+					this->CmplFileSectionRecursive(pBeLink, fidsec, uIncreaseFileCnt);
 					if(uIncreaseFileCnt > 0)
 					{
 						GAIA::SYNC::AutoLock al2(m_lr_prilinks);
 						m_prilinks.erase(np);
-						np.nlink.uCmplFileCnt = np.nlink.uCmplFileCnt + uIncreaseFileCnt;
+						np.nlink.uCmplFileCnt = GAIA::ALGORITHM::minimize(np.nlink.uCmplFileCnt + uIncreaseFileCnt, m_filelist.GetFileCount());
 						m_prilinks.insert(np);
-						pNLink->uCmplFileCnt = np.nlink.uCmplFileCnt;
+						pBeLink->uCmplFileCnt = np.nlink.uCmplFileCnt;
 					}
 				}
 				break;
@@ -3089,6 +3293,7 @@ namespace FSHA
 								GAIA_AST(GAIA::ALWAYSFALSE);
 								nl.state = NLink::STATE_READY;
 								nl.pCmplFiles = new GAIA::CONTAINER::Set<FileIDSection>;
+								nl.uLastHeartTime = GINVALID;
 								m_links.insert(nl);
 								NLinkPri nlp;
 								nlp.nlink = nl;
@@ -3173,6 +3378,9 @@ namespace FSHA
 			GAIA_AST(msg.read_size() == msg.write_size());
 			return GAIA::True;
 		}
+		GINL GAIA::GVOID OnLostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse)
+		{
+		}
 		GINL GAIA::BL NLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName, const GAIA::GCH* pszPassword)
 		{
 			__MsgType msg;
@@ -3204,6 +3412,7 @@ namespace FSHA
 				{
 					nl.state = NLink::STATE_DISCONNECT;
 					nl.pCmplFiles = new GAIA::CONTAINER::Set<FileIDSection>;
+					nl.uLastHeartTime = GINVALID;
 					m_links.insert(nl);
 					NLinkPri nlp;
 					nlp.nlink = nl;
@@ -3253,11 +3462,20 @@ namespace FSHA
 			{
 				nl.state = NLink::STATE_READY;
 				nl.pCmplFiles = new GAIA::CONTAINER::Set<FileIDSection>;
+				nl.uLastHeartTime = GINVALID;
 				m_links.insert(nl);
 				NLinkPri nlp;
 				nlp.nlink = nl;
 				GAIA::SYNC::AutoLock al2(m_lr_prilinks);
 				m_prilinks.insert(nlp);
+			}
+			// Send file count.
+			{
+				__MsgType msg;
+				msg << na;
+				msg << MSG_CMPLFILECOUNT;
+				msg << m_uCmplFileCount;
+				this->Send(msg.front_ptr(), msg.write_size());
 			}
 			return ERRNO_NOERROR;
 		}
@@ -3298,15 +3516,15 @@ namespace FSHA
 			nl.na = na;
 			nl.bBeLink = GAIA::True;
 			GAIA::SYNC::AutoLock al2(m_lr_links);
-			NLink* pNLink = m_links.find(nl);
-			if(pNLink == GNULL)
+			NLink* pLink = m_links.find(nl);
+			if(pLink == GNULL)
 				return ERRNO_NOTREADY;
 			else
 			{
-				if(pNLink->state != NLink::STATE_READY)
+				if(pLink->state != NLink::STATE_READY)
 					return ERRNO_NOTREADY;
 			}
-			pNLink->state = NLink::STATE_ONLINE;
+			pLink->state = NLink::STATE_ONLINE;
 			return ERRNO_NOERROR;
 		}
 		GINL GAIA::GVOID SendOK(const GAIA::NETWORK::NetworkAddress& na)
@@ -3410,15 +3628,15 @@ namespace FSHA
 			}
 			return bRet;
 		}
-		GINL GAIA::GVOID CmplFileSectionRecursive(NLink* pNLink, FileIDSection fidsec, FILEID& uIncreaseFileCnt)
+		GINL GAIA::GVOID CmplFileSectionRecursive(NLink* pLink, FileIDSection fidsec, FILEID& uIncreaseFileCnt)
 		{
-			GAIA::CONTAINER::Set<FileIDSection>::it it = pNLink->pCmplFiles->lower_bound(fidsec);
+			GAIA::CONTAINER::Set<FileIDSection>::it it = pLink->pCmplFiles->lower_bound(fidsec);
 			if(it.empty())
 			{
-				it = pNLink->pCmplFiles->upper_bound(fidsec);
+				it = pLink->pCmplFiles->upper_bound(fidsec);
 				if(it.empty())
 				{
-					pNLink->pCmplFiles->insert(fidsec);
+					pLink->pCmplFiles->insert(fidsec);
 					uIncreaseFileCnt += fidsec.uEnd - fidsec.uStart + 1;
 				}
 				else
@@ -3434,7 +3652,7 @@ namespace FSHA
 					}
 					else
 					{
-						pNLink->pCmplFiles->insert(fidsec);
+						pLink->pCmplFiles->insert(fidsec);
 						uIncreaseFileCnt += fidsec.uEnd - fidsec.uStart + 1;
 					}
 				}
@@ -3449,7 +3667,7 @@ namespace FSHA
 					GAIA::N32 nSplitCnt = this->SplitFileIDSectionLeft(fidsec, fidsec_next, fidsecnew);
 					if(nSplitCnt == 0)
 					{
-						pNLink->pCmplFiles->insert(fidsec);
+						pLink->pCmplFiles->insert(fidsec);
 						uIncreaseFileCnt += fidsec.uEnd - fidsec.uStart + 1;
 					}
 					else
@@ -3457,7 +3675,7 @@ namespace FSHA
 						uIncreaseFileCnt += fidsec_next.uStart - fidsec.uStart;
 						fidsec_next.uStart = fidsec.uStart;
 						if(nSplitCnt == 2)
-							this->CmplFileSectionRecursive(pNLink, fidsecnew, uIncreaseFileCnt);
+							this->CmplFileSectionRecursive(pLink, fidsecnew, uIncreaseFileCnt);
 					}
 				}
 				else
@@ -3469,7 +3687,7 @@ namespace FSHA
 						GAIA_AST(fidsec_next.uStart > fidsec_prev.uEnd);
 						uIncreaseFileCnt += fidsec_next.uStart - fidsec_prev.uEnd - 1;
 						fidsec_prev.uEnd = fidsec_next.uEnd;
-						pNLink->pCmplFiles->erase(fidsec_next);
+						pLink->pCmplFiles->erase(fidsec_next);
 
 					}
 					if(fidsec.uStart < fidsec_prev.uStart)
@@ -3477,14 +3695,14 @@ namespace FSHA
 						FileIDSection fidsecnew;
 						fidsecnew.uStart = fidsec.uStart;
 						fidsec.uEnd = fidsec_prev.uStart - 1;
-						this->CmplFileSectionRecursive(pNLink, fidsecnew, uIncreaseFileCnt);
+						this->CmplFileSectionRecursive(pLink, fidsecnew, uIncreaseFileCnt);
 					}
 					if(fidsec.uEnd > fidsec_next.uEnd)
 					{
 						FileIDSection fidsecnew;
 						fidsecnew.uStart = fidsec_next.uStart + 1;
 						fidsecnew.uEnd = fidsec.uEnd;
-						this->CmplFileSectionRecursive(pNLink, fidsecnew, uIncreaseFileCnt);
+						this->CmplFileSectionRecursive(pLink, fidsecnew, uIncreaseFileCnt);
 					}
 				}
 			}
@@ -3528,6 +3746,7 @@ namespace FSHA
 		__LinkListType m_links; GAIA::SYNC::Lock m_lr_links;
 		__LinkPriListType m_prilinks; GAIA::SYNC::Lock m_lr_prilinks;
 		GAIA::CONTAINER::BasicBitset<GAIA::NM> m_filestate; GAIA::SYNC::Lock m_lr_filestate;
+		GAIA::NM m_uCmplFileCount;
 		NLink::STATE m_state;
 		GAIA::BL m_bEnableSequenceRequest;
 		GAIA::UM m_uSequenceRequestIndex;

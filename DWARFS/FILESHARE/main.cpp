@@ -39,7 +39,10 @@ INPUT_IP:
 		desc.m_selfaddr.uPort = FSHA::MAINRECVPORT;
 	}
 	else
-		desc.m_selfaddr.FromString(szIP);
+	{
+		if(!desc.m_selfaddr.FromString(szIP))
+			goto INPUT_IP;
+	}
 
 	fsha.Initialize(desc);
 	fsha.Startup();
