@@ -12,6 +12,7 @@ namespace GAIA
 		public:
 			Directory(){}
 			~Directory(){}
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL SetWorkingDirectory(const GAIA::GCH* dir);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID GetWorkingDirectory(GAIA::CONTAINER::AString& result) const;
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID GetBinaryDirectory(GAIA::CONTAINER::AString& result) const;
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Create(const GAIA::GCH* pszName, GAIA::BL bOverlapped);
