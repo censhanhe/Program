@@ -1726,7 +1726,30 @@ namespace FSHA
 		class __DWARFS_FILESHARE_API FileReq
 		{
 		public:
+			GINL FileReq(){fid = GINVALID; uUserReqTime = 0; uFirstReqTime = 0; uLastReqTime = 0;}
+			GINL FileReq& operator = (const FileReq& src)
+			{
+				fid = src.fid;
+				uUserReqTime = src.uUserReqTime;
+				uFirstReqTime = src.uFirstReqTime;
+				uLastReqTime = src.uLastReqTime;
+				return *this;
+			}
+			GAIA_CLASS_OPERATOR_COMPARE(fid, fid, FileReq);
 			FILEID fid;
+			/*
+			*	If the FileShare(Current module)'s user call FileShare::Request function, 
+			*	the time will been recorded into variable 'uUserReqTime' at that time.
+			*/
+			GAIA::U64 uUserReqTime;
+			/*
+			*	If FileShare request the file from other FileShare server at the first time,
+			*	The time will been recorded into 'uFirstReqTime' and 'uLastReqTime'.
+			*	And then if the request failed the FileShare will trigger a new request repeatedly,
+			*	the time will been recorded into the variable 'uLastReqTime'.
+			*/
+			GAIA::U64 uFirstReqTime;
+			GAIA::U64 uLastReqTime;
 		};
 		/* Statistics */
 		class __DWARFS_FILESHARE_API Statistics
@@ -1845,8 +1868,9 @@ namespace FSHA
 		typedef GAIA::CONTAINER::Set<FileSendTask> __FileSendTaskListType;
 		typedef GAIA::CONTAINER::Set<ChunkSendTask> __ChunkSendTaskListType;
 		typedef GAIA::CONTAINER::Queue<FileWriteTask> __FileWriteTaskListType;
-		typedef GAIA::CONTAINER::Queue<FILEID> __FileQueueType;
-		typedef GAIA::CONTAINER::Set<FILEID> __FileSetType;
+		typedef GAIA::CONTAINER::Queue<FileReq> __FileReqQueueType;
+		typedef GAIA::CONTAINER::Set<FileReq> __FileReqSetType;
+		typedef GAIA::CONTAINER::Vector<FileReq> __FileReqListType;
 		typedef GAIA::CONTAINER::BasicBuffer<GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM> > __MsgType;
 	public:
 		FileShare(){this->init();}
@@ -2244,7 +2268,10 @@ namespace FSHA
 				if(listPart.size() == 2)
 				{
 					GAIA::SYNC::AutoLock al(m_lr_reqs);
-					m_reqs.push(listPart[1]);
+					FileReq fr;
+					fr.fid = listPart[1];
+					fr.uUserReqTime = GAIA::TIME::clock_time();
+					m_reqs.push(fr);
 				}
 				else
 					CMDFAILED;
@@ -2619,20 +2646,31 @@ namespace FSHA
 			GAIA::SYNC::AutoLock al2(m_lr_reqs);
 			if(!m_reqs.empty())
 			{
-				FIDLIST listFile;
-				listFile.reserve(m_nMaxRequestFileCountSameTime);
+				__FileReqListType listFileReq;
+				listFileReq.reserve(m_nMaxRequestFileCountSameTime);
 				if(m_reqeds.size() < m_nMaxRequestFileCountSameTime)
 				{
 					for(; !m_reqs.empty(); m_reqs.pop())
 					{
-						if(listFile.size() == m_nMaxRequestFileCountSameTime - m_reqeds.size())
+						if(listFileReq.size() == m_nMaxRequestFileCountSameTime - m_reqeds.size())
 							break;
 						if(m_reqeds.find(m_reqs.front()) == GNULL)
-							listFile.push_back(m_reqs.front());
+							listFileReq.push_back(m_reqs.front());
 					}
-					this->Request(m_mainna, listFile);
-					for(FIDLIST::it it = listFile.front_it(); !it.empty(); ++it)
-						m_reqeds.insert(*it);
+					if(!listFileReq.empty())
+					{
+						FIDLIST listFile;
+						listFile.reserve(listFileReq.size());
+						for(__FileReqListType::it it = listFileReq.front_it(); !it.empty(); ++it)
+							listFile.push_back((*it).fid);
+						this->Request(m_mainna, listFile);
+						for(__FileReqListType::it it = listFileReq.front_it(); !it.empty(); ++it)
+						{
+							FileReq& fr = *it;
+							fr.uFirstReqTime = fr.uLastReqTime = GAIA::TIME::clock_time();
+							m_reqeds.insert(fr);
+						}
+					}
 				}
 			}
 			return bRet;
@@ -2651,7 +2689,10 @@ namespace FSHA
 					const FILEID& fid = m_filelist.GetIDBySequence(m_uSequenceRequestIndex);
 					if(m_filestate.exist(fid))
 						continue;
-					m_reqs.push(fid);
+					FileReq fr;
+					fr.fid = fid;
+					fr.uUserReqTime = GAIA::TIME::clock_time();
+					m_reqs.push(fr);
 					bRet = GAIA::True;
 				}
 			}
@@ -2928,7 +2969,9 @@ namespace FSHA
 				/* Remove from requested set. */
 				{
 					GAIA::SYNC::AutoLock al(m_lr_reqeds);
-					m_reqeds.erase((*it).fid);
+					FileReq fr;
+					fr.fid = (*it).fid;
+					m_reqeds.erase(fr);
 				}
 				/* Add to complete file list. */
 				{
@@ -3279,7 +3322,9 @@ namespace FSHA
 					FILEID fid;
 					msg >> fid;
 					GAIA::SYNC::AutoLock al(m_lr_reqeds);
-					FILEID* pFinded = m_reqeds.find(fid);
+					FileReq fr;
+					fr.fid = fid;
+					FileReq* pFinded = m_reqeds.find(fr);
 					if(pFinded != GNULL)
 					{
 						FIDLIST listRequest;
@@ -3441,7 +3486,9 @@ namespace FSHA
 									CHUNKINDEX ci;
 									msg >> fid;
 									msg >> ci;
-									FILEID* pFinded = m_reqeds.find(fid);
+									FileReq fr;
+									fr.fid = fid;
+									FileReq* pFinded = m_reqeds.find(fr);
 									if(pFinded != GNULL)
 										listValidFile.push_back(fid);
 								}
@@ -4051,8 +4098,8 @@ namespace FSHA
 		__FileSendTaskListType m_filesendtasks; GAIA::SYNC::Lock m_lr_filesendtasks;
 		__ChunkSendTaskListType m_chunksendtasks; GAIA::SYNC::Lock m_lr_chunksendtasks;
 		__FileWriteTaskListType m_filewritetasks; GAIA::SYNC::Lock m_lr_filewritetasks;
-		__FileQueueType m_reqs; GAIA::SYNC::Lock m_lr_reqs;
-		__FileSetType m_reqeds; GAIA::SYNC::Lock m_lr_reqeds;
+		__FileReqQueueType m_reqs; GAIA::SYNC::Lock m_lr_reqs;
+		__FileReqSetType m_reqeds; GAIA::SYNC::Lock m_lr_reqeds;
 		FIDLIST m_cmplfiles; GAIA::SYNC::Lock m_lr_cmplfiles;
 		GAIA::SYNC::Lock m_lr_send;
 		GAIA::NM m_nMaxRequestFileCountSameTime;
