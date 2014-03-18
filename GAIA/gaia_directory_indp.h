@@ -19,16 +19,16 @@ namespace GAIA
 	namespace FILESYSTEM
 	{
 	#if GAIA_OS == GAIA_OS_WINDOWS
-		static GAIA::UM MAXPL = MAX_PATH;
+		static const GAIA::UM MAXPL = MAX_PATH;
 	#else
-		static GAIA::UM MAXPL = 260;
+		static const GAIA::UM MAXPL = 260;
 	#endif
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::SetWorkingDirectory(const GAIA::GCH* dir)
 		{
 			if(GAIA::ALGORITHM::stremp(dir))
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(::SetCurrentDirectory(dir))
+			if(::SetCurrentDirectoryA(dir))
 		#else
 			if(chdir(dir) == 0)
 		#endif
@@ -143,7 +143,7 @@ namespace GAIA
 					bFinded = ::FindNextFileA(hFF, &fdata);
 				}
 				::FindClose(hFF);
-				return GAIA::True;
+				return this->Remove(pszName, GAIA::False);
 			}
 			else
 			{
@@ -152,7 +152,60 @@ namespace GAIA
 				return GAIA::False;
 			}
 		#else
-			return GAIA::False;
+			if(bOverlapped)
+			{
+				/* Generate szFind for recursive file collection. */
+				GAIA::GCH szFind[MAXPL];
+				GAIA::ALGORITHM::strcpy(szFind, pszName);
+				GAIA::GCH* p = GAIA::ALGORITHM::strend(szFind);
+				--p;
+				if(*p != '/')
+					GAIA::ALGORITHM::strcat(p, "/");
+				/* find */
+				DIR* pdir = opendir(pszName);
+				if(pdir == GNULL)
+					return GAIA::False;
+				dirent* pdirent;
+				while((pdirent = readdir(pdir)) != GNULL)
+				{
+					if(GAIA::ALGORITHM::strcmp(pdirent->d_name, ".") == 0 || 
+						GAIA::ALGORITHM::strcmp(pdirent->d_name, "..") == 0){}
+					else
+					{
+						struct stat s;
+						GAIA::GCH szNext[MAXPL];
+						GAIA::ALGORITHM::strcpy(szNext, szFind);
+						GAIA::ALGORITHM::strcat(szNext, pdirent->d_name);
+						if(lstat(szNext, &s) >= 0)
+						{
+							if(S_ISDIR(s.st_mode))
+							{
+								if(!this->Remove(szNext, bOverlapped))
+								{
+									closedir(pdir);
+									return GAIA::False;
+								}
+							}
+							else
+							{
+								if(!this->RemoveFile(szNext))
+								{
+									closedir(pdir);
+									return GAIA::False;
+								}
+							}
+						}
+					}
+				}
+				closedir(pdir);
+				return this->Remove(pszName, GAIA::False);
+			}
+			else
+			{
+				if(rmdir(pszName) == 0)
+					return GAIA::True;
+				return GAIA::False;
+			}
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Exist(const GAIA::GCH* pszName) const
@@ -186,6 +239,8 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
+			if(unlink(pszName) == 0)
+				return GAIA::True;
 			return GAIA::False;
 		#endif
 		}
@@ -200,6 +255,8 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
+			if(link(pszSrc, pszDst) == 0)
+				return GAIA::True;
 			return GAIA::False;
 		#endif
 		}

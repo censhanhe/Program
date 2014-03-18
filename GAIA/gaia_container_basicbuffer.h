@@ -166,14 +166,14 @@ namespace GAIA
 				{
 				case SEEK_TYPE_BEGIN:
 					{
-						if(size < 0 || size >= this->capacity())
+						if(size < 0 || size > this->capacity())
 							return GAIA::False;
 						p = m_pFront + size;
 					}
 					break;
 				case SEEK_TYPE_END:
 					{
-						if(size < 0 || size >= this->capacity())
+						if(size < 0 || size > this->capacity())
 							return GAIA::False;
 						p = m_pBack - size;
 					}
