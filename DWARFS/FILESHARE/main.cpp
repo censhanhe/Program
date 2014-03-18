@@ -16,7 +16,9 @@ int main()
 
 	cout << "Local machine ip list:" << endl;
 	GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listIP;
-	GAIA::NETWORK::GetHostIPList(GNULL, listIP);
+	GAIA::GCH szHostName[260];
+	GAIA::NETWORK::GetHostName(szHostName, 260);
+	GAIA::NETWORK::GetHostIPList(szHostName, listIP);
 	for(GAIA::N32 x = 0; x < listIP.size(); ++x)
 	{
 		GAIA::GCH szIP[128];
