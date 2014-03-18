@@ -1660,30 +1660,30 @@ namespace FSHA
 			Statistics(){this->init();}
 			GINL GAIA::GVOID init()
 			{
-				nRequestFileCount = 0;
-				nRequestFileCmplCount = 0;
-				nBeRequestFileCount = 0;
-				nSendFileCount = 0;
-				nSendCmplFileCount = 0;
-				nSendChunkCount = 0;
-				nRecvChunkCount = 0;
-				nNSendCount = 0;
-				nNRecvCount = 0;
+				uRequestFileCount = 0;
+				uRequestFileCmplCount = 0;
+				uBeRequestFileCount = 0;
+				uSendFileCount = 0;
+				uSendCmplFileCount = 0;
+				uSendChunkCount = 0;
+				uRecvChunkCount = 0;
+				uNSendCount = 0;
+				uNRecvCount = 0;
 				uFrameCount = 0;
 				uValidFrameCount = 0;
 				uTotalCmplFileCount = 0;
 				uJumpFileCount = 0;
 				uBeJumpFileCount = 0;
 			}
-			GAIA::NM nRequestFileCount;
-			GAIA::NM nRequestFileCmplCount;
-			GAIA::NM nBeRequestFileCount;
-			GAIA::NM nSendFileCount;
-			GAIA::NM nSendCmplFileCount;
-			GAIA::NM nSendChunkCount;
-			GAIA::NM nRecvChunkCount;
-			GAIA::NM nNSendCount;
-			GAIA::NM nNRecvCount;
+			GAIA::U64 uRequestFileCount;
+			GAIA::U64 uRequestFileCmplCount;
+			GAIA::U64 uBeRequestFileCount;
+			GAIA::U64 uSendFileCount;
+			GAIA::U64 uSendCmplFileCount;
+			GAIA::U64 uSendChunkCount;
+			GAIA::U64 uRecvChunkCount;
+			GAIA::U64 uNSendCount;
+			GAIA::U64 uNRecvCount;
 			GAIA::U64 uFrameCount;
 			GAIA::U64 uValidFrameCount;
 			GAIA::U64 uTotalCmplFileCount;
@@ -1952,7 +1952,7 @@ namespace FSHA
 					nCount /= sizeof(FILEID) + sizeof(CHUNKINDEX);
 					GAIA_AST(nCount < 256);
 					*(REQUESTFILECOUNTTYPE*)(msg.front_ptr() + sizeof(na) + sizeof(MSG_R_FILE)) = (REQUESTFILECOUNTTYPE)nCount;
-					m_statistics.nRequestFileCount += nCount;
+					m_statistics.uRequestFileCount += nCount;
 					this->Send(msg.front_ptr(), msg.write_size());
 					msg.clear();
 				}
@@ -2074,15 +2074,15 @@ namespace FSHA
 			}
 			else if(CMD(CMD_STATISTICS))
 			{
-				m_prt << "ReqFileCount = " << m_statistics.nRequestFileCount << "\n";
-				m_prt << "ReqCmplFileCount = " << m_statistics.nRequestFileCmplCount << "\n";
-				m_prt << "BeReqFileCount = " << m_statistics.nBeRequestFileCount << "\n";
-				m_prt << "SendFileCount = " << m_statistics.nSendFileCount << "\n";
-				m_prt << "SendCmplFileCount = " << m_statistics.nSendCmplFileCount << "\n";
-				m_prt << "SendChunkCount = " << m_statistics.nSendChunkCount << "\n";
-				m_prt << "RecvChunkCount = " << m_statistics.nRecvChunkCount << "\n";
-				m_prt << "NSendCount = " << m_statistics.nNSendCount << "\n";
-				m_prt << "NRecvCount = " << m_statistics.nNRecvCount << "\n";
+				m_prt << "ReqFileCount = " << m_statistics.uRequestFileCount << "\n";
+				m_prt << "ReqCmplFileCount = " << m_statistics.uRequestFileCmplCount << "\n";
+				m_prt << "BeReqFileCount = " << m_statistics.uBeRequestFileCount << "\n";
+				m_prt << "SendFileCount = " << m_statistics.uSendFileCount << "\n";
+				m_prt << "SendCmplFileCount = " << m_statistics.uSendCmplFileCount << "\n";
+				m_prt << "SendChunkCount = " << m_statistics.uSendChunkCount << "\n";
+				m_prt << "RecvChunkCount = " << m_statistics.uRecvChunkCount << "\n";
+				m_prt << "NSendCount = " << m_statistics.uNSendCount << "\n";
+				m_prt << "NRecvCount = " << m_statistics.uNRecvCount << "\n";
 				m_prt << "FrameCount = " << m_statistics.uFrameCount << "\n";
 				m_prt << "ValidFrameCount = " << m_statistics.uValidFrameCount << "\n";
 				m_prt << "TotalCmplFileCount = " << m_statistics.uTotalCmplFileCount << "(" << 
@@ -2615,14 +2615,14 @@ namespace FSHA
 					continue;
 				msg.write(buf, scsize);
 				this->Send(msg.front_ptr(), msg.write_size());
-				m_statistics.nSendChunkCount++;
+				m_statistics.uSendChunkCount++;
 				++fst.sci;
 				if(fst.sci == 0)
 					++fst.ci;
 				bRet = GAIA::True;
 				if(bComplete)
 				{
-					m_statistics.nSendCmplFileCount++;
+					m_statistics.uSendCmplFileCount++;
 					listDelete.push_back(fst);
 					pFRC->pFA->Close();
 					m_desc.m_pFAC->ReleaseFileAccess(pFRC->pFA);
@@ -2677,7 +2677,7 @@ namespace FSHA
 					continue;
 				msg.write(buf, scsize);
 				this->Send(msg.front_ptr(), msg.write_size());
-				m_statistics.nSendChunkCount++;
+				m_statistics.uSendChunkCount++;
 				++cst.sci;
 				if(cst.sci == 0)
 					++cst.ci;
@@ -2816,7 +2816,7 @@ namespace FSHA
 			/* Dispatch complete file. */
 			for(GAIA::CONTAINER::Vector<FileRecCache>::it it = listComplete.front_it(); !it.empty(); ++it)
 			{
-				m_statistics.nRequestFileCmplCount++;
+				m_statistics.uRequestFileCmplCount++;
 				this->SetFileCmpl((*it).fid, GAIA::True);
 				/* Release FileRecCache. */
 				{
@@ -3005,7 +3005,7 @@ namespace FSHA
 		}
 		GINL GAIA::BL OnReceive(NHandle& s, const GAIA::U8* p, GAIA::U32 size)
 		{
-			m_statistics.nNRecvCount++;
+			m_statistics.uNRecvCount++;
 			__MsgType msg;
 			msg.write(p, size);
 			GAIA::NETWORK::NetworkAddress na;
@@ -3103,7 +3103,7 @@ namespace FSHA
 				break;
 			case MSG_R_FILE:
 				{
-					m_statistics.nBeRequestFileCount += *(REQUESTFILECOUNTTYPE*)msg.read_ptr();
+					m_statistics.uBeRequestFileCount += *(REQUESTFILECOUNTTYPE*)msg.read_ptr();
 					if(!this->Jump(na, msg.read_ptr(), msg.write_size() - msg.read_size()))
 					{
 						REQUESTFILECOUNTTYPE fcnt;
@@ -3122,7 +3122,7 @@ namespace FSHA
 								if(pFST == GNULL)
 								{
 									if(m_filesendtasks.insert(fst))
-										m_statistics.nSendFileCount++;
+										m_statistics.uSendFileCount++;
 									else
 										GAIA_AST(GAIA::ALWAYSFALSE);
 								}
@@ -3172,7 +3172,7 @@ namespace FSHA
 				break;
 			case MSG_A_FILECHUNK:
 				{
-					m_statistics.nRecvChunkCount++;
+					m_statistics.uRecvChunkCount++;
 					FileWriteTask fwt;
 					msg >> fwt.fid;
 					msg >> fwt.ci;
@@ -3737,7 +3737,7 @@ namespace FSHA
 			if(m_pNH == GNULL)
 				return GAIA::False;
 			GAIA::SYNC::AutoLock al(m_lr_send);
-			m_statistics.nNSendCount++;
+			m_statistics.uNSendCount++;
 			return m_pNH->Send((const GAIA::U8*)p, size);
 		}
 		GINL GAIA::BL SendToAll(GAIA::GVOID* p, const GAIA::UM& size)
