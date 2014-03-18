@@ -41,6 +41,79 @@
 *	------	----	---------	--------	------------	--------------	-------		links	--------	send
 */
 
+/*
+*	[Protocal flow]
+*	NodeA---------------NodeB-----------------NodeB---------------------NodeB
+*
+*
+*	=========================================================================
+*	LOGIN---------------->---------------------->
+*						 |						|
+*						 |						|
+*	LOGINOK--------------<						|
+*						 |						|
+*						 |						|
+*	CMPLFILECOUNT--------<						|
+*												|
+*												|
+*	CMPFILECOUNT--------->						|
+*	|											|
+*	|											|
+*	CMPLFILESECTION------>						|
+*												|
+*	ERROR---------------------------------------<
+*		INVALIDPARAM							|
+*		USERNAME								|
+*		PASSWORD								|
+*		REPEATOP								|
+**
+*
+*	=========================================================================
+*	LOGOUT--------------->---------------------->
+*						 |						|
+*						 |						|
+*	LOGOUTOK-------------<						|
+*												|
+*												|
+*	ERROR---------------------------------------<
+*		INVALIDPARAM
+*		USERNAME
+*		NOTREADY
+*
+*
+*	=========================================================================
+*	FILE----------------->---------------------->---------------------->
+*						 |						|					   |
+*						 |						|					   |
+*	FILEHEAD-------------<						|					   |
+*						 |						|					   |
+*						 |						|					   |
+*	FILECHUNK[1,n]-------<						|					   |
+*	|											|					   |
+*	|											|					   |
+*	CMPLFILESECTION[0,1]->						|					   |
+*												|					   |
+*												|					   |
+*	CNN-----------------------------------------<					   |
+*																	   |
+*																	   |
+*	FILENOTEXIST-------------------------------------------------------<
+*
+*
+*	=========================================================================
+*	FILECHUNK------------>
+*						 |
+*						 |
+*	FILECHUNK[1,n]-------<
+*	|
+*	|
+*	CMPLFILESECTION[0,1]->
+*
+*
+*	=========================================================================
+*	NOOP<---------------->NOOP
+*/
+
 namespace FSHA
 {
 	/* Constants. */
@@ -75,7 +148,7 @@ namespace FSHA
 	typedef GAIA::U16 CHUNKINDEX;
 	typedef GAIA::U8 SUBCHUNKINDEX;
 	typedef GAIA::U16 SUBCHUNKSIZETYPE;
-	typedef GAIA::U8 REQUESTFILECOUNTTYPE;
+	typedef GAIA::U8 REQFILECOUNTTYPE;
 	typedef GAIA::U8 CRCSIZETYPE;
 	typedef GAIA::U32 FILESIZETYPE;
 	typedef GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::U8> FSTR;
@@ -84,7 +157,7 @@ namespace FSHA
 	typedef GAIA::CONTAINER::BasicAVLTree<
 			FSTR, GAIA::N32, GAIA::N32, 
 			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > FSTRBTR; 
-	typedef GAIA::U32 MAP_INDEX_TYPE; // 0 means invalid id.
+	typedef GAIA::U32 MAPINDEX; // 0 means invalid id.
 	typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAX_PATHLEN> FNAMETYPE;
 	typedef GAIA::CONTAINER::Array<FNAMETYPE, MAX_DEPTH> FNAMEPARTLISTTYPE;
 
@@ -349,10 +422,10 @@ namespace FSHA
 							++itv;
 						}
 						fname.tolower();
-						MAP_INDEX_TYPE mit[MAX_DEPTH];
+						MAPINDEX mit[MAX_DEPTH];
 						if(this->NameToMapIndex(fname, mit))
 						{
-							MAP_INDEX_TYPE* pmit = mit;
+							MAPINDEX* pmit = mit;
 							while(*pmit != GINVALID)
 							{
 								TrieNode n;
@@ -417,11 +490,11 @@ namespace FSHA
 			GAIA::GCH szLower[MAX_PATHLEN];
 			GAIA::ALGORITHM::strcpy(szLower, pszFileName);
 			GAIA::ALGORITHM::tolower(szLower);
-			MAP_INDEX_TYPE mapindex[MAX_DEPTH];
+			MAPINDEX mapindex[MAX_DEPTH];
 			if(!this->NameToMapIndex(szLower, mapindex))
 				return GNULL;
 			TrieNode tnlist[MAX_DEPTH];
-			MAP_INDEX_TYPE* p = mapindex;
+			MAPINDEX* p = mapindex;
 			for(;;)
 			{
 				if(*p == GINVALID)
@@ -443,7 +516,7 @@ namespace FSHA
 			GAIA::NM nIndex = m_recids.search(f);
 			if(nIndex == GINVALID)
 				return GAIA::False;
-			MAP_INDEX_TYPE mapindex[MAX_DEPTH];
+			MAPINDEX mapindex[MAX_DEPTH];
 			if(!this->GenerateMapIndex(m_recids[nIndex].m_it, mapindex))
 				return GAIA::False;
 			return this->MapIndexToName(mapindex, pResult);
@@ -456,7 +529,7 @@ namespace FSHA
 		public:
 			GINL TrieNode& operator = (const TrieNode& src){m_mapindex = src.m_mapindex; m_id = src.m_id; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE(m_mapindex, m_mapindex, TrieNode);
-			MAP_INDEX_TYPE m_mapindex;
+			MAPINDEX m_mapindex;
 			FILEID m_id;
 		};
 	public:
@@ -528,7 +601,7 @@ namespace FSHA
 		typedef GAIA::CONTAINER::Vector<FileRecSeq> __FileRecSeqListType;
 	private:
 		GINL GAIA::GVOID init(){(*m_ftree.root()).m_id = GINVALID; (*m_ftree.root()).m_mapindex = GINVALID; m_LastMaxFileID = 0; m_pPr = GNULL;}
-		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAP_INDEX_TYPE* pResult) const
+		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAPINDEX* pResult) const
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -554,12 +627,12 @@ namespace FSHA
 			pResult[namelist.size()] = GINVALID;
 			return GAIA::True;
 		}
-		GAIA::BL MapIndexToName(const MAP_INDEX_TYPE* pResult, GAIA::GCH* pszFileName) const
+		GAIA::BL MapIndexToName(const MAPINDEX* pResult, GAIA::GCH* pszFileName) const
 		{
 			GAIA_AST(pResult != GNULL);
 			if(pResult == GNULL)
 				return GAIA::False;
-			const MAP_INDEX_TYPE* p = pResult;
+			const MAPINDEX* p = pResult;
 			GAIA::GCH* pDst = pszFileName;
 			while(*p != GINVALID)
 			{
@@ -605,11 +678,11 @@ namespace FSHA
 			}
 			return GAIA::True;
 		}
-		GAIA::BL GenerateMapIndex(__FileTreeType::const_it it, MAP_INDEX_TYPE* pMapIndex) const
+		GAIA::BL GenerateMapIndex(__FileTreeType::const_it it, MAPINDEX* pMapIndex) const
 		{
 			if(it.empty())
 				return GAIA::False;
-			MAP_INDEX_TYPE* p = pMapIndex;
+			MAPINDEX* p = pMapIndex;
 			while(!it.empty())
 			{
 				*p++ = (*it).m_mapindex;
@@ -1691,37 +1764,50 @@ namespace FSHA
 			GAIA::U64 uBeJumpFileCount;
 		};
 	private:
+		/*
+		*	[Message table]
+		*	The following codes is the message and format declaration. 
+		*	_R_ : means request message.
+		*	_A_ : means answer message.
+		*	_N_	: means notify message.
+		*	_C_	: means common message.
+		*/
 		typedef GAIA::U8 MSGIDTYPE;
-		#define MSG_LOGIN 			((MSGIDTYPE)1)
+		#define MSG_R_LOGIN 			((MSGIDTYPE)1)
 		// username + password.
-		#define MSG_LOGOUT			((MSGIDTYPE)2)
+		#define MSG_R_LOGOUT			((MSGIDTYPE)2)
 		// username.
-		#define MSG_NOOP			((MSGIDTYPE)3)
+		#define MSG_C_NOOP				((MSGIDTYPE)3)
 		// nothing.
-		#define MSG_R_FILE			((MSGIDTYPE)10)
-		// filecount(REQUESTFILECOUNTTYPE) * (fileid(FILEID) + chunkindex(CHUNKINDEX)).
-		#define MSG_R_FILECHUNK		((MSGIDTYPE)11)
+		#define MSG_R_FILE				((MSGIDTYPE)10)
+		// filecount(REQFILECOUNTTYPE) * (fileid(FILEID) + chunkindex(CHUNKINDEX)).
+		#define MSG_R_FILECHUNK			((MSGIDTYPE)11)
 		// fileid(FILEID) + chunkindex(CHUNKINDEX).
-		#define MSG_A_FILEHEAD		((MSGIDTYPE)20)
+		#define MSG_A_FILEHEAD			((MSGIDTYPE)20)
 		// fileid(FILEID) + filesize(FILESIZETYPE) + filecrcsize(CRCSIZETYPE) + filecrc(void*).
-		#define MSG_A_FILECHUNK		((MSGIDTYPE)21)
+		#define MSG_A_FILECHUNK			((MSGIDTYPE)21)
 		// fileid(FILEID) + chunkindex(CHUNKINDEX) + subchunkindex(SUBCHUNKINDEX) + filedatasize(SUBCHUNKSIZETYPE) + filedata(void*).
-		#define MSG_A_FILENOTEXIST	((MSGIDTYPE)22)
+		#define MSG_A_FILENOTEXIST		((MSGIDTYPE)22)
 		// fileid(FILEID).
-		#define MSG_A_FILECMPL		((MSGIDTYPE)40)
+		#define MSG_A_FILECMPL			((MSGIDTYPE)40)
 		// fileid(FILEID).
-		#define MSG_CMPLFILECOUNT	((MSGIDTYPE)50)
+		#define MSG_N_CMPLFILECOUNT		((MSGIDTYPE)50)
 		// filecount(FILEID).
-		#define MSG_CMPLFILESECTION	((MSGIDTYPE)51)
+		#define MSG_N_CMPLFILESECTION	((MSGIDTYPE)51)
 		// startindex(FILEID) + endindex(FILEID).
-		#define MSG_A_CNN			((MSGIDTYPE)80)
-		// NetworkAddress + filecount(REQUESTFILECOUNTTYPE) * (fileid(FILEID) + chunkindex(CHUNKINDEX)).
-		#define MSG_A_LOGINOK		((MSGIDTYPE)200)
+		#define MSG_A_CNN				((MSGIDTYPE)80)
+		// NetworkAddress + filecount(REQFILECOUNTTYPE) * (fileid(FILEID) + chunkindex(CHUNKINDEX)).
+		#define MSG_A_LOGINOK			((MSGIDTYPE)200)
 		// nothing.
-		#define MSG_A_LOGOUTOK		((MSGIDTYPE)201)
+		#define MSG_A_LOGOUTOK			((MSGIDTYPE)201)
 		// nothing.
-		#define MSG_A_ERROR			((MSGIDTYPE)250)
+		#define MSG_A_ERROR				((MSGIDTYPE)250)
 		// errno(ERRNO).
+
+		/*
+		*	[Error table]
+		*	The following codes is the error number declaration.
+		*/
 		typedef GAIA::U16 ERRNO;
 		#define ERRNO_NOERROR		((ERRNO)0)
 		#define ERRNO_BUSY			((ERRNO)1)
@@ -1757,8 +1843,8 @@ namespace FSHA
 		typedef GAIA::CONTAINER::Set<FileSendTask> __FileSendTaskListType;
 		typedef GAIA::CONTAINER::Set<ChunkSendTask> __ChunkSendTaskListType;
 		typedef GAIA::CONTAINER::Queue<FileWriteTask> __FileWriteTaskListType;
-		typedef GAIA::CONTAINER::Queue<FILEID> __FILEQUEUETYPE;
-		typedef GAIA::CONTAINER::Set<FILEID> __FILESETTYPE;
+		typedef GAIA::CONTAINER::Queue<FILEID> __FileQueueType;
+		typedef GAIA::CONTAINER::Set<FILEID> __FileSetType;
 		typedef GAIA::CONTAINER::BasicBuffer<GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM> > __MsgType;
 	public:
 		FileShare(){this->init();}
@@ -1939,7 +2025,7 @@ namespace FSHA
 				{
 					msg << na;
 					msg << MSG_R_FILE;
-					msg << (REQUESTFILECOUNTTYPE)0;
+					msg << (REQFILECOUNTTYPE)0;
 				}
 				GAIA_AST(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - msg.write_size() >= sizeof(FILEID) + sizeof(CHUNKINDEX));
 				msg << *it;
@@ -1948,10 +2034,10 @@ namespace FSHA
 				++itnext;
 				if(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - msg.write_size() <= sizeof(FILEID) + sizeof(CHUNKINDEX) || itnext.empty())
 				{
-					GAIA::NM nCount = msg.write_size() - sizeof(na) - sizeof(MSG_R_FILE) - sizeof(REQUESTFILECOUNTTYPE);
+					GAIA::NM nCount = msg.write_size() - sizeof(na) - sizeof(MSG_R_FILE) - sizeof(REQFILECOUNTTYPE);
 					nCount /= sizeof(FILEID) + sizeof(CHUNKINDEX);
 					GAIA_AST(nCount < 256);
-					*(REQUESTFILECOUNTTYPE*)(msg.front_ptr() + sizeof(na) + sizeof(MSG_R_FILE)) = (REQUESTFILECOUNTTYPE)nCount;
+					*(REQFILECOUNTTYPE*)(msg.front_ptr() + sizeof(na) + sizeof(MSG_R_FILE)) = (REQFILECOUNTTYPE)nCount;
 					m_statistics.uRequestFileCount += nCount;
 					this->Send(msg.front_ptr(), msg.write_size());
 					msg.clear();
@@ -2872,7 +2958,7 @@ namespace FSHA
 							{
 								__MsgType msg;
 								msg << m_mainna;
-								msg << MSG_CMPLFILESECTION;
+								msg << MSG_N_CMPLFILESECTION;
 								msg << startindex;
 								msg << endindex;
 								this->SendToAll(msg.front_ptr(), msg.write_size());
@@ -2886,7 +2972,7 @@ namespace FSHA
 					{
 						__MsgType msg;
 						msg << m_mainna;
-						msg << MSG_CMPLFILESECTION;
+						msg << MSG_N_CMPLFILESECTION;
 						msg << startindex;
 						msg << endindex;
 						this->SendToAll(msg.front_ptr(), msg.write_size());
@@ -2907,7 +2993,7 @@ namespace FSHA
 				{
 					__MsgType msg;
 					msg << n.na;
-					msg << MSG_NOOP;
+					msg << MSG_C_NOOP;
 					this->Send(msg.front_ptr(), msg.write_size());
 				}
 			}
@@ -3012,7 +3098,7 @@ namespace FSHA
 			MSGIDTYPE msgid;
 			msg >> na;
 			msg >> msgid;
-			if(msgid != MSG_LOGIN)
+			if(msgid != MSG_R_LOGIN)
 			{
 				GAIA::SYNC::AutoLock al(m_lr_links);
 				NLink nl;
@@ -3026,7 +3112,7 @@ namespace FSHA
 			}
 			switch(msgid)
 			{
-			case MSG_LOGIN:
+			case MSG_R_LOGIN:
 				{
 					GAIA::GCH uname[USERNAMELEN + 1];
 					GAIA::GCH password[USERNAMELEN + 1];
@@ -3050,7 +3136,7 @@ namespace FSHA
 					}
 				}
 				break;
-			case MSG_LOGOUT:
+			case MSG_R_LOGOUT:
 				{
 					GAIA::GCH uname[USERNAMELEN + 1];
 					msg >> uname;
@@ -3072,7 +3158,7 @@ namespace FSHA
 					}
 				}
 				break;
-			case MSG_NOOP:
+			case MSG_C_NOOP:
 				{
 					GAIA::U64 uClockTime = GAIA::TIME::clock_time();
 
@@ -3103,12 +3189,12 @@ namespace FSHA
 				break;
 			case MSG_R_FILE:
 				{
-					m_statistics.uBeRequestFileCount += *(REQUESTFILECOUNTTYPE*)msg.read_ptr();
+					m_statistics.uBeRequestFileCount += *(REQFILECOUNTTYPE*)msg.read_ptr();
 					if(!this->Jump(na, msg.read_ptr(), msg.write_size() - msg.read_size()))
 					{
-						REQUESTFILECOUNTTYPE fcnt;
+						REQFILECOUNTTYPE fcnt;
 						msg >> fcnt;
-						for(REQUESTFILECOUNTTYPE x = 0; x < fcnt; ++x)
+						for(REQFILECOUNTTYPE x = 0; x < fcnt; ++x)
 						{
 							FileSendTask fst;
 							msg >> fst.fid;
@@ -3248,7 +3334,7 @@ namespace FSHA
 					}
 				}
 				break;
-			case MSG_CMPLFILECOUNT:
+			case MSG_N_CMPLFILECOUNT:
 				{
 					FILEID filecount;
 					msg >> filecount;
@@ -3298,7 +3384,7 @@ namespace FSHA
 					}
 				}
 				break;
-			case MSG_CMPLFILESECTION:
+			case MSG_N_CMPLFILESECTION:
 				{
 					FileIDSection fidsec;
 					msg >> fidsec.uStart;
@@ -3340,7 +3426,7 @@ namespace FSHA
 					msg >> jumpna;
 					if(jumpna != na && jumpna != m_pNH->GetRemoteAddress())
 					{
-						REQUESTFILECOUNTTYPE fcnt;
+						REQFILECOUNTTYPE fcnt;
 						msg >> fcnt;
 						if(fcnt > 0)
 						{
@@ -3449,7 +3535,7 @@ namespace FSHA
 					{
 						__MsgType msg;
 						msg << na;
-						msg << MSG_CMPLFILECOUNT;
+						msg << MSG_N_CMPLFILECOUNT;
 						msg << uFileCount;
 						this->Send(msg.front_ptr(), msg.write_size());
 					}
@@ -3459,7 +3545,7 @@ namespace FSHA
 						{
 							__MsgType msg;
 							msg << na;
-							msg << MSG_CMPLFILESECTION;
+							msg << MSG_N_CMPLFILESECTION;
 							msg << (*it).uStart;
 							msg << (*it).uEnd;
 							this->Send(msg.front_ptr(), msg.write_size());
@@ -3497,7 +3583,7 @@ namespace FSHA
 		{
 			__MsgType msg;
 			msg << na;
-			msg << MSG_LOGIN;
+			msg << MSG_R_LOGIN;
 			msg << pszUserName;
 			msg << pszPassword;
 			if(m_mainna.IsInvalid())
@@ -3612,7 +3698,7 @@ namespace FSHA
 			{
 				__MsgType msg;
 				msg << na;
-				msg << MSG_CMPLFILECOUNT;
+				msg << MSG_N_CMPLFILECOUNT;
 				msg << m_uCmplFileCount;
 				this->Send(msg.front_ptr(), msg.write_size());
 			}
@@ -3639,7 +3725,7 @@ namespace FSHA
 
 			__MsgType msg;
 			msg << na;
-			msg << MSG_LOGOUT;
+			msg << MSG_R_LOGOUT;
 			msg << pszUserName;
 			return this->Send(msg.front_ptr(), msg.write_size());
 		}
@@ -3894,7 +3980,7 @@ namespace FSHA
 				jumpna = listLinkPri[GAIA::MATH::random() % index]->nlink.na;
 			}
 			GAIA_AST(jumpna != na);
-			const REQUESTFILECOUNTTYPE& fcnt = *(const REQUESTFILECOUNTTYPE*)p;
+			const REQFILECOUNTTYPE& fcnt = *(const REQFILECOUNTTYPE*)p;
 			__MsgType msg;
 			if(sizeof(na) + sizeof(MSGIDTYPE) + sizeof(jumpna) + nSize > GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE)
 			{
@@ -3906,7 +3992,7 @@ namespace FSHA
 				msg << na;
 				msg << MSG_A_CNN;
 				msg << jumpna;
-				msg << (REQUESTFILECOUNTTYPE)first;
+				msg << (REQFILECOUNTTYPE)first;
 				msg.write(p + sizeof(fcnt), first * nodesize);
 				this->Send(msg.front_ptr(), msg.write_size());
 
@@ -3914,7 +4000,7 @@ namespace FSHA
 				msg << na;
 				msg << MSG_A_CNN;
 				msg << jumpna;
-				msg << (REQUESTFILECOUNTTYPE)second;
+				msg << (REQFILECOUNTTYPE)second;
 				msg.write(p + sizeof(fcnt) + first * nodesize, second * nodesize);
 				this->Send(msg.front_ptr(), msg.write_size());
 
@@ -3963,8 +4049,8 @@ namespace FSHA
 		__FileSendTaskListType m_filesendtasks; GAIA::SYNC::Lock m_lr_filesendtasks;
 		__ChunkSendTaskListType m_chunksendtasks; GAIA::SYNC::Lock m_lr_chunksendtasks;
 		__FileWriteTaskListType m_filewritetasks; GAIA::SYNC::Lock m_lr_filewritetasks;
-		__FILEQUEUETYPE m_reqs; GAIA::SYNC::Lock m_lr_reqs;
-		__FILESETTYPE m_reqeds; GAIA::SYNC::Lock m_lr_reqeds;
+		__FileQueueType m_reqs; GAIA::SYNC::Lock m_lr_reqs;
+		__FileSetType m_reqeds; GAIA::SYNC::Lock m_lr_reqeds;
 		FIDLIST m_cmplfiles; GAIA::SYNC::Lock m_lr_cmplfiles;
 		GAIA::SYNC::Lock m_lr_send;
 		GAIA::NM m_nMaxRequestFileCountSameTime;
