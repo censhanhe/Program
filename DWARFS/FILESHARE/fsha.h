@@ -66,7 +66,7 @@
 *		USERNAME								|
 *		PASSWORD								|
 *		REPEATOP								|
-**
+*
 *
 *	=========================================================================
 *	LOGOUT--------------->---------------------->
@@ -121,13 +121,13 @@ namespace FSHA
 	static const GAIA::U32 VERSION = 0x00000100;
 	static const GAIA::GCH INTERNAL_USERNAME[] = "admin";
 	static const GAIA::GCH INTERNAL_PASSWORD[] = "password";
-	static const GAIA::NM MAX_DEPTH = 18;
-	static const GAIA::NM MAX_PATHLEN = 240;
+	static const GAIA::NM MAXPATHDEPTH = 18;
+	static const GAIA::NM MAXPATHLEN = 240;
 	static const GAIA::U16 MAINRECVPORT = 7121;
-	static const GAIA::U16 DEFAULT_SEND_THREAD_COUNT = 4;
+	static const GAIA::U16 DEFSENDTHREADCOUNT = 4;
 	static const GAIA::U32 CHUNKSIZE = 100 * 1024;
 	static const GAIA::U32 SUBCHUNKSIZE = CHUNKSIZE / 256;
-	static const GAIA::UM THREAD_STACK_SIZE = 1024 * 128;
+	static const GAIA::UM THREADSTACKSIZE = 1024 * 128;
 	static const GAIA::NM USERNAMELEN = 16;
 	static const GAIA::NM PASSWORDLEN = 16;
 	static const GAIA::NM GROUPNAMELEN = 16;
@@ -158,8 +158,8 @@ namespace FSHA
 			FSTR, GAIA::N32, GAIA::N32, 
 			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > FSTRBTR; 
 	typedef GAIA::U32 MAPINDEX; // 0 means invalid id.
-	typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAX_PATHLEN> FNAMETYPE;
-	typedef GAIA::CONTAINER::Array<FNAMETYPE, MAX_DEPTH> FNAMEPARTLISTTYPE;
+	typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAXPATHLEN> FNAMETYPE;
+	typedef GAIA::CONTAINER::Array<FNAMETYPE, MAXPATHDEPTH> FNAMEPARTLISTTYPE;
 
 	/* File sequence. */
 	class __DWARFS_FILESHARE_API FileSequence
@@ -422,7 +422,7 @@ namespace FSHA
 							++itv;
 						}
 						fname.tolower();
-						MAPINDEX mit[MAX_DEPTH];
+						MAPINDEX mit[MAXPATHDEPTH];
 						if(this->NameToMapIndex(fname, mit))
 						{
 							MAPINDEX* pmit = mit;
@@ -487,13 +487,13 @@ namespace FSHA
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GNULL;
-			GAIA::GCH szLower[MAX_PATHLEN];
+			GAIA::GCH szLower[MAXPATHLEN];
 			GAIA::ALGORITHM::strcpy(szLower, pszFileName);
 			GAIA::ALGORITHM::tolower(szLower);
-			MAPINDEX mapindex[MAX_DEPTH];
+			MAPINDEX mapindex[MAXPATHDEPTH];
 			if(!this->NameToMapIndex(szLower, mapindex))
 				return GNULL;
-			TrieNode tnlist[MAX_DEPTH];
+			TrieNode tnlist[MAXPATHDEPTH];
 			MAPINDEX* p = mapindex;
 			for(;;)
 			{
@@ -516,7 +516,7 @@ namespace FSHA
 			GAIA::NM nIndex = m_recids.search(f);
 			if(nIndex == GINVALID)
 				return GAIA::False;
-			MAPINDEX mapindex[MAX_DEPTH];
+			MAPINDEX mapindex[MAXPATHDEPTH];
 			if(!this->GenerateMapIndex(m_recids[nIndex].m_it, mapindex))
 				return GAIA::False;
 			return this->MapIndexToName(mapindex, pResult);
@@ -613,9 +613,9 @@ namespace FSHA
 			if(!this->GenerateFileNamePartList(pszFileName, namelist))
 				return GAIA::False;
 			NameMap f;
-			f.m_name.reserve(MAX_PATHLEN);
+			f.m_name.reserve(MAXPATHLEN);
 			NameMap* p = &f;
-			GAIA_AST(namelist.size() < MAX_DEPTH);
+			GAIA_AST(namelist.size() < MAXPATHDEPTH);
 			for(FNAMEPARTLISTTYPE::_sizetype x = 0; x < namelist.size(); ++x)
 			{
 				p->m_name = namelist[x].front_ptr();
@@ -659,7 +659,7 @@ namespace FSHA
 				{
 					if(pNew == GNULL || *pNew == 0)
 					{
-						GAIA::GCH sz[MAX_PATHLEN];
+						GAIA::GCH sz[MAXPATHLEN];
 						GAIA::ALGORITHM::strcpy(sz, p);
 						if(sz[0] != 0)
 							listResult.push_back(sz);
@@ -667,7 +667,7 @@ namespace FSHA
 					}
 					else
 					{
-						GAIA::GCH sz[MAX_PATHLEN];
+						GAIA::GCH sz[MAXPATHLEN];
 						GAIA::ALGORITHM::memcpy(sz, p, (pNew - p) * sizeof(GAIA::GCH));
 						sz[pNew - p] = 0;
 						if(sz[0] != 0)
@@ -1378,7 +1378,7 @@ namespace FSHA
 		public:
 			GINL FileShareDesc()
 			{
-				m_sendthreadcnt = DEFAULT_SEND_THREAD_COUNT;
+				m_sendthreadcnt = DEFSENDTHREADCOUNT;
 				m_selfaddr.ip.FromString("127.0.0.1");
 				m_selfaddr.uPort = MAINRECVPORT;
 				m_pFAC = &m_default_fileacccreator;
@@ -1861,13 +1861,13 @@ namespace FSHA
 			m_filelist.Load(FILE_FILELIST);
 			m_filestate.resize(m_filelist.GetFileCount() / 8 + m_filelist.GetFileCount() % 8);
 			m_pMWThread = new MainWorkThread; m_pMWThread->SetFileShare(this);
-			m_pMWThread->SetStackSize(THREAD_STACK_SIZE);
+			m_pMWThread->SetStackSize(THREADSTACKSIZE);
 			m_pHeartTickThread = new HeartTickThread; m_pHeartTickThread->SetFileShare(this);
-			m_pHeartTickThread->SetStackSize(THREAD_STACK_SIZE);
+			m_pHeartTickThread->SetStackSize(THREADSTACKSIZE);
 			m_pNH = new NHandle; m_pNH->SetFileShare(this); m_pNH->SetSendBufSize(1024 * 1024); m_pNH->SetRecvBufSize(1024 * 1024 * 100);
-			m_pNReceiver = new NReceiver; m_pNReceiver->SetFileShare(this); m_pNReceiver->SetStackSize(THREAD_STACK_SIZE);
-			m_pNSender = new NSender; m_pNSender->SetFileShare(this); m_pNSender->SetStackSize(THREAD_STACK_SIZE);
-			m_pNListener = new NListener; m_pNListener->SetFileShare(this); m_pNListener->SetStackSize(THREAD_STACK_SIZE);
+			m_pNReceiver = new NReceiver; m_pNReceiver->SetFileShare(this); m_pNReceiver->SetStackSize(THREADSTACKSIZE);
+			m_pNSender = new NSender; m_pNSender->SetFileShare(this); m_pNSender->SetStackSize(THREADSTACKSIZE);
+			m_pNListener = new NListener; m_pNListener->SetFileShare(this); m_pNListener->SetStackSize(THREADSTACKSIZE);
 			m_pNListener->SetAcceptCallBack(&m_NAcceptCallBack); m_NAcceptCallBack.SetFileShare(this);
 			m_desc = desc;
 			m_bInitialized = GAIA::True;
@@ -2475,7 +2475,7 @@ namespace FSHA
 				{
 					GAIA::SYNC::AutoLock al(m_lr_filelist);
 					FILEID fid = listPart[1];
-					GAIA::GCH szFileName[MAX_PATHLEN];
+					GAIA::GCH szFileName[MAXPATHLEN];
 					if(m_filelist.GetName(fid, szFileName))
 						m_prt << szFileName << "\n";
 					else
@@ -3767,10 +3767,10 @@ namespace FSHA
 				pFRC->pFA = m_desc.m_pFAC->CreateFileAccess();
 			if(!pFRC->pFA->IsOpen())
 			{
-				GAIA::GCH szFileName[MAX_PATHLEN];
+				GAIA::GCH szFileName[MAXPATHLEN];
 				if(m_filelist.GetName(fid, szFileName))
 				{
-					GAIA::GCH szFullName[MAX_PATHLEN];
+					GAIA::GCH szFullName[MAXPATHLEN];
 					if(bWrite)
 					{
 						if(m_writeroot.empty())
@@ -3788,7 +3788,7 @@ namespace FSHA
 					GAIA::ALGORITHM::strcat(szFullName, szFileName);
 					if(bWrite)
 					{
-						GAIA::GCH szPath[MAX_PATHLEN];
+						GAIA::GCH szPath[MAXPATHLEN];
 						GAIA::ALGORITHM::strcpy(szPath, szFullName);
 						GAIA::ALGORITHM::strdropr(szPath, "/\\");
 						GAIA::FILESYSTEM::Directory dir;
