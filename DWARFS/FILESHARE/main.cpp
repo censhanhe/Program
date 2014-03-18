@@ -35,12 +35,12 @@ INPUT_IP:
 		GAIA::NM index = szIP[0] - '0';
 		if(index >= listIP.size())
 			goto INPUT_IP;
-		desc.m_selfaddr.ip = listIP[index];
-		desc.m_selfaddr.uPort = FSHA::MAINRECVPORT;
+		desc.selfaddr.ip = listIP[index];
+		desc.selfaddr.uPort = FSHA::MAINRECVPORT;
 	}
 	else
 	{
-		if(!desc.m_selfaddr.FromString(szIP))
+		if(!desc.selfaddr.FromString(szIP))
 			goto INPUT_IP;
 	}
 

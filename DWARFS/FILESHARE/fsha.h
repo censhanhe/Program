@@ -124,7 +124,6 @@ namespace FSHA
 	static const GAIA::NM MAXPATHDEPTH = 18;
 	static const GAIA::NM MAXPATHLEN = 240;
 	static const GAIA::U16 MAINRECVPORT = 7121;
-	static const GAIA::U16 DEFSENDTHREADCOUNT = 4;
 	static const GAIA::U32 CHUNKSIZE = 100 * 1024;
 	static const GAIA::U32 SUBCHUNKSIZE = CHUNKSIZE / 256;
 	static const GAIA::UM THREADSTACKSIZE = 1024 * 128;
@@ -248,7 +247,7 @@ namespace FSHA
 				for(__NameMapType::_sizetype x = 0; x < size; ++x)
 				{
 					__NameMapPool::_datatype* p = m_namespool.alloc();
-					sr >> p->m_name;
+					sr >> p->name;
 					m_names.push_back(p);
 				}
 			}
@@ -267,17 +266,17 @@ namespace FSHA
 					{
 						const TrieNode& n = *it;
 						FileRec fr;
-						fr.m_id = n.m_id;
+						fr.fid = n.fid;
 						GAIA::NM nFinded = m_recids.search(fr);
 						GAIA_AST(nFinded != GINVALID);
-						m_recids[nFinded].m_it = it;
+						m_recids[nFinded].it = it;
 					}
 					++it;
 				}
 			}
 		#ifdef FSHA_DEBUG
 			for(GAIA::NM x = 0; x < m_recids.size(); ++x)
-				GAIA_AST(m_recids[x].m_id == x);
+				GAIA_AST(m_recids[x].fid == x);
 		#endif
 
 			/* Construct file rec seq list. */
@@ -285,7 +284,7 @@ namespace FSHA
 			for(__FileRecIDListType::it it = m_recids.front_it(); !it.empty(); ++it)
 			{
 				FileRecSeq frs;
-				frs.m_pFileRec = &(*it);
+				frs.pFileRec = &(*it);
 				m_recseqs.push_back(frs);
 			}
 			m_recseqs.sort();
@@ -331,7 +330,7 @@ namespace FSHA
 				while(!it.empty())
 				{
 					const __NameMapType::_datatype& d = *it;
-					sr << (*d).m_name;
+					sr << (*d).name;
 					++it;
 				}
 			}
@@ -376,8 +375,8 @@ namespace FSHA
 					{
 						NameMap* nm = m_namespool.alloc();
 						m_names.push_back(nm);
-						(**m_names.back_ptr()).m_name = (*it).front_ptr();
-						(**m_names.back_ptr()).m_name.tolower();
+						(**m_names.back_ptr()).name = (*it).front_ptr();
+						(**m_names.back_ptr()).name.tolower();
 					}
 					else
 						--nRootPart;
@@ -429,15 +428,15 @@ namespace FSHA
 							while(*pmit != GINVALID)
 							{
 								TrieNode n;
-								n.m_mapindex = *pmit;
-								n.m_id = GINVALID;
+								n.mapindex = *pmit;
+								n.fid = GINVALID;
 								listInsert.push_back(n);
 								++pmit;
 							}
 						}						
 						else
 							GAIA_AST(GAIA::ALWAYSFALSE);
-						listInsert.back_ptr()->m_id = id++;
+						listInsert.back_ptr()->fid = id++;
 						m_ftree.insert(listInsert.front_ptr(), listInsert.size());
 					}
 					++it;
@@ -455,9 +454,9 @@ namespace FSHA
 					{
 						const TrieNode& n = *it;
 						FileRec fr;
-						fr.m_id = n.m_id;
-						fr.m_it = it;
-						fr.m_uSequence = 0;
+						fr.fid = n.fid;
+						fr.it = it;
+						fr.uSequence = 0;
 						m_recids.push_back(fr);
 					}
 					++it;
@@ -466,7 +465,7 @@ namespace FSHA
 			}
 		#ifdef FSHA_DEBUG
 			for(GAIA::NM x = 0; x < m_recids.size(); ++x)
-				GAIA_AST(m_recids[x].m_id == x);
+				GAIA_AST(m_recids[x].fid == x);
 		#endif
 
 			/* Generate file rec seq list. */
@@ -475,7 +474,7 @@ namespace FSHA
 			for(__FileRecIDListType::it it = m_recids.front_it(); !it.empty(); ++it)
 			{
 				FileRecSeq frs;
-				frs.m_pFileRec = &(*it);
+				frs.pFileRec = &(*it);
 				m_recseqs.push_back(frs);
 			}
 			m_recseqs.sort();
@@ -500,37 +499,37 @@ namespace FSHA
 				if(*p == GINVALID)
 					break;
 				TrieNode& tn = tnlist[p - mapindex];
-				tn.m_mapindex = *p;
+				tn.mapindex = *p;
 				++p;
 			}
 			GAIA_AST(p != mapindex);
 			__FileTreeType::Node* pNode = m_ftree.find(GNULL, tnlist, p - mapindex);
 			if(pNode == GNULL)
 				return GNULL;
-			return &(**pNode).m_id;
+			return &(**pNode).fid;
 		}
 		GAIA::BL GetName(const FILEID& id, GAIA::GCH* pResult)
 		{
 			__FileRecIDListType::_datatype f;
-			f.m_id = id;
+			f.fid = id;
 			GAIA::NM nIndex = m_recids.search(f);
 			if(nIndex == GINVALID)
 				return GAIA::False;
 			MAPINDEX mapindex[MAXPATHDEPTH];
-			if(!this->GenerateMapIndex(m_recids[nIndex].m_it, mapindex))
+			if(!this->GenerateMapIndex(m_recids[nIndex].it, mapindex))
 				return GAIA::False;
 			return this->MapIndexToName(mapindex, pResult);
 		}
 		GAIA::UM GetFileCount() const{return m_recids.size();}
-		const FILEID& GetIDBySequence(GAIA::UM uIndex) const{return m_recseqs[uIndex].m_pFileRec->m_id;}
+		const FILEID& GetIDBySequence(GAIA::UM uIndex) const{return m_recseqs[uIndex].pFileRec->fid;}
 	private:
 		class TrieNode
 		{
 		public:
-			GINL TrieNode& operator = (const TrieNode& src){m_mapindex = src.m_mapindex; m_id = src.m_id; return *this;}
-			GAIA_CLASS_OPERATOR_COMPARE(m_mapindex, m_mapindex, TrieNode);
-			MAPINDEX m_mapindex;
-			FILEID m_id;
+			GINL TrieNode& operator = (const TrieNode& src){mapindex = src.mapindex; fid = src.fid; return *this;}
+			GAIA_CLASS_OPERATOR_COMPARE(mapindex, mapindex, TrieNode);
+			MAPINDEX mapindex;
+			FILEID fid;
 		};
 	public:
 		typedef GAIA::CONTAINER::BasicTrieTree<TrieNode, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __FileTreeType;
@@ -538,39 +537,39 @@ namespace FSHA
 		class NameMap
 		{
 		public:
-			GAIA_CLASS_OPERATOR_COMPARE(m_name, m_name, NameMap);
-			FSTR m_name;
+			GAIA_CLASS_OPERATOR_COMPARE(name, name, NameMap);
+			FSTR name;
 		};
 		class FileRec
 		{
 		public:
 			GINL FileRec& operator = (const FileRec& src)
 			{
-				m_id = src.m_id;
-				m_it = src.m_it;
-				m_uSequence = src.m_uSequence;
+				fid = src.fid;
+				it = src.it;
+				uSequence = src.uSequence;
 				return *this;
 			}
-			GAIA_CLASS_OPERATOR_COMPARE(m_id, m_id, FileRec);
-			FILEID m_id;
-			__FileTreeType::const_it m_it;
-			FILEID m_uSequence;
+			GAIA_CLASS_OPERATOR_COMPARE(fid, fid, FileRec);
+			FILEID fid;
+			__FileTreeType::const_it it;
+			FILEID uSequence;
 		};
 		class FileRecSeq
 		{
 		public:
-			GINL FileRecSeq& operator = (const FileRecSeq& src){m_pFileRec = src.m_pFileRec; return *this;}
-			GINL GAIA::BL operator == (const FileRecSeq& src) const{return m_pFileRec->m_uSequence == src.m_pFileRec->m_uSequence && m_pFileRec->m_id == src.m_pFileRec->m_id;}
+			GINL FileRecSeq& operator = (const FileRecSeq& src){pFileRec = src.pFileRec; return *this;}
+			GINL GAIA::BL operator == (const FileRecSeq& src) const{return pFileRec->uSequence == src.pFileRec->uSequence && pFileRec->fid == src.pFileRec->fid;}
 			GINL GAIA::BL operator != (const FileRecSeq& src) const{return !(this->operator == (src));}
 			GINL GAIA::BL operator >= (const FileRecSeq& src) const
 			{
-				if(m_pFileRec->m_uSequence > src.m_pFileRec->m_uSequence)
+				if(pFileRec->uSequence > src.pFileRec->uSequence)
 					return GAIA::True;
-				else if(m_pFileRec->m_uSequence < src.m_pFileRec->m_uSequence)
+				else if(pFileRec->uSequence < src.pFileRec->uSequence)
 					return GAIA::False;
 				else
 				{
-					if(m_pFileRec->m_id >= src.m_pFileRec->m_id)
+					if(pFileRec->fid >= src.pFileRec->fid)
 						return GAIA::True;
 					else
 						return GAIA::False;
@@ -578,13 +577,13 @@ namespace FSHA
 			}
 			GINL GAIA::BL operator <= (const FileRecSeq& src) const
 			{
-				if(m_pFileRec->m_uSequence < src.m_pFileRec->m_uSequence)
+				if(pFileRec->uSequence < src.pFileRec->uSequence)
 					return GAIA::True;
-				else if(m_pFileRec->m_uSequence > src.m_pFileRec->m_uSequence)
+				else if(pFileRec->uSequence > src.pFileRec->uSequence)
 					return GAIA::False;
 				else
 				{
-					if(m_pFileRec->m_id <= src.m_pFileRec->m_id)
+					if(pFileRec->fid <= src.pFileRec->fid)
 						return GAIA::True;
 					else
 						return GAIA::False;
@@ -592,7 +591,7 @@ namespace FSHA
 			}
 			GINL GAIA::BL operator > (const FileRecSeq& src) const{return !(this->operator <= (src));}
 			GINL GAIA::BL operator < (const FileRecSeq& src) const{return !(this->operator >= (src));}
-			FileRec* m_pFileRec;
+			FileRec* pFileRec;
 		};
 	public:
 		typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::Ref<NameMap> > __NameMapType;
@@ -600,7 +599,7 @@ namespace FSHA
 		typedef GAIA::CONTAINER::Vector<FileRec> __FileRecIDListType;
 		typedef GAIA::CONTAINER::Vector<FileRecSeq> __FileRecSeqListType;
 	private:
-		GINL GAIA::GVOID init(){(*m_ftree.root()).m_id = GINVALID; (*m_ftree.root()).m_mapindex = GINVALID; m_LastMaxFileID = 0; m_pPr = GNULL;}
+		GINL GAIA::GVOID init(){(*m_ftree.root()).fid = GINVALID; (*m_ftree.root()).mapindex = GINVALID; m_LastMaxFileID = 0; m_pPr = GNULL;}
 		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAPINDEX* pResult) const
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
@@ -613,12 +612,12 @@ namespace FSHA
 			if(!this->GenerateFileNamePartList(pszFileName, namelist))
 				return GAIA::False;
 			NameMap f;
-			f.m_name.reserve(MAXPATHLEN);
+			f.name.reserve(MAXPATHLEN);
 			NameMap* p = &f;
 			GAIA_AST(namelist.size() < MAXPATHDEPTH);
 			for(FNAMEPARTLISTTYPE::_sizetype x = 0; x < namelist.size(); ++x)
 			{
-				p->m_name = namelist[x].front_ptr();
+				p->name = namelist[x].front_ptr();
 				GAIA::N32 n = m_names.search(p);
 				if(n == GINVALID)
 					return GAIA::False;
@@ -638,8 +637,8 @@ namespace FSHA
 			{
 				if(pDst != pszFileName)
 					*pDst++ = '/';
-				GAIA::ALGORITHM::strcpy(pDst, (*m_names[*p]).m_name.front_ptr());
-				pDst += (*m_names[*p]).m_name.size();
+				GAIA::ALGORITHM::strcpy(pDst, (*m_names[*p]).name.front_ptr());
+				pDst += (*m_names[*p]).name.size();
 				++p;
 			}
 			*pDst++ = 0;
@@ -685,7 +684,7 @@ namespace FSHA
 			MAPINDEX* p = pMapIndex;
 			while(!it.empty())
 			{
-				*p++ = (*it).m_mapindex;
+				*p++ = (*it).mapindex;
 				it = m_ftree.parent_it(it);
 				if(m_ftree.root(it))
 					it = m_ftree.parent_it(it);
@@ -698,11 +697,11 @@ namespace FSHA
 		{
 			/* Load node data. */
 			TrieNode tn;
-			sr >> tn.m_id;
-			sr >> tn.m_mapindex;
+			sr >> tn.fid;
+			sr >> tn.mapindex;
 			FileRec fr;
-			sr >> fr.m_uSequence;
-			fr.m_id = tn.m_id;
+			sr >> fr.uSequence;
+			fr.fid = tn.fid;
 			stack.push(tn);
 
 			/* Load node count. */
@@ -714,7 +713,7 @@ namespace FSHA
 			{
 				if(stack.size() > 1)
 				{
-					GAIA_AST(stack.top().m_id != GINVALID);
+					GAIA_AST(stack.top().fid != GINVALID);
 					m_ftree.insert(stack.front_ptr() + 1, stack.size() - 1);
 					m_recids.push_back(fr);
 				}
@@ -731,13 +730,13 @@ namespace FSHA
 		{
 			/* Save node data. */
 			__FileTreeType::_datatype& data = *n;
-			sr << data.m_id;
-			sr << data.m_mapindex;
+			sr << data.fid;
+			sr << data.mapindex;
 			FileRec fr;
-			fr.m_id = data.m_id;
+			fr.fid = data.fid;
 			__FileRecIDListType::_sizetype findedindex = m_recids.search(fr);
 			if(findedindex != GINVALID)
-				sr << m_recids[findedindex].m_uSequence;
+				sr << m_recids[findedindex].uSequence;
 			else
 			{
 				FILEID uSequence = GINVALID;
@@ -796,20 +795,20 @@ namespace FSHA
 		public:
 			typedef GAIA::CONTAINER::Vector<Group*> __GroupRefListType;
 		public:
-			GAIA_CLASS_OPERATOR_COMPARE(m_name, m_name, User);
-			__UserNameType m_name;
-			__PasswordType m_pwd;
-			__GroupRefListType m_refgroups;
+			GAIA_CLASS_OPERATOR_COMPARE(name, name, User);
+			__UserNameType name;
+			__PasswordType pwd;
+			__GroupRefListType refgroups;
 		};
 		class Group
 		{
 		public:
 			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User> > __UserRefListType;
 		public:
-			GAIA_CLASS_OPERATOR_COMPARE(m_name, m_name, Group);
-			__GroupNameType m_name;
-			__UserRefListType m_refusers;
-			Right m_right;
+			GAIA_CLASS_OPERATOR_COMPARE(name, name, Group);
+			__GroupNameType name;
+			__UserRefListType refusers;
+			Right right;
 		};
 	private:
 		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User> > __UserSetType;
@@ -925,8 +924,8 @@ namespace FSHA
 				User* pUser = *it_u;
 				if(pUser != GNULL)
 				{
-					sr << pUser->m_name;
-					sr << pUser->m_pwd;
+					sr << pUser->name;
+					sr << pUser->pwd;
 				}
 				++it_u;
 			}
@@ -940,15 +939,15 @@ namespace FSHA
 				Group* pGroup = *it_g;
 				if(pGroup != GNULL)
 				{
-					sr << pGroup->m_name;
-					sr << pGroup->m_right;
-					Group::__UserRefListType::_sizetype user_cnt = pGroup->m_refusers.size();
+					sr << pGroup->name;
+					sr << pGroup->right;
+					Group::__UserRefListType::_sizetype user_cnt = pGroup->refusers.size();
 					sr << user_cnt;
-					Group::__UserRefListType::it it = pGroup->m_refusers.front_it();
+					Group::__UserRefListType::it it = pGroup->refusers.front_it();
 					while(!it.empty())
 					{
 						User* pUser = *it;
-						sr << pUser->m_name;
+						sr << pUser->name;
 						++it;
 					}
 				}
@@ -970,7 +969,7 @@ namespace FSHA
 				return GAIA::False;
 			User* pUser = m_upool.alloc();
 			__UserSetType::_datatype ru = pUser;
-			pUser->m_name = name;
+			pUser->name = name;
 			return m_users.insert(pUser);
 		}
 		GINL GAIA::BL SetUserPassword(const __UserNameType& name, const __PasswordType& pwd)
@@ -981,7 +980,7 @@ namespace FSHA
 			User* pUser = this->FindUserInternal(name);
 			if(pUser == GNULL)
 				return GAIA::False;
-			pUser->m_pwd = pwd;
+			pUser->pwd = pwd;
 			return GAIA::True;
 		}
 		GINL const GAIA::GCH* GetUserPassword(const __UserNameType& name) const
@@ -992,7 +991,7 @@ namespace FSHA
 			const User* pUser = this->FindUserInternal(name);
 			if(pUser == GNULL)
 				return GNULL;
-			return pUser->m_pwd;
+			return pUser->pwd;
 		}
 		GINL GAIA::BL DeleteUser(const __UserNameType& name)
 		{
@@ -1002,12 +1001,12 @@ namespace FSHA
 			User* pUser = this->FindUserInternal(name);
 			if(pUser == GNULL)
 				return GAIA::False;
-			User::__GroupRefListType::it it = pUser->m_refgroups.front_it();
+			User::__GroupRefListType::it it = pUser->refgroups.front_it();
 			while(!it.empty())
 			{
 				Group* pGroup = *it;
 				if(pGroup != GNULL)
-					pGroup->m_refusers.erase(pUser);
+					pGroup->refusers.erase(pUser);
 				++it;
 			}
 			m_users.erase(pUser);
@@ -1021,7 +1020,7 @@ namespace FSHA
 			{
 				Group* pGroup = *it_g;
 				if(pGroup != GNULL)
-					pGroup->m_refusers.clear();
+					pGroup->refusers.clear();
 				++it_g;
 			}
 			__UserSetType::it it_u = m_users.front_it();
@@ -1049,7 +1048,7 @@ namespace FSHA
 			if(this->FindGroup(name))
 				return GAIA::False;
 			Group* pGroup = m_gpool.alloc();
-			pGroup->m_name = name;
+			pGroup->name = name;
 			m_groups.insert(pGroup);
 			return GAIA::True;
 		}
@@ -1061,13 +1060,13 @@ namespace FSHA
 			Group* pGroup = this->FindGroupInternal(name);
 			if(pGroup == GNULL)
 				return GAIA::False;
-			Group::__UserRefListType::it it = pGroup->m_refusers.front_it();
+			Group::__UserRefListType::it it = pGroup->refusers.front_it();
 			while(!it.empty())
 			{
 				User* pUser = *it;
 				if(pUser != GNULL)
 				{
-					User::__GroupRefListType::it itu = pUser->m_refgroups.front_it();
+					User::__GroupRefListType::it itu = pUser->refgroups.front_it();
 					while(!itu.empty())
 					{
 						if(*itu != GNULL && *itu == pGroup)
@@ -1109,7 +1108,7 @@ namespace FSHA
 			Group* pGroup = this->FindGroupInternal(name);
 			if(pGroup == GNULL)
 				return GAIA::False;
-			pGroup->m_right.m_bRead = bRead;
+			pGroup->right.m_bRead = bRead;
 			return GAIA::True;
 		}
 		GINL GAIA::BL GetGroupRightRead(const __GroupNameType& name, GAIA::BL& bRead)
@@ -1120,7 +1119,7 @@ namespace FSHA
 			Group* pGroup = this->FindGroupInternal(name);
 			if(pGroup == GNULL)
 				return GAIA::False;
-			bRead = pGroup->m_right.m_bRead;
+			bRead = pGroup->right.m_bRead;
 			return GAIA::True;
 		}
 		GINL GAIA::BL SetGroupRightWrite(const __GroupNameType& name, GAIA::BL bWrite)
@@ -1131,7 +1130,7 @@ namespace FSHA
 			Group* pGroup = this->FindGroupInternal(name);
 			if(pGroup == GNULL)
 				return GAIA::False;
-			pGroup->m_right.m_bWrite = bWrite;
+			pGroup->right.m_bWrite = bWrite;
 			return GAIA::True;
 		}
 		GINL GAIA::BL GetGroupRightWrite(const __GroupNameType& name, GAIA::BL& bWrite)
@@ -1142,7 +1141,7 @@ namespace FSHA
 			Group* pGroup = this->FindGroupInternal(name);
 			if(pGroup == GNULL)
 				return GAIA::False;
-			bWrite = pGroup->m_right.m_bWrite;
+			bWrite = pGroup->right.m_bWrite;
 			return GAIA::True;
 		}
 		GINL GAIA::BL AddGroupUser(const __GroupNameType& gname, const __UserNameType& uname)
@@ -1159,15 +1158,15 @@ namespace FSHA
 			User* pUser = this->FindUserInternal(uname);
 			if(pUser == GNULL)
 				return GAIA::False;
-			Group::__UserRefListType::_datatype* pFinded = pGroup->m_refusers.find(pUser);
+			Group::__UserRefListType::_datatype* pFinded = pGroup->refusers.find(pUser);
 			if(pFinded != GNULL)
 				return GAIA::False;
-			pGroup->m_refusers.insert(pUser);
-			GAIA::NM nFreePos = pUser->m_refgroups.find(GNULL);
+			pGroup->refusers.insert(pUser);
+			GAIA::NM nFreePos = pUser->refgroups.find(GNULL);
 			if(nFreePos == GINVALID)
-				pUser->m_refgroups.push_back(pGroup);
+				pUser->refgroups.push_back(pGroup);
 			else
-				pUser->m_refgroups[nFreePos] = pGroup;
+				pUser->refgroups[nFreePos] = pGroup;
 			return GAIA::True;
 		}
 		GINL GAIA::BL DeleteGroupUser(const __GroupNameType& gname, const __UserNameType& uname)
@@ -1184,7 +1183,7 @@ namespace FSHA
 			User* pUser = this->FindUserInternal(uname);
 			if(pUser == GNULL)
 				return GAIA::False;
-			User::__GroupRefListType::it itg = pUser->m_refgroups.front_it();
+			User::__GroupRefListType::it itg = pUser->refgroups.front_it();
 			if(!itg.empty())
 			{
 				Group* pGroupTemp = *itg;
@@ -1192,7 +1191,7 @@ namespace FSHA
 					*itg = GNULL;
 				++itg;
 			}
-			pGroup->m_refusers.erase(pUser);
+			pGroup->refusers.erase(pUser);
 			return GAIA::True;
 		}
 		GINL GAIA::BL DeleteGroupUserAll(const __GroupNameType& name)
@@ -1200,11 +1199,11 @@ namespace FSHA
 			Group* pGroup = this->FindGroupInternal(name);
 			if(pGroup == GNULL)
 				return GAIA::False;
-			Group::__UserRefListType::it it = pGroup->m_refusers.front_it();
+			Group::__UserRefListType::it it = pGroup->refusers.front_it();
 			while(!it.empty())
 			{
 				User* pUser = *it;
-				User::__GroupRefListType::it itg = pUser->m_refgroups.front_it();
+				User::__GroupRefListType::it itg = pUser->refgroups.front_it();
 				if(!itg.empty())
 				{
 					Group* pGroupTemp = *itg;
@@ -1214,7 +1213,7 @@ namespace FSHA
 				}
 				++it;
 			}
-			pGroup->m_refusers.clear();
+			pGroup->refusers.clear();
 			return GAIA::True;
 		}
 		GINL GAIA::GVOID EnumUser(__UserNameListType& result) const
@@ -1223,7 +1222,7 @@ namespace FSHA
 			while(!it.empty())
 			{
 				const User* pUser = *it;
-				result.push_back(pUser->m_name);
+				result.push_back(pUser->name);
 				++it;
 			}
 		}
@@ -1233,7 +1232,7 @@ namespace FSHA
 			while(!it.empty())
 			{
 				const Group* pGroup = *it;
-				result.push_back(pGroup->m_name);
+				result.push_back(pGroup->name);
 				++it;
 			}
 		}
@@ -1245,12 +1244,12 @@ namespace FSHA
 			const User* pUser = this->FindUserInternal(name);
 			if(pUser == GNULL)
 				return GAIA::False;
-			User::__GroupRefListType::const_it it = pUser->m_refgroups.const_front_it();
+			User::__GroupRefListType::const_it it = pUser->refgroups.const_front_it();
 			while(!it.empty())
 			{
 				const Group* pGroup = *it;
 				if(pGroup != GNULL)
-					result.push_back(pGroup->m_name);
+					result.push_back(pGroup->name);
 				++it;
 			}
 			return GAIA::True;
@@ -1263,12 +1262,12 @@ namespace FSHA
 			const Group* pGroup = this->FindGroupInternal(name);
 			if(pGroup == GNULL)
 				return GAIA::False;
-			Group::__UserRefListType::const_it it = pGroup->m_refusers.const_front_it();
+			Group::__UserRefListType::const_it it = pGroup->refusers.const_front_it();
 			while(!it.empty())
 			{
 				const User* pUser = *it;
 				if(pUser != GNULL)
-					result.push_back(pUser->m_name);
+					result.push_back(pUser->name);
 				++it;
 			}
 			return GAIA::True;
@@ -1277,7 +1276,7 @@ namespace FSHA
 		GINL const User* FindUserInternal(const __UserNameType& name) const
 		{
 			User finder;
-			finder.m_name = name;
+			finder.name = name;
 			const __UserSetType::_datatype* pFinded = m_users.find(&finder);
 			if(pFinded == GNULL)
 				return GNULL;
@@ -1286,7 +1285,7 @@ namespace FSHA
 		GINL User* FindUserInternal(const __UserNameType& name)
 		{
 			User finder;
-			finder.m_name = name;
+			finder.name = name;
 			__UserSetType::_datatype* pFinded = m_users.find(&finder);
 			if(pFinded == GNULL)
 				return GNULL;
@@ -1295,7 +1294,7 @@ namespace FSHA
 		GINL const Group* FindGroupInternal(const __GroupNameType& name) const
 		{
 			Group finder;
-			finder.m_name = name;
+			finder.name = name;
 			const __GroupSetType::_datatype* pFinded = m_groups.find(&finder);
 			if(pFinded == GNULL)
 				return GNULL;
@@ -1304,7 +1303,7 @@ namespace FSHA
 		GINL Group* FindGroupInternal(const __GroupNameType& name)
 		{
 			Group finder;
-			finder.m_name = name;
+			finder.name = name;
 			__GroupSetType::_datatype* pFinded = m_groups.find(&finder);
 			if(pFinded == GNULL)
 				return GNULL;
@@ -1378,23 +1377,20 @@ namespace FSHA
 		public:
 			GINL FileShareDesc()
 			{
-				m_sendthreadcnt = DEFSENDTHREADCOUNT;
-				m_selfaddr.ip.FromString("127.0.0.1");
-				m_selfaddr.uPort = MAINRECVPORT;
-				m_pFAC = &m_default_fileacccreator;
+				selfaddr.ip.FromString("127.0.0.1");
+				selfaddr.uPort = MAINRECVPORT;
+				pFAC = &default_fileacccreator;
 			}
 			GINL FileShareDesc& operator = (const FileShareDesc& src)
 			{
-				m_sendthreadcnt = src.m_sendthreadcnt;
-				m_selfaddr = src.m_selfaddr;
-				m_pFAC = src.m_pFAC;
+				selfaddr = src.selfaddr;
+				pFAC = src.pFAC;
 				return *this;
 			}
-			GAIA::U16 m_sendthreadcnt;
-			GAIA::NETWORK::NetworkAddress m_selfaddr;
-			FileAccessCreator* m_pFAC;
+			GAIA::NETWORK::NetworkAddress selfaddr;
+			FileAccessCreator* pFAC;
 		private:
-			FileAccessCreator m_default_fileacccreator;
+			FileAccessCreator default_fileacccreator;
 		};
 		/* Network handle. */
 		class __DWARFS_FILESHARE_API NHandle : public GAIA::NETWORK::NetworkHandle
@@ -1726,6 +1722,12 @@ namespace FSHA
 			SUBCHUNKSIZETYPE size;
 			GAIA::U8 buf[SUBCHUNKSIZE];
 		};
+		/* File request record. */
+		class __DWARFS_FILESHARE_API FileReq
+		{
+		public:
+			FILEID fid;
+		};
 		/* Statistics */
 		class __DWARFS_FILESHARE_API Statistics
 		{
@@ -1901,9 +1903,9 @@ namespace FSHA
 		{
 			if(m_bStartuped)
 				return GAIA::False;
-			m_pNH->SetSelfAddress(m_desc.m_selfaddr);
+			m_pNH->SetSelfAddress(m_desc.selfaddr);
 			GAIA::NETWORK::NetworkHandle::ConnectDesc cnndesc;
-			cnndesc.addr = m_desc.m_selfaddr;
+			cnndesc.addr = m_desc.selfaddr;
 			cnndesc.bStabilityLink = GAIA::False;
 			for(GAIA::U16 uPort = 0; uPort < 10; ++uPort)
 			{
@@ -1956,7 +1958,7 @@ namespace FSHA
 			{
 				FileRecCache& frc = *it;
 				if(frc.pFA != GNULL)
-					m_desc.m_pFAC->ReleaseFileAccess(frc.pFA);
+					m_desc.pFAC->ReleaseFileAccess(frc.pFA);
 				if(frc.pFCSL != GNULL)
 					delete frc.pFCSL;
 			}
@@ -2711,7 +2713,7 @@ namespace FSHA
 					m_statistics.uSendCmplFileCount++;
 					listDelete.push_back(fst);
 					pFRC->pFA->Close();
-					m_desc.m_pFAC->ReleaseFileAccess(pFRC->pFA);
+					m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
 					pFRC->pFA = GNULL;
 					if(pFRC->pFCSL != GNULL)
 					{
@@ -2772,7 +2774,7 @@ namespace FSHA
 				{
 					listDelete.push_back(cst);
 					pFRC->pFA->Close();
-					m_desc.m_pFAC->ReleaseFileAccess(pFRC->pFA);
+					m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
 					pFRC->pFA = GNULL;
 					if(pFRC->pFCSL != GNULL)
 					{
@@ -2913,7 +2915,7 @@ namespace FSHA
 					{
 						pFRC->pFA->Flush();
 						pFRC->pFA->Close();
-						m_desc.m_pFAC->ReleaseFileAccess(pFRC->pFA);
+						m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
 						pFRC->pFA = GNULL;
 					}
 					if(pFRC->pFCSL != GNULL)
@@ -3764,7 +3766,7 @@ namespace FSHA
 				pFRC = m_fcaches.find(frc);
 			}
 			if(pFRC->pFA == GNULL)
-				pFRC->pFA = m_desc.m_pFAC->CreateFileAccess();
+				pFRC->pFA = m_desc.pFAC->CreateFileAccess();
 			if(!pFRC->pFA->IsOpen())
 			{
 				GAIA::GCH szFileName[MAXPATHLEN];
