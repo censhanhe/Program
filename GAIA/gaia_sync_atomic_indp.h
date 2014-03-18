@@ -9,7 +9,7 @@
 #elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
 #	include <libkern/OSAtomic.h>
 #else
-#	include <asm/atomic_32.h>
+#	include <asm/atomic.h>
 #endif
 
 namespace GAIA
