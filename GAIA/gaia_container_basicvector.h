@@ -175,11 +175,41 @@ namespace GAIA
 				}
 				m_pFront[m_size++] = t;
 			}
+			GINL GAIA::GVOID push_back(const _DataType* p, const _SizeType& size)
+			{
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
+				_SizeType newsize = this->size() + size;
+				if(newsize > this->capacity())
+				{
+					_DataType* pTemp = new _datatype[newsize];
+					if(m_pFront != GNULL)
+					{
+						for(_SizeType c = 0; c < this->size(); ++c)
+							pTemp[c] = m_pFront[c];
+						delete[] m_pFront;
+					}
+					m_pFront = pTemp;
+					m_capacity = newsize;
+				}
+				for(_SizeType x = 0; x < size; ++x)
+					m_pFront[m_size++] = p[x];
+			}
 			GINL GAIA::GVOID pop_back()
 			{
 				GAIA_AST(this->size() > 0);
 				if(m_size > 0)
 					--m_size;
+			}
+			GINL GAIA::BL pop_back(_DataType* p, const _SizeType& size)
+			{
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
+				if(size > this->size())
+					return GAIA::False;
+				for(_SizeType x = 0; x < size; ++x)
+					p[x] = m_pFront[this->size() - size + x];
+				return GAIA::True;
 			}
 			GINL GAIA::GVOID inverse(){GAIA::ALGORITHM::inverse(this->front_ptr(), this->back_ptr());}
 			GINL GAIA::BL insert(const _SizeType& index, const _DataType& t)
@@ -293,6 +323,12 @@ namespace GAIA
 					iter.m_index = p - this->front_ptr();
 				}
 				return iter;
+			}
+			GINL __MyType& operator += (const __MyType& src)
+			{
+				if(!src.empty())
+					this->push_back(src.front_ptr(), src.size());
+				return *this;
 			}
 			GINL const _DataType& operator[](const _SizeType& index) const{GAIA_AST(index >= 0 && index < this->size()); return m_pFront[index];}
 			GINL _DataType& operator[](const _SizeType& index){GAIA_AST(index >= 0 && index < this->size()); return m_pFront[index];}

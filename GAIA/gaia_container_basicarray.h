@@ -64,7 +64,28 @@ namespace GAIA
 			GINL _SizeType capacity() const{return _Size;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL GAIA::BL push_back(const _DataType& t){if(this->size() < _Size){m_data[m_size++] = t; return GAIA::True;} else return GAIA::False;}
+			GINL GAIA::BL push_back(const _DataType* p, const _SizeType& size)
+			{
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
+				_SizeType newsize = this->size() + size;
+				if(newsize > this->capacity())
+					return GAIA::False;
+				for(_SizeType x = 0; x < size; ++x)
+					m_data[m_size++] = p[x];
+				return GAIA::True;
+			}
 			GINL GAIA::BL pop_back(){if(this->size() > 0){m_size--; return GAIA::True;} else return GAIA::False;}
+			GINL GAIA::BL pop_back(_DataType* p, const _SizeType& size)
+			{
+				GAIA_AST(p != GNULL);
+				GAIA_AST(size > 0);
+				if(size > this->size())
+					return GAIA::False;
+				for(_SizeType x = 0; x < size; ++x)
+					p[x] = m_data[this->size() - size + x];
+				return GAIA::True;
+			}
 			GINL const _DataType& front() const{GAIA_AST(this->size() > 0); this->operator[](0);}
 			GINL _DataType& front(){GAIA_AST(this->size() > 0); return this->operator[](0);}
 			GINL const _DataType& back() const{GAIA_AST(this->size() > 0); this->operator[](this->size() - 1);}
@@ -276,6 +297,12 @@ namespace GAIA
 					ret.m_pContainer = this;
 				}
 				return ret;
+			}
+			GINL __MyType& operator += (const __MyType& src)
+			{
+				if(!src.empty())
+					this->push_back(src.front_ptr(), src.size());
+				return *this;
 			}
 			GINL const _DataType& operator [] (const _SizeType& index) const{return m_data[index];}
 			GINL _DataType& operator [] (const _SizeType& index){return m_data[index];}
