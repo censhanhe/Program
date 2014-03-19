@@ -2218,7 +2218,8 @@ namespace FSHA
 				"logout",				"logout from remote node, format = logout username ip port.",
 
 				"l",					"show link state, format = l.",
-				"p",					"show performance. format = p.",
+				"p",					"show performance, format = p.",
+				"t",					"test, format = t."
 			};
 			GAIA_ENUM_BEGIN(COMMAND_LIST)
 				CMD_HELP,
@@ -2258,6 +2259,7 @@ namespace FSHA
 
 				CMD_LINK,
 				CMD_PERF,
+				CMD_TEST,
 			GAIA_ENUM_END(COMMAND_LIST)
 			#define CMD(e) (listPart[0] == COMMAND_LIST[e * 2])
 			#define CMDFAILED do{m_prt << "Failed!\n";}while(GAIA::ALWAYSFALSE)
@@ -2714,6 +2716,12 @@ namespace FSHA
 					m_prt << "OnRecvLoginOKA = " << m_perf.fOnRecvLoginOKA << "\n";
 					m_prt << "OnRecvLogoutOKA = " << m_perf.fOnRecvLogoutOKA << "\n";
 					m_prt << "OnRecvErrorA = " << m_perf.fOnRecvErrorA << "\n";
+				}
+			}
+			else if(CMD(CMD_TEST))
+			{
+				if(listPart.size() == 1)
+				{
 				}
 			}
 			else
