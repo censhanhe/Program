@@ -340,6 +340,77 @@ namespace GAIA
 					this->push_back(src[x]);
 				return *this;
 			}
+			GINL GAIA::BL operator == (const __MyType& src) const
+			{
+				if(this->size() == src.size())
+				{
+					const_it srcit = this->const_front_it();
+					const_it dstit = src.const_front_it();
+					for(;;)
+					{
+						if(srcit.empty() || dstit.empty())
+							break;
+						if(*srcit != *dstit)
+							return GAIA::False;
+						++srcit;
+						++dstit;
+					}
+					return GAIA::True;
+				}
+				else
+					return GAIA::False;
+			}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator >= (const __MyType& src) const
+			{
+				if(this->size() > src.size())
+					return GAIA::True;
+				else if(this->size() < src.size())
+					return GAIA::False;
+				else
+				{
+					const_it srcit = this->const_front_it();
+					const_it dstit = src.const_front_it();
+					for(;;)
+					{
+						if(srcit.empty() || dstit.empty())
+							break;
+						if(*srcit > *dstit)
+							return GAIA::True;
+						else if(*srcit < *dstit)
+							return GAIA::False;
+						++srcit;
+						++dstit;
+					}
+					return GAIA::True;
+				}
+			}
+			GINL GAIA::BL operator <= (const __MyType& src) const
+			{
+				if(this->size() > src.size())
+					return GAIA::True;
+				else if(this->size() < src.size())
+					return GAIA::False;
+				else
+				{
+					const_it srcit = this->const_front_it();
+					const_it dstit = src.const_front_it();
+					for(;;)
+					{
+						if(srcit.empty() || dstit.empty())
+							break;
+						if(*srcit < *dstit)
+							return GAIA::True;
+						else if(*srcit > *dstit)
+							return GAIA::False;
+						++srcit;
+						++dstit;
+					}
+					return GAIA::True;
+				}
+			}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
 			GINL _DataType& front(){return this->operator[](0);}
 			GINL const _DataType& front() const{return this->operator[](0);}
 			GINL _DataType& back(){return this->operator[](this->size() - 1);}

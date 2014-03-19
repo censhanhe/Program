@@ -315,6 +315,77 @@ namespace GAIA
 					this->operator[](x) = src[x];
 				return *this;
 			}
+			GINL GAIA::BL operator == (const __MyType& src) const
+			{
+				if(this->size() == src.size())
+				{
+					const_it srcit = this->const_front_it();
+					const_it dstit = src.const_front_it();
+					for(;;)
+					{
+						if(srcit.empty() || dstit.empty())
+							break;
+						if(*srcit != *dstit)
+							return GAIA::False;
+						++srcit;
+						++dstit;
+					}
+					return GAIA::True;
+				}
+				else
+					return GAIA::False;
+			}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator >= (const __MyType& src) const
+			{
+				if(this->size() > src.size())
+					return GAIA::True;
+				else if(this->size() < src.size())
+					return GAIA::False;
+				else
+				{
+					const_it srcit = this->const_front_it();
+					const_it dstit = src.const_front_it();
+					for(;;)
+					{
+						if(srcit.empty() || dstit.empty())
+							break;
+						if(*srcit > *dstit)
+							return GAIA::True;
+						else if(*srcit < *dstit)
+							return GAIA::False;
+						++srcit;
+						++dstit;
+					}
+					return GAIA::True;
+				}
+			}
+			GINL GAIA::BL operator <= (const __MyType& src) const
+			{
+				if(this->size() > src.size())
+					return GAIA::True;
+				else if(this->size() < src.size())
+					return GAIA::False;
+				else
+				{
+					const_it srcit = this->const_front_it();
+					const_it dstit = src.const_front_it();
+					for(;;)
+					{
+						if(srcit.empty() || dstit.empty())
+							break;
+						if(*srcit < *dstit)
+							return GAIA::True;
+						else if(*srcit > *dstit)
+							return GAIA::False;
+						++srcit;
+						++dstit;
+					}
+					return GAIA::True;
+				}
+			}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
 		private:
 			GINL GAIA::GVOID init(){m_size = 0;}
 		private:
