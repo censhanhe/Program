@@ -1605,9 +1605,9 @@ namespace FSHA
 							return GAIA::True;
 					}
 				}
-				else if(end_ci < src.start_ci && end_ci + 1 == src.start_ci)
+				else if(end_ci + 1 == src.start_ci)
 				{
-					if(end_sci > (SUBCHUNKINDEX)(end_sci + 1))
+					if(src.start_sci == 0 && (SUBCHUNKINDEX)(end_sci + 1) == 0)
 						return GAIA::True;
 				}
 				return GAIA::False;
@@ -2075,6 +2075,13 @@ namespace FSHA
 			m_fwtpool.clear();
 			m_statistics.init();
 			m_perf.init();
+			m_listFileReqTemp.clear();
+			m_listFileDeleteTemp.clear();
+			m_listChunkDeleteTemp.clear();
+			m_listCompleteTemp.clear();
+			m_listRecycleTemp.clear();
+			m_listFileCmplFileTemp.clear();
+			m_listFileCmplChunkTemp.clear();
 			m_bStartuped = GAIA::False;
 			return GAIA::True;
 		}
@@ -2781,25 +2788,24 @@ namespace FSHA
 			AL al2(m_lr_reqs);
 			if(!m_reqs.empty())
 			{
-				__FileReqListType listFileReq;
-				listFileReq.reserve(m_nMaxRequestFileCountSameTime);
+				m_listFileReqTemp.clear();
 				if(m_reqeds.size() < m_nMaxRequestFileCountSameTime)
 				{
 					for(; !m_reqs.empty(); m_reqs.pop())
 					{
-						if(listFileReq.size() == m_nMaxRequestFileCountSameTime - m_reqeds.size())
+						if(m_listFileReqTemp.size() == m_nMaxRequestFileCountSameTime - m_reqeds.size())
 							break;
 						if(m_reqeds.find(m_reqs.front()) == GNULL)
-							listFileReq.push_back(m_reqs.front());
+							m_listFileReqTemp.push_back(m_reqs.front());
 					}
-					if(!listFileReq.empty())
+					if(!m_listFileReqTemp.empty())
 					{
 						FIDLIST listFile;
-						listFile.reserve(listFileReq.size());
-						for(__FileReqListType::it it = listFileReq.front_it(); !it.empty(); ++it)
+						listFile.reserve(m_listFileReqTemp.size());
+						for(__FileReqListType::it it = m_listFileReqTemp.front_it(); !it.empty(); ++it)
 							listFile.push_back((*it).fid);
 						this->Request(m_mainna, listFile);
-						for(__FileReqListType::it it = listFileReq.front_it(); !it.empty(); ++it)
+						for(__FileReqListType::it it = m_listFileReqTemp.front_it(); !it.empty(); ++it)
 						{
 							FileReq& fr = *it;
 							fr.uFirstReqTime = fr.uLastReqTime = GAIA::TIME::clock_time();
@@ -2838,10 +2844,12 @@ namespace FSHA
 		}
 		GINL GAIA::BL OnExecuteFileSend()
 		{
+			__MsgType msg;
+			msg.reserve(1024);
 			GAIA::F64 fPerf = FSHA_PERF;
 			GAIA::BL bRet = GAIA::False;
 			AL al1(m_lr_filesendtasks);
-			GAIA::CONTAINER::Vector<FileSendTask> listDelete;
+			m_listFileDeleteTemp.clear();
 			for(__FileSendTaskListType::it it = m_filesendtasks.front_it(); !it.empty(); ++it)
 			{
 				FileSendTask& fst = *it;
@@ -2852,14 +2860,14 @@ namespace FSHA
 				if(fst.bNeedHead)
 				{
 					fst.bNeedHead = GAIA::False;
-					__MsgType msg;
+					msg.clear();
 					msg << fst.na;
 					msg << MSG_A_FILEHEAD;
 					msg << fst.fid;
 					msg << pFRC->fsize;
 					this->Send(msg.front_ptr(), msg.write_size());
 				}
-				__MsgType msg;
+				msg.clear();
 				msg << fst.na;
 				msg << MSG_A_FILECHUNK;
 				msg << fst.fid;
@@ -2891,7 +2899,7 @@ namespace FSHA
 				if(bComplete)
 				{
 					m_statistics.uSendCmplFileCount++;
-					listDelete.push_back(fst);
+					m_listFileDeleteTemp.push_back(fst);
 					pFRC->pFA->Close();
 					m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
 					pFRC->pFA = GNULL;
@@ -2903,7 +2911,7 @@ namespace FSHA
 					m_fcaches.erase(*pFRC);
 				}
 			}
-			for(GAIA::CONTAINER::Vector<FileSendTask>::it it = listDelete.front_it(); !it.empty(); ++it)
+			for(GAIA::CONTAINER::Vector<FileSendTask>::it it = m_listFileDeleteTemp.front_it(); !it.empty(); ++it)
 			{
 				if(!m_filesendtasks.erase(*it))
 					GAIA_AST(GAIA::ALWAYSFALSE);
@@ -2916,7 +2924,7 @@ namespace FSHA
 			GAIA::F64 fPerf = FSHA_PERF;
 			GAIA::BL bRet = GAIA::False;
 			AL al1(m_lr_chunksendtasks);
-			GAIA::CONTAINER::Vector<ChunkSendTask> listDelete;
+			m_listChunkDeleteTemp.clear();
 			for(__ChunkSendTaskListType::it it = m_chunksendtasks.front_it(); !it.empty(); ++it)
 			{
 				ChunkSendTask& cst = *it;
@@ -2954,7 +2962,7 @@ namespace FSHA
 				bRet = GAIA::True;
 				if(bComplete)
 				{
-					listDelete.push_back(cst);
+					m_listChunkDeleteTemp.push_back(cst);
 					pFRC->pFA->Close();
 					m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
 					pFRC->pFA = GNULL;
@@ -2966,7 +2974,7 @@ namespace FSHA
 					m_fcaches.erase(*pFRC);
 				}
 			}
-			for(GAIA::CONTAINER::Vector<ChunkSendTask>::it it = listDelete.front_it(); !it.empty(); ++it)
+			for(GAIA::CONTAINER::Vector<ChunkSendTask>::it it = m_listChunkDeleteTemp.front_it(); !it.empty(); ++it)
 			{
 				if(!m_chunksendtasks.erase(*it))
 					GAIA_AST(GAIA::ALWAYSFALSE);
@@ -2978,7 +2986,7 @@ namespace FSHA
 		{
 			GAIA::F64 fPerf = FSHA_PERF;
 			GAIA::BL bRet = GAIA::False;
-			GAIA::CONTAINER::Vector<FileRecCache> listComplete;
+			m_listCompleteTemp.clear();
 			{
 				AL al1(m_lr_filewritetasks);
 				m_filewritetasks.sort();
@@ -3092,7 +3100,7 @@ namespace FSHA
 							if(pFRC->fsize % SUBCHUNKSIZE != 0)
 								++uCorrectChunkCount;
 							if(uCorrectChunkCount == uChunkCount)
-								listComplete.push_back(*pFRC);
+								m_listCompleteTemp.push_back(*pFRC);
 						}
 					}
 
@@ -3105,7 +3113,7 @@ namespace FSHA
 			}
 
 			/* Dispatch complete file. */
-			for(GAIA::CONTAINER::Vector<FileRecCache>::it it = listComplete.front_it(); !it.empty(); ++it)
+			for(GAIA::CONTAINER::Vector<FileRecCache>::it it = m_listCompleteTemp.front_it(); !it.empty(); ++it)
 			{
 				m_statistics.uRequestFileCmplCount++;
 				this->SetFileCmpl((*it).fid, GAIA::True);
@@ -3200,7 +3208,7 @@ namespace FSHA
 			GAIA::U64 uCurrentTime = GAIA::TIME::clock_time();
 
 			// Recycle from link list and prilink list.
-			GAIA::CONTAINER::Vector<NLink> listRecycle;
+			m_listRecycleTemp.clear();
 			{
 				AL al1(m_lr_links);
 				AL al2(m_lr_prilinks);
@@ -3210,10 +3218,10 @@ namespace FSHA
 					if(uCurrentTime > nl.uLastHeartTime)
 					{
 						if(uCurrentTime - nl.uLastHeartTime > LINKRECYCLETIME)
-							listRecycle.push_back(nl);
+							m_listRecycleTemp.push_back(nl);
 					}
 				}
-				for(GAIA::CONTAINER::Vector<NLink>::it it = listRecycle.front_it(); !it.empty(); ++it)
+				for(GAIA::CONTAINER::Vector<NLink>::it it = m_listRecycleTemp.front_it(); !it.empty(); ++it)
 				{
 					NLinkPri nlp;
 					nlp.nlink = *it;
@@ -3227,13 +3235,13 @@ namespace FSHA
 				}
 			}
 
-			if(listRecycle.size() > 0)
+			if(m_listRecycleTemp.size() > 0)
 			{
 				// Recycle all not sended file.
 				{
 					AL al(m_lr_filesendtasks);
 					GAIA::CONTAINER::Vector<FileSendTask> listRecycleFST;
-					for(GAIA::CONTAINER::Vector<NLink>::it it = listRecycle.front_it(); !it.empty(); ++it)
+					for(GAIA::CONTAINER::Vector<NLink>::it it = m_listRecycleTemp.front_it(); !it.empty(); ++it)
 					{
 						NLink& nl = *it;
 						if(!nl.bBeLink)
@@ -3258,7 +3266,7 @@ namespace FSHA
 				{
 					AL al(m_lr_chunksendtasks);
 					GAIA::CONTAINER::Vector<ChunkSendTask> listRecycleCST;
-					for(GAIA::CONTAINER::Vector<NLink>::it it = listRecycle.front_it(); !it.empty(); ++it)
+					for(GAIA::CONTAINER::Vector<NLink>::it it = m_listRecycleTemp.front_it(); !it.empty(); ++it)
 					{
 						NLink& nl = *it;
 						if(!nl.bBeLink)
@@ -3284,7 +3292,7 @@ namespace FSHA
 				{
 					AL al(m_lr_jumpreqs);
 					GAIA::CONTAINER::Vector<JumpReq> listJR;
-					for(GAIA::CONTAINER::Vector<NLink>::it it = listRecycle.front_it(); !it.empty(); ++it)
+					for(GAIA::CONTAINER::Vector<NLink>::it it = m_listRecycleTemp.front_it(); !it.empty(); ++it)
 					{
 						NLink& nl = *it;
 						JumpReq jr;
@@ -3557,16 +3565,16 @@ namespace FSHA
 						fst.fid = fid;
 						fst.ci = 0;
 						fst.sci = 0;
-						GAIA::CONTAINER::Vector<FileSendTask> listResult;
+						m_listFileCmplFileTemp.clear();
 						for(__FileSendTaskListType::it it = m_filesendtasks.lower_bound(fst); !it.empty(); ++it)
 						{
 							FileSendTask& r = *it;
 							if(r.na == fst.na && r.fid == fst.fid)
-								listResult.push_back(r);
+								m_listFileCmplFileTemp.push_back(r);
 							else
 								break;
 						}
-						for(GAIA::CONTAINER::Vector<FileSendTask>::it it = listResult.front_it(); !it.empty(); ++it)
+						for(GAIA::CONTAINER::Vector<FileSendTask>::it it = m_listFileCmplFileTemp.front_it(); !it.empty(); ++it)
 							m_filesendtasks.erase(*it);
 					}
 
@@ -3578,16 +3586,16 @@ namespace FSHA
 						cst.fid = fid;
 						cst.ci = 0;
 						cst.sci = 0;
-						GAIA::CONTAINER::Vector<ChunkSendTask> listResult;
+						m_listFileCmplChunkTemp.clear();
 						for(__ChunkSendTaskListType::it it = m_chunksendtasks.lower_bound(cst); !it.empty(); ++it)
 						{
 							ChunkSendTask& r = *it;
 							if(r.na == cst.na && r.fid == cst.fid)
-								listResult.push_back(r);
+								m_listFileCmplChunkTemp.push_back(r);
 							else
 								break;
 						}
-						for(GAIA::CONTAINER::Vector<ChunkSendTask>::it it = listResult.front_it(); !it.empty(); ++it)
+						for(GAIA::CONTAINER::Vector<ChunkSendTask>::it it = m_listFileCmplChunkTemp.front_it(); !it.empty(); ++it)
 							m_chunksendtasks.erase(*it);
 					}
 					m_perf.fOnRecvFileCmplA += FSHA_PERF - fPerfFileCmplA;
@@ -4373,6 +4381,14 @@ namespace FSHA
 		GAIA::NM m_nMaxRequestFileCountSameTime;
 		Statistics m_statistics;
 		Perf m_perf;
+
+		__FileReqListType m_listFileReqTemp;
+		GAIA::CONTAINER::Vector<FileSendTask> m_listFileDeleteTemp;
+		GAIA::CONTAINER::Vector<ChunkSendTask> m_listChunkDeleteTemp;
+		GAIA::CONTAINER::Vector<FileRecCache> m_listCompleteTemp;
+		GAIA::CONTAINER::Vector<NLink> m_listRecycleTemp;
+		GAIA::CONTAINER::Vector<FileSendTask> m_listFileCmplFileTemp;
+		GAIA::CONTAINER::Vector<ChunkSendTask> m_listFileCmplChunkTemp;
 	};
 };
 

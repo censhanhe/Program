@@ -43,6 +43,33 @@ namespace GAIA
 			}
 			return p[resindex];
 		}
+		template<typename _DataType> GINL _DataType& middle3(_DataType& a, _DataType& b, _DataType& c)
+		{
+			if(a > b)
+			{
+				if(b > c)
+					return b;
+				else
+				{
+					if(c > a)
+						return a;
+					else
+						return c;
+				}
+			}
+			else
+			{
+				if(a > c)
+					return a;
+				else
+				{
+					if(c > b)
+						return b;
+					else
+						return c;
+				}
+			}
+		}
 		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmp(const _DataType1& v1, const _DataType2& v2)
 		{
 			if(v1 < v2)

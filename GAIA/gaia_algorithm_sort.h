@@ -1,6 +1,10 @@
 #ifndef		__GAIA_ALGORITHM_SORT_H__
 #define		__GAIA_ALGORITHM_SORT_H__
 
+#ifdef GAIA_USESTL
+#	include <algorithm>
+#endif
+
 namespace GAIA
 {
 	namespace ALGORITHM
@@ -36,7 +40,9 @@ namespace GAIA
 			GAIA_AST(pEnd != GNULL);
 			if(pBegin >= pEnd)
 				return;
-
+		#ifdef GAIA_USESTL
+			std::sort(pBegin, pEnd + 1);
+		#else
 			// quick sort optimize.
 			if(pEnd - pBegin < 16)
 				return bsort(pBegin, pEnd);
@@ -57,6 +63,7 @@ namespace GAIA
 			GAIA::ALGORITHM::swap(*pSplit, *pEnd);
 			GAIA::ALGORITHM::qsort(pBegin, pSplit - 1);
 			GAIA::ALGORITHM::qsort(pSplit + 1, pEnd);
+		#endif
 		}
 		template<typename _DataType> GINL GAIA::GVOID esort(_DataType* pBegin, _DataType* pEnd)
 		{

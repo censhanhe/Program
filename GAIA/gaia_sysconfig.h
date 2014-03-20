@@ -214,4 +214,7 @@
 #	endif
 #endif
 
+/* Integration flag. */
+#define GAIA_USESTL
+
 #endif
