@@ -1,7 +1,7 @@
 #ifndef		__GAIA_PRINT_INDP_H__
 #define		__GAIA_PRINT_INDP_H__
 
-#include	<iostream>
+#include <iostream>
 
 namespace GAIA
 {

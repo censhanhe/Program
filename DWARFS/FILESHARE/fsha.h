@@ -1836,6 +1836,10 @@ namespace FSHA
 				fOnRecvLoginOKA = 0.0F;
 				fOnRecvLogoutOKA = 0.0F;
 				fOnRecvErrorA = 0.0F;
+				fTemp1 = 0.0F;
+				fTemp2 = 0.0F;
+				fTemp3 = 0.0F;
+				fTemp4 = 0.0F;
 			}
 			GAIA::F64 fExecute;
 			GAIA::F64 fExecuteRequest;
@@ -1862,6 +1866,10 @@ namespace FSHA
 			GAIA::F64 fOnRecvLoginOKA;
 			GAIA::F64 fOnRecvLogoutOKA;
 			GAIA::F64 fOnRecvErrorA;
+			GAIA::F64 fTemp1;
+			GAIA::F64 fTemp2;
+			GAIA::F64 fTemp3;
+			GAIA::F64 fTemp4;
 		};
 	private:
 		/*
@@ -2134,6 +2142,7 @@ namespace FSHA
 		{
 			GAIA_AST(!listID.empty());
 			__MsgType msg;
+			msg.reserve(1024);
 			for(FIDLIST::const_it it = listID.const_front_it(); !it.empty(); ++it)
 			{
 				if(msg.write_size() == 0)
@@ -2723,6 +2732,10 @@ namespace FSHA
 					m_prt << "OnRecvLoginOKA = " << m_perf.fOnRecvLoginOKA << "\n";
 					m_prt << "OnRecvLogoutOKA = " << m_perf.fOnRecvLogoutOKA << "\n";
 					m_prt << "OnRecvErrorA = " << m_perf.fOnRecvErrorA << "\n";
+					m_prt << "Temp1 = " << m_perf.fTemp1 << "\n";
+					m_prt << "Temp2 = " << m_perf.fTemp2 << "\n";
+					m_prt << "Temp3 = " << m_perf.fTemp3 << "\n";
+					m_prt << "Temp4 = " << m_perf.fTemp4 << "\n";
 				}
 			}
 			else if(CMD(CMD_TEST))
@@ -2933,6 +2946,7 @@ namespace FSHA
 				if(pFRC == GNULL)
 					continue;
 				__MsgType msg;
+				msg.reserve(1024);
 				msg << cst.na;
 				msg << MSG_A_FILECHUNK;
 				msg << cst.ci;
@@ -3174,6 +3188,7 @@ namespace FSHA
 							if(endindex + 1 != *it)
 							{
 								__MsgType msg;
+								msg.reserve(1024);
 								msg << m_mainna;
 								msg << MSG_N_CMPLFILESECTION;
 								msg << startindex;
@@ -3188,6 +3203,7 @@ namespace FSHA
 					if(startindex != GINVALID)
 					{
 						__MsgType msg;
+						msg.reserve(1024);
 						msg << m_mainna;
 						msg << MSG_N_CMPLFILESECTION;
 						msg << startindex;
@@ -3226,6 +3242,7 @@ namespace FSHA
 					NLinkPri nlp;
 					nlp.nlink = *it;
 					__MsgType msg;
+					msg.reserve(1024);
 					msg << nlp.nlink.na;
 					msg << MSG_A_ERROR;
 					msg << ERRNO_TIMEOUT;
@@ -3319,6 +3336,7 @@ namespace FSHA
 				if(n.state == NLink::STATE_READY)
 				{
 					__MsgType msg;
+					msg.reserve(1024);
 					msg << n.na;
 					msg << MSG_C_NOOP;
 					this->Send(msg.front_ptr(), msg.write_size());
@@ -3332,6 +3350,7 @@ namespace FSHA
 			GAIA::F64 fPerf = FSHA_PERF;
 			m_statistics.uNRecvCount++;
 			__MsgType msg;
+			msg.reserve(1024);
 			msg.write(p, size);
 			GAIA::NETWORK::NetworkAddress na;
 			MSGIDTYPE msgid;
@@ -3352,6 +3371,36 @@ namespace FSHA
 					return GAIA::False; // Ignore not login's msg.
 				}
 			}
+			{
+				GAIA::F64 fPerfNoopC = FSHA_PERF;
+				GAIA::U64 uClockTime = GAIA::TIME::clock_time();
+
+				AL al1(m_lr_links);
+				AL al2(m_lr_prilinks);
+				NLink nl;
+				nl.na = na;
+				nl.bBeLink = GAIA::True;
+				NLink* pNL = m_links.find(nl);
+				if(pNL != GNULL)
+					pNL->uLastHeartTime = uClockTime;
+				nl.bBeLink = GAIA::False;
+				pNL = m_links.find(nl);
+				if(pNL != GNULL)
+					pNL->uLastHeartTime = uClockTime;
+
+				NLinkPri nlp;
+				nlp.nlink = nl;
+				nlp.nlink.bBeLink = GAIA::True;
+				NLinkPri* pNLP = m_prilinks.find(nlp);
+				if(pNLP != GNULL)
+					pNLP->nlink.uLastHeartTime = uClockTime;
+				nlp.nlink.bBeLink = GAIA::False;
+				pNLP = m_prilinks.find(nlp);
+				if(pNLP != GNULL)
+					pNLP->nlink.uLastHeartTime = uClockTime;
+
+				m_perf.fOnRecvNoopC += FSHA_PERF - fPerfNoopC;
+			}
 			switch(msgid)
 			{
 			case MSG_R_LOGIN:
@@ -3365,6 +3414,7 @@ namespace FSHA
 					if(en != ERRNO_NOERROR)
 					{
 						__MsgType newmsg;
+						msg.reserve(1024);
 						newmsg << na;
 						newmsg << MSG_A_ERROR;
 						newmsg << en;
@@ -3373,6 +3423,7 @@ namespace FSHA
 					else
 					{
 						__MsgType newmsg;
+						msg.reserve(1024);
 						newmsg << na;
 						newmsg << MSG_A_LOGINOK;
 						this->Send(newmsg.front_ptr(), newmsg.write_size());
@@ -3389,6 +3440,7 @@ namespace FSHA
 					if(en != ERRNO_NOERROR)
 					{
 						__MsgType newmsg;
+						msg.reserve(1024);
 						newmsg << na;
 						newmsg << MSG_A_ERROR;
 						newmsg << en;
@@ -3397,6 +3449,7 @@ namespace FSHA
 					else
 					{
 						__MsgType newmsg;
+						msg.reserve(1024);
 						newmsg << na;
 						newmsg << MSG_A_LOGOUTOK;
 						this->Send(newmsg.front_ptr(), newmsg.write_size());
@@ -3406,34 +3459,6 @@ namespace FSHA
 				break;
 			case MSG_C_NOOP:
 				{
-					GAIA::F64 fPerfNoopC = FSHA_PERF;
-					GAIA::U64 uClockTime = GAIA::TIME::clock_time();
-
-					AL al1(m_lr_links);
-					AL al2(m_lr_prilinks);
-					NLink nl;
-					nl.na = na;
-					nl.bBeLink = GAIA::True;
-					NLink* pNL = m_links.find(nl);
-					if(pNL != GNULL)
-						pNL->uLastHeartTime = uClockTime;
-					nl.bBeLink = GAIA::False;
-					pNL = m_links.find(nl);
-					if(pNL != GNULL)
-						pNL->uLastHeartTime = uClockTime;
-
-					NLinkPri nlp;
-					nlp.nlink = nl;
-					nlp.nlink.bBeLink = GAIA::True;
-					NLinkPri* pNLP = m_prilinks.find(nlp);
-					if(pNLP != GNULL)
-						pNLP->nlink.uLastHeartTime = uClockTime;
-					nlp.nlink.bBeLink = GAIA::False;
-					pNLP = m_prilinks.find(nlp);
-					if(pNLP != GNULL)
-						pNLP->nlink.uLastHeartTime = uClockTime;
-
-					m_perf.fOnRecvNoopC += FSHA_PERF - fPerfNoopC;
 				}
 				break;
 			case MSG_R_FILE:
@@ -3468,6 +3493,7 @@ namespace FSHA
 							else
 							{
 								__MsgType newmsg;
+								msg.reserve(1024);
 								newmsg << na;
 								newmsg << MSG_A_FILENOTEXIST;
 								newmsg << fst.fid;
@@ -3616,6 +3642,7 @@ namespace FSHA
 					if(pLink == GNULL && (pBeLink == GNULL || pBeLink->state != NLink::STATE_READY))
 					{
 						__MsgType msg;
+						msg.reserve(1024);
 						msg << na;
 						msg << MSG_A_ERROR;
 						msg << ERRNO_NOTREADY;
@@ -3673,6 +3700,7 @@ namespace FSHA
 					if(pBeLink == GNULL || pBeLink->state != NLink::STATE_READY)
 					{
 						__MsgType msg;
+						msg.reserve(1024);
 						msg << na;
 						msg << MSG_A_ERROR;
 						msg << ERRNO_NOTREADY;
@@ -3838,6 +3866,7 @@ namespace FSHA
 					// Send file count.
 					{
 						__MsgType msg;
+						msg.reserve(1024);
 						msg << na;
 						msg << MSG_N_CMPLFILECOUNT;
 						msg << uFileCount;
@@ -3848,6 +3877,7 @@ namespace FSHA
 						for(GAIA::CONTAINER::Vector<FileIDSection>::it it = fidseclist.front_it(); !it.empty(); ++it)
 						{
 							__MsgType msg;
+							msg.reserve(1024);
 							msg << na;
 							msg << MSG_N_CMPLFILESECTION;
 							msg << (*it).uStart;
@@ -3905,6 +3935,7 @@ namespace FSHA
 		GINL GAIA::BL NLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName, const GAIA::GCH* pszPassword)
 		{
 			__MsgType msg;
+			msg.reserve(1024);
 			msg << na;
 			msg << MSG_R_LOGIN;
 			msg << pszUserName;
@@ -4020,6 +4051,7 @@ namespace FSHA
 			// Send file count.
 			{
 				__MsgType msg;
+				msg.reserve(1024);
 				msg << na;
 				msg << MSG_N_CMPLFILECOUNT;
 				msg << m_uCmplFileCount;
@@ -4047,6 +4079,7 @@ namespace FSHA
 			}
 
 			__MsgType msg;
+			msg.reserve(1024);
 			msg << na;
 			msg << MSG_R_LOGOUT;
 			msg << pszUserName;
@@ -4305,6 +4338,7 @@ namespace FSHA
 			GAIA_AST(jumpna != na);
 			const REQFILECOUNTTYPE& fcnt = *(const REQFILECOUNTTYPE*)p;
 			__MsgType msg;
+			msg.reserve(1024);
 			if(sizeof(na) + sizeof(MSGIDTYPE) + sizeof(jumpna) + nSize > GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE)
 			{
 				GAIA_AST(fcnt / 2 > 0);

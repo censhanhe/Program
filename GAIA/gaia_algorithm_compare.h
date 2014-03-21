@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template<typename _DataType1, typename _DataType2> GINL const typename GAIA::DATATYPE::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType maximize(const _DataType1& v1, const _DataType2& v2)
+		template<typename _DataType1, typename _DataType2> GINL const typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType maximize(const _DataType1& v1, const _DataType2& v2)
 		{
 			if(v1 > v2)
 				return v1;
@@ -14,7 +14,7 @@ namespace GAIA
 			else
 				return v1;
 		}
-		template<typename _DataType1, typename _DataType2> GINL const typename GAIA::DATATYPE::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType minimize(const _DataType1& v1, const _DataType2& v2)
+		template<typename _DataType1, typename _DataType2> GINL const typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType minimize(const _DataType1& v1, const _DataType2& v2)
 		{
 			if(v1 < v2)
 				return v1;

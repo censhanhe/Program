@@ -244,6 +244,91 @@ public:
 	}
 };
 
+class MultiThreadAllocatorESG : public GAIA::THREAD::Thread
+{
+public:
+	MultiThreadAllocatorESG(){m_pAllocator = GNULL; m_bTestResult = GAIA::True;}
+	~MultiThreadAllocatorESG(){}
+	GINL GAIA::GVOID SetAllocator(GAIA::ALLOCATOR::Allocator* pAllocator){m_pAllocator = pAllocator;}
+	GINL GAIA::BL GetTestResult() const{return m_bTestResult;}
+	virtual GAIA::GVOID WorkProcedure()
+	{
+		static const GAIA::UM PATCH_COUNT = 100000;
+		static const GAIA::UM PATCH_MAX_SIZE = 1024;
+		GAIA::CONTAINER::Vector<GAIA::GVOID*> listAlloced;
+		listAlloced.resize(PATCH_COUNT);
+		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
+		{
+			GAIA::U32 uSize = GAIA::MATH::random() % PATCH_MAX_SIZE + 1;
+			listAlloced[x] = m_pAllocator->alloc_proc(uSize);
+			GAIA_AST(m_pAllocator->size_proc(listAlloced[x]) == uSize);
+			if(m_pAllocator->size_proc(listAlloced[x]) != uSize)
+			{
+				m_bTestResult = GAIA::False;
+				goto FUNCTION_END;
+			}
+			GAIA::ALGORITHM::memset(listAlloced[x], x % 128, uSize);
+		}
+		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
+		{
+			GAIA::U32 uSize = m_pAllocator->size_proc(listAlloced[x]);
+			GAIA_AST(uSize < PATCH_MAX_SIZE + 1);
+			if(uSize >= PATCH_MAX_SIZE + 1)
+			{
+				m_bTestResult = GAIA::False;
+				goto FUNCTION_END;
+			}
+			GAIA_AST(GAIA::ALGORITHM::cmp((GAIA::U8*)listAlloced[x], (GAIA::U8)(x % 128), uSize) == 0);
+			if(GAIA::ALGORITHM::cmp((GAIA::U8*)listAlloced[x], (GAIA::U8)(x % 128), uSize) != 0)
+			{
+				m_bTestResult = GAIA::False;
+				goto FUNCTION_END;
+			}
+		}
+		for(GAIA::U32 x = 0; x < PATCH_COUNT * 10; ++x)
+		{
+			GAIA::N32 nFirst = GAIA::MATH::random() % 65536;
+			GAIA::N32 nSecond = GAIA::MATH::random() % 65536;
+			GAIA::N32 nIndex = nFirst * 65536 + nSecond;
+			nIndex = nIndex % PATCH_COUNT;
+			if(listAlloced[nIndex] == GNULL)
+			{
+				GAIA::U32 uSize = GAIA::MATH::random() % PATCH_MAX_SIZE + 1;
+				listAlloced[nIndex] = m_pAllocator->alloc_proc(uSize);
+				GAIA::ALGORITHM::memset(listAlloced[nIndex], nIndex % 128, uSize);
+			}
+			else
+			{
+				GAIA::U32 uSize = m_pAllocator->size_proc(listAlloced[nIndex]);
+				GAIA_AST(uSize < PATCH_MAX_SIZE + 1);
+				if(uSize >= PATCH_MAX_SIZE + 1)
+				{
+					m_bTestResult = GAIA::False;
+					goto FUNCTION_END;
+				}
+				GAIA_AST(GAIA::ALGORITHM::cmp((GAIA::U8*)listAlloced[nIndex], (GAIA::U8)(nIndex % 128), uSize) == 0);
+				if(GAIA::ALGORITHM::cmp((GAIA::U8*)listAlloced[nIndex], (GAIA::U8)(nIndex % 128), uSize) != 0)
+				{
+					m_bTestResult = GAIA::False;
+					goto FUNCTION_END;
+				}
+				m_pAllocator->release_proc(listAlloced[nIndex]);
+				listAlloced[nIndex] = GNULL;
+			}
+		}
+FUNCTION_END:
+		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
+		{
+			if(listAlloced[x] != GNULL)
+				m_pAllocator->release_proc(listAlloced[x]);
+		}
+	}
+
+private:
+	GAIA::ALLOCATOR::Allocator* m_pAllocator;
+	GAIA::BL m_bTestResult;
+};
+
 GAIA::N32 main()
 {
 #if defined(_MSC_VER) && GAIA_PROFILE == GAIA_PROFILE_DEBUG
@@ -2022,6 +2107,36 @@ GAIA::N32 main()
 				TEST_FILE_LINE("IPAddress to or from string convert SUCCESSFULLY!");
 			else
 				TEST_FILE_LINE("IPAddress to or from string convert FAILED!");
+		}
+		TEST_END;
+	}
+
+	// Allocator ESG test.
+	{
+		TEST_BEGIN("<Allocator ESG test>");
+		{
+			GAIA::ALLOCATOR::AllocatorESG aesg;
+			static const GAIA::UM THREAD_COUNT = 4;
+			GAIA::CONTAINER::Vector<MultiThreadAllocatorESG*> listThread;
+			listThread.resize(THREAD_COUNT);
+			for(GAIA::N32 x = 0; x < THREAD_COUNT; ++x)
+			{
+				listThread[x] = new MultiThreadAllocatorESG;
+				listThread[x]->SetAllocator(&aesg);
+				listThread[x]->Run();
+			}
+			bFunctionSuccess = GAIA::True;
+			for(GAIA::N32 x = 0; x < THREAD_COUNT; ++x)
+			{
+				listThread[x]->Wait();
+				if(!listThread[x]->GetTestResult())
+					bFunctionSuccess = GAIA::False;
+				delete listThread[x];
+			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("Allocator ESG function test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("Allocator ESG function test FAILED!");
 		}
 		TEST_END;
 	}

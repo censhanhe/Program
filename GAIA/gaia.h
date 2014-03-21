@@ -11,6 +11,13 @@
 #include	"gaia_assert.h"
 #include	"gaia_error.h"
 
+#include	"gaia_sync_base.h"
+#include	"gaia_sync_atomic.h"
+#include	"gaia_sync_lock.h"
+#include 	"gaia_sync_autolock.h"
+#include	"gaia_sync_event.h"
+#include	"gaia_sync_mutex.h"
+
 #include	"gaia_math_basic.h"
 #include 	"gaia_math_random.h"
 #include 	"gaia_math_lerp.h"
@@ -103,12 +110,6 @@
 #include 	"gaia_dataphase_bdiff.h"
 #include 	"gaia_dataphase_tdiff.h"
 
-#include	"gaia_sync_base.h"
-#include	"gaia_sync_atomic.h"
-#include	"gaia_sync_lock.h"
-#include 	"gaia_sync_autolock.h"
-#include	"gaia_sync_event.h"
-#include	"gaia_sync_mutex.h"
 #include	"gaia_thread.h"
 #include 	"gaia_thread_pool.h"
 #include	"gaia_process.h"

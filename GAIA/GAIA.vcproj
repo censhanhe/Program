@@ -209,12 +209,28 @@
 							RelativePath=".\gaia_allocator_crt.h"
 							>
 						</File>
+						<File
+							RelativePath=".\gaia_allocator_crt_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_allocator_crt_indp.h"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="ESG"
 						>
 						<File
 							RelativePath=".\gaia_allocator_esg.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_allocator_esg_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_allocator_esg_indp.h"
 							>
 						</File>
 					</Filter>
