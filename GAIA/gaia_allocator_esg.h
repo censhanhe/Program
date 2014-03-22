@@ -18,7 +18,7 @@ namespace GAIA
 			class OriginBuffer
 			{
 			public:
-				GAIA::GVOID* buf;
+				GAIA::U8* buf;
 				GAIA::U8** freestack;
 				GAIA::UM uFreeStackSize;
 				GAIA::UM uFreeStackCapacity;
