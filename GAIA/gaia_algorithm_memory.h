@@ -32,10 +32,10 @@ namespace GAIA
 		{
 			GAIA_AST(dst != GNULL);
 			GAIA_AST(size != 0);
-			_SizeType sizet = size;
 			GAIA::UM clean = 0;
-			for(N32 c = 0; c < sizeof(GAIA::UM) / sizeof(GAIA::N8); c++)
-				clean |= (ch << (c * 8));
+			for(GAIA::NM c = 0; c < sizeof(GAIA::UM) / sizeof(GAIA::N8); c++)
+				clean |= (((GAIA::UM)ch) << (c * 8));
+			_SizeType sizet = size;
 			GAIA::GVOID* pRet = dst;
 			while(sizet > sizeof(GAIA::UM))
 			{
@@ -45,13 +45,13 @@ namespace GAIA
 			}
 			while(sizet > 0)
 			{
-				*(GAIA::U8*)dst = (GAIA::U8)clean;
+				*(GAIA::U8*)dst = (GAIA::U8)ch;
 				dst = ((GAIA::U8*)dst) + 1;
 				sizet = sizet - (_SizeType)sizeof(GAIA::U8);
 			}
 			return pRet;
 		}
-		template<typename _SizeType> GINL GAIA::N32 memcmp(const GAIA::GVOID* p1, const GAIA::GVOID* p2, const _SizeType& size)
+		template<typename _SizeType> GINL GAIA::NM memcmp(const GAIA::GVOID* p1, const GAIA::GVOID* p2, const _SizeType& size)
 		{
 			GAIA_AST(p1 != GNULL);
 			GAIA_AST(p2 != GNULL);
