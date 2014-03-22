@@ -44,7 +44,7 @@ namespace GAIA
 				m_uSecSizeListSize = 0;
 			}
 			GINL GAIA::UM GetSectionPatchSize(GAIA::UM uIndex) const{return 32 + 32 * uIndex * uIndex;}
-			GINL GAIA::UM GetSectionPatchCount(GAIA::UM uIndex) const{if(uIndex == 0) uIndex = 1; return 40000 / uIndex / uIndex;}
+			GINL GAIA::UM GetSectionPatchCount(GAIA::UM uIndex) const{if(uIndex == 0) uIndex = 1; return 40000 / (uIndex * uIndex);}
 			GINL GAIA::UM GetSectionIndex(GAIA::UM uSize) const
 			{
 				GAIA::UM x;
