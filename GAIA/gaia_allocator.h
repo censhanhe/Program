@@ -8,9 +8,9 @@ namespace GAIA
 		class Allocator : public RefObject
 		{
 		public:
-			virtual GAIA::GVOID* alloc_proc(const GAIA::UM& size) = 0;
-			virtual GAIA::GVOID release_proc(GAIA::GVOID* p) = 0;
-			virtual GAIA::UM size_proc(GAIA::GVOID* p) = 0;
+			virtual GAIA::GVOID* memory_alloc(const GAIA::UM& size) = 0;
+			virtual GAIA::GVOID memory_release(GAIA::GVOID* p) = 0;
+			virtual GAIA::UM memory_size(GAIA::GVOID* p) = 0;
 		};
 	};
 };

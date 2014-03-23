@@ -11,9 +11,9 @@ namespace GAIA
 		public:
 			GINL AllocatorESG(){this->init(); this->InitHeap();}
 			GINL ~AllocatorESG(){this->ReleaseHeap();}
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::GVOID* alloc_proc(const GAIA::UM& uSize);
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::GVOID release_proc(GAIA::GVOID* p);
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM size_proc(GAIA::GVOID* p);
+			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::GVOID* memory_alloc(const GAIA::UM& uSize);
+			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::GVOID memory_release(GAIA::GVOID* p);
+			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM memory_size(GAIA::GVOID* p);
 		private:
 			class OriginBuffer
 			{

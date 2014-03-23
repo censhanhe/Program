@@ -59,13 +59,18 @@
 								}
 
 #include "gaia.h"
+#ifndef GAIA_DEBUG_MEMORYLEAK
+	GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
+#endif
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	pragma comment(lib, "ws2_32.lib")
 #endif
 
-#if GAIA_OS == GAIA_OS_WINDOWS && GAIA_PROFILE == GAIA_PROFILE_DEBUG
-#	define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#ifdef GAIA_DEBUG_MEMORYLEAK
+#	if GAIA_OS == GAIA_OS_WINDOWS && GAIA_PROFILE == GAIA_PROFILE_DEBUG
+#		define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#	endif
 #endif
 
 GINL GAIA::GVOID LanguageInfo()
@@ -260,9 +265,9 @@ public:
 		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
 		{
 			GAIA::U32 uSize = GAIA::MATH::random() % PATCH_MAX_SIZE + 1;
-			listAlloced[x] = m_pAllocator->alloc_proc(uSize);
-			GAIA_AST(m_pAllocator->size_proc(listAlloced[x]) == uSize);
-			if(m_pAllocator->size_proc(listAlloced[x]) != uSize)
+			listAlloced[x] = m_pAllocator->memory_alloc(uSize);
+			GAIA_AST(m_pAllocator->memory_size(listAlloced[x]) == uSize);
+			if(m_pAllocator->memory_size(listAlloced[x]) != uSize)
 			{
 				m_bTestResult = GAIA::False;
 				goto FUNCTION_END;
@@ -271,7 +276,7 @@ public:
 		}
 		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
 		{
-			GAIA::U32 uSize = m_pAllocator->size_proc(listAlloced[x]);
+			GAIA::U32 uSize = m_pAllocator->memory_size(listAlloced[x]);
 			GAIA_AST(uSize < PATCH_MAX_SIZE + 1);
 			if(uSize >= PATCH_MAX_SIZE + 1)
 			{
@@ -294,12 +299,12 @@ public:
 			if(listAlloced[nIndex] == GNULL)
 			{
 				GAIA::U32 uSize = GAIA::MATH::random() % PATCH_MAX_SIZE + 1;
-				listAlloced[nIndex] = m_pAllocator->alloc_proc(uSize);
+				listAlloced[nIndex] = m_pAllocator->memory_alloc(uSize);
 				GAIA::ALGORITHM::memset(listAlloced[nIndex], nIndex % 128, uSize);
 			}
 			else
 			{
-				GAIA::U32 uSize = m_pAllocator->size_proc(listAlloced[nIndex]);
+				GAIA::U32 uSize = m_pAllocator->memory_size(listAlloced[nIndex]);
 				GAIA_AST(uSize < PATCH_MAX_SIZE + 1);
 				if(uSize >= PATCH_MAX_SIZE + 1)
 				{
@@ -312,7 +317,7 @@ public:
 					m_bTestResult = GAIA::False;
 					goto FUNCTION_END;
 				}
-				m_pAllocator->release_proc(listAlloced[nIndex]);
+				m_pAllocator->memory_release(listAlloced[nIndex]);
 				listAlloced[nIndex] = GNULL;
 			}
 		}
@@ -320,7 +325,7 @@ FUNCTION_END:
 		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
 		{
 			if(listAlloced[x] != GNULL)
-				m_pAllocator->release_proc(listAlloced[x]);
+				m_pAllocator->memory_release(listAlloced[x]);
 		}
 	}
 

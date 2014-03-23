@@ -26,6 +26,8 @@
 #include	"gaia_allocator_crt.h"
 #include	"gaia_allocator_esg.h"
 
+#include	"gaia_type_impl.h"
+
 #include	"gaia_iterator.h"
 
 #include	"gaia_algorithm_base.h"

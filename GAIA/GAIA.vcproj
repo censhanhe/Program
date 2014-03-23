@@ -291,6 +291,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\gaia_type_impl.h"
+						>
+					</File>
+					<File
 						RelativePath=".\gaia_type_indp.cpp"
 						>
 					</File>

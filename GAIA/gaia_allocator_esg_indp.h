@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALLOCATOR
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID* AllocatorESG::alloc_proc(const GAIA::UM& uSize)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID* AllocatorESG::memory_alloc(const GAIA::UM& uSize)
 		{
 			GAIA::UM uSectionIndex = this->GetSectionIndex(uSize + HEAP_BUFFER_HEADERSIZE);
 			if(uSectionIndex == GINVALID)
@@ -87,7 +87,7 @@ namespace GAIA
 			*(GAIA::UM*)pRet = uSize;
 			return (GAIA::U8*)pRet + sizeof(GAIA::UM) + sizeof(GAIA::U16);
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID AllocatorESG::release_proc(GAIA::GVOID* p)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID AllocatorESG::memory_release(GAIA::GVOID* p)
 		{
 			GAIA::U8* pOriginP = (GAIA::U8*)p - sizeof(GAIA::UM) - sizeof(GAIA::U16);
 			GAIA::U16 uOBIndex = *(GAIA::U16*)(pOriginP + sizeof(GAIA::UM));
@@ -124,7 +124,7 @@ namespace GAIA
 			m_lr.Leave();
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::size_proc(GAIA::GVOID* p)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::memory_size(GAIA::GVOID* p)
 		{
 			return *(GAIA::UM*)((GAIA::U8*)p - sizeof(GAIA::UM) - sizeof(GAIA::U16));
 		}

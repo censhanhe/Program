@@ -162,6 +162,13 @@ namespace GAIA
 	public:
 		virtual GAIA::BL base_statistics(BASE_FEATURE of, GAIA::GVOID* pResult) const{return GAIA::False;}
 		virtual GAIA::BL base_optimize(BASE_FEATURE of, GAIA::GVOID* pResult){return GAIA::False;}
+	public:
+	#ifndef GAIA_DEBUG_MEMORYLEAK
+		GINL GAIA::GVOID* operator new(size_t size);
+		GINL GAIA::GVOID operator delete(GAIA::GVOID* p);
+		GINL GAIA::GVOID* operator new[] (size_t size);
+		GINL GAIA::GVOID operator delete[](GAIA::GVOID* p);
+	#endif
 	};
 
 	/* Class Object. It's the all class's base(except high-performance container and math class. */
@@ -313,6 +320,11 @@ namespace GAIA
 
 #ifndef GAIA_DEBUG_CODEPURE
 #	include "gaia_type_indp.h"
+#endif
+
+#ifndef GAIA_DEBUG_MEMORYLEAK
+	namespace GAIA{namespace ALLOCATOR{class AllocatorESG;};};
+	extern GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
 #endif
 
 #endif
