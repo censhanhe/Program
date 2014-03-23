@@ -58,6 +58,12 @@
 									szPerfName[0] = 0;\
 								}
 
+#ifdef _MSC_VER
+#	define NOMINMAX
+#	include <winsock2.h>
+#	include <windows.h>
+#endif
+
 #include "gaia.h"
 #ifndef GAIA_DEBUG_MEMORYLEAK
 	GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
@@ -129,7 +135,7 @@ GINL GAIA::GVOID LanguageInfo()
 	GAIA::CONTAINER::AString str;\
 	str = (name);\
 	file.WriteText(str.front_ptr());\
-	str = (int)size;\
+	str = (GAIA::N32)size;\
 	file.WriteText(str.front_ptr());\
 	file.WriteText("\r\n");}
 	file.WriteText("[Basic Type Size]\r\n");

@@ -131,20 +131,21 @@ namespace GAIA
 	#define GINVALID (~0)
 
 	/* Undefine origin type. */
+	#define GAIA_INVALID_ORIGINTYPE 1
 	#ifdef GAIA_DEBUG_CODEPURE
 	#	ifndef GAIA_NOCANCEL_ORIGINTYPE
-	#		define bool 1
-	#		define true 1
-	#		define false 1
-	#		define char 1
-	#		define short 1
-	#		define int 1
-	#		define long 1
-	#		define float 1
-	#		define double 1
-	#		define wchar_t 1
-	#		define __wchar_t 1
-	#		define unsigned 1
+	#		define bool GAIA_INVALID_ORIGINTYPE
+	#		define true GAIA_INVALID_ORIGINTYPE
+	#		define false GAIA_INVALID_ORIGINTYPE
+	#		define char GAIA_INVALID_ORIGINTYPE
+	#		define short GAIA_INVALID_ORIGINTYPE
+	#		define int GAIA_INVALID_ORIGINTYPE
+	#		define long GAIA_INVALID_ORIGINTYPE
+	#		define float GAIA_INVALID_ORIGINTYPE
+	#		define double GAIA_INVALID_ORIGINTYPE
+	#		define wchar_t GAIA_INVALID_ORIGINTYPE
+	#		define __wchar_t GAIA_INVALID_ORIGINTYPE
+	#		define unsigned GAIA_INVALID_ORIGINTYPE
 	#	endif
 	#endif
 	

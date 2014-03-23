@@ -83,7 +83,13 @@ namespace GAIA
 			setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::UM bNotBlockModeEnable = 1;
+		#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
+		#		undef long
+		#	endif
 			ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
+		#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
+		#		define long GAIA_INVALID_ORIGINTYPE
+		#	endif
 		#else
 			GAIA::N32 flags = fcntl(m_h, F_GETFL, 0);
 			fcntl(m_h, F_SETFL, flags | O_NONBLOCK);
@@ -416,7 +422,13 @@ namespace GAIA
 					setsockopt(newsock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_desc.nAcceptSendBufSize, sizeof(m_desc.nAcceptSendBufSize));
 					setsockopt(newsock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nAcceptRecvBufSize, sizeof(m_desc.nAcceptRecvBufSize));
 				#if GAIA_OS == GAIA_OS_WINDOWS
+				#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
+				#		undef long
+				#	endif
 					GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(newsock, FIONBIO, &bNotBlockModeEnable);
+				#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
+				#		define long GAIA_INVALID_ORIGINTYPE
+				#	endif
 				#else
 					GAIA::N32 flags = fcntl(newsock, F_GETFL, 0);
 					fcntl(newsock, F_SETFL, flags | O_NONBLOCK);
