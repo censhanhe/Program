@@ -10,7 +10,7 @@
 #	include <stdio.h>
 #	include <sys/stat.h>
 #	include <sys/dir.h>
-#	include <sys/dirent.h>
+#	include <dirent.h>
 #	include <unistd.h>
 #endif
 

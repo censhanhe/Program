@@ -166,11 +166,11 @@ namespace GAIA
 	public:
 	#ifndef GAIA_DEBUG_MEMORYLEAK
 	#	if GAIA_OS == GAIA_OS_WINDOWS
-		GINL GAIA::GVOID* operator new(size_t size);
-		GINL GAIA::GVOID* operator new[] (size_t size);
+			GINL GAIA::GVOID* operator new(size_t size);
+			GINL GAIA::GVOID* operator new[] (size_t size);
 	#	else
-		GINL GAIA::GVOID* operator new(GAIA::UM size);
-		GINL GAIA::GVOID* operator new[](GAIA::UM size);
+			GINL GAIA::GVOID* operator new(GAIA::UM size);
+			GINL GAIA::GVOID* operator new[](GAIA::UM size);
 	#	endif
 		GINL GAIA::GVOID operator delete(GAIA::GVOID* p);
 		GINL GAIA::GVOID operator delete[](GAIA::GVOID* p);

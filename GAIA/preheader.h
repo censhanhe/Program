@@ -49,7 +49,7 @@
 #		include <netdb.h>
 #		include <sys/stat.h>
 #		include <sys/dir.h>
-#		include <sys/dirent.h>
+#		include <dirent.h>
 #		if GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
 #			include <libkern/OSAtomic.h>
 #		else
