@@ -43,30 +43,38 @@ namespace GAIA
 			}
 			return p[resindex];
 		}
-		template<typename _DataType> GINL _DataType& middle3(_DataType& a, _DataType& b, _DataType& c)
+		template<typename _DataType> GINL _DataType& maximize3(_DataType& v1, _DataType& v2, _DataType& v3)
 		{
-			if(a > b)
+			return maximize(maximize(v1, v2), v3);
+		}
+		template<typename _DataType> GINL _DataType& minimize3(_DataType& v1, _DataType& v2, _DataType& v3)
+		{
+			return minimize(minimize(v1, v2), v3);
+		}
+		template<typename _DataType> GINL _DataType& middle3(_DataType& v1, _DataType& v2, _DataType& v3)
+		{
+			if(v1 > v2)
 			{
-				if(b > c)
-					return b;
+				if(v2 > v3)
+					return v2;
 				else
 				{
-					if(c > a)
-						return a;
+					if(v3 > v1)
+						return v1;
 					else
-						return c;
+						return v3;
 				}
 			}
 			else
 			{
-				if(a > c)
-					return a;
+				if(v1 > v3)
+					return v1;
 				else
 				{
-					if(c > b)
-						return b;
+					if(v3 > v2)
+						return v2;
 					else
-						return c;
+						return v3;
 				}
 			}
 		}
