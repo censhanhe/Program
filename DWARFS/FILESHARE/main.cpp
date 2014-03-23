@@ -1,7 +1,11 @@
 #include 	<iostream>
 #include	<string>
-#include	"fsha.h"
 using namespace std;
+
+#include	"fsha.h"
+#ifndef GAIA_DEBUG_MEMORYLEAK
+	GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
+#endif
 
 int main()
 {
