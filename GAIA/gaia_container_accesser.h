@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType> class Accesser
+		template<typename _DataType, typename _SizeType> class Accesser : public GAIA::Base
 		{
 		public:
 			typedef _DataType _datatype;

@@ -629,18 +629,10 @@
 							RelativePath=".\gaia_container_basictrietree.h"
 							>
 						</File>
-						<File
-							RelativePath=".\gaia_container_ksvdtree.h"
-							>
-						</File>
 					</Filter>
 					<Filter
 						Name="VAR"
 						>
-						<File
-							RelativePath=".\gaia_container_basicstackvar.h"
-							>
-						</File>
 						<File
 							RelativePath=".\gaia_container_vari.h"
 							>

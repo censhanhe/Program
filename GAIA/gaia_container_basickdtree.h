@@ -10,7 +10,7 @@ namespace GAIA
 			typename _SizeType, 
 			typename _HeightType,
 			typename _SizeIncreaserType
-		> class BasicKDTree
+		> class BasicKDTree : public GAIA::Base
 		{
 		public:
 			class Node;

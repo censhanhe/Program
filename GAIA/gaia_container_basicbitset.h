@@ -7,7 +7,7 @@ namespace GAIA
 	{
 		#define GAIA_BITSET_SRC (m_pFront[index / 8])
 		#define GAIA_BITSET_CUR (1 << (index % 8))
-		template<typename _SizeType> class BasicBitset
+		template<typename _SizeType> class BasicBitset : public GAIA::Base
 		{
 		public:
 			typedef _SizeType _sizetype;

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _SizeType, typename _SizeIncreaserType, _SizeType _PageSize> class Storage
+		template<typename _SizeType, typename _SizeIncreaserType, _SizeType _PageSize> class Storage : public GAIA::Base
 		{
 		public:
 			typedef _SizeType _sizetype;

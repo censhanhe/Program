@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType> class Ref
+		template<typename _DataType> class Ref : public GAIA::Base
 		{
 		public:
 			typedef _DataType _datatype;

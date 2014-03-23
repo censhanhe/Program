@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> class BasicMultiAVLTree
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> class BasicMultiAVLTree : public GAIA::Base
 		{
 		private:
 			friend class it;

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _SizeType, typename _SizeIncreaserType> class BasicBuffer
+		template<typename _SizeType, typename _SizeIncreaserType> class BasicBuffer : public GAIA::Base
 		{
 		public:
 			typedef _SizeType _sizetype;
