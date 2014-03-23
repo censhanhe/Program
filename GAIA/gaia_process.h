@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace PROCESS
 	{
-		class Process
+		class Process : public GAIA::Base
 		{
 		public:
 		};

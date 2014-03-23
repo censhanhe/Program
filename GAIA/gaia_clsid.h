@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace FRAMEWORK
 	{
-		class ClsID
+		class ClsID : public GAIA::Base
 		{
 		public:
 			GAIA_ENUM_BEGIN(FLAG)

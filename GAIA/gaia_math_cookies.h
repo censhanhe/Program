@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MATH
 	{		
-		template<typename _DataType> class VEC2
+		template<typename _DataType> class VEC2 : public GAIA::Base
 		{
 		public:
 			typedef _DataType _datatype;
@@ -65,27 +65,27 @@ namespace GAIA
 			_DataType x, y;
 		};
 
-		template<typename _DataType> class VEC3
+		template<typename _DataType> class VEC3 : public GAIA::Base
 		{
 		public:
 		public:
 			_DataType x, y, z;
 		};
 		
-		template<typename _DataType> class VEC4
+		template<typename _DataType> class VEC4 : public GAIA::Base
 		{
 		public:
 		public:
 			_DataType x, y, z, w;
 		};
 
-		template<typename _DataType> class QUA
+		template<typename _DataType> class QUA : public GAIA::Base
 		{
 		public:
 			_DataType x, y, z, w;
 		};
 
-		template<typename _DataType> class MTX22
+		template<typename _DataType> class MTX22 : public GAIA::Base
 		{
 		public:
 			GINL GAIA::GVOID identity(){}
@@ -94,32 +94,32 @@ namespace GAIA
 			GINL GAIA::GVOID transpose(){}
 		};
 
-		template<typename _DataType> class MTX33
+		template<typename _DataType> class MTX33 : public GAIA::Base
 		{
 		public:
 		public:
 		};
 
-		template<typename _DataType> class MTX34
+		template<typename _DataType> class MTX34 : public GAIA::Base
 		{
 		public:
 		public:
 		};
 
-		template<typename _DataType> class MTX44
+		template<typename _DataType> class MTX44 : public GAIA::Base
 		{
 		public:
 		public:
 		};
 
-		template<typename _DataType> class PLANE
+		template<typename _DataType> class PLANE : public GAIA::Base
 		{
 		public:
 		public:
 			_DataType a, b, c, d;
 		};
 
-		template<typename _DataType> class AABR
+		template<typename _DataType> class AABR : public GAIA::Base
 		{
 		public:
 			GINL GAIA::GVOID identity(){pmin = (_DataType)+1; pmax = (_DataType)-1;}
@@ -131,7 +131,7 @@ namespace GAIA
 			VEC2<_DataType> pmax;
 		};
 
-		template<typename _DataType> class AABB
+		template<typename _DataType> class AABB : public GAIA::Base
 		{
 		public:
 			
@@ -140,14 +140,14 @@ namespace GAIA
 			VEC3<_DataType> pmax;
 		};
 
-		template<typename _DataType> class ARGB
+		template<typename _DataType> class ARGB : public GAIA::Base
 		{
 		public:
 		public:
 			_DataType a, r, g, b;
 		};
 		
-		template<typename _DataType> class RGB
+		template<typename _DataType> class RGB : public GAIA::Base
 		{
 		public:
 		public:

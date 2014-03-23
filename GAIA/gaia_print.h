@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace PRINT
 	{
-		class Print
+		class Print : public GAIA::Base
 		{
 		public:
 			GINL Print(){}

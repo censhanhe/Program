@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace DATAPHASE
 	{
-		template<typename _SizeType> class BDiff
+		template<typename _SizeType> class BDiff : public GAIA::Base
 		{
 		public:
 			typedef _SizeType _sizetype;

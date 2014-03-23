@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace TIME
 	{
-		class Time
+		class Time : public GAIA::Base
 		{
 		public:
 			GAIA::N16 y; // Year.

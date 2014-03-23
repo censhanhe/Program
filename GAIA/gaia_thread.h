@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace THREAD
 	{
-		class Thread
+		class Thread : public GAIA::Base
 		{
 		public:
 			GAIA_ENUM_BEGIN(THREAD_STATE)

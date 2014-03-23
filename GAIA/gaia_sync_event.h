@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		class Event
+		class Event : public GAIA::Base
 		{
 		public:
 			GAIA_DEBUG_CODEPURE_MEMFUNC Event();

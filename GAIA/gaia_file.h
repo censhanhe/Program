@@ -11,7 +11,7 @@ namespace GAIA
 			FILE_OPEN_TYPE_CREATEALWAYS		= 0x00000004,
 		GAIA_ENUM_END(FILE_OPEN_TYPE)
 		
-		class File
+		class File : public GAIA::Base
 		{
 		public:
 			GINL File(){m_fileopentype = FILE_OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNULL;}

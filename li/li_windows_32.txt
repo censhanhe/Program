@@ -17,11 +17,11 @@ GVOID*=4
    F64=8
 
 [GAIA Basic Type Size]
-  Vector<N32>=12
-   Stack<N32>=12
-   Queue<N32>=20
-    List<N32>=44
-    Pool<N32>=36
+  Vector<N32>=16
+   Stack<N32>=16
+   Queue<N32>=24
+    List<N32>=64
+    Pool<N32>=52
 
 [GAIA Advance Type Size]
 

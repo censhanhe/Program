@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MODEL
 	{
-		template<typename _SizeType, typename _KeyType> class DataModel
+		template<typename _SizeType, typename _KeyType> class DataModel : public GAIA::Base
 		{
 		public:
 			GINL virtual GAIA::BL insert(const _KeyType& keytype, const GAIA::GVOID* pBuffer, const _SizeType& size) = 0;
