@@ -108,8 +108,8 @@ namespace GAIA
 				{
 					if(uOBIndex == hs.uMinFreeIndex)
 					{
-						hs.uMinFreeIndex = 0xFFFFFFFF;
-						hs.uMinFreeSize = 0xFFFFFFFF;
+						hs.uMinFreeIndex = (GAIA::UM)GINVALID;
+						hs.uMinFreeSize = (GAIA::UM)GINVALID;
 					}
 					delete[] ob.freestack;
 					ob.freestack = GNULL;

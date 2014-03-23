@@ -270,7 +270,7 @@ public:
 		listAlloced.resize(PATCH_COUNT);
 		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
 		{
-			GAIA::U32 uSize = GAIA::MATH::random() % PATCH_MAX_SIZE + 1;
+			GAIA::U32 uSize = (GAIA::U32)(GAIA::MATH::random() % PATCH_MAX_SIZE + 1);
 			listAlloced[x] = m_pAllocator->memory_alloc(uSize);
 			GAIA_AST(m_pAllocator->memory_size(listAlloced[x]) == uSize);
 			if(m_pAllocator->memory_size(listAlloced[x]) != uSize)
@@ -282,7 +282,7 @@ public:
 		}
 		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
 		{
-			GAIA::U32 uSize = m_pAllocator->memory_size(listAlloced[x]);
+			GAIA::U32 uSize = (GAIA::U32)m_pAllocator->memory_size(listAlloced[x]);
 			GAIA_AST(uSize < PATCH_MAX_SIZE + 1);
 			if(uSize >= PATCH_MAX_SIZE + 1)
 			{
@@ -301,16 +301,16 @@ public:
 			GAIA::N32 nFirst = GAIA::MATH::random() % 65536;
 			GAIA::N32 nSecond = GAIA::MATH::random() % 65536;
 			GAIA::N32 nIndex = nFirst * 65536 + nSecond;
-			nIndex = nIndex % PATCH_COUNT;
+			nIndex = (GAIA::N32)(nIndex % PATCH_COUNT);
 			if(listAlloced[nIndex] == GNULL)
 			{
-				GAIA::U32 uSize = GAIA::MATH::random() % PATCH_MAX_SIZE + 1;
+				GAIA::U32 uSize = (GAIA::U32)(GAIA::MATH::random() % PATCH_MAX_SIZE + 1);
 				listAlloced[nIndex] = m_pAllocator->memory_alloc(uSize);
 				GAIA::ALGORITHM::memset(listAlloced[nIndex], nIndex % 128, uSize);
 			}
 			else
 			{
-				GAIA::U32 uSize = m_pAllocator->memory_size(listAlloced[nIndex]);
+				GAIA::U32 uSize = (GAIA::U32)m_pAllocator->memory_size(listAlloced[nIndex]);
 				GAIA_AST(uSize < PATCH_MAX_SIZE + 1);
 				if(uSize >= PATCH_MAX_SIZE + 1)
 				{
