@@ -2857,9 +2857,8 @@ namespace FSHA
 		}
 		GINL GAIA::BL OnExecuteFileSend()
 		{
-			__MsgType msg;
-			msg.reserve(1024);
 			GAIA::F64 fPerf = FSHA_PERF;
+			m_FileSendMsgTemp.clear();
 			GAIA::BL bRet = GAIA::False;
 			AL al1(m_lr_filesendtasks);
 			m_listFileDeleteTemp.clear();
@@ -2873,19 +2872,19 @@ namespace FSHA
 				if(fst.bNeedHead)
 				{
 					fst.bNeedHead = GAIA::False;
-					msg.clear();
-					msg << fst.na;
-					msg << MSG_A_FILEHEAD;
-					msg << fst.fid;
-					msg << pFRC->fsize;
-					this->Send(msg.front_ptr(), msg.write_size());
+					m_FileSendMsgTemp.clear();
+					m_FileSendMsgTemp << fst.na;
+					m_FileSendMsgTemp << MSG_A_FILEHEAD;
+					m_FileSendMsgTemp << fst.fid;
+					m_FileSendMsgTemp << pFRC->fsize;
+					this->Send(m_FileSendMsgTemp.front_ptr(), m_FileSendMsgTemp.write_size());
 				}
-				msg.clear();
-				msg << fst.na;
-				msg << MSG_A_FILECHUNK;
-				msg << fst.fid;
-				msg << fst.ci;
-				msg << fst.sci;
+				m_FileSendMsgTemp.clear();
+				m_FileSendMsgTemp << fst.na;
+				m_FileSendMsgTemp << MSG_A_FILECHUNK;
+				m_FileSendMsgTemp << fst.fid;
+				m_FileSendMsgTemp << fst.ci;
+				m_FileSendMsgTemp << fst.sci;
 				FILESIZETYPE cursize = fst.ci * CHUNKSIZE + fst.sci * SUBCHUNKSIZE;
 				FILESIZETYPE remainsize = pFRC->fsize - cursize;
 				SUBCHUNKSIZETYPE scsize;
@@ -2897,13 +2896,13 @@ namespace FSHA
 					scsize = remainsize;
 					bComplete = GAIA::True;
 				}
-				msg << scsize;
+				m_FileSendMsgTemp << scsize;
 				pFRC->pFA->Seek(GAIA::SEEK_TYPE_BEGIN, cursize);
 				GAIA::U8 buf[SUBCHUNKSIZE];
 				if(pFRC->pFA->Read(buf, scsize) != scsize)
 					continue;
-				msg.write(buf, scsize);
-				this->Send(msg.front_ptr(), msg.write_size());
+				m_FileSendMsgTemp.write(buf, scsize);
+				this->Send(m_FileSendMsgTemp.front_ptr(), m_FileSendMsgTemp.write_size());
 				m_statistics.uSendChunkCount++;
 				++fst.sci;
 				if(fst.sci == 0)
@@ -3349,13 +3348,12 @@ namespace FSHA
 		{
 			GAIA::F64 fPerf = FSHA_PERF;
 			m_statistics.uNRecvCount++;
-			__MsgType msg;
-			msg.reserve(1024);
-			msg.write(p, size);
+			m_OnReceiveMsgTemp.clear();
+			m_OnReceiveMsgTemp.write(p, size);
 			GAIA::NETWORK::NetworkAddress na;
 			MSGIDTYPE msgid;
-			msg >> na;
-			msg >> msgid;
+			m_OnReceiveMsgTemp >> na;
+			m_OnReceiveMsgTemp >> msgid;
 			if(msgid != MSG_R_LOGIN)
 			{
 				AL al(m_lr_links);
@@ -3408,13 +3406,13 @@ namespace FSHA
 					GAIA::F64 fPerfLoginR = FSHA_PERF;
 					GAIA::GCH uname[USERNAMELEN + 1];
 					GAIA::GCH password[USERNAMELEN + 1];
-					msg >> uname;
-					msg >> password;
+					m_OnReceiveMsgTemp >> uname;
+					m_OnReceiveMsgTemp >> password;
 					ERRNO en = this->BeLogin(na, uname, password);
 					if(en != ERRNO_NOERROR)
 					{
 						__MsgType newmsg;
-						msg.reserve(1024);
+						newmsg.reserve(1024);
 						newmsg << na;
 						newmsg << MSG_A_ERROR;
 						newmsg << en;
@@ -3423,7 +3421,7 @@ namespace FSHA
 					else
 					{
 						__MsgType newmsg;
-						msg.reserve(1024);
+						newmsg.reserve(1024);
 						newmsg << na;
 						newmsg << MSG_A_LOGINOK;
 						this->Send(newmsg.front_ptr(), newmsg.write_size());
@@ -3435,12 +3433,12 @@ namespace FSHA
 				{
 					GAIA::F64 fPerfLogoutR = FSHA_PERF;
 					GAIA::GCH uname[USERNAMELEN + 1];
-					msg >> uname;
+					m_OnReceiveMsgTemp >> uname;
 					ERRNO en = this->BeLogout(na, uname);
 					if(en != ERRNO_NOERROR)
 					{
 						__MsgType newmsg;
-						msg.reserve(1024);
+						newmsg.reserve(1024);
 						newmsg << na;
 						newmsg << MSG_A_ERROR;
 						newmsg << en;
@@ -3449,7 +3447,7 @@ namespace FSHA
 					else
 					{
 						__MsgType newmsg;
-						msg.reserve(1024);
+						newmsg.reserve(1024);
 						newmsg << na;
 						newmsg << MSG_A_LOGOUTOK;
 						this->Send(newmsg.front_ptr(), newmsg.write_size());
@@ -3464,16 +3462,16 @@ namespace FSHA
 			case MSG_R_FILE:
 				{
 					GAIA::F64 fPerfFileR = FSHA_PERF;
-					m_statistics.uBeRequestFileCount += *(REQFILECOUNTTYPE*)msg.read_ptr();
-					if(!this->Jump(na, msg.read_ptr(), msg.write_size() - msg.read_size()))
+					m_statistics.uBeRequestFileCount += *(REQFILECOUNTTYPE*)m_OnReceiveMsgTemp.read_ptr();
+					if(!this->Jump(na, m_OnReceiveMsgTemp.read_ptr(), m_OnReceiveMsgTemp.write_size() - m_OnReceiveMsgTemp.read_size()))
 					{
 						REQFILECOUNTTYPE fcnt;
-						msg >> fcnt;
+						m_OnReceiveMsgTemp >> fcnt;
 						for(REQFILECOUNTTYPE x = 0; x < fcnt; ++x)
 						{
 							FileSendTask fst;
-							msg >> fst.fid;
-							msg >> fst.ci;
+							m_OnReceiveMsgTemp >> fst.fid;
+							m_OnReceiveMsgTemp >> fst.ci;
 							fst.na = na;
 							fst.bNeedHead = GAIA::True;
 							if(fst.fid < m_filelist.GetFileCount() && m_filestate.exist(fst.fid))
@@ -3493,7 +3491,7 @@ namespace FSHA
 							else
 							{
 								__MsgType newmsg;
-								msg.reserve(1024);
+								newmsg.reserve(1024);
 								newmsg << na;
 								newmsg << MSG_A_FILENOTEXIST;
 								newmsg << fst.fid;
@@ -3502,7 +3500,7 @@ namespace FSHA
 						}
 					}
 					else
-						msg.seek_read(msg.write_size(), GAIA::SEEK_TYPE_BEGIN);
+						m_OnReceiveMsgTemp.seek_read(m_OnReceiveMsgTemp.write_size(), GAIA::SEEK_TYPE_BEGIN);
 					m_perf.fOnRecvFileR += FSHA_PERF - fPerfFileR;
 				}
 				break;
@@ -3510,8 +3508,8 @@ namespace FSHA
 				{
 					GAIA::F64 fPerfFileChunkR = FSHA_PERF;
 					ChunkSendTask cst;
-					msg >> cst.fid;
-					msg >> cst.ci;
+					m_OnReceiveMsgTemp >> cst.fid;
+					m_OnReceiveMsgTemp >> cst.ci;
 					AL al(m_lr_chunksendtasks);
 					ChunkSendTask* pCST = m_chunksendtasks.find(cst);
 					if(pCST == GNULL)
@@ -3525,8 +3523,8 @@ namespace FSHA
 				{
 					GAIA::F64 fPerfFileHeadA = FSHA_PERF;
 					FileRecCache frc;
-					msg >> frc.fid;
-					msg >> frc.fsize;
+					m_OnReceiveMsgTemp >> frc.fid;
+					m_OnReceiveMsgTemp >> frc.fsize;
 					frc.bWrite = GAIA::True;
 					AL al(m_lr_fcaches);
 					FileRecCache* pFRC = m_fcaches.find(frc);
@@ -3546,13 +3544,13 @@ namespace FSHA
 					}
 					GAIA::F64 fPerfFileChunkA = FSHA_PERF;
 					m_statistics.uRecvChunkCount++;
-					msg >> pFWT->fid;
-					msg >> pFWT->ci;
-					msg >> pFWT->sci;
-					msg >> pFWT->size;
+					m_OnReceiveMsgTemp >> pFWT->fid;
+					m_OnReceiveMsgTemp >> pFWT->ci;
+					m_OnReceiveMsgTemp >> pFWT->sci;
+					m_OnReceiveMsgTemp >> pFWT->size;
 					if(pFWT->size > 0)
 					{
-						msg.read(pFWT->buf, pFWT->size);
+						m_OnReceiveMsgTemp.read(pFWT->buf, pFWT->size);
 						AL al(m_lr_filewritetasks);
 						m_filewritetasks.push_back(pFWT);
 					}
@@ -3563,7 +3561,7 @@ namespace FSHA
 				{
 					GAIA::F64 fPerfFileNotExistA = FSHA_PERF;
 					FILEID fid;
-					msg >> fid;
+					m_OnReceiveMsgTemp >> fid;
 					AL al(m_lr_reqeds);
 					FileReq fr;
 					fr.fid = fid;
@@ -3581,7 +3579,7 @@ namespace FSHA
 				{
 					GAIA::F64 fPerfFileCmplA = FSHA_PERF;
 					FILEID fid;
-					msg >> fid;
+					m_OnReceiveMsgTemp >> fid;
 
 					// Clean up file send task.
 					{
@@ -3631,7 +3629,7 @@ namespace FSHA
 				{
 					GAIA::F64 fPerfCmplFileCountN = FSHA_PERF;
 					FILEID filecount;
-					msg >> filecount;
+					m_OnReceiveMsgTemp >> filecount;
 					NLinkPri np;
 					np.nlink.na = na;
 					np.nlink.bBeLink = GAIA::True;
@@ -3641,12 +3639,12 @@ namespace FSHA
 					NLink* pLink = m_links.find(np.nlink);
 					if(pLink == GNULL && (pBeLink == GNULL || pBeLink->state != NLink::STATE_READY))
 					{
-						__MsgType msg;
-						msg.reserve(1024);
-						msg << na;
-						msg << MSG_A_ERROR;
-						msg << ERRNO_NOTREADY;
-						this->Send(msg.front_ptr(), msg.write_size());
+						__MsgType newmsg;
+						newmsg.reserve(1024);
+						newmsg << na;
+						newmsg << MSG_A_ERROR;
+						newmsg << ERRNO_NOTREADY;
+						this->Send(newmsg.front_ptr(), newmsg.write_size());
 						m_perf.fOnRecvCmplFileCountN += FSHA_PERF - fPerfCmplFileCountN;
 						break;
 					}
@@ -3685,8 +3683,8 @@ namespace FSHA
 				{
 					GAIA::F64 fPerfCmplFileSectionN = FSHA_PERF;
 					FileIDSection fidsec;
-					msg >> fidsec.uStart;
-					msg >> fidsec.uEnd;
+					m_OnReceiveMsgTemp >> fidsec.uStart;
+					m_OnReceiveMsgTemp >> fidsec.uEnd;
 					if(fidsec.uStart > fidsec.uEnd)
 					{
 						m_perf.fOnRecvCmplFileSectionN += FSHA_PERF - fPerfCmplFileSectionN;
@@ -3699,12 +3697,12 @@ namespace FSHA
 					NLink* pBeLink = m_links.find(np.nlink);
 					if(pBeLink == GNULL || pBeLink->state != NLink::STATE_READY)
 					{
-						__MsgType msg;
-						msg.reserve(1024);
-						msg << na;
-						msg << MSG_A_ERROR;
-						msg << ERRNO_NOTREADY;
-						this->Send(msg.front_ptr(), msg.write_size());
+						__MsgType newmsg;
+						newmsg.reserve(1024);
+						newmsg << na;
+						newmsg << MSG_A_ERROR;
+						newmsg << ERRNO_NOTREADY;
+						this->Send(newmsg.front_ptr(), newmsg.write_size());
 						m_perf.fOnRecvCmplFileSectionN += FSHA_PERF - fPerfCmplFileSectionN;
 						break;
 					}
@@ -3728,11 +3726,11 @@ namespace FSHA
 				{
 					GAIA::F64 fPerfCnnA = FSHA_PERF;
 					GAIA::NETWORK::NetworkAddress jumpna;
-					msg >> jumpna;
+					m_OnReceiveMsgTemp >> jumpna;
 					if(jumpna != na && jumpna != m_pNH->GetRemoteAddress())
 					{
 						REQFILECOUNTTYPE fcnt;
-						msg >> fcnt;
+						m_OnReceiveMsgTemp >> fcnt;
 						if(fcnt > 0)
 						{
 							FIDLIST listValidFile;
@@ -3742,8 +3740,8 @@ namespace FSHA
 								{
 									FILEID fid;
 									CHUNKINDEX ci;
-									msg >> fid;
-									msg >> ci;
+									m_OnReceiveMsgTemp >> fid;
+									m_OnReceiveMsgTemp >> ci;
 									FileReq fr;
 									fr.fid = fid;
 									FileReq* pFinded = m_reqeds.find(fr);
@@ -3865,24 +3863,24 @@ namespace FSHA
 					}
 					// Send file count.
 					{
-						__MsgType msg;
-						msg.reserve(1024);
-						msg << na;
-						msg << MSG_N_CMPLFILECOUNT;
-						msg << uFileCount;
-						this->Send(msg.front_ptr(), msg.write_size());
+						__MsgType newmsg;
+						newmsg.reserve(1024);
+						newmsg << na;
+						newmsg << MSG_N_CMPLFILECOUNT;
+						newmsg << uFileCount;
+						this->Send(newmsg.front_ptr(), newmsg.write_size());
 					}
 					// Send file section.
 					{
 						for(GAIA::CONTAINER::Vector<FileIDSection>::it it = fidseclist.front_it(); !it.empty(); ++it)
 						{
-							__MsgType msg;
-							msg.reserve(1024);
-							msg << na;
-							msg << MSG_N_CMPLFILESECTION;
-							msg << (*it).uStart;
-							msg << (*it).uEnd;
-							this->Send(msg.front_ptr(), msg.write_size());
+							__MsgType newmsg;
+							newmsg.reserve(1024);
+							newmsg << na;
+							newmsg << MSG_N_CMPLFILESECTION;
+							newmsg << (*it).uStart;
+							newmsg << (*it).uEnd;
+							this->Send(newmsg.front_ptr(), newmsg.write_size());
 						}
 					}
 					// Send jump file request.
@@ -3911,7 +3909,7 @@ namespace FSHA
 				{
 					GAIA::F64 fPerfErrorA = FSHA_PERF;
 					ERRNO en;
-					msg >> en;
+					m_OnReceiveMsgTemp >> en;
 					const GAIA::GCH* pszError = this->ErrorString(en);
 					if(pszError == GNULL)
 						m_prt << "Known error!" << "\n";
@@ -3925,7 +3923,7 @@ namespace FSHA
 				m_perf.fOnRecv += FSHA_PERF - fPerf;
 				return GAIA::False;
 			}
-			GAIA_AST(msg.read_size() == msg.write_size());
+			GAIA_AST(m_OnReceiveMsgTemp.read_size() == m_OnReceiveMsgTemp.write_size());
 			m_perf.fOnRecv += FSHA_PERF - fPerf;
 			return GAIA::True;
 		}
@@ -4423,6 +4421,8 @@ namespace FSHA
 		GAIA::CONTAINER::Vector<NLink> m_listRecycleTemp;
 		GAIA::CONTAINER::Vector<FileSendTask> m_listFileCmplFileTemp;
 		GAIA::CONTAINER::Vector<ChunkSendTask> m_listFileCmplChunkTemp;
+		__MsgType m_FileSendMsgTemp;
+		__MsgType m_OnReceiveMsgTemp;
 	};
 };
 
