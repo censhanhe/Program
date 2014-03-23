@@ -150,7 +150,7 @@ namespace GAIA
 					return GAIA::False;
 				}
 			}
-			GAIA::U8* pNew = new GAIA::U8[uSize];
+			GAIA::U8* pNew = GAIA_MALLOC(GAIA::U8, uSize);
 			GAIA::ALGORITHM::memcpy(pNew, p, uSize);
 			GAIA::SYNC::AutoLock al(m_lock);
 			SendRec r;
@@ -298,7 +298,7 @@ namespace GAIA
 							uSize -= nSended;
 						}
 					}
-					delete[] r.p;
+					GAIA_MRELEASE(r.p);
 				}
 			}
 			return GAIA::True;

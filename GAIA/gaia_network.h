@@ -151,8 +151,8 @@ namespace GAIA
 				m_nRecvBufferSize = 1024;
 				while(!m_sendque.empty())
 				{
-					SendRec sr = m_sendque.front();
-					delete[] sr.p;
+					SendRec& r = m_sendque.front();
+					GAIA_MRELEASE(r.p);
 					m_sendque.pop();
 				}
 			}

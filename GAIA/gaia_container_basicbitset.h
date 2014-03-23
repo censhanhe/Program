@@ -22,7 +22,7 @@ namespace GAIA
 			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL _SizeType size() const{return m_size;}
 			GINL _SizeType capacity() const{return m_capacity;}
-			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){delete[] m_pFront; m_pFront = GNULL;} m_size = m_capacity = 0;}
+			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MRELEASE(m_pFront); m_pFront = GNULL;} m_size = m_capacity = 0;}
 			GINL GAIA::U8* front_ptr(){if(this->empty()) return GNULL; return m_pFront;}
 			GINL GAIA::U8* back_ptr(){if(this->empty()) return GNULL; return &m_pFront[this->size() - 1];}
 			GINL const GAIA::U8* front_ptr() const{if(this->empty()) return GNULL; return m_pFront;}
@@ -59,7 +59,7 @@ namespace GAIA
 				this->destroy();
 				if(size > 0)
 				{
-					m_pFront = new GAIA::U8[size];
+					m_pFront = GAIA_MALLOC(GAIA::U8, size);
 					GAIA::ALGORITHM::set(m_pFront, 0, size);
 					m_capacity = size;
 					m_size = 0;
@@ -111,11 +111,11 @@ namespace GAIA
 				GAIA_AST(size >= 0);
 				if(size == 0)
 					return;
-				GAIA::U8* pNew = new GAIA::U8[this->capacity() + size];
+				GAIA::U8* pNew = GAIA_MALLOC(GAIA::U8, this->capacity() + size);
 				if(this->size() > 0)
 					GAIA::ALGORITHM::memcpy(pNew, this->front_ptr(), this->size());
 				if(m_pFront != GNULL)
-					delete[]  m_pFront;
+					GAIA_MRELEASE(m_pFront);
 				m_pFront = pNew;
 				m_capacity += size;
 			}

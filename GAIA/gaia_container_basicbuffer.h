@@ -15,11 +15,11 @@ namespace GAIA
 		public:
 			GINL BasicBuffer(){this->init();}
 			GINL BasicBuffer(const __MyType& src){this->init(); this->operator = (src);}
-			GINL ~BasicBuffer(){if(m_pFront != GNULL) delete[] m_pFront;}
+			GINL ~BasicBuffer(){if(m_pFront != GNULL) GAIA_MRELEASE(m_pFront);}
 			GINL GAIA::BL empty() const{return this->write_size() == 0;}
 			GINL _SizeType capacity() const{return static_cast<_SizeType>(m_pBack - m_pFront);}
 			GINL GAIA::GVOID clear(){m_pWrite = m_pRead = m_pFront;}
-			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){delete[] m_pFront; this->init();}}
+			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MRELEASE(m_pFront); this->init();}}
 			GINL GAIA::GVOID reserve(const _SizeType& size){this->destroy(); if(size > 0){this->alloc(size); m_pWrite = m_pRead = m_pFront;}}
 			GINL GAIA::GVOID resize(const _SizeType& size){if(this->capacity() < size) this->reserve(size); m_pWrite = m_pRead = m_pFront; m_pWrite += size;}
 			GINL const GAIA::U8* front_ptr() const{return m_pFront;}
@@ -147,11 +147,11 @@ namespace GAIA
 				_SizeType newsize = GAIA::ALGORITHM::maximize(
 					increaser.Increase(static_cast<_SizeType>(m_pWrite - m_pFront)),
 					static_cast<_SizeType>(m_pWrite - m_pFront) + size);
-				GAIA::U8* pNew = new GAIA::U8[newsize];
+				GAIA::U8* pNew = GAIA_MALLOC(GAIA::U8, newsize);
 				if(m_pWrite != m_pFront)
 					GAIA::ALGORITHM::memcpy(pNew, m_pFront, m_pWrite - m_pFront);
 				if(m_pFront != GNULL)
-					delete[] m_pFront;
+					GAIA_MRELEASE(m_pFront);
 				m_pWrite = pNew + (m_pWrite - m_pFront);
 				m_pRead = pNew + (m_pRead - m_pFront);
 				m_pFront = pNew;

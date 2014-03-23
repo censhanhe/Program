@@ -326,6 +326,11 @@ namespace GAIA
 #ifndef GAIA_DEBUG_MEMORYLEAK
 	namespace GAIA{namespace ALLOCATOR{class AllocatorESG;};};
 	extern GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
+#	define GAIA_MALLOC(type, size) (type*)g_global_allocator.memory_alloc(sizeof(type) * size)
+#	define GAIA_MRELEASE(p) g_global_allocator.memory_release(p)
+#else
+#	define GAIA_MALLOC(type, size) new type[size]
+#	define GAIA_MRELEASE(p) delete[] p;
 #endif
 
 #endif

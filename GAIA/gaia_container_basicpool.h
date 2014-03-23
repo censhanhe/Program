@@ -88,7 +88,7 @@ namespace GAIA
 				m_buf.push_back(pGroup);
 			}
 		private:
-			class Group
+			class Group : public GAIA::Base
 			{
 			public:
 				__ElementListType listEle;
