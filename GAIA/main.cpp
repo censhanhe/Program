@@ -26,7 +26,7 @@
 #	define PERF_PRINT_TEXT(text)
 #endif
 
-#define TEST_CURRENT			""
+#define TEST_CURRENT			"<Directory test>"
 #define TEST_BEGIN(name)		if(GAIA::ALGORITHM::strcmp(TEST_CURRENT, "") == 0 || GAIA::ALGORITHM::strcmp((name), TEST_CURRENT) == 0)\
 								{\
 									PERF_PRINT_LINE(name);\
@@ -2006,7 +2006,66 @@ GAIA::N32 main()
 		}
 		TEST_END;
 	}
-	
+
+	// Directory test.
+	{
+		TEST_BEGIN("<Directory test>");
+		{
+			GAIA::FILESYSTEM::Directory dir;
+			dir.Remove("D1", GAIA::True);
+			bFunctionSuccess = GAIA::True;
+			if(!dir.Create("D1/D2/D3/", GAIA::True))
+				bFunctionSuccess = GAIA::False;
+			if(!dir.Exist("D1/D2/D3/"))
+				bFunctionSuccess = GAIA::False;
+			GAIA::FILESYSTEM::File file;
+			if(!file.Open("D1/D2/D3/test", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE))
+				bFunctionSuccess = GAIA::False;
+			file.WriteText("HelloWorld");
+			file.Close();
+			if(!dir.CopyFile("D1/D2/D3/test", "D1/D2/D3/test1"))
+				bFunctionSuccess = GAIA::False;
+			if(!dir.MoveFile("D1/D2/D3/test1", "D1/D2/D3/test2"))
+				bFunctionSuccess = GAIA::False;
+			if(!file.Open("D1/D2/D3/test", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+				bFunctionSuccess = GAIA::False;
+			else
+				file.Close();
+			if(file.Open("D1/D2/D3/test1", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+				bFunctionSuccess = GAIA::False;
+			else
+				file.Close();
+			if(!file.Open("D1/D2/D3/test2", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+				bFunctionSuccess = GAIA::False;
+			else
+				file.Close();
+			GAIA::FILESYSTEM::Directory::__ResultTree rt;
+			if(!dir.CollectFile("D1/D2/D3/", "", GAIA::True, rt))
+				bFunctionSuccess = GAIA::False;
+			if(rt.catagory_count(rt.root()) != 2)
+				bFunctionSuccess = GAIA::False;
+			if(!dir.Remove("D1/D2/D3/", GAIA::True))
+				bFunctionSuccess = GAIA::False;
+			if(!dir.Remove("D1", GAIA::True))
+				bFunctionSuccess = GAIA::False;
+			if(dir.Create("D1/D2/D3/", GAIA::False))
+				bFunctionSuccess = GAIA::False;
+			if(!dir.Create("D1/", GAIA::False))
+				bFunctionSuccess = GAIA::False;
+			if(!dir.Remove("D1/", GAIA::False))
+				bFunctionSuccess = GAIA::False;
+			if(!dir.Create("D1", GAIA::True))
+				bFunctionSuccess = GAIA::False;
+			if(!dir.Remove("D1", GAIA::True))
+				bFunctionSuccess = GAIA::False;
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("Directory test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("Directory test FAILED!");
+		}
+		TEST_END;
+	}
+
 	// Network test.
 	{
 		TEST_BEGIN("<Network function test>");
