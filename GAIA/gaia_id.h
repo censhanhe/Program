@@ -12,8 +12,8 @@ namespace GAIA
 		public:
 			GINL ID(){}
 			GINL ~ID(){}
-			GINL GAIA::GVOID invalid();
-			GINL GAIA::BL isinvalid() const;
+			GINL GAIA::GVOID Invalid();
+			GINL GAIA::BL IsInvalid() const;
 		private:
 			GAIA::U8 m_eles[_ElementSize];
 		};
