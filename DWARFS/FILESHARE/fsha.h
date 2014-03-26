@@ -143,6 +143,7 @@ namespace FSHA
 	static const GAIA::U64 LINKRECYCLETIME = 22000000;
 	static const GAIA::U32 JUMPDISTANCE = 100;
 	static const GAIA::U32 JUMPODDS = 90;
+	static const GAIA::U64 REQUESTTIMEOUTTIME = 5000000;
 
 	/* Type declaration. */
 	typedef GAIA::SYNC::AutoLock AL;
@@ -1725,13 +1726,13 @@ namespace FSHA
 		class __DWARFS_FILESHARE_API FileReq
 		{
 		public:
-			GINL FileReq(){fid = GINVALID; uUserReqTime = 0; uFirstReqTime = 0; uLastReqTime = 0;}
+			GINL FileReq(){fid = GINVALID; uUserReqTime = 0; uFirstReqTime = 0; uLastActiveTime = 0;}
 			GINL FileReq& operator = (const FileReq& src)
 			{
 				fid = src.fid;
 				uUserReqTime = src.uUserReqTime;
 				uFirstReqTime = src.uFirstReqTime;
-				uLastReqTime = src.uLastReqTime;
+				uLastActiveTime = src.uLastActiveTime;
 				return *this;
 			}
 			GAIA_CLASS_OPERATOR_COMPARE(fid, fid, FileReq);
@@ -1743,12 +1744,12 @@ namespace FSHA
 			GAIA::U64 uUserReqTime;
 			/*
 			*	If FileShare request the file from other FileShare server at the first time,
-			*	The time will been recorded into 'uFirstReqTime' and 'uLastReqTime'.
+			*	The time will been recorded into 'uFirstReqTime' and 'uLastActiveTime'.
 			*	And then if the request failed the FileShare will trigger a new request repeatedly,
-			*	the time will been recorded into the variable 'uLastReqTime'.
+			*	the time will been recorded into the variable 'uLastActiveTime'.
 			*/
 			GAIA::U64 uFirstReqTime;
-			GAIA::U64 uLastReqTime;
+			GAIA::U64 uLastActiveTime;
 		};
 		/* Jump request. */
 		class __DWARFS_FILESHARE_API JumpReq
@@ -2788,6 +2789,8 @@ namespace FSHA
 				bRet = GAIA::True;
 			if(this->OnExecuteRecycleLink())
 				bRet = GAIA::True;
+			if(this->OnExecuteTimeoutRequest())
+				bRet = GAIA::True;
 			if(bRet)
 				m_statistics.uValidFrameCount++;
 			m_perf.fExecute += FSHA_PERF - fPerf;
@@ -2821,7 +2824,7 @@ namespace FSHA
 						for(__FileReqListType::it it = m_listFileReqTemp.front_it(); !it.empty(); ++it)
 						{
 							FileReq& fr = *it;
-							fr.uFirstReqTime = fr.uLastReqTime = GAIA::TIME::clock_time();
+							fr.uFirstReqTime = fr.uLastActiveTime = GAIA::TIME::clock_time();
 							m_reqeds.insert(fr);
 						}
 					}
@@ -3323,6 +3326,23 @@ namespace FSHA
 			}
 
 			m_perf.fExecuteRecycleLink += FSHA_PERF - fPerf;
+			return bRet;
+		}
+		GINL GAIA::BL OnExecuteTimeoutRequest()
+		{
+			GAIA::BL bRet = GAIA::False;
+			GAIA::SYNC::AutoLock al(m_lr_reqeds);
+			__FileReqSetType::it it = m_reqeds.front_it();
+			GAIA::U64 uCurrentTime = GAIA::TIME::clock_time();
+			for(; !it.empty(); ++it)
+			{
+				FileReq& fr = *it;
+				GAIA::U64 uDeltaTime = uCurrentTime - fr.uLastActiveTime;
+				if(uDeltaTime > REQUESTTIMEOUTTIME)
+				{
+					bRet = GAIA::True;
+				}
+			}
 			return bRet;
 		}
 		GINL GAIA::BL OnHeartTick()
@@ -4374,7 +4394,7 @@ namespace FSHA
 			}
 			return GAIA::True;
 		}
-	private:	
+	private:
 		FileShareDesc m_desc;
 		GAIA::NETWORK::NetworkAddress m_mainna;
 		GAIA::BL m_bInitialized;
