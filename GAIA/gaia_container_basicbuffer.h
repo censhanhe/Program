@@ -116,6 +116,12 @@ namespace GAIA
 				m_pRead += sizeof(obj);
 				return GAIA::True;
 			}
+			GINL GAIA::BL operator == (const __MyType& src) const{}
+			GINL GAIA::BL operator != (const __MyType& src) const{}
+			GINL GAIA::BL operator >= (const __MyType& src) const{}
+			GINL GAIA::BL operator <= (const __MyType& src) const{}
+			GINL GAIA::BL operator > (const __MyType& src) const{}
+			GINL GAIA::BL operator < (const __MyType& src) const{}
 			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType& obj){this->write(obj); return *this;}
 			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType& obj){this->read(obj); return *this;}
 			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType* obj){this->write(obj); return *this;}

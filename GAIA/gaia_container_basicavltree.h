@@ -54,6 +54,10 @@ namespace GAIA
 					m_pNode = this->select_prev(m_pNode);
 					return *this;
 				}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator = (const GAIA::ITERATOR::Iterator<_DataType>& src){return this->operator = (*static_cast<const it*>(&src));}
+				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
+				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
+				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
 				GINL it& operator += (const _SizeType& c)
 				{
 					for(_SizeType x = 0; x < c; ++x)
@@ -90,7 +94,6 @@ namespace GAIA
 				GINL GAIA::BL operator <= (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const it& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const it& src) const{return !(*this >= src);}
-				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
@@ -175,6 +178,10 @@ namespace GAIA
 					m_pNode = this->select_prev(m_pNode);
 					return *this;
 				}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator = (const GAIA::ITERATOR::ConstIterator<_DataType>& src){return this->operator = (*static_cast<const const_it*>(&src));}
+				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
+				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
+				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
 				GINL const_it& operator += (const _SizeType& c)
 				{
 					for(_SizeType x = 0; x < c; ++x)
@@ -205,7 +212,6 @@ namespace GAIA
 				GINL GAIA::BL operator <= (const const_it& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const const_it& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const const_it& src) const{return !(*this >= src);}
-				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){--(*this); return *this;}

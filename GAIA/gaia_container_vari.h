@@ -27,7 +27,13 @@ namespace GAIA
 		public:
 			GINL Vari();
 			GINL ~Vari();
-
+			GINL Vari& operator = (const Vari& src);
+			GINL GAIA::BL operator == (const Vari& src) const;
+			GINL GAIA::BL operator != (const Vari& src) const;
+			GINL GAIA::BL operator >= (const Vari& src) const;
+			GINL GAIA::BL operator <= (const Vari& src) const;
+			GINL GAIA::BL operator > (const Vari& src) const;
+			GINL GAIA::BL operator < (const Vari& src) const;
 		private:
 			union
 			{
@@ -45,7 +51,7 @@ namespace GAIA
 				GAIA::F64 f64;
 				GAIA::REAL real;
 			};
-			GAIA::X128		x128;
+			GAIA::X128 x128;
 		};
 	};
 };

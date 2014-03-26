@@ -26,7 +26,7 @@
 #	define PERF_PRINT_TEXT(text)
 #endif
 
-#define TEST_CURRENT			"<Directory test>"
+#define TEST_CURRENT			""
 #define TEST_BEGIN(name)		if(GAIA::ALGORITHM::strcmp(TEST_CURRENT, "") == 0 || GAIA::ALGORITHM::strcmp((name), TEST_CURRENT) == 0)\
 								{\
 									PERF_PRINT_LINE(name);\
@@ -419,6 +419,31 @@ GAIA::N32 main()
 			GAIA::N64 nCount = pNew - listNum + 1;
 			if(nCount != 10)
 				TEST_FILE_LINE("unique_noorder FAILED!");
+		}
+		TEST_END;
+	}
+
+	// Iterator test.
+	{
+		TEST_BEGIN("<Iterator test>");
+		{
+			GAIA::CONTAINER::Vector<GAIA::N32> vt;
+			GAIA::CONTAINER::List<GAIA::N32> lt;
+			for(GAIA::NM x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				vt.push_back(x);
+				lt.push_front(x);
+			}
+			GAIA::CONTAINER::Vector<GAIA::N32>::it itosrc = vt.front_it();
+			GAIA::CONTAINER::List<GAIA::N32>::it itodst = lt.front_it();
+			GAIA::ITERATOR::Iterator<GAIA::N32>& itsrc = *static_cast<GAIA::ITERATOR::Iterator<GAIA::N32>*>(&itosrc);
+			GAIA::ITERATOR::Iterator<GAIA::N32>& itdst = *static_cast<GAIA::ITERATOR::Iterator<GAIA::N32>*>(&itodst);
+			for(GAIA::NM x = 0; x < SAMPLE_COUNT; ++x)
+			{
+				*itdst = *itsrc;
+				++itsrc;
+				++itdst;
+			}
 		}
 		TEST_END;
 	}
@@ -818,6 +843,13 @@ GAIA::N32 main()
 				TEST_FILE_LINE("insert test SUCCESSFULLY!");
 			else
 				TEST_FILE_LINE("insert test FAILED!");
+
+			GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM>::it it = str.front_it();
+			while(!it.empty())
+			{
+				GAIA::GTCH ch = *it;
+				++it;
+			}
 		}
 		TEST_END;
 	}

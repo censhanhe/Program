@@ -7,7 +7,7 @@ namespace GAIA
 	{
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::N32 random();
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID random_seed(GAIA::N32 seed);
-		template<GAIA::NM _Size> class RID
+		template<GAIA::NM _Size> class RID : public GAIA::Base
 		{
 		public:
 			static const GAIA::NM _size = _Size;
@@ -32,7 +32,7 @@ namespace GAIA
 			*	many versions(RID's version in different length).
 			*
 			*		Time property(Total	52B).
-			*		0.)		Year				(6B)		[0,64)
+			*		0.)		Year				(6B)		[0,64)		Base time is 2014.
 			*		1.)		Month				(4B)		[0,16)
 			*		2.)		Day					(5B)		[0,32)
 			*		3.)		Hour				(5B)		[0,32)

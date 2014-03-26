@@ -126,7 +126,12 @@ namespace GAIA
 						return *this;
 					}
 				}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator = (const GAIA::ITERATOR::Iterator<_DataType>& src){return this->operator = (*static_cast<const it*>(&src));}
+				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
+				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
 				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
+				GINL GAIA::BL operator == (const it& src) const{return m_pContainer == src.m_pContainer && m_pNode == src.m_pNode;}
+				GINL GAIA::BL operator != (const it& src) const{return !(this->operator == (src));}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
@@ -206,7 +211,12 @@ namespace GAIA
 						return *this;
 					}
 				}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator = (const GAIA::ITERATOR::ConstIterator<_DataType>& src){return this->operator = (*static_cast<const const_it*>(&src));}
+				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
+				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
 				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
+				GINL GAIA::BL operator == (const const_it& src) const{return m_pContainer == src.m_pContainer && m_pNode == src.m_pNode;}
+				GINL GAIA::BL operator != (const const_it& src) const{return !(this->operator == (src));}
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
