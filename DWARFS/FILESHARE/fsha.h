@@ -34,13 +34,13 @@
 /*
 *	[Lock order table]
 *
-*	------	----	usergroup	filelist	------------	--------------	-------		-----	--------	----
-*	reqeds	reqs	---------	--------	------------	--------------	-------		-----	--------	----
+*	------	----	usergroup	filelist	-------------	--------------	-------		-----	--------	----
+*	reqeds	reqs	---------	--------	-------------	--------------	fcaches		-----	--------	----
 *	------	----	---------	--------	filesendtasks	--------------	fcaches		-----	--------	----
-*	------	----	---------	--------	------------	filewritetasks	fcaches		-----	--------	----
-*	------	----	---------	--------	------------	--------------	-------		links	prilinks	----
-*	------	----	usergroup	--------	------------	--------------	-------		links	prilinks	----
-*	------	----	---------	--------	------------	--------------	-------		links	--------	send
+*	------	----	---------	--------	-------------	filewritetasks	fcaches		-----	--------	----
+*	------	----	---------	--------	-------------	--------------	-------		links	prilinks	----
+*	------	----	usergroup	--------	-------------	--------------	-------		links	prilinks	----
+*	------	----	---------	--------	-------------	--------------	-------		links	--------	send
 */
 
 /*
@@ -144,6 +144,8 @@ namespace FSHA
 	static const GAIA::U32 JUMPDISTANCE = 100;
 	static const GAIA::U32 JUMPODDS = 90;
 	static const GAIA::U64 REQUESTTIMEOUTTIME = 5000000;
+	static const GAIA::U32 SINGLECHUNKREQUESTLIMIT = 16;
+	static const GAIA::U32 MAXCHUNKREQUESTCOUNTPERDISPATCH = 100;
 
 	/* Type declaration. */
 	typedef GAIA::SYNC::AutoLock AL;
@@ -1726,13 +1728,23 @@ namespace FSHA
 		class __DWARFS_FILESHARE_API FileReq
 		{
 		public:
-			GINL FileReq(){fid = GINVALID; uUserReqTime = 0; uFirstReqTime = 0; uLastActiveTime = 0;}
+			GINL FileReq()
+			{
+				fid = GINVALID;
+				uUserReqTime = 0;
+				uFirstReqTime = 0;
+				uLastActiveTime = 0;
+				uLastTimeoutSectionRequestTime = 0;
+				uLastTimeoutChunkRequestTime = 0;
+			}
 			GINL FileReq& operator = (const FileReq& src)
 			{
 				fid = src.fid;
 				uUserReqTime = src.uUserReqTime;
 				uFirstReqTime = src.uFirstReqTime;
 				uLastActiveTime = src.uLastActiveTime;
+				uLastTimeoutSectionRequestTime = src.uLastTimeoutSectionRequestTime;
+				uLastTimeoutChunkRequestTime = src.uLastTimeoutChunkRequestTime;
 				return *this;
 			}
 			GAIA_CLASS_OPERATOR_COMPARE(fid, fid, FileReq);
@@ -1745,11 +1757,20 @@ namespace FSHA
 			/*
 			*	If FileShare request the file from other FileShare server at the first time,
 			*	The time will been recorded into 'uFirstReqTime' and 'uLastActiveTime'.
-			*	And then if the request failed the FileShare will trigger a new request repeatedly,
-			*	the time will been recorded into the variable 'uLastActiveTime'.
+			*	And then if the request's answer received, the 'uLastActiveTime' will been updated.
 			*/
 			GAIA::U64 uFirstReqTime;
 			GAIA::U64 uLastActiveTime;
+			/*
+			*	If request timeout, and the section-based request operation occured, 
+			*	the 'uLastTimeoutSectionRequestTime' will been updated.
+			*/
+			GAIA::U64 uLastTimeoutSectionRequestTime;
+			/*
+			*	If request timeout, and the chunk-based request operation occured,
+			*	the 'uLastTimeoutChunkRequestTime' will been updated.
+			*/
+			GAIA::U64 uLastTimeoutChunkRequestTime;
 		};
 		/* Jump request. */
 		class __DWARFS_FILESHARE_API JumpReq
@@ -2142,34 +2163,33 @@ namespace FSHA
 		GINL GAIA::BL Request(const GAIA::NETWORK::NetworkAddress& na, const FIDLIST& listID)
 		{
 			GAIA_AST(!listID.empty());
-			__MsgType msg;
-			msg.reserve(1024);
+			m_RequestMsgTemp.clear();
 			for(FIDLIST::const_it it = listID.const_front_it(); !it.empty(); ++it)
 			{
-				if(msg.write_size() == 0)
+				if(m_RequestMsgTemp.write_size() == 0)
 				{
-					msg << na;
-					msg << MSG_R_FILE;
-					msg << (REQFILECOUNTTYPE)0;
+					m_RequestMsgTemp << na;
+					m_RequestMsgTemp << MSG_R_FILE;
+					m_RequestMsgTemp << (REQFILECOUNTTYPE)0;
 				}
-				GAIA_AST(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - msg.write_size() >= sizeof(FILEID) + sizeof(CHUNKINDEX));
-				msg << *it;
-				msg << (CHUNKINDEX)0;
+				GAIA_AST(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - m_RequestMsgTemp.write_size() >= sizeof(FILEID) + sizeof(CHUNKINDEX));
+				m_RequestMsgTemp << *it;
+				m_RequestMsgTemp << (CHUNKINDEX)0;
 				FIDLIST::const_it itnext = it;
 				++itnext;
-				if(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - msg.write_size() <= sizeof(FILEID) + sizeof(CHUNKINDEX) || itnext.empty())
+				if(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - m_RequestMsgTemp.write_size() <= sizeof(FILEID) + sizeof(CHUNKINDEX) || itnext.empty())
 				{
-					GAIA::NM nCount = msg.write_size() - sizeof(na) - sizeof(MSG_R_FILE) - sizeof(REQFILECOUNTTYPE);
+					GAIA::NM nCount = m_RequestMsgTemp.write_size() - sizeof(na) - sizeof(MSG_R_FILE) - sizeof(REQFILECOUNTTYPE);
 					nCount /= sizeof(FILEID) + sizeof(CHUNKINDEX);
 					GAIA_AST(nCount < 256);
-					*(REQFILECOUNTTYPE*)(msg.front_ptr() + sizeof(na) + sizeof(MSG_R_FILE)) = (REQFILECOUNTTYPE)nCount;
+					*(REQFILECOUNTTYPE*)(m_RequestMsgTemp.front_ptr() + sizeof(na) + sizeof(MSG_R_FILE)) = (REQFILECOUNTTYPE)nCount;
 					m_statistics.uRequestFileCount += nCount;
-					this->Send(msg.front_ptr(), msg.write_size());
-					msg.clear();
+					this->Send(m_RequestMsgTemp.front_ptr(), m_RequestMsgTemp.write_size());
+					m_RequestMsgTemp.clear();
 				}
 			}
-			if(msg.write_size() != 0)
-				this->Send(msg.front_ptr(), msg.write_size());
+			if(m_RequestMsgTemp.write_size() != 0)
+				this->Send(m_RequestMsgTemp.front_ptr(), m_RequestMsgTemp.write_size());
 			return GAIA::True;
 		}
 		GINL GAIA::GVOID EnableSequenceRequest(GAIA::BL bEnable){m_bEnableSequenceRequest = bEnable;}
@@ -2789,7 +2809,9 @@ namespace FSHA
 				bRet = GAIA::True;
 			if(this->OnExecuteRecycleLink())
 				bRet = GAIA::True;
-			if(this->OnExecuteTimeoutRequest())
+			if(this->OnExecuteTimeoutSectionRequest())
+				bRet = GAIA::True;
+			if(this->OnExecuteTimeoutChunkRequest())
 				bRet = GAIA::True;
 			if(bRet)
 				m_statistics.uValidFrameCount++;
@@ -2947,12 +2969,11 @@ namespace FSHA
 				FileRecCache* pFRC = this->RequestFileRecCache(cst.fid, GAIA::False);
 				if(pFRC == GNULL)
 					continue;
-				__MsgType msg;
-				msg.reserve(1024);
-				msg << cst.na;
-				msg << MSG_A_FILECHUNK;
-				msg << cst.ci;
-				msg << cst.sci;
+				m_ChunkSendMsgTemp.clear();
+				m_ChunkSendMsgTemp << cst.na;
+				m_ChunkSendMsgTemp << MSG_A_FILECHUNK;
+				m_ChunkSendMsgTemp << cst.ci;
+				m_ChunkSendMsgTemp << cst.sci;
 				FILESIZETYPE cursize = cst.ci * CHUNKSIZE + cst.sci * SUBCHUNKSIZE;
 				FILESIZETYPE remainsize = pFRC->fsize - cursize;
 				SUBCHUNKSIZETYPE scsize;
@@ -2964,13 +2985,13 @@ namespace FSHA
 					scsize = remainsize;
 					bComplete = GAIA::True;
 				}
-				msg << scsize;
+				m_ChunkSendMsgTemp << scsize;
 				pFRC->pFA->Seek(GAIA::SEEK_TYPE_BEGIN, cursize);
 				GAIA::U8 buf[SUBCHUNKSIZE];
 				if(pFRC->pFA->Read(buf, scsize) != scsize)
 					continue;
-				msg.write(buf, scsize);
-				this->Send(msg.front_ptr(), msg.write_size());
+				m_ChunkSendMsgTemp.write(buf, scsize);
+				this->Send(m_ChunkSendMsgTemp.front_ptr(), m_ChunkSendMsgTemp.write_size());
 				m_statistics.uSendChunkCount++;
 				++cst.sci;
 				if(cst.sci == 0)
@@ -3189,13 +3210,12 @@ namespace FSHA
 							GAIA_AST((*it) > endindex);
 							if(endindex + 1 != *it)
 							{
-								__MsgType msg;
-								msg.reserve(1024);
-								msg << m_mainna;
-								msg << MSG_N_CMPLFILESECTION;
-								msg << startindex;
-								msg << endindex;
-								this->SendToAll(msg.front_ptr(), msg.write_size());
+								m_ExecuteCmplFilesNotifyMsgTemp.clear();
+								m_ExecuteCmplFilesNotifyMsgTemp << m_mainna;
+								m_ExecuteCmplFilesNotifyMsgTemp << MSG_N_CMPLFILESECTION;
+								m_ExecuteCmplFilesNotifyMsgTemp << startindex;
+								m_ExecuteCmplFilesNotifyMsgTemp << endindex;
+								this->SendToAll(m_ExecuteCmplFilesNotifyMsgTemp.front_ptr(), m_ExecuteCmplFilesNotifyMsgTemp.write_size());
 								startindex = endindex = *it;
 							}
 							else
@@ -3204,13 +3224,12 @@ namespace FSHA
 					}
 					if(startindex != GINVALID)
 					{
-						__MsgType msg;
-						msg.reserve(1024);
-						msg << m_mainna;
-						msg << MSG_N_CMPLFILESECTION;
-						msg << startindex;
-						msg << endindex;
-						this->SendToAll(msg.front_ptr(), msg.write_size());
+						m_ExecuteCmplFilesNotifyMsgTemp.clear();
+						m_ExecuteCmplFilesNotifyMsgTemp << m_mainna;
+						m_ExecuteCmplFilesNotifyMsgTemp << MSG_N_CMPLFILESECTION;
+						m_ExecuteCmplFilesNotifyMsgTemp << startindex;
+						m_ExecuteCmplFilesNotifyMsgTemp << endindex;
+						this->SendToAll(m_ExecuteCmplFilesNotifyMsgTemp.front_ptr(), m_ExecuteCmplFilesNotifyMsgTemp.write_size());
 						startindex = endindex = GINVALID;
 					}
 					m_cmplfiles.clear();
@@ -3243,12 +3262,11 @@ namespace FSHA
 				{
 					NLinkPri nlp;
 					nlp.nlink = *it;
-					__MsgType msg;
-					msg.reserve(1024);
-					msg << nlp.nlink.na;
-					msg << MSG_A_ERROR;
-					msg << ERRNO_TIMEOUT;
-					this->Send(msg.front_ptr(), msg.write_size());
+					m_RecycleLinkMsgTemp.clear();
+					m_RecycleLinkMsgTemp << nlp.nlink.na;
+					m_RecycleLinkMsgTemp << MSG_A_ERROR;
+					m_RecycleLinkMsgTemp << ERRNO_TIMEOUT;
+					this->Send(m_RecycleLinkMsgTemp.front_ptr(), m_RecycleLinkMsgTemp.write_size());
 					m_links.erase(nlp.nlink);
 					m_prilinks.erase(nlp);
 				}
@@ -3328,19 +3346,167 @@ namespace FSHA
 			m_perf.fExecuteRecycleLink += FSHA_PERF - fPerf;
 			return bRet;
 		}
-		GINL GAIA::BL OnExecuteTimeoutRequest()
+		GINL GAIA::BL OnExecuteTimeoutSectionRequest()
 		{
 			GAIA::BL bRet = GAIA::False;
-			GAIA::SYNC::AutoLock al(m_lr_reqeds);
-			__FileReqSetType::it it = m_reqeds.front_it();
+			AL al(m_lr_reqeds);
+			__FileReqSetType::it it_reqed = m_reqeds.front_it();
 			GAIA::U64 uCurrentTime = GAIA::TIME::clock_time();
-			for(; !it.empty(); ++it)
+			for(; !it_reqed.empty(); ++it_reqed)
 			{
-				FileReq& fr = *it;
-				GAIA::U64 uDeltaTime = uCurrentTime - fr.uLastActiveTime;
-				if(uDeltaTime > REQUESTTIMEOUTTIME)
+				FileReq& fr = *it_reqed;
+				if(uCurrentTime - fr.uLastActiveTime > REQUESTTIMEOUTTIME && 
+					uCurrentTime - fr.uLastTimeoutSectionRequestTime > REQUESTTIMEOUTTIME)
 				{
-					bRet = GAIA::True;
+					fr.uLastTimeoutSectionRequestTime = uCurrentTime;
+					AL al(m_lr_fcaches);
+					FileRecCache frc;
+					frc.fid = fr.fid;
+					frc.bWrite = GAIA::True;
+					FileRecCache* pFRC = m_fcaches.find(frc);
+					if(pFRC != GNULL)
+					{
+						if(pFRC->pFCSL != GNULL)
+						{
+							FileRecCache::__FileChunkSectionListType::it it = pFRC->pFCSL->front_it();
+							for(; !it.empty(); ++it)
+							{
+								FileChunkSection& fcs = *it;
+								GAIA::BL bRequested = GAIA::False;
+								FileRecCache::__FileChunkSectionListType::it itnext = it;
+								++itnext;
+								if(itnext.empty())
+								{
+									FILESIZETYPE fsize = pFRC->fsize - (FILESIZETYPE)((fcs.end_ci * 256 + fcs.end_sci) * SUBCHUNKSIZE);
+									if(fsize / SUBCHUNKSIZE > SINGLECHUNKREQUESTLIMIT)
+									{
+										bRequested = GAIA::True;
+										break;
+									}
+								}
+								else
+								{
+									FileChunkSection& fcsnext = *itnext;
+									FILESIZETYPE fsize = (FILESIZETYPE)(((fcsnext.start_ci - fcs.end_ci) * 256 + (fcsnext.start_sci - fcs.end_sci)) * SUBCHUNKSIZE);
+									if(fsize / SUBCHUNKSIZE > SINGLECHUNKREQUESTLIMIT)
+									{
+										bRequested = GAIA::True;
+										break;
+									}
+								}
+								if(bRequested)
+								{
+									m_TimeoutSectionRequestMsgTemp.clear();
+									m_TimeoutSectionRequestMsgTemp << m_mainna;
+									m_TimeoutSectionRequestMsgTemp << MSG_R_FILE;
+									m_TimeoutSectionRequestMsgTemp << (REQFILECOUNTTYPE)1;
+									m_TimeoutSectionRequestMsgTemp << pFRC->fid;
+									m_TimeoutSectionRequestMsgTemp << fcs.end_ci;
+									this->Send(m_TimeoutSectionRequestMsgTemp.front_ptr(), m_TimeoutSectionRequestMsgTemp.write_size());
+									bRet = GAIA::True;
+								}
+							}
+						}
+						else
+						{
+							m_TimeoutSectionRequestMsgTemp.clear();
+							m_TimeoutSectionRequestMsgTemp << m_mainna;
+							m_TimeoutSectionRequestMsgTemp << MSG_R_FILE;
+							m_TimeoutSectionRequestMsgTemp << (REQFILECOUNTTYPE)1;
+							m_TimeoutSectionRequestMsgTemp << pFRC->fid;
+							m_TimeoutSectionRequestMsgTemp << (CHUNKINDEX)0;
+							this->Send(m_TimeoutSectionRequestMsgTemp.front_ptr(), m_TimeoutSectionRequestMsgTemp.write_size());
+							bRet = GAIA::True;
+						}
+					}
+					else
+					{
+						m_TimeoutSectionRequestMsgTemp.clear();
+						m_TimeoutSectionRequestMsgTemp << m_mainna;
+						m_TimeoutSectionRequestMsgTemp << MSG_R_FILE;
+						m_TimeoutSectionRequestMsgTemp << (REQFILECOUNTTYPE)1;
+						m_TimeoutSectionRequestMsgTemp << pFRC->fid;
+						m_TimeoutSectionRequestMsgTemp << (CHUNKINDEX)0;
+						this->Send(m_TimeoutSectionRequestMsgTemp.front_ptr(), m_TimeoutSectionRequestMsgTemp.write_size());
+						bRet = GAIA::True;
+					}
+				}
+			}
+			return bRet;
+		}
+		GINL GAIA::BL OnExecuteTimeoutChunkRequest()
+		{
+			GAIA::BL bRet = GAIA::False;
+			AL al(m_lr_reqeds);
+			__FileReqSetType::it it_reqed = m_reqeds.front_it();
+			GAIA::U64 uCurrentTime = GAIA::TIME::clock_time();
+			for(; !it_reqed.empty(); ++it_reqed)
+			{
+				FileReq& fr = *it_reqed;
+				if(uCurrentTime - fr.uLastActiveTime > REQUESTTIMEOUTTIME && 
+					uCurrentTime - fr.uLastTimeoutChunkRequestTime > REQUESTTIMEOUTTIME)
+				{
+					fr.uLastTimeoutChunkRequestTime = uCurrentTime;
+					AL al(m_lr_fcaches);
+					FileRecCache frc;
+					frc.fid = fr.fid;
+					frc.bWrite = GAIA::True;
+					FileRecCache* pFRC = m_fcaches.find(frc);
+					if(pFRC != GNULL)
+					{
+						if(pFRC->pFCSL != GNULL)
+						{
+							CHUNKINDEX uTotalChunkCount = pFRC->fsize / CHUNKSIZE + ((pFRC->fsize % CHUNKSIZE == 0) ? 0 : 1);
+							if(uTotalChunkCount > 0)
+							{
+								GAIA::U32 uChunkRequestCount = 0;
+								FileRecCache::__FileChunkSectionListType::it it = pFRC->pFCSL->front_it();
+								for(; !it.empty(); ++it)
+								{
+									FileChunkSection& fcs = *it;
+									FileRecCache::__FileChunkSectionListType::it itnext = it;
+									++itnext;
+									if(itnext.empty())
+									{
+										for(CHUNKINDEX x = fcs.end_ci; x < uTotalChunkCount; ++x)
+										{
+											m_TimeoutChunkRequestMsgTemp.clear();
+											m_TimeoutChunkRequestMsgTemp << m_mainna;
+											m_TimeoutChunkRequestMsgTemp << MSG_R_FILECHUNK;
+											m_TimeoutChunkRequestMsgTemp << pFRC->fid;
+											m_TimeoutChunkRequestMsgTemp << x;
+											this->Send(m_TimeoutChunkRequestMsgTemp.front_ptr(),
+												m_TimeoutChunkRequestMsgTemp.write_size());
+
+											++uChunkRequestCount;
+											if(uChunkRequestCount == MAXCHUNKREQUESTCOUNTPERDISPATCH)
+												break;
+										}
+									}
+									else
+									{
+										FileChunkSection& fcs_next = *itnext;
+										for(CHUNKINDEX x = fcs.end_ci; x <= fcs_next.start_ci; ++x)
+										{
+											m_TimeoutChunkRequestMsgTemp.clear();
+											m_TimeoutChunkRequestMsgTemp << m_mainna;
+											m_TimeoutChunkRequestMsgTemp << MSG_R_FILECHUNK;
+											m_TimeoutChunkRequestMsgTemp << pFRC->fid;
+											m_TimeoutChunkRequestMsgTemp << x;
+											this->Send(m_TimeoutChunkRequestMsgTemp.front_ptr(),
+												m_TimeoutChunkRequestMsgTemp.write_size());
+
+											++uChunkRequestCount;
+											if(uChunkRequestCount == MAXCHUNKREQUESTCOUNTPERDISPATCH)
+												break;
+										}
+									}
+									if(uChunkRequestCount == MAXCHUNKREQUESTCOUNTPERDISPATCH)
+										break;
+								}
+							}
+						}
+					}
 				}
 			}
 			return bRet;
@@ -3354,11 +3520,10 @@ namespace FSHA
 				NLink& n = *it;
 				if(n.state == NLink::STATE_READY)
 				{
-					__MsgType msg;
-					msg.reserve(1024);
-					msg << n.na;
-					msg << MSG_C_NOOP;
-					this->Send(msg.front_ptr(), msg.write_size());
+					m_HeartTickMsgTemp.clear();
+					m_HeartTickMsgTemp << n.na;
+					m_HeartTickMsgTemp << MSG_C_NOOP;
+					this->Send(m_HeartTickMsgTemp.front_ptr(), m_HeartTickMsgTemp.write_size());
 				}
 			}
 			m_perf.fHeartTick += FSHA_PERF - fPerf;
@@ -3570,9 +3735,22 @@ namespace FSHA
 					m_OnReceiveMsgTemp >> pFWT->size;
 					if(pFWT->size > 0)
 					{
-						m_OnReceiveMsgTemp.read(pFWT->buf, pFWT->size);
-						AL al(m_lr_filewritetasks);
-						m_filewritetasks.push_back(pFWT);
+						// Add to file task list.
+						{
+							m_OnReceiveMsgTemp.read(pFWT->buf, pFWT->size);
+							AL al(m_lr_filewritetasks);
+							m_filewritetasks.push_back(pFWT);
+						}
+
+						// Update uLastActiveTime.
+						{
+							AL al(m_lr_reqeds);
+							FileReq fr;
+							fr.fid = pFWT->fid;
+							FileReq* pFR = m_reqeds.find(fr);
+							if(pFR != GNULL)
+								pFR->uLastActiveTime = GAIA::TIME::clock_time();
+						}
 					}
 					m_perf.fOnRecvFileChunkA += FSHA_PERF - fPerfFileChunkA;
 				}
@@ -4442,7 +4620,14 @@ namespace FSHA
 		GAIA::CONTAINER::Vector<FileSendTask> m_listFileCmplFileTemp;
 		GAIA::CONTAINER::Vector<ChunkSendTask> m_listFileCmplChunkTemp;
 		__MsgType m_FileSendMsgTemp;
+		__MsgType m_ChunkSendMsgTemp;
 		__MsgType m_OnReceiveMsgTemp;
+		__MsgType m_TimeoutSectionRequestMsgTemp;
+		__MsgType m_TimeoutChunkRequestMsgTemp;
+		__MsgType m_RequestMsgTemp;
+		__MsgType m_HeartTickMsgTemp;
+		__MsgType m_ExecuteCmplFilesNotifyMsgTemp;
+		__MsgType m_RecycleLinkMsgTemp;
 	};
 };
 
