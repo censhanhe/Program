@@ -2243,6 +2243,27 @@ GAIA::N32 main()
 		TEST_END;
 	}
 
+	// CRC algorithm test.
+	{
+		TEST_BEGIN("<CRC algorithm test>");
+		{
+			GAIA::CONTAINER::Vector<GAIA::N32> listArray;
+			for(GAIA::N32 x = 0; x < 10000; ++x)
+				listArray.push_back(x);
+			GAIA::DATAPHASE::CRC32 crc32;
+			crc32.build(listArray.front_ptr(), listArray.size() * sizeof(GAIA::N32));
+			GAIA::U32 uCRC = crc32.result();
+			bFunctionSuccess = GAIA::True;
+			if(uCRC != 0x4C9BC0A7)
+				bFunctionSuccess = GAIA::False;
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("CRC32 algorithm test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("CRC32 algorithm test FAILED!");
+		}
+		TEST_END;
+	}
+
 	// Basic factory test 1.
 	{
 		TEST_BEGIN("<Data traffic test>");

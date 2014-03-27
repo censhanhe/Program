@@ -739,6 +739,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\gaia_dataphase_crc.h"
+						>
+					</File>
+					<File
 						RelativePath=".\gaia_dataphase_tdiff.h"
 						>
 					</File>
