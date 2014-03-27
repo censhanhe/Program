@@ -111,6 +111,7 @@
 #include	"gaia_dataphase_xml.h"
 #include 	"gaia_dataphase_bdiff.h"
 #include 	"gaia_dataphase_tdiff.h"
+#include 	"gaia_dataphase_crc.h"
 
 #include	"gaia_thread.h"
 #include 	"gaia_thread_pool.h"
