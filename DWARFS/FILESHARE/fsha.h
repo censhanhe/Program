@@ -1828,16 +1828,18 @@ namespace FSHA
 				uRecvChunkCount = 0;
 				uNSendCount = 0;
 				uNRecvCount = 0;
+				uNSendBytes = 0;
+				uNRecvBytes = 0;
 				uFrameCount = 0;
 				uValidFrameCount = 0;
 				uTotalCmplFileCount = 0;
 				uJumpFileCount = 0;
 				uBeJumpFileCount = 0;
 			}
-			GAIA::F64 fStartupTime;
-			GAIA::U64 uRequestFileCount;
-			GAIA::U64 uRequestFileCmplCount;
-			GAIA::U64 uBeRequestFileCount;
+			GAIA::F64 fStartupTime;				// The time when the FileShare been startuped.
+			GAIA::U64 uRequestFileCount;		// The file count current FileShare requested.
+			GAIA::U64 uRequestFileCmplCount;	// The request complete count of current FileShare requested.	
+			GAIA::U64 uBeRequestFileCount;		// The file count been requested from other FileShare.
 			GAIA::U64 uRequestChunkCount;
 			GAIA::U64 uRequestChunkCmplCount;
 			GAIA::U64 uBeRequestChunkCount;
@@ -1847,6 +1849,8 @@ namespace FSHA
 			GAIA::U64 uRecvChunkCount;
 			GAIA::U64 uNSendCount;
 			GAIA::U64 uNRecvCount;
+			GAIA::U64 uNSendBytes;
+			GAIA::U64 uNRecvBytes;
 			GAIA::U64 uFrameCount;
 			GAIA::U64 uValidFrameCount;
 			GAIA::U64 uTotalCmplFileCount;
@@ -1885,6 +1889,9 @@ namespace FSHA
 				fOnRecvLoginOKA = 0.0F;
 				fOnRecvLogoutOKA = 0.0F;
 				fOnRecvErrorA = 0.0F;
+				fMinFileCmplTime = +999999.0F;
+				fMaxFileCmplTime = -999999.0F;
+				fSumFileCmplTime = 0.0F;
 				fTemp1 = 0.0F;
 				fTemp2 = 0.0F;
 				fTemp3 = 0.0F;
@@ -1917,6 +1924,9 @@ namespace FSHA
 			GAIA::F64 fOnRecvLoginOKA;
 			GAIA::F64 fOnRecvLogoutOKA;
 			GAIA::F64 fOnRecvErrorA;
+			GAIA::F64 fMinFileCmplTime;
+			GAIA::F64 fMaxFileCmplTime;
+			GAIA::F64 fSumFileCmplTime;
 			GAIA::F64 fTemp1;
 			GAIA::F64 fTemp2;
 			GAIA::F64 fTemp3;
@@ -2351,6 +2361,8 @@ namespace FSHA
 				m_prt << "RecvChunkCount = " << m_statistics.uRecvChunkCount << "\n";
 				m_prt << "NSendCount = " << m_statistics.uNSendCount << "\n";
 				m_prt << "NRecvCount = " << m_statistics.uNRecvCount << "\n";
+				m_prt << "NSendBytes = " << m_statistics.uNSendBytes << "\n";
+				m_prt << "NRecvBytes = " << m_statistics.uNRecvBytes << "\n";
 				m_prt << "FrameCount = " << m_statistics.uFrameCount << "\n";
 				m_prt << "ValidFrameCount = " << m_statistics.uValidFrameCount << "\n";
 				m_prt << "TotalCmplFileCount = " << m_statistics.uTotalCmplFileCount << "(" << 
@@ -2785,6 +2797,9 @@ namespace FSHA
 					m_prt << "OnRecvLoginOKA = " << m_perf.fOnRecvLoginOKA << "\n";
 					m_prt << "OnRecvLogoutOKA = " << m_perf.fOnRecvLogoutOKA << "\n";
 					m_prt << "OnRecvErrorA = " << m_perf.fOnRecvErrorA << "\n";
+					m_prt << "MinFileCmplTime = " << m_perf.fMinFileCmplTime << "\n";
+					m_prt << "MaxFileCmplTime = " << m_perf.fMaxFileCmplTime << "\n";
+					m_prt << "AveFileCmplTime = " << m_perf.fSumFileCmplTime / (GAIA::F64)m_statistics.uRequestFileCmplCount << "\n";
 					m_prt << "Temp1 = " << m_perf.fTemp1 << "\n";
 					m_prt << "Temp2 = " << m_perf.fTemp2 << "\n";
 					m_prt << "Temp3 = " << m_perf.fTemp3 << "\n";
@@ -3241,7 +3256,17 @@ namespace FSHA
 					AL al(m_lr_reqeds);
 					FileReq fr;
 					fr.fid = (*it).fid;
-					m_reqeds.erase(fr);
+					FileReq* pFR = m_reqeds.find(fr);
+					if(pFR != GNULL)
+					{
+						GAIA::F64 fTime = (GAIA::F64)(GAIA::TIME::clock_time() - fr.uUserReqTime) * 0.001 * 0.001;
+						if(fTime > m_perf.fMaxFileCmplTime)
+							m_perf.fMaxFileCmplTime = fTime;
+						if(fTime < m_perf.fMinFileCmplTime)
+							m_perf.fMinFileCmplTime = fTime;
+						m_perf.fSumFileCmplTime += fTime;
+						m_reqeds.erase(fr);
+					}
 				}
 				/* Add to complete file list. */
 				{
@@ -3623,6 +3648,7 @@ namespace FSHA
 		{
 			GAIA::F64 fPerf = FSHA_PERF;
 			m_statistics.uNRecvCount++;
+			m_statistics.uNRecvBytes += size - sizeof(GAIA::NETWORK::NetworkAddress);
 			m_OnReceiveMsgTemp.clear();
 			m_OnReceiveMsgTemp.write(p, size);
 			GAIA::NETWORK::NetworkAddress na;
@@ -4482,6 +4508,7 @@ namespace FSHA
 				return GAIA::False;
 			AL al(m_lr_send);
 			m_statistics.uNSendCount++;
+			m_statistics.uNSendBytes += size - sizeof(GAIA::NETWORK::NetworkAddress);
 			return m_pNH->Send((const GAIA::U8*)p, size);
 		}
 		GINL GAIA::BL SendToAll(GAIA::GVOID* p, const GAIA::UM& size)
