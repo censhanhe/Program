@@ -155,7 +155,6 @@ namespace FSHA
 	typedef GAIA::U8 SUBCHUNKINDEX;
 	typedef GAIA::U16 SUBCHUNKSIZETYPE;
 	typedef GAIA::U8 REQFILECOUNTTYPE;
-	typedef GAIA::U8 CRCSIZETYPE;
 	typedef GAIA::U32 FILESIZETYPE;
 	typedef GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::U8> FSTR;
 	typedef GAIA::CONTAINER::Vector<FSTR> FSTRLIST;
@@ -166,6 +165,7 @@ namespace FSHA
 	typedef GAIA::U32 MAPINDEX; // 0 means invalid id.
 	typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAXPATHLEN> FNAMETYPE;
 	typedef GAIA::CONTAINER::Array<FNAMETYPE, MAXPATHDEPTH> FNAMEPARTLISTTYPE;
+	typedef GAIA::U32 CRCTYPE;
 
 	/* File sequence. */
 	class __DWARFS_FILESHARE_API FileSequence
@@ -354,6 +354,22 @@ namespace FSHA
 			delete pFactory;
 			return GAIA::True;
 		}
+		CRCTYPE BuildFileCRC(const GAIA::GCH* pszPathName)
+		{
+			GAIA_AST(!GAIA::ALGORITHM::stremp(pszPathName));
+			if(GAIA::ALGORITHM::stremp(pszPathName))
+				return 0;
+			m_crcbuilder.clear();
+			GAIA::FILESYSTEM::File file;
+			if(!file.Open(pszPathName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+				return 0;
+			static const GAIA::U32 CRCFILEREADPATCHSIZE = 1024 * 1024;
+			GAIA::U8* pBuffer = new GAIA::U8[CRCFILEREADPATCHSIZE];
+			GAIA::N64 nReaded;
+			while((nReaded = file.Read(pBuffer, CRCFILEREADPATCHSIZE)) != 0)
+				m_crcbuilder.build(pBuffer, nReaded);
+			return m_crcbuilder.result();
+		}
 		GAIA::BL Build(const GAIA::GCH* pszPathName, const GAIA::GCH* pszFilter)
 		{
 			FILE_LIST_LOG("Collision destination path files...");
@@ -475,6 +491,19 @@ namespace FSHA
 				GAIA_AST(m_recids[x].fid == x);
 		#endif
 
+			/* Generate file CRC. */
+			FILE_LIST_LOG("Generate file CRC...");
+			{
+				for(GAIA::NM x = 0; x < m_recids.size(); ++x)
+				{
+					GAIA::GCH szName[MAXPATHLEN];
+					if(this->GetName(m_recids[x].fid, szName))
+						m_recids[x].uCRC = this->BuildFileCRC(szName);
+					else
+						GAIA_AST(GAIA::ALWAYSFALSE);
+				}	
+			}
+
 			/* Generate file rec seq list. */
 			FILE_LIST_LOG("Generate file record list by sequence...");
 			m_recseqs.clear();
@@ -527,6 +556,16 @@ namespace FSHA
 				return GAIA::False;
 			return this->MapIndexToName(mapindex, pResult);
 		}
+		GAIA::BL GetCRC(const FILEID& id, CRCTYPE& crc) const
+		{
+			__FileRecIDListType::_datatype f;
+			f.fid = id;
+			GAIA::NM nIndex = m_recids.search(f);
+			if(nIndex == GINVALID)
+				return GAIA::False;
+			crc = m_recids[nIndex].uCRC;
+			return GAIA::True;
+		}
 		GAIA::UM GetFileCount() const{return m_recids.size();}
 		const FILEID& GetIDBySequence(GAIA::UM uIndex) const{return m_recseqs[uIndex].pFileRec->fid;}
 	private:
@@ -555,12 +594,14 @@ namespace FSHA
 				fid = src.fid;
 				it = src.it;
 				uSequence = src.uSequence;
+				uCRC = src.uCRC;
 				return *this;
 			}
 			GAIA_CLASS_OPERATOR_COMPARE(fid, fid, FileRec);
 			FILEID fid;
 			__FileTreeType::const_it it;
 			FILEID uSequence;
+			CRCTYPE uCRC;
 		};
 		class FileRecSeq
 		{
@@ -708,6 +749,7 @@ namespace FSHA
 			sr >> tn.mapindex;
 			FileRec fr;
 			sr >> fr.uSequence;
+			sr >> fr.uCRC;
 			fr.fid = tn.fid;
 			stack.push(tn);
 
@@ -743,11 +785,16 @@ namespace FSHA
 			fr.fid = data.fid;
 			__FileRecIDListType::_sizetype findedindex = m_recids.search(fr);
 			if(findedindex != GINVALID)
+			{
 				sr << m_recids[findedindex].uSequence;
+				sr << m_recids[findedindex].uCRC;
+			}
 			else
 			{
 				FILEID uSequence = GINVALID;
 				sr << uSequence;
+				CRCTYPE uCRC = 0;
+				sr << uCRC;
 			}
 
 			/* Save node count. */
@@ -772,6 +819,7 @@ namespace FSHA
 		__FileTreeType m_ftree; // Sorted by file name section.
 		FILEID m_LastMaxFileID;
 		GAIA::PRINT::Print* m_pPr;
+		GAIA::DATAPHASE::CRC32 m_crcbuilder;
 	};
 
 	/* User group class. */
@@ -1657,13 +1705,14 @@ namespace FSHA
 		public:
 			typedef GAIA::CONTAINER::Set<FileChunkSection> __FileChunkSectionListType;
 		public:
-			GINL FileRecCache(){fid = GINVALID; pFA = GNULL; fsize = 0; pFCSL = GNULL; bWrite = GAIA::False;}
+			GINL FileRecCache(){fid = GINVALID; pFA = GNULL; fsize = 0; uCRC = 0; pFCSL = GNULL; bWrite = GAIA::False;}
 			GAIA_CLASS_OPERATOR_COMPARE2(fid, fid, bWrite, bWrite, FileRecCache);
 			GINL FileRecCache& operator = (const FileRecCache& src)
 			{
 				fid = src.fid;
 				pFA = src.pFA;
 				fsize = src.fsize;
+				uCRC = src.uCRC;
 				pFCSL = src.pFCSL;
 				bWrite = src.bWrite;
 				return *this;
@@ -1672,6 +1721,7 @@ namespace FSHA
 			FILEID fid;
 			FileAccess* pFA;
 			FILESIZETYPE fsize;
+			CRCTYPE uCRC;
 			__FileChunkSectionListType* pFCSL;
 			GAIA::U8 bWrite : 1;
 		};
@@ -1835,6 +1885,7 @@ namespace FSHA
 				uTotalCmplFileCount = 0;
 				uJumpFileCount = 0;
 				uBeJumpFileCount = 0;
+				uCRCCheckFailedCount = 0;
 			}
 			GAIA::F64 fStartupTime;				// The time when the FileShare been startuped.
 			GAIA::U64 uRequestFileCount;		// The file count current FileShare requested.
@@ -1856,6 +1907,7 @@ namespace FSHA
 			GAIA::U64 uTotalCmplFileCount;
 			GAIA::U64 uJumpFileCount;
 			GAIA::U64 uBeJumpFileCount;
+			GAIA::U64 uCRCCheckFailedCount;
 		};
 		/* Performance. */
 		class __DWARFS_FILESHARE_API Perf
@@ -1953,7 +2005,7 @@ namespace FSHA
 		#define MSG_R_FILECHUNK			((MSGIDTYPE)11)
 		// fileid(FILEID) + chunkindex(CHUNKINDEX).
 		#define MSG_A_FILEHEAD			((MSGIDTYPE)20)
-		// fileid(FILEID) + filesize(FILESIZETYPE) + filecrcsize(CRCSIZETYPE) + filecrc(void*).
+		// fileid(FILEID) + filesize(FILESIZETYPE) + filecrccode(CRCTYPE).
 		#define MSG_A_FILECHUNK			((MSGIDTYPE)21)
 		// fileid(FILEID) + chunkindex(CHUNKINDEX) + subchunkindex(SUBCHUNKINDEX) + filedatasize(SUBCHUNKSIZETYPE) + filedata(void*).
 		#define MSG_A_FILENOTEXIST		((MSGIDTYPE)22)
@@ -2370,6 +2422,7 @@ namespace FSHA
 				m_prt << "JumpFileCount = " << m_statistics.uJumpFileCount << "\n";
 				m_prt << "BeJumpFileCount = " << m_statistics.uBeJumpFileCount << "\n";
 				m_prt << "OwnFile = " << m_uCmplFileCount << "/" << m_filelist.GetFileCount() << "\n";
+				m_prt << "CRCCheckFailedCount" << m_statistics.uCRCCheckFailedCount << "\n";
 			}
 			else if(CMD(CMD_SAVE))
 			{
@@ -2949,6 +3002,7 @@ namespace FSHA
 					m_FileSendMsgTemp << MSG_A_FILEHEAD;
 					m_FileSendMsgTemp << fst.fid;
 					m_FileSendMsgTemp << pFRC->fsize;
+					m_FileSendMsgTemp << pFRC->uCRC;
 					this->Send(m_FileSendMsgTemp.front_ptr(), m_FileSendMsgTemp.write_size());
 				}
 				m_FileSendMsgTemp.clear();
@@ -3829,6 +3883,7 @@ namespace FSHA
 					FileRecCache frc;
 					m_OnReceiveMsgTemp >> frc.fid;
 					m_OnReceiveMsgTemp >> frc.fsize;
+					m_OnReceiveMsgTemp >> frc.uCRC;
 					frc.bWrite = GAIA::True;
 					AL al(m_lr_fcaches);
 					FileRecCache* pFRC = m_fcaches.find(frc);
@@ -4444,6 +4499,8 @@ namespace FSHA
 			FileRecCache* pFRC = m_fcaches.find(frc);
 			if(pFRC == GNULL)
 			{
+				if(m_filelist.GetCRC(fid, frc.uCRC))
+					return GNULL;
 				m_fcaches.insert(frc);
 				pFRC = m_fcaches.find(frc);
 			}
