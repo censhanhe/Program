@@ -95,10 +95,11 @@ namespace GAIA
 				return 0;
 			if(!(m_fileopentype & FILE_OPEN_TYPE_READ))
 				return 0;
-			if(fread(pDst, size, 1, (FILE*)m_pFile) == 1)
+			GAIA::N64 nReaded;
+			if((nReaded = fread(pDst, 1, size, (FILE*)m_pFile)) > 0)
 			{
-				m_offset += size;
-				return size;
+				m_offset += nReaded;
+				return nReaded;
 			}
 			return 0;
 		}
@@ -114,12 +115,13 @@ namespace GAIA
 				return 0;
 			if(!(m_fileopentype & FILE_OPEN_TYPE_WRITE))
 				return 0;
-			if(fwrite(pSrc, size, 1, (FILE*)m_pFile) == 1)
+			GAIA::N64 nWriten;
+			if((nWriten = fwrite(pSrc, 1, size, (FILE*)m_pFile)) > 0)
 			{
-				m_offset += size;
+				m_offset += nWriten;
 				if(m_offset > m_size)
 					m_size = m_offset;
-				return size;
+				return nWriten;
 			}
 			return 0;
 		}

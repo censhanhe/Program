@@ -368,6 +368,7 @@ namespace FSHA
 			GAIA::N64 nReaded;
 			while((nReaded = file.Read(pBuffer, CRCFILEREADPATCHSIZE)) != 0)
 				m_crcbuilder.build(pBuffer, nReaded);
+			delete[] pBuffer;
 			return m_crcbuilder.result();
 		}
 		GAIA::BL Build(const GAIA::GCH* pszPathName, const GAIA::GCH* pszFilter)
@@ -498,7 +499,15 @@ namespace FSHA
 				{
 					GAIA::GCH szName[MAXPATHLEN];
 					if(this->GetName(m_recids[x].fid, szName))
-						m_recids[x].uCRC = this->BuildFileCRC(szName);
+					{
+						GAIA::GCH szFullName[MAXPATHLEN];
+						if(GAIA::ALGORITHM::stremp(pszPathName))
+							szFullName[0] = 0;
+						else
+							GAIA::ALGORITHM::strcpy(szFullName, pszPathName);
+						GAIA::ALGORITHM::strcat(szFullName, szName);
+						m_recids[x].uCRC = this->BuildFileCRC(szFullName);
+					}
 					else
 						GAIA_AST(GAIA::ALWAYSFALSE);
 				}	
@@ -2287,6 +2296,8 @@ namespace FSHA
 		GINL GAIA::BL IsEnableSequenceRequest() const{return m_bEnableSequenceRequest;}
 		GINL GAIA::GVOID SetMaxRequestFileCountSameTime(GAIA::NM nCount){m_nMaxRequestFileCountSameTime = nCount;}
 		GINL GAIA::NM GetMaxRequestFileCountSameTime() const{return m_nMaxRequestFileCountSameTime;}
+		GINL GAIA::GVOID EnableRecycleLink(GAIA::BL bEnable){m_bEnableRecycleLink = bEnable;}
+		GINL GAIA::BL IsEnableRecycleLink() const{return m_bEnableRecycleLink;}
 		GAIA::BL Command(const GAIA::GCH* pszCmd)
 		{
 			// Command analyze.
@@ -2321,6 +2332,8 @@ namespace FSHA
 				"cmplall",				"set all file download complete, format = cmplall 0or1.",
 				"req",					"request a file, format = req fileid",
 				"reqall",				"request all files, format = reqall 0or1",
+				"reqs",					"show requesting file list, format = reqs.",
+				"reqeds",				"show requested file list, format = reqeds.",
 
 				"create_user",			"create a new user, format = create_user user_name.",
 				"delete_user",			"delete a exist user, format = delete_user user_name.",
@@ -2340,10 +2353,12 @@ namespace FSHA
 				"show_group",			"show group's information, format = show_group group_name.",
 				"filename",				"show filename by id, format = filename id.",
 				"fileid",				"show fileid by filename, format = fileid filename.",
-				"files",				"show file in the path, format = files filename isincludechild.",
+				"files",				"show file in the path, format = files.",
 
 				"login",				"login to remote node, format = login username password ip port.",
 				"logout",				"logout from remote node, format = logout username ip port.",
+
+				"recycle_link",			"enable recycle link, format = recycle_link 0|1",
 
 				"l",					"show link state, format = l.",
 				"p",					"show performance, format = p.",
@@ -2361,6 +2376,8 @@ namespace FSHA
 				CMD_CMPLALL,
 				CMD_REQUEST,
 				CMD_REQUESTALL,
+				CMD_REQS,
+				CMD_REQEDS,
 
 				CMD_CREATEUSER,
 				CMD_DELETEUSER,
@@ -2384,6 +2401,8 @@ namespace FSHA
 
 				CMD_LOGIN,
 				CMD_LOGOUT,
+
+				CMD_RECYCLELINK,
 
 				CMD_LINK,
 				CMD_PERF,
@@ -2421,8 +2440,8 @@ namespace FSHA
 					(GAIA::F64)m_statistics.uTotalCmplFileCount / (GAIA::F64)(m_filelist.GetFileCount() * m_links.size()) << ")" << "\n";
 				m_prt << "JumpFileCount = " << m_statistics.uJumpFileCount << "\n";
 				m_prt << "BeJumpFileCount = " << m_statistics.uBeJumpFileCount << "\n";
+				m_prt << "CRCCheckFailedCount = " << m_statistics.uCRCCheckFailedCount << "\n";
 				m_prt << "OwnFile = " << m_uCmplFileCount << "/" << m_filelist.GetFileCount() << "\n";
-				m_prt << "CRCCheckFailedCount" << m_statistics.uCRCCheckFailedCount << "\n";
 			}
 			else if(CMD(CMD_SAVE))
 			{
@@ -2503,6 +2522,46 @@ namespace FSHA
 				{
 					m_uSequenceRequestIndex = 0;
 					this->EnableSequenceRequest((GAIA::BL)(GAIA::N32)listPart[1]);
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_REQS))
+			{
+				if(listPart.size() == 1)
+				{
+					AL al(m_lr_reqs);
+					__FileReqQueueType::it it = m_reqs.front_it();
+					GAIA::N32 nIndex = 0;
+					while(!it.empty())
+					{
+						FileReq& fr = *it;
+						m_prt << "[" << nIndex++ << "] FID=" << fr.fid << 
+							" UserReqTime=" << fr.uUserReqTime << 
+							" uFirstReqTime=" << fr.uFirstReqTime << 
+							" uLastActiveTime=" << fr.uLastActiveTime << "\n";
+						++it;
+					}
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_REQEDS))
+			{
+				if(listPart.size() == 1)
+				{
+					AL al(m_lr_reqeds);
+					__FileReqSetType::it it = m_reqeds.front_it();
+					GAIA::N32 nIndex = 0;
+					while(!it.empty())
+					{
+						FileReq& fr = *it;
+						m_prt << "[" << nIndex++ << "] FID=" << fr.fid << 
+							" UserReqTime=" << fr.uUserReqTime << 
+							" uFirstReqTime=" << fr.uFirstReqTime << 
+							" uLastActiveTime=" << fr.uLastActiveTime << "\n";
+						++it;
+					}
 				}
 				else
 					CMDFAILED;
@@ -2725,9 +2784,11 @@ namespace FSHA
 				{
 					AL al(m_lr_filelist);
 					FILEID fid = listPart[1];
-					GAIA::GCH szFileName[MAXPATHLEN];
-					if(m_filelist.GetName(fid, szFileName))
-						m_prt << szFileName << "\n";
+					GAIA::GCH szPathName[MAXPATHLEN];
+					CRCTYPE crc;
+					if(m_filelist.GetName(fid, szPathName) && 
+						m_filelist.GetCRC(fid, crc))
+						m_prt << szPathName << " CRC=" << crc << "\n";
 					else
 						CMDFAILED;
 				}
@@ -2740,8 +2801,9 @@ namespace FSHA
 				{
 					AL al(m_lr_filelist);
 					const FILEID* pFileID = m_filelist.GetIDByName(listPart[1]);
-					if(pFileID != GNULL)
-						m_prt << *pFileID << "\n";
+					CRCTYPE crc;
+					if(pFileID != GNULL && m_filelist.GetCRC(*pFileID, crc))
+						m_prt << *pFileID << " CRC=" << crc << "\n";
 					else
 						CMDFAILED;
 				}
@@ -2750,8 +2812,16 @@ namespace FSHA
 			}
 			else if(CMD(CMD_FILES))
 			{
-				if(listPart.size() == 3)
+				if(listPart.size() == 1)
 				{
+					for(GAIA::UM x = 0; x < m_filelist.GetFileCount(); ++x)
+					{
+						GAIA::GCH szPathName[MAXPATHLEN];
+						CRCTYPE crc;
+						m_filelist.GetName(x, szPathName);
+						m_filelist.GetCRC(x, crc);
+						m_prt << "[" << x << "] " << szPathName << " CRC=" << crc << "\n";
+					}
 				}
 				else
 					CMDFAILED;
@@ -2778,6 +2848,18 @@ namespace FSHA
 					na.uPort = listPart[3];
 					if(!this->NLogout(na, listPart[1].front_ptr()))
 						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_RECYCLELINK))
+			{
+				if(listPart.size() == 2)
+				{
+					if(listPart[1] == "0")
+						this->EnableRecycleLink(GAIA::False);
+					else
+						this->EnableRecycleLink(GAIA::True);
 				}
 				else
 					CMDFAILED;
@@ -2889,6 +2971,11 @@ namespace FSHA
 			m_bEnableSequenceRequest = GAIA::False;
 			m_uSequenceRequestIndex = 0;
 			m_nMaxRequestFileCountSameTime = DEFAULTMAXREQFILECOUNTSAMETIME;
+		#ifdef FSHA_DEBUG
+			m_bEnableRecycleLink = GAIA::False;
+		#else
+			m_bEnableRecycleLink = GAIA::True;
+		#endif
 		}
 		GINL GAIA::BL OnExecute()
 		{
@@ -3269,7 +3356,11 @@ namespace FSHA
 							if(pFRC->fsize % SUBCHUNKSIZE != 0)
 								++uCorrectSubChunkCount;
 							if(uSubChunkCount == uCorrectSubChunkCount)
+							{
+								if(pFRC->pFA != GNULL)
+									pFRC->pFA->Flush();
 								m_listCompleteTemp.push_back(*pFRC);
+							}
 						}
 					}
 
@@ -3284,9 +3375,9 @@ namespace FSHA
 			/* Dispatch complete file. */
 			for(GAIA::CONTAINER::Vector<FileRecCache>::it it = m_listCompleteTemp.front_it(); !it.empty(); ++it)
 			{
+				GAIA::BL bCRCSuccess = GAIA::True;
 				/* File CRC checkup. */
 				{
-					GAIA::BL bCRCSuccess = GAIA::True;
 					CRCTYPE crc;
 					if(!m_filelist.GetCRC((*it).fid, crc))
 						bCRCSuccess = GAIA::False;
@@ -3303,50 +3394,77 @@ namespace FSHA
 					if(!bCRCSuccess)
 					{
 						m_statistics.uCRCCheckFailedCount++;
+						{
+							AL al(m_lr_fcaches);
+							FileRecCache* pFRC = m_fcaches.find(*it);
+							GAIA_AST(pFRC != GNULL);
+							if(pFRC->pFA != GNULL)
+							{
+								pFRC->pFA->Flush();
+								pFRC->pFA->Close();
+								m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
+								pFRC->pFA = GNULL;
+							}
+							if(pFRC->pFCSL != GNULL)
+							{
+								delete pFRC->pFCSL;
+								pFRC->pFCSL = GNULL;
+							}
+							m_fcaches.erase(*it);
+						}
+
+						{
+							FIDLIST listRequest;
+							listRequest.push_back((*it).fid);
+							this->Request(m_mainna, listRequest);
+						}
 					}
 				}
-				m_statistics.uRequestFileCmplCount++;
-				this->SetFileCmpl((*it).fid, GAIA::True);
-				/* Release FileRecCache. */
+				if(bCRCSuccess)
 				{
-					AL al(m_lr_fcaches);
-					FileRecCache* pFRC = m_fcaches.find(*it);
-					GAIA_AST(pFRC != GNULL);
-					if(pFRC->pFA != GNULL)
+					m_statistics.uRequestFileCmplCount++;
+					this->SetFileCmpl((*it).fid, GAIA::True);
+					/* Release FileRecCache. */
 					{
-						pFRC->pFA->Flush();
-						pFRC->pFA->Close();
-						m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
-						pFRC->pFA = GNULL;
+						AL al(m_lr_fcaches);
+						FileRecCache* pFRC = m_fcaches.find(*it);
+						GAIA_AST(pFRC != GNULL);
+						if(pFRC->pFA != GNULL)
+						{
+							pFRC->pFA->Flush();
+							pFRC->pFA->Close();
+							m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
+							pFRC->pFA = GNULL;
+						}
+						if(pFRC->pFCSL != GNULL)
+						{
+							delete pFRC->pFCSL;
+							pFRC->pFCSL = GNULL;
+						}
+						m_fcaches.erase(*it);
 					}
-					if(pFRC->pFCSL != GNULL)
+					/* Remove from requested set. */
 					{
-						delete pFRC->pFCSL;
-						pFRC->pFCSL = GNULL;
+						AL al(m_lr_reqeds);
+						FileReq fr;
+						fr.fid = (*it).fid;
+						FileReq* pFR = m_reqeds.find(fr);
+						if(pFR != GNULL)
+						{
+							GAIA::F64 fTime = (GAIA::F64)(GAIA::TIME::clock_time() - fr.uUserReqTime) * 0.001 * 0.001;
+							if(fTime > m_perf.fMaxFileCmplTime)
+								m_perf.fMaxFileCmplTime = fTime;
+							if(fTime < m_perf.fMinFileCmplTime)
+								m_perf.fMinFileCmplTime = fTime;
+							m_perf.fSumFileCmplTime += fTime;
+							m_reqeds.erase(fr);
+						}
 					}
-					m_fcaches.erase(*it);
-				}
-				/* Remove from requested set. */
-				{
-					AL al(m_lr_reqeds);
-					FileReq fr;
-					fr.fid = (*it).fid;
-					FileReq* pFR = m_reqeds.find(fr);
-					if(pFR != GNULL)
+					/* Add to complete file list. */
 					{
-						GAIA::F64 fTime = (GAIA::F64)(GAIA::TIME::clock_time() - fr.uUserReqTime) * 0.001 * 0.001;
-						if(fTime > m_perf.fMaxFileCmplTime)
-							m_perf.fMaxFileCmplTime = fTime;
-						if(fTime < m_perf.fMinFileCmplTime)
-							m_perf.fMinFileCmplTime = fTime;
-						m_perf.fSumFileCmplTime += fTime;
-						m_reqeds.erase(fr);
+						AL al(m_lr_cmplfiles);
+						m_cmplfiles.push_back((*it).fid);
 					}
-				}
-				/* Add to complete file list. */
-				{
-					AL al(m_lr_cmplfiles);
-					m_cmplfiles.push_back((*it).fid);
 				}
 			}
 			m_perf.fExecuteFileWrite += FSHA_PERF - fPerf;
@@ -3411,28 +3529,31 @@ namespace FSHA
 			// Recycle from link list and prilink list.
 			m_listRecycleTemp.clear();
 			{
-				AL al1(m_lr_links);
-				AL al2(m_lr_prilinks);
-				for(__LinkListType::it it = m_links.front_it(); !it.empty(); ++it)
+				if(this->IsEnableRecycleLink())
 				{
-					NLink& nl = *it;
-					if(uCurrentTime > nl.uLastHeartTime)
+					AL al1(m_lr_links);
+					AL al2(m_lr_prilinks);
+					for(__LinkListType::it it = m_links.front_it(); !it.empty(); ++it)
 					{
-						if(uCurrentTime - nl.uLastHeartTime > LINKRECYCLETIME)
-							m_listRecycleTemp.push_back(nl);
+						NLink& nl = *it;
+						if(uCurrentTime > nl.uLastHeartTime)
+						{
+							if(uCurrentTime - nl.uLastHeartTime > LINKRECYCLETIME)
+								m_listRecycleTemp.push_back(nl);
+						}
 					}
-				}
-				for(GAIA::CONTAINER::Vector<NLink>::it it = m_listRecycleTemp.front_it(); !it.empty(); ++it)
-				{
-					NLinkPri nlp;
-					nlp.nlink = *it;
-					m_RecycleLinkMsgTemp.clear();
-					m_RecycleLinkMsgTemp << nlp.nlink.na;
-					m_RecycleLinkMsgTemp << MSG_A_ERROR;
-					m_RecycleLinkMsgTemp << ERRNO_TIMEOUT;
-					this->Send(m_RecycleLinkMsgTemp.front_ptr(), m_RecycleLinkMsgTemp.write_size());
-					m_links.erase(nlp.nlink);
-					m_prilinks.erase(nlp);
+					for(GAIA::CONTAINER::Vector<NLink>::it it = m_listRecycleTemp.front_it(); !it.empty(); ++it)
+					{
+						NLinkPri nlp;
+						nlp.nlink = *it;
+						m_RecycleLinkMsgTemp.clear();
+						m_RecycleLinkMsgTemp << nlp.nlink.na;
+						m_RecycleLinkMsgTemp << MSG_A_ERROR;
+						m_RecycleLinkMsgTemp << ERRNO_TIMEOUT;
+						this->Send(m_RecycleLinkMsgTemp.front_ptr(), m_RecycleLinkMsgTemp.write_size());
+						m_links.erase(nlp.nlink);
+						m_prilinks.erase(nlp);
+					}
 				}
 			}
 
@@ -4520,7 +4641,7 @@ namespace FSHA
 			FileRecCache* pFRC = m_fcaches.find(frc);
 			if(pFRC == GNULL)
 			{
-				if(m_filelist.GetCRC(fid, frc.uCRC))
+				if(!m_filelist.GetCRC(fid, frc.uCRC))
 					return GNULL;
 				m_fcaches.insert(frc);
 				pFRC = m_fcaches.find(frc);
@@ -4823,6 +4944,7 @@ namespace FSHA
 		__FileWriteTaskPoolType m_fwtpool; GAIA::SYNC::Lock m_lr_fwtpool;
 		GAIA::SYNC::Lock m_lr_send;
 		GAIA::NM m_nMaxRequestFileCountSameTime;
+		GAIA::BL m_bEnableRecycleLink;
 		Statistics m_statistics;
 		Perf m_perf;
 
