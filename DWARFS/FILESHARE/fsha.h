@@ -3284,6 +3284,27 @@ namespace FSHA
 			/* Dispatch complete file. */
 			for(GAIA::CONTAINER::Vector<FileRecCache>::it it = m_listCompleteTemp.front_it(); !it.empty(); ++it)
 			{
+				/* File CRC checkup. */
+				{
+					GAIA::BL bCRCSuccess = GAIA::True;
+					CRCTYPE crc;
+					if(!m_filelist.GetCRC((*it).fid, crc))
+						bCRCSuccess = GAIA::False;
+					else
+					{
+						if(crc == 0)
+							bCRCSuccess = GAIA::False;
+						else
+						{
+							if(crc != (*it).uCRC)
+								bCRCSuccess = GAIA::False;
+						}
+					}
+					if(!bCRCSuccess)
+					{
+						m_statistics.uCRCCheckFailedCount++;
+					}
+				}
 				m_statistics.uRequestFileCmplCount++;
 				this->SetFileCmpl((*it).fid, GAIA::True);
 				/* Release FileRecCache. */
