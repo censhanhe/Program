@@ -5,6 +5,7 @@ namespace GAIA
 {
 	namespace THREAD
 	{
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::UM threadid();
 		class Thread : public GAIA::Base
 		{
 		public:

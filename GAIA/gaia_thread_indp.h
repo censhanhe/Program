@@ -14,6 +14,14 @@ namespace GAIA
 {
 	namespace THREAD
 	{
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::UM threadid()
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			return (GAIA::UM)::GetCurrentThreadId();
+		#else
+			return (GAIA::UM)pthread_self();
+		#endif
+		}
 	#if GAIA_OS == GAIA_OS_WINDOWS
 		static DWORD WINAPI thread_procedure(GAIA::GVOID* p){Thread* pThread = static_cast<Thread*>(p); pThread->WorkProcedure(); return 0;}
 	#else

@@ -38,6 +38,7 @@
 #include 	"gaia_algorithm_search.h"
 #include 	"gaia_algorithm_sort.h"
 #include 	"gaia_algorithm_unique.h"
+#include	"gaia_algorithm_replace.h"
 
 #include 	"gaia_container_datarecord.h"
 #include 	"gaia_container_ref.h"

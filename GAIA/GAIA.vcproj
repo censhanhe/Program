@@ -730,6 +730,14 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="REPLACE"
+						>
+						<File
+							RelativePath=".\gaia_algorithm_replace.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="DATAPHASE"
@@ -840,6 +848,14 @@
 					>
 					<File
 						RelativePath=".\gaia_process.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_process_indp.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_process_indp.h"
 						>
 					</File>
 				</Filter>

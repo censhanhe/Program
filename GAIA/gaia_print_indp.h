@@ -2,11 +2,20 @@
 #define		__GAIA_PRINT_INDP_H__
 
 #include <iostream>
+#include <stdlib.h>
 
 namespace GAIA
 {
 	namespace PRINT
 	{
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Print::clear_screen()
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			system("cls");
+		#else
+			system("clear");
+		#endif
+		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::BL t)
 		{
 			std::cout << t;

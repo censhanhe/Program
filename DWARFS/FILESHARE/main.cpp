@@ -18,6 +18,13 @@ int main()
 	FSHA::FileShare fsha;
 	FSHA::FileShare::FileShareDesc desc;
 
+	GAIA::UM uProcessID = GAIA::PROCESS::processid();
+	cout << "Current Process ID = " << uProcessID << endl << endl;
+
+#ifdef FSHA_DEBUG
+	cout << "Warning! FSHA_DEBUG macro is openned!" << endl << endl;
+#endif
+
 	cout << "Local machine ip list:" << endl;
 	GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listIP;
 	GAIA::GCH szHostName[260];

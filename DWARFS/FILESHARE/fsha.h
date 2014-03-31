@@ -1,7 +1,7 @@
 #ifndef 	__FILE_SHARE_H__
 #define 	__FILE_SHARE_H__
 
-#define FSHA_DEBUG
+//#define FSHA_DEBUG
 
 #ifdef _MSC_VER
 #	if defined(_FSHADLL) || defined(_USEFSHADLL)
@@ -138,12 +138,13 @@ namespace FSHA
 	static const GAIA::GCH FILE_FILELIST[] = "filelist";
 	static const GAIA::U32 FILE_FILELIST_FLAG = 'FSFL';
 	static const GAIA::U32 FILE_FILELIST_VERSION = 0;
-	static const GAIA::N32 DEFAULTMAXREQFILECOUNTSAMETIME = 200;
+	static const GAIA::N32 DEFAULTMAXREQFILECOUNTSAMETIME = 32;
 	static const GAIA::U64 CMPLFILESNOTIFYFREQ = 400;
 	static const GAIA::U64 LINKRECYCLETIME = 22000000;
 	static const GAIA::U32 JUMPDISTANCE = 100;
 	static const GAIA::U32 JUMPODDS = 90;
 	static const GAIA::U64 REQUESTTIMEOUTTIME = 5000000;
+	static const GAIA::U64 REQUESTCMPLFILESNOTIFYTIME = 5000000;
 	static const GAIA::U32 SINGLECHUNKREQUESTLIMIT = 16;
 	static const GAIA::U32 MAXCHUNKREQUESTCOUNTPERDISPATCH = 100;
 	static const GAIA::U32 JUMPOFFSETFILESCOUNT = 100;
@@ -417,13 +418,14 @@ namespace FSHA
 				typedef GAIA::CONTAINER::Vector<TrieNode> __TempInsertVector;
 				__TempInsertVector listInsert;
 				FILEID id = 0;
+				typedef GAIA::CONTAINER::Vector<GAIA::FILESYSTEM::Directory::__ResultTree::_datatype*> __TempPartComineVector;
+				__TempPartComineVector listTemp;
 				while(!it.empty())
 				{
 					if(restree.leaf(it))
 					{
 						listInsert.clear();
-						typedef GAIA::CONTAINER::Vector<GAIA::FILESYSTEM::Directory::__ResultTree::_datatype*> __TempPartComineVector;
-						__TempPartComineVector listTemp;
+						listTemp.clear();
 						GAIA::FILESYSTEM::Directory::__ResultTree::it itt = it;
 						while(!itt.empty())
 						{
@@ -2320,13 +2322,19 @@ namespace FSHA
 			// Execute command.
 			static const GAIA::GCH* COMMAND_LIST[] = 
 			{
-				"Invalid",				"Invalid.",
-				"h",					"show help information.",
-				"s",					"statistics.",
-				"save",					"save config change.",
+				"Invalid",				"Invalid, format = Invalid.",
+				"v",					"show version, format = v.",
+				"loop",					"loop execute command, format = batch [command(space is -) times escape(in msecond)][no].",
+				"pid",					"show process id, format = pid.",
+				"clear",				"clear the screen, format = clear.",
+				"h",					"show help information, format = h.",
+				"s",					"statistics, format = s.",
+				"ss",					"state, format = ss.",
+				"save",					"save config change, format = save.",
 				"build",				"build the path and generate file list, format = file_path file_ext_list.",
 				"readroot",				"set read root path, format = readroot [file_path_name].",
 				"writeroot",			"set write root path, format = writeroot [file_path_name].",
+				"clearwrite",			"clear write root path, format = clearwrite.",
 
 				"cmpl",					"set/get file download complete state, format = cmpl fileid [0or1]",
 				"cmplall",				"set all file download complete, format = cmplall 0or1.",
@@ -2337,19 +2345,19 @@ namespace FSHA
 
 				"create_user",			"create a new user, format = create_user user_name.",
 				"delete_user",			"delete a exist user, format = delete_user user_name.",
-				"delete_all_user",		"delete all exist users.",
+				"delete_all_user",		"delete all exist users, format = delete_all_user.",
 				"password",				"set/get user's password. format = password user_name password | password user_name.",
 
 				"create_group",			"create a new group, format = create_group group_name.",
 				"delete_group",			"delete a exist group, format = delete_group group_name.",
-				"delete_all_group",		"delete all exist groups.",
+				"delete_all_group",		"delete all exist groups, format = delete_all_group.",
 				"right",				"set group right, format = group_name isread iswrite.",
 				"add_group_user",		"add a user to group, format = group_name user_name.",
 				"delete_group_user",	"delete exist user from group, format = group_name user_name.",
 				"delete_group_alluser",	"delete all exist users from group, format = group_name.",
-				"show_users",			"show all users",
+				"show_users",			"show all users, format = show_users.",
 				"show_user",			"show user's information, format = show_user user_name.",
-				"show_groups",			"show all groups",
+				"show_groups",			"show all groups, format = show_groups.",
 				"show_group",			"show group's information, format = show_group group_name.",
 				"filename",				"show filename by id, format = filename id.",
 				"fileid",				"show fileid by filename, format = fileid filename.",
@@ -2359,18 +2367,27 @@ namespace FSHA
 				"logout",				"logout from remote node, format = logout username ip port.",
 
 				"recycle_link",			"enable recycle link, format = recycle_link 0|1",
+				"dspeed",				"set download speed, format = dspeed [speedinbytes].",
+				"uspeed",				"set upload speed, format = uspeed [speedinbytes].",
 
 				"l",					"show link state, format = l.",
+				"pril",					"show priority link state, format = pril.",
 				"p",					"show performance, format = p.",
 				"t",					"test, format = t."
 			};
 			GAIA_ENUM_BEGIN(COMMAND_LIST)
+				CMD_VERSION,
+				CMD_LOOP,
+				CMD_PID,
+				CMD_CLEAR,
 				CMD_HELP,
 				CMD_STATISTICS,
+				CMD_STATE,
 				CMD_SAVE,
 				CMD_BUILD,
 				CMD_READROOT,
 				CMD_WRITEROOT,
+				CMD_CLEARWRITE,
 
 				CMD_CMPL,
 				CMD_CMPLALL,
@@ -2403,8 +2420,11 @@ namespace FSHA
 				CMD_LOGOUT,
 
 				CMD_RECYCLELINK,
+				CMD_DOWNLOADSPEED,
+				CMD_UPLOADSPEED,
 
 				CMD_LINK,
+				CMD_PRIORITYLINK,
 				CMD_PERF,
 				CMD_TEST,
 			GAIA_ENUM_END(COMMAND_LIST)
@@ -2412,7 +2432,50 @@ namespace FSHA
 			#define CMDFAILED do{m_prt << "Failed!\n";}while(GAIA::ALWAYSFALSE)
 			if(listPart.empty())
 				return GAIA::False;
-			if(CMD(CMD_HELP))
+			if(CMD(CMD_VERSION))
+			{
+				if(listPart.size() == 1)
+					m_prt << VERSION_STRING << "\n";
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_LOOP))
+			{
+				if(listPart.size() == 1)
+				{
+					if(m_szLoopCmd[0] == 0)
+						m_prt << "No loop command!" << "\n";
+				}
+				else if(listPart.size() == 2)
+				{
+					if(listPart[1] == "no")
+						m_szLoopCmd[0] = 0;
+					else
+						CMDFAILED;
+				}
+				else if(listPart.size() == 4)
+				{
+					GAIA::ALGORITHM::strcat(m_szLoopCmd, listPart[1].front_ptr());
+					m_uLoopCmdTimes = listPart[2];
+					m_uLoopCmdEscape = listPart[3];
+					m_uLoopCmdLastFireTime = 0;
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_PID))
+			{
+				GAIA::UM uProcessID = GAIA::PROCESS::processid();
+				m_prt << "Current Process ID = " << uProcessID << "\n";
+			}
+			else if(CMD(CMD_CLEAR))
+			{
+				if(listPart.size() == 1)
+					m_prt.clear_screen();
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_HELP))
 			{
 				for(GAIA::N32 x = 0; x < sizeof(COMMAND_LIST) / sizeof(const GAIA::GCH*) / 2; ++x)
 					m_prt << "[" << x << "] " << COMMAND_LIST[x * 2] << " Info:" << COMMAND_LIST[x * 2 + 1] << "\n";
@@ -2442,6 +2505,63 @@ namespace FSHA
 				m_prt << "BeJumpFileCount = " << m_statistics.uBeJumpFileCount << "\n";
 				m_prt << "CRCCheckFailedCount = " << m_statistics.uCRCCheckFailedCount << "\n";
 				m_prt << "OwnFile = " << m_uCmplFileCount << "/" << m_filelist.GetFileCount() << "\n";
+			}
+			else if(CMD(CMD_STATE))
+			{
+				// Global constants.
+				{
+					m_prt << "[Global constants information.]" << "\n";
+					m_prt << "MAXPATHDEPTH = " << MAXPATHDEPTH << "\n";
+					m_prt << "MAXPATHLEN = " << MAXPATHLEN << "\n";
+					m_prt << "MAINRECVPORT = " << MAINRECVPORT << "\n";
+					m_prt << "CHUNKSIZE = " << CHUNKSIZE << "\n";
+					m_prt << "SUBCHUNKSIZE = " << SUBCHUNKSIZE << "\n";
+					m_prt << "THREADSTACKSIZE = " << THREADSTACKSIZE << "\n";
+					m_prt << "USERNAMELEN = " << USERNAMELEN << "\n";
+					m_prt << "PASSWORDLEN = " << PASSWORDLEN << "\n";
+					m_prt << "GROUPNAMELEN = " << GROUPNAMELEN << "\n";
+					m_prt << "FILE_USERGROUP = " << FILE_USERGROUP << "\n";
+					m_prt << "FILE_USERGROUP_FLAG = " << FILE_USERGROUP_FLAG << "\n";
+					m_prt << "FILE_USERGROUP_VERSION = " << FILE_USERGROUP_VERSION << "\n";
+					m_prt << "FILE_FILELIST = " << FILE_FILELIST << "\n";
+					m_prt << "FILE_FILELIST_FLAG = " << FILE_FILELIST_FLAG << "\n";
+					m_prt << "FILE_FILELIST_VERSION = " << FILE_FILELIST_VERSION << "\n";
+					m_prt << "DEFAULTMAXREQFILECOUNTSAMETIME = " << DEFAULTMAXREQFILECOUNTSAMETIME << "\n";
+					m_prt << "CMPLFILESNOTIFYFREQ = " << CMPLFILESNOTIFYFREQ << "\n";
+					m_prt << "LINKRECYCLETIME = " << LINKRECYCLETIME << "\n";
+					m_prt << "JUMPDISTANCE = " << JUMPDISTANCE << "\n";
+					m_prt << "JUMPODDS = " << JUMPODDS << "\n";
+					m_prt << "REQUESTTIMEOUTTIME = " << REQUESTTIMEOUTTIME << "\n";
+					m_prt << "REQUESTCMPLFILESNOTIFYTIME = " << REQUESTCMPLFILESNOTIFYTIME << "\n";
+					m_prt << "SINGLECHUNKREQUESTLIMIT = " << SINGLECHUNKREQUESTLIMIT << "\n";
+					m_prt << "MAXCHUNKREQUESTCOUNTPERDISPATCH = " << MAXCHUNKREQUESTCOUNTPERDISPATCH << "\n";
+					m_prt << "JUMPOFFSETFILESCOUNT = " << JUMPOFFSETFILESCOUNT << "\n";
+					m_prt << "\n";
+				}
+				// Global variable.
+				{
+					m_prt << "[Global variables information]" << "\n";
+					m_prt << "m_uUSpeed = " << m_uUSpeed << "\n";
+					m_prt << "m_uDSpeed = " << m_uDSpeed << "\n";
+					m_prt << "m_uCmplFileCount = " << m_uCmplFileCount << "\n";
+					m_prt << "m_state = " << m_state << "\n";
+					m_prt << "m_bEnableSequenceRequest = " << m_bEnableSequenceRequest << "\n";
+					m_prt << "m_uSequenceRequestIndex = " << m_uSequenceRequestIndex << "\n";
+					m_prt << "m_nMaxRequestFileCountSameTime = " << m_nMaxRequestFileCountSameTime << "\n";
+					m_prt << "m_bEnableRecycleLink = " << m_bEnableRecycleLink << "\n";
+					m_prt << "m_uLastNotifyCmplTime = " << m_uLastNotifyCmplTime << "\n";
+					m_prt << "\n";
+				}
+				// Main address and self address.
+				{
+					m_prt << "[IP address information]" << "\n";
+					GAIA::GCH szText[128];
+					m_mainna.ToString(szText);
+					m_prt << "MainAddress = " << szText << "\n";
+					m_pNH->GetSelfNetAddress().ToString(szText);
+					m_prt << "SelfAddress = " << szText << "\n";
+					m_prt << "\n";
+				}
 			}
 			else if(CMD(CMD_SAVE))
 			{
@@ -2486,6 +2606,17 @@ namespace FSHA
 					m_writeroot = listPart[1].front_ptr();
 				else if(listPart.size() == 1)
 					m_prt << m_writeroot.front_ptr() << "\n";
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_CLEARWRITE))
+			{
+				if(listPart.size() == 1)
+				{
+					GAIA::FILESYSTEM::Directory dir;
+					dir.Remove(m_writeroot, GAIA::True);
+					dir.Create(m_writeroot, GAIA::True);
+				}
 				else
 					CMDFAILED;
 			}
@@ -2864,6 +2995,24 @@ namespace FSHA
 				else
 					CMDFAILED;
 			}
+			else if(CMD(CMD_DOWNLOADSPEED))
+			{
+				if(listPart.size() == 1)
+					m_prt << "DownloadSpeed = " << m_uDSpeed << "\n";
+				else if(listPart.size() == 2)
+					m_uDSpeed = listPart[1];
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_UPLOADSPEED))
+			{
+				if(listPart.size() == 1)
+					m_prt << "UploadSpeed = " << m_uUSpeed << "\n";
+				else if(listPart.size() == 2)
+					m_uUSpeed = listPart[1];
+				else
+					CMDFAILED;
+			}
 			else if(CMD(CMD_LINK))
 			{
 				if(listPart.size() == 1)
@@ -2897,6 +3046,45 @@ namespace FSHA
 						else
 							m_prt << "Invalid" << " ";
 						m_prt << "Files[" << nl.uCmplFileCnt << "]";
+						m_prt << "\n";
+					}
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_PRIORITYLINK))
+			{
+				if(listPart.size() == 1)
+				{
+					{
+						GAIA::GCH szText[128];
+						m_mainna.ToString(szText);
+						m_prt << "MainAddress = " << szText << "\n";
+						m_pNH->GetSelfNetAddress().ToString(szText);
+						m_prt << "SelfAddress = " << szText << "\n";
+					}
+
+					AL al(m_lr_prilinks);
+					GAIA::N32 nIndex = 0;
+					for(__LinkPriListType::it it = m_prilinks.front_it(); !it.empty(); ++it)
+					{
+						NLinkPri& nlp = *it;
+						GAIA::GCH szText[128];
+						nlp.nlink.na.ToString(szText);
+						m_prt << "[" << nIndex << "] " << szText << " ";
+						if(nlp.nlink.bBeLink)
+							m_prt << "BeLink" << " ";
+						else
+							m_prt << "Link" << " ";
+						if(nlp.nlink.state == NLink::STATE_DISCONNECT)
+							m_prt << "Disconnect" << " ";
+						else if(nlp.nlink.state == NLink::STATE_READY)
+							m_prt << "Ready" << " ";
+						else if(nlp.nlink.state == NLink::STATE_ONLINE)
+							m_prt << "Online" << " ";
+						else
+							m_prt << "Invalid" << " ";
+						m_prt << "Files[" << nlp.nlink.uCmplFileCnt << "]";
 						m_prt << "\n";
 					}
 				}
@@ -2976,6 +3164,11 @@ namespace FSHA
 		#else
 			m_bEnableRecycleLink = GAIA::True;
 		#endif
+			m_uLastNotifyCmplTime = 0;
+			m_szLoopCmd[0] = 0;
+			m_uLoopCmdTimes = 0;
+			m_uLoopCmdEscape = 0;
+			m_uLoopCmdLastFireTime = 0;
 		}
 		GINL GAIA::BL OnExecute()
 		{
@@ -2999,6 +3192,8 @@ namespace FSHA
 			if(this->OnExecuteTimeoutSectionRequest())
 				bRet = GAIA::True;
 			if(this->OnExecuteTimeoutChunkRequest())
+				bRet = GAIA::True;
+			if(this->OnExecuteLoopCommand())
 				bRet = GAIA::True;
 			if(bRet)
 				m_statistics.uValidFrameCount++;
@@ -3080,7 +3275,10 @@ namespace FSHA
 				AL al2(m_lr_fcaches);
 				FileRecCache* pFRC = this->RequestFileRecCache(fst.fid, GAIA::False);
 				if(pFRC == GNULL)
+				{
+					m_listFileDeleteTemp.push_back(fst);
 					continue;
+				}
 				if(fst.bNeedHead)
 				{
 					fst.bNeedHead = GAIA::False;
@@ -3092,48 +3290,59 @@ namespace FSHA
 					m_FileSendMsgTemp << pFRC->uCRC;
 					this->Send(m_FileSendMsgTemp.front_ptr(), m_FileSendMsgTemp.write_size());
 				}
-				m_FileSendMsgTemp.clear();
-				m_FileSendMsgTemp << fst.na;
-				m_FileSendMsgTemp << MSG_A_FILECHUNK;
-				m_FileSendMsgTemp << fst.fid;
-				m_FileSendMsgTemp << fst.ci;
-				m_FileSendMsgTemp << fst.sci;
-				FILESIZETYPE cursize = fst.ci * CHUNKSIZE + fst.sci * SUBCHUNKSIZE;
-				FILESIZETYPE remainsize = pFRC->fsize - cursize;
-				SUBCHUNKSIZETYPE scsize;
-				GAIA::BL bComplete = GAIA::False;
-				if(remainsize > SUBCHUNKSIZE)
-					scsize = SUBCHUNKSIZE;
-				else
+				for(GAIA::NM x = 0; x < 10; ++x)
 				{
-					scsize = remainsize;
-					bComplete = GAIA::True;
-				}
-				m_FileSendMsgTemp << scsize;
-				pFRC->pFA->Seek(GAIA::SEEK_TYPE_BEGIN, cursize);
-				GAIA::U8 buf[SUBCHUNKSIZE];
-				if(pFRC->pFA->Read(buf, scsize) != scsize)
-					continue;
-				m_FileSendMsgTemp.write(buf, scsize);
-				this->Send(m_FileSendMsgTemp.front_ptr(), m_FileSendMsgTemp.write_size());
-				m_statistics.uSendChunkCount++;
-				++fst.sci;
-				if(fst.sci == 0)
-					++fst.ci;
-				bRet = GAIA::True;
-				if(bComplete)
-				{
-					m_statistics.uSendCmplFileCount++;
-					m_listFileDeleteTemp.push_back(fst);
-					pFRC->pFA->Close();
-					m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
-					pFRC->pFA = GNULL;
-					if(pFRC->pFCSL != GNULL)
+					m_FileSendMsgTemp.clear();
+					m_FileSendMsgTemp << fst.na;
+					m_FileSendMsgTemp << MSG_A_FILECHUNK;
+					m_FileSendMsgTemp << fst.fid;
+					m_FileSendMsgTemp << fst.ci;
+					m_FileSendMsgTemp << fst.sci;
+					FILESIZETYPE cursize = fst.ci * CHUNKSIZE + fst.sci * SUBCHUNKSIZE;
+					FILESIZETYPE remainsize = pFRC->fsize - cursize;
+					SUBCHUNKSIZETYPE scsize;
+					GAIA::BL bComplete = GAIA::False;
+					if(remainsize > SUBCHUNKSIZE)
+						scsize = SUBCHUNKSIZE;
+					else
 					{
-						delete pFRC->pFCSL;
-						pFRC->pFCSL = GNULL;
+						scsize = remainsize;
+						bComplete = GAIA::True;
 					}
-					m_fcaches.erase(*pFRC);
+					m_FileSendMsgTemp << scsize;
+					pFRC->pFA->Seek(GAIA::SEEK_TYPE_BEGIN, cursize);
+					GAIA::U8 buf[SUBCHUNKSIZE];
+					if(pFRC->pFA->Read(buf, scsize) != scsize)
+						continue;
+				#ifdef FSHA_DEBUG
+					if(scsize > 0)
+					{
+						if(GAIA::MATH::random() % 10000 == 0)
+							buf[GAIA::MATH::random() % scsize] = GAIA::MATH::random() % 256;
+					}
+				#endif
+					m_FileSendMsgTemp.write(buf, scsize);
+					this->Send(m_FileSendMsgTemp.front_ptr(), m_FileSendMsgTemp.write_size());
+					m_statistics.uSendChunkCount++;
+					++fst.sci;
+					if(fst.sci == 0)
+						++fst.ci;
+					bRet = GAIA::True;
+					if(bComplete)
+					{
+						m_statistics.uSendCmplFileCount++;
+						m_listFileDeleteTemp.push_back(fst);
+						pFRC->pFA->Close();
+						m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
+						pFRC->pFA = GNULL;
+						if(pFRC->pFCSL != GNULL)
+						{
+							delete pFRC->pFCSL;
+							pFRC->pFCSL = GNULL;
+						}
+						m_fcaches.erase(*pFRC);
+						break;
+					}
 				}
 			}
 			for(GAIA::CONTAINER::Vector<FileSendTask>::it it = m_listFileDeleteTemp.front_it(); !it.empty(); ++it)
@@ -3156,7 +3365,10 @@ namespace FSHA
 				AL al2(m_lr_fcaches);
 				FileRecCache* pFRC = this->RequestFileRecCache(cst.fid, GAIA::False);
 				if(pFRC == GNULL)
+				{
+					m_listChunkDeleteTemp.push_back(cst);
 					continue;
+				}
 				m_ChunkSendMsgTemp.clear();
 				m_ChunkSendMsgTemp << cst.na;
 				m_ChunkSendMsgTemp << MSG_A_FILECHUNK;
@@ -3179,6 +3391,13 @@ namespace FSHA
 				GAIA::U8 buf[SUBCHUNKSIZE];
 				if(pFRC->pFA->Read(buf, scsize) != scsize)
 					continue;
+			#ifdef FSHA_DEBUG
+				if(scsize > 0)
+				{
+					if(GAIA::MATH::random() % 10000 == 0)
+						buf[GAIA::MATH::random() % scsize] = GAIA::MATH::random() % 256;
+				}
+			#endif
 				m_ChunkSendMsgTemp.write(buf, scsize);
 				this->Send(m_ChunkSendMsgTemp.front_ptr(), m_ChunkSendMsgTemp.write_size());
 				m_statistics.uSendChunkCount++;
@@ -3233,7 +3452,7 @@ namespace FSHA
 						GAIA_AST(GAIA::ALWAYSFALSE);
 						AL al3(m_lr_fwtpool);
 						m_fwtpool.release(&fwt);
-						break;
+						continue;
 					}
 
 					/* Combin file chunk section. */
@@ -3378,21 +3597,18 @@ namespace FSHA
 				GAIA::BL bCRCSuccess = GAIA::True;
 				/* File CRC checkup. */
 				{
-					CRCTYPE crc;
-					if(!m_filelist.GetCRC((*it).fid, crc))
-						bCRCSuccess = GAIA::False;
+					GAIA::GCH szFullName[MAXPATHLEN];
+					if(m_writeroot.empty())
+						szFullName[0] = 0;
 					else
+						GAIA::ALGORITHM::strcpy(szFullName, m_writeroot.front_ptr());
+					GAIA::GCH szFileName[MAXPATHLEN];
+					m_filelist.GetName((*it).fid, szFileName);
+					GAIA::ALGORITHM::strcat(szFullName, szFileName);
+					CRCTYPE crc = m_filelist.BuildFileCRC(szFullName);
+					if(crc != (*it).uCRC)
 					{
-						if(crc == 0)
-							bCRCSuccess = GAIA::False;
-						else
-						{
-							if(crc != (*it).uCRC)
-								bCRCSuccess = GAIA::False;
-						}
-					}
-					if(!bCRCSuccess)
-					{
+						bCRCSuccess = GAIA::False;
 						m_statistics.uCRCCheckFailedCount++;
 						{
 							AL al(m_lr_fcaches);
@@ -3451,7 +3667,7 @@ namespace FSHA
 						FileReq* pFR = m_reqeds.find(fr);
 						if(pFR != GNULL)
 						{
-							GAIA::F64 fTime = (GAIA::F64)(GAIA::TIME::clock_time() - fr.uUserReqTime) * 0.001 * 0.001;
+							GAIA::F64 fTime = (GAIA::F64)(GAIA::TIME::clock_time() - pFR->uFirstReqTime) * 0.001 * 0.001;
 							if(fTime > m_perf.fMaxFileCmplTime)
 								m_perf.fMaxFileCmplTime = fTime;
 							if(fTime < m_perf.fMinFileCmplTime)
@@ -3474,8 +3690,11 @@ namespace FSHA
 		{
 			GAIA::F64 fPerf = FSHA_PERF;
 			GAIA::BL bRet = GAIA::False;
-			if(m_statistics.uFrameCount % CMPLFILESNOTIFYFREQ == 0)
+			GAIA::U64 uTime = GAIA::TIME::clock_time();
+			if(m_statistics.uFrameCount % CMPLFILESNOTIFYFREQ == 0 || 
+				uTime - m_uLastNotifyCmplTime > REQUESTCMPLFILESNOTIFYTIME)
 			{
+				m_uLastNotifyCmplTime = uTime;
 				AL al(m_lr_cmplfiles);
 				if(!m_cmplfiles.empty())
 				{
@@ -3664,6 +3883,8 @@ namespace FSHA
 								if(itnext.empty())
 								{
 									FILESIZETYPE fcmplsize = fcs.e * CHUNKSIZE + fcs.ee * SUBCHUNKSIZE;
+									if(pFRC->fsize == 0)
+										break;
 									GAIA_AST(pFRC->fsize > fcmplsize);
 									FILESIZETYPE fsize = pFRC->fsize - fcmplsize;
 									if(fsize > 1)
@@ -3761,6 +3982,8 @@ namespace FSHA
 									if(itnext.empty())
 									{
 										FILESIZETYPE fcmplsize = fcs.e * CHUNKSIZE + fcs.ee * SUBCHUNKSIZE;
+										if(pFRC->fsize == 0)
+											break;
 										GAIA_AST(pFRC->fsize > fcmplsize);
 										FILESIZETYPE fsize = pFRC->fsize - fcmplsize;
 										if(fsize > 1)
@@ -3820,6 +4043,32 @@ namespace FSHA
 				}
 			}
 			m_perf.fExecuteTimeoutChunkRequest += FSHA_PERF - fPerf;
+			return bRet;
+		}
+		GINL GAIA::BL OnExecuteLoopCommand()
+		{
+			GAIA::BL bRet = GAIA::False;
+			if(m_szLoopCmd[0] != 0)
+			{
+				GAIA::U64 uTime = GAIA::TIME::clock_time();
+				if(uTime - m_uLoopCmdLastFireTime > m_uLoopCmdEscape * 1000)
+				{
+					m_uLoopCmdLastFireTime = uTime;
+					GAIA::GCH szTemp[MAXPATHLEN];
+					GAIA::ALGORITHM::strcpy(szTemp, m_szLoopCmd);
+					GAIA::ALGORITHM::replace(szTemp, GAIA::ALGORITHM::strlen(szTemp), '-', ' ');
+					this->Command(szTemp);
+					if(m_uLoopCmdTimes > 0)
+						--m_uLoopCmdTimes;
+					if(m_uLoopCmdTimes == 0)
+					{
+						m_szLoopCmd[0] = 0;
+						m_uLoopCmdTimes = 0;
+						m_uLoopCmdEscape = 0;
+						m_uLoopCmdLastFireTime = 0;
+					}
+				}
+			}
 			return bRet;
 		}
 		GINL GAIA::BL OnHeartTick()
@@ -4184,6 +4433,7 @@ namespace FSHA
 						np.nlink.uCmplFileCnt = pBeLink->uCmplFileCnt;
 						pBeLink->uCmplFileCnt = filecount;
 						AL al2(m_lr_prilinks);
+						np.nlink.bBeLink = GAIA::True;
 						m_prilinks.erase(np);
 						np.nlink.uCmplFileCnt = filecount;
 						m_prilinks.insert(np);
@@ -4199,6 +4449,7 @@ namespace FSHA
 						np.nlink.uCmplFileCnt = pLink->uCmplFileCnt;
 						pLink->uCmplFileCnt = filecount;
 						AL al2(m_lr_prilinks);
+						np.nlink.bBeLink = GAIA::False;
 						m_prilinks.erase(np);
 						np.nlink.uCmplFileCnt = filecount;
 						m_prilinks.insert(np);
@@ -4222,7 +4473,9 @@ namespace FSHA
 					np.nlink.bBeLink = GAIA::True;
 					AL al(m_lr_links);
 					NLink* pBeLink = m_links.find(np.nlink);
-					if(pBeLink == GNULL || pBeLink->state != NLink::STATE_READY)
+					np.nlink.bBeLink = GAIA::False;
+					NLink* pLink = m_links.find(np.nlink);
+					if(pLink == GNULL && (pBeLink == GNULL || pBeLink->state != NLink::STATE_READY))
 					{
 						__MsgType newmsg;
 						newmsg.reserve(1024);
@@ -4233,18 +4486,22 @@ namespace FSHA
 						m_perf.fOnRecvCmplFileSectionN += FSHA_PERF - fPerfCmplFileSectionN;
 						break;
 					}
-					np.nlink.uCmplFileCnt = pBeLink->uCmplFileCnt;
-					FILEID uIncreaseFileCnt = 0;
-					this->CmplFileSectionRecursive(pBeLink, fidsec, uIncreaseFileCnt);
-					if(uIncreaseFileCnt > 0)
+					if(pBeLink != GNULL)
 					{
-						FILEID uNewFileCount = GAIA::ALGORITHM::minimize(np.nlink.uCmplFileCnt + uIncreaseFileCnt, m_filelist.GetFileCount());
-						m_statistics.uTotalCmplFileCount += uNewFileCount - np.nlink.uCmplFileCnt;
-						AL al2(m_lr_prilinks);
-						m_prilinks.erase(np);
-						np.nlink.uCmplFileCnt = uNewFileCount;
-						m_prilinks.insert(np);
-						pBeLink->uCmplFileCnt = np.nlink.uCmplFileCnt;
+						np.nlink.uCmplFileCnt = pBeLink->uCmplFileCnt;
+						FILEID uIncreaseFileCnt = 0;
+						this->CmplFileSectionRecursive(pBeLink, fidsec, uIncreaseFileCnt);
+						if(uIncreaseFileCnt > 0)
+						{
+							FILEID uNewFileCount = GAIA::ALGORITHM::minimize(np.nlink.uCmplFileCnt + uIncreaseFileCnt, m_filelist.GetFileCount());
+							m_statistics.uTotalCmplFileCount += uNewFileCount - np.nlink.uCmplFileCnt;
+							AL al2(m_lr_prilinks);
+							np.nlink.bBeLink = GAIA::True;
+							m_prilinks.erase(np);
+							np.nlink.uCmplFileCnt = uNewFileCount;
+							m_prilinks.insert(np);
+							pBeLink->uCmplFileCnt = np.nlink.uCmplFileCnt;
+						}
 					}
 					m_perf.fOnRecvCmplFileSectionN += FSHA_PERF - fPerfCmplFileSectionN;
 				}
@@ -4945,6 +5202,11 @@ namespace FSHA
 		GAIA::SYNC::Lock m_lr_send;
 		GAIA::NM m_nMaxRequestFileCountSameTime;
 		GAIA::BL m_bEnableRecycleLink;
+		GAIA::U64 m_uLastNotifyCmplTime;
+		GAIA::GCH m_szLoopCmd[MAXPATHLEN];
+		GAIA::U64 m_uLoopCmdTimes;
+		GAIA::U64 m_uLoopCmdEscape;
+		GAIA::U64 m_uLoopCmdLastFireTime;
 		Statistics m_statistics;
 		Perf m_perf;
 

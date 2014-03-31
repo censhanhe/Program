@@ -11,6 +11,8 @@ namespace GAIA
 			GINL Print(){}
 			GINL ~Print(){}
 
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID clear_screen();
+
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (GAIA::BL t);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (GAIA::NM t);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (GAIA::UM t);
