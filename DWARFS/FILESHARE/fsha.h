@@ -4041,13 +4041,15 @@ namespace FSHA
 				#endif
 
 					/* Write file. */
-					GAIA::F64 fPerfWrite = FSHA_PERF;
-					FILESIZETYPE dstsize = fwt.ci * CHUNKSIZE + fwt.sci * SUBCHUNKSIZE;
-					if(pFRC->pFA->Size() < dstsize)
-						pFRC->pFA->Resize(dstsize);
-					pFRC->pFA->Seek(GAIA::SEEK_TYPE_BEGIN, dstsize);
-					pFRC->pFA->Write(fwt.buf, fwt.size);
-					m_perf.fExecuteFileWriteWriteFile += FSHA_PERF - fPerfWrite;
+					{
+						GAIA::F64 fPerfWrite = FSHA_PERF;
+						FILESIZETYPE dstsize = fwt.ci * CHUNKSIZE + fwt.sci * SUBCHUNKSIZE;
+						if(pFRC->pFA->Size() < dstsize)
+							pFRC->pFA->Resize(dstsize);
+						pFRC->pFA->Seek(GAIA::SEEK_TYPE_BEGIN, dstsize);
+						pFRC->pFA->Write(fwt.buf, fwt.size);
+						m_perf.fExecuteFileWriteWriteFile += FSHA_PERF - fPerfWrite;
+					}
 
 					/* Check write complete. */
 				CHECK_WRITE_COMPLETE:
