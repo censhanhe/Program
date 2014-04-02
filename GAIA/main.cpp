@@ -869,6 +869,7 @@ GAIA::N32 main()
 			while(!it.empty())
 			{
 				GAIA::GTCH ch = *it;
+				ch = 0;
 				++it;
 			}
 		}

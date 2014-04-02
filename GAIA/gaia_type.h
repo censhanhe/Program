@@ -161,6 +161,7 @@ namespace GAIA
 			BASE_FEATURE_SIZE,
 		GAIA_ENUM_END(BASE_FEATURE)
 	public:
+		virtual ~Base(){}
 		virtual GAIA::BL base_statistics(BASE_FEATURE of, GAIA::GVOID* pResult) const{return GAIA::False;}
 		virtual GAIA::BL base_optimize(BASE_FEATURE of, GAIA::GVOID* pResult){return GAIA::False;}
 	public:
@@ -181,7 +182,6 @@ namespace GAIA
 	class Object : public Base
 	{
 	public:
-		virtual ~Object(){}
 	};
 
 	/* Class RefObject. If a class need a reference function, it will derived from here. */
