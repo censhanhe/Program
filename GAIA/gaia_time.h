@@ -17,7 +17,8 @@ namespace GAIA
 			GAIA::N16 msec; // MilliSecond.
 			GAIA::N16 usec; // MicroSecond.
 		};
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 clock_time(); // return value is micro second.
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 clock_time(); // return value is micro second from 1970.1.1.
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 tick_time(); // return value is micro second from process startuped.
 	};
 };
 

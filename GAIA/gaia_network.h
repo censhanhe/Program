@@ -12,8 +12,8 @@ namespace GAIA
 			GINL IP(const IP& src){this->operator = (src);}
 			GINL IP(const GAIA::GCH* psz){this->operator = (psz);}
 			GINL ~IP(){}
-			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(u, 0, 4);}
-			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmp(u, 0, 4) == 0;}
+			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(us, 0, 4);}
+			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmp(us, 0, 4) == 0;}
 			GINL GAIA::BL FromString(const GAIA::GCH* psz)
 			{
 				const GAIA::GCH* p = psz;
@@ -22,10 +22,10 @@ namespace GAIA
 				{
 					for(GAIA::N32 x = 0; x < 3; ++x)
 					{
-						p = GAIA::ALGORITHM::str2int(p, u[x]);
+						p = GAIA::ALGORITHM::str2int(p, us[3 - x]);
 						++p;
 					}
-					GAIA::ALGORITHM::str2int(p, u[3]);
+					GAIA::ALGORITHM::str2int(p, us[0]);
 					return GAIA::True;
 				}
 				return GAIA::False;
@@ -35,19 +35,32 @@ namespace GAIA
 				GAIA::GCH* p = psz;
 				for(GAIA::N32 x = 0; x < 4; ++x)
 				{
-					p = GAIA::ALGORITHM::int2str((GAIA::NM)u[x], p);
+					p = GAIA::ALGORITHM::int2str((GAIA::NM)us[3 - x], p);
 					*(p - 1) = '.';
 				}
 				*(p - 1) = 0;
 			}
-			GINL IP& operator = (const IP& src){uIPv4 = src.uIPv4; return *this;}
+			GINL IP& operator = (const IP& src){u = src.u; return *this;}
 			GINL IP& operator = (const GAIA::GCH* psz){this->FromString(psz); return *this;}
-			GAIA_CLASS_OPERATOR_COMPARE(uIPv4, uIPv4, IP);
+			GINL IP operator + (const IP& src) const{IP ret; ret.u = u + src.u; return ret;}
+			GINL IP operator - (const IP& src) const{IP ret; ret.u = u - src.u; return ret;}
+			template<typename _ParamDataType> GINL IP operator + (const _ParamDataType& t) const{IP ret; ret.u = u + t; return ret;}
+			template<typename _ParamDataType> GINL IP operator - (const _ParamDataType& t) const{IP ret; ret.u = u - t; return ret;}
+			GINL IP& operator += (const IP& src){u += src.u; return *this;}
+			GINL IP& operator -= (const IP& src){u -= src.u; return *this;}
+			template<typename _ParamDataType> GINL IP& operator += (const _ParamDataType& t){u += t; return *this;}
+			template<typename _ParamDataType> GINL IP& operator -= (const _ParamDataType& t){u -= t; return *this;}
+			GINL IP& operator ++ (){(*this) += 1; return *this;}
+			GINL IP& operator -- (){(*this) -= 1; return *this;}
+			GINL IP operator ++ (GAIA::N32){IP ret = *this; ++(*this); return ret;}
+			GINL IP operator -- (GAIA::N32){IP ret = *this; --(*this); return ret;}
+			GAIA_CLASS_OPERATOR_COMPARE(u, u, IP);
 		public:
 			union
 			{
-				GAIA::U8 u[4];
-				struct{GAIA::U8 u0, u1, u2, u3;};
+				GAIA::U32 u;
+				GAIA::U8 us[4];
+				struct{GAIA::U8 u3, u2, u1, u0;};
 				GAIA::U32 uIPv4;
 			};
 		};

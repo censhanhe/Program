@@ -47,10 +47,10 @@
 								}
 #define TEST_FILE_LINE(text)	do{logfile.WriteText("\t");logfile.WriteText(text);logfile.WriteText("\r\n"); PERF_PRINT_LINE(text);}while(0)
 #define TEST_FILE_TEXT(text)	do{logfile.WriteText(text); PERF_PRINT_TEXT(text);}while(0)
-#define PERF_START(name)		uPerfStart = GAIA::TIME::clock_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
+#define PERF_START(name)		uPerfStart = GAIA::TIME::tick_time(); GAIA::ALGORITHM::strcpy(szPerfName, name);
 #define PERF_END 				if(szPerfName[0] != 0)\
 								{\
-									uPerfEnd = GAIA::TIME::clock_time();\
+									uPerfEnd = GAIA::TIME::tick_time();\
 									sprintf(szPerf, "%f(MS)", (GAIA::F64)(uPerfEnd - uPerfStart) * 0.001);\
 									TEST_FILE_TEXT("\t");\
 									TEST_FILE_TEXT(szPerfName);\
@@ -340,6 +340,27 @@ private:
 	GAIA::BL m_bTestResult;
 };
 
+class Compare2
+{
+public:
+	Compare2& operator = (const Compare2& src){n1 = src.n1; n2 = src.n2; return *this;}
+	GAIA_CLASS_OPERATOR_COMPARE2(n1, n1, n2, n2, Compare2);
+public:
+	GAIA::N32 n1;
+	GAIA::N32 n2;
+};
+
+class Compare3
+{
+public:
+	Compare3& operator = (const Compare3& src){n1 = src.n1; n2 = src.n2; n3 = src.n3; return *this;}
+	GAIA_CLASS_OPERATOR_COMPARE3(n1, n1, n2, n2, n3, n3, Compare3);
+public:
+	GAIA::N32 n1;
+	GAIA::N32 n2;
+	GAIA::N32 n3;
+};
+
 GAIA::N32 main()
 {
 #if defined(_MSC_VER) && GAIA_PROFILE == GAIA_PROFILE_DEBUG
@@ -357,7 +378,7 @@ GAIA::N32 main()
 	GAIA::BL bFunctionSuccess = GAIA::True;
 
 	//
-	GAIA::MATH::random_seed((GAIA::U32)(GAIA::TIME::clock_time() / 1000));
+	GAIA::MATH::random_seed((GAIA::U32)(GAIA::TIME::tick_time() / 1000));
 
 	//
 	GAIA::GCH szPerf[256];
@@ -1061,6 +1082,76 @@ GAIA::N32 main()
 		}
 		TEST_END;
 #endif
+	}
+
+	// Compare macro test.
+	{
+		TEST_BEGIN("<ClassMemberCompare macro test>");
+		{
+			bFunctionSuccess = GAIA::True;
+			{
+				typedef GAIA::CONTAINER::Vector<Compare2> __VectorType;
+				__VectorType vt;
+				for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				{
+					Compare2 t;
+					t.n1 = GAIA::MATH::random();
+					t.n2 = GAIA::MATH::random();
+					vt.push_back(t);
+				}
+				vt.sort();
+				vt.unique();
+				for(GAIA::N32 x = 0; x < vt.size() - 1; ++x)
+				{
+					if(vt[x] >= vt[x + 1])
+						bFunctionSuccess = GAIA::False;
+					if(vt[x] > vt[x + 1])
+						bFunctionSuccess = GAIA::False;
+					if(vt[x] == vt[x + 1])
+						bFunctionSuccess = GAIA::False;
+					if(!(vt[x] != vt[x + 1]))
+						bFunctionSuccess = GAIA::False;
+					if(!(vt[x] < vt[x + 1]))
+						bFunctionSuccess = GAIA::False;
+					if(!(vt[x] <= vt[x + 1]))
+						bFunctionSuccess = GAIA::False;
+				}
+			}
+			{
+				typedef GAIA::CONTAINER::Vector<Compare3> __VectorType;
+				__VectorType vt;
+				for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
+				{
+					Compare3 t;
+					t.n1 = GAIA::MATH::random();
+					t.n2 = GAIA::MATH::random();
+					t.n3 = GAIA::MATH::random();
+					vt.push_back(t);
+				}
+				vt.sort();
+				vt.unique();
+				for(GAIA::N32 x = 0; x < vt.size() - 1; ++x)
+				{
+					if(vt[x] >= vt[x + 1])
+						bFunctionSuccess = GAIA::False;
+					if(vt[x] > vt[x + 1])
+						bFunctionSuccess = GAIA::False;
+					if(vt[x] == vt[x + 1])
+						bFunctionSuccess = GAIA::False;
+					if(!(vt[x] != vt[x + 1]))
+						bFunctionSuccess = GAIA::False;
+					if(!(vt[x] < vt[x + 1]))
+						bFunctionSuccess = GAIA::False;
+					if(!(vt[x] <= vt[x + 1]))
+						bFunctionSuccess = GAIA::False;
+				}
+			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("ClassMemberCompare macro test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("ClassMemberCompare macro test FAILED!");
+		}
+		TEST_END;
 	}
 
 	// BasicList function test.
@@ -2103,6 +2194,37 @@ GAIA::N32 main()
 		TEST_BEGIN("<Network function test>");
 		{
 			bFunctionSuccess = GAIA::True;
+
+			{
+				GAIA::NETWORK::IP ip, ip1;
+				ip.FromString("192.168.10.1");
+				GAIA::GCH szTemp[120];
+				++ip;
+				ip.ToString(szTemp);
+				if(GAIA::ALGORITHM::strcmp(szTemp, "192.168.10.2") != 0)
+					bFunctionSuccess = GAIA::False;
+				ip1 = ip++;
+				if(ip1 + 1 != ip)
+					bFunctionSuccess = GAIA::False;
+				ip1 = ip--;
+				if(ip1 - 1 != ip)
+					bFunctionSuccess = GAIA::False;
+				ip1 = ++ip;
+				if(ip1 != ip)
+					bFunctionSuccess = GAIA::False;
+				ip1 = --ip;
+				if(ip1 != ip)
+					bFunctionSuccess = GAIA::False;
+				ip.FromString("192.168.1.1");
+				ip = ip + 1;
+				ip = ip - 1;
+				ip += 1;
+				ip -= 1;
+				ip--;
+				ip.ToString(szTemp);
+				ip--;
+				ip.ToString(szTemp);
+			}
 
 			GAIA::GCH szTemp[64];
 			{
