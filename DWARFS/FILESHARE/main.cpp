@@ -48,6 +48,8 @@ INPUT_IP:
 		GAIA::NM index = szIP[0] - '0';
 		if(index >= listIP.size())
 			goto INPUT_IP;
+		if(index < 0)
+			goto INPUT_IP;
 		desc.selfaddr.ip = listIP[index];
 		desc.selfaddr.uPort = FSHA::MAINRECVPORT;
 	}
