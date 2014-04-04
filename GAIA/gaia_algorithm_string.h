@@ -50,10 +50,10 @@ namespace GAIA
 			}
 			return GNULL;
 		}
-		template<typename _DataType> GINL GAIA::NM strlen(const _DataType* p){GAIA_AST(p != GNULL); GAIA::NM ret = 0; while(p[ret] != 0) ret++; return ret;}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::NM strcnt(const _DataType1* p, const _DataType2& key)
+		template<typename _DataType> GINL GAIA::SIZE strlen(const _DataType* p){GAIA_AST(p != GNULL); GAIA::SIZE ret = 0; while(p[ret] != 0) ret++; return ret;}
+		template<typename _DataType1, typename _DataType2> GINL GAIA::SIZE strcnt(const _DataType1* p, const _DataType2& key)
 		{
-			GAIA::NM ret = 0;
+			GAIA::SIZE ret = 0;
 			while(*p != 0)
 			{
 				if(*p == key)

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType> class Orderless : public BasicOrderless<_DataType, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM> >{public:};
+		template<typename _DataType> class Orderless : public BasicOrderless<_DataType, GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
 	};
 };
 

@@ -7,10 +7,10 @@ namespace GAIA
 	{
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::N32 random();
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID random_seed(GAIA::N32 seed);
-		template<GAIA::NM _Size> class RID : public GAIA::Base
+		template<GAIA::N32 _Size> class RID : public GAIA::Base
 		{
 		public:
-			static const GAIA::NM _size = _Size;
+			static const GAIA::N32 _size = _Size;
 		public:
 			typedef RID<_Size> __MyType;
 		public:

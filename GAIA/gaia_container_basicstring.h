@@ -13,7 +13,7 @@ namespace GAIA
 		public:
 			typedef BasicString<_DataType, _SizeType> __MyType;
 		private:
-			static const GAIA::UM GAIA_DIGIT_TOSTRING_LEN = 64;
+			static const GAIA::U32 GAIA_DIGIT_TOSTRING_LEN = 64;
 		public:
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{

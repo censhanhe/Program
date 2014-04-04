@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType> class Queue : public BasicQueue<_DataType, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM> >{public:};
+		template<typename _DataType> class Queue : public BasicQueue<_DataType, GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
 	};
 };
 

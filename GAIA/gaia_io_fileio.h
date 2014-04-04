@@ -54,7 +54,7 @@ namespace GAIA
 			virtual GAIA::BL Close(){this->init(); return m_file.Close();}
 			virtual GAIA::BL IsOpen() const{return m_file.IsOpen();}	
 			virtual GAIA::UM GetType() const{return m_uTypeMask;}
-			virtual GAIA::BL Read(GAIA::GVOID* pData, GAIA::UM uSize)
+			virtual GAIA::BL Read(GAIA::GVOID* pData, GAIA::U32 uSize)
 			{
 				if(!this->IsOpen())
 					return GAIA::False;
@@ -64,7 +64,7 @@ namespace GAIA
 				m_file.Seek(SEEK_TYPE_FORWARD, nReaded);
 				return GAIA::False;
 			}
-			virtual GAIA::BL Write(const GAIA::GVOID* pData, GAIA::UM uSize)
+			virtual GAIA::BL Write(const GAIA::GVOID* pData, GAIA::U32 uSize)
 			{
 				if(!this->IsOpen())
 					return GAIA::False;

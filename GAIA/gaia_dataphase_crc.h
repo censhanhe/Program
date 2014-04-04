@@ -11,11 +11,11 @@ namespace GAIA
 			GINL CRC8(){m_crc = 0; this->prepare();}
 			GINL GAIA::GVOID clear(){m_crc = 0;}
 			GINL GAIA::U8 result() const{return m_crc;}
-			GINL GAIA::BL build(const GAIA::GVOID* p, GAIA::NM size)
+			GINL GAIA::BL build(const GAIA::GVOID* pBuf, GAIA::U32 size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(pBuf != GNULL);
 				GAIA_AST(size > 0);
-				if(p == GNULL)
+				if(pBuf == GNULL)
 					return GAIA::False;
 				if(size <= 0)
 					return GAIA::False;
@@ -33,11 +33,11 @@ namespace GAIA
 			GINL CRC16(){m_crc = 0; this->prepare();}
 			GINL GAIA::GVOID clear(){m_crc = 0;}
 			GINL GAIA::U16 result() const{return m_crc;}
-			GINL GAIA::BL build(const GAIA::GVOID* p, GAIA::NM size)
+			GINL GAIA::BL build(const GAIA::GVOID* pBuf, GAIA::U32 size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(pBuf != GNULL);
 				GAIA_AST(size > 0);
-				if(p == GNULL)
+				if(pBuf == GNULL)
 					return GAIA::False;
 				if(size <= 0)
 					return GAIA::False;
@@ -55,7 +55,7 @@ namespace GAIA
 			GINL CRC32(){m_crc = 0; this->prepare();}
 			GINL GAIA::GVOID clear(){m_crc = 0;}
 			GINL GAIA::U32 result() const{return m_crc;}
-			GINL GAIA::BL build(const GAIA::GVOID* pBuf, GAIA::NM size)
+			GINL GAIA::BL build(const GAIA::GVOID* pBuf, GAIA::U32 size)
 			{
 				GAIA_AST(pBuf != GNULL);
 				GAIA_AST(size > 0);

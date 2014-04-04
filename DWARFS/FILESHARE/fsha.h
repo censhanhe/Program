@@ -123,15 +123,15 @@ namespace FSHA
 	static const GAIA::U32 VERSION = 0x00000100;
 	static const GAIA::GCH INTERNAL_USERNAME[] = "admin";
 	static const GAIA::GCH INTERNAL_PASSWORD[] = "password";
-	static const GAIA::NM MAXPATHDEPTH = 18;
-	static const GAIA::NM MAXPATHLEN = 240;
+	static const GAIA::N32 MAXPATHDEPTH = 18;
+	static const GAIA::N32 MAXPATHLEN = 240;
 	static const GAIA::U16 MAINRECVPORT = 7121;
 	static const GAIA::U32 SUBCHUNKSIZE = 800;
 	static const GAIA::U32 CHUNKSIZE = SUBCHUNKSIZE * 256;
-	static const GAIA::UM THREADSTACKSIZE = 1024 * 128;
-	static const GAIA::NM USERNAMELEN = 16;
-	static const GAIA::NM PASSWORDLEN = 16;
-	static const GAIA::NM GROUPNAMELEN = 16;
+	static const GAIA::U32 THREADSTACKSIZE = 1024 * 128;
+	static const GAIA::N32 USERNAMELEN = 16;
+	static const GAIA::N32 PASSWORDLEN = 16;
+	static const GAIA::N32 GROUPNAMELEN = 16;
 	static const GAIA::GCH FILE_USERGROUP[] = "usergroup";
 	static const GAIA::U32 FILE_USERGROUP_FLAG = 'FSUG';
 	static const GAIA::U32 FILE_USERGROUP_VERSION = 0;
@@ -165,7 +165,7 @@ namespace FSHA
 	typedef GAIA::U8 REQFILECOUNTTYPE;
 	typedef GAIA::U32 FILESIZETYPE;
 	typedef GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::U8> FSTR;
-	typedef GAIA::CONTAINER::Vector<FSTR> FSTRLIST;
+	typedef GAIA::CONTAINER::BasicVector<FSTR, FILEID, GAIA::ALGORITHM::TwiceSizeIncreaser<FILEID> > FSTRLIST;
 	typedef GAIA::CONTAINER::Vector<FILEID> FIDLIST;
 	typedef GAIA::CONTAINER::BasicAVLTree<
 			FSTR, GAIA::N32, GAIA::N32, 
@@ -200,8 +200,8 @@ namespace FSHA
 			m_filesbtr.destroy();
 			return GAIA::True;
 		}
-		GINL const GAIA::NM& GetRecCount() const{return m_files.size();}
-		GINL const GAIA::GCH* GetRec(const GAIA::NM& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
+		GINL const FILEID& GetRecCount() const{return m_files.size();}
+		GINL const GAIA::GCH* GetRec(const FILEID& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
 	private:
 		FSTRLIST m_files;
 		FSTRBTR m_filesbtr;
@@ -282,15 +282,15 @@ namespace FSHA
 						const TrieNode& n = *it;
 						FileRec fr;
 						fr.fid = n.fid;
-						GAIA::NM nFinded = m_recids.search(fr);
-						GAIA_AST(nFinded != GINVALID);
-						m_recids[nFinded].it = it;
+						__FileRecIDListType::_sizetype tfinded = m_recids.search(fr);
+						GAIA_AST(tfinded != GINVALID);
+						m_recids[tfinded].it = it;
 					}
 					++it;
 				}
 			}
 		#ifdef FSHA_DEBUG
-			for(GAIA::NM x = 0; x < m_recids.size(); ++x)
+			for(__FileRecIDListType::_sizetype x = 0; x < m_recids.size(); ++x)
 				GAIA_AST(m_recids[x].fid == x);
 		#endif
 
@@ -462,7 +462,7 @@ namespace FSHA
 							{
 								TrieNode n;
 								n.mapindex = *pmit;
-								n.fid = GINVALID;
+								n.fid = (FILEID)GINVALID;
 								listInsert.push_back(n);
 								++pmit;
 							}
@@ -497,7 +497,7 @@ namespace FSHA
 				m_recids.sort();
 			}
 		#ifdef FSHA_DEBUG
-			for(GAIA::NM x = 0; x < m_recids.size(); ++x)
+			for(__FileRecIDListType::_sizetype x = 0; x < m_recids.size(); ++x)
 				GAIA_AST(m_recids[x].fid == x);
 		#endif
 
@@ -505,7 +505,7 @@ namespace FSHA
 			FILE_LIST_LOG("Generate file CRC...");
 			{
 				GAIA::N32 nLastPercent = 0;
-				for(GAIA::NM x = 0; x < m_recids.size(); ++x)
+				for(__FileRecIDListType::_sizetype x = 0; x < m_recids.size(); ++x)
 				{
 					GAIA::N32 nNewPercent = x * 100 / m_recids.size();
 					if(nNewPercent != nLastPercent)
@@ -576,7 +576,7 @@ namespace FSHA
 		{
 			__FileRecIDListType::_datatype f;
 			f.fid = id;
-			GAIA::NM nIndex = m_recids.search(f);
+			__FileRecIDListType::_sizetype nIndex = m_recids.search(f);
 			if(nIndex == GINVALID)
 				return GAIA::False;
 			MAPINDEX mapindex[MAXPATHDEPTH];
@@ -588,14 +588,14 @@ namespace FSHA
 		{
 			__FileRecIDListType::_datatype f;
 			f.fid = id;
-			GAIA::NM nIndex = m_recids.search(f);
+			__FileRecIDListType::_sizetype nIndex = m_recids.search(f);
 			if(nIndex == GINVALID)
 				return GAIA::False;
 			crc = m_recids[nIndex].uCRC;
 			return GAIA::True;
 		}
-		GAIA::UM GetFileCount() const{return m_recids.size();}
-		const FILEID& GetIDBySequence(GAIA::UM uIndex) const{return m_recseqs[uIndex].pFileRec->fid;}
+		FILEID GetFileCount() const{return m_recids.size();}
+		const FILEID& GetIDBySequence(FILEID uIndex) const{return m_recseqs[uIndex].pFileRec->fid;}
 	private:
 		class TrieNode
 		{
@@ -670,12 +670,12 @@ namespace FSHA
 			FileRec* pFileRec;
 		};
 	public:
-		typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::Ref<NameMap> > __NameMapType;
+		typedef GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::Ref<NameMap>, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > __NameMapType;
 		typedef GAIA::CONTAINER::Pool<NameMap> __NameMapPool;
-		typedef GAIA::CONTAINER::Vector<FileRec> __FileRecIDListType;
-		typedef GAIA::CONTAINER::Vector<FileRecSeq> __FileRecSeqListType;
+		typedef GAIA::CONTAINER::BasicVector<FileRec, FILEID, GAIA::ALGORITHM::TwiceSizeIncreaser<FILEID> > __FileRecIDListType;
+		typedef GAIA::CONTAINER::BasicVector<FileRecSeq, FILEID, GAIA::ALGORITHM::TwiceSizeIncreaser<FILEID> > __FileRecSeqListType;
 	private:
-		GINL GAIA::GVOID init(){(*m_ftree.root()).fid = GINVALID; (*m_ftree.root()).mapindex = GINVALID; m_LastMaxFileID = 0; m_pPr = GNULL;}
+		GINL GAIA::GVOID init(){(*m_ftree.root()).fid = (FILEID)GINVALID; (*m_ftree.root()).mapindex = (MAPINDEX)GINVALID; m_LastMaxFileID = 0; m_pPr = GNULL;}
 		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAPINDEX* pResult) const
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
@@ -699,7 +699,7 @@ namespace FSHA
 					return GAIA::False;
 				pResult[x] = n;
 			}
-			pResult[namelist.size()] = GINVALID;
+			pResult[namelist.size()] = (MAPINDEX)GINVALID;
 			return GAIA::True;
 		}
 		GAIA::BL MapIndexToName(const MAPINDEX* pResult, GAIA::GCH* pszFileName) const
@@ -766,7 +766,7 @@ namespace FSHA
 					it = m_ftree.parent_it(it);
 			}
 			GAIA::ALGORITHM::inverse(pMapIndex, p - 1);
-			pMapIndex[p - pMapIndex] = GINVALID;
+			pMapIndex[p - pMapIndex] = (MAPINDEX)GINVALID;
 			return GAIA::True;
 		}
 		GAIA::BL LoadNode(GAIA::SERIALIZER::Serializer& sr, GAIA::CONTAINER::Stack<TrieNode>& stack)
@@ -819,7 +819,7 @@ namespace FSHA
 			}
 			else
 			{
-				FILEID uSequence = GINVALID;
+				FILEID uSequence = (FILEID)GINVALID;
 				sr << uSequence;
 				CRCTYPE uCRC = 0;
 				sr << uCRC;
@@ -886,7 +886,7 @@ namespace FSHA
 		class Group
 		{
 		public:
-			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User> > __UserRefListType;
+			typedef GAIA::CONTAINER::BasicSet<GAIA::CONTAINER::Ref<User>, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __UserRefListType;
 		public:
 			GAIA_CLASS_OPERATOR_COMPARE(name, name, Group);
 			__GroupNameType name;
@@ -894,8 +894,8 @@ namespace FSHA
 			Right right;
 		};
 	private:
-		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<User> > __UserSetType;
-		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<Group> > __GroupSetType;
+		typedef GAIA::CONTAINER::BasicSet<GAIA::CONTAINER::Ref<User>, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __UserSetType;
+		typedef GAIA::CONTAINER::BasicSet<GAIA::CONTAINER::Ref<Group>, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __GroupSetType;
 		typedef GAIA::CONTAINER::Pool<User> __UserPoolType;
 		typedef GAIA::CONTAINER::Pool<Group> __GroupPoolType;
 	public:
@@ -1244,7 +1244,7 @@ namespace FSHA
 			if(pFinded != GNULL)
 				return GAIA::False;
 			pGroup->refusers.insert(pUser);
-			GAIA::NM nFreePos = pUser->refgroups.find(GNULL);
+			User::__GroupRefListType::_sizetype nFreePos = pUser->refgroups.find(GNULL);
 			if(nFreePos == GINVALID)
 				pUser->refgroups.push_back(pGroup);
 			else
@@ -1419,7 +1419,7 @@ namespace FSHA
 			GAIA::U64 uBanTime; // The time will the ip been banned. if 0xFFFFFFFFFFFFFFFF means always banned.
 		};
 	public:
-		typedef GAIA::CONTAINER::Set<BanIPNode> __BanIPSet;
+		typedef GAIA::CONTAINER::BasicSet<BanIPNode, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __BanIPSet;
 		typedef GAIA::CONTAINER::Vector<BanIPNode> __BanIPList;
 	public:
 		GINL BanIP(){}
@@ -1580,7 +1580,7 @@ namespace FSHA
 				*pBanTime = pBan->uBanTime;
 			return GAIA::True;
 		}
-		GINL GAIA::NM GetBanIPCount() const{return m_bans.size();}
+		GINL GAIA::N32 GetBanIPCount() const{return m_bans.size();}
 		__BanIPSet::const_it GetBanIPFrontIterator() const{return m_bans.const_front_it();}
 		GINL GAIA::GVOID DeleteBanIPAll(){m_bans.clear();}
 	private:
@@ -1921,7 +1921,7 @@ namespace FSHA
 		public:
 			typedef GAIA::CONTAINER::Set<FileChunkSection> __FileChunkSectionListType;
 		public:
-			GINL FileRecCache(){fid = GINVALID; pFA = GNULL; fsize = 0; uCRC = 0; pFCSL = GNULL; bWrite = GAIA::False;}
+			GINL FileRecCache(){fid = (FILEID)GINVALID; pFA = GNULL; fsize = 0; uCRC = 0; pFCSL = GNULL; bWrite = GAIA::False;}
 			GAIA_CLASS_OPERATOR_COMPARE2(fid, fid, bWrite, bWrite, FileRecCache);
 			GINL FileRecCache& operator = (const FileRecCache& src)
 			{
@@ -1945,7 +1945,7 @@ namespace FSHA
 		class __DWARFS_FILESHARE_API FileSendTask
 		{
 		public:
-			GINL FileSendTask(){na.Invalid(); fid = GINVALID; ci = 0; sci = 0; bNeedHead = GAIA::True;}
+			GINL FileSendTask(){na.Invalid(); fid = (FILEID)GINVALID; ci = 0; sci = 0; bNeedHead = GAIA::True;}
 			GAIA_CLASS_OPERATOR_COMPARE2(na, na, fid, fid, FileSendTask);
 			GINL FileSendTask& operator = (const FileSendTask& src)
 			{
@@ -1987,7 +1987,7 @@ namespace FSHA
 		class __DWARFS_FILESHARE_API FileWriteTask
 		{
 		public:
-			GINL FileWriteTask(){na.Invalid(); fid = GINVALID; ci = 0; sci = 0; size = 0;}
+			GINL FileWriteTask(){na.Invalid(); fid = (FILEID)GINVALID; ci = 0; sci = 0; size = 0;}
 			GAIA_CLASS_OPERATOR_COMPARE3(fid, fid, ci, ci, sci, sci, FileWriteTask);
 			GINL FileWriteTask& operator = (const FileWriteTask& src)
 			{
@@ -2015,7 +2015,7 @@ namespace FSHA
 		class __DWARFS_FILESHARE_API FileHeadSendTask
 		{
 		public:
-			GINL FileHeadSendTask(){na.Invalid(); fid = GINVALID;}
+			GINL FileHeadSendTask(){na.Invalid(); fid = (FILEID)GINVALID;}
 			GINL FileHeadSendTask& operator = (const FileHeadSendTask& src)
 			{
 				na = src.na;
@@ -2033,7 +2033,7 @@ namespace FSHA
 		public:
 			GINL FileReq()
 			{
-				fid = GINVALID;
+				fid = (FILEID)GINVALID;
 				uUserReqTime = 0;
 				uFirstReqTime = 0;
 				uLastActiveTime = 0;
@@ -2419,7 +2419,7 @@ namespace FSHA
 		typedef GAIA::CONTAINER::Set<JumpReq> __JumpReqSetType;
 		typedef GAIA::CONTAINER::Pool<FileWriteTask> __FileWriteTaskPoolType;
 		typedef GAIA::CONTAINER::Vector<FileHeadSendTask> __FileHeadSendTaskListType;
-		typedef GAIA::CONTAINER::BasicBuffer<GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM> > __MsgType;
+		typedef GAIA::CONTAINER::BasicBuffer<GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MsgType;
 	public:
 		FileShare(){this->init();}
 		~FileShare(){}
@@ -2607,7 +2607,7 @@ namespace FSHA
 		GINL GAIA::GVOID SetAllFileCmpl(GAIA::BL bCmpl)
 		{
 			if(bCmpl)
-				m_uCmplFileCount = m_filelist.GetFileCount();
+				m_uCmplFileCount = (FILEID)m_filelist.GetFileCount();
 			else
 				m_uCmplFileCount = 0;
 			AL al(m_lr_filestate);
@@ -2636,7 +2636,7 @@ namespace FSHA
 				++itnext;
 				if(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - m_RequestMsgTemp.write_size() <= sizeof(FILEID) + sizeof(CHUNKINDEX) || itnext.empty())
 				{
-					GAIA::NM nCount = m_RequestMsgTemp.write_size() - sizeof(na) - sizeof(MSG_R_FILE) - sizeof(REQFILECOUNTTYPE);
+					GAIA::N32 nCount = m_RequestMsgTemp.write_size() - sizeof(na) - sizeof(MSG_R_FILE) - sizeof(REQFILECOUNTTYPE);
 					nCount /= sizeof(FILEID) + sizeof(CHUNKINDEX);
 					GAIA_AST(nCount < 256);
 					*(REQFILECOUNTTYPE*)(m_RequestMsgTemp.front_ptr() + sizeof(na) + sizeof(MSG_R_FILE)) = (REQFILECOUNTTYPE)nCount;
@@ -2651,8 +2651,8 @@ namespace FSHA
 		}
 		GINL GAIA::GVOID EnableSequenceRequest(GAIA::BL bEnable){m_bEnableSequenceRequest = bEnable;}
 		GINL GAIA::BL IsEnableSequenceRequest() const{return m_bEnableSequenceRequest;}
-		GINL GAIA::GVOID SetMaxRequestFileCountSameTime(GAIA::NM nCount){m_nMaxRequestFileCountSameTime = nCount;}
-		GINL GAIA::NM GetMaxRequestFileCountSameTime() const{return m_nMaxRequestFileCountSameTime;}
+		GINL GAIA::GVOID SetMaxRequestFileCountSameTime(GAIA::N32 nCount){m_nMaxRequestFileCountSameTime = nCount;}
+		GINL GAIA::N32 GetMaxRequestFileCountSameTime() const{return m_nMaxRequestFileCountSameTime;}
 		GINL GAIA::GVOID EnableRecycleLink(GAIA::BL bEnable){m_bEnableRecycleLink = bEnable;}
 		GINL GAIA::BL IsEnableRecycleLink() const{return m_bEnableRecycleLink;}
 		GAIA::BL Command(const GAIA::GCH* pszCmd)
@@ -3056,14 +3056,14 @@ namespace FSHA
 			else if(CMD(CMD_CMPL))
 			{
 				if(listPart.size() == 3)
-					this->SetFileCmpl((FILEID)listPart[1], (GAIA::BL)(GAIA::NM)listPart[2]);
+					this->SetFileCmpl((FILEID)listPart[1], (GAIA::BL)(GAIA::N32)listPart[2]);
 				else
 					CMDFAILED;
 			}
 			else if(CMD(CMD_CMPLALL))
 			{
 				if(listPart.size() == 2)
-					this->SetAllFileCmpl((GAIA::BL)(GAIA::NM)listPart[1]);
+					this->SetAllFileCmpl((GAIA::BL)(GAIA::N32)listPart[1]);
 				else
 					CMDFAILED;
 			}
@@ -3422,7 +3422,7 @@ namespace FSHA
 			{
 				if(listPart.size() == 1)
 				{
-					for(GAIA::UM x = 0; x < m_filelist.GetFileCount(); ++x)
+					for(FILEID x = 0; x < m_filelist.GetFileCount(); ++x)
 					{
 						GAIA::GCH szPathName[MAXPATHLEN];
 						CRCTYPE crc;
@@ -3719,7 +3719,7 @@ namespace FSHA
 				{
 					AL al(m_lr_fcaches);
 					__FileRecCacheListType::it it = m_fcaches.front_it();
-					GAIA::NM nIndex = 0;
+					FILEID nIndex = 0;
 					for(; !it.empty(); ++it)
 					{
 						FileRecCache& frc = *it;
@@ -3925,7 +3925,7 @@ namespace FSHA
 					m_FileSendMsgTemp << pFRC->uCRC;
 					this->Send(m_FileSendMsgTemp.front_ptr(), m_FileSendMsgTemp.write_size());
 				}
-				for(GAIA::NM x = 0; x < BATCHCHUNKSENDCOUNT; ++x)
+				for(GAIA::U32 x = 0; x < BATCHCHUNKSENDCOUNT; ++x)
 				{
 					m_FileSendMsgTemp.clear();
 					m_FileSendMsgTemp << fst.na;
@@ -4004,7 +4004,7 @@ namespace FSHA
 					m_listChunkDeleteTemp.push_back(cst);
 					continue;
 				}
-				for(GAIA::NM x = 0; x < BATCHCHUNKSENDCOUNT; ++x)
+				for(GAIA::U32 x = 0; x < BATCHCHUNKSENDCOUNT; ++x)
 				{
 					m_ChunkSendMsgTemp.clear();
 					m_ChunkSendMsgTemp << cst.na;
@@ -4235,8 +4235,8 @@ namespace FSHA
 						FileChunkSection* pFCS = pFRC->pFCSL->find(fcs);
 						if(pFCS != GNULL)
 						{
-							GAIA::UM uSubChunkCount = (pFCS->e * 256 + pFCS->ee) - (pFCS->s * 256 + pFCS->ss) + 1;
-							GAIA::UM uCorrectSubChunkCount = pFRC->fsize / SUBCHUNKSIZE;
+							GAIA::U32 uSubChunkCount = (pFCS->e * 256 + pFCS->ee) - (pFCS->s * 256 + pFCS->ss) + 1;
+							GAIA::U32 uCorrectSubChunkCount = pFRC->fsize / SUBCHUNKSIZE;
 							if(pFRC->fsize % SUBCHUNKSIZE != 0)
 								++uCorrectSubChunkCount;
 							if(uSubChunkCount == uCorrectSubChunkCount)
@@ -4324,8 +4324,8 @@ namespace FSHA
 				{
 					m_cmplfiles.sort();
 					m_cmplfiles.unique();
-					FILEID startindex = GINVALID; 
-					FILEID endindex = GINVALID;
+					FILEID startindex = (FILEID)GINVALID; 
+					FILEID endindex = (FILEID)GINVALID;
 					for(FIDLIST::it it = m_cmplfiles.front_it(); !it.empty(); ++it)
 					{
 						if(startindex == GINVALID)
@@ -4355,7 +4355,7 @@ namespace FSHA
 						m_ExecuteCmplFilesNotifyMsgTemp << startindex;
 						m_ExecuteCmplFilesNotifyMsgTemp << endindex;
 						this->SendToAll(m_ExecuteCmplFilesNotifyMsgTemp.front_ptr(), m_ExecuteCmplFilesNotifyMsgTemp.write_size());
-						startindex = endindex = GINVALID;
+						startindex = endindex = (FILEID)GINVALID;
 					}
 					m_cmplfiles.clear();
 				}
@@ -5513,8 +5513,8 @@ namespace FSHA
 						m_state = NLink::STATE_READY;
 					{
 						AL al(m_lr_filestate);
-						FILEID startindex = GINVALID;
-						for(GAIA::CONTAINER::BasicBitset<GAIA::NM>::_sizetype x = 0; x < m_filelist.GetFileCount(); ++x)
+						FILEID startindex = (FILEID)GINVALID;
+						for(GAIA::CONTAINER::BasicBitset<GAIA::N32>::_sizetype x = 0; x < m_filelist.GetFileCount(); ++x)
 						{
 							if(startindex == GINVALID)
 							{
@@ -5530,7 +5530,7 @@ namespace FSHA
 									fidsec.uEnd = x - 1;
 									uFileCount += fidsec.uEnd - fidsec.uStart + 1;
 									fidseclist.push_back(fidsec);
-									startindex = GINVALID;
+									startindex = (FILEID)GINVALID;
 								}
 							}
 						}
@@ -5541,7 +5541,7 @@ namespace FSHA
 							fidsec.uEnd = m_filelist.GetFileCount() - 1;
 							uFileCount += fidsec.uEnd - fidsec.uStart + 1;
 							fidseclist.push_back(fidsec);
-							startindex = GINVALID;
+							startindex = (FILEID)GINVALID;
 						}
 					}
 					// Send file count.
@@ -5903,21 +5903,21 @@ namespace FSHA
 			}
 			return GAIA::True;
 		}
-		GINL GAIA::NM GetFileCacheCompleteSize(const FileRecCache& frc) const
+		GINL FILESIZETYPE GetFileCacheCompleteSize(const FileRecCache& frc) const
 		{
-			GAIA::NM nRet = 0;
+			FILESIZETYPE tRet = 0;
 			if(frc.pFCSL != GNULL)
 			{
 				FileRecCache::__FileChunkSectionListType::const_it it = frc.pFCSL->const_front_it();
 				for(; !it.empty(); ++it)
 				{
 					const FileRecCache::__FileChunkSectionListType::_datatype& t = *it;
-					nRet += (t.e * CHUNKSIZE + t.ee * SUBCHUNKSIZE) - (t.s * CHUNKSIZE + t.ss * SUBCHUNKSIZE) + SUBCHUNKSIZE;
+					tRet += (t.e * CHUNKSIZE + t.ee * SUBCHUNKSIZE) - (t.s * CHUNKSIZE + t.ss * SUBCHUNKSIZE) + SUBCHUNKSIZE;
 				}
 			}
-			return nRet;
+			return tRet;
 		}
-		GINL GAIA::BL Send(const GAIA::GVOID* p, const GAIA::UM& size)
+		GINL GAIA::BL Send(const GAIA::GVOID* p, const GAIA::U32& size)
 		{
 			GAIA_AST(p != GNULL);
 			GAIA_AST(size > 0);
@@ -5984,7 +5984,7 @@ namespace FSHA
 			m_statistics.uNSendBytes += size - sizeof(GAIA::NETWORK::NetworkAddress);
 			return m_pNH->Send((const GAIA::U8*)p, size);
 		}
-		GINL GAIA::BL SendToAll(GAIA::GVOID* p, const GAIA::UM& size)
+		GINL GAIA::BL SendToAll(GAIA::GVOID* p, const GAIA::U32& size)
 		{
 			GAIA_AST(p != GNULL);
 			GAIA_AST(size > 0);
@@ -6100,7 +6100,7 @@ namespace FSHA
 			else
 				return 0;
 		}
-		GINL GAIA::BL Jump(const GAIA::NETWORK::NetworkAddress& na, const GAIA::U8* p, GAIA::NM nSize)
+		GINL GAIA::BL Jump(const GAIA::NETWORK::NetworkAddress& na, const GAIA::U8* p, GAIA::N32 nSize)
 		{
 			GAIA_AST(p != GNULL);
 			GAIA_AST(nSize > 0);
@@ -6157,9 +6157,9 @@ namespace FSHA
 			if(sizeof(na) + sizeof(MSGIDTYPE) + sizeof(jumpna) + nSize > GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE)
 			{
 				GAIA_AST(fcnt / 2 > 0);
-				GAIA::NM first = fcnt / 2;
-				GAIA::NM second = first + (fcnt % 2 == 0 ? 0 : 1);
-				GAIA::NM nodesize = sizeof(FILEID) + sizeof(CHUNKINDEX);
+				GAIA::N32 first = fcnt / 2;
+				GAIA::N32 second = first + (fcnt % 2 == 0 ? 0 : 1);
+				GAIA::N32 nodesize = sizeof(FILEID) + sizeof(CHUNKINDEX);
 
 				msg << na;
 				msg << MSG_A_CNN;
@@ -6213,7 +6213,7 @@ namespace FSHA
 			}
 			if(uCount == 0 && m_mainna.IsInvalid())
 				return GAIA::False;
-			GAIA::NM nSelectIndex = GAIA::MATH::random() % (uCount + 1);
+			GAIA::N32 nSelectIndex = GAIA::MATH::random() % (uCount + 1);
 			if(nSelectIndex == 0)
 				na = m_mainna;
 			else
@@ -6242,11 +6242,11 @@ namespace FSHA
 		FSTR m_writeroot;
 		__LinkListType m_links; GAIA::SYNC::Lock m_lr_links;
 		__LinkPriListType m_prilinks; GAIA::SYNC::Lock m_lr_prilinks;
-		GAIA::CONTAINER::BasicBitset<GAIA::NM> m_filestate; GAIA::SYNC::Lock m_lr_filestate;
-		GAIA::NM m_uCmplFileCount;
+		GAIA::CONTAINER::BasicBitset<GAIA::N32> m_filestate; GAIA::SYNC::Lock m_lr_filestate;
+		FILEID m_uCmplFileCount;
 		NLink::STATE m_state;
 		GAIA::BL m_bEnableSequenceRequest;
-		GAIA::UM m_uSequenceRequestIndex;
+		FILEID m_uSequenceRequestIndex;
 		__FileRecCacheListType m_fcaches; GAIA::SYNC::Lock m_lr_fcaches;
 		__FileSendTaskListType m_filesendtasks; GAIA::SYNC::Lock m_lr_filesendtasks;
 		__ChunkSendTaskListType m_chunksendtasks; GAIA::SYNC::Lock m_lr_chunksendtasks;
@@ -6258,7 +6258,7 @@ namespace FSHA
 		__FileWriteTaskPoolType m_fwtpool; GAIA::SYNC::Lock m_lr_fwtpool;
 		__FileHeadSendTaskListType m_fileheadsendtasks; GAIA::SYNC::Lock m_lr_fileheadsendtasks;
 		GAIA::SYNC::Lock m_lr_send;
-		GAIA::NM m_nMaxRequestFileCountSameTime;
+		GAIA::N32 m_nMaxRequestFileCountSameTime;
 		GAIA::BL m_bEnableRecycleLink;
 		GAIA::U64 m_uLastNotifyCmplTime;
 		GAIA::GCH m_szLoopCmd[MAXPATHLEN];

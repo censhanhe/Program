@@ -44,11 +44,11 @@ namespace GAIA
 			{
 				return GAIA::True;
 			}
-			virtual GAIA::BL Read(GAIA::GVOID* pData, GAIA::UM uSize)
+			virtual GAIA::BL Read(GAIA::GVOID* pData, GAIA::U32 uSize)
 			{
 				return GAIA::True;
 			}
-			virtual GAIA::BL Write(const GAIA::GVOID* pData, GAIA::UM uSize)
+			virtual GAIA::BL Write(const GAIA::GVOID* pData, GAIA::U32 uSize)
 			{
 				return GAIA::True;
 			}

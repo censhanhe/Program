@@ -264,11 +264,12 @@ public:
 	GINL GAIA::BL GetTestResult() const{return m_bTestResult;}
 	virtual GAIA::GVOID WorkProcedure()
 	{
-		static const GAIA::UM PATCH_COUNT = 100000;
-		static const GAIA::UM PATCH_MAX_SIZE = 1024;
-		GAIA::CONTAINER::Vector<GAIA::GVOID*> listAlloced;
+		typedef GAIA::CONTAINER::Vector<GAIA::GVOID*> __PatchListType;
+		static const __PatchListType::_sizetype PATCH_COUNT = 100000;
+		static const __PatchListType::_sizetype PATCH_MAX_SIZE = 1024;
+		__PatchListType listAlloced;
 		listAlloced.resize(PATCH_COUNT);
-		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
+		for(__PatchListType::_sizetype x = 0; x < PATCH_COUNT; ++x)
 		{
 			GAIA::U32 uSize = (GAIA::U32)(GAIA::MATH::random() % PATCH_MAX_SIZE + 1);
 			listAlloced[x] = m_pAllocator->memory_alloc(uSize);
@@ -280,7 +281,7 @@ public:
 			}
 			GAIA::ALGORITHM::memset(listAlloced[x], x % 128, uSize);
 		}
-		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
+		for(__PatchListType::_sizetype x = 0; x < PATCH_COUNT; ++x)
 		{
 			GAIA::U32 uSize = (GAIA::U32)m_pAllocator->memory_size(listAlloced[x]);
 			GAIA_AST(uSize < PATCH_MAX_SIZE + 1);
@@ -296,7 +297,7 @@ public:
 				goto FUNCTION_END;
 			}
 		}
-		for(GAIA::U32 x = 0; x < PATCH_COUNT * 10; ++x)
+		for(__PatchListType::_sizetype x = 0; x < PATCH_COUNT * 10; ++x)
 		{
 			GAIA::N32 nFirst = GAIA::MATH::random() % 65536;
 			GAIA::N32 nSecond = GAIA::MATH::random() % 65536;
@@ -328,7 +329,7 @@ public:
 			}
 		}
 FUNCTION_END:
-		for(GAIA::U32 x = 0; x < PATCH_COUNT; ++x)
+		for(__PatchListType::_sizetype x = 0; x < PATCH_COUNT; ++x)
 		{
 			if(listAlloced[x] != GNULL)
 				m_pAllocator->memory_release(listAlloced[x]);
@@ -450,7 +451,7 @@ GAIA::N32 main()
 		{
 			GAIA::CONTAINER::Vector<GAIA::N32> vt;
 			GAIA::CONTAINER::List<GAIA::N32> lt;
-			for(GAIA::NM x = 0; x < SAMPLE_COUNT; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			{
 				vt.push_back(x);
 				lt.push_front(x);
@@ -459,7 +460,7 @@ GAIA::N32 main()
 			GAIA::CONTAINER::List<GAIA::N32>::it itodst = lt.front_it();
 			GAIA::ITERATOR::Iterator<GAIA::N32>& itsrc = *static_cast<GAIA::ITERATOR::Iterator<GAIA::N32>*>(&itosrc);
 			GAIA::ITERATOR::Iterator<GAIA::N32>& itdst = *static_cast<GAIA::ITERATOR::Iterator<GAIA::N32>*>(&itodst);
-			for(GAIA::NM x = 0; x < SAMPLE_COUNT; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 			{
 				*itdst = *itsrc;
 				++itsrc;
@@ -777,8 +778,8 @@ GAIA::N32 main()
 			GAIA::GTCH ch = GAIA::ALGORITHM::tolower('A');
 			ch = 0;
 			GAIA::GTCH sz[128] = L"abcdefgABCDEFG1234567!@#$%^&";
-			GAIA::UM uLen = GAIA::ALGORITHM::strlen(sz);
-			uLen = 0;
+			GAIA::SIZE sLen = GAIA::ALGORITHM::strlen(sz);
+			sLen = 0;
 			GAIA::ALGORITHM::tolower(sz);
 			sz[0] = 0;
 			GAIA::N32 nCompare = GAIA::ALGORITHM::strcmp(L"Hello world", L"Hello kitty!");
@@ -800,15 +801,15 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<Chars class test>");
 		{
-			GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars;
+			GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N32, 128> chars;
 			chars = "abc";
 			chars += "123";
 			chars = 123.456F;
-			GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::UM, 128> chars1;
+			GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N32, 128> chars1;
 			chars1 = "3.4";
-			GAIA::UM u = chars.find('3', 0);
-			u = chars.find(chars1, 0);
-			u = chars.rfind('4', chars.size() - 1);
+			GAIA::N32 n = chars.find('3', 0);
+			n = chars.find(chars1, 0);
+			n = chars.rfind('4', chars.size() - 1);
 			chars.clear();
 			chars1.clear();
 
@@ -836,14 +837,14 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<String class test>");
 		{
-			GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str;
+			GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::SIZE> str;
 			str = L"Hello world!";
 			str += L" Hello kitty!";
 			str = 32;
 			str = 123.456;
-			GAIA::UM u = str.find('2', 0);
+			GAIA::SIZE u = str.find('2', 0);
 			u = str.find(L"3.4", 0);
-			GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM> str1 = L"3.4";
+			GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::SIZE> str1 = L"3.4";
 			u = str.find(str1, 0);
 			GAIA::REAL r = str;
 			r = 0.0F;
@@ -865,7 +866,7 @@ GAIA::N32 main()
 			else
 				TEST_FILE_LINE("insert test FAILED!");
 
-			GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::UM>::it it = str.front_it();
+			GAIA::CONTAINER::BasicString<GAIA::GTCH, GAIA::SIZE>::it it = str.front_it();
 			while(!it.empty())
 			{
 				GAIA::GTCH ch = *it;
@@ -882,9 +883,9 @@ GAIA::N32 main()
 		{
 			typedef GAIA::CONTAINER::BasicQueue<GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > __QueueType;
 			__QueueType que;
-			for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				que.push(x);
-			for(GAIA::U32 x = 0; x < SAMPLE_COUNT; ++x)
+			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
 				que.pop();
 			que.push(10);
 			que.push(20);
@@ -2341,7 +2342,7 @@ GAIA::N32 main()
 		TEST_BEGIN("<Allocator ESG test>");
 		{
 			GAIA::ALLOCATOR::AllocatorESG aesg;
-			static const GAIA::UM THREAD_COUNT = 4;
+			static const GAIA::U32 THREAD_COUNT = 4;
 			GAIA::CONTAINER::Vector<MultiThreadAllocatorESG*> listThread;
 			listThread.resize(THREAD_COUNT);
 			for(GAIA::N32 x = 0; x < THREAD_COUNT; ++x)

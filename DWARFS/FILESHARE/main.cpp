@@ -45,7 +45,7 @@ INPUT_IP:
 	cin >> szIP;
 	if(szIP[1] == 0)
 	{
-		GAIA::NM index = szIP[0] - '0';
+		GAIA::N32 index = szIP[0] - '0';
 		if(index >= listIP.size())
 			goto INPUT_IP;
 		if(index < 0)

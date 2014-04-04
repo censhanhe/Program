@@ -19,9 +19,9 @@ namespace GAIA
 	namespace FILESYSTEM
 	{
 	#if GAIA_OS == GAIA_OS_WINDOWS
-		static const GAIA::UM MAXPL = MAX_PATH;
+		static const GAIA::U32 MAXPL = MAX_PATH;
 	#else
-		static const GAIA::UM MAXPL = 260;
+		static const GAIA::U32 MAXPL = 260;
 	#endif
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::SetWorkingDirectory(const GAIA::GCH* dir)
 		{
@@ -162,7 +162,7 @@ namespace GAIA
 							}
 						}
 					}
-					bFinded = ::FindNextFileA(hFF, &fdata);
+					bFinded = ::FindNextFileA(hFF, &fdata) != 0;
 				}
 				::FindClose(hFF);
 				return this->Remove(pszName, GAIA::False);
@@ -377,7 +377,7 @@ namespace GAIA
 						treeResult.insert(listResult.front_ptr(), listResult.size());
 					}
 				}
-				bFinded = ::FindNextFileA(hFF, &fdata);
+				bFinded = ::FindNextFileA(hFF, &fdata) != 0;
 			}
 			::FindClose(hFF);
 			return GAIA::True;

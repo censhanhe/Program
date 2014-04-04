@@ -17,9 +17,9 @@ namespace GAIA
 			GINL virtual GAIA::GVOID RemoveRouteAll();
 			GINL virtual GAIA::BL IsExistRoute(Route* pRoute) const;
 			GINL virtual GAIA::BL CollectRoutes(GAIA::CONTAINER::Vector<Route*>& listResult) const;
-			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
+			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::U32& size) = 0;
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Receive(const GAIA::GVOID* p, const GAIA::UM& size) = 0;
+			virtual GAIA::BL Receive(const GAIA::GVOID* p, const GAIA::U32& size) = 0;
 		private:
 			OL_ROUTE m_routes;
 		};

@@ -81,7 +81,7 @@ namespace GAIA
 				GAIA_AST(psz != GNULL);
 				if(psz == GNULL)
 					return;
-				const GAIA::NM bytes = GAIA::ALGORITHM::strlen(psz) * sizeof(_ParamObjType) + sizeof(_ParamObjType);
+				GAIA::SIZE bytes = GAIA::ALGORITHM::strlen(psz) * sizeof(_ParamObjType) + sizeof(_ParamObjType);
 				GAIA::U8* pNew = this->alloc(bytes);
 				GAIA::ALGORITHM::memcpy(pNew, psz, bytes);
 			}
@@ -143,7 +143,8 @@ namespace GAIA
 			{
 				if(size == 0)
 					return GNULL;
-				if(m_pBack - m_pWrite >= size)
+				GAIA_AST(m_pBack >= m_pWrite);
+				if((_SizeType)(m_pBack - m_pWrite) >= size)
 				{
 					GAIA::U8* pRet = m_pWrite;
 					m_pWrite += size;
@@ -203,6 +204,33 @@ namespace GAIA
 				}
 				return GAIA::True;
 			}
+	#ifdef GAIA_DEBUG_MACHINELENGTH
+		private: // Protect for 32-64bit error.
+			GINL GAIA::GVOID write(const GAIA::NM& obj){}
+			GINL GAIA::BL read(GAIA::NM& obj){}
+			GINL GAIA::GVOID write(const GAIA::UM& obj){}
+			GINL GAIA::BL read(GAIA::UM& obj){}
+			GINL GAIA::GVOID write(const GAIA::GWCH& obj){}
+			GINL GAIA::BL read(GAIA::GWCH& obj){}
+			GINL GAIA::GVOID write(const GAIA::NM* psz){}
+			GINL GAIA::BL read(GAIA::NM* psz){}
+			GINL GAIA::GVOID write(const GAIA::UM* psz){}
+			GINL GAIA::BL read(GAIA::UM* psz){}
+			GINL GAIA::GVOID write(const GAIA::GWCH* psz){}
+			GINL GAIA::BL read(GAIA::GWCH* psz){}
+			GINL __MyType& operator << (const GAIA::NM& obj){return *this;}
+			GINL __MyType& operator >> (GAIA::NM& obj){return *this;}
+			GINL __MyType& operator << (const GAIA::UM& obj){return *this;}
+			GINL __MyType& operator >> (GAIA::UM& obj){return *this;}
+			GINL __MyType& operator << (const GAIA::GWCH& obj){return *this;}
+			GINL __MyType& operator >> (GAIA::GWCH& obj){return *this;}
+			GINL __MyType& operator << (const GAIA::NM* obj){return *this;} GINL __MyType& operator << (GAIA::NM* obj){return *this;}
+			GINL __MyType& operator >> (GAIA::NM* obj){return *this;}
+			GINL __MyType& operator << (const GAIA::UM* obj){return *this;} GINL __MyType& operator << (GAIA::UM* obj){return *this;}
+			GINL __MyType& operator >> (GAIA::UM* obj){return *this;}
+			GINL __MyType& operator << (const GAIA::GWCH* obj){return *this;} GINL __MyType& operator << (GAIA::GWCH* obj){return *this;}
+			GINL __MyType& operator >> (GAIA::GWCH* obj){return *this;}
+	#endif
 		private:
 			GAIA::U8* m_pFront;
 			GAIA::U8* m_pBack;

@@ -20,8 +20,8 @@ namespace GAIA
 		public:
 			GINL ThreadPool(){}
 			GINL ~ThreadPool(){}
-			GINL GAIA::GVOID SetThreadCount(const GAIA::UM& size);
-			GINL const GAIA::UM& GetThreadCount() const;
+			GINL GAIA::GVOID SetThreadCount(const GAIA::U32& size);
+			GINL const GAIA::U32& GetThreadCount() const;
 			GINL GAIA::GVOID Begin();
 			GINL GAIA::GVOID End();
 			GINL GAIA::BL IsBegin() const;
@@ -29,7 +29,6 @@ namespace GAIA
 			GINL GAIA::BL RemoveTask(ThreadPoolTask& t);
 			GINL GAIA::BL IsTaskExist(ThreadPoolTask& t) const;
 		private:
-
 		};
 	};
 };

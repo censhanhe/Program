@@ -82,11 +82,10 @@ namespace GAIA
 			setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
 			setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			GAIA::UM bNotBlockModeEnable = 1;
 		#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
 		#		undef long
 		#	endif
-			ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
+			GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
 		#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
 		#		define long GAIA_INVALID_ORIGINTYPE
 		#	endif
@@ -131,7 +130,7 @@ namespace GAIA
 				pReceiver->Add(*this);
 			m_pReceiver = pReceiver;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC BL NetworkHandle::Send(const GAIA::U8* p, GAIA::UM uSize)
+		GAIA_DEBUG_CODEPURE_MEMFUNC BL NetworkHandle::Send(const GAIA::U8* p, GAIA::U32 uSize)
 		{
 			GAIA_AST(p != GNULL);
 			GAIA_AST(uSize > 0);
@@ -183,7 +182,7 @@ namespace GAIA
 					SendRec& r = m_tempsendlist[x];
 					GAIA_AST(r.p != GNULL);
 					GAIA::U8* p = r.p;
-					GAIA::UM uSize = r.uSize;
+					GAIA::U32 uSize = r.uSize;
 					if(!this->IsStabilityLink())
 					{
 						p += sizeof(NetworkAddress);
@@ -303,7 +302,7 @@ namespace GAIA
 			}
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::UM& size){return gethostname(pszResult, size) != GINVALID;}
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::N32& size){return gethostname(pszResult, size) != GINVALID;}
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::GCH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult)
 		{
 			hostent* pHostEnt = gethostbyname(pszHostName);

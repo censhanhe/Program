@@ -41,11 +41,11 @@ namespace GAIA
 				return GAIA::False;
 			}
 			virtual GAIA::UM GetType() const{return m_uTypeMask;}
-			virtual GAIA::BL Read(GAIA::GVOID* pData, GAIA::UM uSize)
+			virtual GAIA::BL Read(GAIA::GVOID* pData, GAIA::U32 uSize)
 			{
 				return GAIA::True;
 			}
-			virtual GAIA::BL Write(const GAIA::GVOID* pData, GAIA::UM uSize)
+			virtual GAIA::BL Write(const GAIA::GVOID* pData, GAIA::U32 uSize)
 			{
 				return GAIA::False;
 			}

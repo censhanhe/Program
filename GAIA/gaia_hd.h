@@ -20,7 +20,7 @@ namespace GAIA
 			GINL GAIA::GVOID Invalid();
 			GINL GAIA::BL IsInvalid() const;
 			GINL GAIA::BL SetRight(UM uRight) const;
-			GINL GAIA::UM GetRight() const;
+			GINL GAIA::U32 GetRight() const;
 			GINL GAIA::BL Close() const;
 			GINL HD MakeShadow() const;
 			GINL GAIA::BL IsShadow() const;

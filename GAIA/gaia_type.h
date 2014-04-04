@@ -30,6 +30,9 @@ namespace GAIA
 	typedef char GTCH;
 #endif
 
+	/* GAIA size. */
+	typedef GAIA::N32 SIZE;
+
 	/* Bool enum. */
 	static const BL True = 1;
 	static const BL False = 0;
@@ -298,7 +301,7 @@ namespace GAIA
 	
 	GINL TYPEID nametotype(const GAIA::GCH* psz)
 	{
-		for(GAIA::NM x = 0; x < sizeofarray(TYPEID_ANAME); ++x)
+		for(GAIA::N32 x = 0; x < sizeofarray(TYPEID_ANAME); ++x)
 		{
 			if(GAIA_INTERNAL_NAMESPACE::typenamecmp(TYPEID_ANAME[x], psz) == 0)
 				return (TYPEID)x;
@@ -307,7 +310,7 @@ namespace GAIA
 	}
 	GINL TYPEID nametotype(const GAIA::GWCH* psz)
 	{
-		for(GAIA::NM x = 0; x < sizeofarray(TYPEID_WNAME); ++x)
+		for(GAIA::N32 x = 0; x < sizeofarray(TYPEID_WNAME); ++x)
 		{
 			if(GAIA_INTERNAL_NAMESPACE::typenamecmp(TYPEID_WNAME[x], psz) == 0)
 				return (TYPEID)x;

@@ -17,7 +17,7 @@ namespace GAIA
 			GINL GAIA::BL FromString(const GAIA::GCH* psz)
 			{
 				const GAIA::GCH* p = psz;
-				GAIA::UM uDotCnt = GAIA::ALGORITHM::strcnt(psz, '.');
+				GAIA::U32 uDotCnt = GAIA::ALGORITHM::strcnt(psz, '.');
 				if(uDotCnt == 3)
 				{
 					for(GAIA::N32 x = 0; x < 3; ++x)
@@ -35,7 +35,7 @@ namespace GAIA
 				GAIA::GCH* p = psz;
 				for(GAIA::N32 x = 0; x < 4; ++x)
 				{
-					p = GAIA::ALGORITHM::int2str((GAIA::NM)us[3 - x], p);
+					p = GAIA::ALGORITHM::int2str((GAIA::N32)us[3 - x], p);
 					*(p - 1) = '.';
 				}
 				*(p - 1) = 0;
@@ -90,7 +90,7 @@ namespace GAIA
 				GAIA::GCH* p = GAIA::ALGORITHM::strend(psz);
 				*p = ':';
 				++p;
-				p = GAIA::ALGORITHM::int2str((GAIA::NM)uPort, p);
+				p = GAIA::ALGORITHM::int2str((GAIA::N32)uPort, p);
 				*(p - 1) = 0;
 			}
 			GINL NetworkAddress& operator = (const NetworkAddress& src){ip = src.ip; uPort = src.uPort; return *this;}
@@ -99,7 +99,7 @@ namespace GAIA
 			IP ip;
 			GAIA::U16 uPort;
 		};
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::UM& size);
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::N32& size);
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::GCH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult);
 		class NetworkSender;
 		class NetworkReceiver;
@@ -114,13 +114,13 @@ namespace GAIA
 			{
 			public:
 				GAIA::U8* p;
-				GAIA::UM uSize;
+				GAIA::U32 uSize;
 			};
 		private:
 			typedef GAIA::CONTAINER::Queue<SendRec> __SendQueueType;
 			typedef GAIA::CONTAINER::Vector<SendRec> __SendListType;
 		public:
-			static const GAIA::UM MAX_NOSTABILITY_SENDSIZE = 840;
+			static const GAIA::U32 MAX_NOSTABILITY_SENDSIZE = 840;
 			class ConnectDesc
 			{
 			public:
@@ -150,7 +150,7 @@ namespace GAIA
 			GINL NetworkSender* GetSender() const{return m_pSender;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetReceiver(NetworkReceiver* pReceiver);
 			GINL NetworkReceiver* GetReceiver() const{return m_pReceiver;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC BL Send(const GAIA::U8* p, GAIA::UM uSize);
+			GAIA_DEBUG_CODEPURE_MEMFUNC BL Send(const GAIA::U8* p, GAIA::U32 uSize);
 			GAIA_CLASS_OPERATOR_COMPARE(m_h, m_h, NetworkHandle);
 		private:
 			GINL GAIA::GVOID init()

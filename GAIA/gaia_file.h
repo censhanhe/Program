@@ -40,13 +40,34 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			template<typename _ParamType> GAIA::N64 WriteText(const _ParamType* pszText){return this->Write(pszText, GAIA::ALGORITHM::strlen(pszText));}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size);
+			template<typename _ParamType> GAIA::N64 WriteText(const _ParamType* pszText){return this->Write(pszText, GAIA::ALGORITHM::strlen(pszText));}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::N64& offset);
 			GINL const GAIA::N64& Tell() const{return m_offset;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Flush();
 			template<typename _ObjType> GINL File& operator >> (_ObjType& t){this->Read(t); return *this;}
 			template<typename _ObjType> GINL File& operator << (const _ObjType& t){this->Write(t); return *this;}
+	#ifdef GAIA_DEBUG_MACHINELENGTH
+		private: // Protect for 32-64bit error.
+			GINL GAIA::BL Read(GAIA::NM& obj){return GAIA::False;}
+			GINL GAIA::BL Write(const GAIA::NM& obj){return GAIA::False;}
+			GINL GAIA::BL Read(GAIA::UM& obj){return GAIA::False;}
+			GINL GAIA::BL Write(const GAIA::UM& obj){return GAIA::False;}
+			GINL GAIA::BL Read(GAIA::GWCH& obj){return GAIA::False;}
+			GINL GAIA::BL Write(const GAIA::GWCH& obj){return GAIA::False;}
+			GINL File& operator >> (GAIA::NM& t){return *this;}
+			GINL File& operator << (const GAIA::NM& t){return *this;}
+			GINL File& operator >> (GAIA::UM& t){return *this;}
+			GINL File& operator << (const GAIA::UM& t){return *this;}
+			GINL File& operator >> (GAIA::GWCH& t){return *this;}
+			GINL File& operator << (const GAIA::GWCH& t){return *this;}
+			GINL GAIA::N64 Read(GAIA::NM* pDst, const GAIA::N64& size){return GAIA::False;}
+			GINL GAIA::N64 Write(const GAIA::NM* pDst, const GAIA::N64& size){return GAIA::False;} GINL GAIA::N64 Write(GAIA::NM* pDst, const GAIA::N64& size){return GAIA::False;}
+			GINL GAIA::N64 Read(GAIA::UM* pDst, const GAIA::N64& size){return GAIA::False;}
+			GINL GAIA::N64 Write(const GAIA::UM* pDst, const GAIA::N64& size){return GAIA::False;} GINL GAIA::N64 Write(GAIA::UM* pDst, const GAIA::N64& size){return GAIA::False;}
+			GINL GAIA::N64 Read(GAIA::GWCH* pDst, const GAIA::N64& size){return GAIA::False;}
+			GINL GAIA::N64 Write(const GAIA::GWCH* pDst, const GAIA::N64& size){return GAIA::False;} GINL GAIA::N64 Write(GAIA::GWCH* pDst, const GAIA::N64& size){return GAIA::False;}
+	#endif
 		private:
 			GAIA::UM m_fileopentype;
 			GAIA::N64 m_size;

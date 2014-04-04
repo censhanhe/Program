@@ -10,12 +10,12 @@ namespace GAIA
 		public:
 			RouteNet(){m_bBegin = GAIA::False;}
 			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::GAIA_CLSID_ROUTE_NET;}
-			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::UM& size)
+			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::U32& size)
 			{
 				return GAIA::True;
 			}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Receive(const GAIA::GVOID* p, const GAIA::UM& size)
+			virtual GAIA::BL Receive(const GAIA::GVOID* p, const GAIA::U32& size)
 			{
 				return GAIA::True;
 			}

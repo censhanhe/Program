@@ -54,14 +54,16 @@ namespace GAIA
 			{
 				if(m_pIO == GNULL)
 					return *this;
-				serializer_write_proc(this, t);
+				SerializerProc sp;
+				sp.write(this, t);
 				return *this;
 			}
 			template<typename _ParamType> GINL Serializer& operator >> (_ParamType& t)
 			{
 				if(m_pIO == GNULL)
 					return *this;
-				serializer_read_proc(this, t);
+				SerializerProc sp;
+				sp.read(this, t);
 				return *this;
 			}
 		private:
