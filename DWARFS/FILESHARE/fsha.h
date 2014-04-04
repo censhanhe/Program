@@ -3780,7 +3780,58 @@ namespace FSHA
 			{
 				if(listPart.size() == 1)
 				{
+					static const GAIA::GCH TESTREADROOT[] = "readroot/";
+					static const GAIA::U32 TESTFILECOUNT = 1000;
+					static const GAIA::U32 TESTFILEMINSIZE = 10;
+					static const GAIA::U32 TESTFILEMAXSIZE = 1024 * 1024;
+					m_prt << "Begin generate test file.\n";
+					m_prt << "Min file size = ." << TESTFILEMINSIZE << "\n";
+					m_prt << "Max file size = ." << TESTFILEMAXSIZE << "\n";
+					m_prt << "File count = ." << TESTFILECOUNT << "\n";
+					GAIA::FILESYSTEM::Directory dir;
+					if(!dir.Create(TESTREADROOT, GAIA::False))
+						m_prt << "Create root path failed!\n";
+					GAIA::U64 uTotalFileSize = 0;
+					for(GAIA::U32 x = 0; x < TESTFILECOUNT; ++x)
+					{
+						GAIA::GCH szFile[MAXPATHLEN];
+						GAIA::ALGORITHM::int2str((GAIA::N32)x, szFile);
+						GAIA::ALGORITHM::strcat(szFile, ".t");
+						GAIA::GCH szFullName[MAXPATHLEN];
+						GAIA::ALGORITHM::strcpy(szFullName, TESTREADROOT);
+						GAIA::ALGORITHM::strcat(szFullName, szFile);
+						GAIA::FILESYSTEM::File file;
+						if(!file.Open(szFullName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE | GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS))
+						{
+							m_prt <<  "Create file " << szFullName << " failed!\n";
+							continue;
+						}
+						GAIA::U32 u0 = (GAIA::U32)GAIA::MATH::random();
+						GAIA::U32 u1 = (GAIA::U32)GAIA::MATH::random();
+						GAIA_AST(TESTFILEMAXSIZE >= TESTFILEMINSIZE);
+						GAIA::U32 uFileSize = (u0 * 65536 + u1) % (TESTFILEMAXSIZE - TESTFILEMINSIZE) + TESTFILEMINSIZE;
+						GAIA::U32 uOriginFileSize = uFileSize;
+						if(uFileSize > 0)
+						{
+							while(uFileSize >= sizeof(GAIA::U32))
+							{
+								file << x;
+								uFileSize -= sizeof(GAIA::U32);
+							}
+							while(uFileSize >= sizeof(GAIA::U8))
+							{
+								file << (GAIA::U8)(x % 256);
+								uFileSize -= sizeof(GAIA::U8);
+							}
+							file.Flush();
+						}
+						m_prt << x << "(" << uOriginFileSize << ") " << "\n";
+						uTotalFileSize += uOriginFileSize;
+					}
+					m_prt << "\nTotalFileSize = " << uTotalFileSize << "\n";
 				}
+				else
+					CMDFAILED;
 			}
 			else
 				return GAIA::False;
