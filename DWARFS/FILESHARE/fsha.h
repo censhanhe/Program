@@ -2689,7 +2689,9 @@ namespace FSHA
 				"build",				"build the path and generate file list, format = file_path file_ext_list.",
 				"readroot",				"set read root path, format = readroot [file_path_name].",
 				"writeroot",			"set write root path, format = writeroot [file_path_name].",
+				"clearread", 			"clear read root path, format = clearread.",
 				"clearwrite",			"clear write root path, format = clearwrite.",
+				"clearconfigfile",		"clear setting file, format = clearconfigfile.",
 
 				"cmpl",					"set/get file download complete state, format = cmpl fileid [0or1]",
 				"cmplall",				"set all file download complete, format = cmplall 0or1.",
@@ -2752,7 +2754,9 @@ namespace FSHA
 				CMD_BUILD,
 				CMD_READROOT,
 				CMD_WRITEROOT,
+				CMD_CLEARREAD,
 				CMD_CLEARWRITE,
+				CMD_CLEARCONFIGFILE,
 
 				CMD_CMPL,
 				CMD_CMPLALL,
@@ -3042,6 +3046,17 @@ namespace FSHA
 				else
 					CMDFAILED;
 			}
+			else if(CMD(CMD_CLEARREAD))
+			{
+				if(listPart.size() == 1)
+				{
+					GAIA::FILESYSTEM::Directory dir;
+					dir.Remove(m_readroot, GAIA::True);
+					dir.Create(m_readroot, GAIA::True);
+				}
+				else
+					CMDFAILED;
+			}
 			else if(CMD(CMD_CLEARWRITE))
 			{
 				if(listPart.size() == 1)
@@ -3049,6 +3064,18 @@ namespace FSHA
 					GAIA::FILESYSTEM::Directory dir;
 					dir.Remove(m_writeroot, GAIA::True);
 					dir.Create(m_writeroot, GAIA::True);
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_CLEARCONFIGFILE))
+			{
+				if(listPart.size() == 1)
+				{
+					GAIA::FILESYSTEM::Directory dir;
+					dir.RemoveFile(FILE_USERGROUP);
+					dir.RemoveFile(FILE_FILELIST);
+					dir.RemoveFile(FILE_BANIP);
 				}
 				else
 					CMDFAILED;
