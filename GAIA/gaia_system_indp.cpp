@@ -1,6 +1,6 @@
 #include 	"preheader.h"
-#include 	"gaia_print.h"
+#include 	"gaia_system.h"
 
 #ifdef GAIA_DEBUG_CODEPURE
-#	include "gaia_print_indp.h"
+#	include "gaia_system_indp.h"
 #endif

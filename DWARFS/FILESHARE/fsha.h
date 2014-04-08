@@ -2498,6 +2498,7 @@ namespace FSHA
 			m_pMWThread->Run();
 			m_pHeartTickThread->Run();
 			m_statistics.fStartupTime = FSHA_PERF;
+			m_statistics_last.fStartupTime = FSHA_PERF;
 			m_bStartuped = GAIA::True;
 			return GAIA::True;
 		}
@@ -2547,7 +2548,9 @@ namespace FSHA
 			m_fwtpool.clear();
 			m_fileheadsendtasks.clear();
 			m_statistics.init();
+			m_statistics_last.init();
 			m_perf.init();
+			m_perf_last.init();
 			m_listFileReqTemp.clear();
 			m_listFileDeleteTemp.clear();
 			m_listChunkDeleteTemp.clear();
@@ -2741,7 +2744,8 @@ namespace FSHA
 				"preset",				"reset performance, format = preset.",
 
 				"t_genfile",			"test:generate sample data file, format = t_genfile.",
-				"t_watchfile",			"test:watch file status, format = t_watchfile.",
+				"t_watch",				"test:enable or disable watch, format = t_watch 0|1.",
+				"t_watchfile",			"test:watch file status, format = t_watchfile fileid.",
 				"t_watchip",			"test:watch ip status, format = t_watchip xxx.xxx.xxx.xxx.",
 				"t_watchport",			"test:watch port status, format = t_watchport port.",
 			};
@@ -2809,6 +2813,7 @@ namespace FSHA
 				CMD_PERFRESET,
 
 				CMD_T_GENFILE,
+				CMD_T_WATCH,
 				CMD_T_WATCHFILE,
 				CMD_T_WATCHIP,
 				CMD_T_WATCHPORT,
@@ -2820,7 +2825,10 @@ namespace FSHA
 			if(CMD(CMD_VERSION))
 			{
 				if(listPart.size() == 1)
+				{
+					AL alprt(m_lr_prt);
 					m_prt << VERSION_STRING << "\n";
+				}
 				else
 					CMDFAILED;
 			}
@@ -2829,7 +2837,10 @@ namespace FSHA
 				if(listPart.size() == 1)
 				{
 					if(m_szLoopCmd[0] == 0)
+					{
+						AL alprt(m_lr_prt);
 						m_prt << "No loop command!" << "\n";
+					}
 				}
 				else if(listPart.size() == 2)
 				{
@@ -2851,96 +2862,104 @@ namespace FSHA
 			else if(CMD(CMD_PID))
 			{
 				GAIA::UM uProcessID = GAIA::PROCESS::processid();
+				AL alprt(m_lr_prt);
 				m_prt << "Current Process ID = " << uProcessID << "\n";
 			}
 			else if(CMD(CMD_CLEAR))
 			{
 				if(listPart.size() == 1)
+				{
+					AL alprt(m_lr_prt);
 					m_prt.clear_screen();
+				}
 				else
 					CMDFAILED;
 			}
 			else if(CMD(CMD_HELP))
 			{
+				AL alprt(m_lr_prt);
 				for(GAIA::N32 x = 0; x < sizeof(COMMAND_LIST) / sizeof(const GAIA::GCH*) / 2; ++x)
 					m_prt << "[" << x << "] " << COMMAND_LIST[x * 2] << " Info:" << COMMAND_LIST[x * 2 + 1] << "\n";
 			}
 			else if(CMD(CMD_STATISTICS))
 			{
-				m_prt << "WorkTime = " << FSHA_PERF - m_statistics.fStartupTime << "\n";
+				AL alprt(m_lr_prt);
+				m_prt << "WorkTime = " << FSHA_PERF - m_statistics.fStartupTime << "(" << m_statistics.fStartupTime - m_statistics_last.fStartupTime << ")" << "\n";
 				m_prt << "\n";
-				m_prt << "ReqFileCount = " << m_statistics.uRequestFileCount << "\n";
-				m_prt << "ReqCmplFileCount = " << m_statistics.uRequestFileCmplCount << "\n";
-				m_prt << "BeReqFileCount = " << m_statistics.uBeRequestFileCount << "\n";
-				m_prt << "ReqChunkCount = " << m_statistics.uRequestChunkCount << "\n";
-				m_prt << "ReqChunkCmplCount = " << m_statistics.uRequestChunkCmplCount << "\n";
-				m_prt << "BeReqChunkCount = " << m_statistics.uBeRequestChunkCount << "\n";
-				m_prt << "ReqFileHeadCount = " << m_statistics.uRequestFileHeadCount << "\n";
+				m_prt << "ReqFileCount = " << m_statistics.uRequestFileCount << "(" << m_statistics.uRequestFileCount - m_statistics_last.uRequestFileCount << ")" << "\n";
+				m_prt << "ReqCmplFileCount = " << m_statistics.uRequestFileCmplCount << "(" << m_statistics.uRequestFileCmplCount - m_statistics_last.uRequestFileCmplCount << ")" << "\n";
+				m_prt << "BeReqFileCount = " << m_statistics.uBeRequestFileCount << "(" << m_statistics.uBeRequestFileCount - m_statistics_last.uBeRequestFileCount << ")" << "\n";
+				m_prt << "ReqChunkCount = " << m_statistics.uRequestChunkCount << "(" << m_statistics.uRequestChunkCount - m_statistics_last.uRequestChunkCount << ")" << "\n";
+				m_prt << "ReqChunkCmplCount = " << m_statistics.uRequestChunkCmplCount << "(" << m_statistics.uRequestChunkCmplCount - m_statistics_last.uRequestChunkCmplCount << ")" << "\n";
+				m_prt << "BeReqChunkCount = " << m_statistics.uBeRequestChunkCount << "(" << m_statistics.uBeRequestChunkCount - m_statistics_last.uBeRequestChunkCount << ")" << "\n";
+				m_prt << "ReqFileHeadCount = " << m_statistics.uRequestFileHeadCount << "(" << m_statistics.uRequestFileHeadCount - m_statistics_last.uRequestFileHeadCount << ")" << "\n";
 				m_prt << "\n";
-				m_prt << "SendFileCount = " << m_statistics.uSendFileCount << "\n";
-				m_prt << "SendCmplFileCount = " << m_statistics.uSendCmplFileCount << "\n";
-				m_prt << "SendChunkCount = " << m_statistics.uSendChunkCount << "\n";
-				m_prt << "RecvChunkCount = " << m_statistics.uRecvChunkCount << "\n";
+				m_prt << "SendFileCount = " << m_statistics.uSendFileCount << "(" << m_statistics.uSendFileCount - m_statistics_last.uSendFileCount << ")" << "\n";
+				m_prt << "SendCmplFileCount = " << m_statistics.uSendCmplFileCount << "(" << m_statistics.uSendCmplFileCount - m_statistics_last.uSendCmplFileCount << ")" << "\n";
+				m_prt << "SendChunkCount = " << m_statistics.uSendChunkCount << "(" << m_statistics.uSendChunkCount - m_statistics_last.uSendChunkCount << ")" << "\n";
+				m_prt << "RecvChunkCount = " << m_statistics.uRecvChunkCount << "(" << m_statistics.uRecvChunkCount - m_statistics_last.uRecvChunkCount << ")" << "\n";
 				m_prt << "\n";
-				m_prt << "NSendCount = " << m_statistics.uNSendCount << "\n";
-				m_prt << "NRecvCount = " << m_statistics.uNRecvCount << "\n";
-				m_prt << "NSendBytes = " << m_statistics.uNSendBytes << "\n";
-				m_prt << "NRecvBytes = " << m_statistics.uNRecvBytes << "\n";
+				m_prt << "NSendCount = " << m_statistics.uNSendCount << "(" << m_statistics.uNSendCount - m_statistics_last.uNSendCount << ")" << "\n";
+				m_prt << "NRecvCount = " << m_statistics.uNRecvCount << "(" << m_statistics.uNRecvCount - m_statistics_last.uNRecvCount << ")" << "\n";
+				m_prt << "NSendBytes = " << m_statistics.uNSendBytes << "(" << m_statistics.uNSendBytes - m_statistics_last.uNSendBytes << ")" << "\n";
+				m_prt << "NRecvBytes = " << m_statistics.uNRecvBytes << "(" << m_statistics.uNRecvBytes - m_statistics_last.uNRecvBytes << ")" << "\n";
 				m_prt << "\n";
-				m_prt << "FrameCount = " << m_statistics.uFrameCount << "\n";
-				m_prt << "ValidFrameCount = " << m_statistics.uValidFrameCount << "\n";
+				m_prt << "FrameCount = " << m_statistics.uFrameCount << "(" << m_statistics.uFrameCount - m_statistics_last.uFrameCount << ")" << "\n";
+				m_prt << "ValidFrameCount = " << m_statistics.uValidFrameCount << "(" << m_statistics.uValidFrameCount - m_statistics_last.uValidFrameCount << ")" << "\n";
 				m_prt << "\n";
-				m_prt << "TotalCmplFileCount = " << m_statistics.uTotalCmplFileCount << "(" << 
-					(GAIA::F64)m_statistics.uTotalCmplFileCount / (GAIA::F64)(m_filelist.GetFileCount() * m_links.size()) << ")" << "\n";
-				m_prt << "JumpFileCount = " << m_statistics.uJumpFileCount << "\n";
-				m_prt << "BeJumpFileCount = " << m_statistics.uBeJumpFileCount << "\n";
-				m_prt << "CRCCheckFailedCount = " << m_statistics.uCRCCheckFailedCount << "\n";
-				m_prt << "BanIPMessageCount = " << m_statistics.uBanIPMessageCount << "\n";
-				m_prt << "EmptyFileCount = " << m_statistics.uEmptyFileCount << "\n";
+				m_prt << "TotalCmplFileCount = " << m_statistics.uTotalCmplFileCount << "(" << (GAIA::F64)m_statistics.uTotalCmplFileCount / (GAIA::F64)(m_filelist.GetFileCount() * m_links.size()) << ")" << "\n";
+				m_prt << "JumpFileCount = " << m_statistics.uJumpFileCount << "(" << m_statistics.uJumpFileCount - m_statistics_last.uJumpFileCount << ")" << "\n";
+				m_prt << "BeJumpFileCount = " << m_statistics.uBeJumpFileCount << "(" << m_statistics.uBeJumpFileCount - m_statistics_last.uBeJumpFileCount << ")" << "\n";
+				m_prt << "CRCCheckFailedCount = " << m_statistics.uCRCCheckFailedCount << "(" << m_statistics.uCRCCheckFailedCount - m_statistics_last.uCRCCheckFailedCount << ")" << "\n";
+				m_prt << "BanIPMessageCount = " << m_statistics.uBanIPMessageCount << "(" << m_statistics.uBanIPMessageCount - m_statistics_last.uBanIPMessageCount << ")" << "\n";
+				m_prt << "EmptyFileCount = " << m_statistics.uEmptyFileCount << "(" << m_statistics.uEmptyFileCount - m_statistics_last.uEmptyFileCount << ")" << "\n";
 				m_prt << "\n";
-				m_prt << "MsgRecvLoginCountR = " << m_statistics.uMsgRecvLoginCountR << "\n";
-				m_prt << "MsgRecvLogoutCountR = " << m_statistics.uMsgRecvLogoutCountR << "\n";
-				m_prt << "MsgRecvNoopCountC = " << m_statistics.uMsgRecvNoopCountC << "\n";
-				m_prt << "MsgRecvFileHeadCountR = " << m_statistics.uMsgRecvFileHeadCountR << "\n";
-				m_prt << "MsgRecvFileCountR = " << m_statistics.uMsgRecvFileCountR << "\n";
-				m_prt << "MsgRecvFileChunkCountR = " << m_statistics.uMsgRecvFileChunkCountR << "\n";
-				m_prt << "MsgRecvFileHeadCountA = " << m_statistics.uMsgRecvFileHeadCountA << "\n";
-				m_prt << "MsgRecvFileChunkCountA = " << m_statistics.uMsgRecvFileChunkCountA << "\n";
-				m_prt << "MsgRecvFileNotExistCountA = " << m_statistics.uMsgRecvFileNotExistCountA << "\n";
-				m_prt << "MsgRecvFileCmplCountA = " << m_statistics.uMsgRecvFileCmplCountA << "\n"; 
-				m_prt << "MsgRecvCmplFileCountN = " << m_statistics.uMsgRecvCmplFileCountCountN << "\n";
-				m_prt << "MsgRecvCmplFileSectionCountN = " << m_statistics.uMsgRecvCmplFileSectionCountN << "\n";
-				m_prt << "MsgRecvCNNCountA = " << m_statistics.uMsgRecvCNNCountA << "\n";
-				m_prt << "MsgRecvLoginOKCountA = " << m_statistics.uMsgRecvLoginOKCountA << "\n";
-				m_prt << "MsgRecvLogoutOKCountA = " << m_statistics.uMsgRecvLogoutOKCountA << "\n";
-				m_prt << "MsgRecvErrorCountA = " << m_statistics.uMsgRecvErrorCountA << "\n";
+				m_prt << "MsgRecvLoginCountR = " << m_statistics.uMsgRecvLoginCountR << "(" << m_statistics.uMsgRecvLoginCountR - m_statistics_last.uMsgRecvLoginCountR << ")" << "\n";
+				m_prt << "MsgRecvLogoutCountR = " << m_statistics.uMsgRecvLogoutCountR << "(" << m_statistics.uMsgRecvLogoutCountR - m_statistics_last.uMsgRecvLogoutCountR << ")" << "\n";
+				m_prt << "MsgRecvNoopCountC = " << m_statistics.uMsgRecvNoopCountC << "(" << m_statistics.uMsgRecvNoopCountC - m_statistics_last.uMsgRecvNoopCountC << ")" << "\n";
+				m_prt << "MsgRecvFileHeadCountR = " << m_statistics.uMsgRecvFileHeadCountR << "(" << m_statistics.uMsgRecvFileHeadCountR - m_statistics_last.uMsgRecvFileHeadCountR << ")" << "\n";
+				m_prt << "MsgRecvFileCountR = " << m_statistics.uMsgRecvFileCountR << "(" << m_statistics.uMsgRecvFileCountR - m_statistics_last.uMsgRecvFileCountR << ")" << "\n";
+				m_prt << "MsgRecvFileChunkCountR = " << m_statistics.uMsgRecvFileChunkCountR << "(" << m_statistics.uMsgRecvFileChunkCountR - m_statistics_last.uMsgRecvFileChunkCountR << ")" << "\n";
+				m_prt << "MsgRecvFileHeadCountA = " << m_statistics.uMsgRecvFileHeadCountA << "(" << m_statistics.uMsgRecvFileHeadCountA - m_statistics_last.uMsgRecvFileHeadCountA << ")" << "\n";
+				m_prt << "MsgRecvFileChunkCountA = " << m_statistics.uMsgRecvFileChunkCountA << "(" << m_statistics.uMsgRecvFileChunkCountA - m_statistics_last.uMsgRecvFileChunkCountA << ")" << "\n";
+				m_prt << "MsgRecvFileNotExistCountA = " << m_statistics.uMsgRecvFileNotExistCountA << "(" << m_statistics.uMsgRecvFileNotExistCountA - m_statistics_last.uMsgRecvFileNotExistCountA << ")" << "\n";
+				m_prt << "MsgRecvFileCmplCountA = " << m_statistics.uMsgRecvFileCmplCountA << "(" << m_statistics.uMsgRecvFileCmplCountA - m_statistics_last.uMsgRecvFileCmplCountA << ")" << "\n"; 
+				m_prt << "MsgRecvCmplFileCountN = " << m_statistics.uMsgRecvCmplFileCountCountN << "(" << m_statistics.uMsgRecvCmplFileCountCountN - m_statistics_last.uMsgRecvCmplFileCountCountN << ")" << "\n";
+				m_prt << "MsgRecvCmplFileSectionCountN = " << m_statistics.uMsgRecvCmplFileSectionCountN << "(" << m_statistics.uMsgRecvCmplFileSectionCountN - m_statistics_last.uMsgRecvCmplFileSectionCountN << ")" << "\n";
+				m_prt << "MsgRecvCNNCountA = " << m_statistics.uMsgRecvCNNCountA << "(" << m_statistics.uMsgRecvCNNCountA - m_statistics_last.uMsgRecvCNNCountA << ")" << "\n";
+				m_prt << "MsgRecvLoginOKCountA = " << m_statistics.uMsgRecvLoginOKCountA << "(" << m_statistics.uMsgRecvLoginOKCountA - m_statistics_last.uMsgRecvLoginOKCountA << ")" << "\n";
+				m_prt << "MsgRecvLogoutOKCountA = " << m_statistics.uMsgRecvLogoutOKCountA << "(" << m_statistics.uMsgRecvLogoutOKCountA - m_statistics_last.uMsgRecvLogoutOKCountA << ")" << "\n";
+				m_prt << "MsgRecvErrorCountA = " << m_statistics.uMsgRecvErrorCountA << "(" << m_statistics.uMsgRecvErrorCountA - m_statistics_last.uMsgRecvErrorCountA << ")" << "\n";
 				m_prt << "\n";
-				m_prt << "MsgSendLoginCountR = " << m_statistics.uMsgSendLoginCountR << "\n";
-				m_prt << "MsgSendLogoutCountR = " << m_statistics.uMsgSendLogoutCountR << "\n";
-				m_prt << "MsgSendNoopCountC = " << m_statistics.uMsgSendNoopCountC << "\n";
-				m_prt << "MsgSendFileHeadCountR = " << m_statistics.uMsgSendFileHeadCountR << "\n";
-				m_prt << "MsgSendFileCountR = " << m_statistics.uMsgSendFileCountR << "\n";
-				m_prt << "MsgSendFileChunkCountR = " << m_statistics.uMsgSendFileChunkCountR << "\n";
-				m_prt << "MsgSendFileHeadCountA = " << m_statistics.uMsgSendFileHeadCountA << "\n";
-				m_prt << "MsgSendFileChunkCountA = " << m_statistics.uMsgSendFileChunkCountA << "\n";
-				m_prt << "MsgSendFileNotExistCountA = " << m_statistics.uMsgSendFileNotExistCountA << "\n";
-				m_prt << "MsgSendFileCmplCountA = " << m_statistics.uMsgSendFileCmplCountA << "\n"; 
-				m_prt << "MsgSendCmplFileCountN = " << m_statistics.uMsgSendCmplFileCountCountN << "\n";
-				m_prt << "MsgSendCmplFileSectionCountN = " << m_statistics.uMsgSendCmplFileSectionCountN << "\n";
-				m_prt << "MsgSendCNNCountA = " << m_statistics.uMsgSendCNNCountA << "\n";
-				m_prt << "MsgSendLoginOKCountA = " << m_statistics.uMsgSendLoginOKCountA << "\n";
-				m_prt << "MsgSendLogoutOKCountA = " << m_statistics.uMsgSendLogoutOKCountA << "\n";
-				m_prt << "MsgSendErrorCountA = " << m_statistics.uMsgSendErrorCountA << "\n";
+				m_prt << "MsgSendLoginCountR = " << m_statistics.uMsgSendLoginCountR << "(" << m_statistics.uMsgSendLoginCountR - m_statistics_last.uMsgSendLoginCountR << ")" << "\n";
+				m_prt << "MsgSendLogoutCountR = " << m_statistics.uMsgSendLogoutCountR << "(" << m_statistics.uMsgSendLogoutCountR - m_statistics_last.uMsgSendLogoutCountR << ")" << "\n";
+				m_prt << "MsgSendNoopCountC = " << m_statistics.uMsgSendNoopCountC << "(" << m_statistics.uMsgSendNoopCountC - m_statistics_last.uMsgSendNoopCountC << ")" << "\n";
+				m_prt << "MsgSendFileHeadCountR = " << m_statistics.uMsgSendFileHeadCountR << "(" << m_statistics.uMsgSendFileHeadCountR - m_statistics_last.uMsgSendFileHeadCountR << ")" << "\n";
+				m_prt << "MsgSendFileCountR = " << m_statistics.uMsgSendFileCountR << "(" << m_statistics.uMsgSendFileCountR - m_statistics_last.uMsgSendFileCountR << ")" << "\n";
+				m_prt << "MsgSendFileChunkCountR = " << m_statistics.uMsgSendFileChunkCountR << "(" << m_statistics.uMsgSendFileChunkCountR - m_statistics_last.uMsgSendFileChunkCountR << ")" << "\n";
+				m_prt << "MsgSendFileHeadCountA = " << m_statistics.uMsgSendFileHeadCountA << "(" << m_statistics.uMsgSendFileHeadCountA - m_statistics_last.uMsgSendFileHeadCountA << ")" << "\n";
+				m_prt << "MsgSendFileChunkCountA = " << m_statistics.uMsgSendFileChunkCountA << "(" << m_statistics.uMsgSendFileChunkCountA - m_statistics_last.uMsgSendFileChunkCountA << ")" << "\n";
+				m_prt << "MsgSendFileNotExistCountA = " << m_statistics.uMsgSendFileNotExistCountA << "(" << m_statistics.uMsgSendFileNotExistCountA - m_statistics_last.uMsgSendFileNotExistCountA << ")" << "\n";
+				m_prt << "MsgSendFileCmplCountA = " << m_statistics.uMsgSendFileCmplCountA << "(" << m_statistics.uMsgSendFileCmplCountA - m_statistics_last.uMsgSendFileCmplCountA << ")" << "\n"; 
+				m_prt << "MsgSendCmplFileCountN = " << m_statistics.uMsgSendCmplFileCountCountN << "(" << m_statistics.uMsgSendCmplFileCountCountN - m_statistics_last.uMsgSendCmplFileCountCountN << ")" << "\n";
+				m_prt << "MsgSendCmplFileSectionCountN = " << m_statistics.uMsgSendCmplFileSectionCountN << "(" << m_statistics.uMsgSendCmplFileSectionCountN - m_statistics_last.uMsgSendCmplFileSectionCountN << ")" << "\n";
+				m_prt << "MsgSendCNNCountA = " << m_statistics.uMsgSendCNNCountA << "(" << m_statistics.uMsgSendCNNCountA - m_statistics_last.uMsgSendCNNCountA << ")" << "\n";
+				m_prt << "MsgSendLoginOKCountA = " << m_statistics.uMsgSendLoginOKCountA << "(" << m_statistics.uMsgSendLoginOKCountA - m_statistics_last.uMsgSendLoginOKCountA << ")" << "\n";
+				m_prt << "MsgSendLogoutOKCountA = " << m_statistics.uMsgSendLogoutOKCountA << "(" << m_statistics.uMsgSendLogoutOKCountA - m_statistics_last.uMsgSendLogoutOKCountA << ")" << "\n";
+				m_prt << "MsgSendErrorCountA = " << m_statistics.uMsgSendErrorCountA << "(" << m_statistics.uMsgSendErrorCountA - m_statistics_last.uMsgSendErrorCountA << ")" << "\n";
 				m_prt << "\n";
-				m_prt << "TimeoutSectionRequestCount = " << m_statistics.uTimeoutSectionRequestCount << "\n";
-				m_prt << "TimeoutChunkRequestCount = " << m_statistics.uTimeoutChunkRequestCount << "\n";
-				m_prt << "TimeoutReRequestCount = " << m_statistics.uTimeoutReRequestCount << "\n";
-				m_prt << "RecvRepeatedDataSize = " << m_statistics.uRecvRepeatedDataSize << "\n";
+				m_prt << "TimeoutSectionRequestCount = " << m_statistics.uTimeoutSectionRequestCount << "(" << m_statistics.uTimeoutSectionRequestCount - m_statistics_last.uTimeoutSectionRequestCount << ")" << "\n";
+				m_prt << "TimeoutChunkRequestCount = " << m_statistics.uTimeoutChunkRequestCount << "(" << m_statistics.uTimeoutChunkRequestCount - m_statistics_last.uTimeoutChunkRequestCount << ")" << "\n";
+				m_prt << "TimeoutReRequestCount = " << m_statistics.uTimeoutReRequestCount << "(" << m_statistics.uTimeoutReRequestCount - m_statistics_last.uTimeoutReRequestCount << ")" << "\n";
+				m_prt << "RecvRepeatedDataSize = " << m_statistics.uRecvRepeatedDataSize << "(" << m_statistics.uRecvRepeatedDataSize - m_statistics_last.uRecvRepeatedDataSize << ")" << "\n";
 				m_prt << "\n";
 				m_prt << "OwnFile = " << m_uCmplFileCount << "/" << m_filelist.GetFileCount() << "\n";
+
+				GAIA::ALGORITHM::memcpy(&m_statistics_last, &m_statistics, sizeof(m_statistics));
 			}
 			else if(CMD(CMD_STATE))
 			{
+				AL alprt(m_lr_prt);
 				// Global constants.
 				{
 					m_prt << "[Global constants information.]" << "\n";
@@ -3039,7 +3058,10 @@ namespace FSHA
 				if(listPart.size() == 2)
 					m_readroot = listPart[1].front_ptr();
 				else if(listPart.size() == 1)
+				{
+					AL alprt(m_lr_prt);
 					m_prt << m_readroot.front_ptr() << "\n";
+				}
 				else
 					CMDFAILED;
 			}
@@ -3048,7 +3070,10 @@ namespace FSHA
 				if(listPart.size() == 2)
 					m_writeroot = listPart[1].front_ptr();
 				else if(listPart.size() == 1)
+				{
+					AL alprt(m_lr_prt);
 					m_prt << m_writeroot.front_ptr() << "\n";
+				}
 				else
 					CMDFAILED;
 			}
@@ -3153,6 +3178,7 @@ namespace FSHA
 								fcmplsize = this->GetFileCacheCompleteSize(*pFRC);
 							}
 						}
+						AL alprt(m_lr_prt);
 						m_prt << "[" << nIndex++ << "] FID=" << fr.fid << 
 							" Size=" << fsize <<
 							" CmplSize=" << fcmplsize << 
@@ -3195,6 +3221,7 @@ namespace FSHA
 								fcmplsize = this->GetFileCacheCompleteSize(*pFRC);
 							}
 						}
+						AL alprt(m_lr_prt);
 						m_prt << "[" << nIndex++ << "] FID=" << fr.fid << 
 							" Size=" << fsize <<
 							" CmplSize=" << fcmplsize << 
@@ -3340,6 +3367,7 @@ namespace FSHA
 					m_usergroup.EnumUser(listUser);
 					UserGroup::__UserNameListType::const_it it = listUser.const_front_it();
 					GAIA::N32 nIndex = 0;
+					AL alprt(m_lr_prt);
 					while(!it.empty())
 					{
 						m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
@@ -3357,6 +3385,7 @@ namespace FSHA
 					const GAIA::GCH* pszPassword = m_usergroup.GetUserPassword(listPart[1].front_ptr());
 					if(pszPassword == GNULL)
 						CMDFAILED;
+					AL alprt(m_lr_prt);
 					m_prt << "Password = " << pszPassword << "\n";
 
 					UserGroup::__GroupNameListType listGroup;
@@ -3381,6 +3410,7 @@ namespace FSHA
 					m_usergroup.EnumGroup(listGroup);
 					UserGroup::__UserNameListType::const_it it = listGroup.const_front_it();
 					GAIA::N32 nIndex = 0;
+					AL alprt(m_lr_prt);
 					while(!it.empty())
 					{
 						m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
@@ -3401,6 +3431,7 @@ namespace FSHA
 						GAIA::BL bRead;
 						m_usergroup.GetGroupRightWrite(listPart[1].front_ptr(), bWrite);
 						m_usergroup.GetGroupRightRead(listPart[1].front_ptr(), bRead);
+						AL alprt(m_lr_prt);
 						m_prt << "Right = " << bWrite << ", Read = " << bRead << "\n";
 
 						UserGroup::__UserNameListType listUser;
@@ -3429,7 +3460,10 @@ namespace FSHA
 					CRCTYPE crc;
 					if(m_filelist.GetName(fid, szPathName) && 
 						m_filelist.GetCRC(fid, crc))
+					{
+						AL alprt(m_lr_prt);
 						m_prt << szPathName << " CRC=" << crc << "\n";
+					}
 					else
 						CMDFAILED;
 				}
@@ -3444,7 +3478,10 @@ namespace FSHA
 					const FILEID* pFileID = m_filelist.GetIDByName(listPart[1]);
 					CRCTYPE crc;
 					if(pFileID != GNULL && m_filelist.GetCRC(*pFileID, crc))
+					{
+						AL alprt(m_lr_prt);
 						m_prt << *pFileID << " CRC=" << crc << "\n";
+					}
 					else
 						CMDFAILED;
 				}
@@ -3455,6 +3492,7 @@ namespace FSHA
 			{
 				if(listPart.size() == 1)
 				{
+					AL alprt(m_lr_prt);
 					for(FILEID x = 0; x < m_filelist.GetFileCount(); ++x)
 					{
 						GAIA::GCH szPathName[MAXPATHLEN];
@@ -3539,6 +3577,7 @@ namespace FSHA
 					GAIA::N32 nIndex = 0;
 					GAIA::GCH szTemp[120];
 					GAIA::U64 uCurrentTime = GAIA::TIME::clock_time();
+					AL alprt(m_lr_prt);
 					for(; !it.empty(); ++it)
 					{
 						const BanIP::BanIPNode& n = *it;
@@ -3599,7 +3638,10 @@ namespace FSHA
 			else if(CMD(CMD_DOWNLOADSPEED))
 			{
 				if(listPart.size() == 1)
+				{
+					AL alprt(m_lr_prt);
 					m_prt << "DownloadSpeed = " << m_uDSpeed << "\n";
+				}
 				else if(listPart.size() == 2)
 					m_uDSpeed = listPart[1];
 				else
@@ -3608,7 +3650,10 @@ namespace FSHA
 			else if(CMD(CMD_UPLOADSPEED))
 			{
 				if(listPart.size() == 1)
+				{
+					AL alprt(m_lr_prt);
 					m_prt << "UploadSpeed = " << m_uUSpeed << "\n";
+				}
 				else if(listPart.size() == 2)
 					m_uUSpeed = listPart[1];
 				else
@@ -3619,6 +3664,7 @@ namespace FSHA
 				if(listPart.size() == 1)
 				{
 					{
+						AL alprt(m_lr_prt);
 						GAIA::GCH szText[128];
 						m_mainna.ToString(szText);
 						m_prt << "MainAddress = " << szText << "\n";
@@ -3633,6 +3679,7 @@ namespace FSHA
 						NLink& nl = *it;
 						GAIA::GCH szText[128];
 						nl.na.ToString(szText);
+						AL alprt(m_lr_prt);
 						m_prt << "[" << nIndex << "] " << szText << " ";
 						if(nl.bBeLink)
 							m_prt << "BeLink" << " ";
@@ -3658,6 +3705,7 @@ namespace FSHA
 				if(listPart.size() == 1)
 				{
 					{
+						AL alprt(m_lr_prt);
 						GAIA::GCH szText[128];
 						m_mainna.ToString(szText);
 						m_prt << "MainAddress = " << szText << "\n";
@@ -3672,6 +3720,7 @@ namespace FSHA
 						NLinkPri& nlp = *it;
 						GAIA::GCH szText[128];
 						nlp.nlink.na.ToString(szText);
+						AL alprt(m_lr_prt);
 						m_prt << "[" << nIndex << "] " << szText << " ";
 						if(nlp.nlink.bBeLink)
 							m_prt << "BeLink" << " ";
@@ -3696,54 +3745,57 @@ namespace FSHA
 			{
 				if(listPart.size() == 1)
 				{
-					m_prt << "Execute = " << m_perf.fExecute << "\n";
-					m_prt << "	ExecuteRequest = " << m_perf.fExecuteRequest << "\n";
-					m_prt << "	ExecuteSeqRequest = " << m_perf.fExecuteSeqRequest << "\n";
-					m_prt << "	ExecuteFileSend = " << m_perf.fExecuteFileSend << "\n";
-					m_prt << "	ExecuteChunkSend = " << m_perf.fExecuteChunkSend << "\n";
-					m_prt << "	ExecuteFileWrite = " << m_perf.fExecuteFileWrite << "\n";
-					m_prt << "		Sort = " << m_perf.fExecuteFileWriteSort << "\n";
-					m_prt << "		Request = " << m_perf.fExecuteFileWriteRequest << "\n";
-					m_prt << "		Combin = " << m_perf.fExecuteFileWriteCombinSection << "\n";
-					m_prt << "		WriteFile = " << m_perf.fExecuteFileWriteWriteFile << "\n";
-					m_prt << "		CheckComplete = " << m_perf.fExecuteFileWriteCheckComplete << "\n";
-					m_prt << "		CompleteDispatch = " << m_perf.fExecuteFileWriteCompleteDispatch << "\n";
-					m_prt << "	ExecuteCmpFilesNotify = " << m_perf.fExecuteCmpFilesNotify << "\n";
-					m_prt << "	ExecuteRecycleLink = " << m_perf.fExecuteRecycleLink << "\n";
-					m_prt << "	ExecuteTimeoutSectionRequest = " << m_perf.fExecuteTimeoutSectionRequest << "\n";
-					m_prt << "	ExecuteTimeoutChunkRequest = " << m_perf.fExecuteTimeoutChunkRequest << "\n";
-					m_prt << "	ExecuteFileHeadSend = " << m_perf.fExecuteFileHeadSend << "\n";
-					m_prt << "	ExecuteBanIP = " << m_perf.fExecuteBanIP << "\n";
+					AL alprt(m_lr_prt);
+					m_prt << "Execute = " << m_perf.fExecute << "(" << m_perf.fExecute - m_perf_last.fExecute << ")" << "\n";
+					m_prt << "	ExecuteRequest = " << m_perf.fExecuteRequest << "(" << m_perf.fExecuteRequest - m_perf_last.fExecuteRequest << ")" << "\n";
+					m_prt << "	ExecuteSeqRequest = " << m_perf.fExecuteSeqRequest << "(" << m_perf.fExecuteSeqRequest - m_perf_last.fExecuteSeqRequest << ")" << "\n";
+					m_prt << "	ExecuteFileSend = " << m_perf.fExecuteFileSend << "(" << m_perf.fExecuteFileSend - m_perf_last.fExecuteFileSend << ")" << "\n";
+					m_prt << "	ExecuteChunkSend = " << m_perf.fExecuteChunkSend << "(" << m_perf.fExecuteChunkSend - m_perf_last.fExecuteChunkSend << ")" << "\n";
+					m_prt << "	ExecuteFileWrite = " << m_perf.fExecuteFileWrite << "(" << m_perf.fExecuteFileWrite - m_perf_last.fExecuteFileWrite << ")" << "\n";
+					m_prt << "		Sort = " << m_perf.fExecuteFileWriteSort << "(" << m_perf.fExecuteFileWriteSort - m_perf_last.fExecuteFileWriteSort << ")" << "\n";
+					m_prt << "		Request = " << m_perf.fExecuteFileWriteRequest << "(" << m_perf.fExecuteFileWriteRequest - m_perf_last.fExecuteFileWriteRequest << ")" << "\n";
+					m_prt << "		Combin = " << m_perf.fExecuteFileWriteCombinSection << "(" << m_perf.fExecuteFileWriteCombinSection - m_perf_last.fExecuteFileWriteCombinSection << ")" << "\n";
+					m_prt << "		WriteFile = " << m_perf.fExecuteFileWriteWriteFile << "(" << m_perf.fExecuteFileWriteWriteFile - m_perf_last.fExecuteFileWriteWriteFile << ")" << "\n";
+					m_prt << "		CheckComplete = " << m_perf.fExecuteFileWriteCheckComplete << "(" << m_perf.fExecuteFileWriteCheckComplete - m_perf_last.fExecuteFileWriteCheckComplete << ")" << "\n";
+					m_prt << "		CompleteDispatch = " << m_perf.fExecuteFileWriteCompleteDispatch << "(" << m_perf.fExecuteFileWriteCompleteDispatch - m_perf_last.fExecuteFileWriteCompleteDispatch << ")" << "\n";
+					m_prt << "	ExecuteCmpFilesNotify = " << m_perf.fExecuteCmpFilesNotify << "(" << m_perf.fExecuteCmpFilesNotify - m_perf_last.fExecuteCmpFilesNotify << ")" << "\n";
+					m_prt << "	ExecuteRecycleLink = " << m_perf.fExecuteRecycleLink << "(" << m_perf.fExecuteRecycleLink - m_perf_last.fExecuteRecycleLink << ")" << "\n";
+					m_prt << "	ExecuteTimeoutSectionRequest = " << m_perf.fExecuteTimeoutSectionRequest << "(" << m_perf.fExecuteTimeoutSectionRequest - m_perf_last.fExecuteTimeoutSectionRequest << ")" << "\n";
+					m_prt << "	ExecuteTimeoutChunkRequest = " << m_perf.fExecuteTimeoutChunkRequest << "(" << m_perf.fExecuteTimeoutChunkRequest - m_perf_last.fExecuteTimeoutChunkRequest << ")" << "\n";
+					m_prt << "	ExecuteFileHeadSend = " << m_perf.fExecuteFileHeadSend << "(" << m_perf.fExecuteFileHeadSend - m_perf_last.fExecuteFileHeadSend << ")" << "\n";
+					m_prt << "	ExecuteBanIP = " << m_perf.fExecuteBanIP << "(" << m_perf.fExecuteBanIP - m_perf_last.fExecuteBanIP << ")" << "\n";
 					m_prt << "\n";
-					m_prt << "HeartTick = " << m_perf.fHeartTick << "\n";
+					m_prt << "HeartTick = " << m_perf.fHeartTick << "(" << m_perf.fHeartTick - m_perf_last.fHeartTick << ")" << "\n";
 					m_prt << "\n";
-					m_prt << "OnRecv = " << m_perf.fOnRecv << "\n";
-					m_prt << "	BanIPCheckUp = " << m_perf.fBanIPCheckUp << "\n";
-					m_prt << "	OnRecvLoginR = " << m_perf.fOnRecvLoginR << "\n";
-					m_prt << "	OnRecvLogoutR = " << m_perf.fOnRecvLogoutR << "\n";
-					m_prt << "	OnRecvNoopC = " << m_perf.fOnRecvNoopC << "\n";
-					m_prt << "	OnRecvFileHeadR = " << m_perf.fOnRecvFileHeadR << "\n";
-					m_prt << "	OnRecvFileR = " << m_perf.fOnRecvFileR << "\n";
-					m_prt << "	OnRecvFileChunkR = " << m_perf.fOnRecvFileChunkR << "\n";
-					m_prt << "	OnRecvFileHeadA = " << m_perf.fOnRecvFileHeadA << "\n";
-					m_prt << "	OnRecvFileChunkA = " << m_perf.fOnRecvFileChunkA << "\n";
-					m_prt << "	OnRecvFileNotExistA = " << m_perf.fOnRecvFileNotExistA << "\n";
-					m_prt << "	OnRecvFileCmplA = " << m_perf.fOnRecvFileCmplA << "\n";
-					m_prt << "	OnRecvCmplFileCountN = " << m_perf.fOnRecvCmplFileCountN << "\n";
-					m_prt << "	OnRecvCmplFileSectionN = " << m_perf.fOnRecvCmplFileSectionN << "\n";
-					m_prt << "	OnRecvCnnA = " << m_perf.fOnRecvCnnA << "\n";
-					m_prt << "	OnRecvLoginOKA = " << m_perf.fOnRecvLoginOKA << "\n";
-					m_prt << "	OnRecvLogoutOKA = " << m_perf.fOnRecvLogoutOKA << "\n";
-					m_prt << "	OnRecvErrorA = " << m_perf.fOnRecvErrorA << "\n";
+					m_prt << "OnRecv = " << m_perf.fOnRecv << "(" << m_perf.fOnRecv - m_perf_last.fOnRecv << ")" << "\n";
+					m_prt << "	BanIPCheckUp = " << m_perf.fBanIPCheckUp << "(" << m_perf.fBanIPCheckUp - m_perf_last.fBanIPCheckUp << ")" << "\n";
+					m_prt << "	OnRecvLoginR = " << m_perf.fOnRecvLoginR << "(" << m_perf.fOnRecvLoginR - m_perf_last.fOnRecvLoginR << ")" << "\n";
+					m_prt << "	OnRecvLogoutR = " << m_perf.fOnRecvLogoutR << "(" << m_perf.fOnRecvLogoutR - m_perf_last.fOnRecvLogoutR << ")" << "\n";
+					m_prt << "	OnRecvNoopC = " << m_perf.fOnRecvNoopC << "(" << m_perf.fOnRecvNoopC - m_perf_last.fOnRecvNoopC << ")" << "\n";
+					m_prt << "	OnRecvFileHeadR = " << m_perf.fOnRecvFileHeadR << "(" << m_perf.fOnRecvFileHeadR - m_perf_last.fOnRecvFileHeadR << ")" << "\n";
+					m_prt << "	OnRecvFileR = " << m_perf.fOnRecvFileR << "(" << m_perf.fOnRecvFileR - m_perf_last.fOnRecvFileR << ")" << "\n";
+					m_prt << "	OnRecvFileChunkR = " << m_perf.fOnRecvFileChunkR << "(" << m_perf.fOnRecvFileChunkR - m_perf_last.fOnRecvFileChunkR << ")" << "\n";
+					m_prt << "	OnRecvFileHeadA = " << m_perf.fOnRecvFileHeadA << "(" << m_perf.fOnRecvFileHeadA - m_perf_last.fOnRecvFileHeadA << ")" << "\n";
+					m_prt << "	OnRecvFileChunkA = " << m_perf.fOnRecvFileChunkA << "(" << m_perf.fOnRecvFileChunkA - m_perf_last.fOnRecvFileChunkA << ")" << "\n";
+					m_prt << "	OnRecvFileNotExistA = " << m_perf.fOnRecvFileNotExistA << "(" << m_perf.fOnRecvFileNotExistA - m_perf_last.fOnRecvFileNotExistA << ")" << "\n";
+					m_prt << "	OnRecvFileCmplA = " << m_perf.fOnRecvFileCmplA << "(" << m_perf.fOnRecvFileCmplA - m_perf_last.fOnRecvFileCmplA << ")" << "\n";
+					m_prt << "	OnRecvCmplFileCountN = " << m_perf.fOnRecvCmplFileCountN << "(" << m_perf.fOnRecvCmplFileCountN - m_perf_last.fOnRecvCmplFileCountN << ")" << "\n";
+					m_prt << "	OnRecvCmplFileSectionN = " << m_perf.fOnRecvCmplFileSectionN << "(" << m_perf.fOnRecvCmplFileSectionN - m_perf_last.fOnRecvCmplFileSectionN << ")" << "\n";
+					m_prt << "	OnRecvCnnA = " << m_perf.fOnRecvCnnA << "(" << m_perf.fOnRecvCnnA - m_perf_last.fOnRecvCnnA << ")" << "\n";
+					m_prt << "	OnRecvLoginOKA = " << m_perf.fOnRecvLoginOKA << "(" << m_perf.fOnRecvLoginOKA - m_perf_last.fOnRecvLoginOKA << ")" << "\n";
+					m_prt << "	OnRecvLogoutOKA = " << m_perf.fOnRecvLogoutOKA << "(" << m_perf.fOnRecvLogoutOKA - m_perf_last.fOnRecvLogoutOKA << ")" << "\n";
+					m_prt << "	OnRecvErrorA = " << m_perf.fOnRecvErrorA << "(" << m_perf.fOnRecvErrorA - m_perf_last.fOnRecvErrorA << ")" << "\n";
 					m_prt << "\n";
-					m_prt << "MinFileCmplTime = " << m_perf.fMinFileCmplTime << "\n";
-					m_prt << "MaxFileCmplTime = " << m_perf.fMaxFileCmplTime << "\n";
+					m_prt << "MinFileCmplTime = " << m_perf.fMinFileCmplTime << "(" << m_perf.fMinFileCmplTime - m_perf_last.fMinFileCmplTime << ")" << "\n";
+					m_prt << "MaxFileCmplTime = " << m_perf.fMaxFileCmplTime << "(" << m_perf.fMaxFileCmplTime - m_perf_last.fMaxFileCmplTime << ")" << "\n";
 					m_prt << "AveFileCmplTime = " << m_perf.fSumFileCmplTime / (GAIA::F64)m_statistics.uRequestFileCmplCount << "\n";
 					m_prt << "\n";
-					m_prt << "Temp1 = " << m_perf.fTemp1 << "\n";
-					m_prt << "Temp2 = " << m_perf.fTemp2 << "\n";
-					m_prt << "Temp3 = " << m_perf.fTemp3 << "\n";
-					m_prt << "Temp4 = " << m_perf.fTemp4 << "\n";
+					m_prt << "Temp1 = " << m_perf.fTemp1 << "(" << m_perf.fTemp1 - m_perf_last.fTemp1 << ")" << "\n";
+					m_prt << "Temp2 = " << m_perf.fTemp2 << "(" << m_perf.fTemp2 - m_perf_last.fTemp2 << ")" << "\n";
+					m_prt << "Temp3 = " << m_perf.fTemp3 << "(" << m_perf.fTemp3 - m_perf_last.fTemp3 << ")" << "\n";
+					m_prt << "Temp4 = " << m_perf.fTemp4 << "(" << m_perf.fTemp4 - m_perf_last.fTemp4 << ")" << "\n";
+
+					GAIA::ALGORITHM::memcpy(&m_perf_last, &m_perf, sizeof(m_perf));
 				}
 			}
 			else if(CMD(CMD_FILECACHEINFO))
@@ -3753,6 +3805,7 @@ namespace FSHA
 					AL al(m_lr_fcaches);
 					__FileRecCacheListType::it it = m_fcaches.front_it();
 					FILEID nIndex = 0;
+					AL alprt(m_lr_prt);
 					for(; !it.empty(); ++it)
 					{
 						FileRecCache& frc = *it;
@@ -3790,6 +3843,7 @@ namespace FSHA
 					static const GAIA::U32 TESTFILECOUNT = 1000;
 					static const GAIA::U32 TESTFILEMINSIZE = 10;
 					static const GAIA::U32 TESTFILEMAXSIZE = 1024 * 1024;
+					AL alprt(m_lr_prt);
 					m_prt << "Begin generate test file.\n";
 					m_prt << "Min file size = ." << TESTFILEMINSIZE << "\n";
 					m_prt << "Max file size = ." << TESTFILEMAXSIZE << "\n";
@@ -3839,6 +3893,20 @@ namespace FSHA
 				else
 					CMDFAILED;
 			}
+			else if(CMD(CMD_T_WATCH))
+			{
+				if(listPart.size() == 2)
+				{
+					if(listPart[1] == "0")
+						m_test_enablewatch = GAIA::False;
+					else if(listPart[1] == "1")
+						m_test_enablewatch = GAIA::True;
+					else
+						CMDFAILED;
+				}
+				else
+					CMDFAILED;
+			}
 			else if(CMD(CMD_T_WATCHFILE))
 			{
 				if(listPart.size() == 2)
@@ -3849,7 +3917,10 @@ namespace FSHA
 					{
 						FILEID fid = listPart[1];
 						if(fid >= m_filelist.GetFileCount())
+						{
+							AL alprt(m_lr_prt);
 							m_prt << "invalid fid!\n";
+						}
 						else
 							m_test_watchfid = fid;
 					}
@@ -3862,11 +3933,9 @@ namespace FSHA
 				if(listPart.size() == 2)
 				{
 					if(listPart[1] == "no")
-					{
-					}
+						m_test_watchna.ip.Invalid();
 					else
-					{
-					}
+						m_test_watchna.ip.FromString(listPart[1]);
 				}
 				else
 					CMDFAILED;
@@ -3876,11 +3945,9 @@ namespace FSHA
 				if(listPart.size() == 2)
 				{
 					if(listPart[1] == "no")
-					{
-					}
+						m_test_watchna.uPort = 0;
 					else
-					{
-					}
+						GAIA::ALGORITHM::str2int(listPart[1].front_ptr(), m_test_watchna.uPort);
 				}
 				else
 					CMDFAILED;
@@ -3920,6 +3987,7 @@ namespace FSHA
 			m_uLoopCmdEscape = 0;
 			m_uLoopCmdLastFireTime = 0;
 			m_uLastBanIPExecute = 0;
+			m_test_enablewatch = GAIA::False;
 			m_test_watchfid = (FILEID)GINVALID;
 			m_test_watchna.Invalid();
 		}
@@ -4347,6 +4415,15 @@ namespace FSHA
 
 					/* Write file. */
 					{
+						if(m_test_enablewatch && m_test_watchfid != (FILEID)GINVALID)
+						{
+							if(m_test_watchfid == pFRC->fid)
+							{
+								AL al(m_lr_prt);
+								m_prt << "[TEST] Write file data, ChunkIndex = " << (GAIA::N32)fwt.ci << ", SubChunkIndex = " << (GAIA::N32)fwt.sci << ".\n";
+							}
+						}
+
 						GAIA::F64 fPerfWrite = FSHA_PERF;
 						FILESIZETYPE dstsize = fwt.ci * CHUNKSIZE + fwt.sci * SUBCHUNKSIZE;
 						if(pFRC->pFA->Size() < dstsize)
@@ -5103,58 +5180,96 @@ namespace FSHA
 
 				m_perf.fOnRecvNoopC += FSHA_PERF - fPerfNoopC;
 			}
+			/* Watch print. */
+			GAIA::BL bWatchMatch = GAIA::False;
+			if(m_test_enablewatch)
+			{
+				if(!m_test_watchna.ip.IsInvalid() && m_test_watchna.uPort != 0)
+				{
+					if(m_test_watchna.ip == na.ip && m_test_watchna.uPort == na.uPort)
+						bWatchMatch = GAIA::True;
+				}
+				else if(!m_test_watchna.ip.IsInvalid())
+				{
+					if(m_test_watchna.ip == na.ip)
+						bWatchMatch = GAIA::True;
+				}
+				else if(m_test_watchna.uPort != 0)
+				{
+					if(m_test_watchna.uPort == na.uPort)
+						bWatchMatch = GAIA::True;
+				}
+			}
 			/* message statistics. */
+			#define MSGWATCHHEAD(sz) if(bWatchMatch){AL al(m_lr_prt); m_prt << "[TEST] Receive msg " << sz << ".\n ";}
 			switch(msgid)
 			{
 			case MSG_R_LOGIN:
 				m_statistics.uMsgRecvLoginCountR++;
+				MSGWATCHHEAD("MSG_R_LOGIN");
 				break;
 			case MSG_R_LOGOUT:
 				m_statistics.uMsgRecvLogoutCountR++;
+				MSGWATCHHEAD("MSG_R_LOGOUT");
 				break;
 			case MSG_C_NOOP:
 				m_statistics.uMsgRecvNoopCountC++;
+				MSGWATCHHEAD("MSG_C_NOOP");
 				break;
 			case MSG_R_FILEHEAD:
 				m_statistics.uMsgRecvFileHeadCountR++;
+				MSGWATCHHEAD("MSG_R_FILEHEAD");
 				break;
 			case MSG_R_FILE:
 				m_statistics.uMsgRecvFileCountR++;
+				MSGWATCHHEAD("MSG_R_FILE");
 				break;
 			case MSG_R_FILECHUNK:
 				m_statistics.uMsgRecvFileChunkCountR++;
+				MSGWATCHHEAD("MSG_R_FILECHUNK");
 				break;
 			case MSG_A_FILEHEAD:
 				m_statistics.uMsgRecvFileHeadCountA++;
+				MSGWATCHHEAD("MSG_A_FILEHEAD");
 				break;
 			case MSG_A_FILECHUNK:
 				m_statistics.uMsgRecvFileChunkCountA++;
+				MSGWATCHHEAD("MSG_A_FILECHUNK");
 				break;
 			case MSG_A_FILENOTEXIST:
 				m_statistics.uMsgRecvFileNotExistCountA++;
+				MSGWATCHHEAD("MSG_A_FILENOTEXIST");
 				break;
 			case MSG_A_FILECMPL:
 				m_statistics.uMsgRecvFileCmplCountA++;
+				MSGWATCHHEAD("MSG_A_FILECMPL");
 				break;
 			case MSG_N_CMPLFILECOUNT:
 				m_statistics.uMsgRecvCmplFileCountCountN++;
+				MSGWATCHHEAD("MSG_N_CMPLFILECOUNT");
 				break;
 			case MSG_N_CMPLFILESECTION:
 				m_statistics.uMsgRecvCmplFileSectionCountN++;
+				MSGWATCHHEAD("MSG_N_CMPLFILESECTION");
 				break;
 			case MSG_A_CNN:
 				m_statistics.uMsgRecvCNNCountA++;
+				MSGWATCHHEAD("MSG_A_CNN");
 				break;
 			case MSG_A_LOGINOK:
 				m_statistics.uMsgRecvLoginOKCountA++;
+				MSGWATCHHEAD("MSG_A_LOGINOK");
 				break;
 			case MSG_A_LOGOUTOK:
 				m_statistics.uMsgRecvLogoutOKCountA++;
+				MSGWATCHHEAD("MSG_A_LOGOUTOK");
 				break;
 			case MSG_A_ERROR:
 				m_statistics.uMsgRecvErrorCountA++;
+				MSGWATCHHEAD("MSG_A_ERROR");
 				break;
 			default:
+				MSGWATCHHEAD("InvalidMessageID");
 				break;
 			}
 			/* message dispatch. */
@@ -5227,6 +5342,15 @@ namespace FSHA
 					AL al(m_lr_fileheadsendtasks);
 					m_fileheadsendtasks.push_back(fhst);
 					m_perf.fOnRecvFileHeadR += FSHA_PERF - fPerfFileHeadR;
+
+					if(m_test_enablewatch && m_test_watchfid != (FILEID)GINVALID)
+					{
+						if(fhst.fid == m_test_watchfid)
+						{
+							AL al(m_lr_prt);
+							m_prt << "[TEST] Been request file head.\n";
+						}
+					}
 				}
 				break;
 			case MSG_R_FILE:
@@ -5267,6 +5391,14 @@ namespace FSHA
 								newmsg << fst.fid;
 								this->Send(newmsg.front_ptr(), newmsg.write_size());
 							}
+							if(m_test_enablewatch && m_test_watchfid != (FILEID)GINVALID)
+							{
+								if(fst.fid == m_test_watchfid)
+								{
+									AL al(m_lr_prt);
+									m_prt << "[TEST] Been request file.\n";
+								}
+							}
 						}
 					}
 					else
@@ -5290,6 +5422,14 @@ namespace FSHA
 					else
 						*pCST = cst;
 					m_perf.fOnRecvFileChunkR += FSHA_PERF - fPerfFileChunkR;
+					if(m_test_enablewatch && m_test_watchfid != (FILEID)GINVALID)
+					{
+						if(cst.fid == m_test_watchfid)
+						{
+							AL al(m_lr_prt);
+							m_prt << "[TEST] Been request file chunk, ChunkIndex = " << (GAIA::N32)cst.ci << ".\n";
+						}
+					}
 				}
 				break;
 			case MSG_A_FILEHEAD:
@@ -5313,6 +5453,15 @@ namespace FSHA
 						m_statistics.uEmptyFileCount++;
 					}
 					m_perf.fOnRecvFileHeadA += FSHA_PERF - fPerfFileHeadA;
+
+					if(m_test_enablewatch && m_test_watchfid != (FILEID)GINVALID)
+					{
+						if(frc.fid == m_test_watchfid)
+						{
+							AL al(m_lr_prt);
+							m_prt << "[TEST] Receive file head.\n";
+						}
+					}
 				}
 				break;
 			case MSG_A_FILECHUNK:
@@ -5351,6 +5500,15 @@ namespace FSHA
 							FileReq* pFR = m_reqeds.find(fr);
 							if(pFR != GNULL)
 								pFR->uLastActiveTime = GAIA::TIME::tick_time();
+						}
+
+						if(m_test_enablewatch && m_test_watchfid != (FILEID)GINVALID)
+						{
+							if(pFWT->fid == m_test_watchfid)
+							{
+								AL al(m_lr_prt);
+								m_prt << "[TEST] Receive file chunk, ChunkIndex = " << (GAIA::N32)pFWT->ci << ", SubChunkIndex = " << (GAIA::N32)pFWT->sci << ".\n";
+							}
 						}
 					}
 					else
@@ -5605,7 +5763,10 @@ namespace FSHA
 			case MSG_A_LOGINOK:
 				{
 					GAIA::F64 fPerfLoginOKA = FSHA_PERF;
-					m_prt << "Login OK!" << "\n";
+					{
+						AL alprt(m_lr_prt);
+						m_prt << "Login OK!" << "\n";
+					}
 
 					// Change link state.
 					{
@@ -5716,6 +5877,7 @@ namespace FSHA
 			case MSG_A_LOGOUTOK:
 				{
 					GAIA::F64 fPerfLogoutOKA = FSHA_PERF;
+					AL alprt(m_lr_prt);
 					m_prt << "Logout OK!" << "\n";
 					m_perf.fOnRecvLogoutOKA += FSHA_PERF - fPerfLogoutOKA;
 				}
@@ -5726,6 +5888,7 @@ namespace FSHA
 					ERRNO en;
 					m_OnReceiveMsgTemp >> en;
 					const GAIA::GCH* pszError = this->ErrorString(en);
+					AL alprt(m_lr_prt);
 					if(pszError == GNULL)
 						m_prt << "Known error!" << "\n";
 					else
@@ -6369,7 +6532,7 @@ namespace FSHA
 		NSender* m_pNSender;
 		NListener* m_pNListener;
 		NAcceptCallBack m_NAcceptCallBack;
-		GAIA::PRINT::Print m_prt;
+		GAIA::PRINT::Print m_prt; GAIA::SYNC::Lock m_lr_prt;
 		FSTR m_readroot;
 		FSTR m_writeroot;
 		__LinkListType m_links; GAIA::SYNC::Lock m_lr_links;
@@ -6400,6 +6563,8 @@ namespace FSHA
 		GAIA::U64 m_uLastBanIPExecute;
 		Statistics m_statistics;
 		Perf m_perf;
+		Statistics m_statistics_last;
+		Perf m_perf_last;
 
 		__FileReqListType m_listFileReqTemp;
 		GAIA::CONTAINER::Vector<FileSendTask> m_listFileDeleteTemp;
@@ -6422,6 +6587,7 @@ namespace FSHA
 		__FileWriteTaskListType m_filewritetasks_temp;
 		__FileHeadSendTaskListType m_fileheadsendtasks_temp;
 
+		GAIA::BL m_test_enablewatch;
 		FILEID m_test_watchfid;
 		GAIA::NETWORK::NetworkAddress m_test_watchna;
 	};

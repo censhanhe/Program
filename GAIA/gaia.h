@@ -11,6 +11,8 @@
 #include	"gaia_assert.h"
 #include	"gaia_error.h"
 
+#include	"gaia_system.h"
+
 #include	"gaia_sync_base.h"
 #include	"gaia_sync_atomic.h"
 #include	"gaia_sync_lock.h"
