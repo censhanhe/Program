@@ -2740,7 +2740,10 @@ namespace FSHA
 				"sreset",				"reset statistics, format = sreset.",
 				"preset",				"reset performance, format = preset.",
 
-				"t",					"test, format = t.",
+				"t_genfile",			"test:generate sample data file, format = t_genfile.",
+				"t_watchfile",			"test:watch file status, format = t_watchfile.",
+				"t_watchip",			"test:watch ip status, format = t_watchip xxx.xxx.xxx.xxx.",
+				"t_watchport",			"test:watch port status, format = t_watchport port.",
 			};
 			GAIA_ENUM_BEGIN(COMMAND_LIST)
 				CMD_VERSION,
@@ -2805,7 +2808,10 @@ namespace FSHA
 				CMD_STATISTICSRESET,
 				CMD_PERFRESET,
 
-				CMD_TEST,
+				CMD_T_GENFILE,
+				CMD_T_WATCHFILE,
+				CMD_T_WATCHIP,
+				CMD_T_WATCHPORT,
 			GAIA_ENUM_END(COMMAND_LIST)
 			#define CMD(e) (listPart[0] == COMMAND_LIST[e * 2])
 			#define CMDFAILED do{m_prt << "Failed!\n";}while(GAIA::ALWAYSFALSE)
@@ -3776,7 +3782,7 @@ namespace FSHA
 				else
 					CMDFAILED;
 			}
-			else if(CMD(CMD_TEST))
+			else if(CMD(CMD_T_GENFILE))
 			{
 				if(listPart.size() == 1)
 				{
@@ -3833,6 +3839,52 @@ namespace FSHA
 				else
 					CMDFAILED;
 			}
+			else if(CMD(CMD_T_WATCHFILE))
+			{
+				if(listPart.size() == 2)
+				{
+					if(listPart[1] == "no")
+						m_test_watchfid = (FILEID)GINVALID;
+					else
+					{
+						FILEID fid = listPart[1];
+						if(fid >= m_filelist.GetFileCount())
+							m_prt << "invalid fid!\n";
+						else
+							m_test_watchfid = fid;
+					}
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_T_WATCHIP))
+			{
+				if(listPart.size() == 2)
+				{
+					if(listPart[1] == "no")
+					{
+					}
+					else
+					{
+					}
+				}
+				else
+					CMDFAILED;
+			}
+			else if(CMD(CMD_T_WATCHPORT))
+			{
+				if(listPart.size() == 2)
+				{
+					if(listPart[1] == "no")
+					{
+					}
+					else
+					{
+					}
+				}
+				else
+					CMDFAILED;
+			}
 			else
 				return GAIA::False;
 			return GAIA::True;
@@ -3868,6 +3920,8 @@ namespace FSHA
 			m_uLoopCmdEscape = 0;
 			m_uLoopCmdLastFireTime = 0;
 			m_uLastBanIPExecute = 0;
+			m_test_watchfid = (FILEID)GINVALID;
+			m_test_watchna.Invalid();
 		}
 		GINL GAIA::BL OnExecute()
 		{
@@ -6367,6 +6421,9 @@ namespace FSHA
 		__MsgType m_FileHeadSendMsgTemp;
 		__FileWriteTaskListType m_filewritetasks_temp;
 		__FileHeadSendTaskListType m_fileheadsendtasks_temp;
+
+		FILEID m_test_watchfid;
+		GAIA::NETWORK::NetworkAddress m_test_watchna;
 	};
 };
 
