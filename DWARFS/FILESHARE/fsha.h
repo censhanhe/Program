@@ -4158,6 +4158,11 @@ namespace FSHA
 				#endif
 					m_FileSendMsgTemp.write(buf, scsize);
 					this->Send(m_FileSendMsgTemp.front_ptr(), m_FileSendMsgTemp.write_size());
+					if(m_test_enablewatch && fst.fid == m_test_watchfid)
+					{
+						AL al(m_lr_prt);
+						m_prt << "[TEST] Send file, ChunkIndex = " << fst.ci << ", SubChunkIndex = " << (GAIA::N32)fst.sci << ".\n";
+					}
 					m_statistics.uSendChunkCount++;
 					++fst.sci;
 					if(fst.sci == 0)
@@ -4165,6 +4170,11 @@ namespace FSHA
 					bRet = GAIA::True;
 					if(bComplete)
 					{
+						if(m_test_enablewatch && fst.fid == m_test_watchfid)
+						{
+							AL al(m_lr_prt);
+							m_prt << "[TEST] Send file complete.\n";
+						}
 						m_statistics.uSendCmplFileCount++;
 						m_listFileDeleteTemp.push_back(fst);
 						pFRC->pFA->Close();
@@ -4237,6 +4247,11 @@ namespace FSHA
 				#endif
 					m_ChunkSendMsgTemp.write(buf, scsize);
 					this->Send(m_ChunkSendMsgTemp.front_ptr(), m_ChunkSendMsgTemp.write_size());
+					if(m_test_enablewatch && m_test_watchfid == cst.fid)
+					{
+						AL al(m_lr_prt);
+						m_prt << "[TEST] Send chunk, ChunkIndex = " << cst.ci << ", SubChunkIndex = " << (GAIA::N32)cst.sci << ".\n";
+					}
 					m_statistics.uSendChunkCount++;
 					++cst.sci;
 					if(cst.sci == 0)
@@ -4247,6 +4262,11 @@ namespace FSHA
 					bRet = GAIA::True;
 					if(bComplete)
 					{
+						if(m_test_enablewatch && m_test_watchfid == cst.fid)
+						{
+							AL al(m_lr_prt);
+							m_prt << "[TEST] Send chunk complete.\n";
+						}
 						m_listChunkDeleteTemp.push_back(cst);
 						pFRC->pFA->Close();
 						m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
@@ -4513,7 +4533,22 @@ namespace FSHA
 					}
 				}
 				if(bCRCSuccess)
-					this->ReleaseFileRecCache(*it);
+				{
+					if(m_test_enablewatch && m_test_watchfid == (*it).fid)
+					{
+						AL al(m_lr_prt);
+						m_prt << "[TEST] File write complete.\n";
+					}
+						this->ReleaseFileRecCache(*it);
+				}
+				else
+				{
+					if(m_test_enablewatch && m_test_watchfid == (*it).fid)
+					{
+						AL al(m_lr_prt);
+						m_prt << "[TEST] File CRC check failed and rerequest.\n";
+					}
+				}
 			}
 			m_perf.fExecuteFileWriteCompleteDispatch += FSHA_PERF - fPerfCompleteDispatch;
 			m_perf.fExecuteFileWrite += FSHA_PERF - fPerf;
@@ -4746,7 +4781,12 @@ namespace FSHA
 										bRequested = GAIA::True;
 								}
 								if(bRequested)
-								{
+								{	
+									if(m_test_enablewatch && m_test_watchfid == fr.fid)
+									{
+										AL al(m_lr_prt);
+										m_prt << "[TEST] Request section for time out, ChunkIndex = " << fcs.e << ".\n";
+									}
 									GAIA::NETWORK::NetworkAddress selectna;
 									this->SelectRequestNetworkAddress(selectna);
 									m_TimeoutSectionRequestMsgTemp.clear();
@@ -4763,7 +4803,12 @@ namespace FSHA
 							}
 						}
 						else
-						{
+						{	
+							if(m_test_enablewatch && m_test_watchfid == fr.fid)
+							{
+								AL al(m_lr_prt);
+								m_prt << "[TEST] Request full file for time out, the pFCSL is GNULL.\n";
+							}
 							GAIA::NETWORK::NetworkAddress selectna;
 							this->SelectRequestNetworkAddress(selectna);
 							m_TimeoutSectionRequestMsgTemp.clear();
@@ -4780,6 +4825,11 @@ namespace FSHA
 					}
 					else
 					{
+						if(m_test_enablewatch && m_test_watchfid == fr.fid)
+						{
+							AL al(m_lr_prt);
+							m_prt << "[TEST] Request full file for time out, the pFRC is GNULL.\n";
+						}
 						GAIA::NETWORK::NetworkAddress selectna;
 						this->SelectRequestNetworkAddress(selectna);
 						m_TimeoutSectionRequestMsgTemp.clear();
@@ -4864,6 +4914,11 @@ namespace FSHA
 													this->Send(m_TimeoutChunkRequestMsgTemp.front_ptr(),
 														m_TimeoutChunkRequestMsgTemp.write_size());
 
+													if(m_test_enablewatch && m_test_watchfid == pFRC->fid)
+													{
+														AL al(m_lr_prt);
+														m_prt << "[TEST] Request file chunk for time out, Chunk = " << x << ".\n";
+													}
 													m_statistics.uTimeoutChunkRequestCount++;
 													++uChunkRequestCount;
 													if(uChunkRequestCount == MAXCHUNKREQUESTCOUNTPERDISPATCH)
