@@ -44,6 +44,7 @@ namespace GAIA
 			#else
 				close(m_h);
 			#endif
+				m_h = GINVALID;
 				return GAIA::False;
 			}
 			if(setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize)) != 0)
@@ -53,6 +54,7 @@ namespace GAIA
 			#else
 				close(m_h);
 			#endif
+				m_h = GINVALID;
 				return GAIA::False;
 			}
 
@@ -388,6 +390,7 @@ namespace GAIA
 			#else
 				close(listensock);
 			#endif
+				listensock = GINVALID;
 				return;
 			}
 			if(setsockopt(listensock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nListenRecvBufSize, sizeof(m_desc.nListenRecvBufSize)) != 0)
@@ -397,6 +400,7 @@ namespace GAIA
 			#else
 				close(listensock);
 			#endif
+				listensock = GINVALID;
 				return;
 			}
 
@@ -417,6 +421,7 @@ namespace GAIA
 			#else
 				close(listensock);
 			#endif
+				listensock = GINVALID;
 				return;
 			}
 
@@ -430,6 +435,7 @@ namespace GAIA
 				shutdown(listensock, SHUT_RDWR);
 				close(listensock);
 			#endif
+				listensock = GINVALID;
 				return;
 			}
 
@@ -461,6 +467,7 @@ namespace GAIA
 						shutdown(newsock, SHUT_RDWR);
 						close(newsock);
 					#endif
+						newsock = GINVALID;
 						break;
 					}
 					if(setsockopt(newsock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nAcceptRecvBufSize, sizeof(m_desc.nAcceptRecvBufSize)) != 0)
@@ -472,6 +479,7 @@ namespace GAIA
 						shutdown(newsock, SHUT_RDWR);
 						close(newsock);
 					#endif
+						newsock = GINVALID;
 						break;
 					}
 				#if GAIA_OS == GAIA_OS_WINDOWS
