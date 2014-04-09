@@ -297,10 +297,10 @@ public:
 		}
 		for(__PatchListType::_sizetype x = 0; x < PATCH_COUNT * 10; ++x)
 		{
-			GAIA::N32 nFirst = GAIA::MATH::random() % 65536;
-			GAIA::N32 nSecond = GAIA::MATH::random() % 65536;
-			GAIA::N32 nIndex = nFirst * 65536 + nSecond;
-			nIndex = (GAIA::N32)(nIndex % PATCH_COUNT);
+			GAIA::U32 nFirst = GAIA::MATH::random() % 65536;
+			GAIA::U32 nSecond = GAIA::MATH::random() % 65536;
+			GAIA::U32 nIndex = nFirst * 65536 + nSecond;
+			nIndex = (GAIA::U32)(nIndex % PATCH_COUNT);
 			if(listAlloced[nIndex] == GNULL)
 			{
 				GAIA::U32 uSize = (GAIA::U32)(GAIA::MATH::random() % PATCH_MAX_SIZE + 1);
