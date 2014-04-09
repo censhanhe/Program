@@ -2886,8 +2886,12 @@ namespace FSHA
 			else if(CMD(CMD_HELP))
 			{
 				AL alprt(m_lr_prt);
+				GAIA::PRINT::PrintFormat pfold, pfnew;
+				m_prt >> pfold >> pfnew;
+				pfnew.align(24);
+				pfnew.left(GAIA::True);
 				for(GAIA::N32 x = 0; x < sizeof(COMMAND_LIST) / sizeof(const GAIA::GCH*) / 2; ++x)
-					m_prt << "[" << x << "] " << COMMAND_LIST[x * 2] << " Info:" << COMMAND_LIST[x * 2 + 1] << "\n";
+					m_prt << "[" << x << "] " << pfnew << COMMAND_LIST[x * 2] << pfold << "Info: " << COMMAND_LIST[x * 2 + 1] << "\n";
 			}
 			else if(CMD(CMD_STATISTICS))
 			{

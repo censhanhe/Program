@@ -133,6 +133,7 @@ namespace GAIA
 				{
 					this->reserve(src.write_size());
 					GAIA::ALGORITHM::memcpy(this->front_ptr(), src.front_ptr(), src.write_size());
+					m_pWrite = m_pFront + src.write_size();
 				}
 				return *this;
 			}
