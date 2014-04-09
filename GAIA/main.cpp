@@ -2285,6 +2285,7 @@ GAIA::N32 main()
 				r.Begin();
 
 				MyNetworkListener::ListenDesc descListen;
+				descListen.Reset();
 				descListen.addr.FromString("127.0.0.1:8765");
 				l.SetDesc(descListen);
 				l.Begin();
@@ -2292,9 +2293,11 @@ GAIA::N32 main()
 				GAIA::SYNC::sleep(1000);
 
 				MyNetworkHandle::ConnectDesc descConn;
+				descConn.Reset();
 				descConn.addr.FromString("127.0.0.1:8765");
 				descConn.bStabilityLink = GAIA::True;
-				h.Connect(descConn);
+				if(!h.Connect(descConn))
+					TEST_FILE_LINE("Connect FAILED!");
 
 				h.SetSender(&s);
 				h.SetReceiver(&r);
