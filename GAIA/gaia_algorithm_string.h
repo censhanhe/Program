@@ -107,8 +107,8 @@ namespace GAIA
 		}
 		template<typename _DataType> GINL GAIA::N32 stricmp(const _DataType* p1, const _DataType* p2)
 		{
-			GAIA_AST(dst != GNULL);
-			GAIA_AST(src != GNULL);
+			GAIA_AST(p1 != GNULL);
+			GAIA_AST(p2 != GNULL);
 			while(GAIA::ALWAYSTRUE)
 			{
 				_DataType c1 = GAIA::ALGORITHM::tolower(*p1);
