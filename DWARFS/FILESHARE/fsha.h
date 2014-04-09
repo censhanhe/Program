@@ -2439,7 +2439,12 @@ namespace FSHA
 			m_pMWThread->SetStackSize(THREADSTACKSIZE);
 			m_pHeartTickThread = new HeartTickThread; m_pHeartTickThread->SetFileShare(this);
 			m_pHeartTickThread->SetStackSize(THREADSTACKSIZE);
-			m_pNH = new NHandle; m_pNH->SetFileShare(this); m_pNH->SetSendBufSize(1024 * 1024); m_pNH->SetRecvBufSize(1024 * 1024 * 100);
+			m_pNH = new NHandle; m_pNH->SetFileShare(this); m_pNH->SetSendBufSize(1024 * 1024);
+		#if GAIA_OS == GAIA_OS_OSX
+			m_pNH->SetRecvBufSize(1024 * 1024 * 3);
+		#else
+			m_pNH->SetRecvBufSize(1024 * 1024 * 100);
+		#endif
 			m_pNReceiver = new NReceiver; m_pNReceiver->SetFileShare(this); m_pNReceiver->SetStackSize(THREADSTACKSIZE);
 			m_pNSender = new NSender; m_pNSender->SetFileShare(this); m_pNSender->SetStackSize(THREADSTACKSIZE);
 			m_pNListener = new NListener; m_pNListener->SetFileShare(this); m_pNListener->SetStackSize(THREADSTACKSIZE);
@@ -2490,7 +2495,10 @@ namespace FSHA
 				++cnndesc.addr.uPort;
 			}
 			if(!m_pNH->IsConnected())
+			{
+				m_prt << "NetworkHandle connect self failed!\n";
 				return GAIA::False;
+			}
 			m_pNH->SetReceiver(m_pNReceiver);
 			m_pNH->SetSender(m_pNSender);
 			m_pNReceiver->Begin();

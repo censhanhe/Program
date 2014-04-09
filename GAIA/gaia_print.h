@@ -8,8 +8,13 @@ namespace GAIA
 		class Print : public GAIA::Base
 		{
 		public:
-			GINL Print(){}
+			GINL Print(){this->init();}
 			GINL ~Print(){}
+
+			GINL GAIA::GVOID enable_write(GAIA::BL bEnable){m_bEnableWrite = bEnable;}
+			GINL GAIA::BL enable_write() const{return m_bEnableWrite;}
+			GINL GAIA::GVOID enable_read(GAIA::BL bEnable){m_bEnableRead = bEnable;}
+			GINL GAIA::BL enable_read() const{return m_bEnableRead;}
 
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID clear_screen();
 
@@ -48,6 +53,23 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (GAIA::GCH* p);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (GAIA::GWCH* p);
 			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (GAIA::X128& t);
+
+			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator >> (PrintFormat& pf);
+			GAIA_DEBUG_CODEPURE_MEMFUNC Print& operator << (const PrintFormat& pf);
+
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID flush();
+
+		private:
+			GINL GAIA::GVOID init()
+			{
+				m_bEnableWrite = GAIA::True;
+				m_bEnableRead = GAIA::True;
+			}
+
+		private:
+			PrintFormat m_pf;
+			GAIA::U8 m_bEnableWrite : 1;
+			GAIA::U8 m_bEnableRead : 1;
 		};
 	};
 };

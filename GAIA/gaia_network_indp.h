@@ -36,6 +36,26 @@ namespace GAIA
 			if(m_h == GINVALID)
 				return GAIA::False;
 
+			// Setup socket buffer size.
+			if(setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize)) != 0)
+			{
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				closesocket(m_h);
+			#else
+				close(m_h);
+			#endif
+				return GAIA::False;
+			}
+			if(setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize)) != 0)
+			{
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				closesocket(m_h);
+			#else
+				close(m_h);
+			#endif
+				return GAIA::False;
+			}
+
 			// Construct network address.
 			sockaddr_in sinaddr;
 			GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
@@ -78,9 +98,7 @@ namespace GAIA
 			//
 			m_conndesc = desc;
 
-			// Setup socket.
-			setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize));
-			setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize));
+			// Setup socket mode.
 		#if GAIA_OS == GAIA_OS_WINDOWS
 		#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
 		#		undef long
@@ -363,8 +381,24 @@ namespace GAIA
 			listensock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 			if(listensock == GINVALID)
 				return;
-			setsockopt(listensock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_desc.nListenSendBufSize, sizeof(m_desc.nListenSendBufSize));
-			setsockopt(listensock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nListenRecvBufSize, sizeof(m_desc.nListenRecvBufSize));
+			if(setsockopt(listensock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_desc.nListenSendBufSize, sizeof(m_desc.nListenSendBufSize)) != 0)
+			{
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				closesocket(listensock);
+			#else
+				close(listensock);
+			#endif
+				return;
+			}
+			if(setsockopt(listensock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nListenRecvBufSize, sizeof(m_desc.nListenRecvBufSize)) != 0)
+			{
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				closesocket(listensock);
+			#else
+				close(listensock);
+			#endif
+				return;
+			}
 
 			// Bind.
 			sockaddr_in addr;
@@ -418,8 +452,28 @@ namespace GAIA
 				if(newsock != GINVALID)
 				{
 					// Setup socket.
-					setsockopt(newsock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_desc.nAcceptSendBufSize, sizeof(m_desc.nAcceptSendBufSize));
-					setsockopt(newsock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nAcceptRecvBufSize, sizeof(m_desc.nAcceptRecvBufSize));
+					if(setsockopt(newsock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_desc.nAcceptSendBufSize, sizeof(m_desc.nAcceptSendBufSize)) != 0)
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS
+						shutdown(newsock, SD_BOTH);
+						closesocket(newsock);
+					#else
+						shutdown(newsock, SHUT_RDWR);
+						close(newsock);
+					#endif
+						break;
+					}
+					if(setsockopt(newsock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nAcceptRecvBufSize, sizeof(m_desc.nAcceptRecvBufSize)) != 0)
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS
+						shutdown(newsock, SD_BOTH);
+						closesocket(newsock);
+					#else
+						shutdown(newsock, SHUT_RDWR);
+						close(newsock);
+					#endif
+						break;
+					}
 				#if GAIA_OS == GAIA_OS_WINDOWS
 				#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
 				#		undef long

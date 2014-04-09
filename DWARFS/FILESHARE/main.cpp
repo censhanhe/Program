@@ -3,9 +3,7 @@
 using namespace std;
 
 #include	"fsha.h"
-#ifndef GAIA_DEBUG_MEMORYLEAK
-	GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
-#endif
+#include	"../../GAIA/gaia_global_impl.h"
 
 int main()
 {

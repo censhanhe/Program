@@ -65,9 +65,7 @@
 #endif
 
 #include "gaia.h"
-#ifndef GAIA_DEBUG_MEMORYLEAK
-	GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
-#endif
+#include "gaia_global_impl.h"
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	pragma comment(lib, "ws2_32.lib")

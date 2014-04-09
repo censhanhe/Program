@@ -181,6 +181,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gaia_global_impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\gaia_internal.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gaia_sysconfig.h"
 				>
 			</File>
@@ -1020,6 +1028,10 @@
 					>
 					<File
 						RelativePath=".\gaia_print.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_print_format.h"
 						>
 					</File>
 					<File
