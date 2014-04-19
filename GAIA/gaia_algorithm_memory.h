@@ -107,7 +107,7 @@ namespace GAIA
 				if(*((GAIA::U8*)p1) < *((GAIA::U8*)p2))
 					return +1;
 				else if(*((GAIA::U8*)p1) > *((GAIA::U8*)p2))
-					return -1;			
+					return -1;
 				p1 = ((GAIA::U8*)p1) + 1;
 				p2 = ((GAIA::U8*)p2) + 1;
 				sizet -= sizeof(GAIA::U8);
