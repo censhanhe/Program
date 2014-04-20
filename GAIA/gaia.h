@@ -98,14 +98,13 @@
 #include	"gaia_container_basicheap.h"
 #include	"gaia_container_accesser.h"
 #include	"gaia_container_storage.h"
-
 #include 	"gaia_container_vari.h"
+
+#include	"gaia_time.h"
 
 #include 	"gaia_math_rid.h"
 #include	"gaia_math_cookies.h"
 #include	"gaia_math_coord.h"
-
-#include	"gaia_time.h"
 
 #include	"gaia_datamodel.h"
 #include	"gaia_linkmodel.h"

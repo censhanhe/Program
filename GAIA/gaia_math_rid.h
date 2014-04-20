@@ -39,7 +39,15 @@ namespace GAIA
 		public:
 			GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
 			GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
-			GINL GAIA::GVOID generate(){}
+			GINL GAIA::GVOID generate()
+			{
+				GAIA::TIME::Time t;
+				GAIA::U16 uPIDSeedRandom;
+				GAIA::U16 uTIDSeedRandom;
+				GAIA::U8 uFileLineSeedRandom;
+				GAIA::U16 uStartTimeSeedRandom;
+				
+			}
 			GINL GAIA::GVOID fromstring(const GAIA::GCH* psz){GAIA::ALGORITHM::str2hex(psz, sizeofarray(u), u);}
 			GINL GAIA::GVOID tostring(GAIA::GCH* psz){GAIA::ALGORITHM::hex2str(u, sizeofarray(u), psz);}
 			GINL RID128& operator = (const RID128& src){u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
