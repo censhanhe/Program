@@ -44,7 +44,7 @@ namespace GAIA
 	class X128
 	{
 	public:
-		GINL X128& operator = (const X128& src){u0 = src.u0; u1 = src.u1; u2 = src.u2; u3 = src.u3;return *this;}
+		GINL X128& operator = (const X128& src){u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
 		template<typename _DataType> GINL X128& operator = (const _DataType* p)
 		{
 			u0 = u1 = u2 = u3 = 0;
@@ -62,55 +62,8 @@ namespace GAIA
 			}
 			return *this;
 		}
-		GINL BL operator == (const X128& src) const
-		{
-			if(u0 == src.u0 && u1 == src.u1 && u2 == src.u2 && u3 == src.u3)
-				return GAIA::True;
-			return GAIA::False;
-		}
-		GINL BL operator != (const X128& src) const{return !this->operator == (src);}
-		GINL BL operator <= (const X128& src) const
-		{
-			if(u0 < src.u0)
-				return GAIA::True;
-			else if(u0 > src.u0)
-				return GAIA::False;
-			if(u1 < src.u1)
-				return GAIA::True;
-			else if(u1 > src.u1)
-				return GAIA::False;
-			if(u2 < src.u2)
-				return GAIA::True;
-			else if(u2 > src.u2)
-				return GAIA::False;
-			if(u3 < src.u3)
-				return GAIA::True;
-			else if(u3 > src.u3)
-				return GAIA::False;
-			return GAIA::True;
-		}
-		GINL BL operator >= (const X128& src) const
-		{
-			if(u0 > src.u0)
-				return GAIA::True;
-			else if(u0 < src.u0)
-				return GAIA::False;
-			if(u1 > src.u1)
-				return GAIA::True;
-			else if(u1 < src.u1)
-				return GAIA::False;
-			if(u2 > src.u2)
-				return GAIA::True;
-			else if(u2 < src.u2)
-				return GAIA::False;
-			if(u3 > src.u3)
-				return GAIA::True;
-			else if(u3 < src.u3)
-				return GAIA::False;
-			return GAIA::True;
-		}
-		GINL BL operator < (const X128& src) const{return !this->operator >= (src);}
-		GINL BL operator > (const X128& src) const{return !this->operator <= (src);}
+		GAIA_CLASS_OPERATOR_COMPARE2(u64_0, u64_0, u64_1, u64_1, X128);
+	public:
 		union
 		{
 			class
@@ -120,6 +73,12 @@ namespace GAIA
 				GAIA::U32 u1;
 				GAIA::U32 u2;
 				GAIA::U32 u3;
+			};
+			class
+			{
+			public:
+				GAIA::U64 u64_0;
+				GAIA::U64 u64_1;
 			};
 			GAIA::U32 u[4];
 		};

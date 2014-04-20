@@ -101,6 +101,7 @@
 
 #include 	"gaia_container_vari.h"
 
+#include 	"gaia_math_rid.h"
 #include	"gaia_math_cookies.h"
 #include	"gaia_math_coord.h"
 
