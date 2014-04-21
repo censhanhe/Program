@@ -32,6 +32,16 @@ namespace GAIA
 		#endif
 			u64_0 = *(GAIA::U64*)ut;
 		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID RID32::uuid()
+		{
+			GAIA::U8 ut[16];
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			::CoCreateGuid((GUID*)ut);
+		#else
+			uuid_generate(*(uuid_t*)ut);
+		#endif
+			u0 = *(GAIA::U32*)ut;
+		}
 	};
 };
 

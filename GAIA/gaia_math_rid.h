@@ -5,57 +5,12 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		/*
-		*	The following property we can select for generate contextid in
-		*	many versions(RID's version in different length).
-		*
-		*		Time property(Total	52B).
-		*		0.)		Year				(6B)		[0,64)		Base time is 2014.
-		*		1.)		Month				(4B)		[0,16)
-		*		2.)		Day					(5B)		[0,32)
-		*		3.)		Hour				(5B)		[0,32)
-		*		4.)		Minute				(6B)		[0,64)
-		*		5.)		Second				(6B)		[0,64)
-		*		7.)		MSecond				(10B)		[0,1024)
-		*		8.)		USecond				(10B)		[0,1024)
-		*
-		*		Random property.
-		*		0.)		PIDSeedRandom		(12B)		[0,4096)
-		*		1.)		TIDSeedRandom		(15B)		[0,32768)
-		*		2.)		FileLineSeedRandom	(4B)		[0,16)
-		*		3.)		StartTimeSeedRandom	(13)		[0,8192)
-		*
-		*		Serial property.
-		*		0.)		SelfIncreaseSerial	(22)		[0,4194304)
-		*
-		*		Location property.
-		*		0.)		EarthZone			(2B)		[0,3)		0 means asia, 1 means america, 2 means europe, 3 means oceania.
-		*		1.)		IPTail				(8B)		[0,256)
-		*/
-
 		/* 128 bit random id. */
 		class RID128 : public GAIA::Base
 		{
 		public:
 			GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
 			GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
-			GINL GAIA::GVOID contextid()
-			{
-				GAIA::TIME::Time t;
-				t.systime();
-				GAIA::U16 uPIDSeedRandom = GAIA::PROCESS::processid() % 4096;
-				GAIA::U16 uTIDSeedRandom = GAIA::THREAD::threadid() % 4096;
-				GAIA::U8 uFileLineSeedRandom = 0;
-				const GAIA::GCH* pFileName = __FILE__;
-				while(*pFileName != 0)
-				{
-					uFileLineSeedRandom += *pFileName;
-					++pFileName;
-				}
-				uFileLineSeedRandom += __LINE__;
-				GAIA::U16 uStartTimeSeedRandom = (GAIA::TIME::tick_time() / 1000) % 8192;
-				
-			}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID uuid();
 			GINL GAIA::GVOID fromstring(const GAIA::GCH* psz){GAIA::ALGORITHM::str2hex(psz, sizeofarray(u), u);}
 			GINL GAIA::GVOID tostring(GAIA::GCH* psz){GAIA::ALGORITHM::hex2str(u, sizeofarray(u), psz);}
@@ -88,9 +43,6 @@ namespace GAIA
 		public:
 			GINL GAIA::BL empty() const{return u64_0 == 0;}
 			GINL GAIA::GVOID clear(){u64_0 = 0;}
-			GINL GAIA::GVOID contextid()
-			{
-			}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID uuid();
 			GINL GAIA::GVOID fromstring(const GAIA::GCH* psz){GAIA::ALGORITHM::str2hex(psz, sizeofarray(u), u);}
 			GINL GAIA::GVOID tostring(GAIA::GCH* psz){GAIA::ALGORITHM::hex2str(u, sizeofarray(u), psz);}
@@ -110,6 +62,29 @@ namespace GAIA
 				{
 				public:
 					GAIA::U64 u64_0;
+				};
+			};
+		};
+
+		/* 32 bit random id. */
+		class RID32 : public GAIA::Base
+		{
+		public:
+			GINL GAIA::BL empty() const{return u0 == 0;}
+			GINL GAIA::GVOID clear(){u0 = 0;}
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID uuid();
+			GINL GAIA::GVOID fromstring(const GAIA::GCH* psz){GAIA::ALGORITHM::str2hex(psz, sizeofarray(u), u);}
+			GINL GAIA::GVOID tostring(GAIA::GCH* psz){GAIA::ALGORITHM::hex2str(u, sizeofarray(u), psz);}
+			GINL RID32& operator = (const RID32& src){u0 = src.u0; return *this;}
+			GAIA_CLASS_OPERATOR_COMPARE(u0, u0, RID32);
+		public:
+			union
+			{
+				GAIA::U8 u[4];
+				class
+				{
+				public:
+					GAIA::U32 u0;
 				};
 			};
 		};
