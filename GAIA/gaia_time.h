@@ -26,6 +26,15 @@ namespace GAIA
 			GINL Time(const GAIA::U64& src){this->operator = (src);}
 			GINL GAIA::BL empty() const{return y == 0 && mo == 0 && d == 0 && h == 0 && mi == 0 && sec == 0 && msec == 0 && usec == 0;}
 			GINL GAIA::GVOID clear(){y = mo = d = h = mi = sec = msec = usec = 0;}
+			GINL GAIA::GVOID tostring(GAIA::GCH* psz) const
+			{
+				GAIA_AST(psz != GNULL);
+			}
+			GINL GAIA::BL fromstring(const GAIA::GCH* psz)
+			{
+				GAIA_AST(psz != GNULL);
+				return GAIA::True;
+			}
 			GINL Time& operator = (const Time& src)
 			{
 				y = src.y;
@@ -41,14 +50,14 @@ namespace GAIA
 			GINL Time& operator = (const GAIA::U64& src)
 			{
 				const GAIA::U32* p = (const GAIA::U32*)&src;
-				y = (p[0] >> 14) & 0x03FF;
-				mo = (p[0] >> 10) & 0x000F;
-				d = (p[0] >> 5) & 0x001F;
-				h = p[0] & 0x001F;
-				mi = (p[1] >> 26) & 0x003F;
-				sec = (p[1] >> 20) & 0x003F;
-				msec = (p[1] >> 10) & 0x03FF;
-				usec = p[1] & 0x03FF;
+				y = (p[0] >> 14) & 0x000003FF;
+				mo = (p[0] >> 10) & 0x0000000F;
+				d = (p[0] >> 5) & 0x0000001F;
+				h = p[0] & 0x0000001F;
+				mi = (p[1] >> 26) & 0x0000003F;
+				sec = (p[1] >> 20) & 0x0000003F;
+				msec = (p[1] >> 10) & 0x000003FF;
+				usec = p[1] & 0x000003FF;
 				return *this;
 			}
 			GINL GAIA::BL operator == (const Time& src) const
@@ -91,6 +100,15 @@ namespace GAIA
 			GINL operator GAIA::U64() const
 			{
 				GAIA::U64 ret;
+				GAIA::U32* p = (GAIA::U32*)&ret;
+				p[0] = ((GAIA::U32)y << 14) & 0xFFFFC000;
+				p[0] |= ((GAIA::U32)mo << 10) & 0x00003C00;
+				p[0] |= ((GAIA::U32)d << 5) & 0x000003E0;
+				p[0] |= ((GAIA::U32)h) & 0x0000001F;
+				p[1] = ((GAIA::U32)mi << 26) & 0xFC000000;
+				p[1] |= ((GAIA::U32)sec << 20) & 0x03F00000;
+				p[1] |= ((GAIA::U32)msec << 10) & 0x000FFC00;
+				p[1] |= ((GAIA::U32)usec) & 0x000003FF;
 				return ret;
 			}
 		public:
