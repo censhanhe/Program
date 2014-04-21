@@ -38,6 +38,7 @@
 #		include <time.h>
 #	else
 #		include <unistd.h>
+#		include <uuid/uuid.h>
 #		include <pthread.h>
 #		include <time.h>
 #		include <sys/time.h>

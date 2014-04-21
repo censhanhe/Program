@@ -102,6 +102,10 @@
 
 #include	"gaia_time.h"
 
+#include	"gaia_thread.h"
+#include 	"gaia_thread_pool.h"
+#include	"gaia_process.h"
+
 #include 	"gaia_math_rid.h"
 #include	"gaia_math_cookies.h"
 #include	"gaia_math_coord.h"
@@ -117,10 +121,6 @@
 #include 	"gaia_dataphase_bdiff.h"
 #include 	"gaia_dataphase_tdiff.h"
 #include 	"gaia_dataphase_crc.h"
-
-#include	"gaia_thread.h"
-#include 	"gaia_thread_pool.h"
-#include	"gaia_process.h"
 
 #include	"gaia_network.h"
 
