@@ -2096,6 +2096,53 @@ GAIA::N32 main()
 		}
 	}
 
+	// RID test.
+	{
+		TEST_BEGIN("<RID test>");
+		{	
+			bFunctionSuccess = GAIA::True;
+			{
+				typedef GAIA::CONTAINER::Vector<GAIA::MATH::RID128> __VectorType;
+				__VectorType vt;
+				vt.resize(10000000);
+				for(__VectorType::_sizetype x = 0; x < vt.size(); ++x)
+					vt[x].uuid();
+				vt.sort();
+				__VectorType::_sizetype repeatcount = vt.unique();
+				if(repeatcount != 0)
+					bFunctionSuccess = GAIA::False;
+			}
+			{
+				typedef GAIA::CONTAINER::Vector<GAIA::MATH::RID64> __VectorType;
+				__VectorType vt;
+				vt.resize(10000000);
+				for(__VectorType::_sizetype x = 0; x < vt.size(); ++x)
+					vt[x].uuid();
+				vt.sort();
+				__VectorType::_sizetype repeatcount = vt.unique();
+				if(repeatcount != 0)
+					bFunctionSuccess = GAIA::False;
+			}
+			{
+				typedef GAIA::CONTAINER::Vector<GAIA::MATH::RID64> __VectorType;
+				__VectorType vt;
+				vt.resize(10000000);
+				for(__VectorType::_sizetype x = 0; x < vt.size(); ++x)
+					vt[x].uuid();
+				vt.sort();
+				__VectorType::_sizetype repeatcount = vt.unique();
+				if(repeatcount != 0)
+					bFunctionSuccess = GAIA::False;
+			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("RID test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("RID test FAILED!");
+				
+		}
+		TEST_END;
+	}
+
 	// Thread test.
 	{
 		TEST_BEGIN("<Thread test>");
