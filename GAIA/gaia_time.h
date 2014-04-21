@@ -26,31 +26,11 @@ namespace GAIA
 			GINL Time(const GAIA::U64& src){this->operator = (src);}
 			GINL GAIA::BL empty() const{return y == 0 && mo == 0 && d == 0 && h == 0 && mi == 0 && sec == 0 && msec == 0 && usec == 0;}
 			GINL GAIA::GVOID clear(){y = mo = d = h = mi = sec = msec = usec = 0;}
-			GINL GAIA::GVOID tostring(GAIA::GCH* psz) const
-			{
-				GAIA_AST(psz != GNULL);
-			}
-			GINL GAIA::BL fromstring(const GAIA::GCH* psz)
-			{
-				GAIA_AST(psz != GNULL);
-				return GAIA::True;
-			}
-			GINL Time& operator = (const Time& src)
-			{
-				y = src.y;
-				mo = src.mo;
-				d = src.d;
-				h = src.h;
-				mi = src.mi;
-				sec = src.sec;
-				msec = src.msec;
-				usec = src.usec;
-				return *this;
-			}
+			GINL Time& operator = (const Time& src){y = src.y; mo = src.mo; d = src.d; h = src.h; mi = src.mi; sec = src.sec; msec = src.msec; usec = src.usec; return *this;}
 			GINL Time& operator = (const GAIA::U64& src)
 			{
 				const GAIA::U32* p = (const GAIA::U32*)&src;
-				y = (p[0] >> 14) & 0x000003FF;
+				y = (p[0] >> 14) & 0x00003FFF;
 				mo = (p[0] >> 10) & 0x0000000F;
 				d = (p[0] >> 5) & 0x0000001F;
 				h = p[0] & 0x0000001F;
@@ -60,17 +40,7 @@ namespace GAIA
 				usec = p[1] & 0x000003FF;
 				return *this;
 			}
-			GINL GAIA::BL operator == (const Time& src) const
-			{
-				return y == src.y && 
-					mo == src.mo && 
-					d == src.d && 
-					h == src.h && 
-					mi == src.mi && 
-					sec == src.sec && 
-					msec == src.msec && 
-					usec == src.usec;
-			}
+			GINL GAIA::BL operator == (const Time& src) const{return y == src.y && mo == src.mo && d == src.d && h == src.h && mi == src.mi && sec == src.sec && msec == src.msec && usec == src.usec;}
 			GINL GAIA::BL operator != (const Time& src) const{return !(this->operator == (src));}
 			GINL GAIA::BL operator >= (const Time& src) const{return GAIA::ALGORITHM::memcmp(this, &src, sizeof(src)) >= 0;}
 			GINL GAIA::BL operator <= (const Time& src) const{return GAIA::ALGORITHM::memcmp(this, &src, sizeof(src)) <= 0;}
@@ -94,9 +64,7 @@ namespace GAIA
 			{
 				return *this;
 			}
-			GINL GAIA::GVOID systime()
-			{
-			}
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID systime();
 			GINL operator GAIA::U64() const
 			{
 				GAIA::U64 ret;
