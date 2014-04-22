@@ -20,7 +20,20 @@ namespace GAIA
 			GINL _SizeType capacity() const{return static_cast<_SizeType>(m_pBack - m_pFront);}
 			GINL GAIA::GVOID clear(){m_pWrite = m_pRead = m_pFront;}
 			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MRELEASE(m_pFront); this->init();}}
-			GINL GAIA::GVOID reserve(const _SizeType& size){this->destroy(); if(size > 0){this->alloc(size); m_pWrite = m_pRead = m_pFront;}}
+			GINL GAIA::GVOID reserve(const _SizeType& size)
+			{
+				if(size == this->capacity())
+				{
+					m_pWrite = m_pRead = m_pFront;
+					return;
+				}
+				this->destroy();
+				if(size > 0)
+				{
+					this->alloc(size);
+					m_pWrite = m_pRead = m_pFront;
+				}
+			}
 			GINL GAIA::GVOID resize(const _SizeType& size){if(this->capacity() < size) this->reserve(size); m_pWrite = m_pRead = m_pFront; m_pWrite += size;}
 			GINL const GAIA::U8* front_ptr() const{return m_pFront;}
 			GINL GAIA::U8* front_ptr(){return m_pFront;}
@@ -128,10 +141,9 @@ namespace GAIA
 			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType* obj){this->read(obj); return *this;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				this->destroy();
+				this->reserve(src.write_size());
 				if(src.write_size() > 0)
 				{
-					this->reserve(src.write_size());
 					GAIA::ALGORITHM::memcpy(this->front_ptr(), src.front_ptr(), src.write_size());
 					m_pWrite = m_pFront + src.write_size();
 				}

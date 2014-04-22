@@ -499,7 +499,10 @@ namespace GAIA
 			GINL __MyType& assign(const _DataType* p, const _SizeType& size)
 			{
 				if(p == GNULL || size == 0)
+				{
+					this->clear();
 					return *this;
+				}
 				this->clear();
 				this->resize(size);
 				GAIA::ALGORITHM::strcpy(m_pFront, p);

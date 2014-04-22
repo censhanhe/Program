@@ -84,7 +84,20 @@ namespace GAIA
 				this->reserve(size);
 				m_size = size;
 			}
-			GINL GAIA::GVOID reserve(const _SizeType& size){this->destroy();if(size > 0){m_pFront = new _DataType[size];m_capacity = size;m_size = 0;}}
+			GINL GAIA::GVOID reserve(const _SizeType& size)
+			{
+				if(this->capacity() == size)
+				{
+					this->clear();
+					return;
+				}
+				this->destroy();
+				if(size > 0)
+				{
+					m_pFront = new _DataType[size];
+					m_capacity = size;
+				}
+			}
 			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){delete[] m_pFront; m_pFront = GNULL; m_capacity = m_size = 0;}}
 			GINL _SizeType count(const _DataType& t) const
 			{
@@ -182,7 +195,11 @@ namespace GAIA
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->reserve(src.size());
-				GAIA::ALGORITHM::copy(m_pFront, src.m_pFront, src.size());
+				if(src.size() > 0)
+				{
+					GAIA::ALGORITHM::copy(m_pFront, src.m_pFront, src.size());
+					m_size = src.size();
+				}
 				return *this;
 			}
 			GINL _DataType& operator[](const _SizeType& index)

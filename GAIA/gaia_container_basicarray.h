@@ -316,9 +316,9 @@ namespace GAIA
 			}
 			GINL const _DataType& operator [] (const _SizeType& index) const{return m_data[index];}
 			GINL _DataType& operator [] (const _SizeType& index){return m_data[index];}
-			GINL BasicArray<_DataType, _SizeType, _Size>& operator << (const _DataType& t){this->push_back(t); return *this;}
-			GINL BasicArray<_DataType, _SizeType, _Size>& operator >> (const _DataType& t){this->push_back(t); return *this;}
-			GINL BasicArray<_DataType, _SizeType, _Size>& operator = (const BasicArray<_DataType, _SizeType, _Size>& src)
+			GINL __MyType& operator << (const _DataType& t){this->push_back(t); return *this;}
+			GINL __MyType& operator >> (const _DataType& t){this->push_back(t); return *this;}
+			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->resize(src.size());
 				for(_sizetype x = 0; x < src.size(); ++x)

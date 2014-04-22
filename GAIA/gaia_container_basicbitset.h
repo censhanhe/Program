@@ -15,7 +15,7 @@ namespace GAIA
 			typedef BasicBitset<_SizeType> __MyType;
 		public:
 			GINL BasicBitset(){this->init();}
-			GINL BasicBitset(const BasicBitset<_SizeType>& src){this->init(); this->operator = (src);}
+			GINL BasicBitset(const __MyType& src){this->init(); this->operator = (src);}
 			GINL BasicBitset(const _SizeType& index){this->init(); this->set(index);}
 			GINL ~BasicBitset(){this->destroy();}
 			GINL GAIA::GVOID clear(){GAIA::ALGORITHM::set(this->front_ptr(), 0, this->size()); m_size = 0;}
@@ -65,16 +65,16 @@ namespace GAIA
 					m_size = 0;
 				}
 			}
-			GINL BasicBitset<_SizeType>& operator = (const _SizeType& index){this->clear(); this->set(index); return *this;}
-			GINL BasicBitset<_SizeType>& operator = (const BasicBitset<_SizeType>& src)
+			GINL __MyType& operator = (const _SizeType& index){this->clear(); this->set(index); return *this;}
+			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->destroy();
 				this->reverse(src.size());
 				GAIA::ALGORITHM::copy(this->front_ptr(), src.front_ptr(), src.size());
 				return *this;
 			}
-			GINL BasicBitset<_SizeType>& operator += (const _SizeType& index){this->set(index); return *this;}
-			GINL BasicBitset<_SizeType>& operator += (const BasicBitset<_SizeType>& src)
+			GINL __MyType& operator += (const _SizeType& index){this->set(index); return *this;}
+			GINL __MyType& operator += (const __MyType& src)
 			{
 				if(this->capacity() < src.size())
 					this->exten(src.size() - this->capacity());
@@ -83,8 +83,8 @@ namespace GAIA
 					this->front_ptr()[x] |= src.front_ptr[x];
 				return *this;
 			}
-			GINL BasicBitset<_SizeType>& operator -= (const _SizeType& index){this->reset(index); return *this;}
-			GINL BasicBitset<_SizeType>& operator -= (const BasicBitset<_SizeType>& src)
+			GINL __MyType& operator -= (const _SizeType& index){this->reset(index); return *this;}
+			GINL __MyType& operator -= (const __MyType& src)
 			{
 				_SizeType minsize = GAIA::ALGORITHM::minimize(this->size(), src.size());
 				for(_SizeType x = 0; x < minsize; ++x)
@@ -92,7 +92,7 @@ namespace GAIA
 				return *this;
 			}
 			GINL GAIA::BL operator == (const _SizeType& index){return this->exist(index);}
-			GINL GAIA::BL operator == (const BasicBitset<_SizeType>& src)
+			GINL GAIA::BL operator == (const __MyType& src)
 			{
 				if(this->size() != src.size())
 					return GAIA::False;
@@ -101,8 +101,8 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL GAIA::BL operator != (const _SizeType& index){return !(this->operator == (index));}
-			GINL GAIA::BL operator != (const BasicBitset<_SizeType>& src){return !(this->operator == (src));}
-			GINL BasicBitset<_SizeType>& operator ~ (){for(_SizeType x = 0; x < this->size(); ++x) this->front_ptr()[x] ^= (GAIA::U8)-1; return *this;}
+			GINL GAIA::BL operator != (const __MyType& src){return !(this->operator == (src));}
+			GINL __MyType& operator ~ (){for(_SizeType x = 0; x < this->size(); ++x) this->front_ptr()[x] ^= (GAIA::U8)-1; return *this;}
 			GINL GAIA::BL operator[](const _SizeType& index) const{return this->exist(index);}
 		private:
 			GINL GAIA::GVOID init(){m_pFront = GNULL; m_size = m_capacity = 0;}

@@ -96,15 +96,7 @@ namespace GAIA
 					this->clear();
 					return;
 				}
-				if(m_pData != GNULL)
-				{
-					delete[] m_pData;
-					m_pData = GNULL;
-				}
-				m_pFront = GNULL;
-				m_pBack = GNULL;
-				m_capacity = 0;
-				m_size = 0;
+				this->destroy();
 				if(size != 0)
 				{
 					m_pData = new _DataType[size];
@@ -230,21 +222,9 @@ namespace GAIA
 			}
 			GINL const __MyType& operator = (const __MyType& src)
 			{
-				this->clear();
+				this->reserve(src.size());
 				for(_SizeType x = 0; x < src.size(); ++x)
-				{
-					const _DataType* pTemp;
-					if(src.m_pFront < src.m_pBack)
-						pTemp = &src.m_pFront[x];
-					else
-					{
-						if(src.capacity() - (src.m_pFront - src.m_pData) > x)
-							pTemp = &src.m_pFront[x];
-						else
-							pTemp = &src.m_pData[x - (src.capacity() - (src.m_pFront - src.m_pData))];
-					}
-					this->push(*pTemp);
-				}
+					this->push(src[x]);
 				return *this;
 			}
 			GINL _DataType& operator[](const _SizeType& index)
