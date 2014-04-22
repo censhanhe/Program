@@ -129,12 +129,34 @@ namespace GAIA
 				m_pRead += sizeof(obj);
 				return GAIA::True;
 			}
-			GINL GAIA::BL operator == (const __MyType& src) const{}
-			GINL GAIA::BL operator != (const __MyType& src) const{}
-			GINL GAIA::BL operator >= (const __MyType& src) const{}
-			GINL GAIA::BL operator <= (const __MyType& src) const{}
-			GINL GAIA::BL operator > (const __MyType& src) const{}
-			GINL GAIA::BL operator < (const __MyType& src) const{}
+			GINL GAIA::BL operator == (const __MyType& src) const
+			{
+				if(src.write_size() != this->write_size())
+					return GAIA::False;
+				else
+					return GAIA::ALGORITHM::memcmp(this->write_ptr(), src.write_ptr(), this->write_size()) == 0;
+			}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator >= (const __MyType& src) const
+			{
+				if(this->write_size() > src.write_size())
+					return GAIA::True;
+				else if(this->write_size() < src.write_size())
+					return GAIA::False;
+				else
+					return GAIA::ALGORITHM::memcmp(this->write_ptr(), src.write_ptr(), this->write_size()) >= 0;
+			}
+			GINL GAIA::BL operator <= (const __MyType& src) const
+			{
+				if(this->write_size() < src.write_size())
+					return GAIA::True;
+				else if(this->write_size() > src.write_size())
+					return GAIA::False;
+				else
+					return GAIA::ALGORITHM::memcmp(this->write_ptr(), src.write_ptr(), this->write_size()) <= 0;
+			}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
 			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType& obj){this->write(obj); return *this;}
 			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType& obj){this->read(obj); return *this;}
 			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType* obj){this->write(obj); return *this;}
