@@ -442,18 +442,20 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL GAIA::GVOID front_prev_it(){}
-			GINL GAIA::GVOID back_prev_it(){}
-			GINL GAIA::GVOID front_mid_it(){}
-			GINL GAIA::GVOID back_mid_it(){}
-			GINL GAIA::GVOID front_next_it(){}
-			GINL GAIA::GVOID back_next_it(){}
-			GINL GAIA::GVOID const_front_prev_it(){}
-			GINL GAIA::GVOID const_back_prev_it(){}
-			GINL GAIA::GVOID const_front_mid_it(){}
-			GINL GAIA::GVOID const_back_mid_it(){}
-			GINL GAIA::GVOID const_front_next_it(){}
-			GINL GAIA::GVOID const_back_next_it(){}
+			GINL __MyType& operator = (const __MyType& src)
+			{
+				this->clear();
+				if(!src.empty())
+				{
+					const_it it = src.const_front_it();
+					while(!it.empty())
+					{
+						this->insert(*it);
+						++it;
+					}
+				}
+				return *this;
+			}
 		private:
 			GINL GAIA::GVOID rotate_prev(Node*& pNode)
 			{

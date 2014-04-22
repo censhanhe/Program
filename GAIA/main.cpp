@@ -1759,13 +1759,19 @@ GAIA::N32 main()
 				bFunctionSuccess = GAIA::False;
 			if(*iteru != 2)
 				bFunctionSuccess = GAIA::False;
-			if(bFunctionSuccess)
-				TEST_FILE_LINE("BasicMap function test SUCCESSFULLY!");
-			else
-				TEST_FILE_LINE("BasicMap function test FAILED!");
-
 			{
-				bFunctionSuccess = GAIA::True;
+				typedef GAIA::CONTAINER::Map<GAIA::U32, GAIA::CONTAINER::AString> __MapType;
+				__MapType map1;
+				__MapType map2;
+				*map1["Hello"] = 10;
+				*map1["World"] = 20;
+				map2 = map1;
+				if(*map2["Hello"] != 10)
+					bFunctionSuccess = GAIA::False;
+				if(*map2["World"] != 20)
+					bFunctionSuccess = GAIA::False;
+			}
+			{
 				typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::N32, GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MapType;
 				__MapType mp;
 				GAIA::MATH::random_seed(0);
@@ -1782,6 +1788,11 @@ GAIA::N32 main()
 						bFunctionSuccess = GAIA::False;
 				}
 			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("BasicMap function test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("BasicMap function test FAILED!");
+
 		}
 		TEST_END;
 	}
