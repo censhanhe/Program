@@ -441,8 +441,14 @@ namespace GAIA
 			GINL const Node& operator[](const _SizeType& index) const{return m_pool[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				m_pRoot = src.m_pRoot;
-				m_pool = src.m_pool;
+				this->clear();
+				if(!src.empty())
+				{
+					m_pRoot = m_pool.alloc();
+					m_pRoot->m_pParent = GNULL;
+					m_pRoot->m_links.clear();
+					this->copy_node(*m_pRoot, *src.m_pRoot);
+				}
 				return *this;
 			}
 		private:
@@ -470,6 +476,22 @@ namespace GAIA
 					if(pNode == GNULL)
 						continue;
 					this->paths_node(root, *pNode, result);
+				}
+			}
+			GINL GAIA::GVOID copy_node(Node& dst, const Node& src)
+			{
+				dst.m_t = src.m_t;
+				for(_SizeType x = 0; x < src.m_links.size(); ++x)
+				{
+					const typename __NodeListType::_datatype& c = src.m_links[x];
+					if(c != GNULL)
+					{
+						Node* pNew = m_pool.alloc();
+						pNew->m_pParent = &dst;
+						pNew->m_links.clear();
+						dst.m_links.push_back(pNew);
+						this->copy_node(*pNew, *c);
+					}
 				}
 			}
 		private:

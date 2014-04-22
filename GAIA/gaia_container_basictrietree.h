@@ -552,7 +552,33 @@ namespace GAIA
 				}
 				return iter;
 			}
-			GINL __MyType& operator = (const __MyType& src){return *this;}
+			GINL __MyType& operator = (const __MyType& src)
+			{
+				typedef GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
+				__VectorType paths;
+				this->clear();
+				const_it it = src.const_front_it();
+				while(!it.empty())
+				{
+					if(src.leaf(it))
+					{
+						paths.clear();
+						const_it itt = it;
+						while(!itt.empty())
+						{
+							paths.push_back(*itt);	
+							itt = src.parent_it(itt);
+						}
+						if(!paths.empty())
+						{
+							paths.inverse();
+							this->insert(paths.front_ptr(), paths.size());
+						}
+					}
+					++it;
+				}
+				return *this;
+			}
 		private:
 			GINL GAIA::GVOID init()
 			{
