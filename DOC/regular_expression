@@ -1,0 +1,15 @@
+CONDITION EXPRESS MOVE OPERATION CHECK UP.
+
+	Sample : if|for|while(value = value)
+	Regular express : \(if\|for\|while\).\{0,}(.\{1,}=.\{1,})
+
+	Sample : value = value = value ? value : value; 
+	Regular express : .\{1,}=.\{1,}=.\{1,}?.\{1,}:.\{1,}
+
+
+
+
+
+
+
+

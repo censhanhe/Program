@@ -225,6 +225,12 @@ namespace GAIA
 			GINL const_it const_back_it() const{const_it ret; ret.m_pNode = m_pBack; return ret;}
 			GINL GAIA::GVOID inverse()
 			{
+				if(this->size() > 1)
+				{
+					it frontit = this->front_it();
+					it backit = this->back_it();
+					GAIA::ALGORITHM::inverse(frontit, backit);
+				}
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{

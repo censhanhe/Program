@@ -50,8 +50,16 @@ namespace GAIA
 			t2 = t1;
 			t1 = t;
 		}
+		template<typename _DataType> GINL GAIA::GVOID swap(GAIA::ITERATOR::Iterator<_DataType>& t1, GAIA::ITERATOR::Iterator<_DataType>& t2)
+		{
+			_DataType t = *t1;
+			*t1 = *t2;
+			*t2 = t;
+		}
 		template<typename _DataType> GINL GAIA::GVOID inverse(_DataType* pBegin, _DataType* pEnd)
 		{
+			GAIA_AST(pBegin != GNULL);
+			GAIA_AST(pEnd != GNULL);
 			if(pBegin >= pEnd)
 				return;
 			while(pBegin < pEnd)
@@ -59,6 +67,17 @@ namespace GAIA
 				GAIA::ALGORITHM::swap(*pBegin, *pEnd);
 				++pBegin;
 				--pEnd;
+			}
+		}
+		template<typename _DataType> GINL GAIA::GVOID inverse(GAIA::ITERATOR::Iterator<_DataType>& begin_it, GAIA::ITERATOR::Iterator<_DataType>& end_it)
+		{
+			GAIA_AST(!begin_it.empty());
+			GAIA_AST(!end_it.empty());
+			while(begin_it != end_it)
+			{
+				GAIA::ALGORITHM::swap(begin_it, end_it);
+				++begin_it;
+				--end_it;
 			}
 		}
 	};

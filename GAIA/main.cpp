@@ -1158,6 +1158,7 @@ GAIA::N32 main()
 	{
 		TEST_BEGIN("<BasicList function test>");
 		{
+			bFunctionSuccess = GAIA::True;
 			typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __ListType;
 			__ListType list;
 			for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)
@@ -1180,6 +1181,29 @@ GAIA::N32 main()
 				list.pop_back();
 			if(!list.empty())
 				TEST_FILE_LINE("list back push pop operator FAILED!");
+			{
+				__ListType l;
+				l.push_back(10);
+				l.push_back(20);
+				l.push_back(30);
+				l.inverse();
+				__ListType::const_it it = l.const_front_it();
+				if(*it != 30)
+					bFunctionSuccess = GAIA::False;
+				++it;
+				if(*it != 20)
+					bFunctionSuccess = GAIA::False;
+				++it;
+				if(*it != 10)
+					bFunctionSuccess = GAIA::False;
+				++it;
+				if(!it.empty())
+					bFunctionSuccess = GAIA::False;
+			}
+			if(bFunctionSuccess)
+				TEST_FILE_LINE("BasicList test SUCCESSFULLY!");
+			else
+				TEST_FILE_LINE("BasicList test FAILED!");
 		}
 		TEST_END;
 	}

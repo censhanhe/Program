@@ -2264,7 +2264,7 @@ namespace FSHA
 				fOnRecvLogoutR = 0.0;
 				fOnRecvNoopC = 0.0;
 				fOnRecvFileHeadR = 0.0;
-				fOnRecvFileR = 0.0F;
+				fOnRecvFileR = 0.0;
 				fOnRecvFileChunkR = 0.0;
 				fOnRecvFileHeadA = 0.0;
 				fOnRecvFileChunkA = 0.0;
