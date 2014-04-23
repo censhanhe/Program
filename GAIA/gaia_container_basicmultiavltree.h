@@ -337,6 +337,12 @@ namespace GAIA
 			GINL GAIA::GVOID const_front_next_it(){}
 			GINL GAIA::GVOID const_back_next_it(){}
 			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
+			GINL GAIA::BL operator == (const __MyType& src) const{return m_avltree == src.m_avltree;}
+			GINL GAIA::BL operator != (const __MyType& src) const{return m_avltree != src.m_avltree;}
+			GINL GAIA::BL operator >= (const __MyType& src) const{return m_avltree >= src.m_avltree;}
+			GINL GAIA::BL operator <= (const __MyType& src) const{return m_avltree <= src.m_avltree;}
+			GINL GAIA::BL operator > (const __MyType& src) const{return m_avltree > src.m_avltree;}
+			GINL GAIA::BL operator < (const __MyType& src) const{return m_avltree < src.m_avltree;}
 		private:
 			GINL GAIA::GVOID init(){}
 			GINL Node* find_node(const _DataType& t) const
