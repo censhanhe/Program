@@ -456,6 +456,62 @@ namespace GAIA
 				}
 				return *this;
 			}
+			GINL GAIA::BL operator == (const __MyType& src) const
+			{
+				if(this->size() != src.size())
+					return GAIA::False;
+				const_it srcit = src.const_front_it();
+				const_it selfit = this->const_front_it();
+				while(!srcit.empty())
+				{
+					if(*selfit != *srcit)
+						return GAIA::False;
+					++srcit;
+					++selfit;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator >= (const __MyType& src) const
+			{
+				if(this->size() > src.size())
+					return GAIA::True;
+				else if(this->size() < src.size())
+					return GAIA::False;
+				const_it srcit = src.const_front_it();
+				const_it selfit = this->const_front_it();
+				while(!srcit.empty())
+				{
+					if(*selfit > *srcit)
+						return GAIA::True;
+					else if(*selfit < *srcit)
+						return GAIA::False;
+					++srcit;
+					++selfit;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator <= (const __MyType& src) const
+			{
+				if(this->size() < src.size())
+					return GAIA::True;
+				else if(this->size() > src.size())
+					return GAIA::False;
+				const_it srcit = src.const_front_it();
+				const_it selfit = this->const_front_it();
+				while(!srcit.empty())
+				{
+					if(*selfit < *srcit)
+						return GAIA::True;
+					else if(*selfit > *srcit)
+						return GAIA::False;
+					++srcit;
+					++selfit;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
 		private:
 			GINL GAIA::GVOID rotate_prev(Node*& pNode)
 			{
