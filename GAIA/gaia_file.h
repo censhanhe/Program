@@ -4,15 +4,15 @@
 namespace GAIA
 {
 	namespace FILESYSTEM
-	{
-		GAIA_ENUM_BEGIN(FILE_OPEN_TYPE)
-			FILE_OPEN_TYPE_READ	= 1 << 0,
-			FILE_OPEN_TYPE_WRITE = 1 << 1,
-			FILE_OPEN_TYPE_CREATEALWAYS	= 1 << 2,
-		GAIA_ENUM_END(FILE_OPEN_TYPE)
-		
+	{	
 		class File : public GAIA::Base
 		{
+		public:
+			GAIA_ENUM_BEGIN(FILE_OPEN_TYPE)
+				OPEN_TYPE_READ	= 1 << 0,
+				OPEN_TYPE_WRITE = 1 << 1,
+				OPEN_TYPE_CREATEALWAYS	= 1 << 2,
+			GAIA_ENUM_END(FILE_OPEN_TYPE)
 		public:
 			GINL File(){m_fileopentype = FILE_OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNULL;}
 			GINL virtual ~File(){if(this->IsOpen()) this->Close();}

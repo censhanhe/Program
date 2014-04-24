@@ -12,11 +12,11 @@ namespace GAIA
 			if(this->IsOpen())
 				this->Close();
 			GAIA_AST(filekey != GNULL);
-			if(opentype & FILE_OPEN_TYPE_CREATEALWAYS)
+			if(opentype & OPEN_TYPE_CREATEALWAYS)
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+"); // Create for read and write.
-			else if(opentype & FILE_OPEN_TYPE_WRITE)
+			else if(opentype & OPEN_TYPE_WRITE)
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+"); // Open for read and write.
-			else if(opentype == FILE_OPEN_TYPE_READ)
+			else if(opentype == OPEN_TYPE_READ)
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb"); // Open for read.
 			else
 				return GAIA::False;
@@ -65,8 +65,8 @@ namespace GAIA
 				GAIA_AST(cur != -1);
 				if(cur == -1)
 					return GAIA::False;
-				if(m_fileopentype & FILE_OPEN_TYPE_CREATEALWAYS || 
-					m_fileopentype & FILE_OPEN_TYPE_WRITE)
+				if(m_fileopentype & OPEN_TYPE_CREATEALWAYS || 
+					m_fileopentype & OPEN_TYPE_WRITE)
 				{
 					if(fseek((FILE*)m_pFile, size - 1, SEEK_SET) != 0)
 						return GAIA::False;
@@ -93,7 +93,7 @@ namespace GAIA
 				return 0;
 			if(m_pFile == GNULL)
 				return 0;
-			if(!(m_fileopentype & FILE_OPEN_TYPE_READ))
+			if(!(m_fileopentype & OPEN_TYPE_READ))
 				return 0;
 			GAIA::N64 nReaded;
 			if((nReaded = fread(pDst, 1, size, (FILE*)m_pFile)) > 0)
@@ -113,7 +113,7 @@ namespace GAIA
 				return 0;
 			if(m_pFile == GNULL)
 				return 0;
-			if(!(m_fileopentype & FILE_OPEN_TYPE_WRITE))
+			if(!(m_fileopentype & OPEN_TYPE_WRITE))
 				return 0;
 			GAIA::N64 nWriten;
 			if((nWriten = fwrite(pSrc, 1, size, (FILE*)m_pFile)) > 0)

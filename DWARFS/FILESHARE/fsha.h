@@ -369,7 +369,7 @@ namespace FSHA
 				return 0;
 			m_crcbuilder.clear();
 			GAIA::FILESYSTEM::File file;
-			if(!file.Open(pszPathName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+			if(!file.Open(pszPathName, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
 				return 0;
 			static const GAIA::U32 CRCFILEREADPATCHSIZE = 1024 * 1024;
 			GAIA::U8* pBuffer = new GAIA::U8[CRCFILEREADPATCHSIZE];
@@ -1614,13 +1614,13 @@ namespace FSHA
 			virtual GAIA::BL Open(const GAIA::GCH* pszFileName, GAIA::BL bReadOnly)
 			{
 				if(bReadOnly)
-					return m_file.Open(pszFileName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
+					return m_file.Open(pszFileName, GAIA::FILESYSTEM::File::OPEN_TYPE_READ);
 				else
 				{
-					if(m_file.Open(pszFileName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE))
+					if(m_file.Open(pszFileName, GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
 						return GAIA::True;
 					else
-						return m_file.Open(pszFileName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE | GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS);
+						return m_file.Open(pszFileName, GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS);
 				}
 			}
 			virtual GAIA::BL Close(){return m_file.Close();}
@@ -3873,7 +3873,7 @@ namespace FSHA
 						GAIA::ALGORITHM::strcpy(szFullName, TESTREADROOT);
 						GAIA::ALGORITHM::strcat(szFullName, szFile);
 						GAIA::FILESYSTEM::File file;
-						if(!file.Open(szFullName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE | GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS))
+						if(!file.Open(szFullName, GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
 						{
 							m_prt <<  "Create file " << szFullName << " failed!\n";
 							continue;

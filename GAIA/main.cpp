@@ -126,7 +126,7 @@ GINL GAIA::GVOID LanguageInfo()
 	if(strFileName.empty())
 		return;
 	GAIA::FILESYSTEM::File file;
-	if(!file.Open(strFileName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE))
+	if(!file.Open(strFileName, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
 		return;
 
 #define WRITE_TEXT(name, size) {\
@@ -384,7 +384,7 @@ GAIA::N32 main()
 	GAIA::GCH szPerfName[256];
 	GAIA::U64 uPerfStart = 0, uPerfEnd = 0;
 	GAIA::FILESYSTEM::File logfile;
-	logfile.Open("../gaia_test_result.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
+	logfile.Open("../gaia_test_result.tmp", GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
 	
 #if GAIA_PROFILE == GAIA_PROFILE_DEBUG
 	logfile.WriteText("[GAIA TEST BEGIN(DEBUG)]\r\n\r\n");
@@ -1500,7 +1500,7 @@ GAIA::N32 main()
 			typedef GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::N64>, GAIA::N64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64> > __StringList;
 			__StringList listString;
 			GAIA::FILESYSTEM::File file;
-			if(file.Open("main.cpp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+			if(file.Open("main.cpp", GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
 			{
 				GAIA::N64 nSize = file.Size();
 				if(nSize > 0)
@@ -2195,10 +2195,10 @@ GAIA::N32 main()
 		TEST_BEGIN("<File test>");
 		{
 			GAIA::FILESYSTEM::File file;
-			GAIA::BL bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE);
+			GAIA::BL bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
 			file.Write(L"My name is Armterla!");
 			bResult = file.Close();
-			bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
+			bResult = file.Open("filetest.tmp", GAIA::FILESYSTEM::File::OPEN_TYPE_READ);
 			GAIA::U64 uFileSize = file.Size();
 			GAIA::CONTAINER::BasicBuffer<GAIA::U64, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U64> > buf;
 			buf.resize(uFileSize);
@@ -2224,7 +2224,7 @@ GAIA::N32 main()
 			if(!dir.Exist("D1/D2/D3/"))
 				bFunctionSuccess = GAIA::False;
 			GAIA::FILESYSTEM::File file;
-			if(!file.Open("D1/D2/D3/test", GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE))
+			if(!file.Open("D1/D2/D3/test", GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
 				bFunctionSuccess = GAIA::False;
 			file.WriteText("HelloWorld");
 			file.Close();
@@ -2232,15 +2232,15 @@ GAIA::N32 main()
 				bFunctionSuccess = GAIA::False;
 			if(!dir.MoveFile("D1/D2/D3/test1", "D1/D2/D3/test2"))
 				bFunctionSuccess = GAIA::False;
-			if(!file.Open("D1/D2/D3/test", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+			if(!file.Open("D1/D2/D3/test", GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
 				bFunctionSuccess = GAIA::False;
 			else
 				file.Close();
-			if(file.Open("D1/D2/D3/test1", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+			if(file.Open("D1/D2/D3/test1", GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
 				bFunctionSuccess = GAIA::False;
 			else
 				file.Close();
-			if(!file.Open("D1/D2/D3/test2", GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ))
+			if(!file.Open("D1/D2/D3/test2", GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
 				bFunctionSuccess = GAIA::False;
 			else
 				file.Close();

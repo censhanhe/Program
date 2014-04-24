@@ -36,14 +36,14 @@ namespace GAIA
 					return GAIA::False;
 				if(uTypeMask & GAIA::IO::IO::IO_TYPE_READ)
 				{
-					GAIA::BL bRet = m_file.Open(pszIOName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_READ);
+					GAIA::BL bRet = m_file.Open(pszIOName, GAIA::FILESYSTEM::File::OPEN_TYPE_READ);
 					if(bRet)
 						m_uTypeMask = uTypeMask;
 					return bRet;
 				}
 				else if(uTypeMask & GAIA::IO::IO::IO_TYPE_WRITE)
 				{
-					GAIA::BL bRet = m_file.Open(pszIOName, GAIA::FILESYSTEM::FILE_OPEN_TYPE_WRITE | GAIA::FILESYSTEM::FILE_OPEN_TYPE_CREATEALWAYS);
+					GAIA::BL bRet = m_file.Open(pszIOName, GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS);
 					if(bRet)
 						m_uTypeMask = uTypeMask;
 					return bRet;
