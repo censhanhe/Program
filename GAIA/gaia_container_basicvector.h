@@ -62,8 +62,8 @@ namespace GAIA
 				}
 				GAIA_CLASS_OPERATOR_COMPARE(m_index, m_index, it);
 			private:
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
 				GINL GAIA::GVOID init(){m_pContainer = GNULL; m_index = 0;}
 			private:
@@ -117,8 +117,8 @@ namespace GAIA
 				}
 				GAIA_CLASS_OPERATOR_COMPARE(m_index, m_index, const_it);
 			private:
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){++(*this); return *this;}
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){--(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
 				GINL GAIA::GVOID init(){m_pContainer = GNULL; m_index = 0;}
 			private:

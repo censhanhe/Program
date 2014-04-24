@@ -72,8 +72,8 @@ namespace GAIA
 					return ret;
 				}
 			private:
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){m_pNode = m_pNode->pNext; return *this;}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){m_pNode = m_pNode->pPrev; return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){m_pNode = m_pNode->pNext; return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){m_pNode = m_pNode->pPrev; return *this;}
 			private:
 				Node* m_pNode;
 			};
@@ -119,8 +119,8 @@ namespace GAIA
 					return ret;
 				}
 			private:
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){m_pNode = m_pNode->pNext; return *this;}
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){m_pNode = m_pNode->pPrev; return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){m_pNode = m_pNode->pNext; return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){m_pNode = m_pNode->pPrev; return *this;}
 			private:
 				const Node* m_pNode;
 			};

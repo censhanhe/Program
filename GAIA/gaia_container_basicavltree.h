@@ -95,8 +95,8 @@ namespace GAIA
 				GINL GAIA::BL operator > (const it& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const it& src) const{return !(*this >= src);}
 			private:
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 				GINL Node* select_next(Node* pNode)
 				{
 					if(pNode->pNext != GNULL)
@@ -213,8 +213,8 @@ namespace GAIA
 				GINL GAIA::BL operator > (const const_it& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const const_it& src) const{return !(*this >= src);}
 			private:
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){++(*this); return *this;}
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){--(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 				GINL const Node* select_next(const Node* pNode)
 				{
 					if(pNode->pNext != GNULL)

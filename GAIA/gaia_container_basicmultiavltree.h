@@ -108,8 +108,8 @@ namespace GAIA
 				}
 				GAIA_CLASS_OPERATOR_COMPARE2(m_iter_n, m_iter_n, m_iter_d, m_iter_d, it);
 			private:
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (N32){++(*this); return *this;}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (N32){--(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
 				typename __AVLTreeType::it m_iter_n;
 				typename Node::__DataListType::it m_iter_d;
@@ -175,8 +175,8 @@ namespace GAIA
 				}
 				GAIA_CLASS_OPERATOR_COMPARE2(m_iter_n, m_iter_n, m_iter_d, m_iter_d, const_it);
 			private:
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (N32){++(*this); return *this;}
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (N32){--(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
 				typename __AVLTreeType::const_it m_iter_n;
 				typename Node::__DataListType::const_it m_iter_d;
