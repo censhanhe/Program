@@ -48,6 +48,24 @@ namespace GAIA
 					m_acc->get(m_index, ret);
 					return ret;
 				}
+				GINL GAIA::BL operator == (const Node& src) const
+				{
+					GAIA_AST(m_acc == src.m_acc);
+					return (_DataType)(*this) == (_DataType)src;
+				}
+				GINL GAIA::BL operator != (const Node& src) const{return !(this->operator = (src));}
+				GINL GAIA::BL operator >= (const Node& src) const
+				{
+					GAIA_AST(m_acc == src.m_acc);
+					return (_DataType)(*this) >= (_DataType)src;
+				}
+				GINL GAIA::BL operator <= (const Node& src) const
+				{
+					GAIA_AST(m_acc == src.m_acc);
+					return (_DataType)(*this) <= (_DataType)src;
+				}
+				GINL GAIA::BL operator > (const Node& src) const{return !(this->operator <= (src));}
+				GINL GAIA::BL operator < (const Node& src) const{return !(this->operator >= (src));}
 			private:
 				GINL Node(){this->init();}
 			private:
@@ -217,6 +235,99 @@ namespace GAIA
 			GINL _SizeType operator - (const __MyType& src){return this->index() - src.index();}
 			GINL __MyType operator + (const _SizeType& size){__MyType ret; ret += size; return ret;}
 			GINL __MyType operator - (const _SizeType& size){__MyType ret; ret -= size; return ret;}
+			GINL GAIA::BL operator == (const __MyType& src) const
+			{
+				if(m_bindtype != src.m_bindtype)
+					return GAIA::False;
+				switch(m_bindtype)
+				{
+				case BIND_TYPE_MEM:
+					{
+						if(m_p != src.m_p)
+							return GAIA::False;
+					}
+					break;
+				case BIND_TYPE_FILE:
+					{
+						if(m_file != src.m_file)
+							return GAIA::False;
+					}
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+				if(this->practice_offset() != src.practice_offset())
+					return GAIA::False;
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator = (src));}
+			GINL GAIA::BL operator >= (const __MyType& src) const
+			{
+				if(m_bindtype > src.m_bindtype)
+					return GAIA::True;
+				else if(m_bindtype < src.m_bindtype)
+					return GAIA::False;
+				switch(m_bindtype)
+				{
+				case BIND_TYPE_MEM:
+					{
+						if(m_p > src.m_p)
+							return GAIA::True;
+						else if(m_p < src.m_p)
+							return GAIA::False;
+					}
+					break;
+				case BIND_TYPE_FILE:
+					{
+						if(m_file > src.m_file)
+							return GAIA::True;
+						else if(m_file < src.m_file)
+							return GAIA::False;
+					}
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+				if(this->practice_offset() < src.practice_offset())
+					return GAIA::False;
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator <= (const __MyType& src) const
+			{
+				if(m_bindtype < src.m_bindtype)
+					return GAIA::True;
+				else if(m_bindtype > src.m_bindtype)
+					return GAIA::False;
+				switch(m_bindtype)
+				{
+				case BIND_TYPE_MEM:
+					{
+						if(m_p < src.m_p)
+							return GAIA::True;
+						else if(m_p > src.m_p)
+							return GAIA::False;
+					}
+					break;
+				case BIND_TYPE_FILE:
+					{
+						if(m_file < src.m_file)
+							return GAIA::True;
+						else if(m_file > src.m_file)
+							return GAIA::False;
+					}
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+				if(this->practice_offset() > src.practice_offset())
+					return GAIA::False;
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
 		private:
 			GINL GAIA::GVOID init()
 			{
