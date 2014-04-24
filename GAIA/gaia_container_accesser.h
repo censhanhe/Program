@@ -26,18 +26,19 @@ namespace GAIA
 			GINL Accesser(){this->init();}
 			GINL Accesser(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~Accesser(){this->destroy();}
-			GINL GAIA::BL bind(GAIA::FILESYSTEM::File* pFile)
+			GINL GAIA::BL bind(GAIA::FILESYSTEM::File& file, GAIA::UM access_type_mask)
 			{
-				this->destory();
-				if(pFile == GNULL)
+				this->destroy();
+				GAIA_AST(file.IsOpen());
+				if(!file.IsOpen())
 					return GAIA::False;
-				if(!pFile->IsOpen())
-					return GAIA::False;
-				m_file = pFile;
-				m_size = pFile->Size();
+				m_file = &file;
+				m_size = file.Size();
+				m_bindtype = BIND_TYPE_FILE;
+				m_atm = access_type_mask;
 				return GAIA::True;
 			}
-			GINL GAIA::BL bind(_DataType* p, const _SizeType& size)
+			GINL GAIA::BL bind(_DataType* p, const _SizeType& size, GAIA::UM access_type_mask)
 			{
 				this->destroy();
 				if(p == GNULL)
@@ -46,12 +47,16 @@ namespace GAIA
 					return GAIA::False;
 				m_p = p;
 				m_size = size;
+				m_bindtype = BIND_TYPE_MEM;
+				m_atm = access_type_mask;
 				return GAIA::True;
 			}
 			GINL BIND_TYPE bindtype() const{return m_bindtype;}
+			GINL GAIA::UM access_type_mask() const{return m_atm;}
 			GINL GAIA::BL isbinded() const{return m_bindtype != BIND_TYPE_INVALID;}
 			GINL _DataType* bindmem() const{return m_p;}
 			GINL GAIA::FILESYSTEM::File* bindfile() const{return m_file;}
+			GINL GAIA::BL empty() const{return !this->is_valid_index(m_index);}
 			GINL GAIA::GVOID destroy(){this->init();}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL GAIA::BL offset(const _SizeType& offset)
@@ -65,6 +70,7 @@ namespace GAIA
 				GAIA_AST(offset <= m_size);
 				if(offset > m_size)
 					return GAIA::False;
+				m_offset = offset;
 				m_index = 0;
 				return GAIA::True;
 			}
@@ -96,24 +102,24 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL const _SizeType& index() const{return m_index;}
-			GINL _DataType& operator * (){return (*this)[0];}
-			GINL const _DataType& operator * () const{return (*this)[0];}
+			GINL _DataType& operator * (){return (*this)[m_index];}
+			GINL const _DataType& operator * () const{return (*this)[m_index];}
 			GINL _DataType& operator [] (const _SizeType& index)
 			{
 				GAIA_AST(this->isbinded());
 				if(!this->isbinded())
 					return *(_DataType*)0;
-				GAIA_AST(this->is_index_valid(index));
-				if(!this->is_index_valid(index))
+				GAIA_AST(this->is_valid_index(index));
+				if(!this->is_valid_index(index))
 					return *(_DataType*)0;
 				switch(this->bindtype())
 				{
 				case BIND_TYPE_MEM:
-					return *(_DataType*)((GAIA::U8)m_p + this->practice_offset());
+					return *(_DataType*)((GAIA::U8*)m_p + this->practice_offset());
 				case BIND_TYPE_FILE:
 					{
 						_SizeType poffset = this->practice_offset();
-						if(m_file->Tell() != poffset())
+						if(m_file->Tell() != poffset)
 						{
 							if(!m_file->Seek(SEEK_TYPE_BEGIN, poffset))
 							{
@@ -121,7 +127,7 @@ namespace GAIA
 								return *(_DataType*)0;
 							}
 						}
-						if(!m_file->Read(&m_t, sizeof(m_t)))
+						if(m_file->Read(&m_t, sizeof(m_t)) != sizeof(m_t))
 						{
 							GAIA_AST(GAIA::ALWAYSFALSE);
 							return *(_DataType*)0;
@@ -198,7 +204,7 @@ namespace GAIA
 				--(*this);
 				return *this;
 			}
-			GINL GAIA::BL is_index_valid(const _SizeType& index) const
+			GINL GAIA::BL is_valid_index(const _SizeType& index) const
 			{
 				if(index < 0)
 					return GAIA::False;
@@ -208,7 +214,7 @@ namespace GAIA
 			}
 			GINL _SizeType practice_offset() const
 			{
-				GAIA_AST(this->is_index_valid());
+				GAIA_AST(this->is_valid_index(m_index));
 				return m_offset + m_index * m_stride;
 			}
 		private:
