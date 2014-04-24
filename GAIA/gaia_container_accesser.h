@@ -22,6 +22,73 @@ namespace GAIA
 			typedef _SizeType _sizetype;
 		public:
 			typedef Accesser<_DataType, _SizeType> __MyType;
+		private:
+			class Node : public GAIA::Base
+			{
+			private:
+				friend class Accesser;
+			public:
+				GINL Node& operator = (const Node& src)
+				{
+					GAIA_AST(m_acc != GNULL);
+					if(m_acc != GNULL && m_index != src.m_index)
+						(*this) = (const _DataType&)src;
+					return *this;
+				}
+				GINL Node& operator = (const _DataType& src)
+				{
+					GAIA_AST(m_acc != GNULL);
+					m_acc->set(m_index, src);
+					return *this;
+				}
+				GINL operator _DataType() const
+				{
+					GAIA_AST(m_acc != GNULL);
+					_DataType ret;
+					m_acc->get(m_index, ret);
+					return ret;
+				}
+			private:
+				GINL Node(){this->init();}
+			private:
+				GINL GAIA::GVOID init(){m_acc = GNULL; m_index = 0;}
+			private:
+				__MyType* m_acc;
+				_SizeType m_index;
+			};
+			class ConstNode : public GAIA::Base
+			{
+			private:
+				friend class Accesser;
+			public:
+				GINL ConstNode& operator = (const ConstNode& src)
+				{
+					GAIA_AST(m_acc != GNULL);
+					if(m_acc != GNULL && m_index != src.m_index)
+						(*this) = (const _DataType&)src;
+					return *this;
+				}
+				GINL ConstNode& operator = (const _DataType& src)
+				{
+					GAIA_AST(m_acc != GNULL);
+					m_acc->set(m_index, src);
+					return *this;
+				}
+				GINL operator _DataType() const
+				{
+					GAIA_AST(m_acc != GNULL);
+					_DataType ret;
+					m_acc->get(m_index, ret);
+					return ret;
+				}
+			private:
+				GINL ConstNode(){this->init();}
+			private:
+				GINL GAIA::GVOID init(){m_acc = GNULL; m_index = 0;}
+			private:
+				const __MyType* m_acc;
+				_SizeType m_index;
+			};
 		public:
 			GINL Accesser(){this->init();}
 			GINL Accesser(const __MyType& src){this->init(); this->operator = (src);}
@@ -102,44 +169,10 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL const _SizeType& index() const{return m_index;}
-			GINL _DataType& operator * (){return (*this)[m_index];}
-			GINL const _DataType& operator * () const{return (*this)[m_index];}
-			GINL _DataType& operator [] (const _SizeType& index)
-			{
-				GAIA_AST(this->isbinded());
-				if(!this->isbinded())
-					return *(_DataType*)0;
-				GAIA_AST(this->is_valid_index(index));
-				if(!this->is_valid_index(index))
-					return *(_DataType*)0;
-				switch(this->bindtype())
-				{
-				case BIND_TYPE_MEM:
-					return *(_DataType*)((GAIA::U8*)m_p + this->practice_offset());
-				case BIND_TYPE_FILE:
-					{
-						_SizeType poffset = this->practice_offset();
-						if(m_file->Tell() != poffset)
-						{
-							if(!m_file->Seek(SEEK_TYPE_BEGIN, poffset))
-							{
-								GAIA_AST(GAIA::ALWAYSFALSE);
-								return *(_DataType*)0;
-							}
-						}
-						if(m_file->Read(&m_t, sizeof(m_t)) != sizeof(m_t))
-						{
-							GAIA_AST(GAIA::ALWAYSFALSE);
-							return *(_DataType*)0;
-						}
-						return m_t;
-					}
-				default:
-					GAIA_AST(GAIA::ALWAYSFALSE);
-					return *(_DataType*)0;
-				}
-			}
-			GINL const _DataType& operator [] (const _SizeType& index) const{return (*const_cast<__MyType*>(this))[index];}
+			GINL Node operator * (){return (*this)[m_index];}
+			GINL ConstNode operator * () const{return (*this)[m_index];}
+			GINL Node operator [] (const _SizeType& index){Node n; n.m_acc = this; n.m_index = index; return n;}
+			GINL ConstNode operator [] (const _SizeType& index) const{ConstNode n; n.m_acc = this; n.m_index = index; return n;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				m_bindtype = src.m_bindtype;
@@ -192,18 +225,6 @@ namespace GAIA
 				m_stride = sizeof(_DataType);
 				m_index = 0;
 			}
-			GINL __MyType& operator ++ (GAIA::N32)
-			{
-				GAIA_AST(GAIA::ALWAYSFALSE);
-				++(*this);
-				return *this;
-			}
-			GINL __MyType& operator -- (GAIA::N32)
-			{
-				GAIA_AST(GAIA::ALWAYSFALSE);
-				--(*this);
-				return *this;
-			}
 			GINL GAIA::BL is_valid_index(const _SizeType& index) const
 			{
 				if(index < 0)
@@ -217,12 +238,102 @@ namespace GAIA
 				GAIA_AST(this->is_valid_index(m_index));
 				return m_offset + m_index * m_stride;
 			}
+			GINL GAIA::BL set(const _SizeType& index, const _DataType& src)
+			{
+				GAIA_AST(this->isbinded());
+				if(!this->isbinded())
+					return GAIA::False;
+				GAIA_AST(this->is_valid_index(index));
+				if(!this->is_valid_index(index))
+					return GAIA::False;
+				switch(this->bindtype())
+				{
+				case BIND_TYPE_MEM:
+					{
+						*(_DataType*)((GAIA::U8*)m_p + this->practice_offset()) = src;
+						break;
+					}
+				case BIND_TYPE_FILE:
+					{
+						_SizeType poffset = this->practice_offset();
+						if(m_file->Tell() != poffset)
+						{
+							if(!m_file->Seek(SEEK_TYPE_BEGIN, poffset))
+							{
+								GAIA_AST(GAIA::ALWAYSFALSE);
+								return GAIA::False;
+							}
+						}
+						if(m_file->Write(&src, sizeof(src)) != sizeof(src))
+						{
+							GAIA_AST(GAIA::ALWAYSFALSE);
+							return GAIA::False;
+						}
+						break;
+					}
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL get(const _SizeType& index, _DataType& dst) const
+			{	
+				GAIA_AST(this->isbinded());
+				if(!this->isbinded())
+					return GAIA::False;
+				GAIA_AST(this->is_valid_index(index));
+				if(!this->is_valid_index(index))
+					return GAIA::False;
+				switch(this->bindtype())
+				{
+				case BIND_TYPE_MEM:
+					{
+						dst = *(_DataType*)((GAIA::U8*)m_p + this->practice_offset());
+						break;
+					}
+				case BIND_TYPE_FILE:
+					{
+						_SizeType poffset = this->practice_offset();
+						if(m_file->Tell() != poffset)
+						{
+							if(!m_file->Seek(SEEK_TYPE_BEGIN, poffset))
+							{
+								GAIA_AST(GAIA::ALWAYSFALSE);
+								return GAIA::False;
+							}
+						}
+						if(m_file->Read(&dst, sizeof(dst)) != sizeof(dst))
+						{
+							GAIA_AST(GAIA::ALWAYSFALSE);
+							return GAIA::False;
+						}
+						break;
+					}
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+				return GAIA::True;
+			}
+		private:
+			GINL __MyType& operator ++ (GAIA::N32)
+			{
+				GAIA_AST(GAIA::ALWAYSFALSE);
+				++(*this);
+				return *this;
+			}
+			GINL __MyType& operator -- (GAIA::N32)
+			{
+				GAIA_AST(GAIA::ALWAYSFALSE);
+				--(*this);
+				return *this;
+			}
 		private:
 			BIND_TYPE m_bindtype;
 			GAIA::UM m_atm; // atm means access type mask.
 			_DataType* m_p;
 			GAIA::FILESYSTEM::File* m_file;
-			_DataType m_t;
 			_SizeType m_size;
 			_SizeType m_offset;
 			_SizeType m_stride;
