@@ -168,4 +168,23 @@
 
 #include	"gaia_factory.h"
 
+/*
+*	The following header files will been included by gaia's user manually.
+*	The user will include these header files by his choose.
+*
+*	[gaia_global_impl.h]
+*		gaia is designed as a header file based source code 
+*		library, so gaia not exist any global variables. but unfortunately,
+*		gaia need some basic global variable, for example : global-allocator.
+*		So, if you want use this function, include this header file after
+*		include gaia.h, or will change gaia's source code for compile errors.
+*
+*	[gaia_using_namespace.h]
+*		include this file will cause all gaia namespace been used.
+*		WARNING! gaia's namespace will protect gaia source code 
+*		library's symbol been declaration as unique symbol. if you 
+*		want to implement a high quality program, please NOT include
+*		this header file(RECOMMANDED).
+*/
+
 #endif
