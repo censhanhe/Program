@@ -221,7 +221,7 @@ namespace GAIA
 					p[x] = m_pFront[this->size() - size + x];
 				return GAIA::True;
 			}
-			GINL GAIA::GVOID inverse(){GAIA::ALGORITHM::inverse(this->front_ptr(), this->back_ptr());}
+			GINL GAIA::GVOID inverse(){if(this->size() > 1) GAIA::ALGORITHM::inverse(this->front_ptr(), this->back_ptr());}
 			GINL GAIA::BL insert(const _SizeType& index, const _DataType& t)
 			{
 				GAIA_AST(index >= 0 && index <= this->size());
