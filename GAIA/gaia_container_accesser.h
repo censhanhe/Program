@@ -213,6 +213,10 @@ namespace GAIA
 					m_index -= size;
 				return *this;
 			}
+			GINL _SizeType operator + (const __MyType& src){return this->index() + src.index();}
+			GINL _SizeType operator - (const __MyType& src){return this->index() - src.index();}
+			GINL __MyType operator + (const _SizeType& size){__MyType ret; ret += size; return ret;}
+			GINL __MyType operator - (const _SizeType& size){__MyType ret; ret -= size; return ret;}
 		private:
 			GINL GAIA::GVOID init()
 			{
@@ -233,10 +237,10 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GINL _SizeType practice_offset() const
+			GINL _SizeType practice_offset(const _SizeType& index) const
 			{
-				GAIA_AST(this->is_valid_index(m_index));
-				return m_offset + m_index * m_stride;
+				GAIA_AST(this->is_valid_index(index));
+				return m_offset + index * m_stride;
 			}
 			GINL GAIA::BL set(const _SizeType& index, const _DataType& src)
 			{
@@ -250,12 +254,12 @@ namespace GAIA
 				{
 				case BIND_TYPE_MEM:
 					{
-						*(_DataType*)((GAIA::U8*)m_p + this->practice_offset()) = src;
+						*(_DataType*)((GAIA::U8*)m_p + this->practice_offset(m_index + index)) = src;
 						break;
 					}
 				case BIND_TYPE_FILE:
 					{
-						_SizeType poffset = this->practice_offset();
+						_SizeType poffset = this->practice_offset(m_index + index);
 						if(m_file->Tell() != poffset)
 						{
 							if(!m_file->Seek(SEEK_TYPE_BEGIN, poffset))
@@ -289,12 +293,12 @@ namespace GAIA
 				{
 				case BIND_TYPE_MEM:
 					{
-						dst = *(_DataType*)((GAIA::U8*)m_p + this->practice_offset());
+						dst = *(_DataType*)((GAIA::U8*)m_p + this->practice_offset(m_index + index));
 						break;
 					}
 				case BIND_TYPE_FILE:
 					{
-						_SizeType poffset = this->practice_offset();
+						_SizeType poffset = this->practice_offset(m_index + index);
 						if(m_file->Tell() != poffset)
 						{
 							if(!m_file->Seek(SEEK_TYPE_BEGIN, poffset))
