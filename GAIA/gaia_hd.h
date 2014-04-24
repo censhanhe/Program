@@ -10,8 +10,8 @@ namespace GAIA
 		{
 		public:
 			GAIA_ENUM_BEGIN(RIGHT)
-				RIGHT_READ			= 0x00000001,
-				RIGHT_WRITE			= 0x00000002,
+				RIGHT_READ = 1 << 0,
+				RIGHT_WRITE	= 1 << 1,
 			GAIA_ENUM_END(RIGHT)
 		public:
 			GINL HD();

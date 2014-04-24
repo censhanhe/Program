@@ -9,8 +9,8 @@ namespace GAIA
 		{
 		public:
 			GAIA_ENUM_BEGIN(IO_TYPE)
-				IO_TYPE_READ	= 0x00000001,
-				IO_TYPE_WRITE	= 0x00000002,
+				IO_TYPE_READ = 1 << 0,
+				IO_TYPE_WRITE = 1 << 1,
 			GAIA_ENUM_END(IO_TYPE)
 		public:
 			virtual GAIA::BL Open(const GAIA::GCH* pszIOName, GAIA::UM uTypeMask) = 0; // uTypeMask is the IO_TYPE's mask.

@@ -96,7 +96,6 @@
 #include 	"gaia_container_basicnet.h"
 #include	"gaia_container_basicdictionary.h"
 #include	"gaia_container_basicheap.h"
-#include	"gaia_container_accesser.h"
 #include	"gaia_container_storage.h"
 #include 	"gaia_container_vari.h"
 
@@ -116,6 +115,8 @@
 #include	"gaia_file.h"
 #include	"gaia_directory.h"
 #include	"gaia_log.h"
+
+#include	"gaia_container_accesser.h"
 
 #include	"gaia_dataphase_xml.h"
 #include 	"gaia_dataphase_bdiff.h"

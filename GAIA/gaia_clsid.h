@@ -9,8 +9,8 @@ namespace GAIA
 		{
 		public:
 			GAIA_ENUM_BEGIN(FLAG)
-				FLAG_SYSDEFINE = 0x00000001,
-				FLAG_USERDEFINE = 0x00000002,
+				FLAG_SYSDEFINE = 1 << 0,
+				FLAG_USERDEFINE = 1 << 1,
 			GAIA_ENUM_END(FLAG)
 		public:
 			GINL ClsID(){}
