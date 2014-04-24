@@ -93,18 +93,6 @@ namespace GAIA
 			GINL Accesser(){this->init();}
 			GINL Accesser(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~Accesser(){this->destroy();}
-			GINL GAIA::BL bind(GAIA::FILESYSTEM::File& file, GAIA::UM access_type_mask)
-			{
-				this->destroy();
-				GAIA_AST(file.IsOpen());
-				if(!file.IsOpen())
-					return GAIA::False;
-				m_file = &file;
-				m_size = file.Size();
-				m_bindtype = BIND_TYPE_FILE;
-				m_atm = access_type_mask;
-				return GAIA::True;
-			}
 			GINL GAIA::BL bind(_DataType* p, const _SizeType& size, GAIA::UM access_type_mask)
 			{
 				this->destroy();
@@ -115,6 +103,18 @@ namespace GAIA
 				m_p = p;
 				m_size = size;
 				m_bindtype = BIND_TYPE_MEM;
+				m_atm = access_type_mask;
+				return GAIA::True;
+			}
+			GINL GAIA::BL bind(GAIA::FILESYSTEM::File& file, GAIA::UM access_type_mask)
+			{
+				this->destroy();
+				GAIA_AST(file.IsOpen());
+				if(!file.IsOpen())
+					return GAIA::False;
+				m_file = &file;
+				m_size = file.Size();
+				m_bindtype = BIND_TYPE_FILE;
 				m_atm = access_type_mask;
 				return GAIA::True;
 			}
