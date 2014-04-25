@@ -193,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gaia_using_namespace.h"
+				>
+			</File>
+			<File
 				RelativePath=".\preheader.cpp"
 				>
 			</File>
@@ -819,6 +823,22 @@
 						>
 						<File
 							RelativePath=".\gaia_math_coord.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="RID"
+						>
+						<File
+							RelativePath=".\gaia_math_rid.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_math_rid_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_math_rid_indp.h"
 							>
 						</File>
 					</Filter>
