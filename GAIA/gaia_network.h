@@ -275,7 +275,7 @@ namespace GAIA
 				while(!iter.empty())
 				{
 					NetworkHandle* pHandle = *iter;
-					GAIA_AST(pHandle != GNULL);
+					GAIA_AST(!!pHandle);
 					pHandle->Release();
 					++iter;
 				}
@@ -333,7 +333,7 @@ namespace GAIA
 				while(!iter.empty())
 				{
 					NetworkHandle* pHandle = *iter;
-					GAIA_AST(pHandle != GNULL);
+					GAIA_AST(!!pHandle);
 					pHandle->Release();
 					++iter;
 				}

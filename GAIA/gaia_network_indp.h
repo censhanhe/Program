@@ -200,7 +200,7 @@ namespace GAIA
 				for(GAIA::N32 x = 0; x < m_tempsendlist.size(); ++x)
 				{
 					SendRec& r = m_tempsendlist[x];
-					GAIA_AST(r.p != GNULL);
+					GAIA_AST(!!r.p);
 					GAIA::U8* p = r.p;
 					GAIA::U32 uSize = r.uSize;
 					if(!this->IsStabilityLink())
@@ -563,7 +563,7 @@ namespace GAIA
 					while(!iter.empty())
 					{
 						NetworkHandle* pHandle = *iter;
-						GAIA_AST(pHandle != GNULL);
+						GAIA_AST(!!pHandle);
 						pHandle->Reference();
 						m_hl.push_back(pHandle);
 						++iter;
@@ -628,7 +628,7 @@ namespace GAIA
 					while(!iter.empty())
 					{
 						NetworkHandle* pHandle = *iter;
-						GAIA_AST(pHandle != GNULL);
+						GAIA_AST(!!pHandle);
 						pHandle->Reference();
 						m_hl.push_back(pHandle);
 						++iter;

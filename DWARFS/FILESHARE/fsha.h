@@ -5090,7 +5090,7 @@ namespace FSHA
 						GAIA::ALGORITHM::strcpy(szFullName, m_readroot.front_ptr());
 					GAIA::ALGORITHM::strcat(szFullName, szFileName);
 					FileAccess* pFA = m_desc.pFAC->CreateFileAccess();
-					GAIA_AST(pFA != GNULL);
+					GAIA_AST(!!pFA);
 					if(pFA == GNULL)
 						continue;
 					if(!pFA->Open(szFullName, GAIA::True))
@@ -5801,7 +5801,7 @@ namespace FSHA
 								{
 									this->NLogin(jumpna, INTERNAL_USERNAME, INTERNAL_PASSWORD);
 									pNL = m_links.find(nl);
-									GAIA_AST(pNL != GNULL);
+									GAIA_AST(!!pNL);
 								}
 								if(pNL->state == NLink::STATE_READY)
 									this->Request(jumpna, listValidFile);

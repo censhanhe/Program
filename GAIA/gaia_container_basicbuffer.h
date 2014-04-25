@@ -91,7 +91,7 @@ namespace GAIA
 			}
 			template<typename _ParamObjType> GINL GAIA::GVOID write(const _ParamObjType* psz)
 			{
-				GAIA_AST(psz != GNULL);
+				GAIA_AST(!!psz);
 				if(psz == GNULL)
 					return;
 				GAIA::SIZE bytes = GAIA::ALGORITHM::strlen(psz) * sizeof(_ParamObjType) + sizeof(_ParamObjType);
@@ -100,7 +100,7 @@ namespace GAIA
 			}
 			template<typename _ParamObjType> GINL GAIA::BL read(_ParamObjType* psz)
 			{
-				GAIA_AST(psz != GNULL);
+				GAIA_AST(!!psz);
 				if(psz == GNULL)
 					return GAIA::False;
 				if(m_pRead == m_pBack)

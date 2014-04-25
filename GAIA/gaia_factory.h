@@ -28,7 +28,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL UnregistCreateCallBack(FactoryCreateCallBack* pCallBack)
 			{
-				GAIA_AST(pCallBack != GNULL);
+				GAIA_AST(!!pCallBack);
 				if(pCallBack == GNULL)
 					return GAIA::False;
 				LIST_CREATECALLBACK::_sizetype t = m_listCreateCB.find(pCallBack);
@@ -39,7 +39,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL IsRegistedCreateCallBack(FactoryCreateCallBack* pCallBack) const
 			{
-				GAIA_AST(pCallBack != GNULL);
+				GAIA_AST(!!pCallBack);
 				if(pCallBack == GNULL)
 					return GAIA::False;
 				if(m_listCreateCB.find(pCallBack) == (LIST_CREATECALLBACK::_sizetype)-1)

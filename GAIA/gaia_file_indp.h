@@ -11,7 +11,7 @@ namespace GAIA
 		{
 			if(this->IsOpen())
 				this->Close();
-			GAIA_AST(filekey != GNULL);
+			GAIA_AST(!!filekey);
 			if(opentype & OPEN_TYPE_CREATEALWAYS)
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+"); // Create for read and write.
 			else if(opentype & OPEN_TYPE_WRITE)

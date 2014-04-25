@@ -287,7 +287,7 @@ namespace GAIA
 				}
 				else
 				{
-					GAIA_AST(m_pRoot != GNULL);
+					GAIA_AST(!!m_pRoot);
 					this->link(*pNode, *pNew);
 				}
 				return pNew;
