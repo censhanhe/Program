@@ -53,7 +53,7 @@ namespace GAIA
 					GAIA_AST(m_acc == src.m_acc);
 					return (_DataType)(*this) == (_DataType)src;
 				}
-				GINL GAIA::BL operator != (const Node& src) const{return !(this->operator = (src));}
+				GINL GAIA::BL operator != (const Node& src) const{return !(this->operator == (src));}
 				GINL GAIA::BL operator >= (const Node& src) const
 				{
 					GAIA_AST(m_acc == src.m_acc);
@@ -259,7 +259,7 @@ namespace GAIA
 				}
 				return this->practice_offset(m_index) == src.practice_offset(src.index());
 			}
-			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator = (src));}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
 			GINL GAIA::BL operator >= (const __MyType& src) const
 			{
 				if(m_bindtype > src.m_bindtype)
@@ -322,6 +322,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
+			GINL GAIA::BL operator ! () const{return this->empty();}
 		private:
 			GINL GAIA::GVOID init()
 			{
