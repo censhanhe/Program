@@ -64,8 +64,8 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strcpy(_DataType1 pDst, _DataType2 pSrc)
 		{
-			GAIA_AST(pDst != GNULL);
-			GAIA_AST(pSrc != GNULL);
+			GAIA_AST(!!pDst);
+			GAIA_AST(!!pSrc);
 			_DataType1 ret = pDst;
 			while(*pSrc != 0)
 			{
@@ -78,8 +78,8 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strcat(_DataType1 pDst, _DataType2 pSrc)
 		{
-			GAIA_AST(pDst != GNULL);
-			GAIA_AST(pSrc != GNULL);
+			GAIA_AST(!!pDst);
+			GAIA_AST(!!pSrc);
 			_DataType1 ret = pDst;
 			pDst = pDst + GAIA::ALGORITHM::strlen(pDst);
 			GAIA::ALGORITHM::strcpy(pDst, pSrc);
@@ -87,8 +87,8 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 strcmp(_DataType1 p1, _DataType2 p2)
 		{
-			GAIA_AST(p1 != GNULL);
-			GAIA_AST(p2 != GNULL);
+			GAIA_AST(!!p1);
+			GAIA_AST(!!p2);
 			while(GAIA::ALWAYSTRUE)
 			{
 				if(*p1 < *p2)
@@ -107,8 +107,8 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 stricmp(_DataType1 p1, _DataType2 p2)
 		{
-			GAIA_AST(p1 != GNULL);
-			GAIA_AST(p2 != GNULL);
+			GAIA_AST(!!p1);
+			GAIA_AST(!!p2);
 			while(GAIA::ALWAYSTRUE)
 			{
 				_DataType1 c1 = GAIA::ALGORITHM::tolower(*p1);
@@ -129,8 +129,8 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strstr(_DataType1 p1, _DataType2 p2)
 		{
-			GAIA_AST(p1 != GNULL);
-			GAIA_AST(p2 != GNULL);
+			GAIA_AST(!!p1);
+			GAIA_AST(!!p2);
 			while(*p1 != 0)
 			{
 				_DataType1 po = p1;
@@ -150,8 +150,8 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 stristr(_DataType1 p1, _DataType2 p2)
 		{
-			GAIA_AST(p1 != GNULL);
-			GAIA_AST(p2 != GNULL);
+			GAIA_AST(!!p1);
+			GAIA_AST(!!p2);
 			while(*p1 != 0)
 			{
 				_DataType1 po = p1;
@@ -219,8 +219,8 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strmch(_DataType1 p1, _DataType2 p2)
 		{
-			GAIA_AST(p1 != GNULL);
-			GAIA_AST(p2 != GNULL);
+			GAIA_AST(!!p1);
+			GAIA_AST(!!p2);
 
 			_DataType1 p = p1;
 			while(*p != 0 && *p2 != 0)
@@ -236,8 +236,8 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strimch(_DataType1 p1, _DataType2 p2)
 		{
-			GAIA_AST(p1 != GNULL);
-			GAIA_AST(p2 != GNULL);
+			GAIA_AST(!!p1);
+			GAIA_AST(!!p2);
 
 			_DataType1 p = p1;
 			while(GAIA::ALGORITHM::tolower(*p) != 0 && GAIA::ALGORITHM::tolower(*p2) != 0)
@@ -340,7 +340,7 @@ namespace GAIA
 		}
 		template<typename _SrcDataType, typename _DstDataType> GINL _DstDataType int2str(const _SrcDataType& src, _DstDataType pDst)
 		{
-			GAIA_AST(pDst != GNULL);
+			GAIA_AST(!!pDst);
 			_SrcDataType tsrc = src;
 			_DstDataType p = pDst;
 			if(src < (_SrcDataType)0)
@@ -367,7 +367,7 @@ namespace GAIA
 		}
 		template<typename _SrcDataType, typename _DstDataType> GINL _DstDataType real2str(const _SrcDataType& src, _DstDataType pDst)
 		{
-			GAIA_AST(pDst != GNULL);
+			GAIA_AST(!!pDst);
 			GAIA::N64 left = (GAIA::N64)src;
 			_SrcDataType right = src - (_SrcDataType)left;
 			right = GAIA::MATH::abs(right);
@@ -382,8 +382,8 @@ namespace GAIA
 		}
 		template<typename _DstDataType, typename _SizeType> GINL _DstDataType hex2str(const GAIA::U8* pSrc, const _SizeType& size, _DstDataType pDst)
 		{
-			GAIA_AST(pSrc != GNULL);
-			GAIA_AST(pDst != GNULL);
+			GAIA_AST(!!pSrc);
+			GAIA_AST(!!pDst);
 			GAIA_AST(size > 0);
 			_SizeType sizet = size;
 			_DstDataType p = pDst;
@@ -414,8 +414,8 @@ namespace GAIA
 		}
 		template<typename _SrcDataType, typename _SizeType> GINL GAIA::U8* str2hex(_SrcDataType pSrc, const _SizeType& size, GAIA::U8* pDst)
 		{
-			GAIA_AST(pSrc != GNULL);
-			GAIA_AST(pDst != GNULL);
+			GAIA_AST(!!pSrc);
+			GAIA_AST(!!pDst);
 			GAIA_AST(size > 0);
 			GAIA_AST(size % 2 == 0);
 			_SizeType sizet = size;

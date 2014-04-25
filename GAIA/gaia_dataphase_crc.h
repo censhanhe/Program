@@ -13,7 +13,7 @@ namespace GAIA
 			GINL GAIA::U8 result() const{return m_crc;}
 			GINL GAIA::BL build(const GAIA::GVOID* pBuf, GAIA::U32 size)
 			{
-				GAIA_AST(pBuf != GNULL);
+				GAIA_AST(!!pBuf);
 				GAIA_AST(size > 0);
 				if(pBuf == GNULL)
 					return GAIA::False;
@@ -35,7 +35,7 @@ namespace GAIA
 			GINL GAIA::U16 result() const{return m_crc;}
 			GINL GAIA::BL build(const GAIA::GVOID* pBuf, GAIA::U32 size)
 			{
-				GAIA_AST(pBuf != GNULL);
+				GAIA_AST(!!pBuf);
 				GAIA_AST(size > 0);
 				if(pBuf == GNULL)
 					return GAIA::False;
@@ -57,7 +57,7 @@ namespace GAIA
 			GINL GAIA::U32 result() const{return m_crc;}
 			GINL GAIA::BL build(const GAIA::GVOID* pBuf, GAIA::U32 size)
 			{
-				GAIA_AST(pBuf != GNULL);
+				GAIA_AST(!!pBuf);
 				GAIA_AST(size > 0);
 				if(pBuf == GNULL)
 					return GAIA::False;

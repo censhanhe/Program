@@ -69,7 +69,7 @@ namespace GAIA
 				if(pGlobalRec == GNULL)
 					return GAIA::False;
 				Node* pNode = pGlobalRec->back();
-				GAIA_AST(pNode != GNULL);
+				GAIA_AST(!!pNode);
 				GAIA::BL ret = pNode->m_avltree.erase(&pGlobalRec->front());
 				if(ret)
 					--m_size;

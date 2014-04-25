@@ -1932,7 +1932,7 @@ GAIA::N32 main()
 							_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
 							GAIA_AST(pTreeNode != GNULL);
 							_MyGraphType::Node* pNode = **pTreeNode;
-							GAIA_AST(pNode != GNULL);
+							GAIA_AST(!!pNode);
 							if(pNode != GNULL)
 							{
 								_MyGraphType::_datatype data = **pNode;
@@ -2008,7 +2008,7 @@ GAIA::N32 main()
 							_MyGraphType::__PathTreeType::Node* pTreeNode = path[y];
 							GAIA_AST(pTreeNode != GNULL);
 							_MyGraphType::Node* pNode = **pTreeNode;
-							GAIA_AST(pNode != GNULL);
+							GAIA_AST(!!pNode);
 							if(pNode != GNULL)
 							{
 								_MyGraphType::_datatype data = **pNode;

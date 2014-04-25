@@ -30,20 +30,20 @@ namespace GAIA
 			public:
 				GINL Node& operator = (const Node& src)
 				{
-					GAIA_AST(m_acc != GNULL);
+					GAIA_AST(!!m_acc);
 					if(m_acc != GNULL && m_index != src.m_index)
 						(*this) = (const _DataType&)src;
 					return *this;
 				}
 				GINL Node& operator = (const _DataType& src)
 				{
-					GAIA_AST(m_acc != GNULL);
+					GAIA_AST(!!m_acc);
 					m_acc->set(m_index, src);
 					return *this;
 				}
 				GINL operator _DataType() const
 				{
-					GAIA_AST(m_acc != GNULL);
+					GAIA_AST(!!m_acc);
 					_DataType ret;
 					m_acc->get(m_index, ret);
 					return ret;
@@ -81,14 +81,14 @@ namespace GAIA
 			public:
 				GINL ConstNode& operator = (const ConstNode& src)
 				{
-					GAIA_AST(m_acc != GNULL);
+					GAIA_AST(!!m_acc);
 					if(m_acc != GNULL && m_index != src.m_index)
 						(*this) = (const _DataType&)src;
 					return *this;
 				}
 				GINL operator _DataType() const
 				{
-					GAIA_AST(m_acc != GNULL);
+					GAIA_AST(!!m_acc);
 					_DataType ret;
 					m_acc->get(m_index, ret);
 					return ret;
@@ -97,7 +97,7 @@ namespace GAIA
 				GINL ConstNode(){this->init();}
 				GINL ConstNode& operator = (const _DataType& src)
 				{
-					GAIA_AST(m_acc != GNULL);
+					GAIA_AST(!!m_acc);
 					m_acc->set(m_index, src);
 					return *this;
 				}

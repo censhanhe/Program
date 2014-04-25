@@ -85,7 +85,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 File::Read(GAIA::GVOID* pDst, const GAIA::N64& size)
 		{
-			GAIA_AST(pDst != GNULL);
+			GAIA_AST(!!pDst);
 			GAIA_AST(size > 0);
 			if(pDst == GNULL)
 				return 0;
@@ -105,7 +105,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 File::Write(const GAIA::GVOID* pSrc, const GAIA::N64& size)
 		{
-			GAIA_AST(pSrc != GNULL);
+			GAIA_AST(!!pSrc);
 			GAIA_AST(size > 0);
 			if(pSrc == GNULL)
 				return 0;

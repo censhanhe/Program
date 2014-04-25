@@ -681,7 +681,7 @@ namespace FSHA
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GAIA::False;
-			GAIA_AST(pResult != GNULL);
+			GAIA_AST(!!pResult);
 			if(pResult == GNULL)
 				return GAIA::False;
 			FNAMEPARTLISTTYPE namelist;
@@ -704,7 +704,7 @@ namespace FSHA
 		}
 		GAIA::BL MapIndexToName(const MAPINDEX* pResult, GAIA::GCH* pszFileName) const
 		{
-			GAIA_AST(pResult != GNULL);
+			GAIA_AST(!!pResult);
 			if(pResult == GNULL)
 				return GAIA::False;
 			const MAPINDEX* p = pResult;
