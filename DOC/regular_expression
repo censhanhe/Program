@@ -7,7 +7,13 @@ CONDITION EXPRESS MOVE OPERATION CHECK UP.
 	Regular express : .\{1,}=.\{1,}=.\{1,}?.\{1,}:.\{1,}
 
 
+ASSERT EXPRESS CHECK UP.
 
+	Sample : GAIA_AST(p != GNULL)
+			 GAIA_AST(p == GNULL)
+	Correct : GAIA_AST(!p)
+			  GAIA_AST(p)
+	Regular express : \<GAIA_AST(.\{1,}\(==\|!=\).\{0,}GNULL)
 
 
 
