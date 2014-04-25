@@ -148,7 +148,7 @@ namespace GAIA
 					freens.m_n.m_size = 0;
 					m_free_s.insert(freens);
 					Node* p = m_free_a.find(nsr.m_n);
-					GAIA_AST(p != GNULL);
+					GAIA_AST(!!p);
 					p->m_head = freens.m_n.m_head;
 					p->m_capacity = freens.m_n.m_capacity;
 					result = ns.m_n;

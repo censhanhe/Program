@@ -52,8 +52,8 @@ namespace GAIA
 		}
 		template<typename _DataType> GINL GAIA::GVOID inverse(_DataType pBegin, _DataType pEnd)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			while(pBegin != pEnd)
 			{
 				GAIA::ALGORITHM::swap(*pBegin, *pEnd);

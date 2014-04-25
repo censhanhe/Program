@@ -16,12 +16,12 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID AllocatorCRT::memory_release(GAIA::GVOID* p)
 		{
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!p);
 			delete[] (GAIA::U8*)((GAIA::UM*)p - 1);
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorCRT::memory_size(GAIA::GVOID* p)
 		{
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!p);
 			return *((GAIA::UM*)p - 1);
 		}
 	};

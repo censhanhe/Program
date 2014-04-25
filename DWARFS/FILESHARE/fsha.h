@@ -6281,7 +6281,7 @@ namespace FSHA
 		}
 		GINL GAIA::BL Send(const GAIA::GVOID* p, const GAIA::U32& size)
 		{
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!p);
 			GAIA_AST(size > 0);
 			if(m_pNH == GNULL)
 				return GAIA::False;
@@ -6348,7 +6348,7 @@ namespace FSHA
 		}
 		GINL GAIA::BL SendToAll(GAIA::GVOID* p, const GAIA::U32& size)
 		{
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!p);
 			GAIA_AST(size > 0);
 			if(m_pNH == GNULL)
 				return GAIA::False;
@@ -6464,7 +6464,7 @@ namespace FSHA
 		}
 		GINL GAIA::BL Jump(const GAIA::NETWORK::NetworkAddress& na, const GAIA::U8* p, GAIA::N32 nSize)
 		{
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!p);
 			GAIA_AST(nSize > 0);
 			if(m_mainna.IsInvalid())
 			{

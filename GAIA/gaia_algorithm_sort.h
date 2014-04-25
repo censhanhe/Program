@@ -11,8 +11,8 @@ namespace GAIA
 	{
 		template<typename _DataType> GINL GAIA::GVOID bsort(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			while(pBegin < pEnd)
 			{
 				_DataType* pTemp = pBegin + 1;
@@ -36,8 +36,8 @@ namespace GAIA
 		}
 		template<typename _DataType> GINL GAIA::GVOID qsort(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			if(pBegin >= pEnd)
 				return;
 		#ifdef GAIA_USESTL
@@ -67,14 +67,14 @@ namespace GAIA
 		}
 		template<typename _DataType> GINL GAIA::GVOID esort(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			GAIA_AST(pBegin < pEnd);
 		}
 		template<typename _DataType> GINL GAIA::GVOID sort(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			if(pEnd - pBegin < 10)
 				bsort(pBegin, pEnd);
 			else
@@ -82,8 +82,8 @@ namespace GAIA
 		}
 		template<typename _DataType> GINL GAIA::BL issorted(_DataType* pBegin, _DataType* pEnd)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			GAIA_AST(pBegin < pEnd);
 			while(pBegin != pEnd)
 			{

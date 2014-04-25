@@ -187,7 +187,7 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID push_back(const _DataType* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				_SizeType newsize = this->size() + size;
 				if(newsize > this->capacity())
@@ -213,7 +213,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL pop_back(_DataType* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				if(size > this->size())
 					return GAIA::False;

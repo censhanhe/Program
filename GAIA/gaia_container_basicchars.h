@@ -174,7 +174,7 @@ namespace GAIA
 			{
 				if(index > this->size())
 					return GAIA::False;
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				if(p == GNULL)
 					return GAIA::False;
 				if(*p == 0)
@@ -214,7 +214,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL erase(const _DataType* p, const _SizeType& index)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				return GAIA::False;
 			}
 			GINL GAIA::BL erase(const __MyType& src)
@@ -234,7 +234,7 @@ namespace GAIA
 			}
 			GINL _SizeType find(const _DataType* p, const _SizeType& index) const
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				if(p == GNULL)
 					return (_SizeType)GINVALID;
 				if(this->empty())
@@ -273,7 +273,7 @@ namespace GAIA
 			}
 			GINL _SizeType rfind(const _DataType* p, const _SizeType& size, const _SizeType& index) const
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				if(p == GNULL)
 					return (_SizeType)GINVALID;
 				if(this->empty())
@@ -369,7 +369,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL trim_left(const _DataType* p)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				if(this->empty())
 					return GAIA::False;
 				_DataType* pTemp = this->front_ptr();

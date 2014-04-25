@@ -152,7 +152,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC BL NetworkHandle::Send(const GAIA::U8* p, GAIA::U32 uSize)
 		{
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!p);
 			GAIA_AST(uSize > 0);
 			if(p == GNULL || uSize == 0)
 				return GAIA::False;

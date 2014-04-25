@@ -49,7 +49,7 @@ namespace GAIA
 			GINL _SizeType read_size() const{return static_cast<_SizeType>(m_pRead - m_pFront);}
 			GINL GAIA::GVOID write(const GAIA::GVOID* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				if(p == GNULL)
 					return;
 				GAIA_AST(size != 0);
@@ -60,7 +60,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL read(GAIA::GVOID* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				if(p == GNULL)
 					return GAIA::False;
 				GAIA_AST(size != 0);

@@ -7,14 +7,14 @@ namespace GAIA
 	{
 		template<typename _DataType> GINL _DataType tolower(const _DataType& c){if(c >= 'A' && c <= 'Z') return c - 'A' + 'a'; return c;}
 		template<typename _DataType> GINL _DataType toupper(const _DataType& c){if(c >= 'a' && c <= 'z') return c - 'a' + 'A'; return c;}
-		template<typename _DataType> GINL _DataType tolowers(_DataType p){GAIA_AST(p != GNULL); _DataType ret = p; while(*p != 0){*p = GAIA::ALGORITHM::tolower(*p);p++;} return ret;}
-		template<typename _DataType> GINL _DataType touppers(_DataType p){GAIA_AST(p != GNULL); _DataType ret = p; while(*p != 0){*p = GAIA::ALGORITHM::toupper(*p);p++;} return ret;}
+		template<typename _DataType> GINL _DataType tolowers(_DataType p){GAIA_AST(!!p); _DataType ret = p; while(*p != 0){*p = GAIA::ALGORITHM::tolower(*p);p++;} return ret;}
+		template<typename _DataType> GINL _DataType touppers(_DataType p){GAIA_AST(!!p); _DataType ret = p; while(*p != 0){*p = GAIA::ALGORITHM::toupper(*p);p++;} return ret;}
 		template<typename _DataType> GINL GAIA::BL islower(const _DataType& c){return c >= 'a' && c <= 'z';}
 		template<typename _DataType> GINL GAIA::BL isupper(const _DataType& c){return c >= 'A' && c <= 'Z';}
-		template<typename _DataType> GINL GAIA::BL isexistlower(_DataType p){GAIA_AST(p != GNULL); while(*p != 0){if(GAIA::ALGORITHM::islower(*p)) return GAIA::True; p++;} return GAIA::False;}
-		template<typename _DataType> GINL GAIA::BL isexistupper(_DataType p){GAIA_AST(p != GNULL); while(*p != 0){if(GAIA::ALGORITHM::isupper(*p)) return GAIA::True; p++;} return GAIA::False;}
-		template<typename _DataType> GINL GAIA::BL isalllower(_DataType p){GAIA_AST(p != GNULL); while(*p != 0){if(!GAIA::ALGORITHM::islower(*p)) return GAIA::False; p++;} return GAIA::True;}
-		template<typename _DataType> GINL GAIA::BL isallupper(_DataType p){GAIA_AST(p != GNULL); while(*p != 0){if(!GAIA::ALGORITHM::isupper(*p)) return GAIA::False; p++;} return GAIA::True;}
+		template<typename _DataType> GINL GAIA::BL isexistlower(_DataType p){GAIA_AST(!!p); while(*p != 0){if(GAIA::ALGORITHM::islower(*p)) return GAIA::True; p++;} return GAIA::False;}
+		template<typename _DataType> GINL GAIA::BL isexistupper(_DataType p){GAIA_AST(!!p); while(*p != 0){if(GAIA::ALGORITHM::isupper(*p)) return GAIA::True; p++;} return GAIA::False;}
+		template<typename _DataType> GINL GAIA::BL isalllower(_DataType p){GAIA_AST(!!p); while(*p != 0){if(!GAIA::ALGORITHM::islower(*p)) return GAIA::False; p++;} return GAIA::True;}
+		template<typename _DataType> GINL GAIA::BL isallupper(_DataType p){GAIA_AST(!!p); while(*p != 0){if(!GAIA::ALGORITHM::isupper(*p)) return GAIA::False; p++;} return GAIA::True;}
 		template<typename _DataType> GINL GAIA::BL isdigit(const _DataType& c){return c >= '0' && c <= '9';}
 		template<typename _DataType> GINL GAIA::BL isalpha(const _DataType& c){if(c < 'A' || c > 'z') return GAIA::False; return c <= 'Z' || c >= 'a';}
 		template<typename _DataType> GINL GAIA::BL ispunctuation(const _DataType& c){return c > ' ' && !GAIA::ALGORITHM::isalpha(c) && !GAIA::ALGORITHM::isdigit(c) && c < 0xFF;}
@@ -50,7 +50,7 @@ namespace GAIA
 			}
 			return GNULL;
 		}
-		template<typename _DataType> GINL GAIA::SIZE strlen(_DataType p){GAIA_AST(p != GNULL); GAIA::SIZE ret = 0; while(p[ret] != 0) ret++; return ret;}
+		template<typename _DataType> GINL GAIA::SIZE strlen(_DataType p){GAIA_AST(!!p); GAIA::SIZE ret = 0; while(p[ret] != 0) ret++; return ret;}
 		template<typename _DataType1, typename _DataType2> GINL GAIA::SIZE strcnt(_DataType1 p, const _DataType2& key)
 		{
 			GAIA::SIZE ret = 0;
@@ -461,7 +461,7 @@ namespace GAIA
 		}
 		template<typename _SrcDataType, typename _DstDataType> GINL _SrcDataType str2int(_SrcDataType p, _DstDataType& dst)
 		{
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!p);
 			dst = 0;
 			GAIA::BL bSign;
 			if(*p == '-')
@@ -485,7 +485,7 @@ namespace GAIA
 		}
 		template<typename _SrcDataType, typename _DstDataType> GINL _SrcDataType str2real(_SrcDataType p, _DstDataType& dst)
 		{
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!p);
 			GAIA::BL bSign;
 			if(*p == '-')
 			{

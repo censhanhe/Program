@@ -36,9 +36,9 @@ namespace GAIA
 		}
 		template<typename _DataType, typename _KeyType, typename _SizeType> GINL _DataType finds(_DataType pBegin, _DataType pEnd, _KeyType p, const _SizeType& size)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
+			GAIA_AST(!!p);
 			GAIA_AST(size != 0);
 			while(pEnd - pBegin + 1 >= size)
 			{
@@ -70,9 +70,9 @@ namespace GAIA
 		}
 		template<typename _DataType, typename _KeyType, typename _SizeType> GINL _DataType rfinds(_DataType pBegin, _DataType pEnd, _KeyType p, const _SizeType& size)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
-			GAIA_AST(p != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
+			GAIA_AST(!!p);
 			GAIA_AST(size != 0);
 			while(pEnd - pBegin + 1 >= size)
 			{
@@ -84,8 +84,8 @@ namespace GAIA
 		}
 		template<typename _DataType, typename _KeyType> GINL _DataType ssearch(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			GAIA_AST(pBegin <= pEnd);
 			while(pBegin <= pEnd)
 			{
@@ -97,8 +97,8 @@ namespace GAIA
 		}
 		template<typename _DataType, typename _KeyType> GINL _DataType bsearch(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			GAIA_AST(pBegin <= pEnd);
 			if(pBegin == pEnd)
 			{
@@ -120,8 +120,8 @@ namespace GAIA
 		}
 		template<typename _DataType, typename _KeyType> GINL _DataType search(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			GAIA_AST(pBegin <= pEnd);
 			if(pEnd < pBegin)
 				return GNULL;
@@ -135,8 +135,8 @@ namespace GAIA
 		}
 		template<typename _DataType, typename _KeyType> GINL _DataType lower_bound(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			if(pBegin == pEnd)
 			{
 				if(*pBegin >= key)
@@ -160,8 +160,8 @@ namespace GAIA
 		}
 		template<typename _DataType, typename _KeyType> GINL _DataType upper_bound(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
-			GAIA_AST(pBegin != GNULL);
-			GAIA_AST(pEnd != GNULL);
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
 			if(pBegin == pEnd)
 			{
 				if(*pEnd <= key)

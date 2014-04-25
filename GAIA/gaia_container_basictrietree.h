@@ -237,14 +237,14 @@ namespace GAIA
 			GINL GAIA::GVOID destroy(){this->init(); m_root.m_links.destroy(); m_pool.destroy();}
 			GINL GAIA::GVOID insert(const _DataType* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				if(this->insert_node(m_root, p, size))
 					++m_root.m_category_count;
 			}
 			GINL GAIA::BL erase(const _DataType* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				Node* pNode = this->match_node(m_root, p, size);
 				if(pNode == GNULL)
@@ -271,7 +271,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL exist(const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				Node* pFinded = this->match_node(m_root, p, size);
 				if(pFinded == GNULL)
@@ -280,7 +280,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL leaf(const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				Node* pFinded = this->match_node(m_root, p, size);
 				if(pFinded != GNULL)
@@ -317,13 +317,13 @@ namespace GAIA
 			GINL const_it toit(const Node& n) const{const_it iter; iter.m_pNode = &n; iter.m_pContainer = this; return iter;}
 			GINL Node* find(const Node* pNode, const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				return this->match_node(pNode == GNULL? m_root : *pNode, p, size);
 			}
 			GINL it lower_bound(const _DataType* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				Node* pNode = &m_root;
 				for(_SizeType x = 0; x < size; ++x)
@@ -364,7 +364,7 @@ namespace GAIA
 			}
 			GINL it upper_bound(const _DataType* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				it iter = this->lower_bound(p, size);
 				GAIA::BL bMatch = GAIA::True;
@@ -391,7 +391,7 @@ namespace GAIA
 			}
 			GINL const_it lower_bound(const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				const Node* pNode = &m_root;
 				for(_SizeType x = 0; x < size; ++x)
@@ -432,7 +432,7 @@ namespace GAIA
 			}
 			GINL const_it upper_bound(const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				const_it iter = this->lower_bound(p, size);
 				GAIA::BL bMatch = GAIA::True;
@@ -459,7 +459,7 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID paths(const Node* pNode, const _DataType* p, const _SizeType& size, __PathListType& result) const
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				Node* pTempNode = this->match_node(pNode == GNULL ? m_root : *pNode, p, size);
 				if(pTempNode == GNULL)
@@ -624,7 +624,7 @@ namespace GAIA
 			}
 			GINL Node* match_node(const Node& n, const _DataType* p, const _SizeType& size) const
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				const _DataType* pTemp = p;
 				_SizeType sizetemp = size;

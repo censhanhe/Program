@@ -76,7 +76,7 @@ namespace GAIA
 			GINL GAIA::BL push_back(const _DataType& t){if(this->size() < _Size){m_data[m_size++] = t; return GAIA::True;} else return GAIA::False;}
 			GINL GAIA::BL push_back(const _DataType* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				_SizeType newsize = this->size() + size;
 				if(newsize > this->capacity())
@@ -88,7 +88,7 @@ namespace GAIA
 			GINL GAIA::BL pop_back(){if(this->size() > 0){m_size--; return GAIA::True;} else return GAIA::False;}
 			GINL GAIA::BL pop_back(_DataType* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				if(size > this->size())
 					return GAIA::False;
