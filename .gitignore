@@ -224,3 +224,6 @@ pip-log.txt
 *.xcuserstate
 
 *.xcuserstate
+
+gaia_test.txt
+accesser_file

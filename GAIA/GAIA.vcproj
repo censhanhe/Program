@@ -1493,6 +1493,18 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="TEST"
+			>
+			<File
+				RelativePath=".\TEST\t_accesser.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TEST\t_header.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>

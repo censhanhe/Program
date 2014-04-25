@@ -233,8 +233,8 @@ namespace GAIA
 			}
 			GINL _SizeType operator + (const __MyType& src){return this->index() + src.index();}
 			GINL _SizeType operator - (const __MyType& src){return this->index() - src.index();}
-			GINL __MyType operator + (const _SizeType& size){__MyType ret; ret += size; return ret;}
-			GINL __MyType operator - (const _SizeType& size){__MyType ret; ret -= size; return ret;}
+			GINL __MyType operator + (const _SizeType& size){__MyType ret; ret = *this; ret += size; return ret;}
+			GINL __MyType operator - (const _SizeType& size){__MyType ret; ret = *this; ret -= size; return ret;}
 			GINL GAIA::BL operator == (const __MyType& src) const
 			{
 				if(m_bindtype != src.m_bindtype)
