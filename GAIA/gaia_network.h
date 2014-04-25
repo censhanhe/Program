@@ -13,7 +13,7 @@ namespace GAIA
 			GINL IP(const GAIA::GCH* psz){this->operator = (psz);}
 			GINL ~IP(){}
 			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(us, 0, 4);}
-			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmp(us, 0, 4) == 0;}
+			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmpk(us, 0, 4) == 0;}
 			GINL GAIA::BL FromString(const GAIA::GCH* psz)
 			{
 				const GAIA::GCH* p = psz;

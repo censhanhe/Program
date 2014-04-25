@@ -229,7 +229,9 @@ namespace GAIA
 				{
 					it frontit = this->front_it();
 					it backit = this->back_it();
-					GAIA::ALGORITHM::inverse(frontit, backit);
+					GAIA::ALGORITHM::inverse(
+							static_cast<GAIA::ITERATOR::Iterator<_DataType>&>(frontit), 
+							static_cast<GAIA::ITERATOR::Iterator<_DataType>&>(backit));
 				}
 			}
 			GINL __MyType& operator = (const __MyType& src)

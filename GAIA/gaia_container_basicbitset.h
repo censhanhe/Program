@@ -96,7 +96,7 @@ namespace GAIA
 			{
 				if(this->size() != src.size())
 					return GAIA::False;
-				if(GAIA::ALGORITHM::cmp(this->front_ptr(), src.front_ptr(), this->size()) != 0) 
+				if(GAIA::ALGORITHM::cmps(this->front_ptr(), src.front_ptr(), this->size()) != 0) 
 					return GAIA::False; 
 				return GAIA::True;
 			}

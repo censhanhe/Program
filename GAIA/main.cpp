@@ -288,8 +288,8 @@ public:
 				m_bTestResult = GAIA::False;
 				goto FUNCTION_END;
 			}
-			GAIA_AST(GAIA::ALGORITHM::cmp((GAIA::U8*)listAlloced[x], (GAIA::U8)(x % 128), uSize) == 0);
-			if(GAIA::ALGORITHM::cmp((GAIA::U8*)listAlloced[x], (GAIA::U8)(x % 128), uSize) != 0)
+			GAIA_AST(GAIA::ALGORITHM::cmpk((GAIA::U8*)listAlloced[x], (GAIA::U8)(x % 128), uSize) == 0);
+			if(GAIA::ALGORITHM::cmpk((GAIA::U8*)listAlloced[x], (GAIA::U8)(x % 128), uSize) != 0)
 			{
 				m_bTestResult = GAIA::False;
 				goto FUNCTION_END;
@@ -316,8 +316,8 @@ public:
 					m_bTestResult = GAIA::False;
 					goto FUNCTION_END;
 				}
-				GAIA_AST(GAIA::ALGORITHM::cmp((GAIA::U8*)listAlloced[nIndex], (GAIA::U8)(nIndex % 128), uSize) == 0);
-				if(GAIA::ALGORITHM::cmp((GAIA::U8*)listAlloced[nIndex], (GAIA::U8)(nIndex % 128), uSize) != 0)
+				GAIA_AST(GAIA::ALGORITHM::cmpk((GAIA::U8*)listAlloced[nIndex], (GAIA::U8)(nIndex % 128), uSize) == 0);
+				if(GAIA::ALGORITHM::cmpk((GAIA::U8*)listAlloced[nIndex], (GAIA::U8)(nIndex % 128), uSize) != 0)
 				{
 					m_bTestResult = GAIA::False;
 					goto FUNCTION_END;
