@@ -257,9 +257,7 @@ namespace GAIA
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
 				}
-				if(this->practice_offset() != src.practice_offset())
-					return GAIA::False;
-				return GAIA::True;
+				return this->practice_offset(m_index) == src.practice_offset(src.index());
 			}
 			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator = (src));}
 			GINL GAIA::BL operator >= (const __MyType& src) const
@@ -290,9 +288,7 @@ namespace GAIA
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
 				}
-				if(this->practice_offset() < src.practice_offset())
-					return GAIA::False;
-				return GAIA::True;
+				return this->practice_offset(m_index) >= src.practice_offset(src.index());
 			}
 			GINL GAIA::BL operator <= (const __MyType& src) const
 			{
@@ -322,9 +318,7 @@ namespace GAIA
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
 				}
-				if(this->practice_offset() > src.practice_offset())
-					return GAIA::False;
-				return GAIA::True;
+				return this->practice_offset(m_index) <= src.practice_offset(src.index());
 			}
 			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}

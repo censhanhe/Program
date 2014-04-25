@@ -552,7 +552,7 @@ namespace FSHA
 				return GNULL;
 			GAIA::GCH szLower[MAXPATHLEN];
 			GAIA::ALGORITHM::strcpy(szLower, pszFileName);
-			GAIA::ALGORITHM::tolower(szLower);
+			GAIA::ALGORITHM::tolowers(szLower);
 			MAPINDEX mapindex[MAXPATHDEPTH];
 			if(!this->NameToMapIndex(szLower, mapindex))
 				return GNULL;

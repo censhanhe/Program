@@ -137,7 +137,7 @@ namespace GAIA
 			{
 				if(this->size() <= 0)
 					return (_SizeType)GINVALID;
-				_DataType* pFinded = GAIA::ALGORITHM::search(m_data, &m_data[this->size() - 1], t);
+				const _DataType* pFinded = GAIA::ALGORITHM::search(m_data, &m_data[this->size() - 1], t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return pFinded - m_data;

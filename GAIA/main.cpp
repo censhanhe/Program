@@ -778,7 +778,7 @@ GAIA::N32 main()
 			GAIA::GTCH sz[128] = L"abcdefgABCDEFG1234567!@#$%^&";
 			GAIA::SIZE sLen = GAIA::ALGORITHM::strlen(sz);
 			sLen = 0;
-			GAIA::ALGORITHM::tolower(sz);
+			GAIA::ALGORITHM::tolowers(sz);
 			sz[0] = 0;
 			GAIA::N32 nCompare = GAIA::ALGORITHM::strcmp(L"Hello world", L"Hello kitty!");
 			nCompare = 0;

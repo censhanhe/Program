@@ -227,7 +227,7 @@ namespace GAIA
 					return (_SizeType)GINVALID;
 				if(this->empty())
 					return (_SizeType)GINVALID;
-				_DataType* pFinded = GAIA::ALGORITHM::find(m_chars + index, m_chars + this->size() - 1, t);
+				const _DataType* pFinded = GAIA::ALGORITHM::find(m_chars + index, m_chars + this->size() - 1, t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return pFinded - m_chars;
@@ -255,7 +255,7 @@ namespace GAIA
 					return (_SizeType)GINVALID;
 				if(index >= this->size())
 					return (_SizeType)GINVALID;
-				_DataType* pFinded = GAIA::ALGORITHM::strstr(m_chars + index, src.front_ptr());
+				const _DataType* pFinded = GAIA::ALGORITHM::strstr(m_chars + index, src.front_ptr());
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return pFinded - m_chars;
@@ -266,7 +266,7 @@ namespace GAIA
 					return (_SizeType)GINVALID;
 				if(index >= this->size())
 					return (_SizeType)GINVALID;
-				_DataType* pFinded = GAIA::ALGORITHM::rfind(m_chars, m_chars + index - 1, t);
+				const _DataType* pFinded = GAIA::ALGORITHM::rfind(m_chars, m_chars + index - 1, t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return pFinded - m_chars;
@@ -280,7 +280,7 @@ namespace GAIA
 					return (_SizeType)GINVALID;
 				if(index >= this->size())
 					return (_SizeType)GINVALID;
-				_DataType* pFinded = GAIA::ALGORITHM::rfinds(m_chars, m_chars + index - 1, p, size);
+				const _DataType* pFinded = GAIA::ALGORITHM::rfinds(m_chars, m_chars + index - 1, p, size);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return pFinded - m_chars;
@@ -405,8 +405,8 @@ namespace GAIA
 			{
 				return GAIA::True;
 			}
-			GINL GAIA::GVOID tolower(){if(m_chars != GNULL) GAIA::ALGORITHM::tolower(m_chars);}
-			GINL GAIA::GVOID toupper(){if(m_chars != GNULL) GAIA::ALGORITHM::toupper(m_chars);}
+			GINL GAIA::GVOID tolower(){if(m_chars != GNULL) GAIA::ALGORITHM::tolowers(m_chars);}
+			GINL GAIA::GVOID toupper(){if(m_chars != GNULL) GAIA::ALGORITHM::touppers(m_chars);}
 			GINL GAIA::BL isexistlower() const{if(m_chars != GNULL) return GAIA::ALGORITHM::isexistlower(m_chars); return GAIA::False;}
 			GINL GAIA::BL isexistupper() const{if(m_chars != GNULL) return GAIA::ALGORITHM::isexistupper(m_chars); return GAIA::False;}
 			GINL GAIA::BL isalllower() const{if(m_chars != GNULL) return GAIA::ALGORITHM::isalllower(m_chars); return GAIA::False;}
