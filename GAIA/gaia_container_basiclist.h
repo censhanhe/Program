@@ -226,13 +226,7 @@ namespace GAIA
 			GINL GAIA::GVOID inverse()
 			{
 				if(this->size() > 1)
-				{
-					it frontit = this->front_it();
-					it backit = this->back_it();
-					GAIA::ALGORITHM::inverse(
-							static_cast<GAIA::ITERATOR::Iterator<_DataType>&>(frontit), 
-							static_cast<GAIA::ITERATOR::Iterator<_DataType>&>(backit));
-				}
+					GAIA::ALGORITHM::inverse(this->front_it(), this->back_it());
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
