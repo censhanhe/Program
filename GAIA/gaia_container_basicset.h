@@ -68,7 +68,7 @@ namespace GAIA
 			GINL BasicSet(const __MyType& src){this->operator = (src);}
 			GINL ~BasicSet(){}
 			GINL GAIA::BL empty() const{return m_avltree.empty();}
-			GINL const _SizeType& size() const{return m_avltree.size();}
+			GINL _SizeType size() const{return m_avltree.size();}
 			GINL const _SizeType& capacity() const{return m_avltree.capacity();}
 			GINL GAIA::GVOID clear(){m_avltree.clear();}
 			GINL GAIA::GVOID destroy(){m_avltree.destroy();}

@@ -231,7 +231,7 @@ namespace GAIA
 			GINL BasicTrieTree(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicTrieTree(){}
 			GINL GAIA::BL empty() const{return m_pool.empty();}
-			GINL const _SizeType& size() const{return m_pool.size();}
+			GINL _SizeType size() const{return m_pool.size();}
 			GINL const _SizeType& capacity() const{return m_pool.capacity();}
 			GINL GAIA::GVOID clear(){this->init(); m_root.m_links.clear(); m_pool.clear();}
 			GINL GAIA::GVOID destroy(){this->init(); m_root.m_links.destroy(); m_pool.destroy();}

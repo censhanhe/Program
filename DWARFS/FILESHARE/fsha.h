@@ -1244,7 +1244,7 @@ namespace FSHA
 			if(pFinded != GNULL)
 				return GAIA::False;
 			pGroup->refusers.insert(pUser);
-			User::__GroupRefListType::_sizetype nFreePos = pUser->refgroups.find(GNULL);
+			User::__GroupRefListType::_sizetype nFreePos = pUser->refgroups.find(GNULL, 0);
 			if(nFreePos == GINVALID)
 				pUser->refgroups.push_back(pGroup);
 			else

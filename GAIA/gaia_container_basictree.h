@@ -262,7 +262,7 @@ namespace GAIA
 			GINL BasicTree(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicTree(){}
 			GINL GAIA::BL empty() const{return m_pRoot == GNULL;}
-			GINL const _SizeType& size() const{return m_pool.size();}
+			GINL _SizeType size() const{return m_pool.size();}
 			GINL const _SizeType& capacity() const{return m_pool.capacity();}
 			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_pool.destroy();}
 			GINL GAIA::GVOID clear(){m_pRoot = GNULL; m_pool.clear();}
