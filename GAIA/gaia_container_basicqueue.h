@@ -290,16 +290,6 @@ namespace GAIA
 				}
 				return ret;
 			}
-			GINL __MyType& operator << (const _DataType& t){this->push(t); return *this;}
-			GINL __MyType& operator << (const __MyType& src)
-			{
-				while(!src.empty())
-				{
-					this->push(src.front());
-					src.pop();
-				}
-				return *this;
-			}
 			GINL const __MyType& operator = (const __MyType& src)
 			{
 				this->reserve(src.size());
@@ -332,6 +322,16 @@ namespace GAIA
 					else
 						return m_pData[index - (this->capacity() - (m_pFront - m_pData))];
 				}
+			}
+			GINL __MyType& operator += (const __MyType& src)
+			{
+				const_it it = src.const_front_it();
+				while(!it.empty())
+				{
+					this->push(*it);
+					++it;
+				}
+				return *this;
 			}
 			GINL GAIA::BL operator == (const __MyType& src) const
 			{
