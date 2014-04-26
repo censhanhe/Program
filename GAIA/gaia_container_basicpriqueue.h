@@ -19,8 +19,8 @@ namespace GAIA
 			GINL BasicPriQueue(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicPriQueue(){}
 			GINL GAIA::BL empty() const{return m_avltree.empty();}
-			GINL _SizeType size() const{return m_avltree.size();}
-			GINL _SizeType capacity() const{return m_avltree.capacity();}
+			GINL const _SizeType& size() const{return m_avltree.size();}
+			GINL const _SizeType& capacity() const{return m_avltree.capacity();}
 			GINL GAIA::GVOID resize(const _SizeType& size){return m_avltree.resize();}
 			GINL GAIA::GVOID reserve(const _SizeType& size){return m_avltree.reserve();}
 			GINL GAIA::GVOID clear(){return m_avltree.clear();}

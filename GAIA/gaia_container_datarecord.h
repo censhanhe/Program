@@ -16,7 +16,7 @@ namespace GAIA
 			GINL DataRecord(const DataRecord& src){this->init(); this->operator = (src);}
 			GINL ~DataRecord(){}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
-			GINL _SizeType size() const{return m_size;}
+			GINL const _SizeType& size() const{return m_size;}
 			GINL GAIA::GVOID resize(const _SizeType& size){m_size = size;}
 			GINL GAIA::GVOID* front_ptr() const{return m_pFront;}
 			GINL GAIA::GVOID front_ptr(GAIA::GVOID* p){m_pFront = p;}

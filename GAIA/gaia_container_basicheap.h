@@ -19,8 +19,8 @@ namespace GAIA
 			GINL BasicHeap(const __MyType& src){}
 			GINL ~BasicHeap(){}
 			GINL GAIA::BL empty() const{return GAIA::False;}
-			GINL _SizeType size() const{return 0;}
-			GINL _SizeType capacity() const{return 0;}
+			GINL const _SizeType& size() const{return 0;}
+			GINL const _SizeType& capacity() const{return 0;}
 			GINL GAIA::GVOID clear(){}
 			GINL GAIA::GVOID destroy(){}
 			GINL __MyType& operator = (const __MyType& src){return *this;}

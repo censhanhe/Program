@@ -88,8 +88,8 @@ namespace GAIA
 			GINL BasicMap(const __MyType& src){this->operator = (src);}
 			GINL ~BasicMap(){}
 			GINL GAIA::BL empty() const{return m_avltree.empty();}
-			GINL _SizeType size() const{return m_avltree.size();}
-			GINL _SizeType capacity() const{return m_avltree.capacity();}
+			GINL const _SizeType& size() const{return m_avltree.size();}
+			GINL const _SizeType& capacity() const{return m_avltree.capacity();}
 			GINL GAIA::GVOID clear(){m_avltree.clear();}
 			GINL GAIA::GVOID destroy(){m_avltree.destroy();}
 			GINL GAIA::BL erase(const _KeyType& key)

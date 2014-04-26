@@ -141,9 +141,9 @@ namespace GAIA
 			GINL BasicQueue(){this->init();}
 			GINL BasicQueue(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicQueue(){if(m_pData != GNULL) delete[] m_pData;}
-			GINL _SizeType capacity() const{return m_capacity;}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
-			GINL _SizeType size() const{return m_size;}
+			GINL const _SizeType& size() const{return m_size;}
+			GINL const _SizeType& capacity() const{return m_capacity;}
 			GINL _SizeType count(const _DataType& t) const
 			{
 				if(this->empty())

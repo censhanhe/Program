@@ -50,8 +50,8 @@ namespace GAIA
 			GINL BasicGraph(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicGraph(){}
 			GINL GAIA::BL empty() const{return m_pRoot == GNULL;}
-			GINL _SizeType size() const{return m_pool.size();}
-			GINL _SizeType capacity() const{return m_pool.capacity();}
+			GINL const _SizeType& size() const{return m_pool.size();}
+			GINL const _SizeType& capacity() const{return m_pool.capacity();}
 			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_pool.destroy(); m_tstack.destroy();}
 			GINL GAIA::GVOID clear(){m_pRoot = GNULL; m_pool.clear();}
 			GINL GAIA::GVOID resize(const _SizeType& size){}

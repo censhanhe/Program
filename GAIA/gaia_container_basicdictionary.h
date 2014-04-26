@@ -18,8 +18,8 @@ namespace GAIA
 			GINL BasicDictionary(const __MyType& src){}
 			GINL ~BasicDictionary(){}
 			GINL GAIA::BL empty() const;
-			GINL _SizeType size() const;
-			GINL _SizeType capacity() const;
+			GINL const _SizeType& size() const;
+			GINL const _SizeType& capacity() const;
 			GINL GAIA::GVOID resize(const _SizeType& size);
 			GINL GAIA::GVOID reserve(const _SizeType& size);
 			GINL GAIA::GVOID clear();

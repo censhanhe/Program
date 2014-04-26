@@ -143,8 +143,8 @@ namespace GAIA
 			GINL ~BasicStack(){if(m_pFront != GNULL) delete[] m_pFront;}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
-			GINL _SizeType size() const{return m_size;}
-			GINL _SizeType capacity() const{return m_capacity;}
+			GINL const _SizeType& size() const{return m_size;}
+			GINL const _SizeType& capacity() const{return m_capacity;}
 			GINL GAIA::GVOID resize(const _SizeType& size)
 			{
 				GAIA_AST(size >= 0);

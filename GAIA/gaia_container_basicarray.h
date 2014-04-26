@@ -142,7 +142,7 @@ namespace GAIA
 			GINL BasicArray(){this->init();}
 			GINL BasicArray(const __MyType& src){this->init(); this->operator = (src);}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
-			GINL _SizeType size() const{return m_size;}
+			GINL const _SizeType& size() const{return m_size;}
 			GINL _SizeType capacity() const{return _Size;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL GAIA::BL push_back(const _DataType& t){if(this->size() < this->capacity()){m_data[m_size++] = t; return GAIA::True;} else return GAIA::False;}

@@ -16,8 +16,8 @@ namespace GAIA
 			GINL BDiff(const __MyType& src){this->operator = (src);}
 			GINL ~BDiff(){}
 			GINL GAIA::BL empty() const{return GAIA::False;}
-			GINL _SizeType size() const{}
-			GINL _SizeType capacity() const{}
+			GINL const _SizeType& size() const{}
+			GINL const _SizeType& capacity() const{}
 			GINL GAIA::GVOID reserve(const _SizeType& size){}
 			GINL GAIA::GVOID clear(){}
 			GINL GAIA::GVOID destroy(){}

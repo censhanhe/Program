@@ -58,8 +58,8 @@ namespace GAIA
 			GINL Storage(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~Storage(){}
 			GINL GAIA::BL empty() const{return m_size == 0;}
-			GINL _SizeType size() const{return m_size;}
-			GINL _SizeType capacity() const{return m_capacity;}
+			GINL const _SizeType& size() const{return m_size;}
+			GINL const _SizeType& capacity() const{return m_capacity;}
 			GINL GAIA::BL increase_reserve(const _SizeType& head, const _SizeType& size)
 			{
 				GAIA_AST(size > 0);

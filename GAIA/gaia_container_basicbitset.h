@@ -20,8 +20,8 @@ namespace GAIA
 			GINL ~BasicBitset(){this->destroy();}
 			GINL GAIA::GVOID clear(){GAIA::ALGORITHM::set(this->front_ptr(), 0, this->size()); m_size = 0;}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
-			GINL _SizeType size() const{return m_size;}
-			GINL _SizeType capacity() const{return m_capacity;}
+			GINL const _SizeType& size() const{return m_size;}
+			GINL const _SizeType& capacity() const{return m_capacity;}
 			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MRELEASE(m_pFront); m_pFront = GNULL;} m_size = m_capacity = 0;}
 			GINL GAIA::U8* front_ptr(){if(this->empty()) return GNULL; return m_pFront;}
 			GINL GAIA::U8* back_ptr(){if(this->empty()) return GNULL; return &m_pFront[this->size() - 1];}

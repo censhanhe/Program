@@ -142,7 +142,7 @@ namespace GAIA
 			GINL BasicStackStack(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicStackStack(){}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
-			GINL _SizeType size() const{return m_size;}
+			GINL const _SizeType& size() const{return m_size;}
 			GINL _SizeType capacity() const{return _Size;}
 			GINL GAIA::BL resize(const _SizeType& size)
 			{

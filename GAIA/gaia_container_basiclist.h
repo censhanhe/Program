@@ -128,8 +128,8 @@ namespace GAIA
 			GINL BasicList(){this->init();}
 			GINL BasicList(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicList(){}
-			GINL _SizeType capacity() const{return m_pool.capacity();}
-			GINL _SizeType size() const{return m_pool.size();}
+			GINL const _SizeType& capacity() const{return m_pool.capacity();}
+			GINL const _SizeType& size() const{return m_pool.size();}
 			GINL GAIA::BL empty() const{return m_pool.empty();}
 			GINL GAIA::GVOID reserve(const _SizeType& size){}
 			GINL GAIA::GVOID resize(const _SizeType& size){}

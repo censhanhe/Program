@@ -55,7 +55,7 @@ namespace GAIA
 			GINL BasicKDTree(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicKDTree(){}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
-			GINL _SizeType size() const{return m_size;}
+			GINL const _SizeType& size() const{return m_size;}
 			GINL GAIA::GVOID clear(){m_pRoot = GNULL; m_nodepool.clear(); m_splitpool.clear(); m_avltree.clear();}
 			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_nodepool.destroy(); m_splitpool.destroy(); m_avltree.destroy();}
 			GINL GAIA::BL insert(const _DataType& t)

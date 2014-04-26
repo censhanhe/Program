@@ -30,7 +30,7 @@ namespace GAIA
 				}
 			}
 			GINL _SizeType size() const{return this->capacity() - m_free.size();}
-			GINL _SizeType capacity() const{return m_use.size();}
+			GINL const _SizeType& capacity() const{return m_use.size();}
 			GINL GAIA::GVOID destroy()
 			{
 				for(_SizeType x = 0; x < m_buf.size(); ++x)

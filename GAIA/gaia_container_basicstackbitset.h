@@ -22,7 +22,7 @@ namespace GAIA
 			GINL ~BasicStackBitset(){}
 			GINL GAIA::GVOID clear(){GAIA::ALGORITHM::memset(m_bits, 0, _Size);}
 			GINL GAIA::BL empty() const{return GAIA::False;}
-			GINL _SizeType size() const{return _Size;}
+			GINL const _SizeType& size() const{return _Size;}
 			GINL _SizeType capacity() const{return _Size;}
 			GINL GAIA::BL exist(const _SizeType& index) const{return (GAIA_STACKBITSET_SRC & GAIA_STACKBITSET_CUR) != 0;}
 			GINL GAIA::GVOID set(const _SizeType& index){GAIA_STACKBITSET_SRC |= GAIA_STACKBITSET_CUR;}

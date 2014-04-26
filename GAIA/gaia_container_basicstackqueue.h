@@ -15,6 +15,24 @@ namespace GAIA
 		public:
 			typedef BasicStackQueue<_DataType, _SizeType, _Size> __MyType;
 		public:
+			class it
+			{
+			};
+			class const_it
+			{
+			};
+		public:
+			GINL BasicStackQueue(){this->init();}
+			GINL BasicStackQueue(const __MyType& src){this->operator = (src);}
+			GINL ~BasicStackQueue(){}
+			GINL _SizeType capacity() const{return _Size;}
+			GINL GAIA::BL empty() const{return this->size() == 0;}
+			GINL const _SizeType& size() const{return m_size;}
+			GINL _SizeType count() const;
+		private:
+			GINL GVOID init(){}
+		private:
+			_SizeType m_size;
 		};
 	};
 };

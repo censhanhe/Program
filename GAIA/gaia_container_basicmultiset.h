@@ -21,8 +21,8 @@ namespace GAIA
 			GINL BasicMultiSet(const __MyType& src){this->operator = (src);}
 			GINL ~BasicMultiSet(){}
 			GINL GAIA::BL empty() const{return m_mavltree.empty();}
-			GINL _SizeType size() const{return m_mavltree.size();}
-			GINL _SizeType capacity() const{return m_mavltree.capacity();}
+			GINL const _SizeType& size() const{return m_mavltree.size();}
+			GINL const _SizeType& capacity() const{return m_mavltree.capacity();}
 			GINL GAIA::GVOID clear(){m_mavltree.clear();}
 			GINL GAIA::GVOID destroy(){m_mavltree.destroy();}
 			GINL GAIA::BL insert(const _DataType& t){return m_mavltree.insert(t);}
