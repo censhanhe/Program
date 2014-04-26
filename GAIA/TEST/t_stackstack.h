@@ -81,6 +81,11 @@ namespace GAIATEST
 			}
 			ss.pop();
 		}
+		if(!ss.empty())
+		{
+			GTLINE2("StackStack pop to empty failed!");
+			++nRet;
+		}
 		ss = ss1;
 		if(ss.front() != ss1.front())
 		{
