@@ -91,7 +91,7 @@ namespace GAIA
 					return GAIA::False;
 				++pBegin;
 			}
-			return GAIA::False;
+			return GAIA::True;
 		}
 	};
 };

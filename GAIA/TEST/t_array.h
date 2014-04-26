@@ -348,6 +348,15 @@ namespace GAIATEST
 			GTLINE2("Array iterator copy element failed!");
 			++nRet;
 		}
+		__ArrayType arr2;
+		arr2 = arr1;
+		arr2 += arr1;
+		arr += arr1;
+		if(arr != arr2)
+		{
+			GTLINE2("Array operator += faield!");
+			++nRet;
+		}
 		return nRet;
 	}
 };
