@@ -21,7 +21,7 @@ namespace GAIA
 			GINL ~Factory(){}
 			GINL GAIA::BL RegistCreateCallBack(FactoryCreateCallBack* pCallBack)
 			{
-				if(m_listCreateCB.find(pCallBack) != (LIST_CREATECALLBACK::_sizetype)-1)
+				if(m_listCreateCB.find(pCallBack, 0) != (LIST_CREATECALLBACK::_sizetype)-1)
 					return GAIA::False;
 				m_listCreateCB.push_back(pCallBack);
 				return GAIA::True;
@@ -31,7 +31,7 @@ namespace GAIA
 				GAIA_AST(!!pCallBack);
 				if(pCallBack == GNULL)
 					return GAIA::False;
-				LIST_CREATECALLBACK::_sizetype t = m_listCreateCB.find(pCallBack);
+				LIST_CREATECALLBACK::_sizetype t = m_listCreateCB.find(pCallBack, 0);
 				if(t == (LIST_CREATECALLBACK::_sizetype)-1)
 					return GAIA::False;
 				m_listCreateCB.erase(t);
@@ -42,7 +42,7 @@ namespace GAIA
 				GAIA_AST(!!pCallBack);
 				if(pCallBack == GNULL)
 					return GAIA::False;
-				if(m_listCreateCB.find(pCallBack) == (LIST_CREATECALLBACK::_sizetype)-1)
+				if(m_listCreateCB.find(pCallBack, 0) == (LIST_CREATECALLBACK::_sizetype)-1)
 					return GAIA::False;
 				return GAIA::True;
 			}

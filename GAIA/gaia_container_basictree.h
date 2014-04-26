@@ -58,7 +58,7 @@ namespace GAIA
 							m_pNode = GNULL;
 							return *this;
 						}
-						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode);
+						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode, 0);
 						GAIA_AST(index != GINVALID);
 						for(_SizeType x = index + 1; x < m_pNode->m_pParent->m_links.size(); ++x)
 						{
@@ -98,7 +98,7 @@ namespace GAIA
 							m_pNode = GNULL;
 							return *this;
 						}
-						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode);
+						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode, 0);
 						GAIA_AST(index != GINVALID);
 						if(index > 0)
 						{
@@ -168,7 +168,7 @@ namespace GAIA
 							m_pNode = GNULL;
 							return *this;
 						}
-						_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode));
+						_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode), 0);
 						GAIA_AST(index != GINVALID);
 						for(_SizeType x = index + 1; x < m_pNode->m_pParent->m_links.size(); ++x)
 						{
@@ -208,7 +208,7 @@ namespace GAIA
 							m_pNode = GNULL;
 							return *this;
 						}
-						_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode));
+						_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode), 0);
 						GAIA_AST(index != GINVALID);
 						if(index > 0)
 						{

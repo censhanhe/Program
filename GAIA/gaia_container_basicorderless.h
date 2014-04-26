@@ -49,7 +49,7 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			GINL _SizeType find(const _DataType& t) const{return m_use.find(t);}
+			GINL _SizeType find(const _DataType& t) const{return m_use.find(t, 0);}
 			GINL _SizeType count(const _DataType& t) const{return m_use.count(t);}
 			GINL __MyType& operator = (const __MyType& src){m_use = src.m_use; m_free = src.m_free;}
 			GINL _DataType& operator[](const _SizeType& index){return m_use[index];}

@@ -73,7 +73,7 @@ namespace GAIA
 			GINL _SizeType size() const{return m_size;}
 			GINL _SizeType capacity() const{return _Size;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
-			GINL GAIA::BL push_back(const _DataType& t){if(this->size() < _Size){m_data[m_size++] = t; return GAIA::True;} else return GAIA::False;}
+			GINL GAIA::BL push_back(const _DataType& t){if(this->size() < this->capacity()){m_data[m_size++] = t; return GAIA::True;} else return GAIA::False;}
 			GINL GAIA::BL push_back(const _DataType* p, const _SizeType& size)
 			{
 				GAIA_AST(!!p);
@@ -94,6 +94,7 @@ namespace GAIA
 					return GAIA::False;
 				for(_SizeType x = 0; x < size; ++x)
 					p[x] = m_data[this->size() - size + x];
+				m_size -= size;
 				return GAIA::True;
 			}
 			GINL const _DataType& front() const{GAIA_AST(this->size() > 0); this->operator[](0);}
@@ -104,7 +105,16 @@ namespace GAIA
 			GINL _DataType* front_ptr(){GAIA_AST(this->size() > 0); return &this->operator[](0);}
 			GINL const _DataType* back_ptr() const{GAIA_AST(this->size() > 0); return &this->operator[](this->size() - 1);}
 			GINL _DataType* back_ptr(){GAIA_AST(this->size() > 0); return &this->operator[](this->size() - 1);}
-			GINL GAIA::GVOID resize(const _SizeType& size){GAIA_AST(size >= 0 && size <= _Size); m_size = size;}
+			GINL GAIA::BL resize(const _SizeType& size)
+			{
+				GAIA_AST(size >= 0 && size <= this->capacity());
+				if(size >= 0 && size <= this->capacity())
+				{
+					m_size = size;
+					return GAIA::True;
+				}
+				return GAIA::False;
+			}
 			GINL GAIA::GVOID reset(const _DataType& t){for(_SizeType x = 0; x < this->size(); ++x) m_data[x] = t;}
 			GINL _SizeType count(const _DataType& t) const
 			{
@@ -142,24 +152,24 @@ namespace GAIA
 					return (_SizeType)GINVALID;
 				return pFinded - m_data;
 			}
-			GINL _SizeType find(const _SizeType& index) const
+			GINL _SizeType find(const _DataType& t, const _SizeType& index) const
 			{
 				if(this->empty())
 					return (_SizeType)GINVALID;
 				if(index >= this->size())
 					return (_SizeType)GINVALID;
-				_DataType* pFinded = GAIA::ALGORITHM::find(&m_data[index], &m_data[index]);
+				const _DataType* pFinded = GAIA::ALGORITHM::find(this->front_ptr() + index, this->back_ptr(), t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return pFinded - m_data;
 			}
-			GINL _SizeType rfind(const _SizeType& index) const
+			GINL _SizeType rfind(const _DataType& t, const _SizeType& index) const
 			{
 				if(this->empty())
 					return (_SizeType)GINVALID;
 				if(index >= this->size())
 					return (_SizeType)GINVALID;
-				_DataType* pFinded = GAIA::ALGORITHM::rfind(m_data, &m_data[index]);
+				const _DataType* pFinded = GAIA::ALGORITHM::rfind(this->front_ptr(), this->front_ptr() + index, t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return pFinded - m_data;
@@ -220,7 +230,7 @@ namespace GAIA
 				const_it iter;
 				if(!this->empty())
 				{
-					_DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
+					const _DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
 					iter.m_pContainer = this;
 					iter.m_index = p - this->front_ptr();
 				}
@@ -242,7 +252,7 @@ namespace GAIA
 				const_it iter;
 				if(!this->empty())
 				{
-					_DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
+					const _DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
 					iter.m_pContainer = this;
 					iter.m_index = p - this->front_ptr();
 				}
@@ -316,8 +326,6 @@ namespace GAIA
 			}
 			GINL const _DataType& operator [] (const _SizeType& index) const{return m_data[index];}
 			GINL _DataType& operator [] (const _SizeType& index){return m_data[index];}
-			GINL __MyType& operator << (const _DataType& t){this->push_back(t); return *this;}
-			GINL __MyType& operator >> (const _DataType& t){this->push_back(t); return *this;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->resize(src.size());

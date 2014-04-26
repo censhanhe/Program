@@ -1497,13 +1497,37 @@
 			Name="TEST"
 			>
 			<File
-				RelativePath=".\TEST\t_accesser.h"
-				>
-			</File>
-			<File
 				RelativePath=".\TEST\t_header.h"
 				>
 			</File>
+			<Filter
+				Name="CONTAINER"
+				>
+				<File
+					RelativePath=".\TEST\t_accesser.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_array.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_list.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_queue.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_stack.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_vector.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\main.cpp"
