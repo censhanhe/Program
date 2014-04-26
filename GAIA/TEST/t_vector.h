@@ -6,8 +6,8 @@ namespace GAIATEST
 	GINL GAIA::N32 t_vector(GAIA::FILESYSTEM::File& file, GAIA::PRINT::Print& prt)
 	{
 		GAIA::N32 nRet = 0;
-		typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __ArrayType;
-		__ArrayType vec;
+		typedef GAIA::CONTAINER::BasicVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> __VectorType;
+		__VectorType vec;
 		vec.reserve(100);
 		if(vec.capacity() != 100)
 		{
@@ -24,14 +24,14 @@ namespace GAIATEST
 			GTLINE2("New vector must been empty!");
 			++nRet;
 		}
-		for(__ArrayType::_sizetype x = 0; x < vec.capacity(); ++x)
+		for(__VectorType::_sizetype x = 0; x < vec.capacity(); ++x)
 			vec.push_back(x);
 		if(vec.size() != vec.capacity())
 		{
 			GTLINE2("Full push_backed vector's size must been capacity()!");
 			++nRet;
 		}
-		for(__ArrayType::_sizetype x = 0; x < vec.size(); ++x)
+		for(__VectorType::_sizetype x = 0; x < vec.size(); ++x)
 		{
 			if(vec[x] != x)
 			{
@@ -45,7 +45,7 @@ namespace GAIATEST
 			GTLINE2("Vector's capacity must not changed!");
 			++nRet;
 		}
-		__ArrayType vec1;
+		__VectorType vec1;
 		vec1.push_back(vec.front_ptr(), vec.size());
 		if(vec1.capacity() != 100)
 		{
@@ -57,7 +57,7 @@ namespace GAIATEST
 			GTLINE2("Vector push_back multi element and the size error!");
 			++nRet;
 		}
-		for(__ArrayType::_sizetype x = 0; x < vec1.size(); ++x)
+		for(__VectorType::_sizetype x = 0; x < vec1.size(); ++x)
 		{
 			if(vec1[x] != x)
 			{
@@ -66,7 +66,7 @@ namespace GAIATEST
 				break;
 			}
 		}
-		for(__ArrayType::_sizetype size = vec.size(); size > 0; --size)
+		for(__VectorType::_sizetype size = vec.size(); size > 0; --size)
 		{
 			if(vec.back() != size - 1)
 			{
@@ -82,8 +82,8 @@ namespace GAIATEST
 			}
 		}
 
-		__ArrayType::_sizetype arrsize = vec1.size();
-		__ArrayType::_datatype* pTemp = new __ArrayType::_datatype[arrsize];
+		__VectorType::_sizetype arrsize = vec1.size();
+		__VectorType::_datatype* pTemp = new __VectorType::_datatype[arrsize];
 		if(!vec1.pop_back(pTemp, arrsize))
 		{
 			GTLINE2("Vector pop_back multi element failed!");
@@ -100,7 +100,7 @@ namespace GAIATEST
 			GTLINE2("Vector push_back multi element size error!");
 			++nRet;
 		}
-		for(__ArrayType::_sizetype x = 0; x < vec.size(); ++x)
+		for(__VectorType::_sizetype x = 0; x < vec.size(); ++x)
 		{
 			if(vec[x] != vec1[x])
 			{
@@ -119,7 +119,7 @@ namespace GAIATEST
 			GTLINE2("Vector resize operation failed!");
 			++nRet;
 		}
-		for(__ArrayType::_sizetype x = 0; x < vec.size(); ++x)
+		for(__VectorType::_sizetype x = 0; x < vec.size(); ++x)
 		{
 			if(vec.count(x) != 1)
 			{
@@ -134,7 +134,7 @@ namespace GAIATEST
 			GTLINE2("Vector reset change the size error!");
 			++nRet;
 		}
-		for(__ArrayType::_sizetype x = 0; x < vec.size(); ++x)
+		for(__VectorType::_sizetype x = 0; x < vec.size(); ++x)
 		{
 			if(vec[x] != 0)
 			{
@@ -143,7 +143,7 @@ namespace GAIATEST
 				break;
 			}
 		}
-		for(__ArrayType::_sizetype x = 0; vec.capacity() != vec.size(); ++x)
+		for(__VectorType::_sizetype x = 0; vec.capacity() != vec.size(); ++x)
 			vec.push_back(x);
 		if(vec.size() != vec.capacity())
 		{
@@ -162,7 +162,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		vec.resize(vec1.size() / 2);
-		for(__ArrayType::_sizetype x = 0; vec.capacity() != vec.size(); ++x)
+		for(__VectorType::_sizetype x = 0; vec.capacity() != vec.size(); ++x)
 			vec.push_back(x);
 		if(vec.size() != vec.capacity())
 		{
@@ -180,7 +180,7 @@ namespace GAIATEST
 			GTLINE2("Vector sort failed!");
 			++nRet;
 		}
-		__ArrayType::const_it cit = vec.const_front_it();
+		__VectorType::const_it cit = vec.const_front_it();
 		while(!cit.empty())
 		{
 			if(vec.search(*cit) == GINVALID)
@@ -204,10 +204,10 @@ namespace GAIATEST
 			++cit;
 		}
 		vec.inverse();
-		__ArrayType::it it = vec.front_it();
+		__VectorType::it it = vec.front_it();
 		while(!it.empty())
 		{
-			__ArrayType::it itt = it;
+			__VectorType::it itt = it;
 			++itt;
 			if(!itt.empty())
 			{
@@ -226,13 +226,13 @@ namespace GAIATEST
 			GTLINE2("Vector insert failed!");
 			++nRet;
 		}
-		__ArrayType::_sizetype insertindex1 = vec.size() / 2;
+		__VectorType::_sizetype insertindex1 = vec.size() / 2;
 		if(!vec.insert(998, insertindex1))
 		{
 			GTLINE2("Vector insert failed!");
 			++nRet;
 		}
-		__ArrayType::_sizetype insertindex2 = vec.size();
+		__VectorType::_sizetype insertindex2 = vec.size();
 		if(!vec.insert(999, insertindex2))
 		{
 			GTLINE2("Vector insert failed!");
@@ -281,7 +281,7 @@ namespace GAIATEST
 		it = vec.front_it();
 		while(!it.empty())
 		{
-			__ArrayType::it itfinded = vec.lower_bound(*it);
+			__VectorType::it itfinded = vec.lower_bound(*it);
 			if(itfinded.empty())
 			{
 				GTLINE2("Vector lower_bound failed!");
@@ -297,11 +297,11 @@ namespace GAIATEST
 			}
 			++it;
 		}
-		const __ArrayType& arrc = vec;
+		const __VectorType& arrc = vec;
 		cit = arrc.const_front_it();
 		while(!cit.empty())
 		{
-			__ArrayType::const_it citfinded = arrc.lower_bound(*cit);
+			__VectorType::const_it citfinded = arrc.lower_bound(*cit);
 			if(citfinded.empty())
 			{
 				GTLINE2("Vector lower_bound const failed!");
@@ -331,7 +331,7 @@ namespace GAIATEST
 			GTLINE2("Vector iterator copy element failed!");
 			++nRet;
 		}
-		__ArrayType vec2;
+		__VectorType vec2;
 		vec2 = vec1;
 		vec2 += vec1;
 		vec += vec1;

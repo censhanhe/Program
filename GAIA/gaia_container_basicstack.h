@@ -30,6 +30,42 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
 				GINL it& operator = (const it& src){m_index = src.m_index; m_pContainer = src.m_pContainer; return *this;}
+				GINL it& operator += (const _SizeType& c)
+				{
+					if(m_pContainer == GNULL)
+						return *this;
+					m_index += c;
+					if(m_index >= m_pContainer->size() || m_index < 0)
+						this->init();
+					return *this;
+				}
+				GINL it& operator -= (const _SizeType& c)
+				{
+					if(m_pContainer == GNULL)
+						return *this;
+					m_index -= c;
+					if(m_index >= m_pContainer->size() || m_index < 0)
+						this->init();
+					return *this;
+				}
+				GINL it operator + (const _SizeType& c) const
+				{
+					it ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL it operator - (const _SizeType& c) const
+				{
+					it ret = *this;
+					ret -= c;
+					return ret;
+				}
+				GINL _SizeType operator - (const it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					return this->m_index - src.m_index;
+				}
 				GAIA_CLASS_OPERATOR_COMPARE(m_index, m_index, it);
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
@@ -55,6 +91,42 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
 				GINL const_it& operator = (const const_it& src){m_index = src.m_index; m_pContainer = src.m_pContainer; return *this;}
+				GINL const_it& operator += (const _SizeType& c)
+				{
+					if(m_pContainer == GNULL)
+						return *this;
+					m_index += c;
+					if(m_index >= m_pContainer->size() || m_index < 0)
+						this->init();
+					return *this;
+				}
+				GINL const_it& operator -= (const _SizeType& c)
+				{
+					if(m_pContainer == GNULL)
+						return *this;
+					m_index -= c;
+					if(m_index >= m_pContainer->size() || m_index < 0)
+						this->init();
+					return *this;
+				}
+				GINL const_it operator + (const _SizeType& c) const
+				{
+					const_it ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL const_it operator - (const _SizeType& c) const
+				{
+					const_it ret = *this;
+					ret -= c;
+					return ret;
+				}
+				GINL _SizeType operator - (const const_it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					return this->m_index - src.m_index;
+				}
 				GAIA_CLASS_OPERATOR_COMPARE(m_index, m_index, const_it);
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
@@ -128,6 +200,10 @@ namespace GAIA
 			GINL GAIA::BL pop(){if(this->size() > 0){--m_size; return GAIA::True;} return GAIA::False;}
 			GINL const _DataType& top() const{return m_pFront[this->size() - 1];}
 			GINL _DataType& top(){return m_pFront[this->size() - 1];}
+			GINL _DataType& front(){return this->operator[](0);}
+			GINL const _DataType& front() const{return this->operator[](0);}
+			GINL _DataType& back(){return this->operator[](this->size() - 1);}
+			GINL const _DataType& back() const{return this->operator[](this->size() - 1);}
 			GINL _DataType* front_ptr(){return m_pFront;}
 			GINL const _DataType* front_ptr() const{return m_pFront;}
 			GINL _DataType* back_ptr(){return &m_pFront[m_size - 1];}
@@ -211,6 +287,16 @@ namespace GAIA
 			{
 				GAIA_AST(index < m_size);
 				return m_pFront[index];
+			}
+			GINL __MyType& operator += (const __MyType& src)
+			{
+				const_it it = src.const_front_it();
+				while(!it.empty())
+				{
+					this->push(*it);
+					++it;
+				}
+				return *this;
 			}
 			GINL GAIA::BL operator == (const __MyType& src) const
 			{

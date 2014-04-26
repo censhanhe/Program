@@ -2,7 +2,20 @@
 #define		__T_HEADER_H__
 
 #define GTLINE(sz) do{prt << sz << "\n"; file.WriteText(sz); file.WriteText("\r\n");}while(0)
-#define GTLINE1(sz) do{prt << "\t" << sz << "\n"; file.WriteText("\t"); file.WriteText(sz); file.WriteText("\r\n");}while(0)
+#define GTLINE1(sz) do{prt << "\t" << sz << "\n"; file.WriteText("\t"); file.WriteText(sz); file.WriteText("\r\n");\
+						if(bOutputTime)\
+							uTimeBegin = GAIA::TIME::tick_time();\
+						else\
+						{\
+							uTimeEnd = GAIA::TIME::tick_time();\
+							str.clear();\
+							str += "Timelost ";\
+							str += (GAIA::F64)(uTimeEnd - uTimeBegin) / 1000.0;\
+							str += "(MS)";\
+							GTLINE2(str.front_ptr());\
+						}\
+						bOutputTime = !bOutputTime;\
+					}while(0)
 #define GTLINE2(sz) do{prt << "\t\t" << sz << "\n"; file.WriteText("\t\t"); file.WriteText(sz); file.WriteText("\r\n");}while(0)
 
 #include "t_accesser.h"
@@ -21,6 +34,9 @@ namespace GAIATEST
 	GINL GAIA::N32 t_all(GAIA::FILESYSTEM::File& file, GAIA::PRINT::Print& prt)
 	{
 		GAIA::N32 nRet = 0;
+		GAIA::BL bOutputTime = GAIA::False;
+		GAIA::U64 uTimeBegin = 0, uTimeEnd = 0;
+		GAIA::CONTAINER::AString str;
 
 		// Every test procedure.
 		GTLINE("[GAIA TEST BEGIN]");
@@ -35,7 +51,6 @@ namespace GAIATEST
 			GTLINE1("Chars test begin!"); nRet += t_chars(file, prt); GTLINE1("Chars test end!"); GTLINE1("\t");
 			GTLINE1("String test begin!"); nRet += t_string(file, prt); GTLINE1("String test end!"); GTLINE1("\t");
 			GTLINE1("Accesser test begin!"); nRet += t_accesser(file, prt); GTLINE1("Accesser test end!"); GTLINE1("\t");
-
 		}
 		GTLINE("[GAIA TEST END]");
 
@@ -46,7 +61,7 @@ namespace GAIATEST
 			GTLINE("There is no error occurred!");
 		else
 		{
-			GAIA::CONTAINER::AString str;
+			str.clear();
 			str = "There are ";
 			str += nRet;
 			str += " error occurred.";
