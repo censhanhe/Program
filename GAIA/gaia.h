@@ -66,6 +66,8 @@
 #include	"gaia_container_array.h"
 #include	"gaia_container_basicvector.h"
 #include	"gaia_container_vector.h"
+#include	"gaia_container_basicstackqueue.h"
+#include	"gaia_container_stackqueue.h"
 #include	"gaia_container_basicqueue.h"
 #include	"gaia_container_queue.h"
 #include	"gaia_container_basicbuffer.h"

@@ -530,7 +530,15 @@
 							>
 						</File>
 						<File
+							RelativePath=".\gaia_container_basicstackqueue.h"
+							>
+						</File>
+						<File
 							RelativePath=".\gaia_container_queue.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_container_stackqueue.h"
 							>
 						</File>
 					</Filter>
@@ -1521,6 +1529,18 @@
 				</File>
 				<File
 					RelativePath=".\TEST\t_stack.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_stackqueue.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_stackstack.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_string.h"
 					>
 				</File>
 				<File
