@@ -13,6 +13,7 @@
 #include "t_stackqueue.h"
 #include "t_queue.h"
 #include "t_list.h"
+#include "t_chars.h"
 #include "t_string.h"
 
 namespace GAIATEST
@@ -31,6 +32,7 @@ namespace GAIATEST
 			GTLINE1("StackQueue test begin!"); nRet += t_stackqueue(file, prt); GTLINE1("StackQueue test end!"); GTLINE1("\t");
 			GTLINE1("Queue test begin!"); nRet += t_queue(file, prt); GTLINE1("Queue test end!"); GTLINE1("\t");
 			GTLINE1("List test begin!"); nRet += t_list(file, prt); GTLINE1("List test end!"); GTLINE1("\t");
+			GTLINE1("Chars test begin!"); nRet += t_chars(file, prt); GTLINE1("Chars test end!"); GTLINE1("\t");
 			GTLINE1("String test begin!"); nRet += t_string(file, prt); GTLINE1("String test end!"); GTLINE1("\t");
 			GTLINE1("Accesser test begin!"); nRet += t_accesser(file, prt); GTLINE1("Accesser test end!"); GTLINE1("\t");
 

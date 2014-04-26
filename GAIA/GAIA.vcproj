@@ -1520,6 +1520,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TEST\t_chars.h"
+					>
+				</File>
+				<File
 					RelativePath=".\TEST\t_list.h"
 					>
 				</File>
