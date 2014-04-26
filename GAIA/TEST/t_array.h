@@ -292,7 +292,7 @@ namespace GAIATEST
 		}
 		if(!(arr >= arr1 && arr <= arr1 && arr == arr1))
 		{
-			GTLINE2("Same array compare !(>= <= ==) faield!");
+			GTLINE2("Same array compare !(>= <= ==) failed!");
 			++nRet;
 		}
 		it = arr.front_it();
@@ -328,7 +328,7 @@ namespace GAIATEST
 			citfinded = arrc.upper_bound(*cit);
 			if(citfinded.empty())
 			{
-				GTLINE2("Array upper_bound const faield!");
+				GTLINE2("Array upper_bound const failed!");
 				++nRet;
 				break;
 			}
@@ -354,7 +354,44 @@ namespace GAIATEST
 		arr += arr1;
 		if(arr != arr2)
 		{
-			GTLINE2("Array operator += faield!");
+			GTLINE2("Array operator += failed!");
+			++nRet;
+		}
+		arr = arr1;
+		cit = arr.const_front_it();
+		it = arr.front_it();
+		if((cit + 10) - cit != 10)
+		{
+			GTLINE2("Array const iterator's operator + index or - iterator failed!");
+			++nRet;
+		}
+		if((it + 10) - it != 10)
+		{
+			GTLINE2("Array iterator's operator + index or - iterator failed!");
+			++nRet;
+		}
+		cit += 10;
+		it += 10;
+		if(cit - arr.const_front_it() != 10)
+		{
+			GTLINE2("Array const iterator += operator failed!");
+			++nRet;
+		}
+		if(it - arr.front_it() != 10)
+		{
+			GTLINE2("Array iterator += operator failed!");
+			++nRet;
+		}
+		cit -= 20;
+		it -= 20;
+		if(!cit.empty())
+		{
+			GTLINE2("Array const iterator -= operator failed!");
+			++nRet;
+		}
+		if(!it.empty())
+		{
+			GTLINE2("Array iterator -= operator failed!");
 			++nRet;
 		}
 		return nRet;

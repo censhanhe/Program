@@ -30,8 +30,8 @@ namespace GAIATEST
 			GTLINE1("Stack test begin!"); nRet += t_stack(file, prt); GTLINE1("Stack test end!"); GTLINE1("\t");
 			GTLINE1("StackQueue test begin!"); nRet += t_stackqueue(file, prt); GTLINE1("StackQueue test end!"); GTLINE1("\t");
 			GTLINE1("Queue test begin!"); nRet += t_queue(file, prt); GTLINE1("Queue test end!"); GTLINE1("\t");
-			GTLINE1("List test begin!"); nRet += t_list(file, prt); GTLINE1("\tList test end!"); GTLINE1("\t");
-			GTLINE1("String test begin!"); nRet += t_string(file, prt); GTLINE1("\tString test end!"); GTLINE1("\t");
+			GTLINE1("List test begin!"); nRet += t_list(file, prt); GTLINE1("List test end!"); GTLINE1("\t");
+			GTLINE1("String test begin!"); nRet += t_string(file, prt); GTLINE1("String test end!"); GTLINE1("\t");
 			GTLINE1("Accesser test begin!"); nRet += t_accesser(file, prt); GTLINE1("Accesser test end!"); GTLINE1("\t");
 
 		}

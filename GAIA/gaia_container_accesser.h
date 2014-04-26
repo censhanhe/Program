@@ -231,7 +231,6 @@ namespace GAIA
 					m_index -= size;
 				return *this;
 			}
-			GINL _SizeType operator + (const __MyType& src){return this->index() + src.index();}
 			GINL _SizeType operator - (const __MyType& src){return this->index() - src.index();}
 			GINL __MyType operator + (const _SizeType& size){__MyType ret; ret = *this; ret += size; return ret;}
 			GINL __MyType operator - (const _SizeType& size){__MyType ret; ret = *this; ret -= size; return ret;}
