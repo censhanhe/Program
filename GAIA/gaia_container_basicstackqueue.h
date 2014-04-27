@@ -139,7 +139,7 @@ namespace GAIA
 			};
 		public:
 			GINL BasicStackQueue(){this->init();}
-			GINL BasicStackQueue(const __MyType& src){this->operator = (src);}
+			GINL BasicStackQueue(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicStackQueue(){}
 			GINL _SizeType capacity() const{return _Size;}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
@@ -160,7 +160,7 @@ namespace GAIA
 				if(this->empty())
 					return 0;
 				_SizeType ret = 0;
-				GAIA::ALGORITHM::count(this->front_it(), this->back_it(), t, ret);
+				GAIA::ALGORITHM::count(this->const_front_it(), this->const_back_it(), t, ret);
 				return ret;
 			}
 			GINL GAIA::BL push_back(const _DataType& t)
@@ -255,13 +255,37 @@ namespace GAIA
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				this->clear(src.size());
+				this->clear();
 				for(_SizeType x = 0; x < src.size(); ++x)
 					this->push_back(src[x]);
 				return *this;
 			}
-			GINL _DataType& operator[](const _SizeType& index){return m_data[index];}
-			GINL const _DataType& operator[](const _SizeType& index) const{return m_data[index];}
+			GINL _DataType& operator[](const _SizeType& index)
+			{
+				GAIA_AST(index < this->size());
+				if(m_pFront < m_pBack)
+					return m_pFront[index];
+				else
+				{
+					if(this->capacity() - (m_pFront - m_data) > index)
+						return m_pFront[index];
+					else
+						return m_data[index - (this->capacity() - (m_pFront - m_data))];
+				}
+			}
+			GINL const _DataType& operator[](const _SizeType& index) const
+			{
+				GAIA_AST(index < this->size());
+				if(m_pFront < m_pBack)
+					return m_pFront[index];
+				else
+				{
+					if(this->capacity() - (m_pFront - m_data) > index)
+						return m_pFront[index];
+					else
+						return m_data[index - (this->capacity() - (m_pFront - m_data))];
+				}
+			}
 			GINL __MyType& operator += (const __MyType& src)
 			{
 				const_it it = src.const_front_it();

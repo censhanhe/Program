@@ -149,7 +149,7 @@ namespace GAIA
 				if(this->empty())
 					return 0;
 				_SizeType ret = 0;
-				GAIA::ALGORITHM::count(this->front_it(), this->back_it(), t, ret);
+				GAIA::ALGORITHM::count(this->const_front_it(), this->const_back_it(), t, ret);
 				return ret;
 			}
 			GINL _DataType& front(){return this->operator[](0);}

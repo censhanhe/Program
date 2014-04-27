@@ -190,11 +190,16 @@ namespace GAIA
 		template<typename _DataType, typename _KeyType, typename _SizeType> GINL GAIA::GVOID count(_DataType pBegin, _DataType pEnd, const _KeyType& key, _SizeType& result)
 		{
 			GAIA_AST(pBegin <= pEnd);
-			while(pBegin <= pEnd)
+			while(pBegin != pEnd)
 			{
 				if(*pBegin == key)
 					++result;
 				++pBegin;
+			}
+			if(pBegin == pEnd)
+			{
+				if(*pBegin == key)
+					++result;
 			}
 		}
 		template<typename _DataType, typename _KeyType, typename _SizeType> GINL GAIA::GVOID lower_equal_count(_DataType pBegin, _DataType pEnd, const _KeyType& key, _SizeType& result)
