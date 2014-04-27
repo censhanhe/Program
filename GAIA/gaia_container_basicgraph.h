@@ -303,9 +303,9 @@ namespace GAIA
 			{
 				while(!m_tstack.empty())
 				{
-					Node* pNode = m_tstack.top();
+					Node* pNode = m_tstack.back();
 					pNode->leave_traveling();
-					const_cast<__MyType*>(this)->m_tstack.pop();
+					const_cast<__MyType*>(this)->m_tstack.pop_back();
 				}
 			}
 			GINL GAIA::GVOID reset_tstack(const _SizeType& size) const
@@ -313,9 +313,9 @@ namespace GAIA
 				GAIA_AST(size >= 0);
 				for(_SizeType x = 0; x < size; ++x)
 				{
-					Node* pNode = m_tstack.top();
+					Node* pNode = m_tstack.back();
 					pNode->leave_traveling();
-					const_cast<__MyType*>(this)->m_tstack.pop();
+					const_cast<__MyType*>(this)->m_tstack.pop_back();
 				}
 			}
 			GINL GAIA::GVOID find_node(const Node* pSrc, const _DataType& t, __NodeListType& result) const
@@ -412,7 +412,7 @@ namespace GAIA
 					}
 				}
 				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
-					const_cast<__MyType*>(this)->m_tstack.push(const_cast<Node*>(&src));
+					const_cast<__MyType*>(this)->m_tstack.push_back(const_cast<Node*>(&src));
 				else
 					src.leave_traveling();
 				return GAIA::False;
@@ -442,7 +442,7 @@ namespace GAIA
 					}
 				}
 				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
-					const_cast<__MyType*>(this)->m_tstack.push(const_cast<Node*>(&src));
+					const_cast<__MyType*>(this)->m_tstack.push_back(const_cast<Node*>(&src));
 				else
 					src.leave_traveling();
 				return GAIA::False;
@@ -462,7 +462,7 @@ namespace GAIA
 					if(dst.m_links[x]->m_traveling)
 						continue;
 					dst.m_links[x]->enter_traveling();
-					const_cast<__MyType*>(this)->m_tstack.push(const_cast<Node*>(&src));
+					const_cast<__MyType*>(this)->m_tstack.push_back(const_cast<Node*>(&src));
 					++traveling_count;
 					_SizeType newnavtimes = navtimes - 1;
 					return this->navfind(dst, *dst.m_links[x], newnavtimes, traveling_count);
@@ -509,7 +509,7 @@ namespace GAIA
 					}
 				}
 				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
-					const_cast<__MyType*>(this)->m_tstack.push(const_cast<Node*>(&src));
+					const_cast<__MyType*>(this)->m_tstack.push_back(const_cast<Node*>(&src));
 				else
 					src.leave_traveling();
 				return GAIA::False;
@@ -554,7 +554,7 @@ namespace GAIA
 					}
 				}
 				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
-					const_cast<__MyType*>(this)->m_tstack.push(const_cast<Node*>(&src));
+					const_cast<__MyType*>(this)->m_tstack.push_back(const_cast<Node*>(&src));
 				else
 					src.leave_traveling();
 				return GAIA::False;

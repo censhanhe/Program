@@ -175,7 +175,7 @@ namespace GAIA
 			SendRec r;
 			r.p = pNew;
 			r.uSize = uSize;
-			m_sendque.push(r);
+			m_sendque.push_back(r);
 			return GAIA::True;
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkHandle::FlushSendQueue()
@@ -191,7 +191,7 @@ namespace GAIA
 				while(!m_sendque.empty())
 				{
 					m_tempsendlist.push_back(m_sendque.front());
-					m_sendque.pop();
+					m_sendque.pop_front();
 				}
 			}
 

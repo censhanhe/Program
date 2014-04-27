@@ -26,8 +26,8 @@ namespace GAIA
 			{
 				if(!m_free.empty())
 				{
-					_SizeType index = m_free.top();
-					m_free.pop();
+					_SizeType index = m_free.back();
+					m_free.pop_back();
 					m_use[index] = t;
 					return index;
 				}
@@ -36,7 +36,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL erasei(const _SizeType& index)
 			{
-				m_free.push(index);
+				m_free.push_back(index);
 				m_use[index] = GNULL;
 				return GAIA::True;
 			}

@@ -166,7 +166,7 @@ namespace GAIA
 				{
 					SendRec& r = m_sendque.front();
 					GAIA_MRELEASE(r.p);
-					m_sendque.pop();
+					m_sendque.pop_front();
 				}
 			}
 			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse){}

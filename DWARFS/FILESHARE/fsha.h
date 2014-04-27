@@ -779,7 +779,7 @@ namespace FSHA
 			sr >> fr.uSequence;
 			sr >> fr.uCRC;
 			fr.fid = tn.fid;
-			stack.push(tn);
+			stack.push_back(tn);
 
 			/* Load node count. */
 			__FileTreeType::__NodeTreeType::_sizetype childcnt;
@@ -790,7 +790,7 @@ namespace FSHA
 			{
 				if(stack.size() > 1)
 				{
-					GAIA_AST(stack.top().fid != GINVALID);
+					GAIA_AST(stack.back().fid != GINVALID);
 					m_ftree.insert(stack.front_ptr() + 1, stack.size() - 1);
 					m_recids.push_back(fr);
 				}
@@ -799,7 +799,7 @@ namespace FSHA
 			/* Load child node. */
 			for(__FileTreeType::__NodeTreeType::_sizetype x = 0; x < childcnt; ++x)
 				this->LoadNode(sr, stack);
-			stack.pop();
+			stack.pop_back();
 
 			return GAIA::True;
 		}
@@ -3145,7 +3145,7 @@ namespace FSHA
 					FileReq fr;
 					fr.fid = listPart[1];
 					fr.uUserReqTime = GAIA::TIME::tick_time();
-					m_reqs.push(fr);
+					m_reqs.push_back(fr);
 				}
 				else
 					CMDFAILED;
@@ -4056,7 +4056,7 @@ namespace FSHA
 				m_listFileReqTemp.clear();
 				if(m_reqeds.size() < m_nMaxRequestFileCountSameTime)
 				{
-					for(; !m_reqs.empty(); m_reqs.pop())
+					for(; !m_reqs.empty(); m_reqs.pop_front())
 					{
 						if(m_listFileReqTemp.size() == m_nMaxRequestFileCountSameTime - m_reqeds.size())
 							break;
@@ -4102,7 +4102,7 @@ namespace FSHA
 					FileReq fr;
 					fr.fid = fid;
 					fr.uUserReqTime = GAIA::TIME::tick_time();
-					m_reqs.push(fr);
+					m_reqs.push_back(fr);
 					bRet = GAIA::True;
 				}
 			}

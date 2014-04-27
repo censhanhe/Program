@@ -185,7 +185,7 @@ namespace GAIA
 					m_capacity = size;
 				}
 			}
-			GINL GAIA::GVOID push(const _DataType& t)
+			GINL GAIA::GVOID push_back(const _DataType& t)
 			{
 				if(this->capacity() == 0)
 				{
@@ -216,7 +216,7 @@ namespace GAIA
 				*m_pBack++ = t;
 				++m_size;
 			}
-			GINL GAIA::BL pop()
+			GINL GAIA::BL pop_front()
 			{
 				if(!this->empty())
 				{
@@ -294,7 +294,7 @@ namespace GAIA
 			{
 				this->reserve(src.size());
 				for(_SizeType x = 0; x < src.size(); ++x)
-					this->push(src[x]);
+					this->push_back(src[x]);
 				return *this;
 			}
 			GINL _DataType& operator[](const _SizeType& index)
@@ -328,7 +328,7 @@ namespace GAIA
 				const_it it = src.const_front_it();
 				while(!it.empty())
 				{
-					this->push(*it);
+					this->push_back(*it);
 					++it;
 				}
 				return *this;

@@ -25,9 +25,9 @@ namespace GAIATEST
 		}
 		for(__StackStackType::_sizetype x = 0; x < ss.capacity(); ++x)
 		{
-			if(!ss.push(x))
+			if(!ss.push_back(x))
 			{
-				GTLINE2("stackstack push return GAIA::False failed!");
+				GTLINE2("stackstack push_back return GAIA::False failed!");
 				++nRet;
 				break;
 			}
@@ -54,19 +54,19 @@ namespace GAIATEST
 		__StackStackType ss1 = ss;
 		if(ss1.capacity() != 100)
 		{
-			GTLINE2("StackStack push multi element change the capacity error!");
+			GTLINE2("StackStack push_back multi element change the capacity error!");
 			++nRet;
 		}
 		if(ss1.size() != ss1.capacity())
 		{
-			GTLINE2("StackStack push multi element and the size error!");
+			GTLINE2("StackStack push_back multi element and the size error!");
 			++nRet;
 		}
 		for(__StackStackType::_sizetype x = 0; x < ss1.size(); ++x)
 		{
 			if(ss1[x] != x)
 			{
-				GTLINE2("StackStack push multi element and then the element value error!");
+				GTLINE2("StackStack push_back multi element and then the element value error!");
 				++nRet;
 				break;
 			}
@@ -79,11 +79,11 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			ss.pop();
+			ss.pop_back();
 		}
 		if(!ss.empty())
 		{
-			GTLINE2("StackStack pop to empty failed!");
+			GTLINE2("StackStack pop_back to empty failed!");
 			++nRet;
 		}
 		ss = ss1;
@@ -112,18 +112,18 @@ namespace GAIATEST
 			}
 		}
 		for(__StackStackType::_sizetype x = 0; ss.capacity() != ss.size(); ++x)
-			ss.push(x);
+			ss.push_back(x);
 		if(ss.size() != ss.capacity())
 		{
-			GTLINE2("StackStack push element to capacity size failed!");
+			GTLINE2("StackStack push_back element to capacity size failed!");
 			++nRet;
 		}
 		ss.resize(ss1.size() / 2);
 		for(__StackStackType::_sizetype x = 0; ss.capacity() != ss.size(); ++x)
-			ss.push(x);
+			ss.push_back(x);
 		if(ss.size() != ss.capacity())
 		{
-			GTLINE2("StackStack push element to capacity size failed!");
+			GTLINE2("StackStack push_back element to capacity size failed!");
 			++nRet;
 		}
 		ss1 = ss;

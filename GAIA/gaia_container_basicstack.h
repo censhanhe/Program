@@ -179,7 +179,7 @@ namespace GAIA
 				GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret);
 				return ret;
 			}
-			GINL GAIA::GVOID push(const _DataType& t)
+			GINL GAIA::GVOID push_back(const _DataType& t)
 			{
 				if(this->size() == this->capacity())
 				{
@@ -197,9 +197,7 @@ namespace GAIA
 				}
 				m_pFront[m_size++] = t;
 			}
-			GINL GAIA::BL pop(){if(this->size() > 0){--m_size; return GAIA::True;} return GAIA::False;}
-			GINL const _DataType& top() const{return m_pFront[this->size() - 1];}
-			GINL _DataType& top(){return m_pFront[this->size() - 1];}
+			GINL GAIA::BL pop_back(){if(this->size() > 0){--m_size; return GAIA::True;} return GAIA::False;}
 			GINL _DataType& front(){return this->operator[](0);}
 			GINL const _DataType& front() const{return this->operator[](0);}
 			GINL _DataType& back(){return this->operator[](this->size() - 1);}
@@ -293,7 +291,7 @@ namespace GAIA
 				const_it it = src.const_front_it();
 				while(!it.empty())
 				{
-					this->push(*it);
+					this->push_back(*it);
 					++it;
 				}
 				return *this;

@@ -156,7 +156,7 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL _SizeType count(const _DataType& t) const{_SizeType ret = 0; GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret); return ret;}
-			GINL GAIA::BL push(const _DataType& t)
+			GINL GAIA::BL push_back(const _DataType& t)
 			{
 				if(this->size() < this->capacity()) 
 				{
@@ -167,7 +167,7 @@ namespace GAIA
 				else
 					return GAIA::False;
 			}
-			GINL GAIA::BL pop()
+			GINL GAIA::BL pop_back()
 			{
 				if(m_size > 0)
 				{
@@ -177,8 +177,6 @@ namespace GAIA
 				else
 					return GAIA::False;
 			}
-			GINL const _DataType& top() const{return m_data[m_size];}
-			GINL _DataType& top(){return m_data[m_size];}
 			GINL _DataType& front(){return this->operator[](0);}
 			GINL const _DataType& front() const{return this->operator[](0);}
 			GINL _DataType& back(){return this->operator[](this->size() - 1);}
@@ -264,7 +262,7 @@ namespace GAIA
 				const_it it = src.const_front_it();
 				while(!it.empty())
 				{
-					this->push(*it);
+					this->push_back(*it);
 					++it;
 				}
 				return *this;

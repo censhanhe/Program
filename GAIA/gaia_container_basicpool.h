@@ -26,7 +26,7 @@ namespace GAIA
 				{
 					__ElementListType& listEle = m_buf[y]->listEle;
 					for(_SizeType x = 0; x < listEle.size(); ++x)
-						m_free.push(&listEle[x]);
+						m_free.push_back(&listEle[x]);
 				}
 			}
 			GINL _SizeType size() const{return this->capacity() - m_free.size();}
@@ -43,11 +43,11 @@ namespace GAIA
 			{
 				if(this->size() == this->capacity())
 					this->alloc_group();
-				_DataType* pTop = m_free.top();
-				m_free.pop();
+				_DataType* pTop = m_free.back();
+				m_free.pop_back();
 				return pTop;
 			}
-			GINL GAIA::BL release(_DataType* p){m_free.push(p); return GAIA::True;}
+			GINL GAIA::BL release(_DataType* p){m_free.push_back(p); return GAIA::True;}
 			GINL _DataType& operator[](const _SizeType& index){return *m_use[index];}
 			GINL const _DataType& operator[](const _SizeType& index) const{return *m_use[index];}
 			GINL GAIA::GVOID collect_valid_index_list(__IndexListType& result) const
@@ -83,7 +83,7 @@ namespace GAIA
 				for(_SizeType x = 0; x < pGroup->listEle.size(); ++x)
 				{
 					m_use.push_back(&pGroup->listEle[x]);
-					m_free.push(&pGroup->listEle[x]);
+					m_free.push_back(&pGroup->listEle[x]);
 				}
 				m_buf.push_back(pGroup);
 			}
