@@ -631,6 +631,14 @@ namespace GAIA
 			_SizeType m_size;
 			_SizeType m_capacity;
 		};
+
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::CONTAINER::BasicString<_DataType2, _SizeType> 
+			operator + (_DataType1 p, const GAIA::CONTAINER::BasicString<_DataType2, _SizeType>& str)
+		{
+			GAIA::CONTAINER::BasicString<_DataType2, _SizeType> ret = p;
+			ret += str;
+			return ret;
+		}
 	};
 };
 
