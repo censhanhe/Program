@@ -21,7 +21,7 @@ namespace GAIA
 			::Sleep((GAIA::U32)uMilliSecond);
 			return uMilliSecond;
 		#else
-			::xusleep((useconds_t)(uMilliSecond * 1000));
+			::usleep((useconds_t)(uMilliSecond * 1000));
 			return uMilliSecond;
 		#endif
 		}
@@ -31,7 +31,7 @@ namespace GAIA
 			::Sleep((GAIA::U32)uMicroSecond / 1000);
 			return uMicroSecond;
 		#else
-			::xusleep((useconds_t)uMicroSecond);
+			::usleep((useconds_t)uMicroSecond);
 			return uMicroSecond;
 		#endif
 		}

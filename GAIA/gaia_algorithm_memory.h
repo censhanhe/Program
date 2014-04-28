@@ -125,7 +125,7 @@ namespace GAIA
 			{
 				GAIA::N32 res = GAIA::ALGORITHM::xmemcheck(pTemp, ch, size);
 				if(res != 0)
-					return ret;
+					return res;
 				pTemp += stride;
 				--count;
 			}
