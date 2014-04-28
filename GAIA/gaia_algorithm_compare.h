@@ -102,7 +102,7 @@ namespace GAIA
 			}
 			return 0;
 		}
-		template<typename _DataType1, typename _DataType2, typename _SizeType> GINL GAIA::N32 cmpk(_DataType1 p, const _DataType2& key, const _SizeType& size)
+		template<typename _DataType, typename _KeyType, typename _SizeType> GINL GAIA::N32 cmpk(_DataType p, const _KeyType& key, const _SizeType& size)
 		{
 			_SizeType sizet = size;
 			while(sizet > 0)
@@ -132,7 +132,7 @@ namespace GAIA
 					return 0;
 			}
 		}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmp2k(_DataType1 p, const _DataType2& key)
+		template<typename _DataType, typename _KeyType> GINL GAIA::N32 cmp2k(_DataType p, const _KeyType& key)
 		{
 			if(p[0] < key)
 				return -1;
@@ -171,7 +171,7 @@ namespace GAIA
 				}
 			}
 		}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmp3k(_DataType1 p, const _DataType2& key)
+		template<typename _DataType, typename _KeyType> GINL GAIA::N32 cmp3k(_DataType p, const _KeyType& key)
 		{
 			if(p[0] < key)
 				return -1;
@@ -224,7 +224,7 @@ namespace GAIA
 				}
 			}
 		}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmp4k(_DataType1 p, const _DataType2& key)
+		template<typename _DataType, typename _KeyType> GINL GAIA::N32 cmp4k(_DataType p, const _KeyType& key)
 		{
 			if(p[0] < key)
 				return -1;

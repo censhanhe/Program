@@ -84,7 +84,7 @@ namespace GAIA
 				while((pCursor = GAIA::ALGORITHM::strdrop(pCursor, "/\\\0")) != GNULL)
 				{
 					GAIA::GCH sz[MAXPL];
-					GAIA::ALGORITHM::memcpy(sz, szFind, (pCursor - szFind + 1) * sizeof(GAIA::GCH));
+					GAIA::ALGORITHM::xmemcpy(sz, szFind, (pCursor - szFind + 1) * sizeof(GAIA::GCH));
 					sz[pCursor - szFind + 1] = 0;
 					if(!this->Exist(sz))
 					{
@@ -366,7 +366,7 @@ namespace GAIA
 								else
 								{
 									GAIA::GCH szTemp[MAXPL];
-									GAIA::ALGORITHM::memcpy(szTemp, pFinal, (pNew - pFinal) * sizeof(GAIA::GCH));
+									GAIA::ALGORITHM::xmemcpy(szTemp, pFinal, (pNew - pFinal) * sizeof(GAIA::GCH));
 									szTemp[pNew - pFinal] = 0;
 									if(szTemp[0] != 0)
 										listResult.push_back(szTemp);
@@ -442,7 +442,7 @@ namespace GAIA
 										else
 										{
 											GAIA::GCH szTemp[MAXPL];
-											GAIA::ALGORITHM::memcpy(szTemp, pFinal, (pNew - pFinal) * sizeof(GAIA::GCH));
+											GAIA::ALGORITHM::xmemcpy(szTemp, pFinal, (pNew - pFinal) * sizeof(GAIA::GCH));
 											szTemp[pNew - pFinal] = 0;
 											if(szTemp[0] != 0)
 												listResult.push_back(szTemp);

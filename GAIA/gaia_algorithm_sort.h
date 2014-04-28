@@ -76,9 +76,9 @@ namespace GAIA
 			GAIA_AST(!!pBegin);
 			GAIA_AST(!!pEnd);
 			if(pEnd - pBegin < 10)
-				bsort(pBegin, pEnd);
+				GAIA::ALGORITHM::bsort(pBegin, pEnd);
 			else
-				qsort(pBegin, pEnd);
+				GAIA::ALGORITHM::qsort(pBegin, pEnd);
 		}
 		template<typename _DataType> GINL GAIA::BL issorted(_DataType pBegin, _DataType pEnd)
 		{

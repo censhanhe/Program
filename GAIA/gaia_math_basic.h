@@ -5,13 +5,13 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		template<typename _DataType> GINL _DataType abs(const _DataType& t)
+		template<typename _DataType> GINL _DataType xabs(const _DataType& t)
 		{
 			if(t < 0)
 				return -t;
 			return t;
 		}
-		template<typename _DataType> GINL _DataType sign(const _DataType& t)
+		template<typename _DataType> GINL _DataType xsign(const _DataType& t)
 		{
 			if(t < (_DataType)0)
 				return (_DataType)-1;
@@ -20,7 +20,7 @@ namespace GAIA
 			else
 				return (_DataType)0;
 		}
-		template<typename _DataType, typename _ParamType1, typename _ParamType2> GINL _DataType clamp(const _DataType& src, const _ParamType1& limitlow, const _ParamType2& limithigh)
+		template<typename _DataType, typename _ParamType1, typename _ParamType2> GINL _DataType xclamp(const _DataType& src, const _ParamType1& limitlow, const _ParamType2& limithigh)
 		{
 			GAIA_AST(limitlow <= limithigh);
 			_DataType ret = src;
@@ -30,25 +30,25 @@ namespace GAIA
 				ret = (_DataType)limithigh;
 			return ret;
 		}
-		template<typename _DataType> GINL _DataType saturate(const _DataType& src)
+		template<typename _DataType> GINL _DataType xsaturate(const _DataType& src)
 		{
-			return clamp(src, (_DataType)0, (_DataType)1);
+			return xclamp(src, (_DataType)0, (_DataType)1);
 		}
-		template<typename _DataType> GINL _DataType floor(const _DataType& src)
-		{
-		}
-		template<typename _DataType> GINL _DataType ceil(const _DataType& src)
+		template<typename _DataType> GINL _DataType xfloor(const _DataType& src)
 		{
 		}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::BL equal(const _DataType1& t1, const _DataType2& t2)
+		template<typename _DataType> GINL _DataType xceil(const _DataType& src)
 		{
-			if(GAIA::MATH::abs(t1 - t2) < (typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType)0.00001)
+		}
+		template<typename _DataType1, typename _DataType2> GINL GAIA::BL xequal(const _DataType1& t1, const _DataType2& t2)
+		{
+			if(GAIA::MATH::xabs(t1 - t2) < (typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType)0.00001)
 				return GAIA::True;
 			return GAIA::False;
 		}
-		template<typename _DataType1, typename _DataType2, typename _DataType3> GINL GAIA::BL equal(const _DataType1& t1, const _DataType2& t2, const _DataType3& epsilon)
+		template<typename _DataType1, typename _DataType2, typename _DataType3> GINL GAIA::BL xequal(const _DataType1& t1, const _DataType2& t2, const _DataType3& epsilon)
 		{
-			if(abs(t1 - t2) < epsilon)
+			if(xabs(t1 - t2) < epsilon)
 				return GAIA::True;
 			return GAIA::False;
 		}

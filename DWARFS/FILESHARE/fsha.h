@@ -743,7 +743,7 @@ namespace FSHA
 					else
 					{
 						GAIA::GCH sz[MAXPATHLEN];
-						GAIA::ALGORITHM::memcpy(sz, p, (pNew - p) * sizeof(GAIA::GCH));
+						GAIA::ALGORITHM::xmemcpy(sz, p, (pNew - p) * sizeof(GAIA::GCH));
 						sz[pNew - p] = 0;
 						if(sz[0] != 0)
 							listResult.push_back(sz);
@@ -1750,7 +1750,7 @@ namespace FSHA
 							--nSleepRemainCnt;
 					}
 					if(nSleepRemainCnt == 0)
-						GAIA::SYNC::sleep(1);
+						GAIA::SYNC::xsleep(1);
 				}
 			}
 			GINL GAIA::GVOID SetExitCmd(GAIA::BL bExitCmd){m_bExitCmd = bExitCmd;}
@@ -1773,7 +1773,7 @@ namespace FSHA
 					{
 						if(m_bExitCmd)
 							break;
-						GAIA::SYNC::sleep(100);
+						GAIA::SYNC::xsleep(100);
 					}
 					if(m_bExitCmd)
 						break;
@@ -1999,7 +1999,7 @@ namespace FSHA
 				if(src.size > 0)
 				{
 					GAIA_AST(src.size <= SUBCHUNKSIZE);
-					GAIA::ALGORITHM::memcpy(buf, src.buf, src.size);
+					GAIA::ALGORITHM::xmemcpy(buf, src.buf, src.size);
 				}
 				return *this;
 			}
@@ -2623,7 +2623,7 @@ namespace FSHA
 				m_uCmplFileCount = 0;
 			AL al(m_lr_filestate);
 			if(m_filestate.size() > 0)
-				GAIA::ALGORITHM::memset(m_filestate.front_ptr(), bCmpl ? 0xFF : 0x00, m_filestate.size());
+				GAIA::ALGORITHM::xmemset(m_filestate.front_ptr(), bCmpl ? 0xFF : 0x00, m_filestate.size());
 		}
 		GINL GAIA::GVOID SetMainNAddr(const GAIA::NETWORK::NetworkAddress& na){m_mainna = na;}
 		GINL const GAIA::NETWORK::NetworkAddress& GetMainNAddr() const{return m_mainna;}
@@ -2967,7 +2967,7 @@ namespace FSHA
 				m_prt << "\n";
 				m_prt << "OwnFile = " << m_uCmplFileCount << "/" << m_filelist.GetFileCount() << "\n";
 
-				GAIA::ALGORITHM::memcpy(&m_statistics_last, &m_statistics, sizeof(m_statistics));
+				GAIA::ALGORITHM::xmemcpy(&m_statistics_last, &m_statistics, sizeof(m_statistics));
 			}
 			else if(CMD(CMD_STATE))
 			{
@@ -3807,7 +3807,7 @@ namespace FSHA
 					m_prt << "Temp3 = " << m_perf.fTemp3 << "(" << m_perf.fTemp3 - m_perf_last.fTemp3 << ")" << "\n";
 					m_prt << "Temp4 = " << m_perf.fTemp4 << "(" << m_perf.fTemp4 - m_perf_last.fTemp4 << ")" << "\n";
 
-					GAIA::ALGORITHM::memcpy(&m_perf_last, &m_perf, sizeof(m_perf));
+					GAIA::ALGORITHM::xmemcpy(&m_perf_last, &m_perf, sizeof(m_perf));
 				}
 			}
 			else if(CMD(CMD_FILECACHEINFO))
@@ -3878,8 +3878,8 @@ namespace FSHA
 							m_prt <<  "Create file " << szFullName << " failed!\n";
 							continue;
 						}
-						GAIA::U32 u0 = (GAIA::U32)GAIA::MATH::random();
-						GAIA::U32 u1 = (GAIA::U32)GAIA::MATH::random();
+						GAIA::U32 u0 = (GAIA::U32)GAIA::MATH::xrandom();
+						GAIA::U32 u1 = (GAIA::U32)GAIA::MATH::xrandom();
 						GAIA_AST(TESTFILEMAXSIZE >= TESTFILEMINSIZE);
 						GAIA::U32 uFileSize = (u0 * 65536 + u1) % (TESTFILEMAXSIZE - TESTFILEMINSIZE) + TESTFILEMINSIZE;
 						GAIA::U32 uOriginFileSize = uFileSize;
@@ -4164,8 +4164,8 @@ namespace FSHA
 				#ifdef FSHA_DEBUG
 					if(scsize > 0)
 					{
-						if(GAIA::MATH::random() % 10000 == 0)
-							buf[GAIA::MATH::random() % scsize] = GAIA::MATH::random() % 256;
+						if(GAIA::MATH::xrandom() % 10000 == 0)
+							buf[GAIA::MATH::xrandom() % scsize] = GAIA::MATH::xrandom() % 256;
 					}
 				#endif
 					m_FileSendMsgTemp.write(buf, scsize);
@@ -4253,8 +4253,8 @@ namespace FSHA
 				#ifdef FSHA_DEBUG
 					if(scsize > 0)
 					{
-						if(GAIA::MATH::random() % 10000 == 0)
-							buf[GAIA::MATH::random() % scsize] = GAIA::MATH::random() % 256;
+						if(GAIA::MATH::xrandom() % 10000 == 0)
+							buf[GAIA::MATH::xrandom() % scsize] = GAIA::MATH::xrandom() % 256;
 					}
 				#endif
 					m_ChunkSendMsgTemp.write(buf, scsize);
@@ -6359,7 +6359,7 @@ namespace FSHA
 				NLink& nl = *it;
 				if(nl.state == NLink::STATE_READY)
 				{
-					GAIA::ALGORITHM::memcpy(p, &nl.na, sizeof(nl.na));
+					GAIA::ALGORITHM::xmemcpy(p, &nl.na, sizeof(nl.na));
 					if(!this->Send(p, size))
 						bRet = GAIA::False;
 				}
@@ -6468,12 +6468,12 @@ namespace FSHA
 			GAIA_AST(nSize > 0);
 			if(m_mainna.IsInvalid())
 			{
-				if(GAIA::MATH::random() % 100 > MAINJUMPODDS)
+				if(GAIA::MATH::xrandom() % 100 > MAINJUMPODDS)
 					return GAIA::False;
 			}
 			else
 			{
-				if(GAIA::MATH::random() % 100 > SUBJUMPODDS)
+				if(GAIA::MATH::xrandom() % 100 > SUBJUMPODDS)
 					return GAIA::False;
 			}
 			GAIA::NETWORK::NetworkAddress jumpna;
@@ -6510,7 +6510,7 @@ namespace FSHA
 				}
 				if(index == 0)
 					return GAIA::False;
-				jumpna = listLinkPri[GAIA::MATH::random() % index]->nlink.na;
+				jumpna = listLinkPri[GAIA::MATH::xrandom() % index]->nlink.na;
 			}
 			GAIA_AST(jumpna != na);
 			const REQFILECOUNTTYPE& fcnt = *(const REQFILECOUNTTYPE*)p;
@@ -6575,7 +6575,7 @@ namespace FSHA
 			}
 			if(uCount == 0 && m_mainna.IsInvalid())
 				return GAIA::False;
-			GAIA::N32 nSelectIndex = GAIA::MATH::random() % (uCount + 1);
+			GAIA::N32 nSelectIndex = GAIA::MATH::xrandom() % (uCount + 1);
 			if(nSelectIndex == 0)
 				na = m_mainna;
 			else

@@ -60,7 +60,7 @@ namespace GAIA
 
 			// Construct network address.
 			sockaddr_in sinaddr;
-			GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
+			GAIA::ALGORITHM::xmemset(&sinaddr, 0, sizeof(sinaddr));
 			sinaddr.sin_family = AF_INET;
 			sinaddr.sin_port = htons(desc.addr.uPort);
 			sinaddr.sin_addr.s_addr =
@@ -170,7 +170,7 @@ namespace GAIA
 				}
 			}
 			GAIA::U8* pNew = GAIA_MALLOC(GAIA::U8, uSize);
-			GAIA::ALGORITHM::memcpy(pNew, p, uSize);
+			GAIA::ALGORITHM::xmemcpy(pNew, p, uSize);
 			GAIA::SYNC::AutoLock al(m_lock);
 			SendRec r;
 			r.p = pNew;
@@ -225,7 +225,7 @@ namespace GAIA
 						{
 							NetworkAddress& na = *(NetworkAddress*)r.p;
 							sockaddr_in sinaddr;
-							GAIA::ALGORITHM::memset(&sinaddr, 0, sizeof(sinaddr));
+							GAIA::ALGORITHM::xmemset(&sinaddr, 0, sizeof(sinaddr));
 							sinaddr.sin_family = AF_INET;
 							sinaddr.sin_port = htons(na.uPort);
 							sinaddr.sin_addr.s_addr =
@@ -406,7 +406,7 @@ namespace GAIA
 
 			// Bind.
 			sockaddr_in addr;
-			GAIA::ALGORITHM::memset(&addr, 0, sizeof(addr));
+			GAIA::ALGORITHM::xmemset(&addr, 0, sizeof(addr));
 			addr.sin_family = AF_INET;
 			addr.sin_port = htons(m_desc.addr.uPort);
 			addr.sin_addr.s_addr =
@@ -585,7 +585,7 @@ namespace GAIA
 
 				//
 				if(!bExistWork)
-					GAIA::SYNC::sleep(1);
+					GAIA::SYNC::xsleep(1);
 			}
 		}
 		/* NetworkReceiver's implement. */
@@ -610,7 +610,7 @@ namespace GAIA
 		GINL GAIA::GVOID NetworkReceiver::WorkProcedure()
 		{
 			sockaddr_in recvfrom_addr;
-			GAIA::ALGORITHM::memset(&recvfrom_addr, 0, sizeof(recvfrom_addr));
+			GAIA::ALGORITHM::xmemset(&recvfrom_addr, 0, sizeof(recvfrom_addr));
 			for(;;)
 			{
 				// Stop command.
@@ -655,7 +655,7 @@ namespace GAIA
 							else
 							{
 								recvfrom_addr_len = sizeof(recvfrom_addr);
-								GAIA::ALGORITHM::memset(&recvfrom_addr, 0, recvfrom_addr_len);
+								GAIA::ALGORITHM::xmemset(&recvfrom_addr, 0, recvfrom_addr_len);
 								GAIA_AST(m_buf.write_size() > sizeof(NetworkAddress));
 								nRecv = (GAIA::N32)recvfrom(
 									pHandle->m_h, 
@@ -764,7 +764,7 @@ namespace GAIA
 									na.ip.u2 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
 									na.ip.u3 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
 									na.uPort = ntohs(recvfrom_addr.sin_port);
-									GAIA::ALGORITHM::memcpy(m_buf.front_ptr(), &na, sizeof(na));
+									GAIA::ALGORITHM::xmemcpy(m_buf.front_ptr(), &na, sizeof(na));
 									this->Receive(*pHandle, m_buf.front_ptr(), (GAIA::U32)(nRecv + sizeof(NetworkAddress)));
 								}
 								bExistWork = GAIA::True;
@@ -780,7 +780,7 @@ namespace GAIA
 
 				//
 				if(!bExistWork)
-					GAIA::SYNC::sleep(1);
+					GAIA::SYNC::xsleep(1);
 			}
 		}
 	};

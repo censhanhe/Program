@@ -51,7 +51,7 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID single_normalize()
 			{
-				if(GAIA::MATH::abs(m_offset) >= (_OffsetType)_BlockSize)
+				if(GAIA::MATH::xabs(m_offset) >= (_OffsetType)_BlockSize)
 				{
 					if(m_offset < (_OffsetType)0)
 					{

@@ -394,6 +394,12 @@ namespace GAIATEST
 			GTLINE2("Array iterator -= operator failed!");
 			++nRet;
 		}
+
+		{
+			GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::U8, 10> tarr;
+			tarr.erase(4);
+		}
+
 		return nRet;
 	}
 };

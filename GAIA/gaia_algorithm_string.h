@@ -111,15 +111,13 @@ namespace GAIA
 			GAIA_AST(!!p2);
 			while(GAIA::ALWAYSTRUE)
 			{
-				_DataType1 c1 = GAIA::ALGORITHM::tolower(*p1);
-				_DataType2 c2 = GAIA::ALGORITHM::tolower(*p2);
-				if(c1 < c2)
+				if(GAIA::ALGORITHM::tolower(*p1) < GAIA::ALGORITHM::tolower(*p2))
 					return -1;
-				else if(c1 > c2)
+				else if(GAIA::ALGORITHM::tolower(*p1) > GAIA::ALGORITHM::tolower(*p2))
 					return +1;
 				else
 				{
-					if(c1 == 0)
+					if(GAIA::ALGORITHM::tolower(*p1) == 0)
 						return 0;
 					++p1;
 					++p2;
@@ -370,7 +368,7 @@ namespace GAIA
 			GAIA_AST(!!pDst);
 			GAIA::N64 left = (GAIA::N64)src;
 			_SrcDataType right = src - (_SrcDataType)left;
-			right = GAIA::MATH::abs(right);
+			right = GAIA::MATH::xabs(right);
 			while(right - (_SrcDataType)(GAIA::N64)right != 0)
 				right *= 10.0F;
 			_DstDataType p = GAIA::ALGORITHM::int2str(left, pDst);
@@ -459,38 +457,38 @@ namespace GAIA
 			}
 			return pDst;
 		}
-		template<typename _SrcDataType, typename _DstDataType> GINL _SrcDataType str2int(_SrcDataType p, _DstDataType& dst)
+		template<typename _SrcDataType, typename _DstDataType> GINL _SrcDataType str2int(_SrcDataType pSrc, _DstDataType& dst)
 		{
-			GAIA_AST(!!p);
+			GAIA_AST(!!pSrc);
 			dst = 0;
 			GAIA::BL bSign;
-			if(*p == '-')
+			if(*pSrc == '-')
 			{
 				bSign = GAIA::True;
-				++p;
+				++pSrc;
 			}
 			else
 				bSign = GAIA::False;
-			while(*p != 0)
+			while(*pSrc != 0)
 			{
-				if(*p < '0' || *p > '9')
+				if(*pSrc < '0' || *pSrc > '9')
 					break;
 				dst = (_DstDataType)(dst * 10);
-				dst = (_DstDataType)(dst + (*p - '0'));
-				++p;
+				dst = (_DstDataType)(dst + (*pSrc - '0'));
+				++pSrc;
 			}
 			if(bSign)
 				dst = 0 - dst;
-			return p;
+			return pSrc;
 		}
-		template<typename _SrcDataType, typename _DstDataType> GINL _SrcDataType str2real(_SrcDataType p, _DstDataType& dst)
+		template<typename _SrcDataType, typename _DstDataType> GINL _SrcDataType str2real(_SrcDataType pDst, _DstDataType& dst)
 		{
-			GAIA_AST(!!p);
+			GAIA_AST(!!pDst);
 			GAIA::BL bSign;
-			if(*p == '-')
+			if(*pDst == '-')
 			{
 				bSign = GAIA::True;
-				++p;
+				++pDst;
 			}
 			else
 				bSign = GAIA::False;
@@ -498,27 +496,27 @@ namespace GAIA
 			_DstDataType right = 0;
 			_DstDataType right_dst;
 			_DstDataType* pTarget = &left;
-			while(*p != 0)
+			while(*pDst != 0)
 			{
-				if(*p < '0' || *p > '9')
+				if(*pDst < '0' || *pDst > '9')
 					break;
 				*pTarget *= 10;
-				*pTarget += (*p - '0');
-				++p;
+				*pTarget += (*pDst - '0');
+				++pDst;
 			}
-			if(*p == '.')
+			if(*pDst == '.')
 			{
-				++p;
+				++pDst;
 				_DstDataType right_div = 1;
 				pTarget = &right;
-				while(*p != 0)
+				while(*pDst != 0)
 				{
-					if(*p < '0' || *p > '9')
+					if(*pDst < '0' || *pDst > '9')
 						break;
 					*pTarget *= 10;
 					right_div *= 10;
-					*pTarget += (*p - '0');
-					++p;
+					*pTarget += (*pDst - '0');
+					++pDst;
 				}
 				right_dst = *pTarget / right_div;
 			}
@@ -527,7 +525,7 @@ namespace GAIA
 			dst = left + right_dst;
 			if(bSign)
 				dst = -dst;
-			return p;
+			return pDst;
 		}
 		template<typename _DataType> class string_cast;
 		#define GAIA_DECLARATION_STRINGCAST(type, convert_func) \

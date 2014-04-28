@@ -131,13 +131,13 @@ namespace GAIA
 				return GAIA::False;
 			GAIA::N64 toffset = m_offset;
 			if(seektype == SEEK_TYPE_BEGIN)
-				toffset = GAIA::MATH::clamp(offset, 0, m_size);
+				toffset = GAIA::MATH::xclamp(offset, 0, m_size);
 			else if(seektype == SEEK_TYPE_END)
-				toffset = GAIA::MATH::clamp(m_size - offset, 0, m_size);
+				toffset = GAIA::MATH::xclamp(m_size - offset, 0, m_size);
 			else if(seektype == SEEK_TYPE_FORWARD)
-				toffset = GAIA::MATH::clamp(m_offset + offset, 0, m_size);
+				toffset = GAIA::MATH::xclamp(m_offset + offset, 0, m_size);
 			else if(seektype == SEEK_TYPE_BACKWARD)
-				toffset = GAIA::MATH::clamp(m_offset - offset, 0, m_size);
+				toffset = GAIA::MATH::xclamp(m_offset - offset, 0, m_size);
 			if(toffset == m_offset)
 				return GAIA::True;
 			if(fseek((FILE*)m_pFile, toffset, SEEK_SET) == 0)

@@ -37,6 +37,12 @@
 #include "t_list.h"
 #include "t_chars.h"
 #include "t_string.h"
+#include "t_stackbitset.h"
+#include "t_bitset.h"
+#include "t_avltree.h"
+#include "t_trietree.h"
+
+#include "t_namespace.h"
 
 namespace GAIATEST
 {
@@ -59,7 +65,13 @@ namespace GAIATEST
 			GTLINE1("List test begin!"); nRet += t_list(file, prt); GTLINE1("List test end!"); GTLINE("\t");
 			GTLINE1("Chars test begin!"); nRet += t_chars(file, prt); GTLINE1("Chars test end!"); GTLINE("\t");
 			GTLINE1("String test begin!"); nRet += t_string(file, prt); GTLINE1("String test end!"); GTLINE("\t");
+			GTLINE1("StackBitset test begin!"); nRet += t_stackbitset(file, prt); GTLINE1("StackBitset test end!"); GTLINE("\t");
+			GTLINE1("Bitset test begin!"); nRet += t_bitset(file, prt); GTLINE1("Bitset test end!"); GTLINE("\t");
+			GTLINE1("AVLTree test begin!"); nRet += t_avltree(file, prt); GTLINE1("AVLTree test end!"); GTLINE("\t");
+			GTLINE1("TrieTree test begin!"); nRet += t_trietree(file, prt); GTLINE1("TrieTree test end!"); GTLINE("\t");
 			GTLINE1("Accesser test begin!"); nRet += t_accesser(file, prt); GTLINE1("Accesser test end!"); GTLINE("\t");
+
+			GTLINE1("Namespace test begin!"); nRet += t_namespace(file, prt); GTLINE1("Namespace test end!"); GTLINE("\t");
 		}
 		GTLINE("[GAIA TEST END]");
 

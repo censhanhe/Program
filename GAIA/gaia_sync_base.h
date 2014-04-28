@@ -5,8 +5,8 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U32 sleep(const GAIA::U32& uMilliSecond);
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 usleep(const GAIA::U64& uMicroSecond);
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::U32 xsleep(const GAIA::U32& uMilliSecond);
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 xusleep(const GAIA::U64& uMicroSecond);
 	};
 };
 

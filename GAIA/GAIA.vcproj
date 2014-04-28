@@ -1520,6 +1520,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TEST\t_avltree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_bitset.h"
+					>
+				</File>
+				<File
 					RelativePath=".\TEST\t_chars.h"
 					>
 				</File>
@@ -1536,6 +1544,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TEST\t_stackbitset.h"
+					>
+				</File>
+				<File
 					RelativePath=".\TEST\t_stackqueue.h"
 					>
 				</File>
@@ -1548,7 +1560,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TEST\t_trietree.h"
+					>
+				</File>
+				<File
 					RelativePath=".\TEST\t_vector.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="NAMESPACE"
+				>
+				<File
+					RelativePath=".\TEST\t_namespace.h"
 					>
 				</File>
 			</Filter>

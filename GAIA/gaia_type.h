@@ -44,6 +44,8 @@ namespace GAIA
 	class X128
 	{
 	public:
+		GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
+		GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
 		GINL X128& operator = (const X128& src){u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
 		template<typename _DataType> GINL X128& operator = (const _DataType* p)
 		{
@@ -66,6 +68,7 @@ namespace GAIA
 	public:
 		union
 		{
+			GAIA::U32 u[4];
 			class
 			{
 			public:
@@ -80,7 +83,6 @@ namespace GAIA
 				GAIA::U64 u64_0;
 				GAIA::U64 u64_1;
 			};
-			GAIA::U32 u[4];
 		};
 	};
 
