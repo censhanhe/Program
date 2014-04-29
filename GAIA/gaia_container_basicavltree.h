@@ -35,7 +35,7 @@ namespace GAIA
 			private:
 				friend class BasicAVLTree;
 			public:
-				GINL it(){m_pNode = GNULL; m_pContainer = GNULL;}
+				GINL it(){this->init();}
 				GINL virtual ~it(){}
 				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual _DataType& operator * (){return m_pNode->t;}
@@ -86,6 +86,22 @@ namespace GAIA
 				{
 					it ret = *this;
 					ret -= c;
+					return ret;
+				}
+				GINL _SizeType operator - (const it& src) const
+				{
+					it iter = *this;
+					_SizeType ret = 0;
+					while(iter > src)
+					{
+						--iter;
+						++ret;
+					}
+					while(iter < src)
+					{
+						++iter;
+						--ret;
+					}
 					return ret;
 				}
 				GINL GAIA::BL operator == (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) == 0;}
@@ -152,6 +168,8 @@ namespace GAIA
 					return pNode;
 				}
 			private:
+				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pContainer = GNULL;}
+			private:
 				Node* m_pNode;
 				__MyType* m_pContainer;
 			};
@@ -160,7 +178,7 @@ namespace GAIA
 			private:
 				friend class BasicAVLTree;
 			public:
-				GINL const_it(){m_pNode = GNULL; m_pContainer = GNULL;}
+				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
 				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
@@ -206,10 +224,26 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const const_it& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) == 0;}
+				GINL _SizeType operator - (const const_it& src) const
+				{
+					const_it iter = *this;
+					_SizeType ret = 0;
+					while(iter > src)
+					{
+						--iter;
+						++ret;
+					}
+					while(iter < src)
+					{
+						++iter;
+						--ret;
+					}
+					return ret;
+				}
+				GINL GAIA::BL operator == (const const_it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) == 0;}
 				GINL GAIA::BL operator != (const const_it& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const const_it& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) >= 0;}
-				GINL GAIA::BL operator <= (const const_it& src) const{return GAIA::ALGORITHM::cmp(m_pNode, src.m_pNode) <= 0;}
+				GINL GAIA::BL operator >= (const const_it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) >= 0;}
+				GINL GAIA::BL operator <= (const const_it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const const_it& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const const_it& src) const{return !(*this >= src);}
 			private:
@@ -270,11 +304,14 @@ namespace GAIA
 					return pNode;
 				}
 			private:
+				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pContainer = GNULL;}
+			private:
 				const Node* m_pNode;
 				const __MyType* m_pContainer;
 			};
 		public:
-			GINL BasicAVLTree(){m_pRoot = GNULL;}
+			GINL BasicAVLTree(){this->init();}
+			GINL BasicAVLTree(const __MyType& src){this->init(); this->operator = (src);}
 			GINL GAIA::BL empty() const{return m_pool.empty();}
 			GINL _SizeType size() const{return m_pool.size();}
 			GINL const _SizeType& capacity() const{return m_pool.capacity();}
@@ -513,6 +550,7 @@ namespace GAIA
 			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
 		private:
+			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
 			GINL GAIA::GVOID rotate_prev(Node*& pNode)
 			{
 				Node* pTemp = pNode->pNext;
@@ -545,17 +583,11 @@ namespace GAIA
 				_HeightType nexth = pNode->pNext == GNULL ? 0 : pNode->pNext->h;
 				return GAIA::ALGORITHM::maximize(prevh, nexth) + 1;
 			}
-			GINL _HeightType balance_factor(Node* pNode)
-			{
-				_HeightType prevh = pNode->pPrev == GNULL ? 0 : pNode->pPrev->h;
-				_HeightType nexth = pNode->pNext == GNULL ? 0 : pNode->pNext->h;
-				return prevh - nexth;
-			}
 			GINL GAIA::GVOID balance(Node*& pNode)
 			{
 				_HeightType prevh = pNode->pPrev == GNULL ? 0 : pNode->pPrev->h;
 				_HeightType nexth = pNode->pNext == GNULL ? 0 : pNode->pNext->h;
-				if(prevh - nexth > 1)
+				if(prevh > nexth + 1)
 				{
 					_HeightType prevnexth = pNode->pPrev->pNext == GNULL ? 0 : pNode->pPrev->pNext->h;
 					_HeightType prevprevh = pNode->pPrev->pPrev == GNULL ? 0 : pNode->pPrev->pPrev->h;
@@ -563,7 +595,7 @@ namespace GAIA
 						this->rotate_prev(pNode->pPrev);
 					this->rotate_next(pNode);
 				}
-				else if(nexth - prevh > 1)
+				else if(nexth > prevh + 1)
 				{
 					_HeightType nextprevh = pNode->pNext->pPrev == GNULL ? 0 : pNode->pNext->pPrev->h;
 					_HeightType nextnexth = pNode->pNext->pNext == GNULL ? 0 : pNode->pNext->pNext->h;
@@ -774,7 +806,7 @@ namespace GAIA
 					return GAIA::True;
 				_HeightType prevh = pNode->pPrev == GNULL ? 0 : pNode->pPrev->h;
 				_HeightType nexth = pNode->pNext == GNULL ? 0 : pNode->pNext->h;
-				if(prevh - nexth > 1 || nexth - prevh > 1)
+				if(prevh > nexth + 1 || nexth > prevh + 1)
 					return GAIA::False;
 				if(!this->dbg_check_balance_node(pNode->pPrev))
 					return GAIA::False;
