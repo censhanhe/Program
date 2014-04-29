@@ -274,7 +274,7 @@ namespace GAIATEST
 			GTLINE2("AVL operator = cause size error!");
 			++nRet;
 		}
-		if(avl1.empty() == avl.empty())
+		if(avl1.empty() != avl.empty())
 		{
 			GTLINE2("AVL operator = cause empty error!");
 			++nRet;

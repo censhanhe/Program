@@ -28,7 +28,7 @@ namespace GAIA
 			private:
 				friend class BasicList;
 			public:
-				GINL it(){m_pNode = GNULL;}
+				GINL it(){this->init();}
 				GINL virtual ~it(){}
 				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual _DataType& operator * (){return m_pNode->t;}
@@ -41,21 +41,45 @@ namespace GAIA
 				GINL GAIA::BL operator == (const it& src) const{return m_pNode == src.m_pNode;}
 				GINL GAIA::BL operator != (const it& src) const{return !(this->operator == (src));}
 				GINL it& operator = (const it& src){m_pNode = src.m_pNode; return *this;}
-				GINL it& operator += (const _SizeType& c)
+				GINL it& operator += (_SizeType c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
 					{
-						if(!this->empty())
-							++(*this);
+						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
 					}
 					return *this;
 				}
-				GINL it& operator -= (const _SizeType& c)
+				GINL it& operator -= (_SizeType c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
 					{
-						if(!this->empty())
-							--(*this);
+						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
 					}
 					return *this;
 				}
@@ -71,9 +95,35 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
+				GINL _SizeType operator - (const it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					it iter = *this;
+					_SizeType ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						++ret;
+						--iter;
+					}
+					iter = *this;
+					ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						--ret;
+						++iter;
+					}
+					return ret;
+				}
 			private:
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){m_pNode = m_pNode->pNext; return *this;}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){m_pNode = m_pNode->pPrev; return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
+			private:
+				GINL GAIA::GVOID init(){m_pNode = GNULL;}
 			private:
 				Node* m_pNode;
 			};
@@ -82,7 +132,7 @@ namespace GAIA
 			private:
 				friend class BasicList;
 			public:
-				GINL const_it(){m_pNode = GNULL;}
+				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
 				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
@@ -94,16 +144,46 @@ namespace GAIA
 				GINL GAIA::BL operator == (const const_it& src) const{return m_pNode == src.m_pNode;}
 				GINL GAIA::BL operator != (const const_it& src) const{return !(this->operator == (src));}
 				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; return *this;}
-				GINL const_it& operator += (const _SizeType& c)
+				GINL const_it& operator += (_SizeType c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
 						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
 					return *this;
 				}
-				GINL const_it& operator -= (const _SizeType& c)
+				GINL const_it& operator -= (_SizeType c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
 						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
 					return *this;
 				}
 				GINL const_it operator + (const _SizeType& c) const
@@ -118,9 +198,35 @@ namespace GAIA
 					ret -= c;
 					return ret;
 				}
+				GINL _SizeType operator - (const const_it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					const_it iter = *this;
+					_SizeType ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						++ret;
+						--iter;
+					}
+					iter = *this;
+					ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						--ret;
+						++iter;
+					}
+					return ret;
+				}
 			private:
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){m_pNode = m_pNode->pNext; return *this;}
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){m_pNode = m_pNode->pPrev; return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
+			private:
+				GINL GAIA::GVOID init(){m_pNode = GNULL;}
 			private:
 				const Node* m_pNode;
 			};
@@ -263,7 +369,7 @@ namespace GAIA
 					return GAIA::False;
 				const_it srcit = src.const_front_it();
 				const_it selfit = this->const_front_it();
-				while(!src.empty())
+				while(!srcit.empty())
 				{
 					if(*selfit > *srcit)
 						return GAIA::True;
@@ -282,7 +388,7 @@ namespace GAIA
 					return GAIA::False;
 				const_it srcit = src.const_front_it();
 				const_it selfit = this->const_front_it();
-				while(!src.empty())
+				while(!srcit.empty())
 				{
 					if(*selfit < *srcit)
 						return GAIA::True;

@@ -58,21 +58,47 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
 				GINL it& operator = (const it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
-				GINL it& operator += (const _SizeType& c)
+				GINL it& operator += (_SizeType c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
 					{
-						if(!this->empty())
-							++(*this);
+						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
 					}
 					return *this;
 				}
-				GINL it& operator -= (const _SizeType& c)
+				GINL it& operator -= (_SizeType c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					if(this->empty())
+						return *this;
+					while(c > 0)
 					{
-						if(!this->empty())
-							--(*this);
+						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
 					}
 					return *this;
 				}
@@ -200,16 +226,46 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
 				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; m_pContainer = src.m_pContainer; return *this;}
-				GINL const_it& operator += (const _SizeType& c)
+				GINL const_it& operator += (_SizeType c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
 						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
 					return *this;
 				}
-				GINL const_it& operator -= (const _SizeType& c)
+				GINL const_it& operator -= (_SizeType c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
 						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
 					return *this;
 				}
 				GINL const_it operator + (const _SizeType& c) const

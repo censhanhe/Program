@@ -190,6 +190,9 @@ namespace GAIATEST
 			}
 			l.pop_front();
 		}
+		l.clear();
+		for(GAIA::N32 x = 0; x < ELEMENT_SIZE; ++x)
+			l.push_front(x);
 		__ListType l1;
 		l1 = l;
 		if(l > l1 || l < l1 || l != l1)
