@@ -66,7 +66,7 @@ namespace GAIA
 				GAIA_AST(size != 0);
 				if(size == 0)
 					return GAIA::False;
-				if(size > m_pBack - m_pRead)
+				if(size > this->capacity() - this->read_size())
 					return GAIA::False;
 				GAIA::ALGORITHM::xmemcpy(p, m_pRead, size);
 				m_pRead += size;
@@ -83,7 +83,7 @@ namespace GAIA
 			{
 				if(src.write_size() == 0)
 					return GAIA::False;
-				if(src.write_size() > m_pBack - m_pRead)
+				if(src.write_size() > this->capacity() - this->read_size())
 					return GAIA::False;
 				GAIA::ALGORITHM::xmemcpy(src.front_ptr(), m_pRead, src.write_size());
 				m_pRead += src.write_size();
@@ -106,7 +106,7 @@ namespace GAIA
 				if(m_pRead == m_pBack)
 					return GAIA::False;
 				_ParamObjType* p = psz;
-				while(m_pBack - m_pRead >= sizeof(_ParamObjType))
+				while(this->capacity() - this->read_size() >= sizeof(_ParamObjType))
 				{
 					*p = *(_ParamObjType*)m_pRead;
 					m_pRead += sizeof(_ParamObjType);
@@ -123,7 +123,7 @@ namespace GAIA
 			}
 			template<typename _ParamObjType> GINL GAIA::BL read(_ParamObjType& obj)
 			{
-				if(sizeof(obj) > m_pBack - m_pRead)
+				if(sizeof(obj) > this->capacity() - this->read_size())
 					return GAIA::False;
 				GAIA::ALGORITHM::xmemcpy(&obj, m_pRead, sizeof(obj));
 				m_pRead += sizeof(obj);
@@ -179,7 +179,7 @@ namespace GAIA
 				if(size == 0)
 					return GNULL;
 				GAIA_AST(m_pBack >= m_pWrite);
-				if((_SizeType)(m_pBack - m_pWrite) >= size)
+				if(this->capacity() - this->write_size() >= size)
 				{
 					GAIA::U8* pRet = m_pWrite;
 					m_pWrite += size;
@@ -187,15 +187,15 @@ namespace GAIA
 				}
 				_SizeIncreaserType increaser;
 				_SizeType newsize = GAIA::ALGORITHM::maximize(
-					increaser.Increase(static_cast<_SizeType>(m_pWrite - m_pFront)),
-					static_cast<_SizeType>(m_pWrite - m_pFront) + size);
+					increaser.Increase(this->write_size()),
+					this->write_size() + size);
 				GAIA::U8* pNew = GAIA_MALLOC(GAIA::U8, newsize);
 				if(m_pWrite != m_pFront)
-					GAIA::ALGORITHM::xmemcpy(pNew, m_pFront, m_pWrite - m_pFront);
+					GAIA::ALGORITHM::xmemcpy(pNew, m_pFront, this->write_size());
 				if(m_pFront != GNULL)
 					GAIA_MRELEASE(m_pFront);
-				m_pWrite = pNew + (m_pWrite - m_pFront);
-				m_pRead = pNew + (m_pRead - m_pFront);
+				m_pWrite = pNew + this->write_size();
+				m_pRead = pNew + this->read_size();
 				m_pFront = pNew;
 				m_pBack = pNew + newsize;
 				U8* pRet = m_pWrite;
@@ -222,14 +222,14 @@ namespace GAIA
 					break;
 				case SEEK_TYPE_FORWARD:
 					{
-						if(m_pBack - p < size)
+						if(static_cast<_SizeType>(m_pBack - p) < size)
 							return GAIA::False;
 						p += size;
 					}
 					break;
 				case SEEK_TYPE_BACKWARD:
 					{
-						if(p - m_pFront < size)
+						if(static_cast<_SizeType>(p - m_pFront) < size)
 							return GAIA::False;
 						p -= size;
 					}

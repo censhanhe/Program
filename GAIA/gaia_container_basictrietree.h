@@ -337,13 +337,13 @@ namespace GAIA
 				}
 				GINL const_it operator + (const _SizeType& c) const
 				{
-					it ret = *this;
+					const_it ret = *this;
 					ret += c;
 					return ret;
 				}
 				GINL const_it operator - (const _SizeType& c) const
 				{
-					it ret = *this;
+					const_it ret = *this;
 					ret -= c;
 					return ret;
 				}
@@ -414,10 +414,12 @@ namespace GAIA
 					{
 						--pNode->m_category_count;
 						--pNode->m_full_count;
-						if(pNode->m_count == 0 && pNode->m_category_count == 0 && pNode->m_full_count == 0)
+						if(pNode->m_pParent != GNULL && 
+							pNode->m_count == 0 && 
+							pNode->m_category_count == 0 && 
+							pNode->m_full_count == 0)
 						{
-							if(pNode->m_pParent != GNULL)
-								pNode->m_pParent->m_links.erase(pNode);
+							pNode->m_pParent->m_links.erase(pNode);
 							m_pool.release(pNode);
 						}
 						pNode = pNode->m_pParent;
@@ -621,9 +623,9 @@ namespace GAIA
 				if(pTempNode == GNULL)
 					return;
 			}
-			GINL _SizeType count(Node& n) const{return n.m_count;} // The insert element list stopped at parameter n's count.
-			GINL _SizeType catagory_count(Node& n) const{return n.m_category_count;} // The insert element list catagory count in the child tree, include self.
-			GINL _SizeType full_count(Node& n) const{return n.m_full_count;} // The insert element list pass at parameter n's count, include self.
+			GINL _SizeType count(const Node& n) const{return n.m_count;} // The insert element list stopped at parameter n's count.
+			GINL _SizeType catagory_count(const Node& n) const{return n.m_category_count;} // The insert element list catagory count in the child tree, include self.
+			GINL _SizeType full_count(const Node& n) const{return n.m_full_count;} // The insert element list pass at parameter n's count, include self.
 			GINL it front_it()
 			{
 				it iter;
@@ -735,6 +737,62 @@ namespace GAIA
 				}
 				return *this;
 			}
+			GINL GAIA::BL operator == (const __MyType& src) const
+			{
+				if(this->size() != src.size())
+					return GAIA::False;
+				const_it srcit = src.const_front_it();
+				const_it selfit = this->const_front_it();
+				while(!srcit.empty())
+				{
+					if(*selfit != *srcit)
+						return GAIA::False;
+					++srcit;
+					++selfit;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator >= (const __MyType& src) const
+			{
+				if(this->size() > src.size())
+					return GAIA::True;
+				else if(this->size() < src.size())
+					return GAIA::False;
+				const_it srcit = src.const_front_it();
+				const_it selfit = this->const_front_it();
+				while(!srcit.empty())
+				{
+					if(*selfit > *srcit)
+						return GAIA::True;
+					else if(*selfit < *srcit)
+						return GAIA::False;
+					++srcit;
+					++selfit;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator <= (const __MyType& src) const
+			{
+				if(this->size() < src.size())
+					return GAIA::True;
+				else if(this->size() > src.size())
+					return GAIA::False;
+				const_it srcit = src.const_front_it();
+				const_it selfit = this->const_front_it();
+				while(!srcit.empty())
+				{
+					if(*selfit < *srcit)
+						return GAIA::True;
+					else if(*selfit > *srcit)
+						return GAIA::False;
+					++srcit;
+					++selfit;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
 		private:
 			GINL GAIA::GVOID init()
 			{

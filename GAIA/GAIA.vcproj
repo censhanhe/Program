@@ -1528,7 +1528,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TEST\t_buffer.h"
+					>
+				</File>
+				<File
 					RelativePath=".\TEST\t_chars.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_graph.h"
 					>
 				</File>
 				<File
@@ -1536,7 +1544,35 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TEST\t_map.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_multiavltree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_multimap.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_multiset.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_ptr.h"
+					>
+				</File>
+				<File
 					RelativePath=".\TEST\t_queue.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_ref.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_set.h"
 					>
 				</File>
 				<File
@@ -1556,7 +1592,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TEST\t_storage.h"
+					>
+				</File>
+				<File
 					RelativePath=".\TEST\t_string.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_tree.h"
 					>
 				</File>
 				<File

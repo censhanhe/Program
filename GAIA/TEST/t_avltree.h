@@ -51,6 +51,11 @@ namespace GAIATEST
 			GTLINE2("AVL capacity error!");
 			++nRet;
 		}
+		if(!GAIA::ALGORITHM::issorted(avl.front_it(), avl.back_it()))
+		{
+			GTLINE2("AVL element not sorted!");
+			++nRet;
+		}
 		for(__AVLType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
 			if(avl.insert(x))
