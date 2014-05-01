@@ -32,8 +32,12 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
 				GINL it& operator = (const it& src){m_iter = src.m_iter; return *this;}
-				GINL GAIA::BL operator == (const it& src) const{return m_iter == src.m_iter;}
-				GINL GAIA::BL operator != (const it& src) const{return m_iter != src.m_iter;}
+				GINL it& operator += (const _SizeType& c){m_iter += c; return *this;}
+				GINL it& operator -= (const _SizeType& c){m_iter -= c; return *this;}
+				GINL it operator + (const _SizeType& c) const{it ret = *this; ret += c; return ret;}
+				GINL it operator - (const _SizeType& c) const{it ret = *this; ret -= c; return ret;}
+				GINL _SizeType operator - (const it& src) const{return m_iter - src.m_iter;}
+				GAIA_CLASS_OPERATOR_COMPARE(m_iter, m_iter, it);
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
@@ -55,8 +59,12 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
 				GINL const_it& operator = (const const_it& src){m_iter = src.m_iter; return *this;}
-				GINL GAIA::BL operator == (const const_it& src) const{return m_iter == src.m_iter;}
-				GINL GAIA::BL operator != (const const_it& src) const{return m_iter != src.m_iter;}
+				GINL const_it& operator += (const _SizeType& c){m_iter += c; return *this;}
+				GINL const_it& operator -= (const _SizeType& c){m_iter -= c; return *this;}
+				GINL const_it operator + (const _SizeType& c) const{const_it ret = *this; ret += c; return ret;}
+				GINL const_it operator - (const _SizeType& c) const{const_it ret = *this; ret -= c; return ret;}
+				GINL _SizeType operator - (const const_it& src) const{return m_iter - src.m_iter;}
+				GAIA_CLASS_OPERATOR_COMPARE(m_iter, m_iter, const_it);
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
@@ -76,7 +84,6 @@ namespace GAIA
 			GINL GAIA::BL erase(const _DataType& t){return m_avltree.erase(t);}
 			GINL _DataType* find(const _DataType& t){return m_avltree.find(t);}
 			GINL const _DataType* find(const _DataType& t) const{return m_avltree.find(t);}
-			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
 			GINL it lower_bound(const _DataType& t){it ret; ret.m_iter = m_avltree.lower_bound(t); return ret;}
 			GINL it upper_bound(const _DataType& t){it ret; ret.m_iter = m_avltree.upper_bound(t); return ret;}
 			GINL const_it lower_bound(const _DataType& t) const{const_it ret; ret.m_iter = m_avltree.lower_bound(t); return ret;}
@@ -85,6 +92,8 @@ namespace GAIA
 			GINL it back_it(){it ret; ret.m_iter = m_avltree.back_it(); return ret;}
 			GINL const_it const_front_it() const{const_it ret; ret.m_iter = m_avltree.const_front_it(); return ret;}
 			GINL const_it const_back_it() const{const_it ret; ret.m_iter = m_avltree.const_back_it(); return ret;}
+			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
+			GAIA_CLASS_OPERATOR_COMPARE(m_avltree, m_avltree, __MyType);
 		private:
 			__AVLTreeType m_avltree;
 		};
