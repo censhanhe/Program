@@ -100,13 +100,7 @@ namespace GAIA
 			GINL const _SizeType& capacity() const{return m_avltree.capacity();}
 			GINL GAIA::GVOID clear(){m_avltree.clear();}
 			GINL GAIA::GVOID destroy(){m_avltree.destroy();}
-			GINL GAIA::BL erase(const _KeyType& key)
-			{
-				Node n;
-				n.m_key = key;
-				return m_avltree.erase(n);
-			}
-			GINL _DataType* operator [] (const _KeyType& key)
+			GINL GAIA::GVOID insert(const _KeyType& key, const _DataType& t)
 			{
 				Node n;
 				n.m_key = key;
@@ -116,16 +110,22 @@ namespace GAIA
 					m_avltree.insert(n);
 					pNode = m_avltree.find(n);
 				}
-				return &pNode->m_data;
+				pNode->m_data = t;
 			}
-			GINL const _DataType* operator [] (const _KeyType& key) const
+			GINL GAIA::BL erase(const _KeyType& key)
 			{
 				Node n;
 				n.m_key = key;
-				Node* pNode = m_avltree.find(n);
+				return m_avltree.erase(n);
+			}
+			GINL const _DataType* find(const _KeyType& key) const
+			{
+				Node n;
+				n.m_key = key;
+				const Node* pNode = m_avltree.find(n);
 				if(pNode == GNULL)
 					return GNULL;
-				return pNode->m_data;
+				return &pNode->m_data;
 			}
 			GINL it lower_bound(const _KeyType& key){it ret; Node f; f.m_key = key; ret.m_iter = m_avltree.lower_bound(f); return ret;}
 			GINL it upper_bound(const _KeyType& key){it ret; Node f; f.m_key = key; ret.m_iter = m_avltree.upper_bound(f); return ret;}
