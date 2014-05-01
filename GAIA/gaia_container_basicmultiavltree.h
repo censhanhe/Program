@@ -78,19 +78,43 @@ namespace GAIA
 				GINL it& operator = (const it& src){m_iter_n = src.m_iter_n; m_iter_d = src.m_iter_d; return *this;}
 				GINL it& operator += (const _SizeType& c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
 					{
-						if(!this->empty())
-							++(*this);
+						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
 					}
 					return *this;
 				}
 				GINL it& operator -= (const _SizeType& c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
 					{
-						if(!this->empty())
-							--(*this);
+						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
 					}
 					return *this;
 				}
@@ -104,6 +128,30 @@ namespace GAIA
 				{
 					it ret = *this;
 					ret -= c;
+					return ret;
+				}
+				GINL _SizeType operator - (const it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					it iter = *this;
+					_SizeType ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						++ret;
+						--iter;
+					}
+					iter = *this;
+					ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						--ret;
+						++iter;
+					}
 					return ret;
 				}
 				GAIA_CLASS_OPERATOR_COMPARE2(m_iter_n, m_iter_n, m_iter_d, m_iter_d, it);
@@ -151,14 +199,44 @@ namespace GAIA
 				GINL const_it& operator = (const const_it& src){m_iter_n = src.m_iter_n; m_iter_d = src.m_iter_d; return *this;}
 				GINL const_it& operator += (const _SizeType& c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
 						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
 					return *this;
 				}
 				GINL const_it& operator -= (const _SizeType& c)
 				{
-					for(_SizeType x = 0; x < c; ++x)
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
 						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
 					return *this;
 				}
 				GINL const_it operator + (const _SizeType& c) const
@@ -171,6 +249,30 @@ namespace GAIA
 				{
 					const_it ret = *this;
 					ret -= c;
+					return ret;
+				}
+				GINL _SizeType operator - (const const_it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					const_it iter = *this;
+					_SizeType ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						++ret;
+						--iter;
+					}
+					iter = *this;
+					ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						--ret;
+						++iter;
+					}
 					return ret;
 				}
 				GAIA_CLASS_OPERATOR_COMPARE2(m_iter_n, m_iter_n, m_iter_d, m_iter_d, const_it);
@@ -324,25 +426,8 @@ namespace GAIA
 					iter.m_iter_d = (*iter.m_iter_n).m_datas.const_back_it();
 				return iter;
 			}
-			GINL GAIA::GVOID front_prev_it(){}
-			GINL GAIA::GVOID back_prev_it(){}
-			GINL GAIA::GVOID front_mid_it(){}
-			GINL GAIA::GVOID back_mid_it(){}
-			GINL GAIA::GVOID front_next_it(){}
-			GINL GAIA::GVOID back_next_it(){}
-			GINL GAIA::GVOID const_front_prev_it(){}
-			GINL GAIA::GVOID const_back_prev_it(){}
-			GINL GAIA::GVOID const_front_mid_it(){}
-			GINL GAIA::GVOID const_back_mid_it(){}
-			GINL GAIA::GVOID const_front_next_it(){}
-			GINL GAIA::GVOID const_back_next_it(){}
 			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
-			GINL GAIA::BL operator == (const __MyType& src) const{return m_avltree == src.m_avltree;}
-			GINL GAIA::BL operator != (const __MyType& src) const{return m_avltree != src.m_avltree;}
-			GINL GAIA::BL operator >= (const __MyType& src) const{return m_avltree >= src.m_avltree;}
-			GINL GAIA::BL operator <= (const __MyType& src) const{return m_avltree <= src.m_avltree;}
-			GINL GAIA::BL operator > (const __MyType& src) const{return m_avltree > src.m_avltree;}
-			GINL GAIA::BL operator < (const __MyType& src) const{return m_avltree < src.m_avltree;}
+			GAIA_CLASS_OPERATOR_COMPARE(m_avltree, m_avltree, __MyType);
 		private:
 			GINL GAIA::GVOID init(){}
 			GINL Node* find_node(const _DataType& t) const

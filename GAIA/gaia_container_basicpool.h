@@ -18,16 +18,22 @@ namespace GAIA
 		public:
 			GINL BasicPool(){this->init();}
 			GINL ~BasicPool(){this->destroy();}
+			GINL GAIA::BL bind(__MyType* p)
+			{
+				if(!m_buf.empty() || 
+					!m_use.empty() || 
+					!m_free.empty())
+					return GAIA::False;
+				m_bind = p;
+				return GAIA::True;
+			}
+			GINL __MyType* bind() const{return m_bind;}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL GAIA::GVOID clear()
 			{
 				m_free.clear();
-				for(_SizeType y = 0; y < m_buf.size(); ++y)
-				{
-					__ElementListType& listEle = m_buf[y]->listEle;
-					for(_SizeType x = 0; x < listEle.size(); ++x)
-						m_free.push_back(&listEle[x]);
-				}
+				for(_SizeType x = 0; x < m_use.size(); ++x)
+					m_free.push_back(m_use[x]);
 			}
 			GINL _SizeType size() const{return this->capacity() - m_free.size();}
 			GINL const _SizeType& capacity() const{return m_use.size();}
@@ -42,7 +48,12 @@ namespace GAIA
 			GINL _DataType* alloc()
 			{
 				if(this->size() == this->capacity())
-					this->alloc_group();
+				{
+					if(this->bind() != GNULL)
+						this->alloc_bind();
+					else
+						this->alloc_group();
+				}
 				_DataType* pTop = m_free.back();
 				m_free.pop_back();
 				return pTop;
@@ -73,12 +84,20 @@ namespace GAIA
 				}
 			}
 		private:
-			GINL GAIA::GVOID init(){}
+			GINL GAIA::GVOID init(){m_bind = GNULL;}
+			GINL GAIA::GVOID alloc_bind()
+			{
+				GAIA_AST(m_bind != GNULL);
+				_DataType* pNew = m_bind->alloc();
+				m_use.push_back(pNew);
+				m_free.push_back(pNew);
+			}
 			GINL GAIA::GVOID alloc_group()
 			{
 				Group* pGroup = new Group;
 				_SizeIncreaserType increaser;
 				_SizeType newsize = increaser.Increase(m_use.size());
+				GAIA_AST(newsize - m_use.size() > 0);
 				pGroup->listEle.resize(newsize - m_use.size());
 				for(_SizeType x = 0; x < pGroup->listEle.size(); ++x)
 				{
@@ -97,6 +116,7 @@ namespace GAIA
 			BasicVector<Group*, _SizeType, _SizeIncreaserType> m_buf;
 			BasicVector<_DataType*, _SizeType, _SizeIncreaserType> m_use;
 			BasicStack<_DataType*, _SizeType, _SizeIncreaserType> m_free;
+			__MyType* m_bind;
 		};
 	};
 };

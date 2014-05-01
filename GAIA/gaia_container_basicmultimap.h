@@ -31,6 +31,209 @@ namespace GAIA
 			typedef BasicMultiAVLTree<Node, _SizeType, _HeightType, _SizeIncreaserType> __MultiAVLTreeType;
 			typedef BasicVector<Pair<_DataType, _SizeType>, _SizeType, _SizeIncreaserType> __DataListType;
 		public:
+		public:
+			class it : public GAIA::ITERATOR::Iterator<_DataType>
+			{
+			private:
+				friend class BasicMultiMap;
+			public:
+				GINL it(){}
+				GINL virtual ~it(){}
+				GINL virtual GAIA::BL empty() const{return m_iter.empty();}
+				GINL virtual _DataType& operator * (){return *m_iter;}
+				GINL virtual const _DataType& operator * () const{return *m_iter;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (){++m_iter; return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (){--m_iter; return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator = (const GAIA::ITERATOR::Iterator<_DataType>& src){return this->operator = (*static_cast<const it*>(&src));}
+				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
+				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
+				GINL it& operator = (const it& src){m_iter = src.m_iter; return *this;}
+				GINL it& operator += (const _SizeType& c)
+				{
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
+					return *this;
+				}
+				GINL it& operator -= (const _SizeType& c)
+				{
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
+					return *this;
+				}
+				GINL it operator + (const _SizeType& c) const
+				{
+					it ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL it operator - (const _SizeType& c) const
+				{
+					it ret = *this;
+					ret -= c;
+					return ret;
+				}
+				GINL _SizeType operator - (const it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					it iter = *this;
+					_SizeType ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						++ret;
+						--iter;
+					}
+					iter = *this;
+					ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						--ret;
+						++iter;
+					}
+					return ret;
+				}
+				GAIA_CLASS_OPERATOR_COMPARE(m_iter, m_iter, it);
+			private:
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
+			private:
+				typename __MultiAVLTreeType::it m_iter;
+			};
+			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
+			{
+			private:
+				friend class BasicMultiMap;
+			public:
+				GINL const_it(){}
+				GINL virtual ~const_it(){}
+				GINL virtual GAIA::BL empty() const{return m_iter.empty();}
+				GINL virtual const _DataType& operator * () const{return *m_iter;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){++m_iter; return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){--m_iter; return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator = (const GAIA::ITERATOR::ConstIterator<_DataType>& src){return this->operator = (*static_cast<const const_it*>(&src));}
+				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
+				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
+				GINL const_it& operator = (const const_it& src){m_iter = src.m_iter; return *this;}
+				GINL const_it& operator += (const _SizeType& c)
+				{
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
+					return *this;
+				}
+				GINL const_it& operator -= (const _SizeType& c)
+				{
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
+					return *this;
+				}
+				GINL const_it operator + (const _SizeType& c) const
+				{
+					const_it ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL const_it operator - (const _SizeType& c) const
+				{
+					const_it ret = *this;
+					ret -= c;
+					return ret;
+				}
+				GINL _SizeType operator - (const const_it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					const_it iter = *this;
+					_SizeType ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						++ret;
+						--iter;
+					}
+					iter = *this;
+					ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						--ret;
+						++iter;
+					}
+					return ret;
+				}
+				GAIA_CLASS_OPERATOR_COMPARE(m_iter, m_iter, const_it);
+			private:
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
+			private:
+				typename __MultiAVLTreeType::const_it m_iter;
+			};
+		public:
 			GINL BasicMultiMap(){}
 			GINL BasicMultiMap(const __MyType& src){this->operator = (src);}
 			GINL ~BasicMultiMap(){}
