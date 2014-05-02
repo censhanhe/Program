@@ -83,12 +83,12 @@ namespace GAIATEST
 			GTLINE1("Bitset test begin!"); nRet += t_bitset(file, prt); GTLINE1("Bitset test end!"); GTLINE("\t");
 			GTLINE1("TrieTree test begin!"); nRet += t_trietree(file, prt); GTLINE1("TrieTree test end!"); GTLINE("\t");
 			GTLINE1("AVLTree test begin!"); nRet += t_avltree(file, prt); GTLINE1("AVLTree test end!"); GTLINE("\t");
-
 			GTLINE1("Set test begin!"); nRet += t_set(file, prt); GTLINE1("Set test end!"); GTLINE("\t");
 			GTLINE1("Map test begin!"); nRet += t_map(file, prt); GTLINE1("Map test end!"); GTLINE("\t");
 			GTLINE1("MultiAVLTree test begin!"); nRet += t_multiavltree(file, prt); GTLINE1("MultiAVLTree test end!"); GTLINE("\t");
 			GTLINE1("MultiSet test begin!"); nRet += t_multiset(file, prt); GTLINE1("MultiSet test end!"); GTLINE("\t");
 			GTLINE1("MultiMap test begin!"); nRet += t_multimap(file, prt); GTLINE1("MultiMap test end!"); GTLINE("\t");
+
 			GTLINE1("Graph test begin!"); nRet += t_graph(file, prt); GTLINE1("Graph test end!"); GTLINE("\t");
 			GTLINE1("Storage test begin!"); nRet += t_storage(file, prt); GTLINE1("Storage test end!"); GTLINE("\t");
 

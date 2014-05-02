@@ -33,7 +33,7 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
 				GINL it& operator = (const it& src){m_iter = src.m_iter; return *this;}
-				GINL it& operator += (const _SizeType& c)
+				GINL it& operator += (_SizeType c)
 				{
 					GAIA_AST(!this->empty());
 					if(this->empty())
@@ -54,7 +54,7 @@ namespace GAIA
 					}
 					return *this;
 				}
-				GINL it& operator -= (const _SizeType& c)
+				GINL it& operator -= (_SizeType c)
 				{
 					GAIA_AST(!this->empty());
 					if(this->empty())
@@ -133,7 +133,7 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
 				GINL const_it& operator = (const const_it& src){m_iter = src.m_iter; return *this;}
-				GINL const_it& operator += (const _SizeType& c)
+				GINL const_it& operator += (_SizeType c)
 				{
 					GAIA_AST(!this->empty());
 					if(this->empty())
@@ -154,7 +154,7 @@ namespace GAIA
 					}
 					return *this;
 				}
-				GINL const_it& operator -= (const _SizeType& c)
+				GINL const_it& operator -= (_SizeType c)
 				{
 					GAIA_AST(!this->empty());
 					if(this->empty())
@@ -223,7 +223,7 @@ namespace GAIA
 			GINL BasicMultiSet(const __MyType& src){this->operator = (src);}
 			GINL ~BasicMultiSet(){}
 			GINL GAIA::BL empty() const{return m_mavltree.empty();}
-			GINL const _SizeType& size() const{return m_mavltree.size();}
+			GINL _SizeType size() const{return m_mavltree.size();}
 			GINL const _SizeType& capacity() const{return m_mavltree.capacity();}
 			GINL GAIA::GVOID clear(){m_mavltree.clear();}
 			GINL GAIA::GVOID destroy(){m_mavltree.destroy();}
@@ -231,11 +231,17 @@ namespace GAIA
 			GINL GAIA::BL erase(const _DataType& t){return m_mavltree.erase(t);}
 			GINL GAIA::BL erase(const Pair<_DataType, _SizeType>& t){return m_mavltree.erase(t);}
 			GINL _SizeType count(const _DataType& t) const{return m_mavltree.count(t);}
+			GINL _DataType* find(const _DataType& t){return m_mavltree.find(t);}
+			GINL const _DataType* find(const _DataType& t) const{return m_mavltree.find(t);}
 			GINL GAIA::BL find(const _DataType& t, __DataListType& result) const{return m_mavltree.find(t, result);}
 			GINL it lower_bound(const _DataType& t){it ret; ret.m_iter = m_mavltree.lower_bound(t); return ret;}
 			GINL it upper_bound(const _DataType& t){it ret; ret.m_iter = m_mavltree.upper_bound(t); return ret;}
 			GINL const_it lower_bound(const _DataType& t) const{const_it ret; ret.m_iter = m_mavltree.lower_bound(t); return ret;}
 			GINL const_it upper_bound(const _DataType& t) const{const_it ret; ret.m_iter = m_mavltree.upper_bound(t); return ret;}
+			GINL it front_it(){it ret; ret.m_iter = m_mavltree.front_it(); return ret;}
+			GINL it back_it(){it ret; ret.m_iter = m_mavltree.back_it(); return ret;}
+			GINL const_it const_front_it() const{const_it ret; ret.m_iter = m_mavltree.const_front_it(); return ret;}
+			GINL const_it const_back_it() const{const_it ret; ret.m_iter = m_mavltree.const_back_it(); return ret;}
 			GINL __MyType& operator = (const __MyType& src){m_mavltree = src.m_mavltree; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE(m_mavltree, m_mavltree, __MyType);
 		private:
