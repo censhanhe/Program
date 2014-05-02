@@ -388,13 +388,13 @@ namespace GAIA
 				it ret;
 				if(m_vec.capacity() != 0)
 				{
-					__VectorType::it ittemp = m_vec.lower_bound(t);
+					typename __VectorType::it ittemp = m_vec.lower_bound(t);
 					ret.m_pContainer = this;
 					ret.m_index = ittemp - m_vec.front_it();
 				}
 				else
 				{
-					__ArrayType::it ittemp = m_arr.lower_bound(t);
+					typename __ArrayType::it ittemp = m_arr.lower_bound(t);
 					ret.m_pContainer = this;
 					ret.m_index = ittemp - m_arr.front_it();
 				}
@@ -405,13 +405,13 @@ namespace GAIA
 				const_it ret;
 				if(m_vec.capacity() != 0)
 				{
-					__VectorType::const_it ittemp = m_vec.lower_bound(t);
+					typename __VectorType::const_it ittemp = m_vec.lower_bound(t);
 					ret.m_pContainer = this;
 					ret.m_index = ittemp - m_vec.const_front_it();
 				}
 				else
 				{
-					__ArrayType::const_it ittemp = m_arr.lower_bound(t);
+					typename __ArrayType::const_it ittemp = m_arr.lower_bound(t);
 					ret.m_pContainer = this;
 					ret.m_index = ittemp - m_arr.const_front_it();
 				}
@@ -422,13 +422,13 @@ namespace GAIA
 				it ret;
 				if(m_vec.capacity() != 0)
 				{
-					__VectorType::it ittemp = m_vec.upper_bound(t);
+					typename __VectorType::it ittemp = m_vec.upper_bound(t);
 					ret.m_pContainer = this;
 					ret.m_index = ittemp - m_vec.front_it();
 				}
 				else
 				{
-					__ArrayType::it ittemp = m_arr.upper_bound(t);
+					typename __ArrayType::it ittemp = m_arr.upper_bound(t);
 					ret.m_pContainer = this;
 					ret.m_index = ittemp - m_arr.front_it();
 				}
@@ -439,13 +439,13 @@ namespace GAIA
 				const_it ret;
 				if(m_vec.capacity() != 0)
 				{
-					__VectorType::const_it ittemp = m_vec.upper_bound(t);
+					typename __VectorType::const_it ittemp = m_vec.upper_bound(t);
 					ret.m_pContainer = this;
 					ret.m_index = ittemp - m_vec.const_front_it();
 				}
 				else
 				{
-					__ArrayType::const_it ittemp = m_arr.upper_bound(t);
+					typename __ArrayType::const_it ittemp = m_arr.upper_bound(t);
 					ret.m_pContainer = this;
 					ret.m_index = ittemp - m_arr.const_front_it();
 				}
