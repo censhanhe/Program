@@ -24,6 +24,32 @@ namespace GAIATEST
 			GTLINE2("New set capacity is not zero!");
 			++nRet;
 		}
+		__SetType::it newit;
+		__SetType::const_it newcit;
+		newit = s.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New set front_it is not empty!");
+			++nRet;
+		}
+		newit = s.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New set back_it is not empty!");
+			++nRet;
+		}
+		newcit = s.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New set const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = s.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New set const_back_it is not empty!");
+			++nRet;
+		}
 		s.clear();
 		s.destroy();
 		for(__SetType::_datatype x = 0; x < ELEMENT_SIZE; ++x)

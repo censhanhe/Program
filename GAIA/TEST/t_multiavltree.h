@@ -25,6 +25,32 @@ namespace GAIATEST
 			GTLINE2("New mavl capacity not 0!");
 			++nRet;
 		}
+		__MultiAVLType::it newit;
+		__MultiAVLType::const_it newcit;
+		newit = mavl.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New multiavl front_it is not empty!");
+			++nRet;
+		}
+		newit = mavl.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New multiavl back_it is not empty!");
+			++nRet;
+		}
+		newcit = mavl.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New multiavl const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = mavl.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New multiavl const_back_it is not empty!");
+			++nRet;
+		}
 		mavl.clear();
 		mavl.destroy();
 		for(__MultiAVLType::_datatype x = 0; x < ELEMENT_SIZE; ++x)

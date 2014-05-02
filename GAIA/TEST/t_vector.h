@@ -24,6 +24,32 @@ namespace GAIATEST
 			GTLINE2("New vector must been empty!");
 			++nRet;
 		}
+		__VectorType::it newit;
+		__VectorType::const_it newcit;
+		newit = vec.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New vector front_it is not empty!");
+			++nRet;
+		}
+		newit = vec.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New vector back_it is not empty!");
+			++nRet;
+		}
+		newcit = vec.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New vector const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = vec.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New vector const_back_it is not empty!");
+			++nRet;
+		}
 		for(__VectorType::_sizetype x = 0; x < vec.capacity(); ++x)
 			vec.push_back(x);
 		if(vec.size() != vec.capacity())

@@ -24,6 +24,32 @@ namespace GAIATEST
 			GTLINE2("New map capacity is not zero!");
 			++nRet;
 		}
+		__MapType::it newit;
+		__MapType::const_it newcit;
+		newit = m.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New map front_it is not empty!");
+			++nRet;
+		}
+		newit = m.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New map back_it is not empty!");
+			++nRet;
+		}
+		newcit = m.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New map const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = m.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New map const_back_it is not empty!");
+			++nRet;
+		}
 		m.clear();
 		m.destroy();
 		for(__MapType::_datatype x = 0; x < ELEMENT_SIZE; ++x)

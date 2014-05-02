@@ -24,6 +24,32 @@ namespace GAIATEST
 			GTLINE2("New multiset capacity is not zero!");
 			++nRet;
 		}
+		__MultiSetType::it newit;
+		__MultiSetType::const_it newcit;
+		newit = ms.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New multiset front_it is not empty!");
+			++nRet;
+		}
+		newit = ms.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New multiset back_it is not empty!");
+			++nRet;
+		}
+		newcit = ms.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New multiset const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = ms.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New multiset const_back_it is not empty!");
+			++nRet;
+		}
 		ms.clear();
 		ms.destroy();
 		for(__MultiSetType::_datatype x = 0; x < ELEMENT_SIZE; ++x)

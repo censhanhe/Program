@@ -49,6 +49,7 @@
 #include "t_multiavltree.h"
 #include "t_multiset.h"
 #include "t_multimap.h"
+#include "t_tree.h"
 #include "t_graph.h"
 #include "t_storage.h"
 #include "t_accesser.h"
@@ -88,6 +89,7 @@ namespace GAIATEST
 			GTLINE1("MultiAVLTree test begin!"); nRet += t_multiavltree(file, prt); GTLINE1("MultiAVLTree test end!"); GTLINE("\t");
 			GTLINE1("MultiSet test begin!"); nRet += t_multiset(file, prt); GTLINE1("MultiSet test end!"); GTLINE("\t");
 			GTLINE1("MultiMap test begin!"); nRet += t_multimap(file, prt); GTLINE1("MultiMap test end!"); GTLINE("\t");
+			GTLINE1("Tree test begin!"); nRet += t_tree(file, prt); GTLINE1("Tree test end!"); GTLINE("\t");
 
 			GTLINE1("Graph test begin!"); nRet += t_graph(file, prt); GTLINE1("Graph test end!"); GTLINE("\t");
 			GTLINE1("Storage test begin!"); nRet += t_storage(file, prt); GTLINE1("Storage test end!"); GTLINE("\t");

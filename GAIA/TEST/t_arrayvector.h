@@ -24,6 +24,32 @@ namespace GAIATEST
 			GTLINE2("New arrayvector must been empty!");
 			++nRet;
 		}
+		__ArrayVectorType::it newit;
+		__ArrayVectorType::const_it newcit;
+		newit = av.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New arrayvector front_it is not empty!");
+			++nRet;
+		}
+		newit = av.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New arrayvector back_it is not empty!");
+			++nRet;
+		}
+		newcit = av.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New arrayvector const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = av.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New arrayvector const_back_it is not empty!");
+			++nRet;
+		}
 		for(__ArrayVectorType::_sizetype x = 0; x < av.capacity(); ++x)
 			av.push_back(x);
 		if(av.size() != av.capacity())

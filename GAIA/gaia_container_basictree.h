@@ -137,6 +137,84 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
 				GINL it& operator = (const it& src){m_pNode = src.m_pNode; return *this;}
+				GINL it& operator += (_SizeType c)
+				{
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
+					return *this;
+				}
+				GINL it& operator -= (_SizeType c)
+				{
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
+					return *this;
+				}
+				GINL it operator + (const _SizeType& c) const
+				{
+					it ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL it operator - (const _SizeType& c) const
+				{
+					it ret = *this;
+					ret -= c;
+					return ret;
+				}
+				GINL _SizeType operator - (const it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					it iter = *this;
+					_SizeType ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						++ret;
+						--iter;
+					}
+					iter = *this;
+					ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						--ret;
+						++iter;
+					}
+					return ret;
+				}
 				GINL GAIA::BL operator == (const it& src) const{return m_pNode == src.m_pNode;}
 				GINL GAIA::BL operator != (const it& src) const{return !(this->operator == (src));}
 			private:
@@ -247,6 +325,84 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
 				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; return *this;}
+				GINL const_it& operator += (_SizeType c)
+				{
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
+					return *this;
+				}
+				GINL const_it& operator -= (_SizeType c)
+				{
+					GAIA_AST(!this->empty());
+					if(this->empty())
+						return *this;
+					while(c > 0)
+					{
+						--(*this);
+						if(this->empty())
+							return *this;
+						--c;
+					}
+					while(c < 0)
+					{
+						++(*this);
+						if(this->empty())
+							return *this;
+						++c;
+					}
+					return *this;
+				}
+				GINL const_it operator + (const _SizeType& c) const
+				{
+					const_it ret = *this;
+					ret += c;
+					return ret;
+				}
+				GINL const_it operator - (const _SizeType& c) const
+				{
+					const_it ret = *this;
+					ret -= c;
+					return ret;
+				}
+				GINL _SizeType operator - (const const_it& src) const
+				{
+					if(this->empty() || src.empty())
+						return 0;
+					const_it iter = *this;
+					_SizeType ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						++ret;
+						--iter;
+					}
+					iter = *this;
+					ret = 0;
+					while(!iter.empty())
+					{
+						if(iter == src)
+							return ret;
+						--ret;
+						++iter;
+					}
+					return ret;
+				}
 				GINL GAIA::BL operator == (const const_it& src) const{return m_pNode == src.m_pNode;}
 				GINL GAIA::BL operator != (const const_it& src) const{return !(this->operator == (src));}
 			private:

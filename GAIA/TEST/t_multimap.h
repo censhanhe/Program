@@ -26,6 +26,32 @@ namespace GAIATEST
 		}
 		mm.clear();
 		mm.destroy();
+		__MultiMapType::it newit;
+		__MultiMapType::const_it newcit;
+		newit = mm.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New multimap front_it is not empty!");
+			++nRet;
+		}
+		newit = mm.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New multimap back_it is not empty!");
+			++nRet;
+		}
+		newcit = mm.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New multimap const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = mm.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New multimap const_back_it is not empty!");
+			++nRet;
+		}
 		for(__MultiMapType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
 			for(GAIA::N32 t = 0; t < 10; ++t)

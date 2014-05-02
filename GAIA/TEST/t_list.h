@@ -41,6 +41,32 @@ namespace GAIATEST
 			GTLINE2("List clear failed!");
 			++nRet;
 		}
+		__ListType::it newit;
+		__ListType::const_it newcit;
+		newit = l.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New list front_it is not empty!");
+			++nRet;
+		}
+		newit = l.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New list back_it is not empty!");
+			++nRet;
+		}
+		newcit = l.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New list const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = l.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New list const_back_it is not empty!");
+			++nRet;
+		}
 		__ListType::it it = l.front_it();
 		for(GAIA::N32 x = 0; x < ELEMENT_SIZE; ++x)
 			l.insert(it, x);

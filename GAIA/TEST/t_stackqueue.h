@@ -23,6 +23,32 @@ namespace GAIATEST
 			GTLINE2("New stackqueue must been empty!");
 			++nRet;
 		}
+		__StackQueueType::it newit;
+		__StackQueueType::const_it newcit;
+		newit = sq.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New stackqueue front_it is not empty!");
+			++nRet;
+		}
+		newit = sq.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New stackqueue back_it is not empty!");
+			++nRet;
+		}
+		newcit = sq.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New stackqueue const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = sq.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New stackqueue const_back_it is not empty!");
+			++nRet;
+		}
 		for(__StackQueueType::_sizetype x = 0; x < sq.capacity(); ++x)
 		{
 			if(!sq.push_back(x))

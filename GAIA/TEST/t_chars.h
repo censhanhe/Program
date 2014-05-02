@@ -29,6 +29,32 @@ namespace GAIATEST
 			GTLINE2("New string is not empty!");
 			++nRet;
 		}
+		__ACharsType::it newit;
+		__ACharsType::const_it newcit;
+		newit = chs.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New chs front_it is not empty!");
+			++nRet;
+		}
+		newit = chs.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New chs back_it is not empty!");
+			++nRet;
+		}
+		newcit = chs.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New chs const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = chs.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New chs const_back_it is not empty!");
+			++nRet;
+		}
 		chs.clear();
 		chs = "Hello World!";
 		if(chs.empty())

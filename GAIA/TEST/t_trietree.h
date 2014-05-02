@@ -42,6 +42,32 @@ namespace GAIATEST
 			GTLINE2("Trie root's full_count not zero!");
 			++nRet;
 		}
+		__TrieType::it newit;
+		__TrieType::const_it newcit;
+		newit = t.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New trietree front_it is not empty!");
+			++nRet;
+		}
+		newit = t.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New trietree back_it is not empty!");
+			++nRet;
+		}
+		newcit = t.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New trietree const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = t.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New trietree const_back_it is not empty!");
+			++nRet;
+		}
 		t.clear();
 		t.destroy();
 		for(__TrieType::_datatype z = 0; z < COUNTZ; ++z)

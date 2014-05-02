@@ -45,6 +45,32 @@ namespace GAIATEST
 			}
 			str.clear();
 		}
+		__AStrType::it newit;
+		__AStrType::const_it newcit;
+		newit = str.front_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New string front_it is not empty!");
+			++nRet;
+		}
+		newit = str.back_it();
+		if(!newit.empty())
+		{
+			GTLINE2("New string back_it is not empty!");
+			++nRet;
+		}
+		newcit = str.const_front_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New string const_front_it is not empty!");
+			++nRet;
+		}
+		newcit = str.const_back_it();
+		if(!newcit.empty())
+		{
+			GTLINE2("New string const_back_it is not empty!");
+			++nRet;
+		}
 		if(!str.empty())
 		{
 			GTLINE2("New string is not empty!");
