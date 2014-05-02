@@ -51,6 +51,35 @@ namespace GAIATEST
 			GTLINE2("Array's capacity must not changed!");
 			++nRet;
 		}
+		arr.clear();
+		for(__ArrayType::_sizetype x = 0; x < arr.capacity(); ++x)
+		{
+			if(!arr.insert(x, x))
+			{
+				GTLINE2("array push_back return GAIA::False failed!");
+				++nRet;
+				break;
+			}
+		}
+		if(arr.size() != arr.capacity())
+		{
+			GTLINE2("Full push_backed array's size must been capacity()!");
+			++nRet;
+		}
+		for(__ArrayType::_sizetype x = 0; x < arr.size(); ++x)
+		{
+			if(arr[x] != x)
+			{
+				GTLINE2("Array's element value error!");
+				++nRet;
+				break;
+			}
+		}
+		if(arr.capacity() != 100)
+		{
+			GTLINE2("Array's capacity must not changed!");
+			++nRet;
+		}
 		__ArrayType arr1;
 		arr1.push_back(arr.front_ptr(), arr.size());
 		if(arr1.capacity() != 100)

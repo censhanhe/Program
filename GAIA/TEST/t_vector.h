@@ -45,6 +45,35 @@ namespace GAIATEST
 			GTLINE2("Vector's capacity must not changed!");
 			++nRet;
 		}
+		vec.clear();
+		for(__VectorType::_sizetype x = 0; x < vec.capacity(); ++x)
+		{
+			if(!vec.insert(x, x))
+			{
+				GTLINE2("Vector insert element failed!");
+				++nRet;
+				break;
+			}
+		}
+		if(vec.size() != vec.capacity())
+		{
+			GTLINE2("Full push_backed vector's size must been capacity()!");
+			++nRet;
+		}
+		for(__VectorType::_sizetype x = 0; x < vec.size(); ++x)
+		{
+			if(vec[x] != x)
+			{
+				GTLINE2("Vector's element value error!");
+				++nRet;
+				break;
+			}
+		}
+		if(vec.capacity() != 100)
+		{
+			GTLINE2("Vector's capacity must not changed!");
+			++nRet;
+		}
 		__VectorType vec1;
 		vec1.push_back(vec.front_ptr(), vec.size());
 		if(vec1.capacity() != 100)

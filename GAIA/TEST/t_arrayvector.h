@@ -45,6 +45,35 @@ namespace GAIATEST
 			GTLINE2("ArrayVector's capacity must not changed!");
 			++nRet;
 		}
+		av.clear();
+		for(__ArrayVectorType::_sizetype x = 0; x < av.capacity(); ++x)
+		{
+			if(!av.insert(x, x))
+			{
+				GTLINE2("ArrayVector insert element failed!");
+				++nRet;
+				break;
+			}
+		}
+		if(av.size() != av.capacity())
+		{
+			GTLINE2("Full push_backed arrayvector's size must been capacity()!");
+			++nRet;
+		}
+		for(__ArrayVectorType::_sizetype x = 0; x < av.size(); ++x)
+		{
+			if(av[x] != x)
+			{
+				GTLINE2("ArrayVector's element value error!");
+				++nRet;
+				break;
+			}
+		}
+		if(av.capacity() != 100)
+		{
+			GTLINE2("ArrayVector's capacity must not changed!");
+			++nRet;
+		}
 		__ArrayVectorType av1;
 		av1.push_back(av.front_ptr(), av.size());
 		if(av1.capacity() != 100)
