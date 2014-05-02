@@ -430,17 +430,14 @@ namespace GAIA
 			GINL const Node* parent(Node* p) const{if(p != GNULL) return p->m_pParent; return GNULL;}
 			GINL Node* insert(const _DataType& t, Node* pNode)
 			{
+				if(pNode == GNULL && m_pRoot != GNULL)
+					return GNULL;
 				Node* pNew = m_pool.alloc();
 				pNew->m_t = t;
 				pNew->m_pParent = GNULL;
 				pNew->m_links.clear();
 				if(pNode == GNULL)
-				{
-					if(m_pRoot == GNULL)
-						m_pRoot = pNew;
-					else
-						this->link(*m_pRoot, *pNew);
-				}
+					m_pRoot = pNew;
 				else
 				{
 					GAIA_AST(!!m_pRoot);
@@ -607,6 +604,62 @@ namespace GAIA
 				}
 				return *this;
 			}
+			GINL GAIA::BL operator == (const __MyType& src) const
+			{
+				if(this->size() != src.size())
+					return GAIA::False;
+				const_it srcit = src.const_front_it();
+				const_it selfit = this->const_front_it();
+				while(!srcit.empty())
+				{
+					if(*selfit != *srcit)
+						return GAIA::False;
+					++srcit;
+					++selfit;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator >= (const __MyType& src) const
+			{
+				if(this->size() > src.size())
+					return GAIA::True;
+				else if(this->size() < src.size())
+					return GAIA::False;
+				const_it srcit = src.const_front_it();
+				const_it selfit = this->const_front_it();
+				while(!srcit.empty())
+				{
+					if(*selfit > *srcit)
+						return GAIA::True;
+					else if(*selfit < *srcit)
+						return GAIA::False;
+					++srcit;
+					++selfit;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator <= (const __MyType& src) const
+			{	
+				if(this->size() < src.size())
+					return GAIA::True;
+				else if(this->size() > src.size())
+					return GAIA::False;
+				const_it srcit = src.const_front_it();
+				const_it selfit = this->const_front_it();
+				while(!srcit.empty())
+				{
+					if(*selfit < *srcit)
+						return GAIA::True;
+					else if(*selfit > *srcit)
+						return GAIA::False;
+					++srcit;
+					++selfit;
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
 		private:
 			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
 			GINL GAIA::GVOID paths_node(const Node& root, const Node& n, __PathListType& result) const
