@@ -27,7 +27,11 @@ namespace GAIATEST
 		mm.clear();
 		mm.destroy();
 		for(__MultiMapType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
-			mm.insert(x, x);
+		{
+			for(GAIA::N32 t = 0; t < 10; ++t)
+				mm.insert(x, x);
+		}
+		__MultiMapType::__DataListType listResult;
 		for(__MultiMapType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
 			if(mm.find(x) == GNULL)
@@ -39,6 +43,25 @@ namespace GAIATEST
 			if(static_cast<const __MultiMapType*>(&mm)->find(x) == GNULL)
 			{
 				GTLINE2("MultiMap const find element failed!");
+				++nRet;
+				break;
+			}
+			listResult.clear();
+			if(!mm.find(x, listResult))
+			{
+				GTLINE2("MultiMap find multi element failed!");
+				++nRet;
+				break;
+			}
+			if(listResult.size() != 10)
+			{
+				GTLINE2("MultiMap find multi element failed!");
+				++nRet;
+				break;
+			}
+			if(mm.count(x) != 10)
+			{
+				GTLINE2("MultiMap count failed!");
 				++nRet;
 				break;
 			}
@@ -73,9 +96,27 @@ namespace GAIATEST
 		}
 		for(__MultiMapType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
+			if(!mm.erase(GAIA::CONTAINER::Pair<GAIA::N32, GAIA::U32>(x, 0)))
+			{
+				GTLINE2("MultiMap erase single element failed!");
+				++nRet;
+				break;;
+			}
+			if(mm.count(x) != 9)
+			{
+				GTLINE2("MultiMap erase single element failed!");
+				++nRet;
+				break;
+			}
 			if(!mm.erase(x))
 			{
-				GTLINE2("MultiMap erase element failed!");
+				GTLINE2("MultiMap erase element by key failed!");
+				++nRet;
+				break;
+			}
+			if(mm.count(x) != 0)
+			{
+				GTLINE2("MultiMap erase element by key failed!");
 				++nRet;
 				break;
 			}

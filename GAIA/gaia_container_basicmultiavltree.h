@@ -320,10 +320,7 @@ namespace GAIA
 					return GAIA::False;
 				if(t.back() >= pN->m_datas.size())
 					return GAIA::False;
-				typename Node::__DataListType::it iter = pN->m_datas.front_it();
-				iter += t.back();
-				pN->m_datas.erase(iter);
-				return GAIA::True;
+				return pN->m_datas.erase(t.back());
 			}
 			GINL _SizeType count(const _DataType& t) const
 			{
