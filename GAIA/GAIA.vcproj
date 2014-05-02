@@ -678,6 +678,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="ARRAYVECTOR"
+						>
+						<File
+							RelativePath=".\gaia_container_arrayvector.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_container_basicarrayvector.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ALGORITHM"
@@ -1517,6 +1529,10 @@
 				</File>
 				<File
 					RelativePath=".\TEST\t_array.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_arrayvector.h"
 					>
 				</File>
 				<File

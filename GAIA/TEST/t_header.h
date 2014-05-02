@@ -32,6 +32,7 @@
 #include "t_ref.h"
 #include "t_array.h"
 #include "t_vector.h"
+#include "t_arrayvector.h"
 #include "t_stackstack.h"
 #include "t_stack.h"
 #include "t_stackqueue.h"
@@ -70,6 +71,7 @@ namespace GAIATEST
 			GTLINE1("Ref test begin!"); nRet += t_ref(file, prt); GTLINE1("Ref test end!"); GTLINE("\t");
 			GTLINE1("Array test begin!"); nRet += t_array(file, prt); GTLINE1("Array test end!"); GTLINE("\t");
 			GTLINE1("Vector test begin!"); nRet += t_vector(file, prt); GTLINE1("Vector test end!"); GTLINE("\t");
+			GTLINE1("ArrayVector test begin!"); nRet += t_arrayvector(file, prt); GTLINE1("ArrayVector test end!"); GTLINE("\t");
 			GTLINE1("StackStack test begin!"); nRet += t_stackstack(file, prt); GTLINE1("StackStack test end!"); GTLINE("\t");
 			GTLINE1("Stack test begin!"); nRet += t_stack(file, prt); GTLINE1("Stack test end!"); GTLINE("\t");
 			GTLINE1("StackQueue test begin!"); nRet += t_stackqueue(file, prt); GTLINE1("StackQueue test end!"); GTLINE("\t");
