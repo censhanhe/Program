@@ -274,7 +274,12 @@ namespace GAIA
 				}
 				return GAIA::True;
 			}
+			GINL it lower_bound(const _DataType& t){it ret; ret.m_iter = m_mavltree.lower_bound(t); return ret;}
+			GINL it upper_bound(const _DataType& t){it ret; ret.m_iter = m_mavltree.upper_bound(t); return ret;}
+			GINL const_it lower_bound(const _DataType& t) const{const_it ret; ret.m_iter = m_mavltree.lower_bound(t); return ret;}
+			GINL const_it upper_bound(const _DataType& t) const{const_it ret; ret.m_iter = m_mavltree.upper_bound(t); return ret;}
 			GINL __MyType& operator = (const __MyType& src){m_mavltree = src.m_mavltree; return *this;}
+			GAIA_CLASS_OPERATOR_COMPARE(m_mavltree, m_mavltree, __MyType);
 		private:
 			__MultiAVLTreeType m_mavltree;
 		};
