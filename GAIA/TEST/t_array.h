@@ -6,9 +6,10 @@ namespace GAIATEST
 	GINL GAIA::N32 t_array(GAIA::FILESYSTEM::File& file, GAIA::PRINT::Print& prt)
 	{
 		GAIA::N32 nRet = 0;
-		typedef GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::N32, 100> __ArrayType;
+		static const GAIA::N32 ELEMENT_COUNT = 100;
+		typedef GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::N32, ELEMENT_COUNT> __ArrayType;
 		__ArrayType arr;
-		if(arr.capacity() != 100)
+		if(arr.capacity() != ELEMENT_COUNT)
 		{
 			GTLINE2("Array's capacity error!");
 			++nRet;
@@ -72,7 +73,7 @@ namespace GAIATEST
 				break;
 			}
 		}
-		if(arr.capacity() != 100)
+		if(arr.capacity() != ELEMENT_COUNT)
 		{
 			GTLINE2("Array's capacity must not changed!");
 			++nRet;
@@ -101,14 +102,14 @@ namespace GAIATEST
 				break;
 			}
 		}
-		if(arr.capacity() != 100)
+		if(arr.capacity() != ELEMENT_COUNT)
 		{
 			GTLINE2("Array's capacity must not changed!");
 			++nRet;
 		}
 		__ArrayType arr1;
 		arr1.push_back(arr.front_ptr(), arr.size());
-		if(arr1.capacity() != 100)
+		if(arr1.capacity() != ELEMENT_COUNT)
 		{
 			GTLINE2("Array push_back multi element change the capacity error!");
 			++nRet;
@@ -406,7 +407,7 @@ namespace GAIATEST
 		__ArrayType arr2;
 		arr2 = arr1;
 		arr2 += arr1;
-		arr += arr1;
+		arr += arr;
 		if(arr != arr2)
 		{
 			GTLINE2("Array operator += failed!");

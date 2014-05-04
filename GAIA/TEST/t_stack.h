@@ -175,7 +175,7 @@ namespace GAIATEST
 		__StackType s2;
 		s2 = s1;
 		s2 += s1;
-		s += s1;
+		s += s;
 		if(s != s2)
 		{
 			GTLINE2("Stack operator += failed!");

@@ -389,7 +389,7 @@ namespace GAIATEST
 		__VectorType vec2;
 		vec2 = vec1;
 		vec2 += vec1;
-		vec += vec1;
+		vec += vec;
 		if(vec != vec2)
 		{
 			GTLINE2("Vector operator += failed!");

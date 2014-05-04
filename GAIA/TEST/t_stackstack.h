@@ -185,7 +185,7 @@ namespace GAIATEST
 		__StackStackType ss2;
 		ss2 = ss1;
 		ss2 += ss1;
-		ss += ss1;
+		ss += ss;
 		if(ss != ss2)
 		{
 			GTLINE2("StackStack operator += failed!");

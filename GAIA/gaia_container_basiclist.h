@@ -334,6 +334,20 @@ namespace GAIA
 				if(this->size() > 1)
 					GAIA::ALGORITHM::inverse(this->front_it(), this->back_it());
 			}
+			GINL __MyType& operator += (const __MyType& src)
+			{
+				const_it it = src.const_front_it();
+				_SizeType size = src.size();
+				while(!it.empty())
+				{
+					this->push_back(*it);
+					++it;
+					--size;
+					if(size == 0)
+						break;
+				}
+				return *this;
+			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->destroy();

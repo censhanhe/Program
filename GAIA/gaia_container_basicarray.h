@@ -393,7 +393,10 @@ namespace GAIA
 			GINL __MyType& operator += (const __MyType& src)
 			{
 				if(!src.empty())
-					this->push_back(src.front_ptr(), src.size());
+				{
+					_SizeType size = src.size(); // For += self.
+					this->push_back(src.front_ptr(), size);
+				}
 				return *this;
 			}
 			GINL const _DataType& operator [] (const _SizeType& index) const{return m_data[index];}

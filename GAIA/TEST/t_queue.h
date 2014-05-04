@@ -175,7 +175,7 @@ namespace GAIATEST
 		__QueueType q2;
 		q2 = q1;
 		q2 += q1;
-		q += q1;
+		q += q;
 		if(q != q2)
 		{
 			GTLINE2("Queue operator += failed!");

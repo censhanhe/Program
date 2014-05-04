@@ -370,7 +370,17 @@ namespace GAIA
 			GINL __MyType& operator += (const __MyType& src)
 			{
 				if(!src.empty())
+				{
+					if(this == &src)
+					{
+						__MyType temp = *this;
+						this->reserve(this->capacity() * 2);
+						this->push_back(temp.front_ptr(), temp.size());
+						this->push_back(temp.front_ptr(), temp.size());
+						return *this;
+					}
 					this->push_back(src.front_ptr(), src.size());
+				}
 				return *this;
 			}
 			GINL const _DataType& operator[](const _SizeType& index) const{GAIA_AST(index >= 0 && index < this->size()); return m_pFront[index];}

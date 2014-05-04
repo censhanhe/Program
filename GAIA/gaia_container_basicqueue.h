@@ -325,6 +325,15 @@ namespace GAIA
 			}
 			GINL __MyType& operator += (const __MyType& src)
 			{
+				if(this == &src)
+				{
+					if(!this->empty())
+					{
+						__MyType temp = *this;
+						*this += temp;
+						return *this;
+					}
+				}
 				const_it it = src.const_front_it();
 				while(!it.empty())
 				{

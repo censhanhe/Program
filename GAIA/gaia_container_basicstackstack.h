@@ -259,6 +259,15 @@ namespace GAIA
 			GINL const _DataType& operator[](const _SizeType& index) const{return m_data[index];}
 			GINL __MyType& operator += (const __MyType& src)
 			{
+				if(this == &src)
+				{
+					if(!this->empty())
+					{
+						__MyType temp = *this;
+						*this += temp;
+						return *this;
+					}
+				}
 				const_it it = src.const_front_it();
 				while(!it.empty())
 				{

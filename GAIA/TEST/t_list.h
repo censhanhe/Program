@@ -231,6 +231,12 @@ namespace GAIATEST
 			GTLINE2("Same list compare !(>= <= ==) failed!");
 			++nRet;
 		}
+		l += l;
+		if(l.size() != ELEMENT_SIZE * 2)
+		{
+			GTLINE2("List operator += self failed!");
+			++nRet;
+		}
 		return nRet;
 	}
 };

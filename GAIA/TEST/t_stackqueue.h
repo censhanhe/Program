@@ -185,7 +185,7 @@ namespace GAIATEST
 		__StackQueueType sq2;
 		sq2 = sq1;
 		sq2 += sq1;
-		sq += sq1;
+		sq += sq;
 		if(sq != sq2)
 		{
 			GTLINE2("StackQueue operator += failed!");
