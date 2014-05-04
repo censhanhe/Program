@@ -178,11 +178,162 @@ namespace GAIATEST
 			GTLINE2("Tree copy construct failed!");
 			++nRet;
 		}
-		// erase all elements start.
-		// erase all element end.
+		it = tr.front_it();
+		while(!it.empty())
+		{
+			__TreeType::it itnext = it;
+			++itnext;
+			__TreeType::Node* pNode = tr.tonode(it);
+			GAIA_AST(pNode != GNULL);
+			tr.erase(*pNode);
+			if(tr.empty())
+				break;
+			it = itnext;
+		}
+		if(!tr.empty())
+		{
+			GTLINE2("Tree erase all element failed!");
+			++nRet;
+		}
+		if(tr.size() != 0)
+		{
+			GTLINE2("Tree erase all element failed!");
+			++nRet;
+		}
+		if(tr.capacity() == 0)
+		{
+			GTLINE2("Tree erase all element failed!");
+			++nRet;
+		}
+		tr = tr1;
+		it = tr.back_it();
+		while(!it.empty())
+		{
+			__TreeType::it itprev = it;
+			--itprev;
+			__TreeType::Node* pNode = tr.tonode(it);
+			GAIA_AST(pNode != GNULL);
+			tr.erase(*pNode);
+			if(tr.empty())
+				break;
+			it = itprev;
+		}
+		if(!tr.empty())
+		{
+			GTLINE2("Tree erase all element failed!");
+			++nRet;
+		}
+		if(tr.size() != 0)
+		{
+			GTLINE2("Tree erase all element failed!");
+			++nRet;
+		}
+		if(tr.capacity() == 0)
+		{
+			GTLINE2("Tree erase all element failed!");
+			++nRet;
+		}
+		tr = tr1;
+		tr.clear();
+		tr.destroy();
+		if(!tr.empty())
+		{
+			GTLINE2("Tree erase all element failed!");
+			++nRet;
+		}
+		if(tr.size() != 0)
+		{
+			GTLINE2("Tree erase all element failed!");
+			++nRet;
+		}
+		if(tr.capacity() != 0)
+		{
+			GTLINE2("Tree erase all element failed!");
+			++nRet;
+		}
 		tr = tr1;
 		tr1.clear();
 		tr1.destroy();
+		tr.clear();
+		tr.destroy();
+		__TreeType::_datatype tdata = 0;
+		if(tr.insert(tdata++, GNULL) == GNULL)
+		{
+			GTLINE2("Tree insert root failed!");
+			++nRet;
+		}
+		for(GAIA::N32 x = 0; x < ELEMENT_COUNT; ++x)
+		{
+			__TreeType::Node* pNode = tr.insert(tdata++, tr.root());
+			if(pNode == GNULL)
+			{
+				GTLINE2("Tree insert child node failed!");
+				++nRet;
+				break;
+			}
+			GAIA::BL bFailed = GAIA::False;
+			for(GAIA::N32 y = 0; y < ELEMENT_COUNT; ++y)
+			{
+				__TreeType::Node* pChild = tr.insert(tdata++, pNode);
+				if(pChild == GNULL)
+				{
+					GTLINE2("Tree insert child child node failed!");
+					++nRet;
+					bFailed = GAIA::True;
+					break;
+				}
+				GAIA::BL bFailedFailed = GAIA::False;
+				for(GAIA::N32 z = 0; z < ELEMENT_COUNT; ++z)
+				{
+					__TreeType::Node* pChildChild = tr.insert(tdata++, pChild);
+					if(pChildChild == GNULL)
+					{
+						GTLINE2("Tree insert child child child node failed!");
+						++nRet;
+						bFailedFailed = GAIA::True;
+						break;
+					}
+				}
+				if(bFailedFailed)
+				{
+					bFailed = GAIA::True;
+					break;
+				}
+			}
+			if(bFailed)
+				break;
+		}
+		if(tr.size() != tTotalNodeCount)
+		{
+			GTLINE2("Tree insert failed! The node count is not match!");
+			++nRet;
+		}
+		GAIA::CONTAINER::Vector<__TreeType::_datatype> listTemp;
+		listTemp.reserve(tTotalNodeCount);
+		it = tr.front_it();
+		while(!it.empty())
+		{
+			listTemp.push_back(*it);
+			++it;
+		}
+		if(!GAIA::ALGORITHM::issorted(listTemp.front_ptr(), listTemp.back_ptr()))
+		{
+			GTLINE2("Tree element data error!");
+			++nRet;
+		}
+		GAIA::CONTAINER::Vector<__TreeType::_datatype>::it itback_v = listTemp.back_it();
+		__TreeType::it itback = tr.back_it();
+		while(!itback.empty())
+		{
+			if(*itback != *itback_v)
+			{
+				GTLINE2("Tree element data error!");
+				++nRet;
+				break;
+			}
+			--itback;
+			--itback_v;
+		}
 		return nRet;
 	}
 };

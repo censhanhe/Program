@@ -90,47 +90,43 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.empty())
+					if(m_pNode->m_pParent == GNULL)
 					{
-					NEXT_LOOP:
-						if(m_pNode->m_pParent == GNULL)
-						{
-							m_pNode = GNULL;
-							return *this;
-						}
-						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode, 0);
-						GAIA_AST(index != GINVALID);
-						if(index > 0)
-						{
-							_SizeType x = index - 1;
-							for(;;)
-							{
-								if(m_pNode->m_pParent->m_links[x] != GNULL)
-								{
-									m_pNode = m_pNode->m_pParent->m_links[x];
-									return *this;
-								}
-								if(x == 0)
-									break;
-								--x;
-							}
-						}
-						m_pNode = m_pNode->m_pParent;
-						goto NEXT_LOOP;
+						m_pNode = GNULL;
+						return *this;
 					}
-					else
+					_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode), 0);
+					GAIA_AST(index != GINVALID);
+					if(index > 0)
 					{
-						typename __NodeListType::it it = m_pNode->m_links.back_it();
-						while(!it.empty())
+						_SizeType x = index - 1;
+						for(;;)
 						{
-							if(*it != GNULL)
+							if(m_pNode->m_pParent->m_links[x] != GNULL)
 							{
-								m_pNode = *it;
+								m_pNode = m_pNode->m_pParent->m_links[x];
+							NEXT_LOOP:
+								while(!m_pNode->m_links.empty())
+								{
+									typename __NodeListType::it it = m_pNode->m_links.back_it();
+									while(!it.empty())
+									{
+										if(*it != GNULL)
+										{
+											m_pNode = *it;
+											goto NEXT_LOOP;
+										}
+										--it;
+									}
+								}
 								return *this;
 							}
-							--it;
+							if(x == 0)
+								break;
+							--x;
 						}
 					}
+					m_pNode = m_pNode->m_pParent;
 					return *this;
 				}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator = (const GAIA::ITERATOR::Iterator<_DataType>& src){return this->operator = (*static_cast<const it*>(&src));}
@@ -240,7 +236,7 @@ namespace GAIA
 						return *this;
 					if(m_pNode->m_links.empty())
 					{
-						NEXT_LOOP:
+					NEXT_LOOP:
 						if(m_pNode->m_pParent == GNULL)
 						{
 							m_pNode = GNULL;
@@ -278,47 +274,43 @@ namespace GAIA
 				{
 					if(m_pNode == GNULL)
 						return *this;
-					if(m_pNode->m_links.empty())
+					if(m_pNode->m_pParent == GNULL)
 					{
-					NEXT_LOOP:
-						if(m_pNode->m_pParent == GNULL)
-						{
-							m_pNode = GNULL;
-							return *this;
-						}
-						_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode), 0);
-						GAIA_AST(index != GINVALID);
-						if(index > 0)
-						{
-							_SizeType x = index - 1;
-							for(;;)
-							{
-								if(m_pNode->m_pParent->m_links[x] != GNULL)
-								{
-									m_pNode = m_pNode->m_pParent->m_links[x];
-									return *this;
-								}
-								if(x == 0)
-									break;
-								--x;
-							}
-						}
-						m_pNode = m_pNode->m_pParent;
-						goto NEXT_LOOP;
+						m_pNode = GNULL;
+						return *this;
 					}
-					else
+					_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode), 0);
+					GAIA_AST(index != GINVALID);
+					if(index > 0)
 					{
-						typename __NodeListType::const_it it = m_pNode->m_links.const_back_it();
-						while(!it.empty())
+						_SizeType x = index - 1;
+						for(;;)
 						{
-							if(*it != GNULL)
+							if(m_pNode->m_pParent->m_links[x] != GNULL)
 							{
-								m_pNode = *it;
+								m_pNode = m_pNode->m_pParent->m_links[x];
+							NEXT_LOOP:
+								while(!m_pNode->m_links.empty())
+								{
+									typename __NodeListType::const_it it = m_pNode->m_links.const_back_it();
+									while(!it.empty())
+									{
+										if(*it != GNULL)
+										{
+											m_pNode = *it;
+											goto NEXT_LOOP;
+										}
+										--it;
+									}
+								}
 								return *this;
 							}
-							--it;
+							if(x == 0)
+								break;
+							--x;
 						}
 					}
+					m_pNode = m_pNode->m_pParent;
 					return *this;
 				}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator = (const GAIA::ITERATOR::ConstIterator<_DataType>& src){return this->operator = (*static_cast<const const_it*>(&src));}
@@ -589,6 +581,10 @@ namespace GAIA
 				iter.m_pNode = pNode;
 				return iter;
 			}
+			GINL Node* tonode(it& it){return it.m_pNode;}
+			GINL const Node* tonode(const const_it& it) const{return it.m_pNode;}
+			GINL it toit(Node& n){it iter; iter.m_pNode = &n; return iter;}
+			GINL const_it toit(const Node& n) const{const_it iter; iter.m_pNode = &n; return iter;}
 			GINL GAIA::GVOID collect_valid_index_list(typename __PoolType::__IndexListType& result) const{m_pool.collect_valid_index_list(result);}
 			GINL Node& operator[](const _SizeType& index){return m_pool[index];}
 			GINL const Node& operator[](const _SizeType& index) const{return m_pool[index];}
