@@ -22,7 +22,7 @@ namespace GAIA
 			GINL _DataType minimize() const{return GAIA::ALGORITHM::minimize(x, y);}
 			GINL _DataType maximize() const{return GAIA::ALGORITHM::maximize(x, y);}
 			GINL GAIA::GVOID normalize(){_DataType t = this->length(); (*this) /= t;}
-			GINL GAIA::BL isnormalize() const{return this->lengthsq() == (_DataType)1;}
+			GINL GAIA::BL isnormalized() const{return this->lengthsq() == (_DataType)1;}
 			GINL GAIA::BL iszero() const{return x == (_DataType)0 && y == (_DataType)0;}
 			template<typename _ParamType> GINL _DataType dot(const VEC2<_ParamType>& v) const{return x * v.x + y * v.y;}
 			template<typename _ParamType> GINL VEC2 num(const VEC2<_ParamType>& v) const{VEC2 ret; ret.x = x * v.x; ret.y = y * v.y; return ret;}
