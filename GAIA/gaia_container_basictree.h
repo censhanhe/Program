@@ -129,10 +129,10 @@ namespace GAIA
 					m_pNode = m_pNode->m_pParent;
 					return *this;
 				}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator = (const GAIA::ITERATOR::Iterator<_DataType>& src){return this->operator = (*static_cast<const it*>(&src));}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator = (const GAIA::ITERATOR::Iterator<_DataType>& src){GAIA_AST(&src != this); return this->operator = (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
-				GINL it& operator = (const it& src){m_pNode = src.m_pNode; return *this;}
+				GINL it& operator = (const it& src){GAIA_AST(&src != this); m_pNode = src.m_pNode; return *this;}
 				GINL it& operator += (_SizeType c)
 				{
 					GAIA_AST(!this->empty());
@@ -313,10 +313,10 @@ namespace GAIA
 					m_pNode = m_pNode->m_pParent;
 					return *this;
 				}
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator = (const GAIA::ITERATOR::ConstIterator<_DataType>& src){return this->operator = (*static_cast<const const_it*>(&src));}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator = (const GAIA::ITERATOR::ConstIterator<_DataType>& src){GAIA_AST(&src != this); return this->operator = (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
-				GINL const_it& operator = (const const_it& src){m_pNode = src.m_pNode; return *this;}
+				GINL const_it& operator = (const const_it& src){GAIA_AST(&src != this); m_pNode = src.m_pNode; return *this;}
 				GINL const_it& operator += (_SizeType c)
 				{
 					GAIA_AST(!this->empty());
@@ -590,6 +590,7 @@ namespace GAIA
 			GINL const Node& operator[](const _SizeType& index) const{return m_pool[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
+				GAIA_AST(&src != this); 
 				this->clear();
 				if(!src.empty())
 				{

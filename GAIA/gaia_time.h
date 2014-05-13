@@ -26,7 +26,7 @@ namespace GAIA
 			GINL Time(const GAIA::U64& src){this->operator = (src);}
 			GINL GAIA::BL empty() const{return y == 0 && mo == 0 && d == 0 && h == 0 && mi == 0 && sec == 0 && msec == 0 && usec == 0;}
 			GINL GAIA::GVOID clear(){y = mo = d = h = mi = sec = msec = usec = 0;}
-			GINL Time& operator = (const Time& src){y = src.y; mo = src.mo; d = src.d; h = src.h; mi = src.mi; sec = src.sec; msec = src.msec; usec = src.usec; return *this;}
+			GINL Time& operator = (const Time& src){GAIA_AST(&src != this); y = src.y; mo = src.mo; d = src.d; h = src.h; mi = src.mi; sec = src.sec; msec = src.msec; usec = src.usec; return *this;}
 			GINL Time& operator = (const GAIA::U64& src)
 			{
 				const GAIA::U32* p = (const GAIA::U32*)&src;

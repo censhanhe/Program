@@ -23,7 +23,7 @@ namespace GAIA
 			GINL const _SizeType& capacity() const{return 0;}
 			GINL GAIA::GVOID clear(){}
 			GINL GAIA::GVOID destroy(){}
-			GINL __MyType& operator = (const __MyType& src){return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); return *this;}
 		private:
 			GINL GAIA::GVOID init(){}
 		private:

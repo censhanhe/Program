@@ -23,7 +23,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL MoveFile(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL CollectFile(const GAIA::GCH* pszName, const GAIA::GCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult);
 		private:
-			GINL Directory& operator = (const Directory& src){return *this;}
+			GINL Directory& operator = (const Directory& src){GAIA_AST(&src != this); return *this;}
 		};
 	};
 };

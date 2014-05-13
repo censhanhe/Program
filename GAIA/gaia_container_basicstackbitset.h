@@ -34,7 +34,7 @@ namespace GAIA
 			GINL GAIA::U8* back_ptr(){return &m_bits[_Size - 1];}
 			GINL const GAIA::U8* front_ptr() const{return m_bits;}
 			GINL const GAIA::U8* back_ptr() const{return &m_bits[_Size - 1];}
-			GINL __MyType& operator = (const __MyType& src){GAIA::ALGORITHM::xmemcpy(this->front_ptr(), src.front_ptr(), _Size); return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); GAIA::ALGORITHM::xmemcpy(this->front_ptr(), src.front_ptr(), _Size); return *this;}
 			GINL __MyType& operator |= (const __MyType& src){for(_SizeType x = 0; x < this->size(); ++x) this->front_ptr()[x] |= src.front_ptr()[x]; return *this;}
 			GINL __MyType& operator &= (const __MyType& src){for(_SizeType x = 0; x < this->size(); ++x) this->front_ptr()[x] &= src.front_ptr()[x]; return *this;}
 			GINL __MyType& operator ^= (const __MyType& src){for(_SizeType x = 0; x < this->size(); ++x) this->front_ptr()[x] ^= src.front_ptr()[x]; return *this;}

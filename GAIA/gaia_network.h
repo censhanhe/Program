@@ -40,7 +40,7 @@ namespace GAIA
 				}
 				*(p - 1) = 0;
 			}
-			GINL IP& operator = (const IP& src){u = src.u; return *this;}
+			GINL IP& operator = (const IP& src){GAIA_AST(&src != this); u = src.u; return *this;}
 			GINL IP& operator = (const GAIA::GCH* psz){this->FromString(psz); return *this;}
 			GINL IP operator + (const IP& src) const{IP ret; ret.u = u + src.u; return ret;}
 			GINL IP operator - (const IP& src) const{IP ret; ret.u = u - src.u; return ret;}
@@ -93,7 +93,7 @@ namespace GAIA
 				p = GAIA::ALGORITHM::int2str((GAIA::N32)uPort, p);
 				*(p - 1) = 0;
 			}
-			GINL NetworkAddress& operator = (const NetworkAddress& src){ip = src.ip; uPort = src.uPort; return *this;}
+			GINL NetworkAddress& operator = (const NetworkAddress& src){GAIA_AST(&src != this); ip = src.ip; uPort = src.uPort; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE2(ip, ip, uPort, uPort, NetworkAddress);
 		public:
 			IP ip;

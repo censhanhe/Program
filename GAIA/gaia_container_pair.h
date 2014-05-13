@@ -24,7 +24,7 @@ namespace GAIA
 			GINL const _FrontDataType& front() const{return m_front;}
 			GINL _BackDataType& back(){return m_back;}
 			GINL const _BackDataType& back() const{return m_back;}
-			GINL __MyType& operator = (const __MyType& src){m_front = src.m_front; m_back = src.m_back; return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); m_front = src.m_front; m_back = src.m_back; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE2(m_front, m_front, m_back, m_back, __MyType);
 		private:
 			_FrontDataType m_front;

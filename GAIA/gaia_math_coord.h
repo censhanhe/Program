@@ -24,7 +24,7 @@ namespace GAIA
 			GINL const _BlockType& block() const{return m_block;}
 			GINL GAIA::GVOID offset(const _OffsetType& offset){m_offset = offset;}
 			GINL GAIA::GVOID block(const _BlockType& block){m_block = block;}
-			GINL __MyType& operator = (const __MyType& src){m_offset = src.m_offset; m_block = src.m_block; return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); m_offset = src.m_offset; m_block = src.m_block; return *this;}
 			template<typename _ParamType> GINL __MyType& operator = (const _ParamType& t)
 			{
 				m_block = (_BlockType)(t / _BlockSize);

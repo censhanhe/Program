@@ -163,6 +163,7 @@ namespace GAIA
 			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType* obj){this->read(obj); return *this;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
+				GAIA_AST(&src != this); 
 				this->reserve(src.write_size());
 				if(src.write_size() > 0)
 				{
