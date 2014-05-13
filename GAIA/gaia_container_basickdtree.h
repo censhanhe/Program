@@ -105,7 +105,7 @@ namespace GAIA
 			}
 			GINL _DataType* find(const _DataType& t){return m_avltree.find(t);}
 			GINL const _DataType* find(const _DataType& t) const{return m_avltree.find(t);}
-			GINL __MyType& operator = (const __MyType& src){return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); return *this;}
 		private:
 			GINL GAIA::GVOID init(){m_pRoot = GNULL; m_size = 0;}
 		private:

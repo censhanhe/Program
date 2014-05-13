@@ -51,7 +51,7 @@ namespace GAIA
 			}
 			GINL _SizeType find(const _DataType& t) const{return m_use.find(t, 0);}
 			GINL _SizeType count(const _DataType& t) const{return m_use.count(t);}
-			GINL __MyType& operator = (const __MyType& src){m_use = src.m_use; m_free = src.m_free;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); m_use = src.m_use; m_free = src.m_free;}
 			GINL _DataType& operator[](const _SizeType& index){return m_use[index];}
 			GINL const _DataType& operator[](const _SizeType& index) const{return m_use[index];}
 		private:

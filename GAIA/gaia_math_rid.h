@@ -14,7 +14,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID uuid();
 			GINL GAIA::GVOID fromstring(const GAIA::GCH* psz){GAIA::ALGORITHM::str2hex(psz, sizeofarray(u), u);}
 			GINL GAIA::GVOID tostring(GAIA::GCH* psz){GAIA::ALGORITHM::hex2str(u, sizeofarray(u), psz);}
-			GINL RID128& operator = (const RID128& src){u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
+			GINL RID128& operator = (const RID128& src){GAIA_AST(&src != this); u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE2(u64_0, u64_0, u64_1, u64_1, RID128);
 		public:
 			union
@@ -46,7 +46,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID uuid();
 			GINL GAIA::GVOID fromstring(const GAIA::GCH* psz){GAIA::ALGORITHM::str2hex(psz, sizeofarray(u), u);}
 			GINL GAIA::GVOID tostring(GAIA::GCH* psz){GAIA::ALGORITHM::hex2str(u, sizeofarray(u), psz);}
-			GINL RID64& operator = (const RID64& src){u64_0 = src.u64_0; return *this;}
+			GINL RID64& operator = (const RID64& src){GAIA_AST(&src != this); u64_0 = src.u64_0; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE(u64_0, u64_0, RID64);
 		public:
 			union
@@ -75,7 +75,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID uuid();
 			GINL GAIA::GVOID fromstring(const GAIA::GCH* psz){GAIA::ALGORITHM::str2hex(psz, sizeofarray(u), u);}
 			GINL GAIA::GVOID tostring(GAIA::GCH* psz){GAIA::ALGORITHM::hex2str(u, sizeofarray(u), psz);}
-			GINL RID32& operator = (const RID32& src){u0 = src.u0; return *this;}
+			GINL RID32& operator = (const RID32& src){GAIA_AST(&src != this); u0 = src.u0; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE(u0, u0, RID32);
 		public:
 			union

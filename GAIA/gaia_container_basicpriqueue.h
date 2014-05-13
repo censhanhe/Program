@@ -47,7 +47,7 @@ namespace GAIA
 			GINL _DataType& front(){return *m_avltree.minimize();}
 			GINL const _DataType& back() const{return *m_avltree.maximize();}
 			GINL _DataType& back(){return *m_avltree.maximize();}
-			GINL __MyType& operator = (const __MyType& src){m_avltree = src.m_avltree; return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); m_avltree = src.m_avltree; return *this;}
 		private:
 			GINL GAIA::GVOID init(){}
 		private:

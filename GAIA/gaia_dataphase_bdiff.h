@@ -40,7 +40,7 @@ namespace GAIA
 			{
 				return GAIA::False;
 			}
-			GINL __MyType& operator = (const __MyType& src){return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); return *this;}
 		};
 	};
 };

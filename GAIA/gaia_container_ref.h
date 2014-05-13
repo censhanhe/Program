@@ -17,7 +17,7 @@ namespace GAIA
 			GINL Ref(_DataType* p){this->init(); this->operator = (p);}
 			GINL ~Ref(){}
 			GINL GAIA::BL empty() const{return m_p == GNULL;}
-			GINL __MyType& operator = (const __MyType& src){m_p = src.m_p; return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); m_p = src.m_p; return *this;}
 			GINL __MyType& operator = (_DataType* p){m_p = p; return *this;}
 			GINL _DataType& operator * (){return *m_p;}
 			GINL const _DataType& operator * () const{return *m_p;}

@@ -253,6 +253,7 @@ namespace GAIA
 			GINL const Node& operator[](const _SizeType& index) const{return m_pool[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
+				GAIA_AST(&src != this); 
 				return *this;
 			}
 		public:

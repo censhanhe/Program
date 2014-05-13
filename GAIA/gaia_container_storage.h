@@ -24,7 +24,7 @@ namespace GAIA
 				GINL const _SizeType& head() const{return m_head;}
 				GINL const _SizeType& size() const{return m_size;}
 				GINL const _SizeType& capacity() const{return m_capacity;}
-				GINL Node& operator = (const Node& src){m_head = src.m_head; m_size = src.m_size; m_capacity = src.m_capacity; return *this;}
+				GINL Node& operator = (const Node& src){GAIA_AST(&src != this); m_head = src.m_head; m_size = src.m_size; m_capacity = src.m_capacity; return *this;}
 				GAIA_CLASS_OPERATOR_COMPARE(m_head, m_head, Node);
 			private:
 				_SizeType m_head;
@@ -41,7 +41,7 @@ namespace GAIA
 				GINL NodeSize(const Node& src){this->operator = (src);}
 				GINL ~NodeSize(){}
 				GINL const Node& node() const{return m_n;}
-				GINL NodeSize& operator = (const NodeSize& src){m_n = src.m_n; return *this;}
+				GINL NodeSize& operator = (const NodeSize& src){GAIA_AST(&src != this); m_n = src.m_n; return *this;}
 				GINL NodeSize& operator = (const Node& src){m_n = src; return *this;}
 				GAIA_CLASS_OPERATOR_COMPARE2(m_n.m_capacity, m_n.m_capacity, m_n.m_head, m_n.m_head, NodeSize);
 			private:
@@ -244,6 +244,7 @@ namespace GAIA
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
+				GAIA_AST(&src != this); 
 				m_origin_a = src.m_origin_a;
 				m_using_a = src.m_using_a;
 				m_free_a = src.m_free_a;

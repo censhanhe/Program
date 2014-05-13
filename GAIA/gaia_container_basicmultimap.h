@@ -18,7 +18,7 @@ namespace GAIA
 				GINL Node(){}
 				GINL ~Node(){}
 				GAIA_CLASS_OPERATOR_COMPARE(m_key, m_key, Node);
-				GINL Node& operator = (const Node& src){m_key = src.m_key; m_data = src.m_data; return *this;}
+				GINL Node& operator = (const Node& src){GAIA_AST(&src != this); m_key = src.m_key; m_data = src.m_data; return *this;}
 			private:
 				_KeyType m_key;
 				_DataType m_data;
@@ -46,10 +46,10 @@ namespace GAIA
 				GINL virtual const _DataType& operator * () const{return (*m_iter).m_data;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (){++m_iter; return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (){--m_iter; return *this;}
-				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator = (const GAIA::ITERATOR::Iterator<_DataType>& src){return this->operator = (*static_cast<const it*>(&src));}
+				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator = (const GAIA::ITERATOR::Iterator<_DataType>& src){GAIA_AST(&src != this); return this->operator = (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
-				GINL it& operator = (const it& src){m_iter = src.m_iter; return *this;}
+				GINL it& operator = (const it& src){GAIA_AST(&src != this); m_iter = src.m_iter; return *this;}
 				GINL it& operator += (_SizeType c)
 				{
 					GAIA_AST(!this->empty());
@@ -146,10 +146,10 @@ namespace GAIA
 				GINL virtual const _DataType& operator * () const{return (*m_iter).m_data;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){++m_iter; return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){--m_iter; return *this;}
-				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator = (const GAIA::ITERATOR::ConstIterator<_DataType>& src){return this->operator = (*static_cast<const const_it*>(&src));}
+				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator = (const GAIA::ITERATOR::ConstIterator<_DataType>& src){GAIA_AST(&src != this); return this->operator = (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
-				GINL const_it& operator = (const const_it& src){m_iter = src.m_iter; return *this;}
+				GINL const_it& operator = (const const_it& src){GAIA_AST(&src != this); m_iter = src.m_iter; return *this;}
 				GINL const_it& operator += (_SizeType c)
 				{
 					GAIA_AST(!this->empty());
@@ -338,7 +338,7 @@ namespace GAIA
 			GINL it back_it(){it ret; ret.m_iter = m_mavltree.back_it(); return ret;}
 			GINL const_it const_front_it() const{const_it ret; ret.m_iter = m_mavltree.const_front_it(); return ret;}
 			GINL const_it const_back_it() const{const_it ret; ret.m_iter = m_mavltree.const_back_it(); return ret;}
-			GINL __MyType& operator = (const __MyType& src){m_mavltree = src.m_mavltree; return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); m_mavltree = src.m_mavltree; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE(m_mavltree, m_mavltree, __MyType);
 		private:
 			__MultiAVLTreeType m_mavltree;
