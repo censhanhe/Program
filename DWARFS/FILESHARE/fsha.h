@@ -600,7 +600,7 @@ namespace FSHA
 		class TrieNode
 		{
 		public:
-			GINL TrieNode& operator = (const TrieNode& src){mapindex = src.mapindex; fid = src.fid; return *this;}
+			GINL TrieNode& operator = (const TrieNode& src){GAIA_AST(&src != this); mapindex = src.mapindex; fid = src.fid; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE(mapindex, mapindex, TrieNode);
 			MAPINDEX mapindex;
 			FILEID fid;
@@ -619,6 +619,7 @@ namespace FSHA
 		public:
 			GINL FileRec& operator = (const FileRec& src)
 			{
+				GAIA_AST(&src != this); 
 				fid = src.fid;
 				it = src.it;
 				uSequence = src.uSequence;
@@ -634,7 +635,7 @@ namespace FSHA
 		class FileRecSeq
 		{
 		public:
-			GINL FileRecSeq& operator = (const FileRecSeq& src){pFileRec = src.pFileRec; return *this;}
+			GINL FileRecSeq& operator = (const FileRecSeq& src){GAIA_AST(&src != this); pFileRec = src.pFileRec; return *this;}
 			GINL GAIA::BL operator == (const FileRecSeq& src) const{return pFileRec->uSequence == src.pFileRec->uSequence && pFileRec->fid == src.pFileRec->fid;}
 			GINL GAIA::BL operator != (const FileRecSeq& src) const{return !(this->operator == (src));}
 			GINL GAIA::BL operator >= (const FileRecSeq& src) const
@@ -1408,6 +1409,7 @@ namespace FSHA
 			GAIA_CLASS_OPERATOR_COMPARE(ip, ip, BanIPNode);
 			GINL BanIPNode& operator = (const BanIPNode& src)
 			{
+				GAIA_AST(&src != this); 
 				ip = src.ip;
 				uOccurTime = src.uOccurTime;
 				uBanTime = src.uBanTime;
@@ -1654,6 +1656,7 @@ namespace FSHA
 			}
 			GINL FileShareDesc& operator = (const FileShareDesc& src)
 			{
+				GAIA_AST(&src != this); 
 				selfaddr = src.selfaddr;
 				pFAC = src.pFAC;
 				return *this;
@@ -1790,7 +1793,7 @@ namespace FSHA
 		{
 		public:
 			GAIA_CLASS_OPERATOR_COMPARE(uStart, uStart, FileIDSection);
-			GINL FileIDSection& operator = (const FileIDSection& src){uStart = src.uStart; uEnd = src.uEnd; return *this;}
+			GINL FileIDSection& operator = (const FileIDSection& src){GAIA_AST(&src != this); uStart = src.uStart; uEnd = src.uEnd; return *this;}
 		public:
 			FILEID uStart;
 			FILEID uEnd;
@@ -1817,6 +1820,7 @@ namespace FSHA
 			GAIA_CLASS_OPERATOR_COMPARE2(na, na, bBeLink, bBeLink, NLink);
 			GINL NLink& operator = (const NLink& src)
 			{
+				GAIA_AST(&src != this); 
 				na = src.na;
 				state = src.state;
 				uCmplFileCnt = src.uCmplFileCnt;
@@ -1839,7 +1843,7 @@ namespace FSHA
 		public:
 			NLinkPri(){}
 			GAIA_CLASS_OPERATOR_COMPARE2(nlink.uCmplFileCnt, nlink.uCmplFileCnt, nlink, nlink, NLinkPri);
-			GINL NLinkPri& operator = (const NLinkPri& src){nlink = src.nlink; return *this;}
+			GINL NLinkPri& operator = (const NLinkPri& src){GAIA_AST(&src != this); nlink = src.nlink; return *this;}
 		public:
 			NLink nlink;
 		};
@@ -1879,6 +1883,7 @@ namespace FSHA
 			GAIA_CLASS_OPERATOR_COMPARE2(s, s, ss, ss, FileChunkSection);
 			GINL FileChunkSection& operator = (const FileChunkSection& src)
 			{
+				GAIA_AST(&src != this); 
 				s = src.s;
 				e = src.e;
 				ss = src.ss;
@@ -1925,6 +1930,7 @@ namespace FSHA
 			GAIA_CLASS_OPERATOR_COMPARE2(fid, fid, bWrite, bWrite, FileRecCache);
 			GINL FileRecCache& operator = (const FileRecCache& src)
 			{
+				GAIA_AST(&src != this); 
 				fid = src.fid;
 				pFA = src.pFA;
 				fsize = src.fsize;
@@ -1949,6 +1955,7 @@ namespace FSHA
 			GAIA_CLASS_OPERATOR_COMPARE2(na, na, fid, fid, FileSendTask);
 			GINL FileSendTask& operator = (const FileSendTask& src)
 			{
+				GAIA_AST(&src != this); 
 				na = src.na;
 				fid = src.fid;
 				ci = src.ci;
@@ -1971,6 +1978,7 @@ namespace FSHA
 			GAIA_CLASS_OPERATOR_COMPARE3(na, na, fid, fid, ci, ci, ChunkSendTask);
 			GINL ChunkSendTask& operator = (const ChunkSendTask& src)
 			{
+				GAIA_AST(&src != this); 
 				na = src.na;
 				fid = src.fid;
 				ci = src.ci;
@@ -1991,6 +1999,7 @@ namespace FSHA
 			GAIA_CLASS_OPERATOR_COMPARE3(fid, fid, ci, ci, sci, sci, FileWriteTask);
 			GINL FileWriteTask& operator = (const FileWriteTask& src)
 			{
+				GAIA_AST(&src != this); 
 				na = src.na;
 				fid = src.fid;
 				ci = src.ci;
@@ -2018,6 +2027,7 @@ namespace FSHA
 			GINL FileHeadSendTask(){na.Invalid(); fid = (FILEID)GINVALID;}
 			GINL FileHeadSendTask& operator = (const FileHeadSendTask& src)
 			{
+				GAIA_AST(&src != this); 
 				na = src.na;
 				fid = src.fid;
 				return *this;
@@ -2043,6 +2053,7 @@ namespace FSHA
 			}
 			GINL FileReq& operator = (const FileReq& src)
 			{
+				GAIA_AST(&src != this); 
 				fid = src.fid;
 				uUserReqTime = src.uUserReqTime;
 				uFirstReqTime = src.uFirstReqTime;
@@ -2087,10 +2098,11 @@ namespace FSHA
 		{
 		public:
 			GINL JumpReq(){na.Invalid();}
-			GINL JumpReq& operator = (const JumpReq& jr)
+			GINL JumpReq& operator = (const JumpReq& src)
 			{
-				na = jr.na;
-				listFID = jr.listFID;
+				GAIA_AST(&src != this); 
+				na = src.na;
+				listFID = src.listFID;
 				return *this;
 			}
 			GAIA_CLASS_OPERATOR_COMPARE(na, na, JumpReq);
