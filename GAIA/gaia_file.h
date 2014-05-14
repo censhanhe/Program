@@ -4,8 +4,8 @@
 namespace GAIA
 {
 	namespace FILESYSTEM
-	{	
-		class File : public GAIA::Base
+	{
+		class FileBase : public GAIA::Base
 		{
 		public:
 			GAIA_ENUM_BEGIN(FILE_OPEN_TYPE)
@@ -13,6 +13,22 @@ namespace GAIA
 				OPEN_TYPE_WRITE = 1 << 1,
 				OPEN_TYPE_CREATEALWAYS	= 1 << 2,
 			GAIA_ENUM_END(FILE_OPEN_TYPE)
+		public:
+			virtual GAIA::BL Open(const GAIA::GCH* filekey, const GAIA::UM& opentype) = 0;
+			virtual GAIA::BL Close() = 0;
+			virtual GAIA::BL IsOpen() const = 0;
+			virtual GAIA::N64 Size() const = 0;
+			virtual GAIA::BL Resize(const GAIA::N64& size) = 0;
+			virtual GAIA::N64 Read(GAIA::GVOID* pDst, const GAIA::N64& size) = 0;
+			virtual GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size) = 0;
+			virtual GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::N64& offset) = 0;
+			virtual const GAIA::N64& Tell() const = 0;
+			virtual GAIA::BL Flush() = 0;
+		private:
+		};
+
+		class File : public FileBase
+		{
 		public:
 			GINL File(){m_fileopentype = FILE_OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNULL;}
 			GINL virtual ~File(){if(this->IsOpen()) this->Close();}

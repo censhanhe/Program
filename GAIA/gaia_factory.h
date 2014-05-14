@@ -84,7 +84,13 @@ namespace GAIA
 					}
 				}
 				if(pRet != GNULL)
-					pRet->Begin(pParameter);
+				{
+					if(!pRet->Begin(pParameter))
+					{
+						pRet->Release();
+						pRet = GNULL;
+					}
+				}
 				return pRet;
 			}
 			GINL virtual Instance* RequestInstance(const ClsID& cid, GAIA::GVOID* pParameter)
