@@ -18,7 +18,7 @@ namespace GAIA
 			GINL BasicBitset(const __MyType& src){this->init(); this->operator = (src);}
 			GINL BasicBitset(const _SizeType& index){this->init(); this->set(index);}
 			GINL ~BasicBitset(){this->destroy();}
-			GINL GAIA::GVOID clear(){GAIA::ALGORITHM::xmemset(this->front_ptr(), 0, this->size());}
+			GINL GAIA::GVOID clear(){if(!this->empty()) GAIA::ALGORITHM::xmemset(this->front_ptr(), 0, this->size());}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL GAIA::BL zero() const{if(this->empty()) return GAIA::False; return GAIA::ALGORITHM::xmemcheck(this->front_ptr(), 0, this->size()) == 0;}
 			GINL GAIA::BL one() const{if(this->empty()) return GAIA::False; return GAIA::ALGORITHM::xmemcheck(this->front_ptr(), 0xFF, this->size()) == 0;}
