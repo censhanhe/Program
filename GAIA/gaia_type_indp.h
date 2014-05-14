@@ -17,13 +17,17 @@ namespace GAIA
 	GINL GAIA::NM RefObject::Reference()
 	{
 	#if GAIA_OS == GAIA_OS_WINDOWS
-		return InterlockedIncrement(&m_nRef);
+	#	if GAIA_MACHINE == GAIA_MACHINE64
+			return InterlockedIncrement64(&m_nRef);
+	#	else
+			return InterlockedIncrement(&m_nRef);
+	#	endif
 	#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
-		#if GAIA_MACHINE == GAIA_MACHINE64
+	#	if GAIA_MACHINE == GAIA_MACHINE64
 			return OSAtomicIncrement64(&m_nRef);
-		#else
+	#	else
 			return OSAtomicIncrement32(&m_nRef);
-		#endif
+	#	endif
 	#else
 	#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
 			return __sync_add_and_fetch(&m_nRef, 1);
@@ -35,13 +39,17 @@ namespace GAIA
 	GINL GAIA::NM RefObject::Release()
 	{
 	#if GAIA_OS == GAIA_OS_WINDOWS
-		GAIA::NM nNew = InterlockedDecrement(&m_nRef);
+	#	if GAIA_MACHINE == GAIA_MACHINE64
+			GAIA::NM nNew = InterlockedDecrement64(&m_nRef);
+	#	else
+			GAIA::NM nNew = InterlockedDecrement(&m_nRef);
+	#	endif
 	#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
-		#if GAIA_MACHINE == GAIA_MACHINE64
+	#	if GAIA_MACHINE == GAIA_MACHINE64
 			GAIA::NM nNew = OSAtomicDecrement64(&m_nRef);
-		#else
+	#	else
 			GAIA::NM nNew = OSAtomicDecrement32(&m_nRef);
-		#endif
+	#	endif
 	#else
 	#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
 			GAIA::NM nNew = __sync_sub_and_fetch(&m_nRef, 1);

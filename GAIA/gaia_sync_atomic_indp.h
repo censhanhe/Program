@@ -20,7 +20,7 @@ namespace GAIA
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			#if GAIA_MACHINE == GAIA_MACHINE64
-				return InterlockedIncrement(&m_n);
+				return InterlockedIncrement64(&m_n);
 			#else
 				return InterlockedIncrement((volatile GAIA::NM*)&m_n);
 			#endif
@@ -38,7 +38,7 @@ namespace GAIA
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			#if GAIA_MACHINE == GAIA_MACHINE64
-				return InterlockedDecrement(&m_n);
+				return InterlockedDecrement64(&m_n);
 			#else
 				return InterlockedDecrement((volatile GAIA::NM*)&m_n);
 			#endif
