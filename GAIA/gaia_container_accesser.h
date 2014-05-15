@@ -127,7 +127,7 @@ namespace GAIA
 				m_atm = access_type_mask;
 				return GAIA::True;
 			}
-			GINL GAIA::BL bind(GAIA::FILESYSTEM::File& file, GAIA::UM access_type_mask)
+			GINL GAIA::BL bind(GAIA::FILESYSTEM::FileBase& file, GAIA::UM access_type_mask)
 			{
 				this->destroy();
 				GAIA_AST(file.IsOpen());
@@ -143,7 +143,7 @@ namespace GAIA
 			GINL GAIA::UM access_type_mask() const{return m_atm;}
 			GINL GAIA::BL isbinded() const{return m_bindtype != BIND_TYPE_INVALID;}
 			GINL _DataType* bindmem() const{return m_p;}
-			GINL GAIA::FILESYSTEM::File* bindfile() const{return m_file;}
+			GINL GAIA::FILESYSTEM::FileBase* bindfile() const{return m_file;}
 			GINL GAIA::BL empty() const{return !this->is_valid_index(m_index);}
 			GINL GAIA::GVOID destroy(){this->init();}
 			GINL const _SizeType& size() const{return m_size;}
@@ -446,7 +446,7 @@ namespace GAIA
 			BIND_TYPE m_bindtype;
 			GAIA::UM m_atm; // atm means access type mask.
 			_DataType* m_p;
-			GAIA::FILESYSTEM::File* m_file;
+			GAIA::FILESYSTEM::FileBase* m_file;
 			_SizeType m_size;
 			_SizeType m_offset;
 			_SizeType m_stride;
