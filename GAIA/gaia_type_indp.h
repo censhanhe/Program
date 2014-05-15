@@ -9,7 +9,9 @@
 #elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
 #	include <libkern/OSAtomic.h>
 #else
-#	include <asm/atomic.h>
+#	if GAIA_COMPILER != GAIA_COMPILER_GCC || GAIA_COMPILER_GCCVER < GAIA_COMPILER_GCCVER_USESYNCXX
+#		include <asm/atomic.h>
+#	endif
 #endif
 
 namespace GAIA

@@ -18,7 +18,7 @@
 #ifdef _MSC_VER
 #	define GAIA_OS GAIA_OS_WINDOWS
 #else
-#	define GAIA_OS GAIA_OS_OSX
+#	define GAIA_OS GAIA_OS_LINUX
 #endif
 
 /* Compiler profile. */
@@ -41,9 +41,9 @@
 #endif
 
 /* Compiler type. */
-#define GAIA_COMPILER_CL
-#define GAIA_COMPILER_GCC
-#define GAIA_COMPILER_CLANG
+#define GAIA_COMPILER_CL 1
+#define GAIA_COMPILER_GCC 2
+#define GAIA_COMPILER_CLANG 3
 #ifdef _MSC_VER
 #	define GAIA_COMPILER GAIA_COMPILER_CL
 #else
