@@ -12,9 +12,9 @@ int main()
 	WSAStartup(MAKEWORD(2, 2), &wsadata);
 #endif
 
-	cout << "Welcome FileShare(v" << FSHA::VERSION_STRING << ")" << endl << endl;
-	FSHA::FileShare fsha;
-	FSHA::FileShare::FileShareDesc desc;
+	cout << "Welcome FileShare(v" << DWARFS_FSHA::VERSION_STRING << ")" << endl << endl;
+	DWARFS_FSHA::FileShare fsha;
+	DWARFS_FSHA::FileShare::FileShareDesc desc;
 
 	GAIA::UM uProcessID = GAIA::PROCESS::processid();
 	cout << "Current Process ID = " << uProcessID << endl << endl;
@@ -34,7 +34,7 @@ int main()
 		listIP[x].ToString(szIP);
 		cout << x << ") " << szIP << endl;
 	}
-	cout << "Default Port is " << FSHA::MAINRECVPORT << endl;
+	cout << "Default Port is " << DWARFS_FSHA::MAINRECVPORT << endl;
 	cout << endl;
 
 	GAIA::GCH szIP[128];
@@ -49,7 +49,7 @@ INPUT_IP:
 		if(index < 0)
 			goto INPUT_IP;
 		desc.selfaddr.ip = listIP[index];
-		desc.selfaddr.uPort = FSHA::MAINRECVPORT;
+		desc.selfaddr.uPort = DWARFS_FSHA::MAINRECVPORT;
 	}
 	else
 	{

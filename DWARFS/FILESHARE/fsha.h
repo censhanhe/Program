@@ -1,5 +1,5 @@
-#ifndef 	__FILE_SHARE_H__
-#define 	__FILE_SHARE_H__
+#ifndef 	__DWARFS_FILE_SHARE_H__
+#define 	__DWARFS_FILE_SHARE_H__
 
 //#define FSHA_DEBUG
 
@@ -116,7 +116,7 @@
 *	NOOP<---------------->NOOP
 */
 
-namespace FSHA
+namespace DWARFS_FSHA
 {
 	/* Constants. */
 	static const GAIA::GCH VERSION_STRING[] = "00.00.01.00";
