@@ -26,6 +26,8 @@ namespace PROM
 			return GAIA::True;
 		}
 	private:
+		DWARFS_MISC::CmdParam m_cmdparam;	
+		DWARFS_MISC::TextLines m_textlines;
 	};
 };
 

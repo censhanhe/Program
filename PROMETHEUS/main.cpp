@@ -43,6 +43,8 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 	}
 
 	/* Execute command. */
+	PROM::Prom prom;
+	prom.command((GAIA::GCH*)buf.front_ptr());
 
 	return 0;
 }

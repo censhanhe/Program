@@ -68,7 +68,6 @@ namespace DWARFS_MISC
 			if(min_param_size > max_param_size && max_param_size != GINVALID)
 				return GINVALID;
 			CmdDecl temp;
-			temp.index = GINVALID;
 			temp.cmd = pszCmd;
 			temp.desc = pszDesc;
 			temp.type = t;
@@ -79,6 +78,7 @@ namespace DWARFS_MISC
 				if(m_decls[x] == temp)
 					return GINVALID;
 			}
+			temp.index = m_decls.size();
 			m_decls.push_back(temp);
 			return m_decls.size() - 1;
 		}
@@ -192,16 +192,94 @@ namespace DWARFS_MISC
 		}
 
 	public:	/* Command access interface. */
-		GINL GAIA::BL load(const GAIA::GCH* pszCmd)
+		GINL GAIA::BL build(const GAIA::GCH* pszCmd)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
 			if(GAIA::ALGORITHM::stremp(pszCmd))
 				return GAIA::False;
-			return GAIA::True;
-		}
 
-		GINL GAIA::BL checkup() const
-		{
+			/* Construct word list. */
+			__ParamListType words;
+			const GAIA::GCH* p = pszCmd;
+			const GAIA::GCH* pLast = p;
+			__StringType str;
+			while(*p != 0)
+			{
+				if(*p == '\r' || *p == '\n' || *p == ' ' || *p == '\t')
+				{
+					if(p > pLast)
+					{
+						str.resize(p - pLast);
+						GAIA::ALGORITHM::xmemcpy(str.front_ptr(), pLast, (pLast - p) * sizeof(__StringType::_datatype));
+						__StringType::_sizetype index_start = 0, index_end = str.size() - 1;
+						for(; index_start < str.size(); ++index_start)
+						{
+							if(str[index_start] != '\r' && 
+								str[index_start] != '\n' && 
+								str[index_start] != ' ' && 
+								str[index_start] != '\t')
+								break;
+						}
+						for(;;)
+						{
+							if(str[index_end] != '\r' && 
+								str[index_end] != '\n' && 
+								str[index_end] != ' ' && 
+								str[index_end] != '\t')
+								break;
+							--index_end;
+							if(index_end == GINVALID)
+								break;
+						}
+						if(index_start != str.size() && index_end != GINVALID)
+						{
+							str.mid(index_start, index_end);
+							words.push_back(str);
+						}
+						pLast = p + 1;
+					}
+				}
+				++p;
+			}
+
+			/* Analyze to command. */
+			__ParamListType::_sizetype head_index = 0;
+			for(__ParamListType::_sizetype x = 0; x < words.size(); ++x)
+			{
+				GAIA::BL bMatch = GAIA::False;
+				__StringType& word = words[x];
+				for(__CmdDeclListType::_sizetype y = 0; y < m_decls.size(); ++y)
+				{
+					CmdDecl& decl = m_decls[y];
+					if(word == decl.cmd)
+					{
+						bMatch = GAIA::True;
+						break;
+					}
+				}
+				if(bMatch)
+				{
+					Cmd cmd;
+					cmd.index = m_cmds.size();
+					cmd.cmd = word;
+					m_cmds.push_back(cmd);
+				}
+				else
+					m_cmds.back().params.push_back(word);
+			}
+
+			/* Checkup. */
+			
+			/* Optimize. */
+			m_opt_cmds.clear();
+			for(__CmdListType::_sizetype x = 0; x < m_cmds.size(); ++x)
+			{
+				__CmdOPTListType::_datatype t;
+				t = &m_cmds[x];
+				m_opt_cmds.push_back(t);
+			}
+			m_opt_cmds.sort();
+
 			return GAIA::True;
 		}
 
