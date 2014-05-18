@@ -1,5 +1,5 @@
-#ifndef		__T_HEADER_H__
-#define		__T_HEADER_H__
+#ifndef		__T_GAIA_HEADER_H__
+#define		__T_GAIA_HEADER_H__
 
 #include "t_common.h"
 #include "t_buffer.h"

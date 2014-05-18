@@ -3,7 +3,7 @@
 
 namespace DWARFS_MISC
 {
-	class CmdParam
+	class CmdParam : public GAIA::Base
 	{
 	public:
 		GINL CmdParam(){this->init();}
@@ -19,6 +19,7 @@ namespace DWARFS_MISC
 			PARAM_TYPE_MUSTEXISTFILE,
 			PARAM_TYPE_MUSTNOTEXISTFILE,
 			PARAM_TYPE_INT,
+			PARAM_TYPE_STRING,
 			PARAM_TYPE_ENUM,
 		GAIA_ENUM_END(PARAM_TYPE)
 
@@ -67,6 +68,9 @@ namespace DWARFS_MISC
 			GAIA_AST(min_param_size <= max_param_size || max_param_size == GINVALID);
 			if(min_param_size > max_param_size && max_param_size != GINVALID)
 				return GINVALID;
+			GAIA_AST(this->is_begin_decl());
+			if(!this->is_begin_decl())
+				return GINVALID;
 			CmdDecl temp;
 			temp.cmd = pszCmd;
 			temp.desc = pszDesc;
@@ -82,7 +86,7 @@ namespace DWARFS_MISC
 			m_decls.push_back(temp);
 			return m_decls.size() - 1;
 		}
-		GINL GAIA::GVOID cmd_param_decl(
+		GINL GAIA::BL cmd_param_decl(
 			const GAIA::GCH* pszCmd,
 			const GAIA::SIZE& min_param_size,
 			const GAIA::SIZE& max_param_size,
@@ -93,25 +97,28 @@ namespace DWARFS_MISC
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
 			if(GAIA::ALGORITHM::stremp(pszCmd))
-				return;
+				return GAIA::False;
 			GAIA_AST(min_param_size >= 0);
 			if(min_param_size < 0)
-				return;
+				return GAIA::False;
 			GAIA_AST(max_param_size >= 0 || max_param_size == GINVALID);
 			if(max_param_size < 0 && max_param_size != GINVALID)
-				return;
+				return GAIA::False;
 			GAIA_AST(min_param_size <= max_param_size || max_param_size == GINVALID);
 			if(min_param_size > max_param_size && max_param_size != GINVALID)
-				return;
+				return GAIA::False;
 			GAIA_AST(start_param_index >= 0);
 			if(start_param_index < 0)
-				return;
+				return GAIA::False;
 			GAIA_AST(end_param_index >= 0 || end_param_index == GINVALID);
 			if(end_param_index < 0 && end_param_index != GINVALID)
-				return;
+				return GAIA::False;
 			GAIA_AST(start_param_index <= end_param_index || end_param_index == GINVALID);
 			if(start_param_index > end_param_index && end_param_index != GINVALID)
-				return;
+				return GAIA::False;
+			GAIA_AST(this->is_begin_decl());
+			if(!this->is_begin_decl())
+				return GAIA::False;
 			CmdDecl* pCmd = GNULL;
 			for(__CmdDeclListType::_sizetype x = 0; x < m_decls.size(); ++x)
 			{
@@ -125,7 +132,7 @@ namespace DWARFS_MISC
 				}	
 			}
 			if(pCmd == GNULL)
-				return;
+				return GAIA::False;
 			ParamDecl temp;
 			temp.start_param_index = start_param_index;
 			temp.end_param_index = end_param_index;
@@ -135,9 +142,10 @@ namespace DWARFS_MISC
 			for(__ParamDeclListType::_sizetype x = 0; x < pCmd->paramdecls.size(); ++x)	
 			{
 				if(pCmd->paramdecls[x] == temp)
-					return;
+					return GAIA::False;
 			}
 			pCmd->paramdecls.push_back(temp);
+			return GAIA::True;
 		}
 		GINL GAIA::GVOID cmd_mutex_decl(const GAIA::GCH* pszCmd1, const GAIA::GCH* pszCmd2)
 		{
@@ -146,6 +154,9 @@ namespace DWARFS_MISC
 				return;
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd2));
 			if(GAIA::ALGORITHM::stremp(pszCmd2))
+				return;
+			GAIA_AST(this->is_begin_decl());
+			if(!this->is_begin_decl())
 				return;
 			if(GAIA::ALGORITHM::strcmp(pszCmd1, pszCmd2) > 0)
 				GAIA::ALGORITHM::swap(pszCmd1, pszCmd2);
@@ -158,8 +169,8 @@ namespace DWARFS_MISC
 			}
 			CmdMutex temp;
 			m_mutex_decls.push_back(temp);
-			temp.cmd1 = pszCmd1;
-			temp.cmd2 = pszCmd2;
+			m_mutex_decls.back().cmd1 = pszCmd1;
+			m_mutex_decls.back().cmd2 = pszCmd2;
 		}
 		GINL GAIA::GVOID cmd_coop_decl(const GAIA::GCH* pszCmd1, const GAIA::GCH* pszCmd2)
 		{
@@ -168,6 +179,9 @@ namespace DWARFS_MISC
 				return;
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd2));
 			if(GAIA::ALGORITHM::stremp(pszCmd2))
+				return;
+			GAIA_AST(this->is_begin_decl());
+			if(!this->is_begin_decl())
 				return;
 			if(GAIA::ALGORITHM::strcmp(pszCmd1, pszCmd2) > 0)
 				GAIA::ALGORITHM::swap(pszCmd1, pszCmd2);
@@ -180,8 +194,8 @@ namespace DWARFS_MISC
 			}
 			CmdCoop temp;
 			m_coop_decls.push_back(temp);
-			temp.cmd1 = pszCmd1;
-			temp.cmd2 = pszCmd2;
+			m_coop_decls.back().cmd1 = pszCmd1;
+			m_coop_decls.back().cmd2 = pszCmd2;
 		}
 		GINL GAIA::GVOID clear_decl()
 		{
@@ -194,6 +208,9 @@ namespace DWARFS_MISC
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmdName));
 			if(GAIA::ALGORITHM::stremp(pszCmdName))
+				return GINVALID;
+			GAIA_AST(!this->is_begin_decl());
+			if(this->is_begin_decl())
 				return GINVALID;
 			CmdDecl cmddecl;
 			cmddecl.cmd = pszCmdName;
@@ -210,6 +227,9 @@ namespace DWARFS_MISC
 	public:	/* Command access interface. */
 		GINL GAIA::BL build(const GAIA::GCH* pszCmd)
 		{
+			GAIA_AST(!this->is_begin_decl());
+			if(this->is_begin_decl())
+				return GAIA::False;
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
 			if(GAIA::ALGORITHM::stremp(pszCmd))
 				return GAIA::False;
@@ -221,14 +241,14 @@ namespace DWARFS_MISC
 			const GAIA::GCH* p = pszCmd;
 			const GAIA::GCH* pLast = p;
 			__StringType str;
-			while(*p != 0)
+			while(*p != 0 || pLast != p)
 			{
-				if(*p == '\r' || *p == '\n' || *p == ' ' || *p == '\t')
+				if(*p == '\r' || *p == '\n' || *p == ' ' || *p == '\t' || *p == '\0')
 				{
 					if(p > pLast)
 					{
 						str.resize(p - pLast);
-						GAIA::ALGORITHM::xmemcpy(str.front_ptr(), pLast, (pLast - p) * sizeof(__StringType::_datatype));
+						GAIA::ALGORITHM::xmemcpy(str.front_ptr(), pLast, (p - pLast) * sizeof(__StringType::_datatype));
 						__StringType::_sizetype index_begin = 0, index_end = str.size() - 1;
 						for(; index_begin < str.size(); ++index_begin)
 						{
@@ -254,7 +274,13 @@ namespace DWARFS_MISC
 							str.mid(index_begin, index_end);
 							words.push_back(str);
 						}
-						pLast = p + 1;
+						if(*p == 0)
+						{
+							pLast = p;
+							break;
+						}
+						else
+							pLast = p + 1;
 					}
 				}
 				++p;
@@ -351,6 +377,9 @@ namespace DWARFS_MISC
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
 			if(GAIA::ALGORITHM::stremp(pszCmd))
+				return GINVALID;
+			GAIA_AST(!this->is_begin_decl());
+			if(this->is_begin_decl())
 				return GINVALID;
 			__CmdOPTListType::_datatype t;
 			Cmd cmd;

@@ -329,8 +329,11 @@ namespace GAIA
 				if(!this->empty())
 				{
 					_DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
-					iter.m_pContainer = this;
-					iter.m_index = (_SizeType)(p - this->front_ptr());
+					if(p != GNULL)
+					{
+						iter.m_pContainer = this;
+						iter.m_index = (_SizeType)(p - this->front_ptr());
+					}
 				}
 				return iter;
 			}
@@ -340,8 +343,11 @@ namespace GAIA
 				if(!this->empty())
 				{
 					const _DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
-					iter.m_pContainer = this;
-					iter.m_index = p - this->front_ptr();
+					if(p != GNULL)
+					{
+						iter.m_pContainer = this;
+						iter.m_index = (_SizeType)(p - this->front_ptr());
+					}
 				}
 				return iter;
 			}
@@ -351,8 +357,11 @@ namespace GAIA
 				if(!this->empty())
 				{
 					_DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
-					iter.m_pContainer = this;
-					iter.m_index = (_SizeType)(p - this->front_ptr());
+					if(p != GNULL)
+					{
+						iter.m_pContainer = this;
+						iter.m_index = (_SizeType)(p - this->front_ptr());
+					}
 				}
 				return iter;
 			}
@@ -362,8 +371,11 @@ namespace GAIA
 				if(!this->empty())
 				{
 					const _DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
-					iter.m_pContainer = this;
-					iter.m_index = p - this->front_ptr();
+					if(p != GNULL)
+					{
+						iter.m_pContainer = this;
+						iter.m_index = (_SizeType)(p - this->front_ptr());
+					}
 				}
 				return iter;
 			}
