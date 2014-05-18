@@ -190,6 +190,22 @@ namespace DWARFS_MISC
 			m_mutex_decls.clear();
 			m_coop_decls.clear();
 		}
+		GINL GAIA::SIZE finddecl(const GAIA::GCH* pszCmdName, const GAIA::SIZE& min_param_size) const
+		{
+			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmdName));
+			if(GAIA::ALGORITHM::stremp(pszCmdName))
+				return GINVALID;
+			CmdDecl cmddecl;
+			cmddecl.cmd = pszCmdName;
+			cmddecl.min_param_size = min_param_size;
+			__CmdDeclOPTListType::_datatype t = &cmddecl;
+			__CmdDeclOPTListType::const_it it = m_opt_decls.lower_bound(t);
+			if(it.empty())
+				return GINVALID;
+			if((**it).cmd != pszCmdName)
+				return GINVALID;
+			return (**it).index;
+		}
 
 	public:	/* Command access interface. */
 		GINL GAIA::BL build(const GAIA::GCH* pszCmd)
@@ -197,6 +213,8 @@ namespace DWARFS_MISC
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
 			if(GAIA::ALGORITHM::stremp(pszCmd))
 				return GAIA::False;
+
+			GAIA::BL bCheckSuccess = GAIA::False;
 
 			/* Construct word list. */
 			__ParamListType words;
@@ -211,13 +229,13 @@ namespace DWARFS_MISC
 					{
 						str.resize(p - pLast);
 						GAIA::ALGORITHM::xmemcpy(str.front_ptr(), pLast, (pLast - p) * sizeof(__StringType::_datatype));
-						__StringType::_sizetype index_start = 0, index_end = str.size() - 1;
-						for(; index_start < str.size(); ++index_start)
+						__StringType::_sizetype index_begin = 0, index_end = str.size() - 1;
+						for(; index_begin < str.size(); ++index_begin)
 						{
-							if(str[index_start] != '\r' && 
-								str[index_start] != '\n' && 
-								str[index_start] != ' ' && 
-								str[index_start] != '\t')
+							if(str[index_begin] != '\r' && 
+								str[index_begin] != '\n' && 
+								str[index_begin] != ' ' && 
+								str[index_begin] != '\t')
 								break;
 						}
 						for(;;)
@@ -231,9 +249,9 @@ namespace DWARFS_MISC
 							if(index_end == GINVALID)
 								break;
 						}
-						if(index_start != str.size() && index_end != GINVALID)
+						if(index_begin != str.size() && index_end != GINVALID)
 						{
-							str.mid(index_start, index_end);
+							str.mid(index_begin, index_end);
 							words.push_back(str);
 						}
 						pLast = p + 1;
@@ -248,14 +266,12 @@ namespace DWARFS_MISC
 			{
 				GAIA::BL bMatch = GAIA::False;
 				__StringType& word = words[x];
-				for(__CmdDeclListType::_sizetype y = 0; y < m_decls.size(); ++y)
+				if(m_decls.empty())
+					bMatch = GAIA::True;
+				else
 				{
-					CmdDecl& decl = m_decls[y];
-					if(word == decl.cmd)
-					{
+					if(this->finddecl(word, 0) != GINVALID)
 						bMatch = GAIA::True;
-						break;
-					}
 				}
 				if(bMatch)
 				{
@@ -265,11 +281,22 @@ namespace DWARFS_MISC
 					m_cmds.push_back(cmd);
 				}
 				else
+				{
+					if(m_cmds.empty())
+						goto FUNCTION_END;
 					m_cmds.back().params.push_back(word);
+				}
 			}
 
 			/* Checkup. */
-			
+			for(__CmdListType::_sizetype x = 0; x < m_cmds.size(); ++x)
+			{
+				Cmd& temp = m_cmds[x];
+				GAIA::SIZE uDecl = this->finddecl(temp.cmd, temp.params.size());
+				if(uDecl == GINVALID)
+					goto FUNCTION_END;
+			}
+
 			/* Optimize. */
 			m_opt_cmds.clear();
 			for(__CmdListType::_sizetype x = 0; x < m_cmds.size(); ++x)
@@ -280,9 +307,22 @@ namespace DWARFS_MISC
 			}
 			m_opt_cmds.sort();
 
+			/* Sign to success. */
+			bCheckSuccess = GAIA::True;
+
+		FUNCTION_END:
+			if(!bCheckSuccess)
+			{
+				this->clear_cmd();
+				return GAIA::False;
+			}
 			return GAIA::True;
 		}
-
+		GINL GAIA::GVOID clear_cmd()
+		{
+			m_cmds.clear();
+			m_opt_cmds.clear();
+		}
 		GINL GAIA::SIZE cmd_size() const
 		{
 			return m_cmds.size();
@@ -318,6 +358,8 @@ namespace DWARFS_MISC
 			t = &cmd;
 			__CmdOPTListType::const_it it = m_opt_cmds.lower_bound(t);
 			if(it.empty())
+				return GINVALID;
+			if((**it).cmd != pszCmd)
 				return GINVALID;
 			return (**it).index;
 		}
