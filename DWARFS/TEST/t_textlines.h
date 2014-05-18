@@ -6,6 +6,10 @@ namespace DWARFSTEST
 	GINL GAIA::N32 t_textlines(GAIA::FILESYSTEM::File& file, GAIA::PRINT::Print& prt)
 	{
 		GAIA::N32 nRet = 0;
+
+		const GAIA::GCH* pszFileName = __FILE__;
+		DWARFS_MISC::TextLines tl;
+		
 		return nRet;
 	}
 };

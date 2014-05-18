@@ -2,16 +2,20 @@ CXX=clang++
 CXXFLAGS=-pthread
 BINPATH=./BIN/
 
-all:$gaia $fsha $prom
+all:gaia dwarfs prom fsha
 
-$gaia:../Program/GAIA/TEST/t_main.cpp
-	$(CXX) $(CXXFLAGS) ../Program/GAIA/TEST/t_main.cpp -o $(BINPATH)gaia
+gaia:./GAIA/TEST/t_main.cpp
+	$(CXX) $(CXXFLAGS) ./GAIA/TEST/t_main.cpp -o $(BINPATH)gaia
 
-$fsha:../Program/DWARFS/FILESHARE/main.cpp
-	$(CXX) $(CXXFLAGS) ../Program/DWARFS/FILESHARE/main.cpp -o $(BINPATH)fsha
+dwarfs:./DWARFS/TEST/t_main.cpp
+	$(CXX) $(CXXFLAGS) ./DWARFS/TEST/t_main.cpp -o $(BINPATH)dwarfs
 
-$prom:../Program/PROMETHEUS/main.cpp
-	$(CXX) $(CXXFLAGS) ../Program/PROMETHEUS/main.cpp -o $(BINPATH)prom
+prom:./PROMETHEUS/main.cpp
+	$(CXX) $(CXXFLAGS) ./PROMETHEUS/main.cpp -o $(BINPATH)prom
+
+fsha:./DWARFS/FILESHARE/main.cpp
+	$(CXX) $(CXXFLAGS) ./DWARFS/FILESHARE/main.cpp -o $(BINPATH)fsha
+
 
 
 

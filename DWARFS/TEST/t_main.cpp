@@ -11,6 +11,8 @@
 
 #include "../../GAIA/gaia.h"
 #include "../../GAIA/gaia_global_impl.h"
+#include "../MISC/textlines.h"
+#include "../MISC/cmdparam.h"
 #include "t_header.h"
 
 #if GAIA_OS == GAIA_OS_WINDOWS
@@ -28,6 +30,6 @@ int main()
 	GAIA::FILESYSTEM::File file;
 	file.Open("../gaia_test.txt", GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
 	GAIA::PRINT::Print prt;
-	GAIATEST::t_all(file, prt);
+	DWARFSTEST::t_all(file, prt);
 	return 0;
 }
