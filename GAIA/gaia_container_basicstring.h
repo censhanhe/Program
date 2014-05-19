@@ -191,6 +191,10 @@ namespace GAIA
 			GINL _DataType* back_ptr(){if(this->empty()) return GNULL; return m_pFront + this->size() - 1;}
 			GINL const _DataType* front_ptr() const{return m_pFront;}
 			GINL const _DataType* back_ptr() const{if(this->empty()) return GNULL; return m_pFront + this->size() - 1;}
+			GINL _DataType& front(){return *this->front_ptr();}
+			GINL const _DataType& front() const{return *this->front_ptr();}
+			GINL _DataType& back(){return *this->back_ptr();}
+			GINL const _DataType& back() const{return *this->back_ptr();}
 			GINL it front_it()
 			{
 				it ret;
