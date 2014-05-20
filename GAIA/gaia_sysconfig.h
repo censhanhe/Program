@@ -18,7 +18,7 @@
 #ifdef _MSC_VER
 #	define GAIA_OS GAIA_OS_WINDOWS
 #else
-#	define GAIA_OS GAIA_OS_LINUX
+#	define GAIA_OS GAIA_OS_OSX
 #endif
 
 /* Compiler profile. */
