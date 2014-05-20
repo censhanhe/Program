@@ -60,7 +60,7 @@ namespace GAIA
 			{
 				GAIA::U32 u;
 				GAIA::U8 us[4];
-				struct{GAIA::U8 u3, u2, u1, u0;};
+				class{public:GAIA::U8 u3, u2, u1, u0;};
 				GAIA::U32 uIPv4;
 			};
 		};

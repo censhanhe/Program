@@ -322,6 +322,58 @@ namespace DWARFS_MISC
 				if(uDecl == GINVALID)
 					goto FUNCTION_END;
 			}
+			for(__CmdListType::_sizetype x = 0; x < m_cmds.size(); ++x)
+			{
+				Cmd& temp = m_cmds[x];
+				for(__CmdMutexListType::_sizetype y = 0; y < m_mutex_decls.size(); ++y)
+				{
+					const CmdMutex& cm = m_mutex_decls[y];
+					const __StringType* pCmd = GNULL;
+					if(cm.cmd1 == temp.cmd)
+						pCmd = &cm.cmd2;
+					else if(cm.cmd2 == temp.cmd)
+						pCmd = &cm.cmd1;
+					if(pCmd != GNULL)
+					{
+						for(__CmdListType::_sizetype z = 0; z < m_cmds.size(); ++z)
+						{
+							if(z == x)
+								continue;
+							if(m_cmds[z].cmd == *pCmd)
+							{
+								goto FUNCTION_END;
+							}
+						}
+					}
+				}
+				for(__CmdCoopListType::_sizetype y = 0; y < m_coop_decls.size(); ++y)
+				{
+					const CmdCoop& cc = m_coop_decls[y];
+					const __StringType* pCmd = GNULL;
+					if(cc.cmd1 == temp.cmd)
+						pCmd = &cc.cmd2;
+					else if(cc.cmd2 == temp.cmd)
+						pCmd = &cc.cmd1;
+					if(pCmd != GNULL)
+					{
+						GAIA::BL bExist = GAIA::False;
+						for(__CmdListType::_sizetype z = 0; z < m_cmds.size(); ++z)
+						{
+							if(z == x)
+								continue;
+							if(m_cmds[z].cmd == *pCmd)
+							{
+								bExist = GAIA::True;
+								break;
+							}
+						}
+						if(!bExist)
+						{
+							goto FUNCTION_END;
+						}
+					}
+				}
+			}
 
 			/* Optimize. */
 			m_opt_cmds.clear();
