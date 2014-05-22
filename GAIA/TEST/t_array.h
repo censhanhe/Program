@@ -351,6 +351,7 @@ namespace GAIATEST
 			GTLINE2("Same array compare !(>= <= ==) failed!");
 			++nRet;
 		}
+		arr.sort();
 		it = arr.front_it();
 		while(!it.empty())
 		{

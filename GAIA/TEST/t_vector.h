@@ -333,6 +333,7 @@ namespace GAIATEST
 			GTLINE2("Same vector compare !(>= <= ==) failed!");
 			++nRet;
 		}
+		vec.sort();
 		it = vec.front_it();
 		while(!it.empty())
 		{
