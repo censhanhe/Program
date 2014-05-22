@@ -3,7 +3,7 @@
 
 namespace GAIATEST
 {
-	GINL GAIA::N32 t_string(GAIA::FILESYSTEM::File& file, GAIA::PRINT::Print& prt)
+	GINL GAIA::N32 t_string(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 

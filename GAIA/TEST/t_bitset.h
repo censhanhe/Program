@@ -3,7 +3,7 @@
 
 namespace GAIATEST
 {
-	GINL GAIA::N32 t_bitset(GAIA::FILESYSTEM::File& file, GAIA::PRINT::Print& prt)
+	GINL GAIA::N32 t_bitset(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 		typedef GAIA::CONTAINER::BasicBitset<GAIA::U32> __BitsetType;

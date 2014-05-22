@@ -216,8 +216,8 @@ namespace DWARFS_FSHA
 	public:
 		GINL FileList(){this->init();}
 		GINL ~FileList(){}
-		GINL GAIA::GVOID SetPrint(GAIA::PRINT::Print* pPr){m_pPr = pPr;}
-		GINL GAIA::PRINT::Print* GetPrint() const{return m_pPr;}
+		GINL GAIA::GVOID SetPrint(GAIA::PRINT::PrintBase* pPr){m_pPr = pPr;}
+		GINL GAIA::PRINT::PrintBase* GetPrint() const{return m_pPr;}
 		GAIA::BL Load(const GAIA::GCH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
@@ -849,7 +849,7 @@ namespace DWARFS_FSHA
 		__FileRecSeqListType m_recseqs; // Sorted by sequence and id.
 		__FileTreeType m_ftree; // Sorted by file name section.
 		FILEID m_LastMaxFileID;
-		GAIA::PRINT::Print* m_pPr;
+		GAIA::PRINT::PrintBase* m_pPr;
 		GAIA::DATAPHASE::CRC32 m_crcbuilder;
 	};
 
