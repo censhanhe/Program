@@ -41,10 +41,69 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 		buf.write(args[x], GAIA::ALGORITHM::strlen(args[x]) * sizeof(GAIA::GCH));
 		buf.write((GAIA::GCH)' ');
 	}
+	buf.write((GAIA::GCH)'\0');
+
+	/* Find first command. */
+	GAIA::SIZE first_command_index = 0;
+	for(GAIA::SIZE x = 0; x < buf.write_size(); ++x)
+	{
+		if(buf[x] == ' ')
+		{
+			first_command_index = x + 1;
+			break;
+		}
+		if(buf[x] == '\0')
+		{
+			first_command_index = x;
+			break;
+		}
+	}
+	for(; first_command_index < buf.write_size(); ++first_command_index)
+	{
+		if(buf[first_command_index] != '\n' && 
+			buf[first_command_index] != '\r' && 
+			buf[first_command_index] != ' ' && 
+			buf[first_command_index] != '\t')
+			break;
+	}
+	if(first_command_index + 1 == buf.write_size())
+	{
+		GAIA::CONTAINER::AString strCombin;
+		GAIA::PRINT::Print prt;
+		prt << "Enter the command here : ";
+		GAIA::GCH szParam[1024];
+		while(GAIA::ALWAYSTRUE)
+		{
+			prt >> szParam;
+			GAIA::GCH* p = GAIA::ALGORITHM::strch(szParam, ';');
+			if(p != GNULL)
+			{
+				if(p != szParam)
+				{
+					*p = '\0';
+					if(!strCombin.empty())
+						strCombin += " ";
+					strCombin += szParam;
+				}
+				break;
+			}
+			else
+			{
+				if(!strCombin.empty())
+					strCombin += " ";
+				strCombin += szParam;
+			}
+		}
+		if(strCombin.empty())
+			return 0;
+		buf.resize((strCombin.size() + 1) * sizeof(GAIA::CONTAINER::AString::_datatype));
+		GAIA::ALGORITHM::xmemcpy(buf.front_ptr(), strCombin.front_ptr(), (strCombin.size() + 1) * sizeof(GAIA::CONTAINER::AString::_datatype));
+		first_command_index = 0;
+	}
 
 	/* Execute command. */
 	PROM::Prom prom;
-	prom.command((GAIA::GCH*)buf.front_ptr());
+	prom.Command((GAIA::GCH*)buf.front_ptr() + first_command_index);
 
 	return 0;
 }

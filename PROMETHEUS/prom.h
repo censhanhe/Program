@@ -10,174 +10,222 @@ namespace PROM
 	class Prom : public GAIA::Base
 	{
 	private:
-		class PipelineContext : public GAIA::RefObject
+		template<typename _DataType> class DirectionalFreeLink : public GAIA::RefObject
 		{
 		public:
-			GINL PipelineContext(){}
-			GINL ~PipelineContext(){}
-			virtual const GAIA::GCH* GetName() const = 0;
-			GINL GAIA::BL BindNext(PipelineContext* pPLC)
+			typedef DirectionalFreeLink<_DataType> __MyType;
+		public:
+			GINL GAIA::BL BindNext(__MyType* p)
 			{
-				GAIA_AST(pPLC != GNULL);
-				if(pPLC == GNULL)
+				GAIA_AST(p != GNULL);
+				if(p == GNULL)
 					return GAIA::False;
-				GAIA_AST(pPLC != this);
-				if(pPLC == this)
+				GAIA_AST(p != this);
+				if(p == this)
 					return GAIA::False;
-				if(this->prev_exist(pPLC))
+				if(this->prev_exist(p))
 					return GAIA::False;
-				pPLC->Reference();
-				for(GAIA::SIZE x = 0; x < this->GetNextSize(); ++x)
+				if(this->next_exist(p))
+					return GAIA::False;
+				this->Reference();
+				p->Reference();
+				GAIA::BL bExist = GAIA::False;
+				for(GAIA::SIZE x = 0; x < m_nexts.size(); ++x)
 				{
-					if(this->GetNext(x) == GNULL)
+					if(m_nexts[x] == GNULL)
 					{
-						m_nexts[x] = pPLC;
-						return GAIA::True;
+						m_nexts[x] = p;
+						bExist = GAIA::True;
+						break;
 					}
 				}
-				m_nexts.push_back(pPLC);
+				if(!bExist)
+					m_nexts.push_back(p);
+				bExist = GAIA::False;
+				for(GAIA::SIZE x = 0; x < p->m_prevs.size(); ++x)
+				{
+					if(p->m_prevs[x] == GNULL)
+					{
+						p->m_prevs[x] = this;
+						bExist = GAIA::True;
+						break;
+					}
+				}
+				if(!bExist)
+					p->m_prevs.push_back(this);
 				return GAIA::True;
 			}
-			GINL GAIA::BL UnbindNext(PipelineContext* pPLC)
+			GINL GAIA::BL UnbindNext(__MyType* p)
 			{
-				GAIA_AST(pPLC != GNULL);
-				if(pPLC == GNULL)
+				GAIA_AST(p != GNULL);
+				if(p == GNULL)
 					return GAIA::False;
-				GAIA_AST(pPLC != this);
-				if(pPLC == this)
+				GAIA_AST(p != this);
+				if(p == this)
 					return GAIA::False;
-				for(GAIA::SIZE x = 0; x < this->GetNextSize(); ++x)
+				GAIA::BL bExist = GAIA::False;
+				for(GAIA::SIZE x = 0; x < m_nexts.size(); ++x)
 				{
-					if(this->GetNext(x) == pPLC)
+					if(m_nexts[x] == p)
 					{
-						pPLC->Release();
 						m_nexts[x] = GNULL;
-						return GAIA::True;
+						bExist = GAIA::True;
+						break;
 					}
 				}
-				return GAIA::False;
+				if(!bExist)
+					return GAIA::False;
+				bExist = GAIA::False;
+				for(GAIA::SIZE x = 0; x < p->m_prevs.size(); ++x)
+				{
+					if(p->m_prevs[x] == this)
+					{
+						p->m_prevs[x] = GNULL;
+						bExist = GAIA::True;
+						break;
+					}
+				}
+				if(!bExist)
+				{
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+				this->Release();
+				p->Release();
+				return GAIA::True;
 			}
 			GINL GAIA::GVOID UnbindNextAll()
 			{
-				for(GAIA::SIZE x = 0; x < this->GetNextSize(); ++x)
+				for(GAIA::SIZE x = 0; x < m_nexts.size(); ++x)
 				{
-					PipelineContext* pPLC = this->GetNext(x);
+					__MyType* pPLC = m_nexts[x];
 					if(pPLC == GNULL)
 						continue;
 					this->UnbindNext(pPLC);
 				}
 			}
 			GINL GAIA::SIZE GetNextSize() const{return m_nexts.size();}
-			GINL PipelineContext* GetNext(const GAIA::SIZE& index) const{if(index >= m_nexts.size()) return GNULL; return m_nexts[index];}
-			GINL GAIA::BL BindPrev(PipelineContext* pPLC)
+			GINL __MyType* GetNext(const GAIA::SIZE& index) const
 			{
-				GAIA_AST(pPLC != GNULL);
-				if(pPLC == GNULL)
-					return GAIA::False;
-				GAIA_AST(pPLC != this);
-				if(pPLC == this)
-					return GAIA::False;
-				if(this->next_exist(pPLC))
-					return GAIA::False;
-				pPLC->Reference();
-				for(GAIA::SIZE x = 0; x < this->GetPrevSize(); ++x)
-				{
-					if(this->GetPrev(x) == GNULL)
-					{
-						m_prevs[x] = pPLC;
-						return GAIA::True;
-					}
-				}
-				m_prevs.push_back(pPLC);
-				return GAIA::True;
+				if(index >= m_nexts.size())
+					return GNULL;
+				if(m_nexts[index] == GNULL)
+					return GNULL;
+				m_nexts[index]->Reference();
+				return m_nexts[index];
 			}
-			GINL GAIA::BL UnbindPrev(PipelineContext* pPLC)
-			{
-				GAIA_AST(pPLC != GNULL);
-				if(pPLC == GNULL)
-					return GAIA::False;
-				GAIA_AST(pPLC != this);
-				if(pPLC == this)
-					return GAIA::False;
-				for(GAIA::SIZE x = 0; x < this->GetPrevSize(); ++x)
-				{
-					if(this->GetPrev(x) == pPLC)
-					{
-						pPLC->Release();
-						m_prevs[x] = GNULL;
-						return GAIA::True;
-					}
-				}
-				return GAIA::True;
-			}
+			GINL GAIA::BL BindPrev(__MyType* p){return p->BindNext(this);}
+			GINL GAIA::BL UnbindPrev(__MyType* p){return p->UnbindNext(this);}
 			GINL GAIA::GVOID UnbindPrevAll()
 			{
 				for(GAIA::SIZE x = 0; x < this->GetPrevSize(); ++x)
 				{
-					PipelineContext* pPLC = this->GetPrev(x);
+					__MyType* pPLC = m_prevs[x];
 					if(pPLC == GNULL)
 						continue;
 					this->UnbindPrev(pPLC);
 				}
 			}
 			GINL GAIA::SIZE GetPrevSize() const{return m_prevs.size();}
-			GINL PipelineContext* GetPrev(const GAIA::SIZE& index) const{if(index >= m_prevs.size()) return GNULL; return m_prevs[index];}
-		private:
-			GINL GAIA::BL next_exist(PipelineContext* pPLC) const
+			GINL __MyType* GetPrev(const GAIA::SIZE& index) const
 			{
-				GAIA_AST(pPLC != GNULL);
-				if(pPLC == GNULL)
+				if(index >= m_prevs.size())
+					return GNULL;
+				if(m_prevs[index] == GNULL)
+					return GNULL;
+				m_prevs[index]->Reference();
+				return m_prevs[index];
+			}
+		private:
+			GINL GAIA::BL next_exist(__MyType* p) const
+			{
+				GAIA_AST(p != GNULL);
+				if(p == GNULL)
 					return GAIA::False;
 				for(GAIA::SIZE x = 0; x < this->GetNextSize(); ++x)
 				{
-					if(this->GetNext(x) == pPLC)
+					__MyType* pNext = this->GetNext(x);
+					if(pNext == GNULL)
+						continue;
+					if(pNext == p)
+					{
+						pNext->Release();
 						return GAIA::True;
-					if(this->GetNext(x)->next_exist(pPLC))
+					}
+					if(pNext->next_exist(p))
+					{
+						pNext->Release();
 						return GAIA::True;
+					}
+					pNext->Release();
 				}
 				return GAIA::False;
 			}
-			GINL GAIA::BL prev_exist(PipelineContext* pPLC) const
+			GINL GAIA::BL prev_exist(__MyType* p) const
 			{
-				GAIA_AST(pPLC != GNULL);
-				if(pPLC == GNULL)
+				GAIA_AST(p != GNULL);
+				if(p == GNULL)
 					return GAIA::False;
 				for(GAIA::SIZE x = 0; x < this->GetPrevSize(); ++x)
 				{
-					if(this->GetPrev(x) == pPLC)
+					__MyType* pPrev = this->GetPrev(x);
+					if(pPrev == GNULL)
+						continue;
+					if(pPrev == p)
+					{
+						p->Release();
 						return GAIA::True;
-					if(this->GetPrev(x)->prev_exist(pPLC))
+					}
+					if(pPrev->prev_exist(p))
+					{
+						pPrev->Release();
 						return GAIA::True;
+					}
+					pPrev->Release();
 				}
 				return GAIA::False;
 			}
+		protected:
+			virtual GAIA::GVOID Destruct()
+			{
+				this->UnbindNextAll();
+				this->UnbindPrevAll();
+			}
 		private:
-			typedef GAIA::CONTAINER::Vector<PipelineContext*> __PipelineContextList;
-			__PipelineContextList m_nexts;
-			__PipelineContextList m_prevs;
+			typedef GAIA::CONTAINER::Vector<__MyType*> __DoubleLinkList;
+		private:
+			__DoubleLinkList m_nexts;
+			__DoubleLinkList m_prevs;
 		};
-		class PPCSourceCommand : public PipelineContext
+		class PipelineContext : public DirectionalFreeLink<PipelineContext>
 		{
 		public:
-			GINL PPCSourceCommand(){pCmd = GNULL;}
-			GINL ~PPCSourceCommand(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PPCSourceCommand";}
-			GAIA::GCH* pCmd;
+			GINL PipelineContext(){}
+			GINL ~PipelineContext(){}
+			virtual const GAIA::GCH* GetName() const = 0;
 		};
-		class PPCCommandParam : public PipelineContext
+		class PLCSourceCommand : public PipelineContext
 		{
 		public:
-			GINL PPCCommandParam(){}
-			GINL ~PPCCommandParam(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PPCCommandParam";}
+			GINL PLCSourceCommand(){pCmd = GNULL;}
+			GINL ~PLCSourceCommand(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLCSourceCommand";}
+			const GAIA::GCH* pCmd;
+		};
+		class PLCCommandParam : public PipelineContext
+		{
+		public:
+			GINL PLCCommandParam(){}
+			GINL ~PLCCommandParam(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLCCommandParam";}
 			DWARFS_MISC::CmdParam cmdparam;
 		};
-		class PPCFile : public PipelineContext
+		class PLCFile : public PipelineContext
 		{
 		public:
-			GINL PPCFile();
-			GINL ~PPCFile();
-			virtual const GAIA::GCH* GetName() const{return "Prom:PPCFile";}
+			GINL PLCFile();
+			GINL ~PLCFile();
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLCFile";}
 		public:
 			typedef GAIA::CONTAINER::AString __FileName;
 			class File
@@ -191,12 +239,12 @@ namespace PROM
 			__FileList filelist;
 			__FileOPTList fileoptlist;
 		};
-		class PPCFileCodeLines : public PipelineContext
+		class PLCFileCodeLines : public PipelineContext
 		{
 		public:
-			GINL PPCFileCodeLines();
-			GINL ~PPCFileCodeLines();
-			virtual const GAIA::GCH* GetName() const{return "Prom:PPCFileCodeLines";}
+			GINL PLCFileCodeLines();
+			GINL ~PLCFileCodeLines();
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLCFileCodeLines";}
 		public:
 			class FileCodeLines
 			{
@@ -208,36 +256,13 @@ namespace PROM
 		public:
 			__FileCodelinesList file_codelines_list;
 		};
-		class Pipeline : public GAIA::Base
+		class Pipeline : public DirectionalFreeLink<Pipeline>
 		{
 		public:
 			GINL Pipeline(){}
 			GINL ~Pipeline(){}
 			virtual const GAIA::GCH* GetName() const = 0;
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size) = 0;
-			GINL GAIA::BL LinkParent(Pipeline* pPL)
-			{
-				GAIA_AST(pPL != GNULL);
-				if(pPL == GNULL)
-					return GAIA::False;
-				return GAIA::True;
-			}
-			GINL GAIA::BL UnlinkParent(Pipeline* pPL)
-			{
-				GAIA_AST(pPL != GNULL);
-				if(pPL == GNULL)
-					return GAIA::False;
-				return GAIA::True;
-			}
-			GINL GAIA::SIZE GetParentSize() const{return m_parents.size();}
-			GINL Pipeline* GetParent(const GAIA::SIZE& index) const{if(index >= m_parents.size()) return GNULL; return m_parents[index];}
-			GINL GAIA::SIZE GetChildSize() const{return m_childs.size();}
-			GINL Pipeline* GetChild(const GAIA::SIZE& index) const{if(index >= m_childs.size()) return GNULL; return m_childs[index];}
-		private:
-			typedef GAIA::CONTAINER::Vector<Pipeline*> __PipelineList;
-		private:
-			__PipelineList m_parents;
-			__PipelineList m_childs;
 		};
 		class PLCommandAnalyze : public Pipeline
 		{
@@ -245,7 +270,10 @@ namespace PROM
 			GINL PLCommandAnalyze(){}
 			GINL ~PLCommandAnalyze(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLCommandAnalyze";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size){}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			{
+				return GNULL;
+			}
 		};
 		class PLFileCollect : public Pipeline
 		{
@@ -253,7 +281,10 @@ namespace PROM
 			GINL PLFileCollect(){}
 			GINL ~PLFileCollect(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLFileCollect";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size){}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			{
+				return GNULL;
+			}
 		};
 		class PLLineStatistics : public Pipeline
 		{
@@ -261,7 +292,10 @@ namespace PROM
 			GINL PLLineStatistics(){}
 			GINL ~PLLineStatistics(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLLineStatistics";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size){}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			{
+				return GNULL;
+			}
 		};
 		class PLSymbolStatistics : public Pipeline
 		{
@@ -269,7 +303,10 @@ namespace PROM
 			GINL PLSymbolStatistics(){}
 			GINL ~PLSymbolStatistics(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLSymbolStatistics";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size){}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			{
+				return GNULL;
+			}
 		};
 		class PLSingleLineAnalyze : public Pipeline
 		{
@@ -277,7 +314,141 @@ namespace PROM
 			GINL PLSingleLineAnalyze(){}
 			GINL ~PLSingleLineAnalyze(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLSingleLineAnalyze";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size){}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			{
+				return GNULL;
+			}
+		};
+		class PipelineDispatch : public GAIA::RefObject
+		{
+		public:
+			GINL GAIA::GVOID Run(
+				Pipeline** ppPrevPL, const GAIA::SIZE& prevpl_size,
+				Pipeline** ppNextPL, const GAIA::SIZE& nextpl_size,
+				PipelineContext** ppPLC, const GAIA::SIZE& plc_size)
+			{
+				/* Internal type. */
+				typedef GAIA::CONTAINER::Vector<Pipeline*> __PipelineList;
+				typedef GAIA::CONTAINER::Vector<PipelineContext*> __PipelineContextList;
+
+				/* Check parameter. */
+				GAIA_AST(ppNextPL != GNULL);
+				if(ppNextPL == GNULL)
+					return;
+				GAIA_AST(nextpl_size != 0);
+				if(nextpl_size == 0)
+					return;
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return;
+				GAIA_AST(plc_size != 0);
+				if(plc_size == 0)
+					return;
+				if(ppPrevPL == GNULL)
+				{
+					if(prevpl_size != 0)
+						return;
+				}
+				else
+				{
+					if(prevpl_size == 0)
+						return;
+					if(prevpl_size != nextpl_size)
+						return;
+				}
+				for(GAIA::SIZE x = 0; x < prevpl_size; ++x)
+				{
+					GAIA_AST(ppPrevPL[x] != GNULL);
+					if(ppPrevPL[x] == GNULL)
+						return;
+				}
+				for(GAIA::SIZE x = 0; x < nextpl_size; ++x)
+				{
+					GAIA_AST(ppNextPL[x] != GNULL);
+					if(ppNextPL[x] == GNULL)
+						return;
+				}
+				for(GAIA::SIZE x = 0; x < plc_size; ++x)
+				{
+					GAIA_AST(ppPLC[x] != GNULL);
+					if(ppPLC[x] == GNULL)
+						return;
+				}
+
+				/* Dispatch current layer. */
+				__PipelineContextList plc_list;
+				__PipelineContextList new_plc_list;
+				plc_list.reserve(prevpl_size);
+				new_plc_list.reserve(prevpl_size);
+				for(GAIA::SIZE x = 0; x < nextpl_size; ++x)
+				{
+					Pipeline* pTempPL = ppNextPL[x];
+					GAIA::SIZE uPracPrevSize = 0;
+					for(GAIA::SIZE y = 0; y < pTempPL->GetPrevSize(); ++y)
+					{
+						Pipeline* pTempPrevPL = dynamic_cast<Pipeline*>(pTempPL->GetPrev(y));
+						if(pTempPrevPL == GNULL)
+							continue;
+						pTempPrevPL->Release();
+						++uPracPrevSize;
+					}
+					if(uPracPrevSize == 0)
+					{
+						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size);
+						new_plc_list.push_back(pNewPLC);
+					}
+					else
+					{
+						plc_list.clear();
+						for(GAIA::SIZE y = 0; y < pTempPL->GetPrevSize(); ++y)
+						{
+							Pipeline* pTempPrevPL = dynamic_cast<Pipeline*>(pTempPL->GetPrev(y));
+							if(pTempPrevPL == GNULL)
+								continue;
+							GAIA::BL bFindedMatchedPLC = GAIA::False;
+							for(GAIA::SIZE z = 0; z < prevpl_size; ++z)
+							{
+								if(ppPrevPL[z] == pTempPrevPL)
+								{
+									plc_list.push_back(ppPLC[z]);
+									bFindedMatchedPLC = GAIA::True;
+									break;
+								}
+							}
+							if(bFindedMatchedPLC)
+							{
+								PipelineContext* pNewPLC = pTempPL->Execute(
+									new_plc_list.front_ptr(), new_plc_list.size());
+								new_plc_list.push_back(pNewPLC);
+							}
+							else
+							{
+							}
+							pTempPrevPL->Release();
+						}
+					}
+				}
+
+				/* Dispatch next layer. */
+				__PipelineList pl_list;
+				for(GAIA::SIZE x = 0; x < nextpl_size; ++x)
+				{
+					for(GAIA::SIZE y = 0; y < ppNextPL[x]->GetNextSize(); ++y)
+					{
+						Pipeline* pTempNext = dynamic_cast<Pipeline*>(ppNextPL[x]->GetNext(y));
+						if(pTempNext == GNULL)
+							continue;
+						pl_list.push_back(pTempNext);
+					}
+				}
+				this->Run(ppNextPL, nextpl_size, 
+					pl_list.front_ptr(), pl_list.size(), 
+					new_plc_list.front_ptr(), new_plc_list.size());
+			}
+		protected:
+			virtual GAIA::GVOID Destruct()
+			{
+			}
 		};
 	public:
 		GINL Prom()
@@ -286,7 +457,7 @@ namespace PROM
 		GINL ~Prom()
 		{
 		}
-		GINL GAIA::BL command(const GAIA::GCH* psz)
+		GINL GAIA::BL Command(const GAIA::GCH* psz)
 		{
 			GAIA_AST(psz != GNULL);
 			if(psz == GNULL)
@@ -294,7 +465,26 @@ namespace PROM
 			if(*psz == 0)
 				return GAIA::False;
 
+			PipelineDispatch* pPLD = new PipelineDispatch;
+			PLCSourceCommand* pPLC = new PLCSourceCommand; pPLC->pCmd = psz;
+			Pipeline* pPL = this->ConstructPipeline();
+			{
+			}
+			this->DestructPipeline(pPL); pPL = GNULL;
+			pPLC->Release(); pPLC = GNULL;
+			pPLD->Release(); pPLD = GNULL;
+
 			return GAIA::True;
+		}
+	private:
+		GINL Pipeline* ConstructPipeline()
+		{
+			Pipeline* pl_cmdanalyze = new PLCommandAnalyze;
+			return pl_cmdanalyze;
+		}
+		GINL GAIA::GVOID DestructPipeline(Pipeline* pPL)
+		{
+			pPL->Release();
 		}
 	private:
 	};

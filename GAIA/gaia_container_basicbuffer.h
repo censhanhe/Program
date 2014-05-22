@@ -161,6 +161,8 @@ namespace GAIA
 			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType& obj){this->read(obj); return *this;}
 			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType* obj){this->write(obj); return *this;}
 			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType* obj){this->read(obj); return *this;}
+			template<typename _ParamObjType> GINL const GAIA::U8& operator [] (const _ParamObjType& index) const{GAIA_AST(index < this->write_size()); return this->front_ptr()[index];}
+			template<typename _ParamObjType> GINL GAIA::U8& operator [] (const _ParamObjType& index){GAIA_AST(index < this->write_size()); return this->front_ptr()[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				GAIA_AST(&src != this); 
