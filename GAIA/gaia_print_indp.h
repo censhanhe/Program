@@ -9,7 +9,7 @@ namespace GAIA
 {
 	namespace PRINT
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Print::clear_screen()
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL GAIA::GVOID Print::clear_screen()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			system("cls");
@@ -17,105 +17,105 @@ namespace GAIA
 			system("clear");
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::BL t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::BL t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::NM t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::NM t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::UM t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::UM t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::N8 t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::N8 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::N16 t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::N16 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::N32 t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::N32 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const GAIA::N64& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::N64& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::U8 t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::U8 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::U16 t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::U16 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::U32 t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::U32 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const GAIA::U64& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::U64& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (GAIA::F32 t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (GAIA::F32 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const GAIA::F64& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::F64& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const GAIA::GWCH& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::GWCH& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::wcout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const GAIA::GCH* p)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::GCH* p)
 		{
 			if(p == GNULL)
 				return *this;
@@ -124,7 +124,7 @@ namespace GAIA
 			std::cout << p;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const GAIA::GWCH* p)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::GWCH* p)
 		{
 			if(p == GNULL)
 				return *this;
@@ -133,111 +133,111 @@ namespace GAIA
 			std::wcout << p;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const GAIA::X128& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::X128& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::BL& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::BL& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::NM& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::NM& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::UM& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::UM& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::N8& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::N8& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::N16& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::N16& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::N32& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::N32& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::N64& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::N64& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::U8& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::U8& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::U16& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::U16& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::U32& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::U32& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::U64& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::U64& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::F32& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::F32& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::F64& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::F64& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::GWCH& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::GWCH& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::wcin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::GCH* p)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::GCH* p)
 		{
 			if(p == GNULL)
 				return *this;
@@ -246,7 +246,7 @@ namespace GAIA
 			std::cin >> p;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::GWCH* p)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::GWCH* p)
 		{
 			if(p == GNULL)
 				return *this;
@@ -255,7 +255,7 @@ namespace GAIA
 			std::wcin >> p;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (GAIA::X128& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::X128& t)
 		{
 			if(!this->enable_read())
 				return *this;
@@ -264,12 +264,12 @@ namespace GAIA
 			t = sz;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator >> (PrintFormat& pf)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (PrintFormat& pf)
 		{
 			pf = m_pf;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Print& Print::operator << (const PrintFormat& pf)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const PrintFormat& pf)
 		{
 			if(pf.align() != m_pf.align() || pf.align() != 0)
 			{
@@ -376,7 +376,7 @@ namespace GAIA
 			m_pf = pf;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Print::flush()
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL GAIA::GVOID Print::flush()
 		{
 			std::cout << std::flush;
 		}

@@ -346,13 +346,16 @@ namespace PROM
 					return;
 				if(ppPrevPL == GNULL)
 				{
+					GAIA_AST(prevpl_size == 0);
 					if(prevpl_size != 0)
 						return;
 				}
 				else
 				{
+					GAIA_AST(prevpl_size != 0);
 					if(prevpl_size == 0)
 						return;
+					GAIA_AST(prevpl_size == nextpl_size);
 					if(prevpl_size != nextpl_size)
 						return;
 				}
@@ -395,11 +398,16 @@ namespace PROM
 					if(uPracPrevSize == 0)
 					{
 						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size);
+						if(pNewPLC == GNULL)
+						{
+							// OUTPUT.
+						}
 						new_plc_list.push_back(pNewPLC);
 					}
 					else
 					{
 						plc_list.clear();
+						GAIA::BL bExecuteAble = GAIA::True;
 						for(GAIA::SIZE y = 0; y < pTempPL->GetPrevSize(); ++y)
 						{
 							Pipeline* pTempPrevPL = dynamic_cast<Pipeline*>(pTempPL->GetPrev(y));
@@ -415,17 +423,21 @@ namespace PROM
 									break;
 								}
 							}
-							if(bFindedMatchedPLC)
-							{
-								PipelineContext* pNewPLC = pTempPL->Execute(
-									new_plc_list.front_ptr(), new_plc_list.size());
-								new_plc_list.push_back(pNewPLC);
-							}
-							else
-							{
-							}
 							pTempPrevPL->Release();
+							if(!bFindedMatchedPLC)
+							{
+								// OUTPUT.
+								bExecuteAble = GAIA::False;
+								break;
+							}
 						}
+						PipelineContext* pNewPLC = pTempPL->Execute(
+							plc_list.front_ptr(), plc_list.size());
+						if(pNewPLC == GNULL)
+						{
+							// OUTPUT.
+						}
+						new_plc_list.push_back(pNewPLC);
 					}
 				}
 
@@ -444,6 +456,8 @@ namespace PROM
 				this->Run(ppNextPL, nextpl_size, 
 					pl_list.front_ptr(), pl_list.size(), 
 					new_plc_list.front_ptr(), new_plc_list.size());
+				for(GAIA::SIZE x = 0; x < pl_list.size(); ++x)
+					pl_list[x]->Release();
 			}
 		protected:
 			virtual GAIA::GVOID Destruct()
