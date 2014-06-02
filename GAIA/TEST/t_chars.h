@@ -1163,6 +1163,13 @@ namespace GAIATEST
 			GTLINE2("String replace element object right failed!");
 			++nRet;
 		}
+		chs = "Hello";
+		chs = 10 + chs;
+		if(chs != "10Hello")
+		{
+			GTLINE2("String global operator + error!");
+			++nRet;
+		}
 
 		return nRet;
 	}
