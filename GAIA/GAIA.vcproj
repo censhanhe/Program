@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="GAIA"
+	Name="gaia"
 	ProjectGUID="{C552C70C-4991-4C3C-A8A3-AB5701576B02}"
-	RootNamespace="GAIA"
+	RootNamespace="gaia"
 	Keyword="Win32Proj"
 	>
 	<Platforms>

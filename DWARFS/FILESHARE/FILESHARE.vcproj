@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="FILESHARE"
+	Name="fileshare"
 	ProjectGUID="{D1BF18A6-241A-4CBF-A458-DF73CED05774}"
-	RootNamespace="FILESHARE"
+	RootNamespace="fileshare"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
