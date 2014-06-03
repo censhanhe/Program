@@ -10,6 +10,75 @@ namespace PROM
 	class Prom : public GAIA::Base
 	{
 	private:
+		class ERROR_SYSTEM
+		{
+		public:
+			GAIA_ENUM_BEGIN(ERROR_TYPE)
+				ERROR_TYPE_INTERNAL_WARNING,
+				ERROR_TYPE_INTERNAL_ERROR,
+				ERROR_TYPE_WARING,
+				ERROR_TYPE_ERROR,
+			GAIA_ENUM_END(ERROR_TYPE)
+			class ErrorBase : public GAIA::Base
+			{
+			public:
+				GINL ErrorBase(){m_uFileLine = (GAIA::U32)GINVALID;}
+				virtual GAIA::U16 getid() const = 0;
+				virtual GAIA::U8 getstage() const = 0;
+				virtual GAIA::U8 getlevel() const = 0;
+				virtual const GAIA::GCH* getdesc() const = 0;
+				virtual const GAIA::GCH* getsample() const = 0;
+				GINL GAIA::GVOID setfilename(const GAIA::GCH* pszFileName){m_strFileName = pszFileName;}
+				GINL const GAIA::GCH* getfilename() const{return m_strFileName.front_ptr();}
+				GINL GAIA::GVOID setfileline(GAIA::U32 uFileLine){m_uFileLine = uFileLine;}
+				GINL GAIA::U32 getfileline() const{return m_uFileLine;}
+			private:
+				GAIA::CONTAINER::AString m_strFileName;
+				GAIA::U32 m_uFileLine;
+			};
+			#define PROM_ERROR(id, stage, level, desc, sample) \
+				class ERROR_##id : public ErrorBase\
+				{\
+				public:\
+					virtual GAIA::U16 getid() const{return id;}\
+					virtual GAIA::U8 getstage() const{return stage;}\
+					virtual GAIA::U8 getlevel() const{return level;}\
+					virtual const GAIA::GCH* getdesc() const{return desc;}\
+					virtual const GAIA::GCH* getsample() const{return sample;}\
+				};
+			PROM_ERROR(101,		0x0000, 0x0000, "pipeline execute failed, no pipeline context returned", "");
+			PROM_ERROR(102,		0x0000, 0x0000, "command parameters error", "");
+			PROM_ERROR(103,		0x0000, 0x0000, "pipeline link structure error", "");
+			PROM_ERROR(1001,	0x0000, 0x0002, "allocate size not match the object", "Object* p = (Object*)malloc/calloc/realloc...(sizeof(Object));");
+		};
+
+	#define PROM_RAISE_FATALERROR(id) \
+		do\
+		{\
+			ERROR_SYSTEM::ERROR_##id* temp_error = new ERROR_SYSTEM::ERROR_##id;\
+			errs.push_back(temp_error);\
+		}while(GAIA::ALWAYSFALSE)
+
+	#define PROM_RAISE_FILEERROR(id, filename, line) \
+		do\
+		{\
+			ERROR_SYSTEM::ERROR_##id* temp_error = new ERROR_SYSTEM::ERROR_##id;\
+			errs.push_back(temp_error);\
+			temp_error->setfilename(filename);\
+		}while(GAIA::ALWAYSFALSE)
+
+	#define PROM_RAISE_ERROR(id, filename, line) \
+		do\
+		{\
+			ERROR_SYSTEM::ERROR_##id* temp_error = new ERROR_SYSTEM::ERROR_##id;\
+			errs.push_back(temp_error);\
+			temp_error->setfilename(filename);\
+			temp_error->setfileline(line);\
+		}while(GAIA::ALWAYSFALSE)
+
+	private:
+		typedef GAIA::CONTAINER::Vector<ERROR_SYSTEM::ErrorBase*> __ErrorListType;
+	private:
 		template<typename _DataType> class DirectionalFreeLink : public GAIA::RefObject
 		{
 		public:
@@ -207,18 +276,22 @@ namespace PROM
 		class PLCSourceCommand : public PipelineContext
 		{
 		public:
-			GINL PLCSourceCommand(){pCmd = GNULL;}
+			GINL PLCSourceCommand(){pszCmd = GNULL;}
 			GINL ~PLCSourceCommand(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLCSourceCommand";}
-			const GAIA::GCH* pCmd;
+			const GAIA::GCH* pszCmd;
 		};
 		class PLCCommandParam : public PipelineContext
 		{
 		public:
-			GINL PLCCommandParam(){}
+			GINL PLCCommandParam(){this->init();}
 			GINL ~PLCCommandParam(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLCCommandParam";}
 			DWARFS_MISC::CmdParam cmdparam;
+		private:
+			GINL GAIA::GVOID init()
+			{
+			}
 		};
 		class PLCFile : public PipelineContext
 		{
@@ -262,7 +335,7 @@ namespace PROM
 			GINL Pipeline(){}
 			GINL ~Pipeline(){}
 			virtual const GAIA::GCH* GetName() const = 0;
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size) = 0;
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs) = 0;
 		};
 		class PLCommandAnalyze : public Pipeline
 		{
@@ -270,9 +343,48 @@ namespace PROM
 			GINL PLCommandAnalyze(){}
 			GINL ~PLCommandAnalyze(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLCommandAnalyze";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
 			{
-				return GNULL;
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+				PLCSourceCommand* plc_sourcecommand = GNULL;
+				for(GAIA::SIZE x = 0; x < size; ++x)
+				{
+					if(ppPLC[x] == GNULL)
+						continue;
+					const GAIA::GCH* pszName = ppPLC[x]->GetName();
+					if(pszName == GNULL)
+						return GNULL;
+					if(pszName[0] == 0)
+						return GNULL;
+					if(GAIA::ALGORITHM::strcmp(pszName, "Prom:PLCSourceCommand") == 0)
+						plc_sourcecommand = static_cast<PLCSourceCommand*>(ppPLC[x]);
+				}
+				if(plc_sourcecommand == GNULL)
+					return GNULL;
+
+				/* Initialize result pipeline context. */
+				PLCCommandParam* pRet = new PLCCommandParam;
+				pRet->cmdparam.begin_decl();
+				{
+					pRet->cmdparam.cmd_decl("-i", "input files or directory", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_MUSTEXIST);
+				}
+				pRet->cmdparam.end_decl();
+
+				/* Execute. */
+				if(!pRet->cmdparam.build(plc_sourcecommand->pszCmd))
+				{
+					PROM_RAISE_FATALERROR(102);
+					pRet->Release();
+					return GNULL;
+				}
+
+				return pRet;
 			}
 		};
 		class PLFileCollect : public Pipeline
@@ -281,7 +393,7 @@ namespace PROM
 			GINL PLFileCollect(){}
 			GINL ~PLFileCollect(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLFileCollect";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
 			{
 				return GNULL;
 			}
@@ -292,7 +404,7 @@ namespace PROM
 			GINL PLLineStatistics(){}
 			GINL ~PLLineStatistics(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLLineStatistics";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
 			{
 				return GNULL;
 			}
@@ -303,7 +415,7 @@ namespace PROM
 			GINL PLSymbolStatistics(){}
 			GINL ~PLSymbolStatistics(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLSymbolStatistics";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
 			{
 				return GNULL;
 			}
@@ -314,7 +426,7 @@ namespace PROM
 			GINL PLSingleLineAnalyze(){}
 			GINL ~PLSingleLineAnalyze(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLSingleLineAnalyze";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
 			{
 				return GNULL;
 			}
@@ -325,7 +437,8 @@ namespace PROM
 			GINL GAIA::GVOID Run(
 				Pipeline** ppPrevPL, const GAIA::SIZE& prevpl_size,
 				Pipeline** ppNextPL, const GAIA::SIZE& nextpl_size,
-				PipelineContext** ppPLC, const GAIA::SIZE& plc_size)
+				PipelineContext** ppPLC, const GAIA::SIZE& plc_size, 
+				__ErrorListType& errs)
 			{
 				/* Internal type. */
 				typedef GAIA::CONTAINER::Vector<Pipeline*> __PipelineList;
@@ -397,11 +510,9 @@ namespace PROM
 					}
 					if(uPracPrevSize == 0)
 					{
-						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size);
+						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, errs);
 						if(pNewPLC == GNULL)
-						{
-							// OUTPUT.
-						}
+							PROM_RAISE_FATALERROR(101);
 						new_plc_list.push_back(pNewPLC);
 					}
 					else
@@ -426,17 +537,15 @@ namespace PROM
 							pTempPrevPL->Release();
 							if(!bFindedMatchedPLC)
 							{
-								// OUTPUT.
+								PROM_RAISE_FATALERROR(103);
 								bExecuteAble = GAIA::False;
 								break;
 							}
 						}
 						PipelineContext* pNewPLC = pTempPL->Execute(
-							plc_list.front_ptr(), plc_list.size());
+							plc_list.front_ptr(), plc_list.size(), errs);
 						if(pNewPLC == GNULL)
-						{
-							// OUTPUT.
-						}
+							PROM_RAISE_FATALERROR(101);
 						new_plc_list.push_back(pNewPLC);
 					}
 				}
@@ -453,11 +562,21 @@ namespace PROM
 						pl_list.push_back(pTempNext);
 					}
 				}
-				this->Run(ppNextPL, nextpl_size, 
-					pl_list.front_ptr(), pl_list.size(), 
-					new_plc_list.front_ptr(), new_plc_list.size());
+				if(pl_list.size() != 0)
+				{
+					this->Run(ppNextPL, nextpl_size, 
+						pl_list.front_ptr(), pl_list.size(), 
+						new_plc_list.front_ptr(), new_plc_list.size(), errs);
+				}
 				for(GAIA::SIZE x = 0; x < pl_list.size(); ++x)
 					pl_list[x]->Release();
+
+				/* Release new pipeline context. */
+				for(GAIA::SIZE x = 0; x < new_plc_list.size(); ++x)
+				{
+					if(new_plc_list[x] != GNULL)
+						new_plc_list[x]->Release();
+				}
 			}
 		protected:
 			virtual GAIA::GVOID Destruct()
@@ -471,7 +590,7 @@ namespace PROM
 		GINL ~Prom()
 		{
 		}
-		GINL GAIA::BL Command(const GAIA::GCH* psz)
+		GINL GAIA::BL Command(const GAIA::GCH* psz, GAIA::PRINT::PrintBase& prt)
 		{
 			GAIA_AST(psz != GNULL);
 			if(psz == GNULL)
@@ -480,9 +599,12 @@ namespace PROM
 				return GAIA::False;
 
 			PipelineDispatch* pPLD = new PipelineDispatch;
-			PLCSourceCommand* pPLC = new PLCSourceCommand; pPLC->pCmd = psz;
+			PLCSourceCommand* pPLC = new PLCSourceCommand; pPLC->pszCmd = psz;
 			Pipeline* pPL = this->ConstructPipeline();
 			{
+				pPLD->Run(GNULL, 0, &pPL, 1, (PipelineContext**)&pPLC, 1, m_errors);
+				this->PrintError(prt);
+				this->ClearError();
 			}
 			this->DestructPipeline(pPL); pPL = GNULL;
 			pPLC->Release(); pPLC = GNULL;
@@ -500,7 +622,56 @@ namespace PROM
 		{
 			pPL->Release();
 		}
+		GINL GAIA::GVOID PrintError(GAIA::PRINT::PrintBase& prt)
+		{
+			GAIA::PRINT::PrintFormat prtfmt;
+			GAIA::PRINT::PrintFormat prtfmt_old;
+			prt >> prtfmt_old;
+			prt << prtfmt;
+
+			for(GAIA::SIZE x = 0; x < m_errors.size(); ++x)
+			{
+				ERROR_SYSTEM::ErrorBase* pError = m_errors[x];
+				if(pError == GNULL)
+					continue;
+				prt << "Prometheus:";
+				prt << "P" << (GAIA::N32)pError->getstage();
+				prt << "L" << (GAIA::N32)pError->getlevel();
+				prt << "N" << (GAIA::N32)pError->getid();
+				if(!GAIA::ALGORITHM::stremp(pError->getdesc()))
+				{
+					prt << ", ";
+					prt << pError->getdesc();
+				}
+				if(!GAIA::ALGORITHM::stremp(pError->getsample()))
+				{
+					prt << ", ";
+					prt << pError->getsample();
+				}
+				if(!GAIA::ALGORITHM::stremp(pError->getfilename()))
+				{
+					prt << ", ";
+					prt << pError->getfileline();
+					if(pError->getfileline() != GINVALID)
+						prt << "(" << pError->getfileline() << ")";
+				}
+				prt << ". \n";
+			}
+			prt << prtfmt_old;
+		}
+		GINL GAIA::GVOID ClearError()
+		{
+			for(GAIA::SIZE x = 0; x < m_errors.size(); ++x)
+			{
+				ERROR_SYSTEM::ErrorBase* pError = m_errors[x];
+				if(pError == GNULL)
+					continue;
+				delete pError;
+			}
+			m_errors.clear();
+		}
 	private:
+		__ErrorListType m_errors;
 	};
 };
 

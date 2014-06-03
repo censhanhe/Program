@@ -26,6 +26,10 @@
 
 GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 {
+#if GAIA_OS == GAIA_OS_WINDOWS
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
 	GAIA::PRINT::Print prt;
 
 	/* Calculate all args length. */
@@ -69,7 +73,6 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 	if(first_command_index + 1 == buf.write_size())
 	{
 		GAIA::CONTAINER::AString strCombin;
-		GAIA::PRINT::Print prt;
 		prt << "Enter the command here : ";
 		GAIA::GCH szParam[1024];
 		while(GAIA::ALWAYSTRUE)
@@ -103,7 +106,7 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 
 	/* Execute command. */
 	PROM::Prom prom;
-	prom.Command((GAIA::GCH*)buf.front_ptr() + first_command_index);
+	prom.Command((GAIA::GCH*)buf.front_ptr() + first_command_index, prt);
 
 	return 0;
 }

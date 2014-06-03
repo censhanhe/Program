@@ -25,6 +25,10 @@
 
 int main()
 {
+#if GAIA_OS == GAIA_OS_WINDOWS
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
 	GAIA::FILESYSTEM::File file;
 	file.Open("../gaia_test.txt", GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
 	GAIA::PRINT::Print prt;
