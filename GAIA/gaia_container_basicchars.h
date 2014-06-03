@@ -165,6 +165,7 @@ namespace GAIA
 			GINL _SizeType capacity() const{return _Size;}
 			GINL GAIA::BL resize(const _SizeType& size){if(size > _Size) return GAIA::False; m_size = size + 1; m_chars[size] = 0; return GAIA::True;}
 			GINL GAIA::GVOID clear(){m_size = 0; if(m_chars != GNULL) m_chars[0] = 0;}
+			GINL GAIA::U32 type() const{return GAIA::ALGORITHM::strtype(m_chars);}
 			GINL _DataType* front_ptr(){return m_chars;}
 			GINL _DataType* back_ptr(){if(this->empty()) return GNULL; return m_chars + this->size() - 1;}
 			GINL const _DataType* front_ptr() const{return m_chars;}

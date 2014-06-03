@@ -111,7 +111,7 @@ namespace DWARFSTEST
 			GTLINE2("CmdParam finddecl failed!");
 			++nRet;
 		}
-		if(!cp.build("-D text.txt -r -m -o output.txt -omax 123"))
+		if(!cp.build("-D text.txt -r -m -o output.txt -omax 123", prt))
 		{
 			GTLINE2("CmdParam build failed!");
 			++nRet;

@@ -1170,6 +1170,30 @@ namespace GAIATEST
 			GTLINE2("String global operator + error!");
 			++nRet;
 		}
+		chs = "1234567890ABCDEF1234567890ABCDEF";
+		if(chs.type() != (GAIA::STRING_TYPE_RID | GAIA::STRING_TYPE_RID128))
+		{
+			GTLINE2("String type RID128 failed!");
+			++nRet;
+		}
+		chs = "Hello world 123.4F";
+		if(chs.type() != GAIA::STRING_TYPE_STRING)
+		{
+			GTLINE2("String type string failed!");
+			++nRet;
+		}
+		chs = "-123.4F";
+		if(!(chs.type() & GAIA::STRING_TYPE_REAL))
+		{
+			GTLINE2("String type real failed!");
+			++nRet;
+		}
+		chs = "+123123123123";
+		if(!(chs.type() & GAIA::STRING_TYPE_INTEGER))
+		{
+			GTLINE2("String type integer failed!");
+			++nRet;
+		}
 
 		return nRet;
 	}

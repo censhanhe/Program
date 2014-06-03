@@ -335,7 +335,7 @@ namespace PROM
 			GINL Pipeline(){}
 			GINL ~Pipeline(){}
 			virtual const GAIA::GCH* GetName() const = 0;
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs) = 0;
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs) = 0;
 		};
 		class PLCommandAnalyze : public Pipeline
 		{
@@ -343,7 +343,7 @@ namespace PROM
 			GINL PLCommandAnalyze(){}
 			GINL ~PLCommandAnalyze(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLCommandAnalyze";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
 				GAIA_AST(ppPLC != GNULL);
@@ -372,12 +372,15 @@ namespace PROM
 				PLCCommandParam* pRet = new PLCCommandParam;
 				pRet->cmdparam.begin_decl();
 				{
-					pRet->cmdparam.cmd_decl("-i", "input files or directory", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_MUSTEXIST);
+					pRet->cmdparam.cmd_decl("-i", "input files", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-I", "input directory", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-E", "input directory files extension name filter", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-linebreak", "change lines break flag, use \"\\r\" \"\\n\" or \"\\r\\n\"", 1, 1, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 				}
 				pRet->cmdparam.end_decl();
 
 				/* Execute. */
-				if(!pRet->cmdparam.build(plc_sourcecommand->pszCmd))
+				if(!pRet->cmdparam.build(plc_sourcecommand->pszCmd, prt))
 				{
 					PROM_RAISE_FATALERROR(102);
 					pRet->Release();
@@ -393,7 +396,7 @@ namespace PROM
 			GINL PLFileCollect(){}
 			GINL ~PLFileCollect(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLFileCollect";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
 			}
@@ -404,7 +407,7 @@ namespace PROM
 			GINL PLLineStatistics(){}
 			GINL ~PLLineStatistics(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLLineStatistics";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
 			}
@@ -415,7 +418,7 @@ namespace PROM
 			GINL PLSymbolStatistics(){}
 			GINL ~PLSymbolStatistics(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLSymbolStatistics";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
 			}
@@ -426,7 +429,7 @@ namespace PROM
 			GINL PLSingleLineAnalyze(){}
 			GINL ~PLSingleLineAnalyze(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLSingleLineAnalyze";}
-			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, __ErrorListType& errs)
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
 			}
@@ -437,8 +440,8 @@ namespace PROM
 			GINL GAIA::GVOID Run(
 				Pipeline** ppPrevPL, const GAIA::SIZE& prevpl_size,
 				Pipeline** ppNextPL, const GAIA::SIZE& nextpl_size,
-				PipelineContext** ppPLC, const GAIA::SIZE& plc_size, 
-				__ErrorListType& errs)
+				PipelineContext** ppPLC, const GAIA::SIZE& plc_size,
+				GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Internal type. */
 				typedef GAIA::CONTAINER::Vector<Pipeline*> __PipelineList;
@@ -510,7 +513,7 @@ namespace PROM
 					}
 					if(uPracPrevSize == 0)
 					{
-						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, errs);
+						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, prt, errs);
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
 						new_plc_list.push_back(pNewPLC);
@@ -543,7 +546,7 @@ namespace PROM
 							}
 						}
 						PipelineContext* pNewPLC = pTempPL->Execute(
-							plc_list.front_ptr(), plc_list.size(), errs);
+							plc_list.front_ptr(), plc_list.size(), prt, errs);
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
 						new_plc_list.push_back(pNewPLC);
@@ -566,7 +569,8 @@ namespace PROM
 				{
 					this->Run(ppNextPL, nextpl_size, 
 						pl_list.front_ptr(), pl_list.size(), 
-						new_plc_list.front_ptr(), new_plc_list.size(), errs);
+						new_plc_list.front_ptr(), new_plc_list.size(), 
+						prt, errs);
 				}
 				for(GAIA::SIZE x = 0; x < pl_list.size(); ++x)
 					pl_list[x]->Release();
@@ -602,7 +606,7 @@ namespace PROM
 			PLCSourceCommand* pPLC = new PLCSourceCommand; pPLC->pszCmd = psz;
 			Pipeline* pPL = this->ConstructPipeline();
 			{
-				pPLD->Run(GNULL, 0, &pPL, 1, (PipelineContext**)&pPLC, 1, m_errors);
+				pPLD->Run(GNULL, 0, &pPL, 1, (PipelineContext**)&pPLC, 1, prt, m_errors);
 				this->PrintError(prt);
 				this->ClearError();
 			}
@@ -643,17 +647,17 @@ namespace PROM
 					prt << ", ";
 					prt << pError->getdesc();
 				}
-				if(!GAIA::ALGORITHM::stremp(pError->getsample()))
-				{
-					prt << ", ";
-					prt << pError->getsample();
-				}
 				if(!GAIA::ALGORITHM::stremp(pError->getfilename()))
 				{
 					prt << ", ";
 					prt << pError->getfileline();
 					if(pError->getfileline() != GINVALID)
 						prt << "(" << pError->getfileline() << ")";
+				}
+				if(!GAIA::ALGORITHM::stremp(pError->getsample()))
+				{
+					prt << ", ";
+					prt << pError->getsample();
 				}
 				prt << ". \n";
 			}

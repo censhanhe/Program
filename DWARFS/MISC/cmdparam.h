@@ -216,7 +216,7 @@ namespace DWARFS_MISC
 			cmddecl.cmd = pszCmdName;
 			cmddecl.min_param_size = min_param_size;
 			__CmdDeclOPTListType::_datatype t = &cmddecl;
-			__CmdDeclOPTListType::const_it it = m_opt_decls.lower_bound(t);
+			__CmdDeclOPTListType::const_it it = m_opt_decls.upper_bound(t);
 			if(it.empty())
 				return GINVALID;
 			if((**it).cmd != pszCmdName)
@@ -225,7 +225,7 @@ namespace DWARFS_MISC
 		}
 
 	public:	/* Command access interface. */
-		GINL GAIA::BL build(const GAIA::GCH* pszCmd)
+		GINL GAIA::BL build(const GAIA::GCH* pszCmd, GAIA::PRINT::PrintBase& prt)
 		{
 			GAIA_AST(!this->is_begin_decl());
 			if(this->is_begin_decl())
@@ -296,7 +296,7 @@ namespace DWARFS_MISC
 					bMatch = GAIA::True;
 				else
 				{
-					if(this->finddecl(word, 0) != GINVALID)
+					if(this->finddecl(word, GAIA::MAXSIZE) != GINVALID)
 						bMatch = GAIA::True;
 				}
 				if(bMatch)
@@ -309,7 +309,10 @@ namespace DWARFS_MISC
 				else
 				{
 					if(m_cmds.empty())
+					{
+						prt << "CmdParam:Invalid command or parameter without command! \"" << word.front_ptr() << "\"\n";
 						goto FUNCTION_END;
+					}
 					m_cmds.back().params.push_back(word);
 				}
 			}
@@ -317,11 +320,54 @@ namespace DWARFS_MISC
 			/* Checkup. */
 			for(__CmdListType::_sizetype x = 0; x < m_cmds.size(); ++x)
 			{
-				Cmd& temp = m_cmds[x];
+				const Cmd& temp = m_cmds[x];
 				GAIA::SIZE uDecl = this->finddecl(temp.cmd, temp.params.size());
 				if(uDecl == GINVALID)
+				{
+					prt << "CmdParam:Invalid command! \"" << temp.cmd.front_ptr() << "\"\n";
 					goto FUNCTION_END;
+				}
+				CmdDecl& decl = m_decls[uDecl];
+				if(temp.params.size() < decl.min_param_size)
+				{
+					prt << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" << 
+						" [" << decl.min_param_size << ", " << decl.max_param_size << "]" << "\n";
+					goto FUNCTION_END;
+				}
+				if(decl.max_param_size != GINVALID)
+				{
+					if(temp.params.size() > decl.max_param_size)
+					{
+						prt << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" << 
+							" [" << decl.min_param_size << ", " << decl.max_param_size << "]" << "\n";
+						goto FUNCTION_END;
+					}
+				}
 			}
+			for(GAIA::SIZE x = 0; x < m_decls.size(); ++x)
+			{
+				CmdDecl& decl = m_decls[x];
+				if(decl.type == CMD_TYPE_MUSTEXIST)
+				{
+					GAIA::BL bExist = GAIA::False;
+					for(GAIA::SIZE y = 0; y < m_cmds.size(); ++y)
+					{
+						const Cmd& temp = m_cmds[x];
+						if(temp.cmd == decl.cmd)
+						{
+							bExist = GAIA::True;
+							break;
+						}
+					}
+					if(!bExist)
+					{
+						prt << "CmdParam:Must exist command! \"" << decl.cmd.front_ptr() << "\"\n";
+						goto FUNCTION_END;
+					}
+				}
+			}
+
+			/* Checkup mutex and coop. */
 			for(__CmdListType::_sizetype x = 0; x < m_cmds.size(); ++x)
 			{
 				Cmd& temp = m_cmds[x];
@@ -341,6 +387,7 @@ namespace DWARFS_MISC
 								continue;
 							if(m_cmds[z].cmd == *pCmd)
 							{
+								prt << "CmdParam:Command mutex! \"" << temp.cmd.front_ptr() << "\" " << "and" << "\"" << pCmd->front_ptr() << "\"\n";
 								goto FUNCTION_END;
 							}
 						}
@@ -369,6 +416,7 @@ namespace DWARFS_MISC
 						}
 						if(!bExist)
 						{
+							prt << "CmdParam:Command coop! \"" << temp.cmd.front_ptr() << "\" " << "and" << "\"" << pCmd->front_ptr() << "\"\n";
 							goto FUNCTION_END;
 						}
 					}

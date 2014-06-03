@@ -3,7 +3,7 @@
 
 //#define FSHA_DEBUG
 
-#ifdef _MSC_VER
+#if GAIA_COMPILER == GAIA_COMPILER_CL
 #	if defined(_FSHADLL) || defined(_USEFSHADLL)
 #		ifdef FILESHARE_EXPORT
 #			define __DWARFS_FILESHARE_API __declspec(dllexport)

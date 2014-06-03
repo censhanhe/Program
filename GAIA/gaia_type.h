@@ -15,7 +15,28 @@ namespace GAIA
 	typedef unsigned int U32;
 	typedef long long N64;
 	typedef unsigned long long U64;
-
+#if GAIA_COMPILER == GAIA_COMPILER_CL
+#	pragma warning(disable : 4310)
+#endif
+	static const GAIA::N8 N8MINSIZE = (GAIA::N8)0x80;
+	static const GAIA::N8 N8MAXSIZE = (GAIA::N8)0x7F;
+	static const GAIA::U8 U8MINSIZE = (GAIA::U8)0x00;
+	static const GAIA::U8 U8MAXSIZE = (GAIA::U8)0xFF;
+	static const GAIA::N16 N16MINSIZE = (GAIA::N16)0x8000;
+	static const GAIA::N16 N16MAXSIZE = (GAIA::N16)0x7FFF;
+	static const GAIA::U16 U16MINSIZE = (GAIA::U16)0x0000;
+	static const GAIA::U16 U16MAXSIZE = (GAIA::U16)0xFFFF;
+	static const GAIA::N32 N32MINSIZE = (GAIA::N32)0x80000000;
+	static const GAIA::N32 N32MAXSIZE = (GAIA::N32)0x7FFFFFFF;
+	static const GAIA::U32 U32MINSIZE = (GAIA::U32)0x00000000;
+	static const GAIA::U32 U32MAXSIZE = (GAIA::U32)0xFFFFFFFF;
+	static const GAIA::N64 N64MINSIZE = (GAIA::N64)0x8000000000000000;
+	static const GAIA::N64 N64MAXSIZE = (GAIA::N64)0x7FFFFFFFFFFFFFFF;
+	static const GAIA::U64 U64MINSIZE = (GAIA::U64)0x0000000000000000;
+	static const GAIA::U64 U64MAXSIZE = (GAIA::U64)0xFFFFFFFFFFFFFFFF;
+#if GAIA_COMPILER == GAIA_COMPILER_CL
+#	pragma warning(default : 4310)
+#endif
 	/* Float type declaration. */
 	typedef float F32;
 	typedef double F64;
@@ -32,6 +53,8 @@ namespace GAIA
 
 	/* GAIA size. */
 	typedef GAIA::N32 SIZE;
+	static const GAIA::SIZE MINSIZE = (GAIA::SIZE)N32MINSIZE;
+	static const GAIA::SIZE MAXSIZE = (GAIA::SIZE)N32MAXSIZE;
 
 	/* Bool enum. */
 	static const BL True = 1;
@@ -86,7 +109,7 @@ namespace GAIA
 		};
 	};
 
-	/* Global constants. */
+	/* Other global constants. */
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSTRUE = GAIA::True;
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSFALSE = GAIA::False;
 
@@ -245,13 +268,36 @@ namespace GAIA
 	GINL TYPEID nametotype(const GAIA::GCH* psz);
 	GINL TYPEID nametotype(const GAIA::GWCH* psz);
 
-	/* Seek type. */
+	/* Common type. */
 	GAIA_ENUM_BEGIN(SEEK_TYPE)
 		SEEK_TYPE_BEGIN,
 		SEEK_TYPE_END,
 		SEEK_TYPE_FORWARD,
 		SEEK_TYPE_BACKWARD,
 	GAIA_ENUM_END(SEEK_TYPE)
+
+	GAIA_ENUM_BEGIN(STRING_TYPE)
+		STRING_TYPE_STRING	= 1 << 0,
+
+		STRING_TYPE_INTEGER	= 1 << 1,
+		STRING_TYPE_N8		= 1 << 2,	// Not supported!
+		STRING_TYPE_U8		= 1 << 3,	// Not supported!
+		STRING_TYPE_N16		= 1 << 4,	// Not supported!
+		STRING_TYPE_U16		= 1 << 5,	// Not supported!
+		STRING_TYPE_N32		= 1 << 6,	// Not supported!
+		STRING_TYPE_U32		= 1 << 7,	// Not supported!
+		STRING_TYPE_N64		= 1 << 8,	// Not supported!
+		STRING_TYPE_U64		= 1 << 9,	// Not supported!
+
+		STRING_TYPE_REAL	= 1 << 10,
+		STRING_TYPE_F32		= 1 << 11,	// Not supported!
+		STRING_TYPE_F64		= 1 << 12,	// Not supported!
+
+		STRING_TYPE_X128	= 1 << 20,
+		STRING_TYPE_RID		= 1 << 20,
+		STRING_TYPE_RID64	= 1 << 21,
+		STRING_TYPE_RID128	= 1 << 22,
+	GAIA_ENUM_END(STRING_TYPE)
 };
 
 #ifndef GAIA_DEBUG_CODEPURE

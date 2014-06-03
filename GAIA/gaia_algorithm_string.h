@@ -7,32 +7,32 @@ namespace GAIA
 	{
 		template<typename _DataType> GINL _DataType tolower(const _DataType& c){if(c >= 'A' && c <= 'Z') return c - 'A' + 'a'; return c;}
 		template<typename _DataType> GINL _DataType toupper(const _DataType& c){if(c >= 'a' && c <= 'z') return c - 'a' + 'A'; return c;}
-		template<typename _DataType> GINL _DataType tolowers(_DataType p){GAIA_AST(!!p); _DataType ret = p; while(*p != 0){*p = GAIA::ALGORITHM::tolower(*p);p++;} return ret;}
-		template<typename _DataType> GINL _DataType touppers(_DataType p){GAIA_AST(!!p); _DataType ret = p; while(*p != 0){*p = GAIA::ALGORITHM::toupper(*p);p++;} return ret;}
+		template<typename _DataType> GINL _DataType tolowers(_DataType p){GAIA_AST(!!p); _DataType ret = p; while(*p != '\0'){*p = GAIA::ALGORITHM::tolower(*p);p++;} return ret;}
+		template<typename _DataType> GINL _DataType touppers(_DataType p){GAIA_AST(!!p); _DataType ret = p; while(*p != '\0'){*p = GAIA::ALGORITHM::toupper(*p);p++;} return ret;}
 		template<typename _DataType> GINL GAIA::BL islower(const _DataType& c){return c >= 'a' && c <= 'z';}
 		template<typename _DataType> GINL GAIA::BL isupper(const _DataType& c){return c >= 'A' && c <= 'Z';}
-		template<typename _DataType> GINL GAIA::BL isexistlower(_DataType p){GAIA_AST(!!p); while(*p != 0){if(GAIA::ALGORITHM::islower(*p)) return GAIA::True; p++;} return GAIA::False;}
-		template<typename _DataType> GINL GAIA::BL isexistupper(_DataType p){GAIA_AST(!!p); while(*p != 0){if(GAIA::ALGORITHM::isupper(*p)) return GAIA::True; p++;} return GAIA::False;}
-		template<typename _DataType> GINL GAIA::BL isalllower(_DataType p){GAIA_AST(!!p); while(*p != 0){if(!GAIA::ALGORITHM::islower(*p)) return GAIA::False; p++;} return GAIA::True;}
-		template<typename _DataType> GINL GAIA::BL isallupper(_DataType p){GAIA_AST(!!p); while(*p != 0){if(!GAIA::ALGORITHM::isupper(*p)) return GAIA::False; p++;} return GAIA::True;}
+		template<typename _DataType> GINL GAIA::BL isexistlower(_DataType p){GAIA_AST(!!p); while(*p != '\0'){if(GAIA::ALGORITHM::islower(*p)) return GAIA::True; p++;} return GAIA::False;}
+		template<typename _DataType> GINL GAIA::BL isexistupper(_DataType p){GAIA_AST(!!p); while(*p != '\0'){if(GAIA::ALGORITHM::isupper(*p)) return GAIA::True; p++;} return GAIA::False;}
+		template<typename _DataType> GINL GAIA::BL isalllower(_DataType p){GAIA_AST(!!p); while(*p != '\0'){if(!GAIA::ALGORITHM::islower(*p)) return GAIA::False; p++;} return GAIA::True;}
+		template<typename _DataType> GINL GAIA::BL isallupper(_DataType p){GAIA_AST(!!p); while(*p != '\0'){if(!GAIA::ALGORITHM::isupper(*p)) return GAIA::False; p++;} return GAIA::True;}
 		template<typename _DataType> GINL GAIA::BL isdigit(const _DataType& c){return c >= '0' && c <= '9';}
 		template<typename _DataType> GINL GAIA::BL isalpha(const _DataType& c){if(c < 'A' || c > 'z') return GAIA::False; return c <= 'Z' || c >= 'a';}
 		template<typename _DataType> GINL GAIA::BL ispunctuation(const _DataType& c){return c > ' ' && !GAIA::ALGORITHM::isalpha(c) && !GAIA::ALGORITHM::isdigit(c) && c < 0xFF;}
 		template<typename _DataType> GINL GAIA::BL isspecial(const _DataType& c){return c < ' ';}
 		template<typename _DataType> GINL GAIA::BL stremp(_DataType p)
 		{
-			if(p == GNULL || p[0] == 0)
+			if(p == GNULL || *p == '\0')
 				return GAIA::True;
 			return GAIA::False;
 		}
 		template<typename _DataType> GINL _DataType strend(_DataType p)
 		{
-			while(*p != 0) ++p;
+			while(*p != '\0') ++p;
 			return p;
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strch(_DataType1 p, const _DataType2& c)
 		{
-			while(*p != 0)
+			while(*p != '\0')
 			{
 				if(*p == c)
 					return p;
@@ -42,7 +42,7 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strich(_DataType1 p, const _DataType2& c)
 		{
-			while(*p != 0)
+			while(*p != '\0')
 			{
 				if(GAIA::ALGORITHM::tolower(*p) == GAIA::ALGORITHM::tolower(c))
 					return p;
@@ -50,11 +50,11 @@ namespace GAIA
 			}
 			return GNULL;
 		}
-		template<typename _DataType> GINL GAIA::SIZE strlen(_DataType p){GAIA_AST(!!p); GAIA::SIZE ret = 0; while(p[ret] != 0) ret++; return ret;}
+		template<typename _DataType> GINL GAIA::SIZE strlen(_DataType p){GAIA_AST(!!p); GAIA::SIZE ret = 0; while(p[ret] != '\0') ret++; return ret;}
 		template<typename _DataType1, typename _DataType2> GINL GAIA::SIZE strcnt(_DataType1 p, const _DataType2& key)
 		{
 			GAIA::SIZE ret = 0;
-			while(*p != 0)
+			while(*p != '\0')
 			{
 				if(*p == key)
 					++ret;
@@ -67,13 +67,13 @@ namespace GAIA
 			GAIA_AST(!!pDst);
 			GAIA_AST(!!pSrc);
 			_DataType1 ret = pDst;
-			while(*pSrc != 0)
+			while(*pSrc != '\0')
 			{
 				*pDst = *pSrc;
 				++pDst;
 				++pSrc;
 			}
-			*pDst = 0;
+			*pDst = '\0';
 			return ret;
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strcat(_DataType1 pDst, _DataType2 pSrc)
@@ -97,7 +97,7 @@ namespace GAIA
 					return +1;
 				else
 				{
-					if(*p1 == 0)
+					if(*p1 == '\0')
 						return 0;
 					++p1;
 					++p2;
@@ -117,7 +117,7 @@ namespace GAIA
 					return +1;
 				else
 				{
-					if(GAIA::ALGORITHM::tolower(*p1) == 0)
+					if(GAIA::ALGORITHM::tolower(*p1) == '\0')
 						return 0;
 					++p1;
 					++p2;
@@ -129,18 +129,18 @@ namespace GAIA
 		{
 			GAIA_AST(!!p1);
 			GAIA_AST(!!p2);
-			while(*p1 != 0)
+			while(*p1 != '\0')
 			{
 				_DataType1 po = p1;
 				_DataType2 p = p2;
-				while(*po != 0 && *p != 0)
+				while(*po != '\0' && *p != '\0')
 				{
 					if(*p != *po)
 						break;
 					++po;
 					++p;
 				}
-				if(*p == 0)
+				if(*p == '\0')
 					return p1;
 				++p1;
 			}
@@ -150,18 +150,18 @@ namespace GAIA
 		{
 			GAIA_AST(!!p1);
 			GAIA_AST(!!p2);
-			while(*p1 != 0)
+			while(*p1 != '\0')
 			{
 				_DataType1 po = p1;
 				_DataType2 p = p2;
-				while(*po != 0 && *p != 0)
+				while(*po != '\0' && *p != '\0')
 				{
 					if(GAIA::ALGORITHM::tolower(*p) != GAIA::ALGORITHM::tolower(*po))
 						break;
 					++po;
 					++p;
 				}
-				if(*p == 0)
+				if(*p == '\0')
 					return p1;
 				++p1;
 			}
@@ -221,14 +221,14 @@ namespace GAIA
 			GAIA_AST(!!p2);
 
 			_DataType1 p = p1;
-			while(*p != 0 && *p2 != 0)
+			while(*p != '\0' && *p2 != '\0')
 			{
 				if(*p2 != *p)
 					return GNULL;
 				++p;
 				++p2;
 			}
-			if(*p2 == 0)
+			if(*p2 == '\0')
 				return p1;
 			return GNULL;
 		}
@@ -238,24 +238,24 @@ namespace GAIA
 			GAIA_AST(!!p2);
 
 			_DataType1 p = p1;
-			while(GAIA::ALGORITHM::tolower(*p) != 0 && GAIA::ALGORITHM::tolower(*p2) != 0)
+			while(GAIA::ALGORITHM::tolower(*p) != '\0' && GAIA::ALGORITHM::tolower(*p2) != '\0')
 			{
 				if(*p2 != *p)
 					return GNULL;
 				++p;
 				++p2;
 			}
-			if(*p2 == 0)
+			if(*p2 == '\0')
 				return p1;
 			return GNULL;
 		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strdrop(_DataType1 p, _DataType2 pKeys)
 		{
 			_DataType1 p1 = p;
-			while(*p1 != 0)
+			while(*p1 != '\0')
 			{
 				_DataType2 p2 = pKeys;
-				while(*p2 != 0)
+				while(*p2 != '\0')
 				{
 					if(*p1 == *p2)
 						return p1;
@@ -268,10 +268,10 @@ namespace GAIA
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 stridrop(_DataType1 p, _DataType2 pKeys)
 		{
 			_DataType1 p1 = p;
-			while(*p1 != 0)
+			while(*p1 != '\0')
 			{
 				_DataType2 p2 = pKeys;
-				while(*p2 != 0)
+				while(*p2 != '\0')
 				{
 					if(GAIA::ALGORITHM::tolower(*p1) == GAIA::ALGORITHM::tolower(*p2))
 						return p1;
@@ -287,11 +287,11 @@ namespace GAIA
 			while(p1 > p)
 			{
 				_DataType2 p2 = pKeys;
-				while(*p2 != 0)
+				while(*p2 != '\0')
 				{
 					if(*p1 == *p2)
 					{
-						*(p1 + 1) = 0;
+						*(p1 + 1) = '\0';
 						return p1;
 					}
 					++p2;
@@ -306,11 +306,11 @@ namespace GAIA
 			while(p1 > p)
 			{
 				_DataType2 p2 = pKeys;
-				while(*p2 != 0)
+				while(*p2 != '\0')
 				{
 					if(GAIA::ALGORITHM::tolower(*p1) == GAIA::ALGORITHM::tolower(*p2))
 					{
-						*(p1 + 1) = 0;
+						*(p1 + 1) = '\0';
 						return p1;
 					}
 					++p2;
@@ -329,7 +329,7 @@ namespace GAIA
 					return GNULL;
 				if(*pEnd == '.')
 				{
-					if(pEnd[1] != 0)
+					if(pEnd[1] != '\0')
 						return &pEnd[1];
 				}
 				--pEnd;
@@ -360,7 +360,7 @@ namespace GAIA
 			}
 			else
 				GAIA::ALGORITHM::inverse(*pDst == '-' ? pDst + 1 : pDst, p - 1);
-			*p = 0;
+			*p = '\0';
 			return p + 1;
 		}
 		template<typename _SrcDataType, typename _DstDataType> GINL _DstDataType real2str(const _SrcDataType& src, _DstDataType pDst)
@@ -407,7 +407,7 @@ namespace GAIA
 				++pSrc;
 				--sizet;
 			}
-			*p = 0;
+			*p = '\0';
 			return pDst;
 		}
 		template<typename _SrcDataType, typename _SizeType> GINL GAIA::U8* str2hex(_SrcDataType pSrc, const _SizeType& size, GAIA::U8* pDst)
@@ -469,7 +469,7 @@ namespace GAIA
 			}
 			else
 				bSign = GAIA::False;
-			while(*pSrc != 0)
+			while(*pSrc != '\0')
 			{
 				if(*pSrc < '0' || *pSrc > '9')
 					break;
@@ -496,7 +496,7 @@ namespace GAIA
 			_DstDataType right = 0;
 			_DstDataType right_dst;
 			_DstDataType* pTarget = &left;
-			while(*pDst != 0)
+			while(*pDst != '\0')
 			{
 				if(*pDst < '0' || *pDst > '9')
 					break;
@@ -509,7 +509,7 @@ namespace GAIA
 				++pDst;
 				_DstDataType right_div = 1;
 				pTarget = &right;
-				while(*pDst != 0)
+				while(*pDst != '\0')
 				{
 					if(*pDst < '0' || *pDst > '9')
 						break;
@@ -526,6 +526,89 @@ namespace GAIA
 			if(bSign)
 				dst = -dst;
 			return pDst;
+		}
+		template<typename _DataType> GINL GAIA::U32 strtype(_DataType p)
+		{
+			if(GAIA::ALGORITHM::stremp(p))
+				return GAIA::STRING_TYPE_INVALID;
+
+			/* Check up the string is RID. */
+			GAIA::SIZE len = GAIA::ALGORITHM::strlen(p);
+			if(len == sizeof(GAIA::X128) || 
+				len == sizeof(GAIA::X128) * 2)
+			{
+				GAIA::BL bMatch = GAIA::True;
+				_DataType pTemp = p;
+				while(*pTemp != '\0')
+				{
+					if(*pTemp >= 'a' && *pTemp <= 'f' || 
+						*pTemp >= 'A' && *pTemp <= 'F' || 
+						*pTemp >= '0' && *pTemp <= '9'){}
+					else
+					{
+						bMatch = GAIA::False;
+						break;
+					}
+					++pTemp;
+				}
+				if(bMatch)
+				{
+					if(len == sizeof(GAIA::X128))
+						return GAIA::STRING_TYPE_RID | GAIA::STRING_TYPE_RID64;
+					else
+						return GAIA::STRING_TYPE_RID | GAIA::STRING_TYPE_RID128;
+				}
+			}
+
+			/* Check up the string is real. */
+			{
+				GAIA::BL bMatch = GAIA::True;
+				GAIA::BL bExistPoint = GAIA::False;
+				_DataType pTemp = p;
+				while(*pTemp != '\0')
+				{
+					if((*pTemp == '.') || 
+						(*pTemp >= '0' && *pTemp <= '9') || 
+						(pTemp == p && (*pTemp == '-' || *pTemp == '+')) || 
+						(pTemp[1] == '\0' && (*pTemp == 'f' || *pTemp == 'F')))
+					{
+						if(*pTemp == '.')
+							bExistPoint = GAIA::True;
+					}
+					else
+					{
+						bMatch = GAIA::False;
+						break;
+					}
+					++pTemp;
+				}
+				if(bMatch)
+				{
+					if(bExistPoint)
+						return GAIA::STRING_TYPE_REAL;
+				}
+			}
+
+			/* Check up the string is integer. */
+			{
+				GAIA::BL bMatch = GAIA::True;
+				_DataType pTemp = p;
+				while(*pTemp != '\0')
+				{
+					if((*pTemp >= '0' && *pTemp <= '9') || 
+						(pTemp == p && (*pTemp == '-' || *pTemp == '+'))){}
+					else
+					{
+						bMatch = GAIA::False;
+						break;
+					}
+					++pTemp;
+				}
+				if(bMatch)
+					return GAIA::STRING_TYPE_INTEGER;
+			}
+
+			return GAIA::STRING_TYPE_STRING;
 		}
 		template<typename _DataType> class string_cast;
 		#define GAIA_DECLARATION_STRINGCAST(type, convert_func) \

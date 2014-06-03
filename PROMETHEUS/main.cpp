@@ -1,4 +1,4 @@
-#if defined(_MSC_VER) && GAIA_PROFILE == GAIA_PROFILE_DEBUG
+#if GAIA_COMPILER == GAIA_COMPILER_CL && GAIA_PROFILE == GAIA_PROFILE_DEBUG
 #   define  _CRTDBG_MAP_ALLOC
 #   include <stdlib.h>
 #   include <stdio.h>

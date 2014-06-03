@@ -169,15 +169,17 @@ namespace GAIA
 				return GNULL;
 			}
 			_DataType pMid = pBegin + (pEnd - pBegin) / 2;
-			if(key > *pMid)
+			if((pEnd - pBegin) % 2 != 0)
+				++pMid;
+			if(key >= *pMid)
 			{
-				_DataType pRet = GAIA::ALGORITHM::upper_bound(pMid + 1, pEnd, key);
+				_DataType pRet = GAIA::ALGORITHM::upper_bound(pMid, pEnd, key);
 				if(pRet != GNULL)
 					return pRet;
 			}
-			else if(key <= *pMid)
+			else if(key < *pMid)
 			{
-				_DataType pRet = GAIA::ALGORITHM::upper_bound(pBegin, pMid, key);
+				_DataType pRet = GAIA::ALGORITHM::upper_bound(pBegin, pMid - 1, key);
 				if(pRet != GNULL)
 					return pRet;
 			}

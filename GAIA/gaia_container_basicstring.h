@@ -187,6 +187,7 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID clear(){m_size = 0; if(m_pFront != GNULL) m_pFront[0] = 0;}
 			GINL GAIA::GVOID destroy(){m_size = m_capacity = 0; if(m_pFront != GNULL){delete[] m_pFront; m_pFront = GNULL;}}
+			GINL GAIA::U32 type() const{return GAIA::ALGORITHM::strtype(m_pFront);}
 			GINL _DataType* front_ptr(){return m_pFront;}
 			GINL _DataType* back_ptr(){if(this->empty()) return GNULL; return m_pFront + this->size() - 1;}
 			GINL const _DataType* front_ptr() const{return m_pFront;}
