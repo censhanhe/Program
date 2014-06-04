@@ -94,7 +94,10 @@ namespace DWARFS_MISC
 			if(pFile == NULL)
 				return GAIA::False;
 			for(__LineListType::_sizetype x = 0; x < m_lines.size(); ++x)
+			{
+				GAIA_AST(m_lines[x].size() > 0);
 				pFile->Write(m_lines[x].front_ptr(), m_lines[x].size());
+			}
 			return GAIA::True;
 		}
 		GINL GAIA::GVOID clear(){m_lines.clear();}

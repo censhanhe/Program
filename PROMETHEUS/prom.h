@@ -1,3 +1,7 @@
+/*
+	TextLines and CmdParam need support operator = and compare operator.
+*/
+
 #ifndef 	__PROMETHEUS_H__
 #define 	__PROMETHEUS_H__
 
@@ -277,6 +281,13 @@ namespace PROM
 			GINL PipelineContext(){}
 			GINL ~PipelineContext(){}
 			virtual const GAIA::GCH* GetName() const = 0;
+		};
+		class PLCEmpty : public PipelineContext
+		{
+		public:
+			GINL PLCEmpty(){}
+			GINL ~PLCEmpty(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLCEmpty";}
 		};
 		class PLCSourceCommand : public PipelineContext
 		{
@@ -576,6 +587,44 @@ namespace PROM
 				return pRet;
 			}
 		};
+		class PLLineBreakCorrect : public Pipeline
+		{
+		public:
+			GINL PLLineBreakCorrect(){}
+			GINL ~PLLineBreakCorrect(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLLineBreakCorrect";}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			{
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+				PLCFileCodeLines* plc_codelines = GNULL;
+				for(GAIA::SIZE x = 0; x < size; ++x)
+				{
+					if(ppPLC[x] == GNULL)
+						continue;
+					const GAIA::GCH* pszName = ppPLC[x]->GetName();
+					if(GAIA::ALGORITHM::stremp(pszName))
+						return GNULL;
+					if(GAIA::ALGORITHM::strcmp(pszName, "Prom:PLCFileCodeLines") == 0)
+						plc_codelines = static_cast<PLCFileCodeLines*>(ppPLC[x]);
+				}
+				if(plc_codelines == GNULL)
+					return GNULL;
+
+				/* Initialize result pipeline context. */
+				PLCEmpty* pRet = new PLCEmpty;
+
+				/* Execute */
+				
+
+				return pRet;
+			}
+		};
 		class PLLineStatistics : public Pipeline
 		{
 		public:
@@ -716,8 +765,7 @@ namespace PROM
 							}
 						}
 						prt << "\tPipeline Stage : " << pTempPL->GetName() << "\n";
-						PipelineContext* pNewPLC = pTempPL->Execute(
-							plc_list.front_ptr(), plc_list.size(), prt, errs);
+						PipelineContext* pNewPLC = pTempPL->Execute(plc_list.front_ptr(), plc_list.size(), prt, errs);
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
 						new_plc_list.push_back(pNewPLC);
@@ -794,12 +842,17 @@ namespace PROM
 			{
 				Pipeline* pl_filecollect = new PLFileCollect;
 				pl_cmdanalyze->BindNext(pl_filecollect);
-				pl_filecollect->Release();
 				{
 					Pipeline* pl_linecollect = new PLLineCollect;
 					pl_filecollect->BindNext(pl_linecollect);
+					{
+						PLLineBreakCorrect* pl_linebreakcorrect = new PLLineBreakCorrect;
+						pl_linecollect->BindNext(pl_linebreakcorrect);
+						pl_linebreakcorrect->Release();
+					}
 					pl_linecollect->Release();
 				}
+				pl_filecollect->Release();
 			}
 			return pl_cmdanalyze;
 		}
