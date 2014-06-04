@@ -50,6 +50,8 @@ namespace PROM
 			PROM_ERROR(102,		0x0000, 0x0000, "command parameters error", "");
 			PROM_ERROR(103,		0x0000, 0x0000, "pipeline link structure error", "");
 			PROM_ERROR(501,		0x0000, 0x0003, "file specified by -i parameter is not exist", "");
+			PROM_ERROR(502,		0x0000, 0x0004, "file not exist!", "");
+			PROM_ERROR(511,		0x0000, 0x0002, "text line analyze failed!", "");
 			PROM_ERROR(1001,	0x0000, 0x0002, "allocate size not match the object", "Object* p = (Object*)malloc/calloc/realloc...(sizeof(Object));");
 		};
 
@@ -309,10 +311,8 @@ namespace PROM
 				__FileName name;
 			};
 			typedef GAIA::CONTAINER::Vector<File> __FileList;
-			typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::Ref<File> > __FileOPTList;
 		public:
 			__FileList filelist;
-			__FileOPTList fileoptlist;
 		};
 		class PLCFileCodeLines : public PipelineContext
 		{
@@ -324,7 +324,6 @@ namespace PROM
 			class FileCodeLines
 			{
 			public:
-				GAIA::SIZE fileid;
 				DWARFS_MISC::TextLines lines;
 			};
 			typedef GAIA::CONTAINER::Vector<FileCodeLines> __FileCodelinesList;
@@ -473,7 +472,7 @@ namespace PROM
 
 					GAIA::FILESYSTEM::File file;
 					if(!file.Open(tempfile.name, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
-						PROM_RAISE_FILEERROR(501, tempfile.name.front_ptr());
+						PROM_RAISE_FILEERROR(501, tempfile.name);
 				}
 				GAIA::CONTAINER::AString strExt;
 				for(__ExtListType::_sizetype x = 0; x < listExt.size(); ++x)
@@ -499,11 +498,15 @@ namespace PROM
 								GAIA::FILESYSTEM::Directory::__ResultTree::const_it tempit = it;
 								listTempPathPart.clear();
 								tempfile.name.clear();
-								for(; !tempit.empty(); ++tempit)
+								for(; !tempit.empty(); tempit = restree.parent_it(tempit))
 									listTempPathPart.push_back(*tempit);
 								listTempPathPart.inverse();
 								for(__PathListType::_sizetype y = 0; y < listTempPathPart.size(); ++y)
-									tempfile.name += listTempPathPart[x];
+								{
+									if(!tempfile.name.empty())
+										tempfile.name += "/";
+									tempfile.name += listTempPathPart[y];
+								}
 								pRet->filelist.push_back(tempfile);
 							}
 						}
@@ -511,8 +514,7 @@ namespace PROM
 				}
 				pRet->filelist.sort();
 				pRet->filelist.unique();
-				for(PLCFile::__FileList::_sizetype x = 0; x < pRet->filelist.size(); ++x)
-					pRet->fileoptlist.push_back(&pRet->filelist[x]);
+				prt << "\t\tThere are " << pRet->filelist.size() << " files collected!\n";
 
 				return pRet;
 			}
@@ -550,7 +552,24 @@ namespace PROM
 				PLCFileCodeLines* pRet = new PLCFileCodeLines;
 
 				/* Execute */
-
+				pRet->file_codelines_list.resize(plc_file->filelist.size());
+				GAIA::SIZE uTotalLineCount = 0;
+				for(PLCFile::__FileList::_sizetype x = 0; x < plc_file->filelist.size(); ++x)
+				{
+					GAIA::FILESYSTEM::File file;
+					if(!file.Open(plc_file->filelist[x].name, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+					{
+						PROM_RAISE_FILEERROR(502, plc_file->filelist[x].name);
+						continue;
+					}
+					if(!pRet->file_codelines_list[x].lines.load(&file))
+					{
+						PROM_RAISE_FILEERROR(511, plc_file->filelist[x].name);
+						continue;
+					}
+					uTotalLineCount += pRet->file_codelines_list.size();
+				}
+				prt << "\t\tThere are " << uTotalLineCount << " lines collected!\n";
 
 				return pRet;
 			}
@@ -661,8 +680,8 @@ namespace PROM
 					}
 					if(uPracPrevSize == 0)
 					{
-						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, prt, errs);
 						prt << "\tPipeline Stage : " << pTempPL->GetName() << "\n";
+						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, prt, errs);
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
 						new_plc_list.push_back(pNewPLC);
@@ -694,9 +713,9 @@ namespace PROM
 								break;
 							}
 						}
+						prt << "\tPipeline Stage : " << pTempPL->GetName() << "\n";
 						PipelineContext* pNewPLC = pTempPL->Execute(
 							plc_list.front_ptr(), plc_list.size(), prt, errs);
-						prt << "\tPipeline Stage : " << pTempPL->GetName() << "\n";
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
 						new_plc_list.push_back(pNewPLC);

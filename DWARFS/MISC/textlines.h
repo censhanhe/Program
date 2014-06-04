@@ -28,6 +28,8 @@ namespace DWARFS_MISC
 			GAIA_AST(pFile != GNULL);
 			if(pFile == GNULL)
 				return GAIA::False;
+			if(pFile->Size() == 0)
+				return GAIA::True;
 			typedef GAIA::CONTAINER::Buffer __BufferType;
 			__BufferType buf;
 			buf.resize(pFile->Size());
