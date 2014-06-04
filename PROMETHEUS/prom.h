@@ -51,7 +51,9 @@ namespace PROM
 			PROM_ERROR(103,		0x0000, 0x0000, "pipeline link structure error", "");
 			PROM_ERROR(501,		0x0000, 0x0003, "file specified by -i parameter is not exist", "");
 			PROM_ERROR(502,		0x0000, 0x0004, "file not exist!", "");
+			PROM_ERROR(503,		0x0000, 0x0002, "create file failed!", "");
 			PROM_ERROR(511,		0x0000, 0x0002, "text line analyze failed!", "");
+			PROM_ERROR(512,		0x0000, 0x0002, "text line save failed!", "");
 			PROM_ERROR(1001,	0x0000, 0x0002, "allocate size not match the object", "Object* p = (Object*)malloc/calloc/realloc...(sizeof(Object));");
 		};
 
