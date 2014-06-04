@@ -348,6 +348,37 @@ namespace PROM
 		public:
 			GINL Pipeline(){}
 			GINL ~Pipeline(){}
+			GINL PipelineContext* GetPLCByName(PipelineContext** ppPLC, const GAIA::SIZE& size, const GAIA::GCH* pszName) const
+			{
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+				for(GAIA::SIZE x = 0; x < size; ++x)
+				{
+					if(ppPLC[x] == GNULL)
+						continue;
+					const GAIA::GCH* pszTempName = ppPLC[x]->GetName();
+					if(GAIA::ALGORITHM::strcmp(pszTempName, pszName) == 0)
+					{
+						ppPLC[x]->Reference();
+						return ppPLC[x];
+					}
+					for(GAIA::SIZE y = 0; y < ppPLC[x]->GetPrevSize(); ++y)
+					{
+						PipelineContext* pPrevPLC = static_cast<PipelineContext*>(ppPLC[x]->GetPrev(y));
+						if(pPrevPLC == GNULL)
+							continue;
+						PipelineContext* pPrevResult = this->GetPLCByName(&pPrevPLC, 1, pszName);
+						pPrevPLC->Release();
+						if(pPrevResult != GNULL)
+							return pPrevResult;
+					}
+				}
+				return GNULL;
+			}
 			virtual const GAIA::GCH* GetName() const = 0;
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs) = 0;
 		};
@@ -366,17 +397,7 @@ namespace PROM
 				GAIA_AST(size != 0);
 				if(size == 0)
 					return GNULL;
-				PLCSourceCommand* plc_sourcecommand = GNULL;
-				for(GAIA::SIZE x = 0; x < size; ++x)
-				{
-					if(ppPLC[x] == GNULL)
-						continue;
-					const GAIA::GCH* pszName = ppPLC[x]->GetName();
-					if(GAIA::ALGORITHM::stremp(pszName))
-						return GNULL;
-					if(GAIA::ALGORITHM::strcmp(pszName, "Prom:PLCSourceCommand") == 0)
-						plc_sourcecommand = static_cast<PLCSourceCommand*>(ppPLC[x]);
-				}
+				PLCSourceCommand* plc_sourcecommand = static_cast<PLCSourceCommand*>(this->GetPLCByName(ppPLC, size, "Prom:PLCSourceCommand"));
 				if(plc_sourcecommand == GNULL)
 					return GNULL;
 
@@ -396,8 +417,12 @@ namespace PROM
 				{
 					PROM_RAISE_FATALERROR(102);
 					pRet->Release();
+					plc_sourcecommand->Release();
 					return GNULL;
 				}
+
+				/* Release. */
+				plc_sourcecommand->Release();
 
 				return pRet;
 			}
@@ -417,17 +442,7 @@ namespace PROM
 				GAIA_AST(size != 0);
 				if(size == 0)
 					return GNULL;
-				PLCCommandParam* plc_commandparam = GNULL;
-				for(GAIA::SIZE x = 0; x < size; ++x)
-				{
-					if(ppPLC[x] == GNULL)
-						continue;
-					const GAIA::GCH* pszName = ppPLC[x]->GetName();
-					if(GAIA::ALGORITHM::stremp(pszName))
-						return GNULL;
-					if(GAIA::ALGORITHM::strcmp(pszName, "Prom:PLCCommandParam") == 0)
-						plc_commandparam = static_cast<PLCCommandParam*>(ppPLC[x]);
-				}
+				PLCCommandParam* plc_commandparam = static_cast<PLCCommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLCCommandParam"));
 				if(plc_commandparam == GNULL)
 					return GNULL;
 
@@ -529,6 +544,9 @@ namespace PROM
 				pRet->filelist.unique();
 				prt << "\t\tThere are " << pRet->filelist.size() << " files collected!\n";
 
+				/* Release. */
+				plc_commandparam->Release();
+
 				return pRet;
 			}
 		};
@@ -547,17 +565,7 @@ namespace PROM
 				GAIA_AST(size != 0);
 				if(size == 0)
 					return GNULL;
-				PLCFile* plc_file = GNULL;
-				for(GAIA::SIZE x = 0; x < size; ++x)
-				{
-					if(ppPLC[x] == GNULL)
-						continue;
-					const GAIA::GCH* pszName = ppPLC[x]->GetName();
-					if(GAIA::ALGORITHM::stremp(pszName))
-						return GNULL;
-					if(GAIA::ALGORITHM::strcmp(pszName, "Prom:PLCFile") == 0)
-						plc_file = static_cast<PLCFile*>(ppPLC[x]);
-				}
+				PLCFile* plc_file = static_cast<PLCFile*>(this->GetPLCByName(ppPLC, size, "Prom:PLCFile"));
 				if(plc_file == GNULL)
 					return GNULL;
 
@@ -584,6 +592,9 @@ namespace PROM
 				}
 				prt << "\t\tThere are " << uTotalLineCount << " lines collected!\n";
 
+				/* Release. */
+				plc_file->Release();
+
 				return pRet;
 			}
 		};
@@ -602,26 +613,27 @@ namespace PROM
 				GAIA_AST(size != 0);
 				if(size == 0)
 					return GNULL;
+				PLCEmpty* pRet = GNULL;
+				PLCCommandParam* plc_commandparam = GNULL;
 				PLCFileCodeLines* plc_codelines = GNULL;
-				for(GAIA::SIZE x = 0; x < size; ++x)
-				{
-					if(ppPLC[x] == GNULL)
-						continue;
-					const GAIA::GCH* pszName = ppPLC[x]->GetName();
-					if(GAIA::ALGORITHM::stremp(pszName))
-						return GNULL;
-					if(GAIA::ALGORITHM::strcmp(pszName, "Prom:PLCFileCodeLines") == 0)
-						plc_codelines = static_cast<PLCFileCodeLines*>(ppPLC[x]);
-				}
+				plc_commandparam = static_cast<PLCCommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLCCommandParam"));
+				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_codelines = static_cast<PLCFileCodeLines*>(this->GetPLCByName(ppPLC, size, "Prom:PLCFileCodeLines"));
 				if(plc_codelines == GNULL)
-					return GNULL;
+					goto FUNCTION_END;
 
 				/* Initialize result pipeline context. */
-				PLCEmpty* pRet = new PLCEmpty;
+				pRet = new PLCEmpty;
 
 				/* Execute */
-				
 
+				/* Release. */
+			FUNCTION_END:
+				if(plc_commandparam != GNULL)
+					plc_commandparam->Release();
+				if(plc_codelines != GNULL)
+					plc_codelines->Release();
 				return pRet;
 			}
 		};
@@ -656,6 +668,42 @@ namespace PROM
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
+			}
+		};
+		class PLSave : public Pipeline
+		{
+		public:
+			GINL PLSave(){}
+			GINL ~PLSave(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLSave";}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			{
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+				PLCEmpty* pRet = GNULL;
+				PLCCommandParam* plc_commandparam = GNULL;
+				PLCFileCodeLines* plc_codelines = GNULL;
+				plc_commandparam = static_cast<PLCCommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLCCommandParam"));
+				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_codelines = static_cast<PLCFileCodeLines*>(this->GetPLCByName(ppPLC, size, "Prom:PLCFileCodeLines"));
+				if(plc_codelines == GNULL)
+					goto FUNCTION_END;
+
+				/* Initialize result pipeline context. */
+				pRet = new PLCEmpty;
+
+				/* Execute */
+
+				/* Release. */
+			FUNCTION_END:
+
+				return pRet;
 			}
 		};
 		class PipelineDispatch : public GAIA::RefObject
@@ -695,9 +743,6 @@ namespace PROM
 					GAIA_AST(prevpl_size != 0);
 					if(prevpl_size == 0)
 						return;
-					GAIA_AST(prevpl_size == nextpl_size);
-					if(prevpl_size != nextpl_size)
-						return;
 				}
 				for(GAIA::SIZE x = 0; x < prevpl_size; ++x)
 				{
@@ -735,6 +780,15 @@ namespace PROM
 						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, prt, errs);
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
+						else
+						{
+							for(GAIA::SIZE y = 0; y  < plc_size; y++)
+							{
+								if(ppPLC[y] == GNULL)
+									continue;
+								ppPLC[y]->BindNext(pNewPLC);
+							}
+						}
 						new_plc_list.push_back(pNewPLC);
 					}
 					else
@@ -768,6 +822,15 @@ namespace PROM
 						PipelineContext* pNewPLC = pTempPL->Execute(plc_list.front_ptr(), plc_list.size(), prt, errs);
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
+						else
+						{
+							for(GAIA::SIZE y = 0; y  < plc_size; y++)
+							{
+								if(ppPLC[y] == GNULL)
+									continue;
+								ppPLC[y]->BindNext(pNewPLC);
+							}
+						}
 						new_plc_list.push_back(pNewPLC);
 					}
 				}
@@ -798,7 +861,11 @@ namespace PROM
 				for(GAIA::SIZE x = 0; x < new_plc_list.size(); ++x)
 				{
 					if(new_plc_list[x] != GNULL)
+					{
+						new_plc_list[x]->UnbindPrevAll();
+						new_plc_list[x]->UnbindNextAll();
 						new_plc_list[x]->Release();
+					}
 				}
 			}
 		protected:
@@ -849,6 +916,10 @@ namespace PROM
 						PLLineBreakCorrect* pl_linebreakcorrect = new PLLineBreakCorrect;
 						pl_linecollect->BindNext(pl_linebreakcorrect);
 						pl_linebreakcorrect->Release();
+
+						PLSave* pl_save = new PLSave;
+						pl_linecollect->BindNext(pl_save);
+						pl_save->Release();
 					}
 					pl_linecollect->Release();
 				}
