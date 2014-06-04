@@ -8,11 +8,11 @@ namespace GAIA
 		class FileBase : public GAIA::Base
 		{
 		public:
-			GAIA_ENUM_BEGIN(FILE_OPEN_TYPE)
+			GAIA_ENUM_BEGIN(OPEN_TYPE)
 				OPEN_TYPE_READ	= 1 << 0,
 				OPEN_TYPE_WRITE = 1 << 1,
 				OPEN_TYPE_CREATEALWAYS	= 1 << 2,
-			GAIA_ENUM_END(FILE_OPEN_TYPE)
+			GAIA_ENUM_END(OPEN_TYPE)
 		public:
 			virtual GAIA::BL Open(const GAIA::GCH* filekey, const GAIA::UM& opentype) = 0;
 			virtual GAIA::BL Close() = 0;
@@ -30,7 +30,7 @@ namespace GAIA
 		class File : public FileBase
 		{
 		public:
-			GINL File(){m_fileopentype = FILE_OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNULL;}
+			GINL File(){m_fileopentype = OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNULL;}
 			GINL virtual ~File(){if(this->IsOpen()) this->Close();}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Open(const GAIA::GCH* filekey, const GAIA::UM& opentype);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Close();

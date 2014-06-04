@@ -49,6 +49,7 @@ namespace PROM
 			PROM_ERROR(101,		0x0000, 0x0000, "pipeline execute failed, no pipeline context returned", "");
 			PROM_ERROR(102,		0x0000, 0x0000, "command parameters error", "");
 			PROM_ERROR(103,		0x0000, 0x0000, "pipeline link structure error", "");
+			PROM_ERROR(501,		0x0000, 0x0003, "file specified by -i parameter is not exist", "");
 			PROM_ERROR(1001,	0x0000, 0x0002, "allocate size not match the object", "Object* p = (Object*)malloc/calloc/realloc...(sizeof(Object));");
 		};
 
@@ -59,7 +60,7 @@ namespace PROM
 			errs.push_back(temp_error);\
 		}while(GAIA::ALWAYSFALSE)
 
-	#define PROM_RAISE_FILEERROR(id, filename, line) \
+	#define PROM_RAISE_FILEERROR(id, filename) \
 		do\
 		{\
 			ERROR_SYSTEM::ERROR_##id* temp_error = new ERROR_SYSTEM::ERROR_##id;\
@@ -296,14 +297,15 @@ namespace PROM
 		class PLCFile : public PipelineContext
 		{
 		public:
-			GINL PLCFile();
-			GINL ~PLCFile();
+			GINL PLCFile(){}
+			GINL ~PLCFile(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLCFile";}
 		public:
 			typedef GAIA::CONTAINER::AString __FileName;
 			class File
 			{
 			public:
+				GAIA_CLASS_OPERATOR_COMPARE(name, name, File);
 				__FileName name;
 			};
 			typedef GAIA::CONTAINER::Vector<File> __FileList;
@@ -315,8 +317,8 @@ namespace PROM
 		class PLCFileCodeLines : public PipelineContext
 		{
 		public:
-			GINL PLCFileCodeLines();
-			GINL ~PLCFileCodeLines();
+			GINL PLCFileCodeLines(){}
+			GINL ~PLCFileCodeLines(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLCFileCodeLines";}
 		public:
 			class FileCodeLines
@@ -358,9 +360,7 @@ namespace PROM
 					if(ppPLC[x] == GNULL)
 						continue;
 					const GAIA::GCH* pszName = ppPLC[x]->GetName();
-					if(pszName == GNULL)
-						return GNULL;
-					if(pszName[0] == 0)
+					if(GAIA::ALGORITHM::stremp(pszName))
 						return GNULL;
 					if(GAIA::ALGORITHM::strcmp(pszName, "Prom:PLCSourceCommand") == 0)
 						plc_sourcecommand = static_cast<PLCSourceCommand*>(ppPLC[x]);
@@ -398,7 +398,161 @@ namespace PROM
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLFileCollect";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
-				return GNULL;
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+				PLCCommandParam* plc_commandparam = GNULL;
+				for(GAIA::SIZE x = 0; x < size; ++x)
+				{
+					if(ppPLC[x] == GNULL)
+						continue;
+					const GAIA::GCH* pszName = ppPLC[x]->GetName();
+					if(GAIA::ALGORITHM::stremp(pszName))
+						return GNULL;
+					if(GAIA::ALGORITHM::strcmp(pszName, "Prom:PLCCommandParam") == 0)
+						plc_commandparam = static_cast<PLCCommandParam*>(ppPLC[x]);
+				}
+				if(plc_commandparam == GNULL)
+					return GNULL;
+
+				/* Initialize result pipeline context. */
+				PLCFile* pRet = new PLCFile;
+
+				/* Execute. */
+				typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::AString> __FileListType;
+				typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::AString> __PathListType;
+				typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::AString> __ExtListType;
+				__FileListType listFile;
+				__PathListType listPath;
+				__ExtListType listExt;
+				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
+				{
+					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					if(GAIA::ALGORITHM::stremp(pszCmd))
+						continue;
+					if(GAIA::ALGORITHM::strcmp(pszCmd, "-i") == 0)
+					{
+						for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
+						{
+							const GAIA::GCH* pszParam = plc_commandparam->cmdparam.param(x, y);
+							if(GAIA::ALGORITHM::stremp(pszParam))
+								continue;
+							listFile.push_back(pszParam);
+						}
+					}
+					else if(GAIA::ALGORITHM::strcmp(pszCmd, "-I") == 0)
+					{
+						for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
+						{
+							const GAIA::GCH* pszParam = plc_commandparam->cmdparam.param(x, y);
+							if(GAIA::ALGORITHM::stremp(pszParam))
+								continue;
+							listPath.push_back(pszParam);
+						}
+					}
+					else if(GAIA::ALGORITHM::strcmp(pszCmd, "-E") == 0)
+					{
+						for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
+						{
+							const GAIA::GCH* pszParam = plc_commandparam->cmdparam.param(x, y);
+							if(GAIA::ALGORITHM::stremp(pszParam))
+								continue;
+							listExt.push_back(pszParam);
+						}
+					}
+				}
+				for(__FileListType::_sizetype x = 0; x < listFile.size(); ++x)
+				{
+					PLCFile::File tempfile;
+					tempfile.name = listFile[x];
+					pRet->filelist.push_back(tempfile);
+
+					GAIA::FILESYSTEM::File file;
+					if(!file.Open(tempfile.name, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+						PROM_RAISE_FILEERROR(501, tempfile.name.front_ptr());
+				}
+				GAIA::CONTAINER::AString strExt;
+				for(__ExtListType::_sizetype x = 0; x < listExt.size(); ++x)
+				{
+					if(!strExt.empty())
+						strExt += "|";
+					strExt += listExt[x];
+				}
+				GAIA::FILESYSTEM::Directory::__ResultTree restree;
+				__PathListType listTempPathPart;
+				PLCFile::File tempfile;
+				for(__PathListType::_sizetype x = 0; x < listPath.size(); ++x)
+				{
+					GAIA::FILESYSTEM::Directory dir;
+					restree.clear();
+					if(dir.CollectFile(listPath[x], strExt, GAIA::True, restree))
+					{
+						GAIA::FILESYSTEM::Directory::__ResultTree::const_it it = restree.const_front_it();
+						for(; !it.empty(); ++it)
+						{
+							if(restree.leaf(it))
+							{
+								GAIA::FILESYSTEM::Directory::__ResultTree::const_it tempit = it;
+								listTempPathPart.clear();
+								tempfile.name.clear();
+								for(; !tempit.empty(); ++tempit)
+									listTempPathPart.push_back(*tempit);
+								listTempPathPart.inverse();
+								for(__PathListType::_sizetype y = 0; y < listTempPathPart.size(); ++y)
+									tempfile.name += listTempPathPart[x];
+								pRet->filelist.push_back(tempfile);
+							}
+						}
+					}
+				}
+				pRet->filelist.sort();
+				pRet->filelist.unique();
+				for(PLCFile::__FileList::_sizetype x = 0; x < pRet->filelist.size(); ++x)
+					pRet->fileoptlist.push_back(&pRet->filelist[x]);
+
+				return pRet;
+			}
+		};
+		class PLLineCollect : public Pipeline
+		{
+		public:
+			GINL PLLineCollect(){}
+			GINL ~PLLineCollect(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLLineCollect";}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			{
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+				PLCFile* plc_file = GNULL;
+				for(GAIA::SIZE x = 0; x < size; ++x)
+				{
+					if(ppPLC[x] == GNULL)
+						continue;
+					const GAIA::GCH* pszName = ppPLC[x]->GetName();
+					if(GAIA::ALGORITHM::stremp(pszName))
+						return GNULL;
+					if(GAIA::ALGORITHM::strcmp(pszName, "Prom:PLCFile") == 0)
+						plc_file = static_cast<PLCFile*>(ppPLC[x]);
+				}
+				if(plc_file == GNULL)
+					return GNULL;
+
+				/* Initialize result pipeline context. */
+				PLCFileCodeLines* pRet = new PLCFileCodeLines;
+
+				/* Execute */
+
+
+				return pRet;
 			}
 		};
 		class PLLineStatistics : public Pipeline
@@ -487,12 +641,6 @@ namespace PROM
 					if(ppNextPL[x] == GNULL)
 						return;
 				}
-				for(GAIA::SIZE x = 0; x < plc_size; ++x)
-				{
-					GAIA_AST(ppPLC[x] != GNULL);
-					if(ppPLC[x] == GNULL)
-						return;
-				}
 
 				/* Dispatch current layer. */
 				__PipelineContextList plc_list;
@@ -514,6 +662,7 @@ namespace PROM
 					if(uPracPrevSize == 0)
 					{
 						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, prt, errs);
+						prt << "\tPipeline Stage : " << pTempPL->GetName() << "\n";
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
 						new_plc_list.push_back(pNewPLC);
@@ -547,6 +696,7 @@ namespace PROM
 						}
 						PipelineContext* pNewPLC = pTempPL->Execute(
 							plc_list.front_ptr(), plc_list.size(), prt, errs);
+						prt << "\tPipeline Stage : " << pTempPL->GetName() << "\n";
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
 						new_plc_list.push_back(pNewPLC);
@@ -620,10 +770,22 @@ namespace PROM
 		GINL Pipeline* ConstructPipeline()
 		{
 			Pipeline* pl_cmdanalyze = new PLCommandAnalyze;
+			{
+				Pipeline* pl_filecollect = new PLFileCollect;
+				pl_cmdanalyze->BindNext(pl_filecollect);
+				pl_filecollect->Release();
+				{
+					Pipeline* pl_linecollect = new PLLineCollect;
+					pl_filecollect->BindNext(pl_linecollect);
+					pl_linecollect->Release();
+				}
+			}
 			return pl_cmdanalyze;
 		}
 		GINL GAIA::GVOID DestructPipeline(Pipeline* pPL)
 		{
+			pPL->UnbindPrevAll();
+			pPL->UnbindNextAll();
 			pPL->Release();
 		}
 		GINL GAIA::GVOID PrintError(GAIA::PRINT::PrintBase& prt)
@@ -650,7 +812,7 @@ namespace PROM
 				if(!GAIA::ALGORITHM::stremp(pError->getfilename()))
 				{
 					prt << ", ";
-					prt << pError->getfileline();
+					prt << pError->getfilename();
 					if(pError->getfileline() != GINVALID)
 						prt << "(" << pError->getfileline() << ")";
 				}

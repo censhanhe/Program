@@ -49,7 +49,7 @@ namespace GAIA
 			{
 				fclose((FILE*)m_pFile);
 				m_pFile = GNULL;
-				m_fileopentype = FILE_OPEN_TYPE_INVALID;
+				m_fileopentype = OPEN_TYPE_INVALID;
 				m_size = m_offset = 0;
 				return GAIA::True;
 			}

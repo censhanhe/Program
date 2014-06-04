@@ -9,18 +9,18 @@
 #	define HEAPCHECK
 #endif
 
+#ifdef GAIA_DEBUG_MEMORYLEAK
+#	if GAIA_OS == GAIA_OS_WINDOWS && GAIA_PROFILE == GAIA_PROFILE_DEBUG
+#		define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#	endif
+#endif
+
 #include "../gaia.h"
 #include "../gaia_global_impl.h"
 #include "t_header.h"
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	pragma comment(lib, "ws2_32.lib")
-#endif
-
-#ifdef GAIA_DEBUG_MEMORYLEAK
-#	if GAIA_OS == GAIA_OS_WINDOWS && GAIA_PROFILE == GAIA_PROFILE_DEBUG
-#		define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
-#	endif
 #endif
 
 int main()
