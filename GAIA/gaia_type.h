@@ -57,8 +57,8 @@ namespace GAIA
 	static const GAIA::SIZE MAXSIZE = (GAIA::SIZE)N32MAXSIZE;
 
 	/* Bool enum. */
-	static const BL True = 1;
-	static const BL False = 0;
+	static const BL True = true;
+	static const BL False = false;
 
 	/* Void. */
 	typedef void GVOID;

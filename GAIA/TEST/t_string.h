@@ -1190,6 +1190,13 @@ namespace GAIATEST
 			GTLINE2("String replace element object right failed!");
 			++nRet;
 		}
+		str = "HelloWorldHelloWorld";
+		str.replace("Hello", "");
+		if(str != "WorldWorld")
+		{
+			GTLINE2("String replace to empty string failed!");
+			++nRet;
+		}
 		str = "Hello";
 		str = 10 + str;
 		if(str != "10Hello")

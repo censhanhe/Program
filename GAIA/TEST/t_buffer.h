@@ -182,6 +182,36 @@ namespace GAIATEST
 			GTLINE2("Buffer operator = failed!");
 			++nRet;
 		}
+		if(!(b == b1))
+		{
+			GTLINE2("Buffer operator == failed!");
+			++nRet;
+		}
+		if(!(b >= b1))
+		{
+			GTLINE2("Buffer operator >= failed!");
+			++nRet;
+		}
+		if(!(b <= b1))
+		{
+			GTLINE2("Buffer operator <= failed!");
+			++nRet;
+		}
+		if(b != b1)
+		{
+			GTLINE2("Buffer operator != failed!");
+			++nRet;
+		}
+		if(b > b1)
+		{
+			GTLINE2("Buffer operator > failed!");
+			++nRet;
+		}
+		if(b < b1)
+		{
+			GTLINE2("Buffer operator < failed!");
+			++nRet;
+		}
 		if(!(b1 == b && b1 >= b && b1 <= b))
 		{
 			GTLINE2("Buffer operator == >= <= failed!");

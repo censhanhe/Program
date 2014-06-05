@@ -1,5 +1,5 @@
 /*
-	TextLines and CmdParam need support operator = and compare operator.
+	String operator from Chars and inverse.
 */
 
 #ifndef 	__PROMETHEUS_H__
@@ -320,8 +320,12 @@ namespace PROM
 			class File
 			{
 			public:
+				File(){this->init();}
 				GAIA_CLASS_OPERATOR_COMPARE(name, name, File);
 				__FileName name;
+				GAIA::BL bNeedSave;
+			private:
+				GINL GAIA::GVOID init(){bNeedSave = GAIA::False;}
 			};
 			typedef GAIA::CONTAINER::Vector<File> __FileList;
 		public:
@@ -408,6 +412,7 @@ namespace PROM
 					pRet->cmdparam.cmd_decl("-i", "input files", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-I", "input directory", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-E", "input directory files extension name filter", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-s", "save changes to source files", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-linebreak", "change lines break flag, use \"\\r\" \"\\n\" or \"\\r\\n\"", 1, 1, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 				}
 				pRet->cmdparam.end_decl();
@@ -613,11 +618,16 @@ namespace PROM
 				GAIA_AST(size != 0);
 				if(size == 0)
 					return GNULL;
+				GAIA::CONTAINER::AChars chs;
 				PLCEmpty* pRet = GNULL;
 				PLCCommandParam* plc_commandparam = GNULL;
+				PLCFile* plc_file = GNULL;
 				PLCFileCodeLines* plc_codelines = GNULL;
 				plc_commandparam = static_cast<PLCCommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLCCommandParam"));
 				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_file = static_cast<PLCFile*>(this->GetPLCByName(ppPLC, size, "Prom:PLCFile"));
+				if(plc_file == GNULL)
 					goto FUNCTION_END;
 				plc_codelines = static_cast<PLCFileCodeLines*>(this->GetPLCByName(ppPLC, size, "Prom:PLCFileCodeLines"));
 				if(plc_codelines == GNULL)
@@ -627,11 +637,99 @@ namespace PROM
 				pRet = new PLCEmpty;
 
 				/* Execute */
+				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
+				{
+					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					if(GAIA::ALGORITHM::stremp(pszCmd))
+						continue;
+					if(GAIA::ALGORITHM::strcmp(pszCmd, "-linebreak") == 0)
+					{
+						GAIA_AST(plc_commandparam->cmdparam.param_size(x) == 1);
+						if(plc_commandparam->cmdparam.param_size(x) == 1)
+						{
+							chs = plc_commandparam->cmdparam.param(x, 0);
+							break;
+						}
+					}
+				}
+				if(!chs.empty())
+				{
+					GAIA::SIZE remove_rn = 0;
+					GAIA::SIZE remove_n = 0;
+					GAIA::SIZE remove_r = 0;
+					GAIA::SIZE add = 0;
+					GAIA::SIZE old_remove_rn = 0;
+					GAIA::SIZE old_remove_n = 0;
+					GAIA::SIZE old_remove_r = 0;
+					GAIA::SIZE old_add = 0;
+					GAIA::SIZE need_save = 0;
+					GAIA::CONTAINER::AString strTemp;
+					for(GAIA::SIZE x = 0; x < plc_codelines->file_codelines_list.size(); ++x)
+					{
+						PLCFileCodeLines::__FileCodelinesList::_datatype& t = plc_codelines->file_codelines_list[x];
+						GAIA::BL bNeedSave = GAIA::False;
+						for(GAIA::SIZE y = 0; y < t.lines.size(); ++y)
+						{
+							strTemp = t.lines.get_line(y);
+							GAIA_AST(!strTemp.empty());
+							if(strTemp.empty())
+								continue;
+
+							old_remove_rn = remove_rn;
+							old_remove_n = remove_n;
+							old_remove_r = remove_r;
+							old_add = add;
+
+							GAIA::BL bExistValidFlag = GAIA::False;
+							if(strTemp.size () >= chs.size())
+							{
+								if(strTemp.rfind(chs.front_ptr(), strTemp.size() - 1) != strTemp.size() - chs.size())
+									++add;
+								else
+									bExistValidFlag = GAIA::True;
+							}
+							else
+								++add;
+
+							remove_rn += strTemp.replace("\r\n", "");
+							remove_n += strTemp.replace("\n", "");
+							remove_r += strTemp.replace("\r", "");
+							strTemp += chs.front_ptr();
+
+							if(bExistValidFlag)
+							{
+								if(chs == "\r\n")
+									--remove_rn;
+								if(chs == "\n")
+									--remove_n;
+								if(chs == "\r")
+									--remove_r;
+							}
+							t.lines.set_line(y, strTemp);
+
+							if(remove_rn != old_remove_rn || 
+								remove_n != old_remove_n || 
+								remove_r != old_remove_r || 
+								add != old_add)
+								bNeedSave = GAIA::True;
+						}
+						if(bNeedSave)
+						{
+							plc_file->filelist[x].bNeedSave = GAIA::True;
+							++need_save;
+						}
+					}
+					prt << "\t\tAdd " << chs.front_ptr() << "=" << add << ".\n";
+					prt << "\t\tRemove \\r\\n=" << remove_rn << ", \\n=" << remove_n << ", \\r=" << remove_r << ".\n";
+					prt << "\t\tChange " << need_save << " files.\n";
+				}
 
 				/* Release. */
 			FUNCTION_END:
 				if(plc_commandparam != GNULL)
 					plc_commandparam->Release();
+				if(plc_file != GNULL)
+					plc_file->Release();
 				if(plc_codelines != GNULL)
 					plc_codelines->Release();
 				return pRet;
@@ -687,9 +785,13 @@ namespace PROM
 					return GNULL;
 				PLCEmpty* pRet = GNULL;
 				PLCCommandParam* plc_commandparam = GNULL;
+				PLCFile* plc_file = GNULL;
 				PLCFileCodeLines* plc_codelines = GNULL;
 				plc_commandparam = static_cast<PLCCommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLCCommandParam"));
 				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_file = static_cast<PLCFile*>(this->GetPLCByName(ppPLC, size, "Prom:PLCFile"));
+				if(plc_file == GNULL)
 					goto FUNCTION_END;
 				plc_codelines = static_cast<PLCFileCodeLines*>(this->GetPLCByName(ppPLC, size, "Prom:PLCFileCodeLines"));
 				if(plc_codelines == GNULL)
@@ -699,9 +801,55 @@ namespace PROM
 				pRet = new PLCEmpty;
 
 				/* Execute */
+				GAIA::BL bSaveCmd = GAIA::False;
+				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
+				{
+					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					if(GAIA::ALGORITHM::stremp(pszCmd))
+						continue;
+					if(GAIA::ALGORITHM::strcmp(pszCmd, "-s") == 0)
+					{
+						bSaveCmd = GAIA::True;
+						break;
+					}
+				}
+				GAIA::SIZE save_success_count = 0;
+				GAIA::SIZE save_failed_count = 0;
+				if(bSaveCmd)
+				{
+					for(GAIA::SIZE x = 0; x < plc_file->filelist.size(); ++x)
+					{
+						if(!plc_file->filelist[x].bNeedSave)
+							continue;
+						GAIA::FILESYSTEM::File file;
+						if(file.Open(plc_file->filelist[x].name, 
+							GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
+						{
+							if(plc_codelines->file_codelines_list[x].lines.save(&file))
+							{
+								plc_file->filelist[x].bNeedSave = GAIA::False;
+								++save_success_count;
+							}
+							else
+								--save_failed_count;
+						}
+						else
+							--save_failed_count;
+					}
+					if(save_failed_count == 0)
+						prt << "\t\tThere are " << save_success_count << " files save successfully.\n";
+					else
+						prt << "\t\tThere are " << save_success_count << " files save successfully, and " << save_failed_count << " files save failed!.\n";
+				}
 
 				/* Release. */
 			FUNCTION_END:
+				if(plc_commandparam != GNULL)
+					plc_commandparam->Release();
+				if(plc_file != GNULL)
+					plc_file->Release();
+				if(plc_codelines != GNULL)
+					plc_codelines->Release();
 
 				return pRet;
 			}
