@@ -493,11 +493,40 @@ namespace DWARFS_MISC
 			return (**it).index;
 		}
 
+		GINL CmdParam& operator = (const CmdParam& src)
+		{
+			GAIA_AST(!src.is_begin_decl());
+			GAIA_AST(!this->is_begin_decl());
+			m_bBeginDecl = GAIA::False;
+			m_decls = src.m_decls;
+			m_opt_decls.clear();
+			for(GAIA::SIZE x = 0; x < m_decls.size(); ++x)
+				m_opt_decls.push_back(&m_decls[x]);
+			m_opt_decls.sort();
+			m_mutex_decls = src.m_mutex_decls;
+			m_coop_decls = src.m_coop_decls;
+			m_cmds = src.m_cmds;
+			m_opt_cmds.clear();
+			for(GAIA::SIZE x = 0; x < m_cmds.size(); ++x)
+				m_opt_cmds.push_back(&m_cmds[x]);
+			m_opt_cmds.sort();
+			return *this;
+		}
+		GAIA_CLASS_OPERATOR_COMPARE3(m_opt_decls, m_opt_decls, m_mutex_decls, m_mutex_decls, m_coop_decls, m_coop_decls, CmdParam);
+
 	private:
 		typedef GAIA::CONTAINER::AString __StringType;
 		class ParamDecl
 		{
 		public:
+			GINL ParamDecl& operator = (const ParamDecl& src)
+			{
+				start_param_index = src.start_param_index;
+				end_param_index = src.end_param_index;
+				desc = src.desc;
+				type = src.type;
+				return *this;
+			}
 			GAIA_CLASS_OPERATOR_COMPARE2(start_param_index, start_param_index, end_param_index, end_param_index, ParamDecl);
 			GAIA::SIZE start_param_index;
 			GAIA::SIZE end_param_index;
@@ -508,6 +537,17 @@ namespace DWARFS_MISC
 		class CmdDecl
 		{
 		public:
+			GINL CmdDecl& operator = (const CmdDecl& src)
+			{
+				index = src.index;
+				cmd = src.cmd;
+				desc = src.desc;
+				type = src.type;
+				min_param_size = src.min_param_size;
+				max_param_size = src.max_param_size;
+				paramdecls = src.paramdecls;
+				return *this;
+			}
 			GAIA_CLASS_OPERATOR_COMPARE2(cmd, cmd, min_param_size, min_param_size, CmdDecl);
 			GAIA::SIZE index;
 			__StringType cmd;
@@ -522,6 +562,13 @@ namespace DWARFS_MISC
 		class Cmd
 		{
 		public:
+			GINL Cmd& operator = (const Cmd& src)
+			{
+				index = src.index;
+				cmd = src.cmd;
+				params = src.params;
+				return *this;
+			}
 			GAIA_CLASS_OPERATOR_COMPARE(cmd, cmd, Cmd);
 			GAIA::SIZE index;
 			__StringType cmd;
@@ -533,6 +580,12 @@ namespace DWARFS_MISC
 		class CmdMutex
 		{
 		public:
+			GINL CmdMutex& operator = (const CmdMutex& src)
+			{
+				cmd1 = src.cmd1;
+				cmd2 = src.cmd2;
+				return *this;
+			}
 			GAIA_CLASS_OPERATOR_COMPARE(cmd1, cmd1, CmdMutex);
 			__StringType cmd1;
 			__StringType cmd2;
@@ -540,6 +593,12 @@ namespace DWARFS_MISC
 		class CmdCoop
 		{
 		public:
+			GINL CmdCoop& operator = (const CmdCoop& src)
+			{
+				cmd1 = src.cmd1;
+				cmd2 = src.cmd2;
+				return *this;
+			}
 			GAIA_CLASS_OPERATOR_COMPARE(cmd1, cmd1, CmdCoop);
 			__StringType cmd1;
 			__StringType cmd2;

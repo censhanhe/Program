@@ -8,6 +8,7 @@ namespace DWARFS_MISC
 	public:
 		typedef GAIA::CONTAINER::AString __LineType;
 		typedef GAIA::CONTAINER::AString::_datatype __CharType;
+		typedef GAIA::CONTAINER::BasicChars<__CharType, GAIA::N32, 3> __FlagType;
 	private:
 		typedef GAIA::CONTAINER::Vector<__LineType> __LineListType;
 	public:
@@ -19,7 +20,7 @@ namespace DWARFS_MISC
 				GAIA::ALGORITHM::strcmp(psz, "\n") != 0 && 
 				GAIA::ALGORITHM::strcmp(psz, "\r\n") != 0)
 				return GAIA::False;
-			GAIA::ALGORITHM::strcpy(m_lineflag, psz);
+			m_lineflag = psz;
 			return GAIA::True;
 		}
 		GINL const GAIA::GCH* lineflag() const{return m_lineflag;}
@@ -84,7 +85,7 @@ namespace DWARFS_MISC
 				__LineType& l = m_lines.back();
 				__LineType::_datatype t = *l.back_it();
 				if(t != '\r' && t != '\n')
-					l += m_lineflag;
+					l += m_lineflag.front_ptr();
 			}
 			return GAIA::True;
 		}
@@ -121,7 +122,7 @@ namespace DWARFS_MISC
 			}
 			m_lines[index] = p;
 			if(bAppendLineFlag)
-				m_lines[index] += m_lineflag;
+				m_lines[index] += m_lineflag.front_ptr();
 			return GAIA::True;
 		}
 		GINL const __CharType* get_line(const GAIA::SIZE& index) const{return m_lines[index];}
@@ -158,7 +159,7 @@ namespace DWARFS_MISC
 				if(!this->checkline(p[x], line_flag_count))
 				{
 					if(line_flag_count == 0)
-						m_lines[index + x] += m_lineflag;
+						m_lines[index + x] += m_lineflag.front_ptr();
 				}
 			}
 			return GAIA::True;
@@ -184,8 +185,15 @@ namespace DWARFS_MISC
 			}
 			return GAIA::True;
 		}
+		GINL TextLines& operator = (const TextLines& src)
+		{
+			m_lines = src.m_lines;
+			m_lineflag = src.m_lineflag;
+			return *this;
+		}
+		GAIA_CLASS_OPERATOR_COMPARE2(m_lines, m_lines, m_lineflag, m_lineflag, TextLines);
 	private:
-		GINL GAIA::GVOID init(){GAIA::ALGORITHM::strcpy(m_lineflag, "\r");}
+		GINL GAIA::GVOID init(){m_lineflag = "\r";}
 		GINL GAIA::BL checkline(const __CharType* p, GAIA::SIZE& line_flag_count) const
 		{
 			line_flag_count = 0;
@@ -221,7 +229,7 @@ namespace DWARFS_MISC
 		}	
 	private:
 		__LineListType m_lines;
-		GAIA::GCH m_lineflag[3];
+		__FlagType m_lineflag;
 	};
 };
 
