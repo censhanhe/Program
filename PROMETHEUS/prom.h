@@ -691,10 +691,27 @@ namespace PROM
 							GAIA::BL bExistValidFlag = GAIA::False;
 							if(strTemp.size () >= chs.size())
 							{
-								if(strTemp.rfind(chs.front_ptr(), strTemp.size() - 1) != strTemp.size() - chs.size())
+								if(strTemp.rfind(chs.front_ptr(), strTemp.size() - 1) != 
+									strTemp.size() - chs.size())
 									++add;
 								else
-									bExistValidFlag = GAIA::True;
+								{
+									if(chs == "\n")
+									{
+										if(strTemp.size() >= 2)
+										{
+											if(strTemp[strTemp.size() - 2] == '\r' && 
+												strTemp[strTemp.size() - 1] == '\n')
+												++add;
+											else
+												bExistValidFlag = GAIA::True;
+										}
+										else
+											bExistValidFlag = GAIA::True;
+									}
+									else
+										bExistValidFlag = GAIA::True;
+								}
 							}
 							else
 								++add;
