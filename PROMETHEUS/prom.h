@@ -727,7 +727,17 @@ namespace PROM
 							++need_save;
 						}
 					}
-					prt << "\t\tAdd " << chs.front_ptr() << "=" << add << ".\n";
+
+					GAIA::CONTAINER::AChars tempchs;
+					if(chs == "\r\n")
+						tempchs = "\\r\\n";
+					else if(chs == "\n")
+						tempchs = "\\n";
+					else if(chs == "\r")
+						tempchs = "\\r";
+					else
+						tempchs = "(InvalidCharacter)";
+					prt << "\t\tAdd " << tempchs.front_ptr() << "=" << add << ".\n";
 					prt << "\t\tRemove \\r\\n=" << remove_rn << ", \\n=" << remove_n << ", \\r=" << remove_r << ".\n";
 					prt << "\t\tChange " << need_save << " files.\n";
 				}
@@ -932,7 +942,7 @@ namespace PROM
 					}
 					if(uPracPrevSize == 0)
 					{
-						prt << "\tPipeline Stage : " << pTempPL->GetName() << "\n";
+						prt << "\n\tPipeline Stage : " << pTempPL->GetName() << "\n";
 						PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, prt, errs);
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
@@ -974,7 +984,7 @@ namespace PROM
 								break;
 							}
 						}
-						prt << "\tPipeline Stage : " << pTempPL->GetName() << "\n";
+						prt << "\n\tPipeline Stage : " << pTempPL->GetName() << "\n";
 						PipelineContext* pNewPLC = pTempPL->Execute(plc_list.front_ptr(), plc_list.size(), prt, errs);
 						if(pNewPLC == GNULL)
 							PROM_RAISE_FATALERROR(101);
