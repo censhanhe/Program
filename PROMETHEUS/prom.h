@@ -652,6 +652,14 @@ namespace PROM
 						}
 					}
 				}
+				if(chs == "\\r\\n")
+					chs = "\r\n";
+				else if(chs == "\\n")
+					chs = "\n";
+				else if(chs == "\\r")
+					chs = "\r";
+				else
+					chs.clear();
 				if(!chs.empty())
 				{
 					GAIA::SIZE remove_rn = 0;
