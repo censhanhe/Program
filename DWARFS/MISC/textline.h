@@ -1,9 +1,9 @@
-#ifndef 	__DWARFS_TEXTLINES_H__
-#define 	__DWARFS_TEXTLINES_H__
+#ifndef 	__DWARFS_TEXTLINE_H__
+#define 	__DWARFS_TEXTLINE_H__
 
 namespace DWARFS_MISC
 {
-	class TextLines : public GAIA::Base
+	class TextLine : public GAIA::Base
 	{
 	public:
 		typedef GAIA::CONTAINER::AString __LineType;
@@ -12,8 +12,8 @@ namespace DWARFS_MISC
 	private:
 		typedef GAIA::CONTAINER::Vector<__LineType> __LineListType;
 	public:
-		GINL TextLines(){this->init();}
-		GINL ~TextLines(){}
+		GINL TextLine(){this->init();}
+		GINL ~TextLine(){}
 		GINL GAIA::BL lineflag(const GAIA::GCH* psz)
 		{
 			if(GAIA::ALGORITHM::strcmp(psz, "\r") != 0 && 
@@ -185,13 +185,13 @@ namespace DWARFS_MISC
 			}
 			return GAIA::True;
 		}
-		GINL TextLines& operator = (const TextLines& src)
+		GINL TextLine& operator = (const TextLine& src)
 		{
 			m_lines = src.m_lines;
 			m_lineflag = src.m_lineflag;
 			return *this;
 		}
-		GAIA_CLASS_OPERATOR_COMPARE2(m_lines, m_lines, m_lineflag, m_lineflag, TextLines);
+		GAIA_CLASS_OPERATOR_COMPARE2(m_lines, m_lines, m_lineflag, m_lineflag, TextLine);
 	private:
 		GINL GAIA::GVOID init(){m_lineflag = "\r";}
 		GINL GAIA::BL checkline(const __CharType* p, GAIA::SIZE& line_flag_count) const

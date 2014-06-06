@@ -348,7 +348,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MISC\textlines.h"
+				RelativePath=".\MISC\textline.h"
 				>
 			</File>
 		</Filter>
@@ -368,7 +368,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TEST\t_textlines.h"
+				RelativePath=".\TEST\t_textline.h"
 				>
 			</File>
 		</Filter>

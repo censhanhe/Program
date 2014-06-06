@@ -2,7 +2,7 @@
 #define		__T_DWARFS_HEADER_H__
 
 #include "../../GAIA/TEST/t_common.h"
-#include "t_textlines.h"
+#include "t_textline.h"
 #include "t_cmdparam.h"
 
 namespace DWARFSTEST
@@ -17,7 +17,7 @@ namespace DWARFSTEST
 		// Every test procedure.
 		GTLINE("[DWARFS TEST BEGIN]");
 		{
-			GTLINE1("TestLines test begin!"); nRet += t_textlines(file, prt); GTLINE1("TestLines test end!"); GTLINE("\t");
+			GTLINE1("TestLines test begin!"); nRet += t_textline(file, prt); GTLINE1("TestLines test end!"); GTLINE("\t");
 			GTLINE1("CmdParam test begin!"); nRet += t_cmdparam(file, prt); GTLINE1("CmdParam test end!"); GTLINE("\t");
 		}
 		GTLINE("[DWARFS TEST END]");
