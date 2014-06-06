@@ -56,6 +56,7 @@ namespace PROM
 			PROM_ERROR(101,		0x0000, 0x0000, "pipeline execute failed, no pipeline context returned", "");
 			PROM_ERROR(102,		0x0000, 0x0000, "command parameters error", "");
 			PROM_ERROR(103,		0x0000, 0x0000, "pipeline link structure error", "");
+			PROM_ERROR(104,		0x0000, 0x0002, "pipeline output stage result failed", "");
 			PROM_ERROR(501,		0x0000, 0x0003, "file specified by -i parameter is not exist", "");
 			PROM_ERROR(502,		0x0000, 0x0004, "file not exist!", "");
 			PROM_ERROR(503,		0x0000, 0x0002, "create file failed!", "");
@@ -420,7 +421,7 @@ namespace PROM
 			}
 			virtual const GAIA::GCH* GetName() const = 0;
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs) = 0;
-			virtual GAIA::BL Output(PipelineContext* pPLC){return GAIA::False;}
+			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile){return GAIA::False;}
 		};
 		class PL_CommandAnalyze : public Pipeline
 		{
@@ -473,6 +474,13 @@ namespace PROM
 				plc_sourcecommand->Release();
 
 				return pRet;
+			}
+			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile)
+			{
+				GAIA_AST(pPLC != GNULL);
+				if(pPLC == GNULL)
+					return GAIA::False;
+				return GAIA::True;
 			}
 		};
 		class PL_Help : public Pipeline
@@ -536,7 +544,6 @@ namespace PROM
 					plc_commandparam->Release();
 				return pRet;
 			}
-			virtual GAIA::BL Output(PipelineContext* pPLC){return GAIA::False;}
 		};
 		class PL_FileCollect : public Pipeline
 		{
@@ -1042,6 +1049,7 @@ namespace PROM
 		class PipelineDispatch : public GAIA::RefObject
 		{
 		public:
+			GINL PipelineDispatch(){this->init();}
 			GINL GAIA::GVOID Run(
 				Pipeline** ppPrevPL, const GAIA::SIZE& prevpl_size,
 				Pipeline** ppNextPL, const GAIA::SIZE& nextpl_size,
@@ -1115,6 +1123,58 @@ namespace PROM
 							PROM_RAISE_FATALERROR(101);
 						else
 						{
+							GAIA_AST(!GAIA::ALGORITHM::stremp(pNewPLC->GetName()));
+							if(!GAIA::ALGORITHM::stremp(pNewPLC->GetName()))
+							{
+								if(GAIA::ALGORITHM::strcmp(pNewPLC->GetName(), "Prom:PLC_CommandParam") == 0)
+									m_plc_commandparam = static_cast<PLC_CommandParam*>(pNewPLC);
+							}
+							if(m_plc_commandparam != GNULL)
+							{
+								for(GAIA::SIZE y = 0; y < m_plc_commandparam->cmdparam.cmd_size(); ++y)
+								{
+									const GAIA::GCH* pszCmd = m_plc_commandparam->cmdparam.cmd(y);
+									if(GAIA::ALGORITHM::stremp(pszCmd))
+										continue;
+									if(GAIA::ALGORITHM::strcmp(pszCmd, "-o") == 0)
+									{
+										if(m_plc_commandparam->cmdparam.param_size(y) == 2)
+										{
+											const GAIA::GCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
+											const GAIA::GCH* pszParam1 = m_plc_commandparam->cmdparam.param(y, 1);
+											GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
+											GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam1));
+											if(!GAIA::ALGORITHM::stremp(pszParam0) && !GAIA::ALGORITHM::stremp(pszParam1))
+											{
+												if(GAIA::ALGORITHM::strcmp(pszParam0, pTempPL->GetName()) == 0)
+												{
+													if(pTempPL->Output(pNewPLC, GNULL))
+														prt << "\t\tOutput " << pTempPL->GetName() << " successfully!\n";
+													else
+														PROM_RAISE_FATALERROR(104);
+												}
+											}
+										}
+										else if(m_plc_commandparam->cmdparam.param_size(y) == 1)
+										{
+											const GAIA::GCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
+											GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
+											if(!GAIA::ALGORITHM::stremp(pszParam0))
+											{
+												if(GAIA::ALGORITHM::strcmp(pszParam0, pTempPL->GetName()) == 0)
+												{
+													if(pTempPL->Output(pNewPLC, GNULL))
+														prt << "\t\tOutput " << pTempPL->GetName() << " successfully!\n";
+													else
+														PROM_RAISE_FATALERROR(104);
+												}
+											}
+										}
+										else
+											GAIA_AST(GAIA::False);
+									}
+								}
+							}
 							for(GAIA::SIZE y = 0; y  < plc_size; y++)
 							{
 								if(ppPLC[y] == GNULL)
@@ -1157,6 +1217,12 @@ namespace PROM
 							PROM_RAISE_FATALERROR(101);
 						else
 						{
+							GAIA_AST(!GAIA::ALGORITHM::stremp(pNewPLC->GetName()));
+							if(!GAIA::ALGORITHM::stremp(pNewPLC->GetName()))
+							{
+								if(GAIA::ALGORITHM::strcmp(pNewPLC->GetName(), "Prom:PLC_CommandParam") == 0)
+									m_plc_commandparam = static_cast<PLC_CommandParam*>(pNewPLC);
+							}
 							for(GAIA::SIZE y = 0; y  < plc_size; y++)
 							{
 								if(ppPLC[y] == GNULL)
@@ -1205,6 +1271,13 @@ namespace PROM
 			virtual GAIA::GVOID Destruct()
 			{
 			}
+		private:
+			GINL GAIA::GVOID init()
+			{
+				m_plc_commandparam = GNULL;
+			}
+		private:
+			PLC_CommandParam* m_plc_commandparam;
 		};
 	public:
 		GINL Prom()
