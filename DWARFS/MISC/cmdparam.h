@@ -3,6 +3,23 @@
 
 namespace DWARFS_MISC
 {
+	static const GAIA::GCH* CMD_TYPE_ANAME[] = 
+	{
+		"Invalid",
+		"MustExist",
+	};
+
+	static const GAIA::GCH* PARAM_TYPE_ANAME[] = 
+	{
+		"Invalid",
+		"File",
+		"MustExistFile",
+		"MustNotExistFile",
+		"Int",
+		"String",
+		"Enum",
+	};
+
 	class CmdParam : public GAIA::Base
 	{
 	public:
@@ -196,6 +213,42 @@ namespace DWARFS_MISC
 			m_coop_decls.push_back(temp);
 			m_coop_decls.back().cmd1 = pszCmd1;
 			m_coop_decls.back().cmd2 = pszCmd2;
+		}
+		GINL GAIA::SIZE cmd_decl_size() const{return m_decls.size();}
+		GINL const GAIA::GCH* cmd_decl_cmd(const GAIA::SIZE& decl) const
+		{
+			GAIA_AST(decl < m_decls.size());
+			if(decl >= m_decls.size())
+				return GNULL;
+			return m_decls[decl].cmd;
+		}
+		GINL const GAIA::GCH* cmd_decl_desc(const GAIA::SIZE& decl) const
+		{
+			GAIA_AST(decl < m_decls.size());
+			if(decl >= m_decls.size())
+				return GNULL;
+			return m_decls[decl].desc;
+		}
+		GINL GAIA::SIZE cmd_decl_min_param_size(const GAIA::SIZE& decl) const
+		{
+			GAIA_AST(decl < m_decls.size());
+			if(decl >= m_decls.size())
+				return (GAIA::SIZE)GINVALID;
+			return m_decls[decl].min_param_size;
+		}
+		GINL GAIA::SIZE cmd_decl_max_param_size(const GAIA::SIZE& decl) const
+		{
+			GAIA_AST(decl < m_decls.size());
+			if(decl >= m_decls.size())
+				return (GAIA::SIZE)GINVALID;
+			return m_decls[decl].max_param_size;
+		}
+		GINL CMD_TYPE cmd_decl_type(const GAIA::SIZE& decl) const
+		{
+			GAIA_AST(decl < m_decls.size());
+			if(decl >= m_decls.size())
+				return CMD_TYPE_INVALID;
+			return m_decls[decl].type;
 		}
 		GINL GAIA::GVOID clear_decl()
 		{

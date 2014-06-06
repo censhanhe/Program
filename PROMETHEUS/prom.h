@@ -353,10 +353,34 @@ namespace PROM
 		class PLC_Word : public PipelineContext
 		{
 		public:
+			typedef GAIA::CONTAINER::AString __WordType;
+		public:
 			GINL PLC_Word(){}
 			GINL ~PLC_Word(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_Word";}
 		public:
+			class Word
+			{
+			public:
+				GINL Word(){this->init();}
+				GINL Word& operator = (const Word& src)
+				{
+					strWord = src.strWord;
+					return *this;
+				}
+				GAIA_CLASS_OPERATOR_COMPARE(strWord, strWord, Word);
+			private:
+				GINL GAIA::GVOID init()
+				{
+					uExistCount = 0;
+				}
+			public:
+				__WordType strWord;
+				GAIA::U32 uExistCount;
+			};
+			typedef GAIA::CONTAINER::Set<Word> __WordSetType;
+		public:
+			__WordSetType wordset;
 		};
 		class Pipeline : public DirectionalFreeLink<Pipeline>
 		{
@@ -396,6 +420,7 @@ namespace PROM
 			}
 			virtual const GAIA::GCH* GetName() const = 0;
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs) = 0;
+			virtual GAIA::BL Output(PipelineContext* pPLC){return GAIA::False;}
 		};
 		class PL_CommandAnalyze : public Pipeline
 		{
@@ -420,11 +445,18 @@ namespace PROM
 				PLC_CommandParam* pRet = new PLC_CommandParam;
 				pRet->cmdparam.begin_decl();
 				{
+					pRet->cmdparam.cmd_decl("help", "show help information", 0, 1, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+
 					pRet->cmdparam.cmd_decl("-i", "input files", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-I", "input directory", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-E", "input directory files extension name filter", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-s", "save changes to source files", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-o", "output the stage result", 1, 2, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-linebreak", "change lines break flag, use \"\\r\" \"\\n\" or \"\\r\\n\"", 1, 1, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+
+					pRet->cmdparam.cmd_decl("-linestat", "statistics the lines, use -o to output the result", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-wordstat", "statistics the words, use -o to output the result", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-symbolstat", "statistics the symbols, use -o to output the result", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 				}
 				pRet->cmdparam.end_decl();
 
@@ -442,6 +474,69 @@ namespace PROM
 
 				return pRet;
 			}
+		};
+		class PL_Help : public Pipeline
+		{
+		public:
+			GINL PL_Help(){}
+			GINL ~PL_Help(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PL_Help";}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			{
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+				PLC_CommandParam* plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
+				if(plc_commandparam == GNULL)
+					return GNULL;
+
+				/* Initialize result pipeline context. */
+				PLC_Empty* pRet = new PLC_Empty;
+				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
+				{
+					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					if(GAIA::ALGORITHM::stremp(pszCmd))
+						continue;
+					if(GAIA::ALGORITHM::strcmp(pszCmd, "help") == 0)
+					{
+						if(plc_commandparam->cmdparam.param_size(x) != 0)
+						{
+							for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
+							{
+							}
+						}
+						else
+						{
+							for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.cmd_decl_size(); ++y)
+							{
+								const GAIA::GCH* pszDeclCmd = plc_commandparam->cmdparam.cmd_decl_cmd(y);
+								if(pszDeclCmd == GNULL)
+									continue;
+								const GAIA::GCH* pszDeclDesc = plc_commandparam->cmdparam.cmd_decl_desc(y);
+								GAIA::SIZE min_param_size = plc_commandparam->cmdparam.cmd_decl_min_param_size(y);
+								GAIA::SIZE max_param_size = plc_commandparam->cmdparam.cmd_decl_max_param_size(y);
+								DWARFS_MISC::CmdParam::CMD_TYPE cmdtype = plc_commandparam->cmdparam.cmd_decl_type(y);
+								if(GAIA::ALGORITHM::stremp(pszDeclDesc))
+									pszDeclDesc = "Noinfo";
+								prt << "\t" << "[" << y << "]" << pszDeclCmd << ", Info:" << pszDeclDesc << ", " << 
+									"[" << min_param_size << ", " << max_param_size << "] " << 
+									DWARFS_MISC::CMD_TYPE_ANAME[cmdtype] << "\n";
+							}
+						}
+						break;
+					}
+				}
+
+			FUNCTION_END:
+				if(plc_commandparam != GNULL)
+					plc_commandparam->Release();
+				return pRet;
+			}
+			virtual GAIA::BL Output(PipelineContext* pPLC){return GAIA::False;}
 		};
 		class PL_FileCollect : public Pipeline
 		{
@@ -781,23 +876,23 @@ namespace PROM
 				return pRet;
 			}
 		};
-		class PL_LineStatistics : public Pipeline
+		class PL_LineStat : public Pipeline
 		{
 		public:
-			GINL PL_LineStatistics(){}
-			GINL ~PL_LineStatistics(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_LineStatistics";}
+			GINL PL_LineStat(){}
+			GINL ~PL_LineStat(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PL_LineStat";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
 			}
 		};
-		class PL_WordStatistics : public Pipeline
+		class PL_WordStat : public Pipeline
 		{
 		public:
-			GINL PL_WordStatistics(){}
-			GINL ~PL_WordStatistics(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_WordStatistics";}
+			GINL PL_WordStat(){}
+			GINL ~PL_WordStat(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PL_WordStat";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -807,7 +902,7 @@ namespace PROM
 				GAIA_AST(size != 0);
 				if(size == 0)
 					return GNULL;
-				PLC_Empty* pRet = GNULL;
+				PLC_Word* pRet = GNULL;
 				PLC_CommandParam* plc_commandparam = GNULL;
 				PLC_File* plc_file = GNULL;
 				PLC_FileCodeLine* plc_codelines = GNULL;
@@ -822,20 +917,26 @@ namespace PROM
 					goto FUNCTION_END;
 
 				/* Initialize result pipeline context. */
-				pRet = new PLC_Empty;
+				pRet = new PLC_Word;
 
 				/* Execute */
 
 			FUNCTION_END:
+				if(plc_commandparam != GNULL)
+					plc_commandparam->Release();
+				if(plc_file != GNULL)
+					plc_file->Release();
+				if(plc_codelines != GNULL)
+					plc_codelines->Release();
 				return pRet;
 			}
 		};
-		class PL_SymbolStatistics : public Pipeline
+		class PL_SymbolStat : public Pipeline
 		{
 		public:
-			GINL PL_SymbolStatistics(){}
-			GINL ~PL_SymbolStatistics(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_SymbolStatistics";}
+			GINL PL_SymbolStat(){}
+			GINL ~PL_SymbolStat(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PL_SymbolStat";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
@@ -1139,6 +1240,10 @@ namespace PROM
 		{
 			Pipeline* pl_cmdanalyze = new PL_CommandAnalyze;
 			{
+				PL_Help* pl_help = new PL_Help;
+				pl_cmdanalyze->BindNext(pl_help);
+				pl_help->Release();
+
 				Pipeline* pl_filecollect = new PL_FileCollect;
 				pl_cmdanalyze->BindNext(pl_filecollect);
 				{
@@ -1149,7 +1254,7 @@ namespace PROM
 						pl_linecollect->BindNext(pl_linebreakcorrect);
 						pl_linebreakcorrect->Release();
 
-						PL_WordStatistics* pl_wordstatistics = new PL_WordStatistics;
+						PL_WordStat* pl_wordstatistics = new PL_WordStat;
 						pl_linecollect->BindNext(pl_wordstatistics);
 						pl_wordstatistics->Release();
 

@@ -2408,7 +2408,7 @@ namespace DWARFS_FSHA
 		#define ERRNO_TIMEOUT		((ERRNO)8)
 		const GAIA::GCH* ErrorString(ERRNO en)
 		{
-			static const GAIA::GCH* ERRNO_STRING[] = 
+			static const GAIA::GCH* ERRNO_ANAME[] = 
 			{
 				"NoError",
 				"Busy",
@@ -2420,9 +2420,9 @@ namespace DWARFS_FSHA
 				"NotReady",
 				"Timeout",
 			};
-			if(en >= sizeofarray(ERRNO_STRING))
+			if(en >= sizeofarray(ERRNO_ANAME))
 				return GNULL;
-			return ERRNO_STRING[en];
+			return ERRNO_ANAME[en];
 		}
 	private:
 		typedef GAIA::CONTAINER::Set<NLink> __LinkListType;
