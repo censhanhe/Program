@@ -421,7 +421,7 @@ namespace PROM
 			}
 			virtual const GAIA::GCH* GetName() const = 0;
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs) = 0;
-			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile){return GAIA::False;}
+			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt){return GAIA::False;}
 		};
 		class PL_CommandAnalyze : public Pipeline
 		{
@@ -475,11 +475,39 @@ namespace PROM
 
 				return pRet;
 			}
-			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile)
+			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 			{
+				/* Parameter check up. */
 				GAIA_AST(pPLC != GNULL);
 				if(pPLC == GNULL)
 					return GAIA::False;
+
+				GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
+				if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+					return GAIA::False;
+
+				PLC_CommandParam* plc_sourcecommand = static_cast<PLC_CommandParam*>(pPLC);
+				if(plc_sourcecommand == GNULL)
+					return GAIA::False;
+				if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), "Prom:PLC_CommandParam") != 0)
+					return GAIA::False;
+
+				for(GAIA::SIZE x = 0; x < plc_sourcecommand->cmdparam.cmd_size(); ++x)
+				{
+					const GAIA::GCH* pszCmd = plc_sourcecommand->cmdparam.cmd(x);
+					if(GAIA::ALGORITHM::stremp(pszCmd))
+						continue;
+					prt << "\t\t" << pszCmd << " ";
+					for(GAIA::SIZE y = 0; y < plc_sourcecommand->cmdparam.param_size(x); ++y)
+					{
+						const GAIA::GCH* pszParam = plc_sourcecommand->cmdparam.param(x, y);
+						if(GAIA::ALGORITHM::stremp(pszParam))
+							continue;
+						prt << pszParam << " ";
+					}
+					prt << "\n";
+				}
+
 				return GAIA::True;
 			}
 		};
@@ -1148,7 +1176,7 @@ namespace PROM
 											{
 												if(GAIA::ALGORITHM::strcmp(pszParam0, pTempPL->GetName()) == 0)
 												{
-													if(pTempPL->Output(pNewPLC, GNULL))
+													if(pTempPL->Output(pNewPLC, GNULL, prt))
 														prt << "\t\tOutput " << pTempPL->GetName() << " successfully!\n";
 													else
 														PROM_RAISE_FATALERROR(104);
@@ -1163,7 +1191,7 @@ namespace PROM
 											{
 												if(GAIA::ALGORITHM::strcmp(pszParam0, pTempPL->GetName()) == 0)
 												{
-													if(pTempPL->Output(pNewPLC, GNULL))
+													if(pTempPL->Output(pNewPLC, GNULL, prt))
 														prt << "\t\tOutput " << pTempPL->GetName() << " successfully!\n";
 													else
 														PROM_RAISE_FATALERROR(104);
