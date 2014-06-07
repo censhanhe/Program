@@ -911,6 +911,93 @@ namespace PROM
 				return pRet;
 			}
 		};
+		class PL_Format : public Pipeline
+		{
+		public:
+			GINL PL_Format(){}
+			GINL ~PL_Format(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PL_Format";}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			{
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+				PLC_Empty* pRet = GNULL;
+				PLC_CommandParam* plc_commandparam = GNULL;
+				PLC_File* plc_file = GNULL;
+				PLC_FileCodeLine* plc_codelines = GNULL;
+				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
+				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_File"));
+				if(plc_file == GNULL)
+					goto FUNCTION_END;
+				plc_codelines = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
+				if(plc_codelines == GNULL)
+					goto FUNCTION_END;
+
+				/* Initialize result pipeline context. */
+				pRet = new PLC_Empty;
+
+				/* Execute */
+				GAIA::BL bFmt = GAIA::False;
+				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
+				{
+					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					if(GAIA::ALGORITHM::stremp(pszCmd))
+						continue;
+					if(GAIA::ALGORITHM::strcmp(pszCmd, "-fmt") == 0)
+					{
+						bFmt = GAIA::True;
+						break;
+					}
+				}
+				if(bFmt)
+				{
+					typedef GAIA::CONTAINER::AString __LineType;
+					__LineType strLine;
+					for(GAIA::SIZE x = 0; x < plc_codelines->file_codelines_list.size(); ++x)
+					{
+						PLC_FileCodeLine::FileCodeLines& fcl = plc_codelines->file_codelines_list[x];
+
+						/* Line inside based code-format. */
+						for(GAIA::SIZE y = 0; y < fcl.lines.size(); ++y)
+						{
+							strLine = fcl.lines.get_line(y);
+							if(strLine.empty())
+								continue;
+
+							/* Delete space or tab at line tail. */
+							__LineType::it itback = strLine.back_it();
+							while(!itback.empty())
+							{
+								--itback;
+							}
+
+							/* Remove continuation-space. */
+
+						}
+
+						/* Line outside based code-format. */
+
+					}
+					prt << "\t\tCode line formated!" << "\n";
+				}
+
+			FUNCTION_END:
+				if(plc_commandparam != GNULL)
+					plc_commandparam->Release();
+				if(plc_file != GNULL)
+					plc_file->Release();
+				if(plc_codelines != GNULL)
+					plc_codelines->Release();
+				return pRet;
+			}
+		};
 		class PL_LineStat : public Pipeline
 		{
 		public:
@@ -1354,6 +1441,10 @@ namespace PROM
 						PL_LineBreakCorrect* pl_linebreakcorrect = new PL_LineBreakCorrect;
 						pl_linecollect->BindNext(pl_linebreakcorrect);
 						pl_linebreakcorrect->Release();
+
+						PL_Format* pl_format = new PL_Format;
+						pl_linecollect->BindNext(pl_format);
+						pl_format->Release();
 
 						PL_WordStat* pl_wordstatistics = new PL_WordStat;
 						pl_linecollect->BindNext(pl_wordstatistics);
