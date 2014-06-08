@@ -454,6 +454,7 @@ namespace PROM
 					pRet->cmdparam.cmd_decl("-s", "save changes to source files", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-o", "output the stage result", 1, 2, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-linebreak", "change lines break flag, use \"\\r\" \"\\n\" or \"\\r\\n\"", 1, 1, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-fmt", "format the codes", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 
 					pRet->cmdparam.cmd_decl("-linestat", "statistics the lines, use -o to output the result", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-wordstat", "statistics the words, use -o to output the result", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
@@ -960,6 +961,8 @@ namespace PROM
 				{
 					typedef GAIA::CONTAINER::AString __LineType;
 					__LineType strLine;
+					GAIA::SIZE remove_space_count = 0;
+					GAIA::SIZE remove_tab_count = 0;
 					for(GAIA::SIZE x = 0; x < plc_codelines->file_codelines_list.size(); ++x)
 					{
 						PLC_FileCodeLine::FileCodeLines& fcl = plc_codelines->file_codelines_list[x];
@@ -971,21 +974,68 @@ namespace PROM
 							if(strLine.empty())
 								continue;
 
+							/* Get line break flag. */
+							GAIA::GCH szLineBreak[3];
+							if(strLine.back() == '\n')
+							{
+								if(strLine.size() > 1)
+								{
+									if(strLine[strLine.size() - 2] == '\r')
+										GAIA::ALGORITHM::strcpy(szLineBreak, "\r\n");
+									else
+										GAIA::ALGORITHM::strcpy(szLineBreak, "\n");
+								}
+								else
+									GAIA::ALGORITHM::strcpy(szLineBreak, "\n");
+							}
+							else if(strLine.back() == '\r')
+								GAIA::ALGORITHM::strcpy(szLineBreak, "\r");
+							if(GAIA::ALGORITHM::strlen(szLineBreak) == 2)
+								strLine.resize(strLine.size() - 2);
+							else
+								strLine.resize(strLine.size() - 1);
+
 							/* Delete space or tab at line tail. */
 							__LineType::it itback = strLine.back_it();
 							while(!itback.empty())
 							{
+								if(*itback != ' ' && *itback != '\t')
+									break;
+								if(*itback == ' ')
+									++remove_space_count;
+								else if(*itback == '\t')
+									++remove_tab_count;
+								GAIA_AST(strLine.size() > 0);
+								strLine.resize(strLine.size() - 1);
 								--itback;
 							}
 
 							/* Remove continuation-space. */
+							GAIA::GCH chOld = '\0';
+							for(GAIA::SIZE z = 0; z < strLine.size(); ++z)
+							{
+								if(strLine[z] == ' ')
+								{
+									if(chOld == ' ')
+									{
+										strLine.erasei(z);
+										--z;
+										++remove_space_count;
+									}
+								}
+								chOld = strLine[z];
+							}
 
+							// Last.
+							strLine += szLineBreak;
+							fcl.lines.set_line(y, strLine);
 						}
 
 						/* Line outside based code-format. */
 
 					}
 					prt << "\t\tCode line formated!" << "\n";
+					prt << "\t\tRemove space = " << remove_space_count << ", remove tab = " << remove_tab_count << "\n";
 				}
 
 			FUNCTION_END:
