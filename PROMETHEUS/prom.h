@@ -963,8 +963,11 @@ namespace PROM
 					__LineType strLine;
 					GAIA::SIZE remove_space_count = 0;
 					GAIA::SIZE remove_tab_count = 0;
+					GAIA::SIZE line_change_count = 0;
+					GAIA::SIZE file_change_count = 0;
 					for(GAIA::SIZE x = 0; x < plc_codelines->file_codelines_list.size(); ++x)
 					{
+						GAIA::BL bFileChanged = GAIA::False;
 						PLC_FileCodeLine::FileCodeLines& fcl = plc_codelines->file_codelines_list[x];
 
 						/* Line inside based code-format. */
@@ -973,6 +976,7 @@ namespace PROM
 							strLine = fcl.lines.get_line(y);
 							if(strLine.empty())
 								continue;
+							GAIA::BL bLineChanged = GAIA::False;
 
 							/* Get line break flag. */
 							GAIA::GCH szLineBreak[3];
@@ -1002,9 +1006,15 @@ namespace PROM
 								if(*itback != ' ' && *itback != '\t')
 									break;
 								if(*itback == ' ')
+								{
 									++remove_space_count;
+									bLineChanged = GAIA::True;
+								}
 								else if(*itback == '\t')
+								{
 									++remove_tab_count;
+									bLineChanged = GAIA::True;
+								}
 								GAIA_AST(strLine.size() > 0);
 								strLine.resize(strLine.size() - 1);
 								--itback;
@@ -1021,21 +1031,34 @@ namespace PROM
 										strLine.erasei(z);
 										--z;
 										++remove_space_count;
+										bLineChanged = GAIA::True;
 									}
 								}
 								chOld = strLine[z];
 							}
 
-							// Last.
-							strLine += szLineBreak;
-							fcl.lines.set_line(y, strLine);
+							/* Update the line. */
+							if(bLineChanged)
+							{
+								strLine += szLineBreak;
+								fcl.lines.set_line(y, strLine);
+								++line_change_count;
+								bFileChanged = GAIA::True;
+							}
 						}
 
 						/* Line outside based code-format. */
 
+						/* Set need save. */
+						if(bFileChanged)
+						{
+							plc_file->filelist[x].bNeedSave = GAIA::True;
+							++file_change_count;
+						}
 					}
 					prt << "\t\tCode line formated!" << "\n";
-					prt << "\t\tRemove space = " << remove_space_count << ", remove tab = " << remove_tab_count << "\n";
+					prt << "\t\tRemove space = " << remove_space_count << ", remove tab = " << remove_tab_count << ".\n";
+					prt << "\t\tThere are " << line_change_count << " line changed, and " << file_change_count << " file changed.\n";
 				}
 
 			FUNCTION_END:
