@@ -59,8 +59,10 @@ namespace DWARFS_MISC
 					if(x + 1 < buf.read_size())
 					{
 						if(p[x + 1] != '\n')
-							pMatched = p + x + 1;
+							pMatched = p + x;
 					}
+					else
+						pMatched = p + x;
 				}
 				else if(p[x] == '\n')
 					pMatched = p + x;
