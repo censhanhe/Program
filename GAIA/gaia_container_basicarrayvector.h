@@ -620,4 +620,4 @@ namespace GAIA
 	};
 };
 
-#endif
+#endif
