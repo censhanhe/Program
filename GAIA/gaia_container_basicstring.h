@@ -315,7 +315,7 @@ namespace GAIA
 				GAIA::ALGORITHM::copy(this->front_ptr() + index, src.front_ptr(), src.size());
 				return GAIA::True;
 			}
-			template<typename _ParamSizeType> GINL GAIA::BL erasei(const _ParamSizeType& index)
+			template<typename _ParamSizeType> GINL GAIA::BL erase_index(const _ParamSizeType& index)
 			{
 				if(index >= 0 && index < this->size())
 				{
@@ -325,7 +325,7 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			template<typename _ParamSizeType1, typename _ParamSizeType2> GINL GAIA::BL erasei(const _ParamSizeType1& index_start, const _ParamSizeType2& index_end)
+			template<typename _ParamSizeType1, typename _ParamSizeType2> GINL GAIA::BL erase_index(const _ParamSizeType1& index_start, const _ParamSizeType2& index_end)
 			{
 				GAIA_AST(index_start <= index_end);
 				if(index_start >= 0 && index_start < this->size() && 
@@ -352,7 +352,7 @@ namespace GAIA
 					_SizeType tindex = index;
 					while((tindex = this->find(t, tindex)) != GINVALID)
 					{
-						this->erasei(tindex);
+						this->erase_index(tindex);
 						++ret;
 						++tindex;
 					}
@@ -371,7 +371,7 @@ namespace GAIA
 					_SizeType len = GAIA::ALGORITHM::strlen(p);
 					while((tindex = this->find(p, tindex)) != GINVALID)
 					{
-						this->erasei(tindex, tindex + len - 1);
+						this->erase_index(tindex, tindex + len - 1);
 						++ret;
 						tindex += len;
 					}
@@ -389,7 +389,7 @@ namespace GAIA
 					_SizeType tindex = index;
 					while((tindex = this->find(src, tindex)) != GINVALID)
 					{
-						this->erasei(tindex, tindex + src.size() - 1);
+						this->erase_index(tindex, tindex + src.size() - 1);
 						++ret;
 						tindex += src.size();
 					}
@@ -496,7 +496,7 @@ namespace GAIA
 				_SizeType tindex = 0;
 				while((tindex = this->find(pSrc, tindex)) != GINVALID)
 				{
-					this->erasei(tindex, tindex + srclen - 1);
+					this->erase_index(tindex, tindex + srclen - 1);
 					if(dstlen != 0)
 						this->insert(pDst, tindex);
 					tindex += dstlen + 1;
@@ -514,7 +514,7 @@ namespace GAIA
 				_SizeType tindex = 0;
 				while((tindex = this->find(src, tindex)) != GINVALID)
 				{
-					this->erasei(tindex, tindex + src.size() - 1);
+					this->erase_index(tindex, tindex + src.size() - 1);
 					if(dst.size() != 0)
 						this->insert(dst, tindex);
 					tindex += dst.size() + 1;

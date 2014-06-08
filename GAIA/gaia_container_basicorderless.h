@@ -34,7 +34,7 @@ namespace GAIA
 				m_use.push_back(t);
 				return m_use.size() - 1;
 			}
-			GINL GAIA::BL erasei(const _SizeType& index)
+			GINL GAIA::BL erase_index(const _SizeType& index)
 			{
 				m_free.push_back(index);
 				m_use[index] = GNULL;
@@ -45,7 +45,7 @@ namespace GAIA
 				for(_SizeType x = 0; x < m_use.size(); ++x)
 				{
 					if(m_use[x] == t)
-						return this->erasei(x);
+						return this->erase_index(x);
 				}
 				return GAIA::False;
 			}

@@ -1028,7 +1028,7 @@ namespace PROM
 								{
 									if(chOld == ' ')
 									{
-										strLine.erasei(z);
+										strLine.erase_index(z);
 										--z;
 										++remove_space_count;
 										bLineChanged = GAIA::True;

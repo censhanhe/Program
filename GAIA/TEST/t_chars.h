@@ -550,29 +550,29 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = "Hello World! I am gaia, i am all object's base!";
-		chs.erasei(0);
-		chs.erasei(chs.size() - 1);
-		chs.erasei(3);
+		chs.erase_index(0);
+		chs.erase_index(chs.size() - 1);
+		chs.erase_index(3);
 		if(chs != "ell World! I am gaia, i am all object's base")
 		{
-			GTLINE2("String erasei element failed!");
+			GTLINE2("String erase_index element failed!");
 			++nRet;
 		}
 		if(chs.size() != GAIA::ALGORITHM::strlen("ell World! I am gaia, i am all object's base"))
 		{
-			GTLINE2("String erasei element cause size failed!");
+			GTLINE2("String erase_index element cause size failed!");
 			++nRet;
 		}
 		chs = "Hello World! I am gaia, i am all object's base!";
-		chs.erasei(6, 10);
+		chs.erase_index(6, 10);
 		if(chs != "Hello ! I am gaia, i am all object's base!")
 		{
-			GTLINE2("String erasei multi elements failed!");
+			GTLINE2("String erase_index multi elements failed!");
 			++nRet;
 		}
 		if(chs.size() != GAIA::ALGORITHM::strlen("Hello ! I am gaia, i am all object's base!"))
 		{
-			GTLINE2("String erasei multi elements cause size failed!");
+			GTLINE2("String erase_index multi elements cause size failed!");
 		}
 		chs = "Hello World! I am gaia, i am all object's base!";
 		if(chs.erase('a', 0) != 6)

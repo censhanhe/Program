@@ -1,10 +1,10 @@
 #if GAIA_COMPILER == GAIA_COMPILER_CL && GAIA_PROFILE == GAIA_PROFILE_DEBUG
-#   define  _CRTDBG_MAP_ALLOC
-#   include <stdlib.h>
-#   include <stdio.h>
-#   include <crtdbg.h>
-#   include <assert.h>
-#   define HEAPCHECK assert(_CrtCheckMemory());
+#	define  _CRTDBG_MAP_ALLOC
+#	include <stdlib.h>
+#	include <stdio.h>
+#	include <crtdbg.h>
+#	include <assert.h>
+#	define HEAPCHECK assert(_CrtCheckMemory());
 #else
 #   define HEAPCHECK
 #endif
