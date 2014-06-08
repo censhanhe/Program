@@ -6,8 +6,8 @@ namespace GAIA
 	namespace CONTAINER
 	{
 		template<
-			typename _DataType, 
-			typename _SizeType, 
+			typename _DataType,
+			typename _SizeType,
 			typename _HeightType,
 			typename _SizeIncreaserType
 		> class BasicKDTree : public GAIA::Base

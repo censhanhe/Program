@@ -165,7 +165,7 @@ namespace GAIA
 			template<typename _ParamObjType> GINL GAIA::U8& operator [] (const _ParamObjType& index){GAIA_AST(index < this->write_size()); return this->front_ptr()[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				this->reserve(src.write_size());
 				if(src.write_size() > 0)
 				{

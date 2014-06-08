@@ -69,7 +69,7 @@ namespace GAIA
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				this->destroy();
 				this->resize(src.size());
 				GAIA::ALGORITHM::copy(this->front_ptr(), src.front_ptr(), src.size());

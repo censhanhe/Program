@@ -171,8 +171,8 @@ namespace GAIATEST
 			++nRet;
 		}
 		__TreeType tr1 = tr;
-		if(tr1.size() != tr.size() || 
-			tr1.capacity() != tr.capacity() || 
+		if(tr1.size() != tr.size() ||
+			tr1.capacity() != tr.capacity() ||
 			tr1.empty() != tr.empty())
 		{
 			GTLINE2("Tree copy construct failed!");
@@ -338,4 +338,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

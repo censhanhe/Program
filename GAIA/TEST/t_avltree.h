@@ -264,8 +264,8 @@ namespace GAIATEST
 			__AVLType::const_it cit_l = (*(const __AVLType*)&avl).lower_bound(x);
 			__AVLType::it it_u = avl.upper_bound(x);
 			__AVLType::const_it cit_u = (*(const __AVLType*)&avl).upper_bound(x);
-			if(*it_l != *cit_l || 
-				*it_l != *it_u || 
+			if(*it_l != *cit_l ||
+				*it_l != *it_u ||
 				*it_l != *cit_u)
 			{
 				GTLINE2("AVL lower_bound and upper_bound failed!");
@@ -328,7 +328,7 @@ namespace GAIATEST
 			{
 				GTLINE2("AVL const iterator operator - failed!");
 				++nRet;
-			}			
+			}
 		}
 		if(avl > avl1 || avl < avl1 || avl != avl1)
 		{
@@ -344,4 +344,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

@@ -17,10 +17,10 @@ namespace GAIA
 		*	network.
 		*
 		*	right.
-		*	
+		*
 		*/
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL command_line(const GAIA::GCH* pszCmd);
 	};
 };
 
-#endif
+#endif

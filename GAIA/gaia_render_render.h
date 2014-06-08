@@ -83,13 +83,13 @@ namespace GAIA
 			virtual GAIA::GVOID GetIndexBuffer(const GAIA::RENDER::IndexBuffer*& pIB) const = 0;
 			virtual GAIA::GVOID SetVertexBuffer(GAIA::N32 nStream, const GAIA::RENDER::VertexBuffer* pVB) = 0;
 			virtual GAIA::GVOID GetVertexBuffer(GAIA::N32 nStream, const GAIA::RENDER::VertexBuffer*& pVB) const = 0;
-			
+
 			virtual GAIA::GVOID SetRenderTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::RenderTarget* pTarget) = 0;
 			virtual GAIA::GVOID GetRenderTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::RenderTarget*& pTarget) const = 0;
-			
+
 			virtual GAIA::GVOID SetTriangleType(DRAW_TRIANGLE_TYPE dtt) = 0;
 			virtual GAIA::GVOID GetTriangleType(DRAW_TRIANGLE_TYPE& dtt) const = 0;
-			
+
 			virtual GAIA::GVOID DrawTriangle() = 0;
 			virtual GAIA::GVOID DrawIndexedTriangle() = 0;
 
@@ -98,4 +98,4 @@ namespace GAIA
 	};
 };
 
-#endif
+#endif

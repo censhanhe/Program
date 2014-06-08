@@ -20,8 +20,8 @@ namespace GAIA
 			GINL ~BasicPool(){this->destroy();}
 			GINL GAIA::BL bind(__MyType* p)
 			{
-				if(!m_buf.empty() || 
-					!m_use.empty() || 
+				if(!m_buf.empty() ||
+					!m_use.empty() ||
 					!m_free.empty())
 					return GAIA::False;
 				m_bind = p;

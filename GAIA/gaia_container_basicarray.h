@@ -267,7 +267,7 @@ namespace GAIA
 				else
 				{
 					this->resize(this->size() + 1);
-					GAIA::ALGORITHM::move_next(this->front_ptr() + this->size() - 1, 
+					GAIA::ALGORITHM::move_next(this->front_ptr() + this->size() - 1,
 						this->front_ptr() + this->size() - 2,
 						this->size() - index);
 					this->operator[](index) = t;
@@ -415,7 +415,7 @@ namespace GAIA
 			GINL _DataType& operator [] (const _SizeType& index){return m_data[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				this->resize(src.size());
 				for(_sizetype x = 0; x < src.size(); ++x)
 					this->operator[](x) = src[x];

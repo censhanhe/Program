@@ -4,7 +4,7 @@
 namespace GAIA
 {
 	namespace MATH
-	{		
+	{
 		template<typename _DataType> class VEC2 : public GAIA::Base
 		{
 		public:
@@ -71,7 +71,7 @@ namespace GAIA
 		public:
 			_DataType x, y, z;
 		};
-		
+
 		template<typename _DataType> class VEC4 : public GAIA::Base
 		{
 		public:
@@ -134,7 +134,7 @@ namespace GAIA
 		template<typename _DataType> class AABB : public GAIA::Base
 		{
 		public:
-			
+
 		public:
 			VEC3<_DataType> pmin;
 			VEC3<_DataType> pmax;
@@ -146,7 +146,7 @@ namespace GAIA
 		public:
 			_DataType a, r, g, b;
 		};
-		
+
 		template<typename _DataType> class RGB : public GAIA::Base
 		{
 		public:

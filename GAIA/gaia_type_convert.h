@@ -5,8 +5,8 @@ namespace GAIA
 {
 	namespace DATATYPE
 	{
-		
+
 	}
 }
 
-#endif
+#endif

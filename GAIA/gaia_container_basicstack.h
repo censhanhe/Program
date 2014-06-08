@@ -268,7 +268,7 @@ namespace GAIA
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				this->reserve(src.size());
 				if(src.size() > 0)
 				{

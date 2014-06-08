@@ -24,7 +24,7 @@ namespace GAIA
 		{
 			if(this->IsConnected())
 				this->Disconnect();
-			
+
 			if(desc.addr.IsInvalid())
 				return GAIA::False;
 
@@ -235,11 +235,11 @@ namespace GAIA
 								(na.ip.u3 << 24);
 						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
 							nSended = static_cast<GAIA::N32>(sendto(
-								m_h, (const GAIA::GCH*)p, uSize, MSG_NOSIGNAL, 
+								m_h, (const GAIA::GCH*)p, uSize, MSG_NOSIGNAL,
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
 						#else
 							nSended = static_cast<GAIA::N32>(sendto(
-								m_h, (const GAIA::GCH*)p, uSize, 0, 
+								m_h, (const GAIA::GCH*)p, uSize, 0,
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
 						#endif
 						}
@@ -552,7 +552,7 @@ namespace GAIA
 				if(m_bStopCmd)
 					break;
 
-				// 
+				//
 				GAIA::BL bExistWork = GAIA::False;
 
 				// Copy network handle to handle list.
@@ -658,10 +658,10 @@ namespace GAIA
 								GAIA::ALGORITHM::xmemset(&recvfrom_addr, 0, recvfrom_addr_len);
 								GAIA_AST(m_buf.write_size() > sizeof(NetworkAddress));
 								nRecv = (GAIA::N32)recvfrom(
-									pHandle->m_h, 
-									(GAIA::N8*)m_buf.front_ptr() + sizeof(NetworkAddress), 
-									(GAIA::N32)m_buf.write_size() - sizeof(NetworkAddress), 0, 
-									(sockaddr*)&recvfrom_addr, 
+									pHandle->m_h,
+									(GAIA::N8*)m_buf.front_ptr() + sizeof(NetworkAddress),
+									(GAIA::N32)m_buf.write_size() - sizeof(NetworkAddress), 0,
+									(sockaddr*)&recvfrom_addr,
 									&recvfrom_addr_len);
 							}
 							if(nRecv == GINVALID)

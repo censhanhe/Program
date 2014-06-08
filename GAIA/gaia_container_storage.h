@@ -144,7 +144,7 @@ namespace GAIA
 				{
 					NodeSize freens = nsr;
 					freens.m_n.m_head += ns.m_n.m_capacity;
-					freens.m_n.m_capacity -= ns.m_n.m_capacity;	
+					freens.m_n.m_capacity -= ns.m_n.m_capacity;
 					freens.m_n.m_size = 0;
 					m_free_s.insert(freens);
 					Node* p = m_free_a.find(nsr.m_n);
@@ -244,7 +244,7 @@ namespace GAIA
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				m_origin_a = src.m_origin_a;
 				m_using_a = src.m_using_a;
 				m_free_a = src.m_free_a;

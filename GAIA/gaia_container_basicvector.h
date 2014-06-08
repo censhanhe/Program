@@ -399,7 +399,7 @@ namespace GAIA
 			GINL _DataType& operator[](const _SizeType& index){GAIA_AST(index >= 0 && index < this->size()); return m_pFront[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				this->reserve(src.size());
 				if(src.size() > 0)
 				{
@@ -557,4 +557,4 @@ namespace GAIA
 	};
 };
 
-#endif
+#endif

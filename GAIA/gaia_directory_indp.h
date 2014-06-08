@@ -138,7 +138,7 @@ namespace GAIA
 				GAIA::BL bFinded = GAIA::True;
 				while(bFinded)
 				{
-					if(GAIA::ALGORITHM::strcmp(fdata.cFileName, ".") == 0 || 
+					if(GAIA::ALGORITHM::strcmp(fdata.cFileName, ".") == 0 ||
 						GAIA::ALGORITHM::strcmp(fdata.cFileName, "..") == 0){}
 					else
 					{
@@ -190,7 +190,7 @@ namespace GAIA
 				dirent* pdirent;
 				while((pdirent = readdir(pdir)) != GNULL)
 				{
-					if(GAIA::ALGORITHM::strcmp(pdirent->d_name, ".") == 0 || 
+					if(GAIA::ALGORITHM::strcmp(pdirent->d_name, ".") == 0 ||
 						GAIA::ALGORITHM::strcmp(pdirent->d_name, "..") == 0){}
 					else
 					{
@@ -323,7 +323,7 @@ namespace GAIA
 			GAIA::BL bFinded = GAIA::True;
 			while(bFinded)
 			{
-				if(GAIA::ALGORITHM::strcmp(fdata.cFileName, ".") == 0 || 
+				if(GAIA::ALGORITHM::strcmp(fdata.cFileName, ".") == 0 ||
 					GAIA::ALGORITHM::strcmp(fdata.cFileName, "..") == 0){}
 				else if(fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && bOverlapped)
 				{
@@ -396,7 +396,7 @@ namespace GAIA
 			dirent* pdirent;
 			while((pdirent = readdir(pdir)) != GNULL)
 			{
-				if(GAIA::ALGORITHM::strcmp(pdirent->d_name, ".") == 0 || 
+				if(GAIA::ALGORITHM::strcmp(pdirent->d_name, ".") == 0 ||
 					GAIA::ALGORITHM::strcmp(pdirent->d_name, "..") == 0){}
 				else
 				{

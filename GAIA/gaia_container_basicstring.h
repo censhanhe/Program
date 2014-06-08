@@ -328,14 +328,14 @@ namespace GAIA
 			template<typename _ParamSizeType1, typename _ParamSizeType2> GINL GAIA::BL erase_index(const _ParamSizeType1& index_start, const _ParamSizeType2& index_end)
 			{
 				GAIA_AST(index_start <= index_end);
-				if(index_start >= 0 && index_start < this->size() && 
+				if(index_start >= 0 && index_start < this->size() &&
 					index_end >= index_start && index_end < this->size())
 				{
 					if(this->size() - index_start - 1 != 0)
 					{
 						GAIA::ALGORITHM::move_prev(
-							this->front_ptr() + index_start, 
-							this->front_ptr() + index_end + 1, 
+							this->front_ptr() + index_start,
+							this->front_ptr() + index_end + 1,
 							this->size() - index_end - 1);
 					}
 					this->resize(this->size() - (index_end - index_start) - 1);
@@ -906,7 +906,7 @@ namespace GAIA
 			_SizeType m_size;
 			_SizeType m_capacity;
 		};
-		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::CONTAINER::BasicString<_DataType2, _SizeType> 
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::CONTAINER::BasicString<_DataType2, _SizeType>
 			operator + (_DataType1 p, const GAIA::CONTAINER::BasicString<_DataType2, _SizeType>& str)
 		{
 			GAIA::CONTAINER::BasicString<_DataType2, _SizeType> ret = p;

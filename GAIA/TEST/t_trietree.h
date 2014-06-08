@@ -382,7 +382,7 @@ namespace GAIATEST
 			{
 				GTLINE2("Trie const iterator operator - failed!");
 				++nRet;
-			}			
+			}
 		}
 		it = t1.front_it();
 		cit = t1.const_front_it();
@@ -530,4 +530,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

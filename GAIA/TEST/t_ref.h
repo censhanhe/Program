@@ -74,7 +74,7 @@ namespace GAIATEST
 		}
 		if(r1 != r || r1 > r || r1 < r)
 		{
-			GTLINE2("Ref operator !=  __MyType failed!");
+			GTLINE2("Ref operator != __MyType failed!");
 			++nRet;
 		}
 		if(!(r == pElements && r >= pElements && r <= pElements))
@@ -115,4 +115,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

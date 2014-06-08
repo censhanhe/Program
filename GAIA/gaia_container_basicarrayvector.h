@@ -473,7 +473,7 @@ namespace GAIA
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				m_arr = src.m_arr;
 				m_vec = src.m_vec;
 				return *this;
@@ -620,4 +620,4 @@ namespace GAIA
 	};
 };
 
-#endif
+#endif

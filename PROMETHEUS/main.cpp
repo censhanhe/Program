@@ -1,18 +1,18 @@
 #if GAIA_COMPILER == GAIA_COMPILER_CL && GAIA_PROFILE == GAIA_PROFILE_DEBUG
-#	define  _CRTDBG_MAP_ALLOC
+#	define _CRTDBG_MAP_ALLOC
 #	include <stdlib.h>
 #	include <stdio.h>
 #	include <crtdbg.h>
 #	include <assert.h>
 #	define HEAPCHECK assert(_CrtCheckMemory());
 #else
-#   define HEAPCHECK
+# define HEAPCHECK
 #endif
 
 #ifdef GAIA_DEBUG_MEMORYLEAK
-#   if GAIA_OS == GAIA_OS_WINDOWS && GAIA_PROFILE == GAIA_PROFILE_DEBUG
-#       define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
-#   endif
+# if GAIA_OS == GAIA_OS_WINDOWS && GAIA_PROFILE == GAIA_PROFILE_DEBUG
+# define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
+# endif
 #endif
 
 #include "../GAIA/gaia.h"
@@ -20,7 +20,7 @@
 #include "prom.h"
 
 #if GAIA_OS == GAIA_OS_WINDOWS
-#   pragma comment(lib, "ws2_32.lib")
+# pragma comment(lib, "ws2_32.lib")
 #endif
 
 GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
@@ -71,9 +71,9 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 	}
 	for(; first_command_index < buf.write_size(); ++first_command_index)
 	{
-		if(buf[first_command_index] != '\n' && 
-			buf[first_command_index] != '\r' && 
-			buf[first_command_index] != ' ' && 
+		if(buf[first_command_index] != '\n' &&
+			buf[first_command_index] != '\r' &&
+			buf[first_command_index] != ' ' &&
 			buf[first_command_index] != '\t')
 			break;
 	}

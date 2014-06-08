@@ -130,17 +130,17 @@ namespace GAIATEST
 		__MapType::const_it citback = m.const_back_it();
 		for(__MapType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(itfront.empty() || 
-				citfront.empty() || 
-				itback.empty() || 
+			if(itfront.empty() ||
+				citfront.empty() ||
+				itback.empty() ||
 				citback.empty())
 			{
 				GTLINE2("Map iterator exist error!");
 				++nRet;
 				break;
 			}
-			if(*itfront != x || 
-				*citfront != x || 
+			if(*itfront != x ||
+				*citfront != x ||
 				*itback != ELEMENT_SIZE - x - 1 ||
 				*citback != ELEMENT_SIZE - x - 1)
 			{
@@ -153,9 +153,9 @@ namespace GAIATEST
 			--itback;
 			--citback;
 		}
-		if(!itfront.empty() || 
-			!citfront.empty() || 
-			!itback.empty() || 
+		if(!itfront.empty() ||
+			!citfront.empty() ||
+			!itback.empty() ||
 			!citback.empty())
 		{
 			GTLINE2("Map iterator ++ -- exist error!");
@@ -181,9 +181,9 @@ namespace GAIATEST
 		citfront = m.const_front_it();
 		itback = m.back_it();
 		citback = m.const_back_it();
-		if(!itfront.empty() || 
-			!citfront.empty() || 
-			!itback.empty() || 
+		if(!itfront.empty() ||
+			!citfront.empty() ||
+			!itback.empty() ||
 			!citback.empty())
 		{
 			GTLINE2("Map iterator not empty when map is empty!");
@@ -216,25 +216,25 @@ namespace GAIATEST
 		citfront = m1.const_front_it();
 		itback = m1.back_it();
 		citback = m1.const_back_it();
-		if(itfront >= itback || itfront > itback || itfront == itback || 
+		if(itfront >= itback || itfront > itback || itfront == itback ||
 			citfront >= citback || citfront > citback || citfront == citback)
 		{
 			GTLINE2("Map iterator operator >= > == failed!");
 			++nRet;
 		}
-		if(!(itfront <= itback && itfront < itback && itfront != itback && 
+		if(!(itfront <= itback && itfront < itback && itfront != itback &&
 			citfront <= citback && citfront < citback && citfront != citback))
 		{
 			GTLINE2("Map iterator operator <= < != failed!");
 			++nRet;
 		}
-		if((itfront + 10) - 10 != m1.front_it() || 
+		if((itfront + 10) - 10 != m1.front_it() ||
 			(citfront + 10) - 10 != m1.const_front_it())
 		{
 			GTLINE2("Map iterator operator + or - failed!");
 			++nRet;
 		}
-		if(itfront + 10 - m1.front_it() != 10 || 
+		if(itfront + 10 - m1.front_it() != 10 ||
 			citfront + 10 - m1.const_front_it() != 10)
 		{
 			GTLINE2("Map iterator operator + or - failed!");
@@ -244,9 +244,9 @@ namespace GAIATEST
 		itback -= ELEMENT_SIZE - 1;
 		citfront += ELEMENT_SIZE - 1;
 		citback -= ELEMENT_SIZE - 1;
-		if(itfront != m1.back_it() || 
-			itback != m1.front_it() || 
-			citfront != m1.const_back_it() || 
+		if(itfront != m1.back_it() ||
+			itback != m1.front_it() ||
+			citfront != m1.const_back_it() ||
 			citback != m1.const_front_it())
 		{
 			GTLINE2("Map iterator += or -= error!");
@@ -256,4 +256,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

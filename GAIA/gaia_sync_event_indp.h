@@ -74,7 +74,7 @@ namespace GAIA
 						abstime.tv_sec = now.tv_sec + uMilliSecond / 1000;
 						if(pthread_cond_timedwait((pthread_cond_t*)m_head, (pthread_mutex_t*)m_headmutex, &abstime) == 0)
 							ret = GAIA::True;
-					}	
+					}
 				}
 				else
 					ret = GAIA::True;

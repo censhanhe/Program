@@ -138,11 +138,11 @@ namespace GAIATEST
 					GTLINE2("RAM accesser operator -= or += or - failed!");
 					++nRet;
 				}
-				if(!(acc1 > acc) || 
-					acc1 < acc || 
-					acc1 <= acc || 
-					acc1 == acc || 
-					!(acc1 >= acc) || 
+				if(!(acc1 > acc) ||
+					acc1 < acc ||
+					acc1 <= acc ||
+					acc1 == acc ||
+					!(acc1 >= acc) ||
 					!(acc1 != acc))
 				{
 					GTLINE2("RAM accesser compare operator failed!");
@@ -165,9 +165,9 @@ namespace GAIATEST
 				typedef GAIA::CONTAINER::Accesser<__DataType, GAIA::NM> __AccType;
 				__AccType acc;
 				GAIA::FILESYSTEM::File accfile;
-				if(!accfile.Open("../accesser_file", 
-					GAIA::FILESYSTEM::File::OPEN_TYPE_READ | 
-					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | 
+				if(!accfile.Open("../accesser_file",
+					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
+					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
 					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
 				{
 					GTLINE2("Create accesser bind file failed!");
@@ -295,11 +295,11 @@ namespace GAIATEST
 					GTLINE2("File accesser operator -= or += or - failed!");
 					++nRet;
 				}
-				if(!(acc1 > acc) || 
-					acc1 < acc || 
-					acc1 <= acc || 
-					acc1 == acc || 
-					!(acc1 >= acc) || 
+				if(!(acc1 > acc) ||
+					acc1 < acc ||
+					acc1 <= acc ||
+					acc1 == acc ||
+					!(acc1 >= acc) ||
 					!(acc1 != acc))
 				{
 					GTLINE2("File accesser compare operator failed!");
@@ -318,4 +318,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		
+
 	};
 };
 

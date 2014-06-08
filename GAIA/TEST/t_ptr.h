@@ -73,7 +73,7 @@ namespace GAIATEST
 		}
 		if(p1 != p || p1 > p || p1 < p)
 		{
-			GTLINE2("Ptr operator !=  __MyType failed!");
+			GTLINE2("Ptr operator != __MyType failed!");
 			++nRet;
 		}
 		if(!(p == pElements && p >= pElements && p <= pElements))
@@ -157,4 +157,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

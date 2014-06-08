@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template<typename _BufferType, typename _SizeType, typename _OldDataType, typename _NewDataType> _SizeType 
+		template<typename _BufferType, typename _SizeType, typename _OldDataType, typename _NewDataType> _SizeType
 			replace(_BufferType* p, const _SizeType& size, const _OldDataType& old_element, const _NewDataType& new_element)
 		{
 			_SizeType ret = 0;
@@ -24,4 +24,4 @@ namespace GAIA
 	};
 };
 
-#endif
+#endif

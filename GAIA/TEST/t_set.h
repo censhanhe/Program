@@ -144,17 +144,17 @@ namespace GAIATEST
 		__SetType::const_it citback = s.const_back_it();
 		for(__SetType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(itfront.empty() || 
-				citfront.empty() || 
-				itback.empty() || 
+			if(itfront.empty() ||
+				citfront.empty() ||
+				itback.empty() ||
 				citback.empty())
 			{
 				GTLINE2("Set iterator exist error!");
 				++nRet;
 				break;
 			}
-			if(*itfront != x || 
-				*citfront != x || 
+			if(*itfront != x ||
+				*citfront != x ||
 				*itback != ELEMENT_SIZE - x - 1 ||
 				*citback != ELEMENT_SIZE - x - 1)
 			{
@@ -167,9 +167,9 @@ namespace GAIATEST
 			--itback;
 			--citback;
 		}
-		if(!itfront.empty() || 
-			!citfront.empty() || 
-			!itback.empty() || 
+		if(!itfront.empty() ||
+			!citfront.empty() ||
+			!itback.empty() ||
 			!citback.empty())
 		{
 			GTLINE2("Set iterator ++ -- exist error!");
@@ -195,9 +195,9 @@ namespace GAIATEST
 		citfront = s.const_front_it();
 		itback = s.back_it();
 		citback = s.const_back_it();
-		if(!itfront.empty() || 
-			!citfront.empty() || 
-			!itback.empty() || 
+		if(!itfront.empty() ||
+			!citfront.empty() ||
+			!itback.empty() ||
 			!citback.empty())
 		{
 			GTLINE2("Set iterator not empty when set is empty!");
@@ -237,25 +237,25 @@ namespace GAIATEST
 		citfront = s1.const_front_it();
 		itback = s1.back_it();
 		citback = s1.const_back_it();
-		if(itfront >= itback || itfront > itback || itfront == itback || 
+		if(itfront >= itback || itfront > itback || itfront == itback ||
 			citfront >= citback || citfront > citback || citfront == citback)
 		{
 			GTLINE2("Set iterator operator >= > == failed!");
 			++nRet;
 		}
-		if(!(itfront <= itback && itfront < itback && itfront != itback && 
+		if(!(itfront <= itback && itfront < itback && itfront != itback &&
 			citfront <= citback && citfront < citback && citfront != citback))
 		{
 			GTLINE2("Set iterator operator <= < != failed!");
 			++nRet;
 		}
-		if((itfront + 10) - 10 != s1.front_it() || 
+		if((itfront + 10) - 10 != s1.front_it() ||
 			(citfront + 10) - 10 != s1.const_front_it())
 		{
 			GTLINE2("Set iterator operator + or - failed!");
 			++nRet;
 		}
-		if(itfront + 10 - s1.front_it() != 10 || 
+		if(itfront + 10 - s1.front_it() != 10 ||
 			citfront + 10 - s1.const_front_it() != 10)
 		{
 			GTLINE2("Set iterator operator + or - failed!");
@@ -265,9 +265,9 @@ namespace GAIATEST
 		itback -= ELEMENT_SIZE - 1;
 		citfront += ELEMENT_SIZE - 1;
 		citback -= ELEMENT_SIZE - 1;
-		if(itfront != s1.back_it() || 
-			itback != s1.front_it() || 
-			citfront != s1.const_back_it() || 
+		if(itfront != s1.back_it() ||
+			itback != s1.front_it() ||
+			citfront != s1.const_back_it() ||
 			citback != s1.const_front_it())
 		{
 			GTLINE2("Set iterator += or -= error!");
@@ -277,4 +277,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

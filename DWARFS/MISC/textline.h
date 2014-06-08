@@ -16,8 +16,8 @@ namespace DWARFS_MISC
 		GINL ~TextLine(){}
 		GINL GAIA::BL lineflag(const GAIA::GCH* psz)
 		{
-			if(GAIA::ALGORITHM::strcmp(psz, "\r") != 0 && 
-				GAIA::ALGORITHM::strcmp(psz, "\n") != 0 && 
+			if(GAIA::ALGORITHM::strcmp(psz, "\r") != 0 &&
+				GAIA::ALGORITHM::strcmp(psz, "\n") != 0 &&
 				GAIA::ALGORITHM::strcmp(psz, "\r\n") != 0)
 				return GAIA::False;
 			m_lineflag = psz;
@@ -60,7 +60,7 @@ namespace DWARFS_MISC
 					{
 						if(p[x + 1] != '\n')
 							pMatched = p + x + 1;
-					}	
+					}
 				}
 				else if(p[x] == '\n')
 					pMatched = p + x;
@@ -73,7 +73,7 @@ namespace DWARFS_MISC
 					m_lines.push_back(empty_line);
 					m_lines.back().resize(pMatched - pLast + 1);
 					GAIA::ALGORITHM::xmemcpy(
-						m_lines.back().front_ptr(), 
+						m_lines.back().front_ptr(),
 						pLast, pMatched - pLast + 1);
 					pLast = pMatched + 1;
 					bExistMatch = GAIA::True;
@@ -226,7 +226,7 @@ namespace DWARFS_MISC
 			if(line_flag_count != 1)
 				return GAIA::False;
 			return GAIA::True;
-		}	
+		}
 	private:
 		__LineListType m_lines;
 		__FlagType m_lineflag;

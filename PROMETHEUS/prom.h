@@ -559,8 +559,8 @@ namespace PROM
 								DWARFS_MISC::CmdParam::CMD_TYPE cmdtype = plc_commandparam->cmdparam.cmd_decl_type(y);
 								if(GAIA::ALGORITHM::stremp(pszDeclDesc))
 									pszDeclDesc = "Noinfo";
-								prt << "\t" << "[" << y << "]" << pszDeclCmd << ", Info:" << pszDeclDesc << ", " << 
-									"[" << min_param_size << ", " << max_param_size << "] " << 
+								prt << "\t" << "[" << y << "]" << pszDeclCmd << ", Info:" << pszDeclDesc << ", " <<
+									"[" << min_param_size << ", " << max_param_size << "] " <<
 									DWARFS_MISC::CMD_TYPE_ANAME[cmdtype] << "\n";
 							}
 						}
@@ -833,7 +833,7 @@ namespace PROM
 							GAIA::BL bExistValidFlag = GAIA::False;
 							if(strTemp.size () >= chs.size())
 							{
-								if(strTemp.rfind(chs.front_ptr(), strTemp.size() - 1) != 
+								if(strTemp.rfind(chs.front_ptr(), strTemp.size() - 1) !=
 									strTemp.size() - chs.size())
 									++add;
 								else
@@ -842,7 +842,7 @@ namespace PROM
 									{
 										if(strTemp.size() >= 2)
 										{
-											if(strTemp[strTemp.size() - 2] == '\r' && 
+											if(strTemp[strTemp.size() - 2] == '\r' &&
 												strTemp[strTemp.size() - 1] == '\n')
 												++add;
 											else
@@ -874,9 +874,9 @@ namespace PROM
 							}
 							t.lines.set_line(y, strTemp);
 
-							if(remove_rn != old_remove_rn || 
-								remove_n != old_remove_n || 
-								remove_r != old_remove_r || 
+							if(remove_rn != old_remove_rn ||
+								remove_n != old_remove_n ||
+								remove_r != old_remove_r ||
 								add != old_add)
 								bNeedSave = GAIA::True;
 						}
@@ -1202,7 +1202,7 @@ namespace PROM
 						if(!plc_file->filelist[x].bNeedSave)
 							continue;
 						GAIA::FILESYSTEM::File file;
-						if(file.Open(plc_file->filelist[x].name, 
+						if(file.Open(plc_file->filelist[x].name,
 							GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
 						{
 							if(plc_codelines->file_codelines_list[x].lines.save(&file))
@@ -1363,7 +1363,7 @@ namespace PROM
 									}
 								}
 							}
-							for(GAIA::SIZE y = 0; y  < plc_size; y++)
+							for(GAIA::SIZE y = 0; y < plc_size; y++)
 							{
 								if(ppPLC[y] == GNULL)
 									continue;
@@ -1411,7 +1411,7 @@ namespace PROM
 								if(GAIA::ALGORITHM::strcmp(pNewPLC->GetName(), "Prom:PLC_CommandParam") == 0)
 									m_plc_commandparam = static_cast<PLC_CommandParam*>(pNewPLC);
 							}
-							for(GAIA::SIZE y = 0; y  < plc_size; y++)
+							for(GAIA::SIZE y = 0; y < plc_size; y++)
 							{
 								if(ppPLC[y] == GNULL)
 									continue;
@@ -1436,9 +1436,9 @@ namespace PROM
 				}
 				if(pl_list.size() != 0)
 				{
-					this->Run(ppNextPL, nextpl_size, 
-						pl_list.front_ptr(), pl_list.size(), 
-						new_plc_list.front_ptr(), new_plc_list.size(), 
+					this->Run(ppNextPL, nextpl_size,
+						pl_list.front_ptr(), pl_list.size(),
+						new_plc_list.front_ptr(), new_plc_list.size(),
 						prt, errs);
 				}
 				for(GAIA::SIZE x = 0; x < pl_list.size(); ++x)

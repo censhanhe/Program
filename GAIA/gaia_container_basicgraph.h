@@ -253,7 +253,7 @@ namespace GAIA
 			GINL const Node& operator[](const _SizeType& index) const{return m_pool[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				return *this;
 			}
 		public:
@@ -282,7 +282,7 @@ namespace GAIA
 						Node* pNode = t.m_links[y];
 						if(pNode == GNULL)
 							continue;
-						GAIA::BL bExist  = GAIA::False;
+						GAIA::BL bExist = GAIA::False;
 						for(_SizeType z = 0; z < pNode->m_links.size(); ++z)
 						{
 							if(pNode->m_links[z] == &t)
@@ -531,7 +531,7 @@ namespace GAIA
 					{
 						const Node* pNode = src.m_links[x];
 						if(pNode == GNULL)
-							continue;	
+							continue;
 						_SizeType traveling_count = 0;
 						const Node& navdst = this->navfind(src, *pNode, navtimes, traveling_count);
 						this->reset_tstack(traveling_count);

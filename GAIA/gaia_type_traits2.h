@@ -10,7 +10,7 @@ namespace GAIA
 			/* Data convert formula declaration. */
 			template<typename _DataType1, typename _DataType2> class DataTypeConvertTraits{public:typedef _DataType1 ConvertedType;};
 
-			/* UM second. */ 
+			/* UM second. */
 			template<> class DataTypeConvertTraits<U8, UM>{public:typedef UM ConvertedType;};
 			template<> class DataTypeConvertTraits<U16, UM>{public:typedef UM ConvertedType;};
 			template<> class DataTypeConvertTraits<U32, UM>{public:typedef UM ConvertedType;};

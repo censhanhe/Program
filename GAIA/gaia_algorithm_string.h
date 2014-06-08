@@ -534,15 +534,15 @@ namespace GAIA
 
 			/* Check up the string is RID. */
 			GAIA::SIZE len = GAIA::ALGORITHM::strlen(p);
-			if(len == sizeof(GAIA::X128) || 
+			if(len == sizeof(GAIA::X128) ||
 				len == sizeof(GAIA::X128) * 2)
 			{
 				GAIA::BL bMatch = GAIA::True;
 				_DataType pTemp = p;
 				while(*pTemp != '\0')
 				{
-					if(*pTemp >= 'a' && *pTemp <= 'f' || 
-						*pTemp >= 'A' && *pTemp <= 'F' || 
+					if(*pTemp >= 'a' && *pTemp <= 'f' ||
+						*pTemp >= 'A' && *pTemp <= 'F' ||
 						*pTemp >= '0' && *pTemp <= '9'){}
 					else
 					{
@@ -567,9 +567,9 @@ namespace GAIA
 				_DataType pTemp = p;
 				while(*pTemp != '\0')
 				{
-					if((*pTemp == '.') || 
-						(*pTemp >= '0' && *pTemp <= '9') || 
-						(pTemp == p && (*pTemp == '-' || *pTemp == '+')) || 
+					if((*pTemp == '.') ||
+						(*pTemp >= '0' && *pTemp <= '9') ||
+						(pTemp == p && (*pTemp == '-' || *pTemp == '+')) ||
 						(pTemp[1] == '\0' && (*pTemp == 'f' || *pTemp == 'F')))
 					{
 						if(*pTemp == '.')
@@ -595,7 +595,7 @@ namespace GAIA
 				_DataType pTemp = p;
 				while(*pTemp != '\0')
 				{
-					if((*pTemp >= '0' && *pTemp <= '9') || 
+					if((*pTemp >= '0' && *pTemp <= '9') ||
 						(pTemp == p && (*pTemp == '-' || *pTemp == '+'))){}
 					else
 					{

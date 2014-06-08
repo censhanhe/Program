@@ -3,13 +3,13 @@
 
 namespace DWARFS_MISC
 {
-	static const GAIA::GCH* CMD_TYPE_ANAME[] = 
+	static const GAIA::GCH* CMD_TYPE_ANAME[] =
 	{
 		"Invalid",
 		"MustExist",
 	};
 
-	static const GAIA::GCH* PARAM_TYPE_ANAME[] = 
+	static const GAIA::GCH* PARAM_TYPE_ANAME[] =
 	{
 		"Invalid",
 		"File",
@@ -64,10 +64,10 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::BL is_begin_decl() const{return m_bBeginDecl;}
 		GINL GAIA::SIZE cmd_decl(
-			const GAIA::GCH* pszCmd, 
+			const GAIA::GCH* pszCmd,
 			const GAIA::GCH* pszDesc,
-			const GAIA::SIZE& min_param_size, 
-			const GAIA::SIZE& max_param_size, 
+			const GAIA::SIZE& min_param_size,
+			const GAIA::SIZE& max_param_size,
 			CMD_TYPE t)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
@@ -141,12 +141,12 @@ namespace DWARFS_MISC
 			{
 				CmdDecl& temp = m_decls[x];
 				if(temp.cmd == pszCmd &&
-					temp.min_param_size == min_param_size && 
+					temp.min_param_size == min_param_size &&
 					temp.max_param_size == max_param_size)
 				{
 					pCmd = &temp;
 					break;
-				}	
+				}
 			}
 			if(pCmd == GNULL)
 				return GAIA::False;
@@ -156,7 +156,7 @@ namespace DWARFS_MISC
 			if(!GAIA::ALGORITHM::stremp(pszDesc))
 				temp.desc = pszDesc;
 			temp.type = t;
-			for(__ParamDeclListType::_sizetype x = 0; x < pCmd->paramdecls.size(); ++x)	
+			for(__ParamDeclListType::_sizetype x = 0; x < pCmd->paramdecls.size(); ++x)
 			{
 				if(pCmd->paramdecls[x] == temp)
 					return GAIA::False;
@@ -180,7 +180,7 @@ namespace DWARFS_MISC
 			for(__CmdMutexListType::_sizetype x = 0; x < m_mutex_decls.size(); ++x)
 			{
 				CmdMutex& temp = m_mutex_decls[x];
-				if(temp.cmd1 == pszCmd1 && 
+				if(temp.cmd1 == pszCmd1 &&
 					temp.cmd2 == pszCmd2)
 					return;
 			}
@@ -205,7 +205,7 @@ namespace DWARFS_MISC
 			for(__CmdCoopListType::_sizetype x = 0; x < m_coop_decls.size(); ++x)
 			{
 				CmdCoop& temp = m_coop_decls[x];
-				if(temp.cmd1 == pszCmd1 && 
+				if(temp.cmd1 == pszCmd1 &&
 					temp.cmd2 == pszCmd2)
 					return;
 			}
@@ -305,17 +305,17 @@ namespace DWARFS_MISC
 						__StringType::_sizetype index_begin = 0, index_end = str.size() - 1;
 						for(; index_begin < str.size(); ++index_begin)
 						{
-							if(str[index_begin] != '\r' && 
-								str[index_begin] != '\n' && 
-								str[index_begin] != ' ' && 
+							if(str[index_begin] != '\r' &&
+								str[index_begin] != '\n' &&
+								str[index_begin] != ' ' &&
 								str[index_begin] != '\t')
 								break;
 						}
 						for(;;)
 						{
-							if(str[index_end] != '\r' && 
-								str[index_end] != '\n' && 
-								str[index_end] != ' ' && 
+							if(str[index_end] != '\r' &&
+								str[index_end] != '\n' &&
+								str[index_end] != ' ' &&
 								str[index_end] != '\t')
 								break;
 							--index_end;
@@ -383,7 +383,7 @@ namespace DWARFS_MISC
 				CmdDecl& decl = m_decls[uDecl];
 				if(temp.params.size() < decl.min_param_size)
 				{
-					prt << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" << 
+					prt << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" <<
 						" [" << decl.min_param_size << ", " << decl.max_param_size << "]" << "\n";
 					goto FUNCTION_END;
 				}
@@ -391,7 +391,7 @@ namespace DWARFS_MISC
 				{
 					if(temp.params.size() > decl.max_param_size)
 					{
-						prt << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" << 
+						prt << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" <<
 							" [" << decl.min_param_size << ", " << decl.max_param_size << "]" << "\n";
 						goto FUNCTION_END;
 					}

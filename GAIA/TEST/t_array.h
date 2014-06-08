@@ -163,7 +163,7 @@ namespace GAIATEST
 		}
 		delete[] pTemp;
 		pTemp = GNULL;
-		if(arr1.size() != arrsize || 
+		if(arr1.size() != arrsize ||
 			arr.size() != arrsize)
 		{
 			GTLINE2("Array push_back multi element size error!");
@@ -461,4 +461,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

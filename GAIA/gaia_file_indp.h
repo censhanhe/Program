@@ -65,7 +65,7 @@ namespace GAIA
 				GAIA_AST(cur != -1);
 				if(cur == -1)
 					return GAIA::False;
-				if(m_fileopentype & OPEN_TYPE_CREATEALWAYS || 
+				if(m_fileopentype & OPEN_TYPE_CREATEALWAYS ||
 					m_fileopentype & OPEN_TYPE_WRITE)
 				{
 					if(fseek((FILE*)m_pFile, size - 1, SEEK_SET) != 0)

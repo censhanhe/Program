@@ -149,7 +149,7 @@ namespace GAIATEST
 
 		delete[] pTemp;
 		pTemp = GNULL;
-		if(vec1.size() != arrsize || 
+		if(vec1.size() != arrsize ||
 			vec.size() != arrsize)
 		{
 			GTLINE2("Vector push_back multi element size error!");
@@ -461,4 +461,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

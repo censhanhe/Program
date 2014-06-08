@@ -290,8 +290,8 @@ namespace GAIATEST
 			__MultiAVLType::const_it cit_l = (*(const __MultiAVLType*)&mavl).lower_bound(x);
 			__MultiAVLType::it it_u = mavl.upper_bound(x);
 			__MultiAVLType::const_it cit_u = (*(const __MultiAVLType*)&mavl).upper_bound(x);
-			if(*it_l != *cit_l || 
-				*it_l != *it_u || 
+			if(*it_l != *cit_l ||
+				*it_l != *it_u ||
 				*it_l != *cit_u)
 			{
 				GTLINE2("MultiAVL lower_bound and upper_bound failed!");
@@ -456,7 +456,7 @@ namespace GAIATEST
 			{
 				GTLINE2("MultiAVL const iterator operator - failed!");
 				++nRet;
-			}			
+			}
 		}
 		if(mavl > mavl1 || mavl < mavl1 || mavl != mavl1)
 		{
@@ -472,4 +472,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

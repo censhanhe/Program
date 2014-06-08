@@ -30,7 +30,7 @@ namespace GAIA
 			public:
 				GINL Node& operator = (const Node& src)
 				{
-					GAIA_AST(&src != this); 
+					GAIA_AST(&src != this);
 					GAIA_AST(!!m_acc);
 					if(m_acc != GNULL && m_index != src.m_index)
 						(*this) = (const _DataType&)src;
@@ -82,7 +82,7 @@ namespace GAIA
 			public:
 				GINL ConstNode& operator = (const ConstNode& src)
 				{
-					GAIA_AST(&src != this); 
+					GAIA_AST(&src != this);
 					GAIA_AST(!!m_acc);
 					if(m_acc != GNULL && m_index != src.m_index)
 						(*this) = (const _DataType&)src;
@@ -99,7 +99,7 @@ namespace GAIA
 				GINL ConstNode(){this->init();}
 				GINL ConstNode& operator = (const _DataType& src)
 				{
-					GAIA_AST(&src != this); 
+					GAIA_AST(&src != this);
 					GAIA_AST(!!m_acc);
 					m_acc->set(m_index, src);
 					return *this;
@@ -196,7 +196,7 @@ namespace GAIA
 			GINL ConstNode operator [] (const _SizeType& index) const{ConstNode n; n.m_acc = this; n.m_index = index; return n;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				m_bindtype = src.m_bindtype;
 				m_atm = src.m_atm;
 				m_p = src.m_p;
@@ -391,7 +391,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL GAIA::BL get(const _SizeType& index, _DataType& dst) const
-			{	
+			{
 				GAIA_AST(this->isbinded());
 				if(!this->isbinded())
 					return GAIA::False;

@@ -3,11 +3,11 @@
 
 /*
 *	!WARNING!
-*		Only cpp(*.cpp *.c) file can include this file. 
+*		Only cpp(*.cpp *.c) file can include this file.
 *		The header file(*.h *.hh *.hpp) cannot include this file!
 *
 *	!WARNING!
-*		This file can only been used in GAIA system. 
+*		This file can only been used in GAIA system.
 *		Any other project will use itself's preheader file.
 */
 

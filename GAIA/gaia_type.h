@@ -135,7 +135,7 @@ namespace GAIA
 	#		define unsigned GAIA_INVALID_ORIGINTYPE
 	#	endif
 	#endif
-	
+
 	/* Common operation. */
 	#define sizeofarray(arr) (sizeof(arr) / sizeof((arr)[0]))
 
@@ -223,7 +223,7 @@ namespace GAIA
 		TYPEID_GWCH,
 	GAIA_ENUM_END(TYPEID)
 
-	static const GAIA::GCH* TYPEID_ANAME[] = 
+	static const GAIA::GCH* TYPEID_ANAME[] =
 	{
 		"Invalid",
 		"NM",
@@ -244,7 +244,7 @@ namespace GAIA
 		"GWCH",
 	};
 
-	static const GAIA::GWCH* TYPEID_WNAME[] = 
+	static const GAIA::GWCH* TYPEID_WNAME[] =
 	{
 		L"Invalid",
 		L"NM",
@@ -264,7 +264,7 @@ namespace GAIA
 		L"GCH",
 		L"GWCH",
 	};
-	
+
 	GINL TYPEID nametotype(const GAIA::GCH* psz);
 	GINL TYPEID nametotype(const GAIA::GWCH* psz);
 

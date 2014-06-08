@@ -590,7 +590,7 @@ namespace GAIA
 			GINL const Node& operator[](const _SizeType& index) const{return m_pool[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				this->clear();
 				if(!src.empty())
 				{
@@ -637,7 +637,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL GAIA::BL operator <= (const __MyType& src) const
-			{	
+			{
 				if(this->size() < src.size())
 					return GAIA::True;
 				else if(this->size() > src.size())

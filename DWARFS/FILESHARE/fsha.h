@@ -84,22 +84,22 @@
 *
 *
 *	=========================================================================
-*	FILE----------------->---------------------->---------------------->
-*						 |						|					   |
-*						 |						|					   |
-*	FILEHEAD-------------<						|					   |
-*						 |						|					   |
-*						 |						|					   |
-*	FILECHUNK[1,n]-------<						|					   |
-*	|											|					   |
-*	|											|					   |
-*	CMPLFILESECTION[0,1]->						|					   |
-*												|					   |
-*												|					   |
-*	CNN-----------------------------------------<					   |
-*																	   |
-*																	   |
-*	FILENOTEXIST-------------------------------------------------------<
+*	FILE----------------->---------------------->----------------------->
+*						 |						|						|
+*						 |						|						|
+*	FILEHEAD-------------<						|						|
+*						 |						|						|
+*						 |						|						|
+*	FILECHUNK[1,n]-------<						|						|
+*	|											|						|
+*	|											|						|
+*	CMPLFILESECTION[0,1]->						|						|
+*												|						|
+*												|						|
+*	CNN-----------------------------------------<						|
+*																		|
+*																		|
+*	FILENOTEXIST--------------------------------------------------------<
 *
 *
 *	=========================================================================
@@ -168,8 +168,8 @@ namespace DWARFS_FSHA
 	typedef GAIA::CONTAINER::BasicVector<FSTR, FILEID, GAIA::ALGORITHM::TwiceSizeIncreaser<FILEID> > FSTRLIST;
 	typedef GAIA::CONTAINER::Vector<FILEID> FIDLIST;
 	typedef GAIA::CONTAINER::BasicAVLTree<
-			FSTR, GAIA::N32, GAIA::N32, 
-			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > FSTRBTR; 
+			FSTR, GAIA::N32, GAIA::N32,
+			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > FSTRBTR;
 	typedef GAIA::U32 MAPINDEX; // 0 means invalid id.
 	typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAXPATHLEN> FNAMETYPE;
 	typedef GAIA::CONTAINER::Array<FNAMETYPE, MAXPATHDEPTH> FNAMEPARTLISTTYPE;
@@ -227,7 +227,7 @@ namespace DWARFS_FSHA
 			/* Construct serializer. */
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
-			GAIA::SERIALIZER::Serializer* pSerializer = 
+			GAIA::SERIALIZER::Serializer* pSerializer =
 				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
 			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, &fileiofile);
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_READ))
@@ -320,7 +320,7 @@ namespace DWARFS_FSHA
 			/* Construct serializer. */
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
-			GAIA::SERIALIZER::Serializer* pSerializer = 
+			GAIA::SERIALIZER::Serializer* pSerializer =
 				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
 			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, &fileiofile);
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_WRITE))
@@ -468,7 +468,7 @@ namespace DWARFS_FSHA
 								listInsert.push_back(n);
 								++pmit;
 							}
-						}						
+						}
 						else
 							GAIA_AST(GAIA::ALWAYSFALSE);
 						listInsert.back_ptr()->fid = id++;
@@ -529,7 +529,7 @@ namespace DWARFS_FSHA
 					}
 					else
 						GAIA_AST(GAIA::ALWAYSFALSE);
-				}	
+				}
 				if(m_pPr != GNULL)
 					(*m_pPr) << "\n";
 			}
@@ -621,7 +621,7 @@ namespace DWARFS_FSHA
 		public:
 			GINL FileRec& operator = (const FileRec& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				fid = src.fid;
 				it = src.it;
 				uSequence = src.uSequence;
@@ -911,7 +911,7 @@ namespace DWARFS_FSHA
 			/* Construct serializer. */
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
-			GAIA::SERIALIZER::Serializer* pSerializer = 
+			GAIA::SERIALIZER::Serializer* pSerializer =
 				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
 			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, &fileiofile);
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_READ))
@@ -985,7 +985,7 @@ namespace DWARFS_FSHA
 			/* Construct serializer. */
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
-			GAIA::SERIALIZER::Serializer* pSerializer = 
+			GAIA::SERIALIZER::Serializer* pSerializer =
 				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
 			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, &fileiofile);
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_WRITE))
@@ -1413,7 +1413,7 @@ namespace DWARFS_FSHA
 			GAIA_CLASS_OPERATOR_COMPARE(ip, ip, BanIPNode);
 			GINL BanIPNode& operator = (const BanIPNode& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				ip = src.ip;
 				uOccurTime = src.uOccurTime;
 				uBanTime = src.uBanTime;
@@ -1439,7 +1439,7 @@ namespace DWARFS_FSHA
 			/* Construct serializer. */
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
-			GAIA::SERIALIZER::Serializer* pSerializer = 
+			GAIA::SERIALIZER::Serializer* pSerializer =
 				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
 			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, &fileiofile);
 			if(!pFileIO->Open(FILE_BANIP, GAIA::IO::IO::IO_TYPE_READ))
@@ -1491,7 +1491,7 @@ namespace DWARFS_FSHA
 			/* Construct serializer. */
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
-			GAIA::SERIALIZER::Serializer* pSerializer = 
+			GAIA::SERIALIZER::Serializer* pSerializer =
 				(GAIA::SERIALIZER::Serializer*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_SERIALIZER, GNULL);
 			GAIA::IO::FileIO* pFileIO = (GAIA::IO::FileIO*)pFactory->CreateInstance(GAIA::FRAMEWORK::GAIA_CLSID_FILEIO, &fileiofile);
 			if(!pFileIO->Open(FILE_BANIP, GAIA::IO::IO::IO_TYPE_WRITE))
@@ -1662,7 +1662,7 @@ namespace DWARFS_FSHA
 			}
 			GINL FileShareDesc& operator = (const FileShareDesc& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				selfaddr = src.selfaddr;
 				pFAC = src.pFAC;
 				return *this;
@@ -1826,7 +1826,7 @@ namespace DWARFS_FSHA
 			GAIA_CLASS_OPERATOR_COMPARE2(na, na, bBeLink, bBeLink, NLink);
 			GINL NLink& operator = (const NLink& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				na = src.na;
 				state = src.state;
 				uCmplFileCnt = src.uCmplFileCnt;
@@ -1889,7 +1889,7 @@ namespace DWARFS_FSHA
 			GAIA_CLASS_OPERATOR_COMPARE2(s, s, ss, ss, FileChunkSection);
 			GINL FileChunkSection& operator = (const FileChunkSection& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				s = src.s;
 				e = src.e;
 				ss = src.ss;
@@ -1936,7 +1936,7 @@ namespace DWARFS_FSHA
 			GAIA_CLASS_OPERATOR_COMPARE2(fid, fid, bWrite, bWrite, FileRecCache);
 			GINL FileRecCache& operator = (const FileRecCache& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				fid = src.fid;
 				pFA = src.pFA;
 				fsize = src.fsize;
@@ -1961,7 +1961,7 @@ namespace DWARFS_FSHA
 			GAIA_CLASS_OPERATOR_COMPARE2(na, na, fid, fid, FileSendTask);
 			GINL FileSendTask& operator = (const FileSendTask& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				na = src.na;
 				fid = src.fid;
 				ci = src.ci;
@@ -1984,7 +1984,7 @@ namespace DWARFS_FSHA
 			GAIA_CLASS_OPERATOR_COMPARE3(na, na, fid, fid, ci, ci, ChunkSendTask);
 			GINL ChunkSendTask& operator = (const ChunkSendTask& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				na = src.na;
 				fid = src.fid;
 				ci = src.ci;
@@ -2005,7 +2005,7 @@ namespace DWARFS_FSHA
 			GAIA_CLASS_OPERATOR_COMPARE3(fid, fid, ci, ci, sci, sci, FileWriteTask);
 			GINL FileWriteTask& operator = (const FileWriteTask& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				na = src.na;
 				fid = src.fid;
 				ci = src.ci;
@@ -2033,7 +2033,7 @@ namespace DWARFS_FSHA
 			GINL FileHeadSendTask(){na.Invalid(); fid = (FILEID)GINVALID;}
 			GINL FileHeadSendTask& operator = (const FileHeadSendTask& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				na = src.na;
 				fid = src.fid;
 				return *this;
@@ -2059,7 +2059,7 @@ namespace DWARFS_FSHA
 			}
 			GINL FileReq& operator = (const FileReq& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				fid = src.fid;
 				uUserReqTime = src.uUserReqTime;
 				uFirstReqTime = src.uFirstReqTime;
@@ -2072,7 +2072,7 @@ namespace DWARFS_FSHA
 			GAIA_CLASS_OPERATOR_COMPARE(fid, fid, FileReq);
 			FILEID fid;
 			/*
-			*	If the FileShare(Current module)'s user call FileShare::Request function, 
+			*	If the FileShare(Current module)'s user call FileShare::Request function,
 			*	the time will been recorded into variable 'uUserReqTime' at that time.
 			*/
 			GAIA::U64 uUserReqTime;
@@ -2084,7 +2084,7 @@ namespace DWARFS_FSHA
 			GAIA::U64 uFirstReqTime;
 			GAIA::U64 uLastActiveTime;
 			/*
-			*	If request timeout, and the section-based request operation occured, 
+			*	If request timeout, and the section-based request operation occured,
 			*	the 'uLastTimeoutSectionRequestTime' will been updated.
 			*/
 			GAIA::U64 uLastTimeoutSectionRequestTime;
@@ -2106,7 +2106,7 @@ namespace DWARFS_FSHA
 			GINL JumpReq(){na.Invalid();}
 			GINL JumpReq& operator = (const JumpReq& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				na = src.na;
 				listFID = src.listFID;
 				return *this;
@@ -2146,7 +2146,7 @@ namespace DWARFS_FSHA
 				uCRCCheckFailedCount = 0;
 				uBanIPMessageCount = 0;
 				uEmptyFileCount = 0;
-		
+
 				uMsgRecvLoginCountR = 0;
 				uMsgRecvLogoutCountR = 0;
 				uMsgRecvNoopCountC = 0;
@@ -2156,7 +2156,7 @@ namespace DWARFS_FSHA
 				uMsgRecvFileHeadCountA = 0;
 				uMsgRecvFileChunkCountA = 0;
 				uMsgRecvFileNotExistCountA = 0;
-				uMsgRecvFileCmplCountA = 0; 
+				uMsgRecvFileCmplCountA = 0;
 				uMsgRecvCmplFileCountCountN = 0;
 				uMsgRecvCmplFileSectionCountN = 0;
 				uMsgRecvCNNCountA = 0;
@@ -2173,7 +2173,7 @@ namespace DWARFS_FSHA
 				uMsgSendFileHeadCountA = 0;
 				uMsgSendFileChunkCountA = 0;
 				uMsgSendFileNotExistCountA = 0;
-				uMsgSendFileCmplCountA = 0; 
+				uMsgSendFileCmplCountA = 0;
 				uMsgSendCmplFileCountCountN = 0;
 				uMsgSendCmplFileSectionCountN = 0;
 				uMsgSendCNNCountA = 0;
@@ -2188,7 +2188,7 @@ namespace DWARFS_FSHA
 			}
 			GAIA::F64 fStartupTime;				// The time when the FileShare been startuped.
 			GAIA::U64 uRequestFileCount;		// The file count current FileShare requested.
-			GAIA::U64 uRequestFileCmplCount;	// The request complete count of current FileShare requested.	
+			GAIA::U64 uRequestFileCmplCount;	// The request complete count of current FileShare requested.
 			GAIA::U64 uBeRequestFileCount;		// The file count been requested from other FileShare.
 			GAIA::U64 uRequestChunkCount;
 			GAIA::U64 uRequestChunkCmplCount;
@@ -2220,7 +2220,7 @@ namespace DWARFS_FSHA
 			GAIA::U64 uMsgRecvFileHeadCountA;
 			GAIA::U64 uMsgRecvFileChunkCountA;
 			GAIA::U64 uMsgRecvFileNotExistCountA;
-			GAIA::U64 uMsgRecvFileCmplCountA; 
+			GAIA::U64 uMsgRecvFileCmplCountA;
 			GAIA::U64 uMsgRecvCmplFileCountCountN;
 			GAIA::U64 uMsgRecvCmplFileSectionCountN;
 			GAIA::U64 uMsgRecvCNNCountA;
@@ -2237,7 +2237,7 @@ namespace DWARFS_FSHA
 			GAIA::U64 uMsgSendFileHeadCountA;
 			GAIA::U64 uMsgSendFileChunkCountA;
 			GAIA::U64 uMsgSendFileNotExistCountA;
-			GAIA::U64 uMsgSendFileCmplCountA; 
+			GAIA::U64 uMsgSendFileCmplCountA;
 			GAIA::U64 uMsgSendCmplFileCountCountN;
 			GAIA::U64 uMsgSendCmplFileSectionCountN;
 			GAIA::U64 uMsgSendCNNCountA;
@@ -2352,7 +2352,7 @@ namespace DWARFS_FSHA
 	private:
 		/*
 		*	[Message table]
-		*	The following codes is the message and format declaration. 
+		*	The following codes is the message and format declaration.
 		*	_R_ : means request message.
 		*	_A_ : means answer message.
 		*	_N_	: means notify message.
@@ -2408,7 +2408,7 @@ namespace DWARFS_FSHA
 		#define ERRNO_TIMEOUT		((ERRNO)8)
 		const GAIA::GCH* ErrorString(ERRNO en)
 		{
-			static const GAIA::GCH* ERRNO_ANAME[] = 
+			static const GAIA::GCH* ERRNO_ANAME[] =
 			{
 				"NoError",
 				"Busy",
@@ -2704,7 +2704,7 @@ namespace DWARFS_FSHA
 			strCmd.clear();
 
 			// Execute command.
-			static const GAIA::GCH* COMMAND_LIST[] = 
+			static const GAIA::GCH* COMMAND_LIST[] =
 			{
 				"Invalid",				"Invalid, format = Invalid.",
 				"v",					"show version, format = v.",
@@ -2953,7 +2953,7 @@ namespace DWARFS_FSHA
 				m_prt << "MsgRecvFileHeadCountA = " << m_statistics.uMsgRecvFileHeadCountA << "(" << m_statistics.uMsgRecvFileHeadCountA - m_statistics_last.uMsgRecvFileHeadCountA << ")" << "\n";
 				m_prt << "MsgRecvFileChunkCountA = " << m_statistics.uMsgRecvFileChunkCountA << "(" << m_statistics.uMsgRecvFileChunkCountA - m_statistics_last.uMsgRecvFileChunkCountA << ")" << "\n";
 				m_prt << "MsgRecvFileNotExistCountA = " << m_statistics.uMsgRecvFileNotExistCountA << "(" << m_statistics.uMsgRecvFileNotExistCountA - m_statistics_last.uMsgRecvFileNotExistCountA << ")" << "\n";
-				m_prt << "MsgRecvFileCmplCountA = " << m_statistics.uMsgRecvFileCmplCountA << "(" << m_statistics.uMsgRecvFileCmplCountA - m_statistics_last.uMsgRecvFileCmplCountA << ")" << "\n"; 
+				m_prt << "MsgRecvFileCmplCountA = " << m_statistics.uMsgRecvFileCmplCountA << "(" << m_statistics.uMsgRecvFileCmplCountA - m_statistics_last.uMsgRecvFileCmplCountA << ")" << "\n";
 				m_prt << "MsgRecvCmplFileCountN = " << m_statistics.uMsgRecvCmplFileCountCountN << "(" << m_statistics.uMsgRecvCmplFileCountCountN - m_statistics_last.uMsgRecvCmplFileCountCountN << ")" << "\n";
 				m_prt << "MsgRecvCmplFileSectionCountN = " << m_statistics.uMsgRecvCmplFileSectionCountN << "(" << m_statistics.uMsgRecvCmplFileSectionCountN - m_statistics_last.uMsgRecvCmplFileSectionCountN << ")" << "\n";
 				m_prt << "MsgRecvCNNCountA = " << m_statistics.uMsgRecvCNNCountA << "(" << m_statistics.uMsgRecvCNNCountA - m_statistics_last.uMsgRecvCNNCountA << ")" << "\n";
@@ -2970,7 +2970,7 @@ namespace DWARFS_FSHA
 				m_prt << "MsgSendFileHeadCountA = " << m_statistics.uMsgSendFileHeadCountA << "(" << m_statistics.uMsgSendFileHeadCountA - m_statistics_last.uMsgSendFileHeadCountA << ")" << "\n";
 				m_prt << "MsgSendFileChunkCountA = " << m_statistics.uMsgSendFileChunkCountA << "(" << m_statistics.uMsgSendFileChunkCountA - m_statistics_last.uMsgSendFileChunkCountA << ")" << "\n";
 				m_prt << "MsgSendFileNotExistCountA = " << m_statistics.uMsgSendFileNotExistCountA << "(" << m_statistics.uMsgSendFileNotExistCountA - m_statistics_last.uMsgSendFileNotExistCountA << ")" << "\n";
-				m_prt << "MsgSendFileCmplCountA = " << m_statistics.uMsgSendFileCmplCountA << "(" << m_statistics.uMsgSendFileCmplCountA - m_statistics_last.uMsgSendFileCmplCountA << ")" << "\n"; 
+				m_prt << "MsgSendFileCmplCountA = " << m_statistics.uMsgSendFileCmplCountA << "(" << m_statistics.uMsgSendFileCmplCountA - m_statistics_last.uMsgSendFileCmplCountA << ")" << "\n";
 				m_prt << "MsgSendCmplFileCountN = " << m_statistics.uMsgSendCmplFileCountCountN << "(" << m_statistics.uMsgSendCmplFileCountCountN - m_statistics_last.uMsgSendCmplFileCountCountN << ")" << "\n";
 				m_prt << "MsgSendCmplFileSectionCountN = " << m_statistics.uMsgSendCmplFileSectionCountN << "(" << m_statistics.uMsgSendCmplFileSectionCountN - m_statistics_last.uMsgSendCmplFileSectionCountN << ")" << "\n";
 				m_prt << "MsgSendCNNCountA = " << m_statistics.uMsgSendCNNCountA << "(" << m_statistics.uMsgSendCNNCountA - m_statistics_last.uMsgSendCNNCountA << ")" << "\n";
@@ -3209,11 +3209,11 @@ namespace DWARFS_FSHA
 							}
 						}
 						AL alprt(m_lr_prt);
-						m_prt << "[" << nIndex++ << "] FID=" << fr.fid << 
+						m_prt << "[" << nIndex++ << "] FID=" << fr.fid <<
 							" Size=" << fsize <<
-							" CmplSize=" << fcmplsize << 
-							" UserReqTime=" << (GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 << 
-							" FirstReqTime=" << (GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 << 
+							" CmplSize=" << fcmplsize <<
+							" UserReqTime=" << (GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 <<
+							" FirstReqTime=" << (GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 <<
 							" LastActiveTime=" << (GAIA::F64)(uCurrentTime - fr.uLastActiveTime) * 0.001 * 0.001 << "\n";
 						++it;
 					}
@@ -3252,11 +3252,11 @@ namespace DWARFS_FSHA
 							}
 						}
 						AL alprt(m_lr_prt);
-						m_prt << "[" << nIndex++ << "] FID=" << fr.fid << 
+						m_prt << "[" << nIndex++ << "] FID=" << fr.fid <<
 							" Size=" << fsize <<
-							" CmplSize=" << fcmplsize << 
-							" UserReqTime=" << (GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 << 
-							" FirstReqTime=" << (GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 << 
+							" CmplSize=" << fcmplsize <<
+							" UserReqTime=" << (GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 <<
+							" FirstReqTime=" << (GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 <<
 							" LastActiveTime=" << (GAIA::F64)(uCurrentTime - fr.uLastActiveTime) * 0.001 * 0.001 << "\n";
 						++it;
 					}
@@ -3488,7 +3488,7 @@ namespace DWARFS_FSHA
 					FILEID fid = listPart[1];
 					GAIA::GCH szPathName[MAXPATHLEN];
 					CRCTYPE crc;
-					if(m_filelist.GetName(fid, szPathName) && 
+					if(m_filelist.GetName(fid, szPathName) &&
 						m_filelist.GetCRC(fid, crc))
 					{
 						AL alprt(m_lr_prt);
@@ -3842,8 +3842,8 @@ namespace DWARFS_FSHA
 						GAIA::GCH szFileName[MAXPATHLEN];
 						if(!m_filelist.GetName(frc.fid, szFileName))
 							GAIA::ALGORITHM::strcpy(szFileName, "<InvalidFileName>");
-						m_prt << "[" << nIndex << "] " << " FileID=" << frc.fid << " " << szFileName << 
-							" Size=" << frc.fsize << 
+						m_prt << "[" << nIndex << "] " << " FileID=" << frc.fid << " " << szFileName <<
+							" Size=" << frc.fsize <<
 							" CmplSize=" << this->GetFileCacheCompleteSize(frc) << "\n";
 						++nIndex;
 					}
@@ -3893,7 +3893,7 @@ namespace DWARFS_FSHA
 						GAIA::FILESYSTEM::File file;
 						if(!file.Open(szFullName, GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
 						{
-							m_prt <<  "Create file " << szFullName << " failed!\n";
+							m_prt << "Create file " << szFullName << " failed!\n";
 							continue;
 						}
 						GAIA::U32 u0 = (GAIA::U32)GAIA::MATH::xrandom();
@@ -4589,7 +4589,7 @@ namespace DWARFS_FSHA
 			GAIA::F64 fPerf = FSHA_PERF;
 			GAIA::BL bRet = GAIA::False;
 			GAIA::U64 uTime = GAIA::TIME::tick_time();
-			if(m_statistics.uFrameCount % CMPLFILESNOTIFYFREQ == 0 || 
+			if(m_statistics.uFrameCount % CMPLFILESNOTIFYFREQ == 0 ||
 				uTime - m_uLastNotifyCmplTime > REQUESTCMPLFILESNOTIFYTIME)
 			{
 				m_uLastNotifyCmplTime = uTime;
@@ -4598,7 +4598,7 @@ namespace DWARFS_FSHA
 				{
 					m_cmplfiles.sort();
 					m_cmplfiles.unique();
-					FILEID startindex = (FILEID)GINVALID; 
+					FILEID startindex = (FILEID)GINVALID;
 					FILEID endindex = (FILEID)GINVALID;
 					for(FIDLIST::it it = m_cmplfiles.front_it(); !it.empty(); ++it)
 					{
@@ -4758,7 +4758,7 @@ namespace DWARFS_FSHA
 			for(; !it_reqed.empty(); ++it_reqed)
 			{
 				FileReq& fr = *it_reqed;
-				if(uCurrentTime - fr.uLastActiveTime > REQUESTTIMEOUTTIME && 
+				if(uCurrentTime - fr.uLastActiveTime > REQUESTTIMEOUTTIME &&
 					uCurrentTime - fr.uLastTimeoutSectionRequestTime > REQUESTTIMEOUTTIME)
 				{
 					fr.uLastTimeoutSectionRequestTime = uCurrentTime;
@@ -4805,13 +4805,13 @@ namespace DWARFS_FSHA
 								{
 									FileChunkSection& fcsnext = *itnext;
 									GAIA_AST((fcsnext.s * 256 + fcsnext.ss) > (fcs.e * 256 + fcs.ee));
-									FILESIZETYPE fsize = (fcsnext.s * CHUNKSIZE + fcsnext.ss * SUBCHUNKSIZE) - 
+									FILESIZETYPE fsize = (fcsnext.s * CHUNKSIZE + fcsnext.ss * SUBCHUNKSIZE) -
 										(fcs.e * CHUNKSIZE + fcs.ee * SUBCHUNKSIZE);
 									if(fsize >= SINGLECHUNKREQUESTLIMIT * CHUNKSIZE + 1)
 										bRequested = GAIA::True;
 								}
 								if(bRequested)
-								{	
+								{
 									if(m_test_enablewatch && m_test_watchfid == fr.fid)
 									{
 										AL al(m_lr_prt);
@@ -4833,7 +4833,7 @@ namespace DWARFS_FSHA
 							}
 						}
 						else
-						{	
+						{
 							if(m_test_enablewatch && m_test_watchfid == fr.fid)
 							{
 								AL al(m_lr_prt);
@@ -4888,7 +4888,7 @@ namespace DWARFS_FSHA
 			for(; !it_reqed.empty(); ++it_reqed)
 			{
 				FileReq& fr = *it_reqed;
-				if(uCurrentTime - fr.uLastActiveTime > REQUESTTIMEOUTTIME && 
+				if(uCurrentTime - fr.uLastActiveTime > REQUESTTIMEOUTTIME &&
 					uCurrentTime - fr.uLastTimeoutChunkRequestTime > REQUESTTIMEOUTTIME)
 				{
 					fr.uLastTimeoutChunkRequestTime = uCurrentTime;
@@ -4961,7 +4961,7 @@ namespace DWARFS_FSHA
 									{
 										FileChunkSection& fcs_next = *itnext;
 										GAIA_AST(fcs_next.s * 256 + fcs_next.ss > fcs.e * 256 + fcs.ee);
-										FILESIZETYPE fsize = (fcs_next.s * CHUNKSIZE + fcs_next.ss * SUBCHUNKSIZE) - 
+										FILESIZETYPE fsize = (fcs_next.s * CHUNKSIZE + fcs_next.ss * SUBCHUNKSIZE) -
 											(fcs.e * CHUNKSIZE + fcs.ee * SUBCHUNKSIZE);
 										if(fsize < SINGLECHUNKREQUESTLIMIT * CHUNKSIZE + 1)
 										{
@@ -6043,14 +6043,14 @@ namespace DWARFS_FSHA
 				return ERRNO_INVALIDPARAM;
 			if(GAIA::ALGORITHM::strcmp(pszUserName, INTERNAL_USERNAME) == 0)
 			{
-				if(GAIA::ALGORITHM::stremp(INTERNAL_PASSWORD) && 
+				if(GAIA::ALGORITHM::stremp(INTERNAL_PASSWORD) &&
 					GAIA::ALGORITHM::stremp(pszPassword))
 				{
 				}
-				else if(!GAIA::ALGORITHM::stremp(INTERNAL_PASSWORD) && 
+				else if(!GAIA::ALGORITHM::stremp(INTERNAL_PASSWORD) &&
 					GAIA::ALGORITHM::stremp(pszPassword))
 					return ERRNO_PASSWORD;
-				else if(GAIA::ALGORITHM::stremp(INTERNAL_PASSWORD) && 
+				else if(GAIA::ALGORITHM::stremp(INTERNAL_PASSWORD) &&
 					!GAIA::ALGORITHM::stremp(pszPassword))
 					return ERRNO_PASSWORD;
 				else
@@ -6065,14 +6065,14 @@ namespace DWARFS_FSHA
 				if(!m_usergroup.FindUser(pszUserName))
 					return ERRNO_USERNAME;
 				const GAIA::GCH* pszCorrectPassword = m_usergroup.GetUserPassword(pszUserName);
-				if(GAIA::ALGORITHM::stremp(pszCorrectPassword) && 
+				if(GAIA::ALGORITHM::stremp(pszCorrectPassword) &&
 					GAIA::ALGORITHM::stremp(pszPassword))
 				{
 				}
-				else if(!GAIA::ALGORITHM::stremp(pszCorrectPassword) && 
+				else if(!GAIA::ALGORITHM::stremp(pszCorrectPassword) &&
 					GAIA::ALGORITHM::stremp(pszPassword))
 					return ERRNO_PASSWORD;
-				else if(GAIA::ALGORITHM::stremp(pszCorrectPassword) && 
+				else if(GAIA::ALGORITHM::stremp(pszCorrectPassword) &&
 					!GAIA::ALGORITHM::stremp(pszPassword))
 					return ERRNO_PASSWORD;
 				else
@@ -6437,7 +6437,7 @@ namespace DWARFS_FSHA
 				else
 				{
 					FileIDSection& fidsec_prev = *it;
-					if(fidsec.uStart <= fidsec_prev.uEnd + 1 && 
+					if(fidsec.uStart <= fidsec_prev.uEnd + 1 &&
 						fidsec.uEnd + 1 >= fidsec_next.uStart)
 					{
 						GAIA_AST(fidsec_next.uStart > fidsec_prev.uEnd);
@@ -6496,7 +6496,7 @@ namespace DWARFS_FSHA
 			}
 			GAIA::NETWORK::NetworkAddress jumpna;
 			{
-				AL al1(m_lr_links);				
+				AL al1(m_lr_links);
 				NLink nl;
 				nl.na = na;
 				nl.bBeLink = GAIA::True;

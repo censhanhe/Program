@@ -185,17 +185,17 @@ namespace GAIATEST
 		__MultiSetType::const_it citback = ms.const_back_it();
 		for(__MultiSetType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(itfront.empty() || 
-				citfront.empty() || 
-				itback.empty() || 
+			if(itfront.empty() ||
+				citfront.empty() ||
+				itback.empty() ||
 				citback.empty())
 			{
 				GTLINE2("MultiSet iterator exist error!");
 				++nRet;
 				break;
 			}
-			if(*itfront != x || 
-				*citfront != x || 
+			if(*itfront != x ||
+				*citfront != x ||
 				*itback != ELEMENT_SIZE - x - 1 ||
 				*citback != ELEMENT_SIZE - x - 1)
 			{
@@ -208,9 +208,9 @@ namespace GAIATEST
 			--itback;
 			--citback;
 		}
-		if(!itfront.empty() || 
-			!citfront.empty() || 
-			!itback.empty() || 
+		if(!itfront.empty() ||
+			!citfront.empty() ||
+			!itback.empty() ||
 			!citback.empty())
 		{
 			GTLINE2("MultiSet iterator ++ -- exist error!");
@@ -236,9 +236,9 @@ namespace GAIATEST
 		citfront = ms.const_front_it();
 		itback = ms.back_it();
 		citback = ms.const_back_it();
-		if(!itfront.empty() || 
-			!citfront.empty() || 
-			!itback.empty() || 
+		if(!itfront.empty() ||
+			!citfront.empty() ||
+			!itback.empty() ||
 			!citback.empty())
 		{
 			GTLINE2("MultiSet iterator not empty when multiset is empty!");
@@ -278,25 +278,25 @@ namespace GAIATEST
 		citfront = ms1.const_front_it();
 		itback = ms1.back_it();
 		citback = ms1.const_back_it();
-		if(itfront >= itback || itfront > itback || itfront == itback || 
+		if(itfront >= itback || itfront > itback || itfront == itback ||
 			citfront >= citback || citfront > citback || citfront == citback)
 		{
 			GTLINE2("MultiSet iterator operator >= > == failed!");
 			++nRet;
 		}
-		if(!(itfront <= itback && itfront < itback && itfront != itback && 
+		if(!(itfront <= itback && itfront < itback && itfront != itback &&
 			citfront <= citback && citfront < citback && citfront != citback))
 		{
 			GTLINE2("MultiSet iterator operator <= < != failed!");
 			++nRet;
 		}
-		if((itfront + 10) - 10 != ms1.front_it() || 
+		if((itfront + 10) - 10 != ms1.front_it() ||
 			(citfront + 10) - 10 != ms1.const_front_it())
 		{
 			GTLINE2("MultiSet iterator operator + or - failed!");
 			++nRet;
 		}
-		if(itfront + 10 - ms1.front_it() != 10 || 
+		if(itfront + 10 - ms1.front_it() != 10 ||
 			citfront + 10 - ms1.const_front_it() != 10)
 		{
 			GTLINE2("MultiSet iterator operator + or - failed!");
@@ -306,9 +306,9 @@ namespace GAIATEST
 		itback -= ELEMENT_SIZE - 1;
 		citfront += ELEMENT_SIZE - 1;
 		citback -= ELEMENT_SIZE - 1;
-		if(itfront != ms1.back_it() || 
-			itback != ms1.front_it() || 
-			citfront != ms1.const_back_it() || 
+		if(itfront != ms1.back_it() ||
+			itback != ms1.front_it() ||
+			citfront != ms1.const_back_it() ||
 			citback != ms1.const_front_it())
 		{
 			GTLINE2("MultiSet iterator += or -= error!");
@@ -318,4 +318,4 @@ namespace GAIATEST
 	}
 };
 
-#endif
+#endif

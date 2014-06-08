@@ -23,7 +23,7 @@ namespace GAIA
 				GINL const _DataType& operator * () const{return m_t;}
 				GINL Node& operator = (const Node& src)
 				{
-					GAIA_AST(&src != this); 
+					GAIA_AST(&src != this);
 					m_pParent = src.m_pParent;
 					m_links = src.m_links;
 					m_t = src.m_t;
@@ -241,7 +241,7 @@ namespace GAIA
 							m_pNode = GNULL;
 							return *this;
 						}
-						typename __NodeTreeType::const_it it = 
+						typename __NodeTreeType::const_it it =
 							(const_cast<const Node*>(m_pNode->m_pParent))->m_links.lower_bound(
 								Ref<Node>(const_cast<Node*>(m_pNode)));
 						GAIA_AST(!it.empty());
@@ -266,7 +266,7 @@ namespace GAIA
 						return *this;
 					if(m_pNode->m_pParent != GNULL)
 					{
-						typename __NodeTreeType::const_it it = 
+						typename __NodeTreeType::const_it it =
 							(const_cast<const Node*>(m_pNode->m_pParent))->m_links.lower_bound(
 								Ref<Node>(const_cast<Node*>(m_pNode)));
 						GAIA_AST(!it.empty());
@@ -415,9 +415,9 @@ namespace GAIA
 					{
 						--pNode->m_category_count;
 						--pNode->m_full_count;
-						if(pNode->m_pParent != GNULL && 
-							pNode->m_count == 0 && 
-							pNode->m_category_count == 0 && 
+						if(pNode->m_pParent != GNULL &&
+							pNode->m_count == 0 &&
+							pNode->m_category_count == 0 &&
 							pNode->m_full_count == 0)
 						{
 							pNode->m_pParent->m_links.erase(pNode);
@@ -713,7 +713,7 @@ namespace GAIA
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				typedef GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
 				__VectorType paths;
 				this->clear();
@@ -726,7 +726,7 @@ namespace GAIA
 						const_it itt = it;
 						while(!itt.empty())
 						{
-							paths.push_back(*itt);	
+							paths.push_back(*itt);
 							itt = src.parent_it(itt);
 						}
 						if(!paths.empty())

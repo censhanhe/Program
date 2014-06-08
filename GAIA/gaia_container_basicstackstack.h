@@ -158,9 +158,9 @@ namespace GAIA
 			GINL _SizeType count(const _DataType& t) const{_SizeType ret = 0; GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret); return ret;}
 			GINL GAIA::BL push_back(const _DataType& t)
 			{
-				if(this->size() < this->capacity()) 
+				if(this->size() < this->capacity())
 				{
-					m_data[m_size] = t; 
+					m_data[m_size] = t;
 					++m_size;
 					return GAIA::True;
 				}
@@ -247,7 +247,7 @@ namespace GAIA
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				GAIA_AST(&src != this); 
+				GAIA_AST(&src != this);
 				this->clear();
 				if(!src.empty())
 				{

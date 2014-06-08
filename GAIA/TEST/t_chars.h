@@ -415,15 +415,15 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = "HelloWorld";
-		if(chs[0] != 'H' || 
-			chs[1] != 'e' || 
-			chs[2] != 'l' || 
-			chs[3] != 'l' || 
-			chs[4] != 'o' || 
-			chs[5] != 'W' || 
-			chs[6] != 'o' || 
-			chs[7] != 'r' || 
-			chs[8] != 'l' || 
+		if(chs[0] != 'H' ||
+			chs[1] != 'e' ||
+			chs[2] != 'l' ||
+			chs[3] != 'l' ||
+			chs[4] != 'o' ||
+			chs[5] != 'W' ||
+			chs[6] != 'o' ||
+			chs[7] != 'r' ||
+			chs[8] != 'l' ||
 			chs[9] != 'd')
 		{
 			GTLINE2("String operator [] failed!");
@@ -596,12 +596,12 @@ namespace GAIATEST
 			GTLINE2("String erase element* from index failed!");
 			++nRet;
 		}
-		if(chs != "Hello World! I  gaia, i  all object's base!")
+		if(chs != "Hello World! I gaia, i all object's base!")
 		{
 			GTLINE2("String erase element* from index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello World! I  gaia, i  all object's base!"))
+		if(chs.size() != GAIA::ALGORITHM::strlen("Hello World! I gaia, i all object's base!"))
 		{
 			GTLINE2("String erase element* from index cause size error!");
 			++nRet;
@@ -612,12 +612,12 @@ namespace GAIATEST
 			GTLINE2("String erase element object from index failed!");
 			++nRet;
 		}
-		if(chs != "Hello World! I  gaia, i  all object's base!")
+		if(chs != "Hello World! I gaia, i all object's base!")
 		{
 			GTLINE2("String erase element object from index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello World! I  gaia, i  all object's base!"))
+		if(chs.size() != GAIA::ALGORITHM::strlen("Hello World! I gaia, i all object's base!"))
 		{
 			GTLINE2("String erase element object from index cause size error!");
 			++nRet;

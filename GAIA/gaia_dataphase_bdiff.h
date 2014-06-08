@@ -22,17 +22,17 @@ namespace GAIA
 			GINL GAIA::GVOID clear(){}
 			GINL GAIA::GVOID destroy(){}
 			GINL GAIA::BL Generate(
-					const GAIA::GVOID* p1, 
-					const _SizeType& size1, 
-					const GAIA::GVOID* p2, 
+					const GAIA::GVOID* p1,
+					const _SizeType& size1,
+					const GAIA::GVOID* p2,
 					const _SizeType& size2)
 			{
 				return GAIA::False;
 			}
 			GINL GAIA::BL Patch(
-					const GAIA::GVOID* pSrc, 
-					const _SizeType& srcsize, 
-					const GAIA::GVOID* pDst, 
+					const GAIA::GVOID* pSrc,
+					const _SizeType& srcsize,
+					const GAIA::GVOID* pDst,
 					const _SizeType& dstsize,
 					GAIA::GVOID* pResult,
 					const _SizeType& resbufsize,

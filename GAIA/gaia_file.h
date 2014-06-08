@@ -39,7 +39,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Resize(const GAIA::N64& size);
 			template<typename _ObjType> GINL GAIA::BL Read(_ObjType& obj)
 			{
-				GAIA_AST(!!m_pFile); 
+				GAIA_AST(!!m_pFile);
 				if(m_pFile == GNULL)
 					return GAIA::False;
 				if(this->Read(&obj, sizeof(obj)) != sizeof(obj))
