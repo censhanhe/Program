@@ -719,7 +719,7 @@ namespace PROM
 				/* Initialize result pipeline context. */
 				PLC_FileCodeLine* pRet = new PLC_FileCodeLine;
 
-				/* Execute */
+				/* Execute. */
 				pRet->file_codelines_list.resize(plc_file->filelist.size());
 				GAIA::SIZE uTotalLineCount = 0;
 				for(PLC_File::__FileList::_sizetype x = 0; x < plc_file->filelist.size(); ++x)
@@ -778,7 +778,7 @@ namespace PROM
 				/* Initialize result pipeline context. */
 				pRet = new PLC_Empty;
 
-				/* Execute */
+				/* Execute. */
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
 					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
@@ -944,7 +944,7 @@ namespace PROM
 				/* Initialize result pipeline context. */
 				pRet = new PLC_Empty;
 
-				/* Execute */
+				/* Execute. */
 				GAIA::BL bFmt = GAIA::False;
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
@@ -1114,7 +1114,117 @@ namespace PROM
 				/* Initialize result pipeline context. */
 				pRet = new PLC_Word;
 
-				/* Execute */
+				/* Execute. */
+				GAIA::BL bLineStat = GAIA::False;
+				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
+				{
+					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					if(GAIA::ALGORITHM::stremp(pszCmd))
+						continue;
+					if(GAIA::ALGORITHM::strcmp(pszCmd, "-wordstat") == 0)
+					{
+						bLineStat = GAIA::True;
+						break;
+					}
+				}
+				if(bLineStat)
+				{
+					DWARFS_MISC::TextLine::__LineType strLine;
+					PLC_Word::Word word;
+					for(GAIA::SIZE x = 0; x < plc_codelines->file_codelines_list.size(); ++x)
+					{
+						DWARFS_MISC::TextLine& l = plc_codelines->file_codelines_list[x].lines;
+						for(GAIA::SIZE y = 0; y < l.size(); ++y)
+						{
+							strLine = l.get_line(y);
+							if(strLine.empty())
+								continue;
+							static const GAIA::SIZE EMPTY_FLAG = 0;
+							static const GAIA::SIZE CHAR_FLAG = 1;
+							static const GAIA::SIZE SIGN_FLAG = 2;
+							GAIA::SIZE lastflag = EMPTY_FLAG;
+							GAIA::SIZE flag_changed_index = 0;
+							for(GAIA::SIZE z = 0; z < strLine.size(); ++z)
+							{
+								GAIA::SIZE newflag;
+								if(strLine[z] == '\t' || strLine[z] == ' ' || strLine[z] == '\r' || strLine[z] == '\n')
+								{
+									newflag = EMPTY_FLAG;
+								}
+								else if(GAIA::ALGORITHM::isalpha(strLine[z]) || 
+									GAIA::ALGORITHM::isdigit(strLine[z]) || 
+									strLine[z] == '_' || 
+									strLine[z] == '.' && z + 1 < strLine.size() && GAIA::ALGORITHM::isdigit(strLine[z + 1]))
+								{
+									newflag = CHAR_FLAG;
+								}
+								else
+								{
+									newflag = SIGN_FLAG;
+								}
+
+								if(newflag != lastflag)
+								{
+									if(lastflag != EMPTY_FLAG)
+									{
+										word.strWord = strLine;
+										word.strWord.mid(flag_changed_index, z > flag_changed_index ? z - 1 : z);
+										PLC_Word::Word* pWord = pRet->wordset.find(word);
+										if(pWord == GNULL)
+										{
+											word.uExistCount = 1;
+											pRet->wordset.insert(word);
+										}
+										else
+											++pWord->uExistCount;
+									}
+									lastflag = newflag;
+									flag_changed_index = z;
+								}
+								else
+								{
+									if(lastflag == SIGN_FLAG)
+									{
+										if(z != flag_changed_index)
+										{
+											static const GAIA::GCH* LINK_SIGN_LIST[] = 
+											{
+												">>", "<<", 
+												"++", "--", 
+												"+=", "-=", "*=", "/=", 
+												"==", "!=", ">=", "<="
+											};
+											GAIA::BL bLink = GAIA::False;
+											for(GAIA::SIZE t = 0; t < sizeofarray(LINK_SIGN_LIST); ++t)
+											{
+												if(strLine[flag_changed_index] == LINK_SIGN_LIST[t][0] && 
+													strLine[z] == LINK_SIGN_LIST[t][1])
+												{
+													bLink = GAIA::True;
+													break;
+												}
+											}
+											if(!bLink)
+											{
+												word.strWord = strLine;
+												word.strWord.mid(flag_changed_index, z > flag_changed_index ? z - 1 : z);
+												PLC_Word::Word* pWord = pRet->wordset.find(word);
+												if(pWord == GNULL)
+												{
+													word.uExistCount = 1;
+													pRet->wordset.insert(word);
+												}
+												else
+													++pWord->uExistCount;
+												flag_changed_index = z;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 
 			FUNCTION_END:
 				if(plc_commandparam != GNULL)
@@ -1124,6 +1234,34 @@ namespace PROM
 				if(plc_codelines != GNULL)
 					plc_codelines->Release();
 				return pRet;
+			}
+			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+			{
+				/* Parameter check up. */
+				GAIA_AST(pPLC != GNULL);
+				if(pPLC == GNULL)
+					return GAIA::False;
+
+				GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
+				if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+					return GAIA::False;
+
+				PLC_Word* plc_word = static_cast<PLC_Word*>(pPLC);
+				if(plc_word == GNULL)
+					return GAIA::False;
+				if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), "Prom:PLC_Word") != 0)
+					return GAIA::False;
+
+				GAIA::SIZE index = 0;
+				PLC_Word::__WordSetType::it it = plc_word->wordset.front_it();
+				while(!it.empty())
+				{
+					PLC_Word::Word& word = *it;
+					prt << "[" << index++ << "] \"" << word.strWord.front_ptr() << "\", Count = " << word.uExistCount << "\n";
+					++it;
+				}
+
+				return GAIA::True;
 			}
 		};
 		class PL_SymbolStat : public Pipeline
@@ -1180,7 +1318,7 @@ namespace PROM
 				/* Initialize result pipeline context. */
 				pRet = new PLC_Empty;
 
-				/* Execute */
+				/* Execute. */
 				GAIA::BL bSaveCmd = GAIA::False;
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
@@ -1311,58 +1449,7 @@ namespace PROM
 							PROM_RAISE_FATALERROR(101);
 						else
 						{
-							GAIA_AST(!GAIA::ALGORITHM::stremp(pNewPLC->GetName()));
-							if(!GAIA::ALGORITHM::stremp(pNewPLC->GetName()))
-							{
-								if(GAIA::ALGORITHM::strcmp(pNewPLC->GetName(), "Prom:PLC_CommandParam") == 0)
-									m_plc_commandparam = static_cast<PLC_CommandParam*>(pNewPLC);
-							}
-							if(m_plc_commandparam != GNULL)
-							{
-								for(GAIA::SIZE y = 0; y < m_plc_commandparam->cmdparam.cmd_size(); ++y)
-								{
-									const GAIA::GCH* pszCmd = m_plc_commandparam->cmdparam.cmd(y);
-									if(GAIA::ALGORITHM::stremp(pszCmd))
-										continue;
-									if(GAIA::ALGORITHM::strcmp(pszCmd, "-o") == 0)
-									{
-										if(m_plc_commandparam->cmdparam.param_size(y) == 2)
-										{
-											const GAIA::GCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
-											const GAIA::GCH* pszParam1 = m_plc_commandparam->cmdparam.param(y, 1);
-											GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
-											GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam1));
-											if(!GAIA::ALGORITHM::stremp(pszParam0) && !GAIA::ALGORITHM::stremp(pszParam1))
-											{
-												if(GAIA::ALGORITHM::strcmp(pszParam0, pTempPL->GetName()) == 0)
-												{
-													if(pTempPL->Output(pNewPLC, GNULL, prt))
-														prt << "\t\tOutput " << pTempPL->GetName() << " successfully!\n";
-													else
-														PROM_RAISE_FATALERROR(104);
-												}
-											}
-										}
-										else if(m_plc_commandparam->cmdparam.param_size(y) == 1)
-										{
-											const GAIA::GCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
-											GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
-											if(!GAIA::ALGORITHM::stremp(pszParam0))
-											{
-												if(GAIA::ALGORITHM::strcmp(pszParam0, pTempPL->GetName()) == 0)
-												{
-													if(pTempPL->Output(pNewPLC, GNULL, prt))
-														prt << "\t\tOutput " << pTempPL->GetName() << " successfully!\n";
-													else
-														PROM_RAISE_FATALERROR(104);
-												}
-											}
-										}
-										else
-											GAIA_AST(GAIA::False);
-									}
-								}
-							}
+							this->ExecuteOutput(pNewPLC, pTempPL, prt, errs);
 							for(GAIA::SIZE y = 0; y < plc_size; y++)
 							{
 								if(ppPLC[y] == GNULL)
@@ -1405,12 +1492,7 @@ namespace PROM
 							PROM_RAISE_FATALERROR(101);
 						else
 						{
-							GAIA_AST(!GAIA::ALGORITHM::stremp(pNewPLC->GetName()));
-							if(!GAIA::ALGORITHM::stremp(pNewPLC->GetName()))
-							{
-								if(GAIA::ALGORITHM::strcmp(pNewPLC->GetName(), "Prom:PLC_CommandParam") == 0)
-									m_plc_commandparam = static_cast<PLC_CommandParam*>(pNewPLC);
-							}
+							this->ExecuteOutput(pNewPLC, pTempPL, prt, errs);
 							for(GAIA::SIZE y = 0; y < plc_size; y++)
 							{
 								if(ppPLC[y] == GNULL)
@@ -1463,6 +1545,61 @@ namespace PROM
 			GINL GAIA::GVOID init()
 			{
 				m_plc_commandparam = GNULL;
+			}
+			GINL GAIA::GVOID ExecuteOutput(PipelineContext* pPLC, Pipeline* pPL, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			{
+				GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
+				if(!GAIA::ALGORITHM::stremp(pPLC->GetName()))
+				{
+					if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), "Prom:PLC_CommandParam") == 0)
+						m_plc_commandparam = static_cast<PLC_CommandParam*>(pPLC);
+				}
+				if(m_plc_commandparam != GNULL)
+				{
+					for(GAIA::SIZE y = 0; y < m_plc_commandparam->cmdparam.cmd_size(); ++y)
+					{
+						const GAIA::GCH* pszCmd = m_plc_commandparam->cmdparam.cmd(y);
+						if(GAIA::ALGORITHM::stremp(pszCmd))
+							continue;
+						if(GAIA::ALGORITHM::strcmp(pszCmd, "-o") == 0)
+						{
+							if(m_plc_commandparam->cmdparam.param_size(y) == 2)
+							{
+								const GAIA::GCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
+								const GAIA::GCH* pszParam1 = m_plc_commandparam->cmdparam.param(y, 1);
+								GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
+								GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam1));
+								if(!GAIA::ALGORITHM::stremp(pszParam0) && !GAIA::ALGORITHM::stremp(pszParam1))
+								{
+									if(GAIA::ALGORITHM::strcmp(pszParam0, pPL->GetName()) == 0)
+									{
+										if(pPL->Output(pPLC, GNULL, prt))
+											prt << "\t\tOutput " << pPL->GetName() << " successfully!\n";
+										else
+											PROM_RAISE_FATALERROR(104);
+									}
+								}
+							}
+							else if(m_plc_commandparam->cmdparam.param_size(y) == 1)
+							{
+								const GAIA::GCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
+								GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
+								if(!GAIA::ALGORITHM::stremp(pszParam0))
+								{
+									if(GAIA::ALGORITHM::strcmp(pszParam0, pPL->GetName()) == 0)
+									{
+										if(pPL->Output(pPLC, GNULL, prt))
+											prt << "\t\tOutput " << pPL->GetName() << " successfully!\n";
+										else
+											PROM_RAISE_FATALERROR(104);
+									}
+								}
+							}
+							else
+								GAIA_AST(GAIA::False);
+						}
+					}
+				}
 			}
 		private:
 			PLC_CommandParam* m_plc_commandparam;
