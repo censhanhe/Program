@@ -618,7 +618,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		str = "Hello World! I am gaia, i am all object's base!";
-		if(str.erase("am", 1) != 2)
+		if(str.erase("am ", 1) != 2)
 		{
 			GTLINE2("String erase element* from index failed!");
 			++nRet;
@@ -634,7 +634,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		str = "Hello World! I am gaia, i am all object's base!";
-		if(str.erase((__AStrType)"am", 1) != 2)
+		if(str.erase((__AStrType)"am ", 1) != 2)
 		{
 			GTLINE2("String erase element object from index failed!");
 			++nRet;
