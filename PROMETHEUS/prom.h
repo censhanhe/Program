@@ -60,6 +60,7 @@ namespace PROM
 			PROM_ERROR(501,		0x0000, 0x0003, "file specified by -i parameter is not exist", "");
 			PROM_ERROR(502,		0x0000, 0x0004, "file not exist!", "");
 			PROM_ERROR(503,		0x0000, 0x0002, "create file failed!", "");
+			PROM_ERROR(504,		0x0000, 0x0003, "open file failed!", "");
 			PROM_ERROR(511,		0x0000, 0x0002, "text line analyze failed!", "");
 			PROM_ERROR(512,		0x0000, 0x0002, "text line save failed!", "");
 			PROM_ERROR(1001,	0x0000, 0x0002, "allocate size not match the object", "Object* p = (Object*)malloc/calloc/realloc...(sizeof(Object));");
@@ -367,6 +368,7 @@ namespace PROM
 				GINL Word& operator = (const Word& src)
 				{
 					strWord = src.strWord;
+					uExistCount = src.uExistCount;
 					return *this;
 				}
 				GAIA_CLASS_OPERATOR_COMPARE(strWord, strWord, Word);
@@ -421,7 +423,7 @@ namespace PROM
 			}
 			virtual const GAIA::GCH* GetName() const = 0;
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs) = 0;
-			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt){return GAIA::False;}
+			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt){return GAIA::False;}
 		};
 		class PL_CommandAnalyze : public Pipeline
 		{
@@ -476,7 +478,7 @@ namespace PROM
 
 				return pRet;
 			}
-			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 			{
 				/* Parameter check up. */
 				GAIA_AST(pPLC != GNULL);
@@ -1115,7 +1117,7 @@ namespace PROM
 				pRet = new PLC_Word;
 
 				/* Execute. */
-				GAIA::BL bLineStat = GAIA::False;
+				GAIA::BL bWordStat = GAIA::False;
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
 					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
@@ -1123,11 +1125,11 @@ namespace PROM
 						continue;
 					if(GAIA::ALGORITHM::strcmp(pszCmd, "-wordstat") == 0)
 					{
-						bLineStat = GAIA::True;
+						bWordStat = GAIA::True;
 						break;
 					}
 				}
-				if(bLineStat)
+				if(bWordStat)
 				{
 					DWARFS_MISC::TextLine::__LineType strLine;
 					PLC_Word::Word word;
@@ -1235,7 +1237,7 @@ namespace PROM
 					plc_codelines->Release();
 				return pRet;
 			}
-			virtual GAIA::BL Output(PipelineContext* pPLC, const GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 			{
 				/* Parameter check up. */
 				GAIA_AST(pPLC != GNULL);
@@ -1257,7 +1259,21 @@ namespace PROM
 				while(!it.empty())
 				{
 					PLC_Word::Word& word = *it;
-					prt << "[" << index++ << "] \"" << word.strWord.front_ptr() << "\", Count = " << word.uExistCount << "\n";
+					if(pFile != GNULL)
+					{
+						GAIA::GCH szTemp[32];
+						GAIA::ALGORITHM::int2str(index, szTemp);
+						pFile->Write("[", 1);
+						pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp));
+						pFile->Write("] \"", 3);
+						pFile->Write(word.strWord.front_ptr(), word.strWord.size());
+						pFile->Write("\", Count = ", sizeof("\", Count = ") - 1);
+						GAIA::ALGORITHM::int2str(word.uExistCount, szTemp);
+						pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp));
+						pFile->Write("\n", 1);
+					}
+					else
+						prt << "[" << index++ << "] \"" << word.strWord.front_ptr() << "\", Count = " << word.uExistCount << "\n";
 					++it;
 				}
 
@@ -1573,10 +1589,16 @@ namespace PROM
 								{
 									if(GAIA::ALGORITHM::strcmp(pszParam0, pPL->GetName()) == 0)
 									{
-										if(pPL->Output(pPLC, GNULL, prt))
-											prt << "\t\tOutput " << pPL->GetName() << " successfully!\n";
+										GAIA::FILESYSTEM::File ofile;
+										if(ofile.Open(pszParam1, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
+										{
+											if(pPL->Output(pPLC, &ofile, prt))
+												prt << "\t\tOutput " << pPL->GetName() << " successfully!\n";
+											else
+												PROM_RAISE_FATALERROR(104);
+										}
 										else
-											PROM_RAISE_FATALERROR(104);
+											PROM_RAISE_FATALERROR(503);
 									}
 								}
 							}
