@@ -10,10 +10,21 @@ namespace GAIA
 			GAIA::UM uSectionIndex = this->GetSectionIndex(uSize + HEAP_BUFFER_HEADERSIZE);
 			if(uSectionIndex == GINVALID)
 			{
+				m_capacity.Add(uSize + HEAP_BUFFER_HEADERSIZE);
+				m_size.Add(uSize + HEAP_BUFFER_HEADERSIZE);
+				m_usesize.Add(uSize);
+				m_piecesize.Increase();
+
 				GAIA::GVOID* pTemp = new GAIA::U8[uSize + HEAP_BUFFER_HEADERSIZE];
 				*(GAIA::UM*)pTemp = uSize;
 				*(GAIA::U16*)((GAIA::U8*)pTemp + sizeof(GAIA::UM)) = (GAIA::U16)GINVALID;
 				return (GAIA::U8*)pTemp + sizeof(GAIA::UM) + sizeof(GAIA::U16);
+			}
+			else
+			{
+				m_size.Add(m_secsizelist[uSectionIndex]);
+				m_usesize.Add(uSize);
+				m_piecesize.Increase();
 			}
 			GAIA::GVOID* pRet;
 		#ifdef GAIA_ALLOCATOR_ESG_MULTITHREAD
@@ -56,6 +67,7 @@ namespace GAIA
 					GAIA::UM uSectionPatchCount = this->GetSectionPatchCount(uSectionIndex);
 					GAIA::UM uSectionPatchSize = m_secsizelist[uSectionIndex];
 					newobref.buf = new GAIA::U8[uSectionPatchSize * uSectionPatchCount];
+					m_capacity.Add(uSectionPatchSize * uSectionPatchCount);
 					for(GAIA::UM x = 0; x < uSectionPatchCount; ++x)
 					{
 						GAIA::U8* pTemp = (GAIA::U8*)newobref.buf + uSectionPatchSize * x;
@@ -93,10 +105,18 @@ namespace GAIA
 			GAIA::U16 uOBIndex = *(GAIA::U16*)(pOriginP + sizeof(GAIA::UM));
 			if(uOBIndex == (GAIA::U16)GINVALID)
 			{
+				m_capacity.Add(-(GAIA::N64)this->memory_size(p) - (GAIA::N64)HEAP_BUFFER_HEADERSIZE);
+				m_size.Add(-(GAIA::N64)this->memory_size(p) - (GAIA::N64)HEAP_BUFFER_HEADERSIZE);
+				m_usesize.Add(-(GAIA::N64)this->memory_size(p));
+				m_piecesize.Decrease();
 				delete[] pOriginP;
 				return;
 			}
 			GAIA::UM uSectionIndex = this->GetSectionIndex(*(GAIA::UM*)pOriginP + HEAP_BUFFER_HEADERSIZE);
+			GAIA_AST(uSectionIndex != GINVALID);
+			m_size.Add(-(GAIA::N64)m_secsizelist[uSectionIndex]);
+			m_usesize.Add(-(GAIA::N64)this->memory_size(p));
+			m_piecesize.Decrease();
 		#ifdef GAIA_ALLOCATOR_ESG_MULTITHREAD
 			m_lr.Enter();
 		#endif
@@ -106,6 +126,7 @@ namespace GAIA
 				this->push(pOriginP, ob.freestack, ob.uFreeStackSize, ob.uFreeStackCapacity);
 				if(ob.uFreeStackSize == this->GetSectionPatchCount(uSectionIndex))
 				{
+					m_capacity.Add(-((GAIA::N64)m_secsizelist[uSectionIndex] * (GAIA::N64)ob.uFreeStackSize));
 					if(uOBIndex == hs.uMinFreeIndex)
 					{
 						hs.uMinFreeIndex = (GAIA::UM)GINVALID;
@@ -127,6 +148,22 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::memory_size(GAIA::GVOID* p)
 		{
 			return *(GAIA::UM*)((GAIA::U8*)p - sizeof(GAIA::UM) - sizeof(GAIA::U16));
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::capacity()
+		{
+			return m_capacity;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::size()
+		{
+			return m_size;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::use_size()
+		{
+			return m_usesize;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::piece_size()
+		{
+			return m_piecesize;
 		}
 	};
 };

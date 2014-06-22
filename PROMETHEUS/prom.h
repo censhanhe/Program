@@ -458,8 +458,8 @@ namespace PROM
 					pRet->cmdparam.cmd_decl("-linebreak", "change lines break flag, use \"\\r\" \"\\n\" or \"\\r\\n\"", 1, 1, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-fmt", "format the codes", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 
-					pRet->cmdparam.cmd_decl("-linestat", "statistics the lines, use -o to output the result", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
-					pRet->cmdparam.cmd_decl("-wordstat", "statistics the words, use -o to output the result", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-linestat", "statistics the lines, use -o to output the result", 0, 1, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-wordstat", "statistics the words, use -o to output the result", 0, 1, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-symbolstat", "statistics the symbols, use -o to output the result", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 				}
 				pRet->cmdparam.end_decl();
@@ -1150,20 +1150,15 @@ namespace PROM
 							{
 								GAIA::SIZE newflag;
 								if(strLine[z] == '\t' || strLine[z] == ' ' || strLine[z] == '\r' || strLine[z] == '\n')
-								{
 									newflag = EMPTY_FLAG;
-								}
-								else if(GAIA::ALGORITHM::isalpha(strLine[z]) || 
+								else if(
+									GAIA::ALGORITHM::isalpha(strLine[z]) || 
 									GAIA::ALGORITHM::isdigit(strLine[z]) || 
 									strLine[z] == '_' || 
 									strLine[z] == '.' && z + 1 < strLine.size() && GAIA::ALGORITHM::isdigit(strLine[z + 1]))
-								{
 									newflag = CHAR_FLAG;
-								}
 								else
-								{
 									newflag = SIGN_FLAG;
-								}
 
 								if(newflag != lastflag)
 								{
@@ -1262,7 +1257,7 @@ namespace PROM
 					if(pFile != GNULL)
 					{
 						GAIA::GCH szTemp[32];
-						GAIA::ALGORITHM::int2str(index, szTemp);
+						GAIA::ALGORITHM::int2str(index++, szTemp);
 						pFile->Write("[", 1);
 						pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp));
 						pFile->Write("] \"", 3);

@@ -11,6 +11,10 @@ namespace GAIA
 			virtual GAIA::GVOID* memory_alloc(const GAIA::UM& size) = 0;
 			virtual GAIA::GVOID memory_release(GAIA::GVOID* p) = 0;
 			virtual GAIA::UM memory_size(GAIA::GVOID* p) = 0;
+			virtual GAIA::UM capacity() = 0;
+			virtual GAIA::UM size() = 0;
+			virtual GAIA::UM use_size() = 0;
+			virtual GAIA::UM piece_size() = 0;
 		};
 	};
 };

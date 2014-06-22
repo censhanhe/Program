@@ -16,6 +16,7 @@ namespace GAIA
 			GINL operator GAIA::N64() const{return m_n;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Increase();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Decrease();
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Add(const GAIA::N64& src);
 		private:
 			volatile GAIA::N64 m_n;
 		};

@@ -54,6 +54,24 @@ namespace GAIA
 		#	endif
 		#endif
 		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Atomic::Add(const GAIA::N64& src)
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			#if GAIA_MACHINE == GAIA_MACHINE64
+				return InterlockedExchangeAdd64(&m_n, src);
+			#else
+				return InterlockedExchangeAdd((volatile GAIA::NM*)&m_n, (GAIA::NM)src);
+			#endif
+		#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
+			return OSAtomicAdd64(src, &m_n);
+		#else
+		#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
+				return __sync_add_and_fetch((GAIA::N32*)&m_n, (GAIA::N32)src);
+		#	else
+				return atomic_add_return((GAIA::N32)src, (GAIA::N32*)&m_n);
+		#	endif
+		#endif
+		}
 	};
 };
 
