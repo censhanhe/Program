@@ -1,7 +1,3 @@
-/*
-	String operator from Chars and inverse.
-*/
-
 #ifndef 	__PROMETHEUS_H__
 #define 	__PROMETHEUS_H__
 

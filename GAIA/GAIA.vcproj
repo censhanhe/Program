@@ -493,6 +493,18 @@
 				<Filter
 					Name="CONTAINER"
 					>
+					<File
+						RelativePath=".\gaia_container_cooperation.h"
+						>
+					</File>
+					<Filter
+						Name="ACCESSER"
+						>
+						<File
+							RelativePath=".\gaia_container_accesser.h"
+							>
+						</File>
+					</Filter>
 					<Filter
 						Name="VECTOR"
 						>
@@ -506,14 +518,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ACCESSER"
-						>
-						<File
-							RelativePath=".\gaia_container_accesser.h"
-							>
-						</File>
-					</Filter>
-					<Filter
 						Name="ARRAY"
 						>
 						<File
@@ -522,6 +526,18 @@
 						</File>
 						<File
 							RelativePath=".\gaia_container_basicarray.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="ARRAYVECTOR"
+						>
+						<File
+							RelativePath=".\gaia_container_arrayvector.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_container_basicarrayvector.h"
 							>
 						</File>
 					</Filter>
@@ -566,6 +582,14 @@
 						</File>
 						<File
 							RelativePath=".\gaia_container_chars.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="DATARECORD"
+						>
+						<File
+							RelativePath=".\gaia_container_datarecord.h"
 							>
 						</File>
 					</Filter>
@@ -642,6 +666,18 @@
 						</File>
 						<File
 							RelativePath=".\gaia_container_orderless.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="PACKAGE"
+						>
+						<File
+							RelativePath=".\gaia_container_basicpackage.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_container_basicstackpackage.h"
 							>
 						</File>
 					</Filter>
@@ -814,38 +850,6 @@
 						>
 						<File
 							RelativePath=".\gaia_container_vari.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="DATARECORD"
-						>
-						<File
-							RelativePath=".\gaia_container_datarecord.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="PACKAGE"
-						>
-						<File
-							RelativePath=".\gaia_container_basicpackage.h"
-							>
-						</File>
-						<File
-							RelativePath=".\gaia_container_basicstackpackage.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="ARRAYVECTOR"
-						>
-						<File
-							RelativePath=".\gaia_container_arrayvector.h"
-							>
-						</File>
-						<File
-							RelativePath=".\gaia_container_basicarrayvector.h"
 							>
 						</File>
 					</Filter>

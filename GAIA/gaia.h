@@ -102,6 +102,7 @@
 #include	"gaia_container_basicheap.h"
 #include	"gaia_container_storage.h"
 #include 	"gaia_container_vari.h"
+#include	"gaia_container_cooperation.h"
 
 #include	"gaia_time.h"
 
