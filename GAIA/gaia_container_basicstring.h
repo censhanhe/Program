@@ -181,12 +181,28 @@ namespace GAIA
 				{
 					m_capacity = size + 1;
 					m_size = 0;
+			#ifdef GAIA_MODULE_BASEDATATYPEONLY
+					m_pFront = GAIA_MALLOC(_DataType, m_capacity);
+			#else
 					m_pFront = new _DataType[m_capacity];
+			#endif
 					m_pFront[size] = 0;
 				}
 			}
 			GINL GAIA::GVOID clear(){m_size = 0; if(m_pFront != GNULL) m_pFront[0] = 0;}
-			GINL GAIA::GVOID destroy(){m_size = m_capacity = 0; if(m_pFront != GNULL){delete[] m_pFront; m_pFront = GNULL;}}
+			GINL GAIA::GVOID destroy()
+			{
+				m_size = m_capacity = 0;
+				if(m_pFront != GNULL)
+				{
+				#ifdef GAIA_MODULE_BASEDATATYPEONLY
+					GAIA_MFREE(m_pFront);
+				#else
+					delete[] m_pFront;
+				#endif
+					m_pFront = GNULL;
+				}
+			}
 			GINL GAIA::U32 type() const{return GAIA::ALGORITHM::strtype(m_pFront);}
 			GINL _DataType* front_ptr(){return m_pFront;}
 			GINL _DataType* back_ptr(){if(this->empty()) return GNULL; return m_pFront + this->size() - 1;}
@@ -836,11 +852,20 @@ namespace GAIA
 				GAIA_AST(size >= 0);
 				if(size == 0)
 					return;
+			#ifdef GAIA_MODULE_BASEDATATYPEONLY
+				_DataType* pNew = GAIA_MALLOC(_DataType, this->capacity() + size + 1);
+			#else
 				_DataType* pNew = new _DataType[this->capacity() + size + 1];
+			#endif
 				if(!this->empty())
 					GAIA::ALGORITHM::strcpy(pNew, this->front_ptr());
 				m_capacity = this->capacity() + size + 1;
-				delete[] m_pFront;
+				if(m_pFront != GNULL)
+			#ifdef GAIA_MODULE_BASEDATATYPEONLY
+					GAIA_MFREE(m_pFront);
+			#else
+					delete[] m_pFront;
+			#endif
 				m_pFront = pNew;
 			}
 			GINL __MyType& assign(const _DataType* p, const _SizeType& size)

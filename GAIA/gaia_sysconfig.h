@@ -124,6 +124,11 @@
 #define GAIA_ENUM_BEGIN(name) enum name{name##_INVALID = 0,
 #define GAIA_ENUM_END(name) name##_COUNT,name##_FORCEUNSIGNEDINTEGER=GAIA_MAX_UNSIGNED_INTEGER,};
 
+/* Module Setting. */
+#define GAIA_MODULE_BASEDATATYPEONLY	// If define this macro, the macro's user will alloc object by GAIA_MALLOC but not new(c++ operator).
+										// In that case, the buffer element will been base data type only. 
+										// If not, the constructor and destructor will not been called.
+
 /* Class helper. */
 #define GAIA_CLASS_OPERATOR_COMPARE(self, another, anothertype) \
 			GINL GAIA::BL operator == (const anothertype& src) const{return (self) == (src.another);}\
