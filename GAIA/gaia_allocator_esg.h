@@ -18,6 +18,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM size();
 			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM use_size();
 			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM piece_size();
+			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::U64 alloc_times();
 		private:
 			class OriginBuffer
 			{
@@ -50,6 +51,7 @@ namespace GAIA
 				m_size = 0;
 				m_usesize = 0;
 				m_piecesize = 0;
+				m_alloctimes = 0;
 			}
 			GINL GAIA::UM GetSectionPatchSize(GAIA::UM uIndex) const{return 32 + 32 * uIndex * uIndex;}
 			GINL GAIA::UM GetSectionPatchCount(GAIA::UM uIndex) const{if(uIndex == 0) uIndex = 1; return 40000 / (uIndex * uIndex);}
@@ -180,6 +182,7 @@ namespace GAIA
 			GAIA::SYNC::Atomic m_size;
 			GAIA::SYNC::Atomic m_usesize;
 			GAIA::SYNC::Atomic m_piecesize;
+			GAIA::SYNC::Atomic m_alloctimes;
 			GAIA::SYNC::Lock m_lr;
 		};
 	};

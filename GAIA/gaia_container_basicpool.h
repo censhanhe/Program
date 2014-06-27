@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicPool : public GAIA::Base
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicPool : public GAIA::Entity
 		{
 		public:
 			typedef _DataType _datatype;
@@ -107,7 +107,7 @@ namespace GAIA
 				m_buf.push_back(pGroup);
 			}
 		private:
-			class Group : public GAIA::Base
+			class Group : public GAIA::Entity
 			{
 			public:
 				__ElementListType listEle;

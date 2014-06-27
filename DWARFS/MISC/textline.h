@@ -3,7 +3,7 @@
 
 namespace DWARFS_MISC
 {
-	class TextLine : public GAIA::Base
+	class TextLine : public GAIA::Entity
 	{
 	public:
 		typedef GAIA::CONTAINER::AString __LineType;

@@ -115,5 +115,8 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 	PROM::Prom prom;
 	prom.Command((GAIA::GCH*)buf.front_ptr() + first_command_index, prt);
 
+	/* Dump system status. */
+	prt << "Allocate Times = " << g_global_allocator.alloc_times();
+
 	return 0;
 }

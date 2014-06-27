@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicGraph : public GAIA::Base
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicGraph : public GAIA::Entity
 		{
 		public:
 			class Node

@@ -176,7 +176,7 @@ namespace DWARFS_FSHA
 	typedef GAIA::U32 CRCTYPE;
 
 	/* File sequence. */
-	class __DWARFS_FILESHARE_API FileSequence : public GAIA::Base
+	class __DWARFS_FILESHARE_API FileSequence : public GAIA::Entity
 	{
 	public:
 		FileSequence(){}
@@ -208,7 +208,7 @@ namespace DWARFS_FSHA
 	};
 
 	/* File list class. */
-	class __DWARFS_FILESHARE_API FileList : public GAIA::Base
+	class __DWARFS_FILESHARE_API FileList : public GAIA::Entity
 	{
 	#define FILE_LIST_LOG(msg) do{if(m_pPr != GNULL){*m_pPr << (msg) << "\n";}}while(GAIA::ALWAYSFALSE)
 	#define FILE_LIST_LOG2(msg1, msg2) do{if(m_pPr != GNULL){*m_pPr << (msg1) << (msg2) << "\n";}}while(GAIA::ALWAYSFALSE)
@@ -854,7 +854,7 @@ namespace DWARFS_FSHA
 	};
 
 	/* User group class. */
-	class __DWARFS_FILESHARE_API UserGroup : public GAIA::Base
+	class __DWARFS_FILESHARE_API UserGroup : public GAIA::Entity
 	{
 	public:
 		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, USERNAMELEN> __UserNameType;
@@ -1404,7 +1404,7 @@ namespace DWARFS_FSHA
 	};
 
 	/* Ban IP. */
-	class __DWARFS_FILESHARE_API BanIP : public GAIA::Base
+	class __DWARFS_FILESHARE_API BanIP : public GAIA::Entity
 	{
 	public:
 		class BanIPNode
@@ -1596,7 +1596,7 @@ namespace DWARFS_FSHA
 		__BanIPList m_bans_temp;
 	};
 	/* File share class. */
-	class __DWARFS_FILESHARE_API FileShare : public GAIA::Base
+	class __DWARFS_FILESHARE_API FileShare : public GAIA::Entity
 	{
 	public:
 		/* File access. */

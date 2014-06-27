@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType> class BasicString : public GAIA::Base
+		template<typename _DataType, typename _SizeType> class BasicString : public GAIA::Entity
 		{
 		public:
 			typedef _DataType _datatype;

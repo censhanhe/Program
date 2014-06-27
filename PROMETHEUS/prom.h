@@ -10,7 +10,7 @@ namespace PROM
 	static const GAIA::GCH VERSION_STRING[] = "00.00.01.00";
 	static const GAIA::U32 VERSION = 0x00000100;
 
-	class Prom : public GAIA::Base
+	class Prom : public GAIA::Entity
 	{
 	private:
 		class ERROR_SYSTEM
@@ -22,7 +22,7 @@ namespace PROM
 				ERROR_TYPE_WARING,
 				ERROR_TYPE_ERROR,
 			GAIA_ENUM_END(ERROR_TYPE)
-			class ErrorBase : public GAIA::Base
+			class ErrorBase : public GAIA::Entity
 			{
 			public:
 				GINL ErrorBase(){m_uFileLine = (GAIA::U32)GINVALID;}
@@ -1413,8 +1413,60 @@ namespace PROM
 					++it;
 				}
 
+				typedef GAIA::CONTAINER::Vector<WordByRefCount> __WordCountSortVectorType;
+				__WordCountSortVectorType wordcountsortlist;
+				it = plc_word->wordset.front_it();
+				while(!it.empty())
+				{
+					PLC_Word::Word& word = *it;
+					WordByRefCount temp;
+					temp.pWord = &word.strWord;
+					temp.uExistCount = word.uExistCount;
+					wordcountsortlist.push_back(temp);
+					++it;
+				}
+				wordcountsortlist.sort();
+
+				index = 0;
+				__WordCountSortVectorType::it itcountsort = wordcountsortlist.front_it();
+				while(!itcountsort.empty())
+				{
+					WordByRefCount& word = *itcountsort;
+					if(pFile != GNULL)
+					{
+						GAIA::GCH szTemp[32];
+						GAIA::ALGORITHM::int2str(index++, szTemp);
+						pFile->Write("[", 1);
+						pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp));
+						pFile->Write("] \"", 3);
+						pFile->Write(word.pWord->front_ptr(), word.pWord->size());
+						pFile->Write("\", Count = ", sizeof("\", Count = ") - 1);
+						GAIA::ALGORITHM::int2str(word.uExistCount, szTemp);
+						pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp));
+						pFile->Write("\n", 1);
+					}
+					else
+						prt << "[" << index++ << "] \"" << word.pWord->front_ptr() << "\", Count = " << word.uExistCount << "\n";
+					++itcountsort;
+				}
+
 				return GAIA::True;
 			}
+		private:
+			class WordByRefCount
+			{
+			public:
+				const WordByRefCount& operator = (const WordByRefCount& src)
+				{
+					pWord = src.pWord;
+					uExistCount = src.uExistCount;
+					return *this;
+				}
+				GAIA_CLASS_OPERATOR_COMPARE(uExistCount, uExistCount, WordByRefCount);
+			public:
+				PLC_Word::__WordType* pWord;
+				GAIA::U32 uExistCount;
+			};
 		};
 		class PL_SymbolStat : public Pipeline
 		{

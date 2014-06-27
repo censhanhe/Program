@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		class Lock : public GAIA::Base
+		class Lock : public GAIA::Entity
 		{
 		public:
 			GAIA_DEBUG_CODEPURE_MEMFUNC Lock();

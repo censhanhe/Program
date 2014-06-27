@@ -20,7 +20,7 @@ namespace DWARFS_MISC
 		"Enum",
 	};
 
-	class CmdParam : public GAIA::Base
+	class CmdParam : public GAIA::Entity
 	{
 	public:
 		GINL CmdParam(){this->init();}

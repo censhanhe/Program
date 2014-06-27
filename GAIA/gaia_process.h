@@ -6,7 +6,7 @@ namespace GAIA
 	namespace PROCESS
 	{
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::UM processid();
-		class Process : public GAIA::Base
+		class Process : public GAIA::Entity
 		{
 		public:
 		};

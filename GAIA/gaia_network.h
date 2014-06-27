@@ -165,7 +165,7 @@ namespace GAIA
 				while(!m_sendque.empty())
 				{
 					SendRec& r = m_sendque.front();
-					GAIA_MRELEASE(r.p);
+					GAIA_MFREE(r.p);
 					m_sendque.pop_front();
 				}
 			}

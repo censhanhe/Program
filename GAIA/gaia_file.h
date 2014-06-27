@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace FILESYSTEM
 	{
-		class FileBase : public GAIA::Base
+		class FileBase : public GAIA::Entity
 		{
 		public:
 			GAIA_ENUM_BEGIN(OPEN_TYPE)

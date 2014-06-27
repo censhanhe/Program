@@ -15,6 +15,7 @@ namespace GAIA
 			m_capacity.Add(uSize + sizeof(GAIA::UM));
 			m_usesize.Add(uSize);
 			m_piecesize.Increase();
+			m_alloctimes.Increase();
 			return ((GAIA::UM*)pRet) + 1;
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID AllocatorCRT::memory_release(GAIA::GVOID* p)
@@ -45,6 +46,10 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorCRT::piece_size()
 		{
 			return m_piecesize;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::U64 AllocatorCRT::alloc_times()
+		{
+			return m_alloctimes;
 		}
 	};
 };

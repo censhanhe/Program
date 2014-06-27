@@ -18,7 +18,7 @@ namespace GAIA
 		 *	million second	: 10 bit.
 		 *	micro second	: 10 bit.
 		 */
-		class Time : public GAIA::Base
+		class Time : public GAIA::Entity
 		{
 		public:
 			GINL Time(){}

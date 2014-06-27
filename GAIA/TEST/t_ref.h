@@ -109,7 +109,7 @@ namespace GAIATEST
 			GTLINE2("Ref operator const _DataType* failed!");
 			++nRet;
 		}
-		GAIA_MRELEASE(pElements);
+		GAIA_MFREE(pElements);
 		pElements = GNULL;
 		return nRet;
 	}

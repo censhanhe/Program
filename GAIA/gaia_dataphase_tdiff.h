@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace DATAPHASE
 	{
-		template<typename _DataType, typename _SizeType> class TDiff : public GAIA::Base
+		template<typename _DataType, typename _SizeType> class TDiff : public GAIA::Entity
 		{
 		public:
 			typedef _DataType _datatype;

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicTrieTree : public GAIA::Base
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicTrieTree : public GAIA::Entity
 		{
 		public:
 			class Node;

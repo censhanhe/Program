@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _SizeType, typename _SizeIncreaserType> class BasicBuffer : public GAIA::Base
+		template<typename _SizeType, typename _SizeIncreaserType> class BasicBuffer : public GAIA::Entity
 		{
 		public:
 			typedef _SizeType _sizetype;
@@ -15,11 +15,11 @@ namespace GAIA
 		public:
 			GINL BasicBuffer(){this->init();}
 			GINL BasicBuffer(const __MyType& src){this->init(); this->operator = (src);}
-			GINL ~BasicBuffer(){if(m_pFront != GNULL) GAIA_MRELEASE(m_pFront);}
+			GINL ~BasicBuffer(){if(m_pFront != GNULL) GAIA_MFREE(m_pFront);}
 			GINL GAIA::BL empty() const{return this->write_size() == 0;}
 			GINL _SizeType capacity() const{return static_cast<_SizeType>(m_pBack - m_pFront);}
 			GINL GAIA::GVOID clear(){m_pWrite = m_pRead = m_pFront;}
-			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MRELEASE(m_pFront); this->init();}}
+			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MFREE(m_pFront); this->init();}}
 			GINL GAIA::GVOID reserve(const _SizeType& size)
 			{
 				if(size == this->capacity())
@@ -196,7 +196,7 @@ namespace GAIA
 				if(m_pWrite != m_pFront)
 					GAIA::ALGORITHM::xmemcpy(pNew, m_pFront, this->write_size());
 				if(m_pFront != GNULL)
-					GAIA_MRELEASE(m_pFront);
+					GAIA_MFREE(m_pFront);
 				m_pWrite = pNew + this->write_size();
 				m_pRead = pNew + this->read_size();
 				m_pFront = pNew;

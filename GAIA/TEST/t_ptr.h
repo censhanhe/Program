@@ -151,7 +151,7 @@ namespace GAIATEST
 			GTLINE2("Ptr operator + or - failed!");
 			++nRet;
 		}
-		GAIA_MRELEASE(pElements);
+		GAIA_MFREE(pElements);
 		pElements = GNULL;
 		return nRet;
 	}

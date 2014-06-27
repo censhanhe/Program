@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace PRINT
 	{
-		class PrintBase : public GAIA::Base
+		class PrintBase : public GAIA::Entity
 		{
 		public:
 			virtual GAIA::GVOID enable_write(GAIA::BL bEnable) = 0;

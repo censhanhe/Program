@@ -7,7 +7,7 @@ namespace GAIA
 	{
 		#define GAIA_BITSET_SRC (m_pFront[index / 8])
 		#define GAIA_BITSET_CUR (1 << (index % 8))
-		template<typename _SizeType> class BasicBitset : public GAIA::Base
+		template<typename _SizeType> class BasicBitset : public GAIA::Entity
 		{
 		public:
 			typedef _SizeType _sizetype;
@@ -24,7 +24,7 @@ namespace GAIA
 			GINL GAIA::BL one() const{if(this->empty()) return GAIA::False; return GAIA::ALGORITHM::xmemcheck(this->front_ptr(), 0xFF, this->size()) == 0;}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL const _SizeType& capacity() const{return m_capacity;}
-			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MRELEASE(m_pFront); m_pFront = GNULL;} m_size = m_capacity = 0;}
+			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MFREE(m_pFront); m_pFront = GNULL;} m_size = m_capacity = 0;}
 			GINL GAIA::U8* front_ptr(){if(this->empty()) return GNULL; return m_pFront;}
 			GINL GAIA::U8* back_ptr(){if(this->empty()) return GNULL; return &m_pFront[this->size() - 1];}
 			GINL const GAIA::U8* front_ptr() const{if(this->empty()) return GNULL; return m_pFront;}
@@ -142,7 +142,7 @@ namespace GAIA
 				if(this->size() > 0)
 					GAIA::ALGORITHM::xmemcpy(pNew, this->front_ptr(), this->size());
 				if(m_pFront != GNULL)
-					GAIA_MRELEASE(m_pFront);
+					GAIA_MFREE(m_pFront);
 				m_pFront = pNew;
 				m_capacity += size;
 			}

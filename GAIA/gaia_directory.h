@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace FILESYSTEM
 	{
-		class Directory : public GAIA::Base
+		class Directory : public GAIA::Entity
 		{
 		public:
 			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::CONTAINER::AString, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM> > __ResultTree;

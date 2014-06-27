@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace PRINT
 	{
-		class PrintFormat : public GAIA::Base
+		class PrintFormat : public GAIA::Entity
 		{
 		public:
 			GINL PrintFormat(){this->reset();}

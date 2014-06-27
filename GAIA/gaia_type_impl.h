@@ -5,8 +5,13 @@ namespace GAIA
 {
 #ifndef GAIA_DEBUG_MEMORYLEAK
 #	if GAIA_OS == GAIA_OS_WINDOWS
-		GINL GAIA::GVOID* Base::operator new(size_t size){return g_global_allocator.memory_alloc((GAIA::UM)size);}
-		GINL GAIA::GVOID* Base::operator new[](size_t size){return g_global_allocator.memory_alloc((GAIA::UM)size);}
+#		if GAIA_MACHINE == GAIA_MACHINE32
+			GINL GAIA::GVOID* Base::operator new(GAIA::U32 size){return g_global_allocator.memory_alloc((GAIA::UM)size);}
+			GINL GAIA::GVOID* Base::operator new[](GAIA::U32 size){return g_global_allocator.memory_alloc((GAIA::UM)size);}
+#		elif GAIA_MACHINE == GAIA_MACHINE64
+			GINL GAIA::GVOID* Base::operator new(GAIA::U64 size){return g_global_allocator.memory_alloc((GAIA::UM)size);}
+			GINL GAIA::GVOID* Base::operator new[](GAIA::U64 size){return g_global_allocator.memory_alloc((GAIA::UM)size);}		
+#		endif
 #	else
 		GINL GAIA::GVOID* Base::operator new(GAIA::UM size){return g_global_allocator.memory_alloc((GAIA::UM)size);}
 		GINL GAIA::GVOID* Base::operator new[](GAIA::UM size){return g_global_allocator.memory_alloc((GAIA::UM)size);}

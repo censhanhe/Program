@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace FRAMEWORK
 	{
-		template<GAIA::U32 _ElementSize> class ID : public GAIA::Base
+		template<GAIA::U32 _ElementSize> class ID : public GAIA::Entity
 		{
 		public:
 			static const GAIA::U32 _elementsize = _ElementSize;

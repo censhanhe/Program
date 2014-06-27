@@ -317,7 +317,7 @@ namespace GAIA
 							uSize -= nSended;
 						}
 					}
-					GAIA_MRELEASE(r.p);
+					GAIA_MFREE(r.p);
 				}
 			}
 			return GAIA::True;

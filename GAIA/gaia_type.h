@@ -143,19 +143,15 @@ namespace GAIA
 	class Base
 	{
 	public:
-		GAIA_ENUM_BEGIN(BASE_FEATURE)
-			BASE_FEATURE_CAPACITY,
-			BASE_FEATURE_SIZE,
-		GAIA_ENUM_END(BASE_FEATURE)
-	public:
-		virtual ~Base(){}
-		virtual GAIA::BL base_statistics(BASE_FEATURE of, GAIA::GVOID* pResult) const{return GAIA::False;}
-		virtual GAIA::BL base_optimize(BASE_FEATURE of, GAIA::GVOID* pResult){return GAIA::False;}
-	public:
 	#ifndef GAIA_DEBUG_MEMORYLEAK
 	#	if GAIA_OS == GAIA_OS_WINDOWS
-			GINL GAIA::GVOID* operator new(size_t size);
-			GINL GAIA::GVOID* operator new[] (size_t size);
+	#		if GAIA_MACHINE == GAIA_MACHINE32
+				GINL GAIA::GVOID* operator new(GAIA::U32 size);
+				GINL GAIA::GVOID* operator new[](GAIA::U32 size);
+	#		elif GAIA_MACHINE == GAIA_MACHINE64
+				GINL GAIA::GVOID* operator new(GAIA::U64 size);
+				GINL GAIA::GVOID* operator new[](GAIA::U64 size);
+	#		endif
 	#	else
 			GINL GAIA::GVOID* operator new(GAIA::UM size);
 			GINL GAIA::GVOID* operator new[](GAIA::UM size);
@@ -165,8 +161,22 @@ namespace GAIA
 	#endif
 	};
 
+	/* Entity can been dispatch by virtual table and have a virtual destructor. */
+	class Entity : public Base
+	{
+	public:
+		GAIA_ENUM_BEGIN(FEATURE)
+			FEATURE_CAPACITY,
+			FEATURE_SIZE,
+		GAIA_ENUM_END(FEATURE)
+	public:
+		virtual ~Entity(){}
+		virtual GAIA::BL base_statistics(FEATURE of, GAIA::GVOID* pResult) const{return GAIA::False;}
+		virtual GAIA::BL base_optimize(FEATURE of, GAIA::GVOID* pResult){return GAIA::False;}
+	};
+
 	/* Class Object. It's the all class's base(except high-performance container and math class. */
-	class Object : public Base
+	class Object : public Entity
 	{
 	public:
 	};
@@ -308,10 +318,10 @@ namespace GAIA
 	namespace GAIA{namespace ALLOCATOR{class AllocatorESG;};};
 	extern GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
 #	define GAIA_MALLOC(type, size) (type*)g_global_allocator.memory_alloc(sizeof(type) * size)
-#	define GAIA_MRELEASE(p) g_global_allocator.memory_release(p)
+#	define GAIA_MFREE(p) g_global_allocator.memory_release(p)
 #else
 #	define GAIA_MALLOC(type, size) new type[size]
-#	define GAIA_MRELEASE(p) delete[] p;
+#	define GAIA_MFREE(p) delete[] (p);
 #endif
 
 #endif

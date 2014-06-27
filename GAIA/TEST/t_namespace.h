@@ -17,7 +17,7 @@ namespace GAIATEST
 			xmemset(p, (GAIA::N8)17, sizeof(GAIA::N32) * 1024);
 			xmemcpy(p, p + 1, sizeof(GAIA::N32));
 			xmemcmp(p, p + 1, sizeof(GAIA::N32));
-			GAIA_MRELEASE(p);
+			GAIA_MFREE(p);
 			p = GNULL;
 		}
 		{

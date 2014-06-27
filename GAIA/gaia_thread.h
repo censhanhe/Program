@@ -6,7 +6,7 @@ namespace GAIA
 	namespace THREAD
 	{
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::UM threadid();
-		class Thread : public GAIA::Base
+		class Thread : public GAIA::Entity
 		{
 		public:
 			GAIA_ENUM_BEGIN(THREAD_STATE)

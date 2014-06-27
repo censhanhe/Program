@@ -7,7 +7,7 @@ namespace GAIA
 	{
 		#define GAIA_STACKBITSET_SRC (m_bits[index / 8])
 		#define GAIA_STACKBITSET_CUR (1 << (index % 8))
-		template<typename _SizeType, _SizeType _Size> class BasicStackBitset : public GAIA::Base
+		template<typename _SizeType, _SizeType _Size> class BasicStackBitset : public GAIA::Entity
 		{
 		public:
 			typedef _SizeType _sizetype;

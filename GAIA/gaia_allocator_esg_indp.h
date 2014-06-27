@@ -7,13 +7,15 @@ namespace GAIA
 	{
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID* AllocatorESG::memory_alloc(const GAIA::UM& uSize)
 		{
+			m_piecesize.Increase();
+			m_alloctimes.Increase();
+
 			GAIA::UM uSectionIndex = this->GetSectionIndex(uSize + HEAP_BUFFER_HEADERSIZE);
 			if(uSectionIndex == GINVALID)
 			{
 				m_capacity.Add(uSize + HEAP_BUFFER_HEADERSIZE);
 				m_size.Add(uSize + HEAP_BUFFER_HEADERSIZE);
 				m_usesize.Add(uSize);
-				m_piecesize.Increase();
 
 				GAIA::GVOID* pTemp = new GAIA::U8[uSize + HEAP_BUFFER_HEADERSIZE];
 				*(GAIA::UM*)pTemp = uSize;
@@ -24,7 +26,6 @@ namespace GAIA
 			{
 				m_size.Add(m_secsizelist[uSectionIndex]);
 				m_usesize.Add(uSize);
-				m_piecesize.Increase();
 			}
 			GAIA::GVOID* pRet;
 		#ifdef GAIA_ALLOCATOR_ESG_MULTITHREAD
@@ -164,6 +165,10 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::piece_size()
 		{
 			return m_piecesize;
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::U64 AllocatorESG::alloc_times()
+		{
+			return m_alloctimes;
 		}
 	};
 };

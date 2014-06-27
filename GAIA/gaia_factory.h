@@ -6,7 +6,7 @@ namespace GAIA
 	namespace FRAMEWORK
 	{
 		class Factory;
-		class FactoryCreateCallBack : public GAIA::Base
+		class FactoryCreateCallBack : public GAIA::Entity
 		{
 		public:
 			GINL FactoryCreateCallBack(){}

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _SizeType> class DataRecord : public GAIA::Base
+		template<typename _SizeType> class DataRecord : public GAIA::Entity
 		{
 		public:
 			typedef _SizeType _sizetype;

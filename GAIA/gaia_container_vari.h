@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		class Vari : public GAIA::Base
+		class Vari : public GAIA::Entity
 		{
 		public:
 			GAIA_ENUM_BEGIN(VARI_TYPE)

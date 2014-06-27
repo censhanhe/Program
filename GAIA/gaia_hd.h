@@ -6,7 +6,7 @@ namespace GAIA
 	namespace FRAMEWORK
 	{
 		class Instance;
-		class HD : public GAIA::Base // Handle class.
+		class HD : public GAIA::Entity // Handle class.
 		{
 		public:
 			GAIA_ENUM_BEGIN(RIGHT)

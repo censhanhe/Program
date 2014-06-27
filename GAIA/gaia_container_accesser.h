@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType, typename _SizeType> class Accesser : public GAIA::Base
+		template<typename _DataType, typename _SizeType> class Accesser : public GAIA::Entity
 		{
 		public:
 			GAIA_ENUM_BEGIN(BIND_TYPE)
@@ -23,7 +23,7 @@ namespace GAIA
 		public:
 			typedef Accesser<_DataType, _SizeType> __MyType;
 		private:
-			class Node : public GAIA::Base
+			class Node : public GAIA::Entity
 			{
 			private:
 				friend class Accesser;
@@ -75,7 +75,7 @@ namespace GAIA
 				__MyType* m_acc;
 				_SizeType m_index;
 			};
-			class ConstNode : public GAIA::Base
+			class ConstNode : public GAIA::Entity
 			{
 			private:
 				friend class Accesser;
