@@ -126,7 +126,7 @@
 
 /* Module Setting. */
 #define GAIA_MODULE_BASEDATATYPEONLY	// If define this macro, the macro's user will alloc object by GAIA_MALLOC but not new(c++ operator).
-										// In that case, the buffer element will been base data type only. 
+										// In that case, the buffer element will been base data type only.
 										// If not, the constructor and destructor will not been called.
 
 /* Class helper. */
