@@ -79,6 +79,7 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 	}
 	if(first_command_index + 1 == buf.write_size())
 	{
+REPEAT:
 		GAIA::CONTAINER::AString strCombin;
 		prt << "Enter the command here : ";
 		GAIA::GCH szParam[1024];
@@ -116,7 +117,10 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 	prom.Command((GAIA::GCH*)buf.front_ptr() + first_command_index, prt);
 
 	/* Dump system status. */
-	prt << "Allocate Times = " << g_global_allocator.alloc_times();
+	prt << "Allocate Times = " << g_global_allocator.alloc_times() << "\n";
+
+	if(nargs == 1)
+		goto REPEAT;
 
 	return 0;
 }
