@@ -8,16 +8,16 @@ namespace GAIA
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	if GAIA_PROFILE == GAIA_PROFILE_DEBUG
 		inline GAIA::N32 crt_alloc_hook(
-			GAIA::N32 nAllocType, 
-			GAIA::GVOID* pUserData, 
+			GAIA::N32 nAllocType,
+			GAIA::GVOID* pUserData,
 #		if GAIA_MACHINE == GAIA_MACHINE32
-			GAIA::U32 size, 
+			GAIA::U32 size,
 #		elif GAIA_MACHINE == GAIA_MACHINE64
 			GAIA::U64 size,
 #		endif
-			GAIA::N32 nBlockType, 
-			GAIA::NM nRequestNum, 
-			const GAIA::U8* pszFileName, 
+			GAIA::N32 nBlockType,
+			GAIA::NM nRequestNum,
+			const GAIA::U8* pszFileName,
 			GAIA::N32 nCodeLine)
 		{
 			static GAIA::U64 s_uAllocCount = 0;

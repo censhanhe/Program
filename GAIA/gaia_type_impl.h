@@ -10,7 +10,7 @@ namespace GAIA
 			GINL GAIA::GVOID* Base::operator new[](GAIA::U32 size){return g_global_allocator.memory_alloc((GAIA::UM)size);}
 #		elif GAIA_MACHINE == GAIA_MACHINE64
 			GINL GAIA::GVOID* Base::operator new(GAIA::U64 size){return g_global_allocator.memory_alloc((GAIA::UM)size);}
-			GINL GAIA::GVOID* Base::operator new[](GAIA::U64 size){return g_global_allocator.memory_alloc((GAIA::UM)size);}		
+			GINL GAIA::GVOID* Base::operator new[](GAIA::U64 size){return g_global_allocator.memory_alloc((GAIA::UM)size);}
 #		endif
 #	else
 		GINL GAIA::GVOID* Base::operator new(GAIA::UM size){return g_global_allocator.memory_alloc((GAIA::UM)size);}

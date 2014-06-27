@@ -1293,9 +1293,9 @@ namespace PROM
 								if(strLine[z] == '\t' || strLine[z] == ' ' || strLine[z] == '\r' || strLine[z] == '\n')
 									newflag = EMPTY_FLAG;
 								else if(
-									GAIA::ALGORITHM::isalpha(strLine[z]) || 
-									GAIA::ALGORITHM::isdigit(strLine[z]) || 
-									strLine[z] == '_' || 
+									GAIA::ALGORITHM::isalpha(strLine[z]) ||
+									GAIA::ALGORITHM::isdigit(strLine[z]) ||
+									strLine[z] == '_' ||
 									strLine[z] == '.' && z + 1 < strLine.size() && GAIA::ALGORITHM::isdigit(strLine[z + 1]))
 									newflag = CHAR_FLAG;
 								else
@@ -1325,17 +1325,17 @@ namespace PROM
 									{
 										if(z != flag_changed_index)
 										{
-											static const GAIA::GCH* LINK_SIGN_LIST[] = 
+											static const GAIA::GCH* LINK_SIGN_LIST[] =
 											{
-												">>", "<<", 
-												"++", "--", 
-												"+=", "-=", "*=", "/=", 
+												">>", "<<",
+												"++", "--",
+												"+=", "-=", "*=", "/=",
 												"==", "!=", ">=", "<="
 											};
 											GAIA::BL bLink = GAIA::False;
 											for(GAIA::SIZE t = 0; t < sizeofarray(LINK_SIGN_LIST); ++t)
 											{
-												if(strLine[flag_changed_index] == LINK_SIGN_LIST[t][0] && 
+												if(strLine[flag_changed_index] == LINK_SIGN_LIST[t][0] &&
 													strLine[z] == LINK_SIGN_LIST[t][1])
 												{
 													bLink = GAIA::True;
