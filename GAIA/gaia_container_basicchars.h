@@ -160,6 +160,7 @@ namespace GAIA
 			GINL BasicChars(const GAIA::F64& t){this->init(); this->operator = (t);}
 			GINL BasicChars(const GAIA::BL& t){this->init(); this->operator = (t);}
 			GINL BasicChars(const _DataType* p1, const _SizeType& size1, const _DataType* p2, const _SizeType& size2){this->init(); this->combin(p1, size1, p2, size2);}
+			template<typename _ParamSizeType> BasicChars(const GAIA::CONTAINER::BasicString<_DataType, _ParamSizeType>& src){this->operator = (src);}
 			GINL ~BasicChars(){}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL _SizeType size() const{if(m_size == 0) return 0; return m_size - 1;}

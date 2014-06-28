@@ -3269,7 +3269,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 2)
 				{
 					AL al(m_lr_usergroup);
-					if(!m_usergroup.AddUser(listPart[1].front_ptr()))
+					if(!m_usergroup.AddUser(listPart[1]))
 						CMDFAILED;
 				}
 				else
@@ -3280,7 +3280,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 2)
 				{
 					AL al(m_lr_usergroup);
-					if(!m_usergroup.DeleteUser(listPart[1].front_ptr()))
+					if(!m_usergroup.DeleteUser(listPart[1]))
 						CMDFAILED;
 				}
 				else
@@ -3301,7 +3301,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 3)
 				{
 					AL al(m_lr_usergroup);
-					if(!m_usergroup.SetUserPassword(listPart[1].front_ptr(), listPart[2].front_ptr()))
+					if(!m_usergroup.SetUserPassword(listPart[1], listPart[2]))
 						CMDFAILED;
 				}
 				else
@@ -3312,7 +3312,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 2)
 				{
 					AL al(m_lr_usergroup);
-					if(!m_usergroup.AddGroup(listPart[1].front_ptr()))
+					if(!m_usergroup.AddGroup(listPart[1]))
 						CMDFAILED;
 				}
 				else
@@ -3323,7 +3323,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 2)
 				{
 					AL al(m_lr_usergroup);
-					if(!m_usergroup.DeleteGroup(listPart[1].front_ptr()))
+					if(!m_usergroup.DeleteGroup(listPart[1]))
 						CMDFAILED;
 				}
 				else
@@ -3344,11 +3344,11 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 4)
 				{
 					AL al(m_lr_usergroup);
-					if(!m_usergroup.SetGroupRightWrite(listPart[1].front_ptr(), (GAIA::BL)listPart[2].front_ptr()))
+					if(!m_usergroup.SetGroupRightWrite(listPart[1], (GAIA::BL)listPart[2].front_ptr()))
 						CMDFAILED;
 					else
 					{
-						if(!m_usergroup.SetGroupRightRead(listPart[1].front_ptr(), (GAIA::BL)listPart[3].front_ptr()))
+						if(!m_usergroup.SetGroupRightRead(listPart[1], (GAIA::BL)listPart[3].front_ptr()))
 							CMDFAILED;
 					}
 				}
@@ -3360,7 +3360,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 3)
 				{
 					AL al(m_lr_usergroup);
-					if(!m_usergroup.AddGroupUser(listPart[1].front_ptr(), listPart[2].front_ptr()))
+					if(!m_usergroup.AddGroupUser(listPart[1], listPart[2]))
 						CMDFAILED;
 				}
 				else
@@ -3371,7 +3371,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 3)
 				{
 					AL al(m_lr_usergroup);
-					if(!m_usergroup.DeleteGroupUser(listPart[1].front_ptr(), listPart[2].front_ptr()))
+					if(!m_usergroup.DeleteGroupUser(listPart[1], listPart[2]))
 						CMDFAILED;
 				}
 				else
@@ -3382,7 +3382,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 2)
 				{
 					AL al(m_lr_usergroup);
-					if(!m_usergroup.DeleteGroupUserAll(listPart[1].front_ptr()))
+					if(!m_usergroup.DeleteGroupUserAll(listPart[1]))
 						CMDFAILED;
 				}
 				else
@@ -3455,17 +3455,17 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 2)
 				{
 					AL al(m_lr_usergroup);
-					if(m_usergroup.FindGroup(listPart[1].front_ptr()))
+					if(m_usergroup.FindGroup(listPart[1]))
 					{
 						GAIA::BL bWrite;
 						GAIA::BL bRead;
-						m_usergroup.GetGroupRightWrite(listPart[1].front_ptr(), bWrite);
-						m_usergroup.GetGroupRightRead(listPart[1].front_ptr(), bRead);
+						m_usergroup.GetGroupRightWrite(listPart[1], bWrite);
+						m_usergroup.GetGroupRightRead(listPart[1], bRead);
 						AL alprt(m_lr_prt);
 						m_prt << "Right = " << bWrite << ", Read = " << bRead << "\n";
 
 						UserGroup::__UserNameListType listUser;
-						m_usergroup.EnumGroupUser(listPart[1].front_ptr(), listUser);
+						m_usergroup.EnumGroupUser(listPart[1], listUser);
 						UserGroup::__UserNameListType::const_it it = listUser.const_front_it();
 						GAIA::N32 nIndex = 0;
 						while(!it.empty())

@@ -524,7 +524,7 @@ namespace DWARFS_MISC
 				return GNULL;
 			if(param >= this->param_size(cmd))
 				return GNULL;
-			return m_cmds[cmd].params[param].front_ptr();
+			return m_cmds[cmd].params[param];
 		}
 		GINL GAIA::SIZE findcmd(const GAIA::GCH* pszCmd) const
 		{

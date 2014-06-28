@@ -157,6 +157,7 @@ namespace GAIA
 			GINL BasicString(const GAIA::F64& t){this->init(); this->operator = (t);}
 			GINL BasicString(const GAIA::BL& t){this->init(); this->operator = (t);}
 			GINL BasicString(const _DataType* p1, const _SizeType& size1, const _DataType* p2, const _SizeType& size2){this->init(); this->combin(p1, size1, p2, size2);}
+			template<typename _ParamSizeType, _ParamSizeType _Size> BasicString(const GAIA::CONTAINER::BasicChars<_DataType, _ParamSizeType, _Size>& src){this->operator = (src);}
 			GINL ~BasicString(){this->destroy();}
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return this->front_ptr()[0] == 0;}
 			GINL _SizeType size() const{if(m_size == 0) return 0; return m_size - 1;}
@@ -780,7 +781,7 @@ namespace GAIA
 			GINL GAIA::BL isexistupper() const{if(m_pFront != GNULL) return GAIA::ALGORITHM::isexistupper(m_pFront); return GAIA::False;}
 			GINL GAIA::BL isalllower() const{if(m_pFront != GNULL) return GAIA::ALGORITHM::isalllower(m_pFront); return GAIA::False;}
 			GINL GAIA::BL isallupper() const{if(m_pFront != GNULL) return GAIA::ALGORITHM::isallupper(m_pFront); return GAIA::False;}
-			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); this->assign(src.front_ptr(), src.size()); return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); this->assign(src, src.size()); return *this;}
 			GINL __MyType& operator = (const _DataType* p){this->assign(p, (_SizeType)GAIA::ALGORITHM::strlen(p)); return *this;}
 			GINL __MyType& operator = (const GAIA::NM& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::N8& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
@@ -802,7 +803,7 @@ namespace GAIA
 			GINL __MyType& operator = (const GAIA::F64& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::real2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::BL& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
 			template<typename _ParamSizeType, _ParamSizeType _Size> __MyType& operator = (const GAIA::CONTAINER::BasicChars<_DataType, _ParamSizeType, _Size>& src);
-			GINL __MyType& operator += (const __MyType& src){return this->combin(src.front_ptr(), src.size());}
+			GINL __MyType& operator += (const __MyType& src){return this->combin(src, src.size());}
 			GINL __MyType& operator += (const _DataType* p){return this->combin(p, GAIA::ALGORITHM::strlen(p));}
 			GINL __MyType operator + (const __MyType& src) const{return __MyType(this->front_ptr(), this->size(), src.front_ptr(), src.size());}
 			GINL __MyType operator + (const _DataType* p) const{return __MyType(this->front_ptr(), this->size(), p, GAIA::ALGORITHM::strlen(p));}
