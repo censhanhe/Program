@@ -104,7 +104,7 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->size()) == 0;
 			}
-			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const __MyType& src) const
 			{
 				if(this->size() > src.size())
@@ -121,8 +121,8 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->size()) <= 0;
 			}
-			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 			GINL __MyType operator ~ () const
 			{
 				__MyType ret = *this;

@@ -639,7 +639,7 @@ namespace DWARFS_FSHA
 		public:
 			GINL FileRecSeq& operator = (const FileRecSeq& src){GAIA_AST(&src != this); pFileRec = src.pFileRec; return *this;}
 			GINL GAIA::BL operator == (const FileRecSeq& src) const{return pFileRec->uSequence == src.pFileRec->uSequence && pFileRec->fid == src.pFileRec->fid;}
-			GINL GAIA::BL operator != (const FileRecSeq& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator != (const FileRecSeq& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const FileRecSeq& src) const
 			{
 				if(pFileRec->uSequence > src.pFileRec->uSequence)
@@ -668,8 +668,8 @@ namespace DWARFS_FSHA
 						return GAIA::False;
 				}
 			}
-			GINL GAIA::BL operator > (const FileRecSeq& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const FileRecSeq& src) const{return !(this->operator >= (src));}
+			GINL GAIA::BL operator > (const FileRecSeq& src) const{return !this->operator <= (src);}
+			GINL GAIA::BL operator < (const FileRecSeq& src) const{return !this->operator >= (src);}
 			FileRec* pFileRec;
 		};
 	public:

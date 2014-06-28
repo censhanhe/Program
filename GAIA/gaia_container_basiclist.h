@@ -39,7 +39,7 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator == (*static_cast<const it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::Iterator<_DataType>& src) const{return this->operator != (*static_cast<const it*>(&src));}
 				GINL GAIA::BL operator == (const it& src) const{return m_pNode == src.m_pNode;}
-				GINL GAIA::BL operator != (const it& src) const{return !(this->operator == (src));}
+				GINL GAIA::BL operator != (const it& src) const{return !this->operator == (src);}
 				GINL it& operator = (const it& src){GAIA_AST(&src != this); m_pNode = src.m_pNode; return *this;}
 				GINL it& operator += (_SizeType c)
 				{
@@ -142,7 +142,7 @@ namespace GAIA
 				GINL virtual GAIA::BL operator == (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator == (*static_cast<const const_it*>(&src));}
 				GINL virtual GAIA::BL operator != (const GAIA::ITERATOR::ConstIterator<_DataType>& src) const{return this->operator != (*static_cast<const const_it*>(&src));}
 				GINL GAIA::BL operator == (const const_it& src) const{return m_pNode == src.m_pNode;}
-				GINL GAIA::BL operator != (const const_it& src) const{return !(this->operator == (src));}
+				GINL GAIA::BL operator != (const const_it& src) const{return !this->operator == (src);}
 				GINL const_it& operator = (const const_it& src){GAIA_AST(&src != this); m_pNode = src.m_pNode; return *this;}
 				GINL const_it& operator += (_SizeType c)
 				{
@@ -375,7 +375,7 @@ namespace GAIA
 				}
 				return GAIA::True;
 			}
-			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const __MyType& src) const
 			{
 				if(this->size() > src.size())
@@ -414,8 +414,8 @@ namespace GAIA
 				}
 				return GAIA::True;
 			}
-			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 		private:
 			GINL GAIA::GVOID init(){m_pFront = m_pBack = GNULL;}
 		private:

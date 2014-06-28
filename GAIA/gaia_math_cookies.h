@@ -46,13 +46,13 @@ namespace GAIA
 			template<typename _ParamType> GINL const __MyType& operator = (const _ParamType& v){x = y = (_DataType)v; return *this;}
 			template<typename _ParamType> GINL const __MyType& operator = (const _ParamType* pV){x = (_DataType)pV[0]; y = (_DataType)pV[1]; return *this;}
 			template<typename _ParamType> GINL GAIA::BL operator == (const VEC2<_ParamType>& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamType>::_datatype*)&v) == 0;}
-			template<typename _ParamType> GINL GAIA::BL operator != (const VEC2<_ParamType>& v) const{return !(this->operator == (v));}
+			template<typename _ParamType> GINL GAIA::BL operator != (const VEC2<_ParamType>& v) const{return !this->operator == (v);}
 			template<typename _ParamType> GINL GAIA::BL operator >= (const VEC2<_ParamType>& v) const{return !this->operator < (v);}
 			template<typename _ParamType> GINL GAIA::BL operator <= (const VEC2<_ParamType>& v) const{return !this->operator > (v);}
 			template<typename _ParamType> GINL GAIA::BL operator > (const VEC2<_ParamType>& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamType>::_datatype*)&v) > 0;}
 			template<typename _ParamType> GINL GAIA::BL operator < (const VEC2<_ParamType>& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamType>::_datatype*)&v) < 0;}
 			template<typename _ParamType> GINL GAIA::BL operator == (const _ParamType& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, v) == 0;}
-			template<typename _ParamType> GINL GAIA::BL operator != (const _ParamType& v) const{return !(this->operator == (v));}
+			template<typename _ParamType> GINL GAIA::BL operator != (const _ParamType& v) const{return !this->operator == (v);}
 			template<typename _ParamType> GINL GAIA::BL operator >= (const _ParamType& v) const{return !this->operator < (v);}
 			template<typename _ParamType> GINL GAIA::BL operator <= (const _ParamType& v) const{return !this->operator > (v);}
 			template<typename _ParamType> GINL GAIA::BL operator > (const _ParamType& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, v) > 0;}

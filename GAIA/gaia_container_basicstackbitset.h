@@ -39,11 +39,11 @@ namespace GAIA
 			GINL __MyType& operator &= (const __MyType& src){for(_SizeType x = 0; x < this->size(); ++x) this->front_ptr()[x] &= src.front_ptr()[x]; return *this;}
 			GINL __MyType& operator ^= (const __MyType& src){for(_SizeType x = 0; x < this->size(); ++x) this->front_ptr()[x] ^= src.front_ptr()[x]; return *this;}
 			GINL GAIA::BL operator == (const __MyType& src) const{return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), _Size) == 0;}
-			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const __MyType& src) const{return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), _Size) >= 0;}
 			GINL GAIA::BL operator <= (const __MyType& src) const{return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), _Size) <= 0;}
-			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 			GINL __MyType operator ~ () const
 			{
 				__MyType ret = *this;

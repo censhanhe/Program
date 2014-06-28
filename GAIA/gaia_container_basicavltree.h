@@ -565,7 +565,7 @@ namespace GAIA
 				}
 				return GAIA::True;
 			}
-			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const __MyType& src) const
 			{
 				if(this->size() > src.size())
@@ -604,8 +604,8 @@ namespace GAIA
 				}
 				return GAIA::True;
 			}
-			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 		private:
 			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
 			GINL GAIA::GVOID rotate_prev(Node*& pNode)

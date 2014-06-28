@@ -428,7 +428,7 @@ namespace GAIA
 				else
 					return GAIA::False;
 			}
-			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const __MyType& src) const
 			{
 				if(this->size() > src.size())
@@ -477,8 +477,8 @@ namespace GAIA
 					return GAIA::True;
 				}
 			}
-			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 			GINL _DataType& front(){return this->operator[](0);}
 			GINL const _DataType& front() const{return this->operator[](0);}
 			GINL _DataType& back(){return this->operator[](this->size() - 1);}

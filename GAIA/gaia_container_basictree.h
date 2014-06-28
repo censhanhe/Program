@@ -212,7 +212,7 @@ namespace GAIA
 					return ret;
 				}
 				GINL GAIA::BL operator == (const it& src) const{return m_pNode == src.m_pNode;}
-				GINL GAIA::BL operator != (const it& src) const{return !(this->operator == (src));}
+				GINL GAIA::BL operator != (const it& src) const{return !this->operator == (src);}
 			private:
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
@@ -396,7 +396,7 @@ namespace GAIA
 					return ret;
 				}
 				GINL GAIA::BL operator == (const const_it& src) const{return m_pNode == src.m_pNode;}
-				GINL GAIA::BL operator != (const const_it& src) const{return !(this->operator == (src));}
+				GINL GAIA::BL operator != (const const_it& src) const{return !this->operator == (src);}
 			private:
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
@@ -616,7 +616,7 @@ namespace GAIA
 				}
 				return GAIA::True;
 			}
-			GINL GAIA::BL operator != (const __MyType& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const __MyType& src) const
 			{
 				if(this->size() > src.size())
@@ -655,8 +655,8 @@ namespace GAIA
 				}
 				return GAIA::True;
 			}
-			GINL GAIA::BL operator > (const __MyType& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const __MyType& src) const{return !(this->operator >= (src));}
+			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
+			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 		private:
 			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
 			GINL GAIA::GVOID paths_node(const Node& root, const Node& n, __PathListType& result) const

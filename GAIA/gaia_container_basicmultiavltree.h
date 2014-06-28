@@ -21,9 +21,9 @@ namespace GAIA
 				typedef BasicVector<_DataType, _SizeType, _SizeIncreaserType> __DataListType;
 			public:
 				GINL GAIA::BL operator == (const Node& src) const{return m_datas.front() == src.m_datas.front();}
-				GINL GAIA::BL operator != (const Node& src) const{return !(this->operator == (src));}
-				GINL GAIA::BL operator >= (const Node& src) const{return !(this->operator < (src));}
-				GINL GAIA::BL operator <= (const Node& src) const{return !(this->operator > (src));}
+				GINL GAIA::BL operator != (const Node& src) const{return !this->operator == (src);}
+				GINL GAIA::BL operator >= (const Node& src) const{return !this->operator < (src);}
+				GINL GAIA::BL operator <= (const Node& src) const{return !this->operator > (src);}
 				GINL GAIA::BL operator > (const Node& src) const{return m_datas.front() > src.m_datas.front();}
 				GINL GAIA::BL operator < (const Node& src) const{return m_datas.front() < src.m_datas.front();}
 				GINL Node& operator = (const Node& src){GAIA_AST(&src != this); m_datas = src.m_datas; return *this;}

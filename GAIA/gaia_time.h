@@ -41,11 +41,11 @@ namespace GAIA
 				return *this;
 			}
 			GINL GAIA::BL operator == (const Time& src) const{return y == src.y && mo == src.mo && d == src.d && h == src.h && mi == src.mi && sec == src.sec && msec == src.msec && usec == src.usec;}
-			GINL GAIA::BL operator != (const Time& src) const{return !(this->operator == (src));}
+			GINL GAIA::BL operator != (const Time& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const Time& src) const{return GAIA::ALGORITHM::xmemcmp(this, &src, sizeof(src)) >= 0;}
 			GINL GAIA::BL operator <= (const Time& src) const{return GAIA::ALGORITHM::xmemcmp(this, &src, sizeof(src)) <= 0;}
-			GINL GAIA::BL operator > (const Time& src) const{return !(this->operator <= (src));}
-			GINL GAIA::BL operator < (const Time& src) const{return !(this->operator >= (src));}
+			GINL GAIA::BL operator > (const Time& src) const{return !this->operator <= (src);}
+			GINL GAIA::BL operator < (const Time& src) const{return !this->operator >= (src);}
 			GINL Time operator + (const Time& src) const
 			{
 				Time ret;
