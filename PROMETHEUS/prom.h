@@ -415,18 +415,24 @@ namespace PROM
 		class PLC_ObjCtn : public PipelineContext
 		{
 		public:
-			class PL_Obj
+			class Obj : public GAIA::Base
 			{
 			public:
 				GAIA_ENUM_BEGIN(TYPE)
 					MACRO,
+					INCLUDE,
+					TEMPLATE,
 					EXPRESSION,
 					VAR,
+					ARRAY,
 					FUNC,
 					ENUM,
 					UNION,
 					STRUCT,
 					CLASS,
+					NAMESPACE,
+					FIELD,
+					OTHERS,
 				GAIA_ENUM_END(TYPE)
 
 				GAIA_ENUM_BEGIN(STRUCTTYPE)
@@ -440,12 +446,16 @@ namespace PROM
 					PTR,
 				GAIA_ENUM_END(REFTYPE)
 			public:
+				virtual TYPE GetType() const{return TYPE_INVALID;}
+				virtual STRUCTTYPE GetStructType() const{return STRUCTTYPE_INVALID;}
+				virtual REFTYPE GetRefType() const{return REFTYPE_INVALID;}
+			public:
 				GINL GAIA::GVOID SetLocation(const Loc& l){m_loc = l;}
 				GINL const Loc& GetLocation() const{return m_loc;}
 			private:
 				Loc m_loc;
 			};
-			class PL_ObjVar
+			class ObjVar
 			{
 			public:
 				GAIA_ENUM_BEGIN(TYPE)
@@ -458,7 +468,7 @@ namespace PROM
 					REAL64,
 				GAIA_ENUM_END(TYPE)
 			};
-			class PL_ObjExpression
+			class ObjExpression
 			{
 			public:
 				GAIA_ENUM_BEGIN(TYPE)
@@ -474,13 +484,46 @@ namespace PROM
 					SUB2,
 					MUL2,
 					DIV2,
+					MOD,
 				GAIA_ENUM_END(TYPE)
+			};
+			class Rec : public GAIA::Base
+			{
+			public:
+				Obj* pObj;
+			};
+			class RecLocation : public Rec
+			{
+			public:
+				GINL GAIA::BL operator == (const RecLocation& src){return pObj->GetLocation() == src.pObj->GetLocation();}
+				GINL GAIA::BL operator != (const RecLocation& src){return !this->operator == (src);}
+				GINL GAIA::BL operator >= (const RecLocation& src){return pObj->GetLocation() >= src.pObj->GetLocation();}
+				GINL GAIA::BL operator <= (const RecLocation& src){return pObj->GetLocation() <= src.pObj->GetLocation();}
+				GINL GAIA::BL operator > (const RecLocation& src){return !this->operator <= (src);}
+				GINL GAIA::BL operator < (const RecLocation& src){return !this->operator >= (src);}
+			};
+			class RecName : public Rec
+			{
+			public:
+			};
+			class RecType : public Rec
+			{
+			public:
+				GINL GAIA::BL operator == (const RecLocation& src){return pObj->GetType() == src.pObj->GetType();}
+				GINL GAIA::BL operator != (const RecLocation& src){return !this->operator == (src);}
+				GINL GAIA::BL operator >= (const RecLocation& src){return pObj->GetType() >= src.pObj->GetType();}
+				GINL GAIA::BL operator <= (const RecLocation& src){return pObj->GetType() <= src.pObj->GetType();}
+				GINL GAIA::BL operator > (const RecLocation& src){return !this->operator <= (src);}
+				GINL GAIA::BL operator < (const RecLocation& src){return !this->operator >= (src);}
 			};
 		public:
 			GINL PLC_ObjCtn(){}
 			GINL ~PLC_ObjCtn(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_ObjCtn";}
 		public:
+			typedef GAIA::CONTAINER::Set<RecLocation> __RecLocationSetType;
+		public:
+			__RecLocationSetType rec_location;
 		};
 		class PLC_Word : public PipelineContext
 		{
