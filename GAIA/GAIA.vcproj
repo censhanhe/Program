@@ -1723,6 +1723,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TEST\t_cooperate.h"
+					>
+				</File>
+				<File
 					RelativePath=".\TEST\t_graph.h"
 					>
 				</File>

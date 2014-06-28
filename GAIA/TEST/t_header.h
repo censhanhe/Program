@@ -28,6 +28,7 @@
 #include "t_graph.h"
 #include "t_storage.h"
 #include "t_accesser.h"
+#include "t_cooperate.h"
 #include "t_namespace.h"
 
 namespace GAIATEST
@@ -70,6 +71,7 @@ namespace GAIATEST
 			GTLINE1("Storage test begin!"); nRet += t_storage(file, prt); GTLINE1("Storage test end!"); GTLINE("\t");
 
 			GTLINE1("Accesser test begin!"); nRet += t_accesser(file, prt); GTLINE1("Accesser test end!"); GTLINE("\t");
+			GTLINE1("Cooperate test begin!"); nRet += t_cooperate(file, prt); GTLINE1("Cooperate test end!"); GTLINE("\t");
 			GTLINE1("Namespace test begin!"); nRet += t_namespace(file, prt); GTLINE1("Namespace test end!"); GTLINE("\t");
 		}
 		GTLINE("[GAIA TEST END]");

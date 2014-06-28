@@ -3632,9 +3632,9 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 5)
 				{
 					GAIA::NETWORK::NetworkAddress na;
-					na.ip.FromString(listPart[3].front_ptr());
+					na.ip.FromString(listPart[3]);
 					na.uPort = listPart[4];
-					if(!this->NLogin(na, listPart[1].front_ptr(), listPart[2].front_ptr()))
+					if(!this->NLogin(na, listPart[1], listPart[2]))
 						CMDFAILED;
 				}
 				else

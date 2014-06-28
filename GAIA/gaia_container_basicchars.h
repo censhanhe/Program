@@ -5,6 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
+		template<typename _DataType, typename _SizeType> class BasicString;
 		template<typename _DataType, typename _SizeType, _SizeType _Size> class BasicChars : public GAIA::Entity
 		{
 		public:
@@ -770,6 +771,7 @@ namespace GAIA
 			GINL __MyType& operator = (const GAIA::F32& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::real2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::F64& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::real2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::BL& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGORITHM::int2str(t, sz); return this->operator = (sz);}
+			template<typename _ParamSizeType> __MyType& operator = (const GAIA::CONTAINER::BasicString<_DataType, _ParamSizeType>& src);
 			GINL __MyType& operator += (const __MyType& src){return this->combin(src.front_ptr(), src.size());}
 			GINL __MyType& operator += (const _DataType* p){return this->combin(p, GAIA::ALGORITHM::strlen(p));}
 			GINL __MyType operator + (const __MyType& src) const{return __MyType(this->front_ptr(), this->size(), src.front_ptr(), src.size());}
