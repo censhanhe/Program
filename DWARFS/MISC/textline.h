@@ -7,14 +7,14 @@ namespace DWARFS_MISC
 	{
 	public:
 		typedef GAIA::CONTAINER::AString __LineType;
-		typedef GAIA::CONTAINER::AString::_datatype __CharType;
+		typedef __LineType::_datatype __CharType;
 		typedef GAIA::CONTAINER::BasicChars<__CharType, GAIA::N32, 3> __FlagType;
 	private:
 		typedef GAIA::CONTAINER::Vector<__LineType> __LineListType;
 	public:
 		GINL TextLine(){this->init();}
 		GINL ~TextLine(){}
-		GINL GAIA::BL lineflag(const GAIA::GCH* psz)
+		GINL GAIA::BL lineflag(const __CharType* psz)
 		{
 			if(GAIA::ALGORITHM::strcmp(psz, "\r") != 0 &&
 				GAIA::ALGORITHM::strcmp(psz, "\n") != 0 &&
@@ -23,7 +23,7 @@ namespace DWARFS_MISC
 			m_lineflag = psz;
 			return GAIA::True;
 		}
-		GINL const GAIA::GCH* lineflag() const{return m_lineflag;}
+		GINL const __CharType* lineflag() const{return m_lineflag;}
 		GINL GAIA::BL load(GAIA::FILESYSTEM::FileBase* pFile)
 		{
 			GAIA_AST(pFile != GNULL);
@@ -87,7 +87,7 @@ namespace DWARFS_MISC
 				__LineType& l = m_lines.back();
 				__LineType::_datatype t = *l.back_it();
 				if(t != '\r' && t != '\n')
-					l += m_lineflag.front_ptr();
+					l += m_lineflag;
 			}
 			return GAIA::True;
 		}
@@ -124,7 +124,7 @@ namespace DWARFS_MISC
 			}
 			m_lines[index] = p;
 			if(bAppendLineFlag)
-				m_lines[index] += m_lineflag.front_ptr();
+				m_lines[index] += m_lineflag;
 			return GAIA::True;
 		}
 		GINL const __CharType* get_line(const GAIA::SIZE& index) const{return m_lines[index];}
@@ -161,7 +161,7 @@ namespace DWARFS_MISC
 				if(!this->checkline(p[x], line_flag_count))
 				{
 					if(line_flag_count == 0)
-						m_lines[index + x] += m_lineflag.front_ptr();
+						m_lines[index + x] += m_lineflag;
 				}
 			}
 			return GAIA::True;

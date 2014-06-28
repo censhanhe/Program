@@ -10,6 +10,22 @@ namespace PROM
 	static const GAIA::GCH VERSION_STRING[] = "00.00.01.00";
 	static const GAIA::U32 VERSION = 0x00000100;
 
+	template<typename _DataType> GAIA::BL is_word_char(_DataType t)
+	{
+		if(t >= 'a' && t <= 'z' || 
+			t >= 'A' && t <= 'Z' || 
+			t >= '0' && t <= '9' || 
+			t == '_')
+			return GAIA::True;
+		return GAIA::False;
+	}
+	template<typename _DataType> GAIA::BL is_blank_char(_DataType t)
+	{
+		if(t == ' ' || t == '\t')
+			return GAIA::True;
+		return GAIA::False;
+	}
+
 	class Prom : public GAIA::Entity
 	{
 	private:
@@ -412,6 +428,15 @@ namespace PROM
 		public:
 			__FileCodelinesList file_codelines_list;
 		};
+		class PLC_FileCodeLinePrepare : public PipelineContext
+		{
+		public:
+			GINL PLC_FileCodeLinePrepare(){}
+			GINL ~PLC_FileCodeLinePrepare(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_FileCodeLinePrepare";}
+		public:
+			PLC_FileCodeLine::__FileCodelinesList file_codelines_list;
+		};
 		class PLC_ObjCtn : public PipelineContext
 		{
 		public:
@@ -466,6 +491,8 @@ namespace PROM
 					INT64,
 					REAL32,
 					REAL64,
+					STRING,
+					WSTRING,
 				GAIA_ENUM_END(TYPE)
 			};
 			class ObjExpression
@@ -988,7 +1015,7 @@ namespace PROM
 					GAIA::SIZE old_remove_r = 0;
 					GAIA::SIZE old_add = 0;
 					GAIA::SIZE need_save = 0;
-					GAIA::CONTAINER::AString strTemp;
+					DWARFS_MISC::TextLine::__LineType strTemp;
 					for(GAIA::SIZE x = 0; x < plc_codelines->file_codelines_list.size(); ++x)
 					{
 						PLC_FileCodeLine::__FileCodelinesList::_datatype& t = plc_codelines->file_codelines_list[x];
@@ -1134,7 +1161,7 @@ namespace PROM
 				}
 				if(bFmt)
 				{
-					typedef GAIA::CONTAINER::AString __LineType;
+					typedef DWARFS_MISC::TextLine::__LineType __LineType;
 					__LineType strLine;
 					GAIA::SIZE remove_space_count = 0;
 					GAIA::SIZE remove_tab_count = 0;
@@ -1244,6 +1271,166 @@ namespace PROM
 				if(plc_codelines != GNULL)
 					plc_codelines->Release();
 				return pRet;
+			}
+		};
+		class PL_LinePrepare : public Pipeline
+		{
+		public:
+			GINL PL_LinePrepare(){}
+			GINL ~PL_LinePrepare(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PL_LinePrepare";}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			{
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+				GAIA::CONTAINER::Vector<GAIA::BL> listEraseTemp;
+				DWARFS_MISC::TextLine::__LineType strLine, strLineTemp;
+				PLC_FileCodeLinePrepare* pRet = GNULL;
+				PLC_CommandParam* plc_commandparam = GNULL;
+				PLC_FileCodeLine* plc_codelines = GNULL;
+				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
+				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_codelines = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
+				if(plc_codelines == GNULL)
+					goto FUNCTION_END;
+
+				pRet = new PLC_FileCodeLinePrepare;
+				pRet->file_codelines_list = plc_codelines->file_codelines_list;
+
+				for(GAIA::SIZE x = 0; x < pRet->file_codelines_list.size(); ++x)
+				{
+					PLC_FileCodeLine::FileCodeLines& fcl = pRet->file_codelines_list[x];
+					GAIA::BL bInString = GAIA::False;
+					for(GAIA::SIZE y = 0; y < fcl.lines.size(); ++y)
+					{
+						strLine = strLineTemp = fcl.lines.get_line(y);
+						listEraseTemp.resize(strLineTemp.size());
+						listEraseTemp.reset(GAIA::False);
+						GAIA::BL bSign = GAIA::True;
+						GAIA::SIZE sLastNotBlankIndex = GINVALID;
+						for(GAIA::SIZE z = 0; z < strLineTemp.size(); ++z)
+						{
+							DWARFS_MISC::TextLine::__CharType ch = strLineTemp[z];
+							if(bInString)
+							{
+								if(ch == '"' && (z == 0 || strLineTemp[z - 1] != '\\'))
+								{
+									bInString = GAIA::False;
+									bSign = GAIA::True;
+									sLastNotBlankIndex = z;
+								}
+								continue;
+							}
+							if(!is_blank_char(ch))
+							{
+								if(is_word_char(ch))
+								{
+									if(bSign)
+									{
+										if(z > sLastNotBlankIndex + 1)
+										{
+											GAIA::ALGORITHM::set(
+												listEraseTemp.front_ptr() + sLastNotBlankIndex + 1, 
+												GAIA::True, 
+												z - sLastNotBlankIndex - 1);
+										}
+									}
+									else
+									{
+										if(z > sLastNotBlankIndex + 2)
+										{
+											GAIA::ALGORITHM::set(
+												listEraseTemp.front_ptr() + sLastNotBlankIndex + 2, 
+												GAIA::True, 
+												z - sLastNotBlankIndex - 2);
+										}
+									}
+									bSign = GAIA::False;
+								}
+								else
+								{
+									if(z > sLastNotBlankIndex + 1)
+									{
+										GAIA::ALGORITHM::set(
+											listEraseTemp.front_ptr() + sLastNotBlankIndex + 1, 
+											GAIA::True, 
+											z - sLastNotBlankIndex - 1);
+									}
+									bSign = GAIA::True;
+								}
+								sLastNotBlankIndex = z;
+							}
+							if(!bInString)
+							{
+								if(ch == '"')
+									bInString = GAIA::True;
+							}
+						}
+						//for(GAIA::SIZE z = 0; z < strLineTemp.size(); ++z)
+						//{
+						//	if(strLineTemp[z] == '\r' || strLineTemp[z] == '\n')
+						//		listEraseTemp[z] = GAIA::True;
+						//}
+						GAIA_AST(listEraseTemp.size() == strLine.size());
+						GAIA_AST(listEraseTemp.size() == strLineTemp.size());
+						GAIA::SIZE sWriteIndex = 0;
+						for(GAIA::SIZE z = 0; z < strLineTemp.size(); ++z)
+						{
+							if(listEraseTemp[z])
+								continue;
+							strLine[sWriteIndex++] = strLineTemp[z];
+						}
+						strLine.resize(sWriteIndex);
+						if(strLine != fcl.lines.get_line(y))
+							fcl.lines.set_line(y, strLine);
+					}
+					GAIA_AST(!bInString);
+				}
+
+			FUNCTION_END:
+				if(plc_commandparam != GNULL)
+					plc_commandparam->Release();
+				if(plc_codelines != GNULL)
+					plc_codelines->Release();
+				return pRet;
+			}
+			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+			{
+				/* Parameter check up. */
+				GAIA_AST(pPLC != GNULL);
+				if(pPLC == GNULL)
+					return GAIA::False;
+
+				GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
+				if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+					return GAIA::False;
+
+				PLC_FileCodeLinePrepare* plc_filecodelineprepare = static_cast<PLC_FileCodeLinePrepare*>(pPLC);
+				if(plc_filecodelineprepare == GNULL)
+					return GAIA::False;
+				if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), "Prom:PLC_FileCodeLinePrepare") != 0)
+					return GAIA::False;
+
+				for(GAIA::SIZE x = 0; x < plc_filecodelineprepare->file_codelines_list.size(); ++x)
+				{
+					PLC_FileCodeLine::FileCodeLines& fcl = plc_filecodelineprepare->file_codelines_list[x];
+					for(GAIA::SIZE y = 0; y < fcl.lines.size(); ++y)
+					{
+						const DWARFS_MISC::TextLine::__CharType* pszLine = fcl.lines.get_line(y);
+						if(pszLine == GNULL)
+							continue;
+						pFile->Write(pszLine, GAIA::ALGORITHM::strlen(pszLine) * sizeof(DWARFS_MISC::TextLine::__CharType));
+						pFile->Write(fcl.lines.lineflag(), GAIA::ALGORITHM::strlen(fcl.lines.lineflag()) * sizeof(DWARFS_MISC::TextLine::__CharType));
+					}
+				}
+
+				return GAIA::True;
 			}
 		};
 		class PL_ObjAnalyze : public Pipeline
@@ -1918,6 +2105,10 @@ namespace PROM
 						PL_WordStat* pl_wordstatistics = new PL_WordStat;
 						pl_linecollect->BindNext(pl_wordstatistics);
 						pl_wordstatistics->Release();
+
+						PL_LinePrepare* pl_lineprepare = new PL_LinePrepare;
+						pl_linecollect->BindNext(pl_lineprepare);
+						pl_lineprepare->Release();
 
 						PL_Save* pl_save = new PL_Save;
 						pl_linecollect->BindNext(pl_save);
