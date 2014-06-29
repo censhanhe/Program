@@ -1,12 +1,13 @@
+#include "../GAIA/gaia_sysconfig.h"
 #if GAIA_COMPILER == GAIA_COMPILER_CL && GAIA_PROFILE == GAIA_PROFILE_DEBUG
-#	define _CRTDBG_MAP_ALLOC
+#	define	_CRTDBG_MAP_ALLOC
 #	include <stdlib.h>
 #	include <stdio.h>
 #	include <crtdbg.h>
 #	include <assert.h>
 #	define HEAPCHECK assert(_CrtCheckMemory());
 #else
-# define HEAPCHECK
+#	define HEAPCHECK
 #endif
 
 #ifdef GAIA_DEBUG_MEMORYLEAK
