@@ -1302,6 +1302,8 @@ namespace PROM
 
 				pRet = new PLC_FileCodeLinePrepare;
 				pRet->file_codelines_list = plc_codelines->file_codelines_list;
+				for(GAIA::SIZE x = 0; x < pRet->file_codelines_list.size(); ++x)
+					pRet->file_codelines_list[x].lines.enable_checkline(GAIA::False);
 
 				for(GAIA::SIZE x = 0; x < pRet->file_codelines_list.size(); ++x)
 				{
@@ -1372,11 +1374,11 @@ namespace PROM
 									bInString = GAIA::True;
 							}
 						}
-						//for(GAIA::SIZE z = 0; z < strLineTemp.size(); ++z)
-						//{
-						//	if(strLineTemp[z] == '\r' || strLineTemp[z] == '\n')
-						//		listEraseTemp[z] = GAIA::True;
-						//}
+						for(GAIA::SIZE z = 0; z < strLineTemp.size(); ++z)
+						{
+							if(strLineTemp[z] == '\r' || strLineTemp[z] == '\n')
+								listEraseTemp[z] = GAIA::True;
+						}
 						GAIA_AST(listEraseTemp.size() == strLine.size());
 						GAIA_AST(listEraseTemp.size() == strLineTemp.size());
 						GAIA::SIZE sWriteIndex = 0;
@@ -1425,7 +1427,8 @@ namespace PROM
 						const DWARFS_MISC::TextLine::__CharType* pszLine = fcl.lines.get_line(y);
 						if(pszLine == GNULL)
 							continue;
-						pFile->Write(pszLine, GAIA::ALGORITHM::strlen(pszLine) * sizeof(DWARFS_MISC::TextLine::__CharType));
+						if(pszLine[0] != '\0')
+							pFile->Write(pszLine, GAIA::ALGORITHM::strlen(pszLine) * sizeof(DWARFS_MISC::TextLine::__CharType));
 						pFile->Write(fcl.lines.lineflag(), GAIA::ALGORITHM::strlen(fcl.lines.lineflag()) * sizeof(DWARFS_MISC::TextLine::__CharType));
 					}
 				}

@@ -187,6 +187,8 @@ namespace DWARFS_MISC
 			}
 			return GAIA::True;
 		}
+		GINL GAIA::GVOID enable_checkline(GAIA::BL bEnable){m_bEnableCheckLine = bEnable;}
+		GINL GAIA::BL isenable_checkline() const{return m_bEnableCheckLine;}
 		GINL TextLine& operator = (const TextLine& src)
 		{
 			m_lines = src.m_lines;
@@ -195,9 +197,14 @@ namespace DWARFS_MISC
 		}
 		GAIA_CLASS_OPERATOR_COMPARE2(m_lines, m_lines, m_lineflag, m_lineflag, TextLine);
 	private:
-		GINL GAIA::GVOID init(){m_lineflag = "\r";}
+		GINL GAIA::GVOID init(){m_lineflag = "\r"; m_bEnableCheckLine = GAIA::True;}
 		GINL GAIA::BL checkline(const __CharType* p, GAIA::SIZE& line_flag_count) const
 		{
+			if(!this->isenable_checkline())
+			{
+				line_flag_count = 1;
+				return GAIA::True;
+			}
 			line_flag_count = 0;
 			GAIA_AST(!GAIA::ALGORITHM::stremp(p));
 			if(GAIA::ALGORITHM::stremp(p))
@@ -232,6 +239,7 @@ namespace DWARFS_MISC
 	private:
 		__LineListType m_lines;
 		__FlagType m_lineflag;
+		GAIA::U8 m_bEnableCheckLine : 1;
 	};
 };
 
