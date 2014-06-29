@@ -760,7 +760,7 @@ namespace PROM
 								GAIA::SIZE max_param_size = plc_commandparam->cmdparam.cmd_decl_max_param_size(y);
 								DWARFS_MISC::CmdParam::CMD_TYPE cmdtype = plc_commandparam->cmdparam.cmd_decl_type(y);
 								if(GAIA::ALGORITHM::stremp(pszDeclDesc))
-									pszDeclDesc = "Noinfo";
+									pszDeclDesc = "NoInfo";
 								prt << "\t" << "[" << y << "]" << pszDeclCmd << ", Info:" << pszDeclDesc << ", " <<
 									"[" << min_param_size << ", " << max_param_size << "] " <<
 									DWARFS_MISC::CMD_TYPE_ANAME[cmdtype] << "\n";
@@ -966,15 +966,15 @@ namespace PROM
 				PLC_Empty* pRet = GNULL;
 				PLC_CommandParam* plc_commandparam = GNULL;
 				PLC_File* plc_file = GNULL;
-				PLC_FileCodeLine* plc_codelines = GNULL;
+				PLC_FileCodeLine* plc_codeline = GNULL;
 				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
 				if(plc_commandparam == GNULL)
 					goto FUNCTION_END;
 				plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_File"));
 				if(plc_file == GNULL)
 					goto FUNCTION_END;
-				plc_codelines = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
-				if(plc_codelines == GNULL)
+				plc_codeline = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
+				if(plc_codeline == GNULL)
 					goto FUNCTION_END;
 
 				/* Initialize result pipeline context. */
@@ -1016,9 +1016,9 @@ namespace PROM
 					GAIA::SIZE old_add = 0;
 					GAIA::SIZE need_save = 0;
 					DWARFS_MISC::TextLine::__LineType strTemp;
-					for(GAIA::SIZE x = 0; x < plc_codelines->file_codelines_list.size(); ++x)
+					for(GAIA::SIZE x = 0; x < plc_codeline->file_codelines_list.size(); ++x)
 					{
-						PLC_FileCodeLine::__FileCodelinesList::_datatype& t = plc_codelines->file_codelines_list[x];
+						PLC_FileCodeLine::__FileCodelinesList::_datatype& t = plc_codeline->file_codelines_list[x];
 						GAIA::BL bNeedSave = GAIA::False;
 						for(GAIA::SIZE y = 0; y < t.lines.size(); ++y)
 						{
@@ -1109,8 +1109,8 @@ namespace PROM
 					plc_commandparam->Release();
 				if(plc_file != GNULL)
 					plc_file->Release();
-				if(plc_codelines != GNULL)
-					plc_codelines->Release();
+				if(plc_codeline != GNULL)
+					plc_codeline->Release();
 				return pRet;
 			}
 		};
@@ -1132,15 +1132,15 @@ namespace PROM
 				PLC_Empty* pRet = GNULL;
 				PLC_CommandParam* plc_commandparam = GNULL;
 				PLC_File* plc_file = GNULL;
-				PLC_FileCodeLine* plc_codelines = GNULL;
+				PLC_FileCodeLine* plc_codeline = GNULL;
 				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
 				if(plc_commandparam == GNULL)
 					goto FUNCTION_END;
 				plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_File"));
 				if(plc_file == GNULL)
 					goto FUNCTION_END;
-				plc_codelines = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
-				if(plc_codelines == GNULL)
+				plc_codeline = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
+				if(plc_codeline == GNULL)
 					goto FUNCTION_END;
 
 				/* Initialize result pipeline context. */
@@ -1167,10 +1167,10 @@ namespace PROM
 					GAIA::SIZE remove_tab_count = 0;
 					GAIA::SIZE line_change_count = 0;
 					GAIA::SIZE file_change_count = 0;
-					for(GAIA::SIZE x = 0; x < plc_codelines->file_codelines_list.size(); ++x)
+					for(GAIA::SIZE x = 0; x < plc_codeline->file_codelines_list.size(); ++x)
 					{
 						GAIA::BL bFileChanged = GAIA::False;
-						PLC_FileCodeLine::FileCodeLines& fcl = plc_codelines->file_codelines_list[x];
+						PLC_FileCodeLine::FileCodeLines& fcl = plc_codeline->file_codelines_list[x];
 
 						/* Line inside based code-format. */
 						for(GAIA::SIZE y = 0; y < fcl.lines.size(); ++y)
@@ -1268,8 +1268,8 @@ namespace PROM
 					plc_commandparam->Release();
 				if(plc_file != GNULL)
 					plc_file->Release();
-				if(plc_codelines != GNULL)
-					plc_codelines->Release();
+				if(plc_codeline != GNULL)
+					plc_codeline->Release();
 				return pRet;
 			}
 		};
@@ -1288,23 +1288,26 @@ namespace PROM
 				GAIA_AST(size != 0);
 				if(size == 0)
 					return GNULL;
+
 				GAIA::CONTAINER::Vector<GAIA::BL> listEraseTemp;
 				DWARFS_MISC::TextLine::__LineType strLine, strLineTemp;
 				PLC_FileCodeLinePrepare* pRet = GNULL;
 				PLC_CommandParam* plc_commandparam = GNULL;
-				PLC_FileCodeLine* plc_codelines = GNULL;
+				PLC_FileCodeLine* plc_codeline = GNULL;
 				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
 				if(plc_commandparam == GNULL)
 					goto FUNCTION_END;
-				plc_codelines = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
-				if(plc_codelines == GNULL)
+				plc_codeline = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
+				if(plc_codeline == GNULL)
 					goto FUNCTION_END;
 
+				/* Initialize result pipeline context. */
 				pRet = new PLC_FileCodeLinePrepare;
-				pRet->file_codelines_list = plc_codelines->file_codelines_list;
+				pRet->file_codelines_list = plc_codeline->file_codelines_list;
 				for(GAIA::SIZE x = 0; x < pRet->file_codelines_list.size(); ++x)
 					pRet->file_codelines_list[x].lines.enable_checkline(GAIA::False);
 
+				/* Execute. */
 				for(GAIA::SIZE x = 0; x < pRet->file_codelines_list.size(); ++x)
 				{
 					PLC_FileCodeLine::FileCodeLines& fcl = pRet->file_codelines_list[x];
@@ -1435,8 +1438,8 @@ namespace PROM
 			FUNCTION_END:
 				if(plc_commandparam != GNULL)
 					plc_commandparam->Release();
-				if(plc_codelines != GNULL)
-					plc_codelines->Release();
+				if(plc_codeline != GNULL)
+					plc_codeline->Release();
 				return pRet;
 			}
 			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
@@ -1473,15 +1476,120 @@ namespace PROM
 				return GAIA::True;
 			}
 		};
-		class PL_ObjAnalyze : public Pipeline
+		class PL_ObjAnalyzeBase : public Pipeline
 		{
 		public:
-			GINL PL_ObjAnalyze(){}
-			GINL ~PL_ObjAnalyze(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_ObjAnalyze";}
+			GINL PL_ObjAnalyzeBase(){}
+			GINL ~PL_ObjAnalyzeBase(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PL_ObjAnalyzeBase";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
-				return GNULL;
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+
+				PLC_ObjCtn* pRet = GNULL;
+				PLC_CommandParam* plc_commandparam = GNULL;
+				PLC_FileCodeLinePrepare* plc_codelineprepare = GNULL;
+				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
+				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_codelineprepare = static_cast<PLC_FileCodeLinePrepare*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLinePrepare"));
+				if(plc_codelineprepare == GNULL)
+					goto FUNCTION_END;
+
+				/* Initialize result pipeline context. */
+				pRet = new PLC_ObjCtn;
+
+				/* Execute. */
+
+			FUNCTION_END:
+				if(plc_commandparam != GNULL)
+					plc_commandparam->Release();
+				if(plc_codelineprepare != GNULL)
+					plc_codelineprepare->Release();
+				return pRet;
+			}
+			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+			{
+				/* Parameter check up. */
+				GAIA_AST(pPLC != GNULL);
+				if(pPLC == GNULL)
+					return GAIA::False;
+
+				GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
+				if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+					return GAIA::False;
+
+				PLC_ObjCtn* plc_objctn = static_cast<PLC_ObjCtn*>(pPLC);
+				if(plc_objctn == GNULL)
+					return GAIA::False;
+				if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), "Prom:PLC_ObjCtn") != 0)
+					return GAIA::False;
+
+				return GAIA::True;
+			}
+		};
+		class PL_ObjAnalyzeUnwrapMacro : public Pipeline
+		{
+		public:
+			GINL PL_ObjAnalyzeUnwrapMacro(){}
+			GINL ~PL_ObjAnalyzeUnwrapMacro(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PL_ObjAnalyzeUnwrapMacro";}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			{
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+
+				PLC_Empty* pRet = GNULL;
+				PLC_CommandParam* plc_commandparam = GNULL;
+				PLC_FileCodeLinePrepare* plc_codelineprepare = GNULL;
+				PLC_ObjCtn* plc_objctn = GNULL;
+				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
+				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_codelineprepare = static_cast<PLC_FileCodeLinePrepare*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLinePrepare"));
+				if(plc_codelineprepare == GNULL)
+					goto FUNCTION_END;
+				plc_objctn = static_cast<PLC_ObjCtn*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_ObjCtn"));
+				if(plc_objctn == GNULL)
+					goto FUNCTION_END;
+
+				/* Initialize result pipeline context. */
+				pRet = new PLC_Empty;
+
+				/* Execute. */
+
+			FUNCTION_END:
+				if(plc_commandparam != GNULL)
+					plc_commandparam->Release();
+				if(plc_codelineprepare != GNULL)
+					plc_codelineprepare->Release();
+				if(plc_objctn != GNULL)
+					plc_objctn->Release();
+				return pRet;
+			}
+			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+			{
+				/* Parameter check up. */
+				GAIA_AST(pPLC != GNULL);
+				if(pPLC == GNULL)
+					return GAIA::False;
+
+				GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
+				if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+					return GAIA::False;
+
+				return GAIA::True;
 			}
 		};
 		class PL_LineStat : public Pipeline
@@ -1513,15 +1621,15 @@ namespace PROM
 				PLC_Word* pRet = GNULL;
 				PLC_CommandParam* plc_commandparam = GNULL;
 				PLC_File* plc_file = GNULL;
-				PLC_FileCodeLine* plc_codelines = GNULL;
+				PLC_FileCodeLine* plc_codeline = GNULL;
 				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
 				if(plc_commandparam == GNULL)
 					goto FUNCTION_END;
 				plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_File"));
 				if(plc_file == GNULL)
 					goto FUNCTION_END;
-				plc_codelines = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
-				if(plc_codelines == GNULL)
+				plc_codeline = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
+				if(plc_codeline == GNULL)
 					goto FUNCTION_END;
 
 				/* Initialize result pipeline context. */
@@ -1544,9 +1652,9 @@ namespace PROM
 				{
 					DWARFS_MISC::TextLine::__LineType strLine;
 					PLC_Word::Word word;
-					for(GAIA::SIZE x = 0; x < plc_codelines->file_codelines_list.size(); ++x)
+					for(GAIA::SIZE x = 0; x < plc_codeline->file_codelines_list.size(); ++x)
 					{
-						DWARFS_MISC::TextLine& l = plc_codelines->file_codelines_list[x].lines;
+						DWARFS_MISC::TextLine& l = plc_codeline->file_codelines_list[x].lines;
 						for(GAIA::SIZE y = 0; y < l.size(); ++y)
 						{
 							strLine = l.get_line(y);
@@ -1639,8 +1747,8 @@ namespace PROM
 					plc_commandparam->Release();
 				if(plc_file != GNULL)
 					plc_file->Release();
-				if(plc_codelines != GNULL)
-					plc_codelines->Release();
+				if(plc_codeline != GNULL)
+					plc_codeline->Release();
 				return pRet;
 			}
 			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
@@ -1778,15 +1886,15 @@ namespace PROM
 				PLC_Empty* pRet = GNULL;
 				PLC_CommandParam* plc_commandparam = GNULL;
 				PLC_File* plc_file = GNULL;
-				PLC_FileCodeLine* plc_codelines = GNULL;
+				PLC_FileCodeLine* plc_codeline = GNULL;
 				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
 				if(plc_commandparam == GNULL)
 					goto FUNCTION_END;
 				plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_File"));
 				if(plc_file == GNULL)
 					goto FUNCTION_END;
-				plc_codelines = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
-				if(plc_codelines == GNULL)
+				plc_codeline = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLine"));
+				if(plc_codeline == GNULL)
 					goto FUNCTION_END;
 
 				/* Initialize result pipeline context. */
@@ -1817,7 +1925,7 @@ namespace PROM
 						if(file.Open(plc_file->filelist[x].name,
 							GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
 						{
-							if(plc_codelines->file_codelines_list[x].lines.save(&file))
+							if(plc_codeline->file_codelines_list[x].lines.save(&file))
 							{
 								plc_file->filelist[x].bNeedSave = GAIA::False;
 								++save_success_count;
@@ -1840,8 +1948,8 @@ namespace PROM
 					plc_commandparam->Release();
 				if(plc_file != GNULL)
 					plc_file->Release();
-				if(plc_codelines != GNULL)
-					plc_codelines->Release();
+				if(plc_codeline != GNULL)
+					plc_codeline->Release();
 
 				return pRet;
 			}
@@ -2149,6 +2257,16 @@ namespace PROM
 						PL_LinePrepare* pl_lineprepare = new PL_LinePrepare;
 						pl_linecollect->BindNext(pl_lineprepare);
 						pl_lineprepare->Release();
+						{
+							PL_ObjAnalyzeBase* pl_objanalyzebase = new PL_ObjAnalyzeBase;
+							pl_lineprepare->BindNext(pl_objanalyzebase);
+							pl_objanalyzebase->Release();
+							{
+								PL_ObjAnalyzeUnwrapMacro* pl_objanalyzeunwrapmacro = new PL_ObjAnalyzeUnwrapMacro;
+								pl_objanalyzebase->BindNext(pl_objanalyzeunwrapmacro);
+								pl_objanalyzeunwrapmacro->Release();
+							}
+						}
 
 						PL_Save* pl_save = new PL_Save;
 						pl_linecollect->BindNext(pl_save);
