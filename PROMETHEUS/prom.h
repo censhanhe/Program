@@ -1309,16 +1309,40 @@ namespace PROM
 				{
 					PLC_FileCodeLine::FileCodeLines& fcl = pRet->file_codelines_list[x];
 					GAIA::BL bInString = GAIA::False;
+					GAIA::BL bInMultiLineComment = GAIA::False;
 					for(GAIA::SIZE y = 0; y < fcl.lines.size(); ++y)
 					{
 						strLine = strLineTemp = fcl.lines.get_line(y);
 						listEraseTemp.resize(strLineTemp.size());
 						listEraseTemp.reset(GAIA::False);
+						GAIA::BL bInSingleLineComment = GAIA::False;
 						GAIA::BL bSign = GAIA::True;
 						GAIA::SIZE sLastNotBlankIndex = GINVALID;
 						for(GAIA::SIZE z = 0; z < strLineTemp.size(); ++z)
 						{
 							DWARFS_MISC::TextLine::__CharType ch = strLineTemp[z];
+							if(bInMultiLineComment)
+							{
+								if(ch == '/' && (z > 0 && strLineTemp[z - 1] == '*'))
+								{
+									bInMultiLineComment = GAIA::False;
+									bSign = GAIA::True;
+									sLastNotBlankIndex = z;
+								}
+								listEraseTemp[z] = GAIA::True; // Erase the multi line comment.
+								continue;
+							}
+							if(bInSingleLineComment)
+							{
+								if(z + 1 == strLineTemp.size())
+								{
+									bInSingleLineComment = GAIA::False;
+									bSign = GAIA::True;
+									sLastNotBlankIndex = z;
+								}
+								listEraseTemp[z] = GAIA::True; // Erase the single line comment.
+								continue;
+							}
 							if(bInString)
 							{
 								if(ch == '"' && (z == 0 || strLineTemp[z - 1] != '\\'))
@@ -1340,7 +1364,7 @@ namespace PROM
 											GAIA::ALGORITHM::set(
 												listEraseTemp.front_ptr() + sLastNotBlankIndex + 1, 
 												GAIA::True, 
-												z - sLastNotBlankIndex - 1);
+												z - sLastNotBlankIndex - 1); // Erase blank between sign and word.
 										}
 									}
 									else
@@ -1350,7 +1374,7 @@ namespace PROM
 											GAIA::ALGORITHM::set(
 												listEraseTemp.front_ptr() + sLastNotBlankIndex + 2, 
 												GAIA::True, 
-												z - sLastNotBlankIndex - 2);
+												z - sLastNotBlankIndex - 2); // Erase blank between word and word.
 										}
 									}
 									bSign = GAIA::False;
@@ -1362,17 +1386,30 @@ namespace PROM
 										GAIA::ALGORITHM::set(
 											listEraseTemp.front_ptr() + sLastNotBlankIndex + 1, 
 											GAIA::True, 
-											z - sLastNotBlankIndex - 1);
+											z - sLastNotBlankIndex - 1); // Erase blank between sign and word or between sign and sign.
 									}
 									bSign = GAIA::True;
 								}
 								sLastNotBlankIndex = z;
 							}
-							if(!bInString)
+							if(ch == '/')
 							{
-								if(ch == '"')
-									bInString = GAIA::True;
+								if(z + 1 < strLineTemp.size())
+								{
+									if(strLineTemp[z + 1] == '/')
+									{
+										listEraseTemp[z] = GAIA::True; // Erase the single line comment head.
+										bInSingleLineComment = GAIA::True;
+									}
+									else if(strLineTemp[z + 1] == '*')
+									{
+										listEraseTemp[z] = GAIA::True; // Erase the multi line comment head.
+										bInMultiLineComment = GAIA::True;
+									}
+								}
 							}
+							if(ch == '"')
+								bInString = GAIA::True;
 						}
 						for(GAIA::SIZE z = 0; z < strLineTemp.size(); ++z)
 						{
