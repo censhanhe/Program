@@ -1,9 +1,6 @@
+[GAIA TASK]
 
 	FRAMEWORK STRUCTURE
-
-		All class have a root class called 'class Base'.
-
-		Base class have a virtual function called 'GAIA::BL obj_statistics(flag)' for memory use statistic or others.
 
 
 	ALGORITHM
@@ -71,3 +68,39 @@
 
 
 	UI System
+
+
+[PROMETHEUS TASK]
+
+	Support '-h' for header path.
+	Support '-predefine' for pre-processor defination.
+
+	PL_FileRelationAnalyze : 
+		Analyze the file include structure and generate PLC_FileRelation.(All able include)
+		Every will have multi parents and multi childs.
+		If the file is not exist which been included, will been signed with 'not exist'.
+
+	PL_ObjAnalyzeBase : 
+		Generate the PLC_ObjCtn only.(Nothting else at all)
+
+	PL_ObjAnalyzeUnwrapMacro : 
+		Analyze the final macros from root file to child file, and generate the macro object. 
+		When analyze child file, will use the parents's macro defination, so parents's macro must have been analyzed complete.
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
