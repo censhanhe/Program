@@ -437,6 +437,15 @@ namespace PROM
 		public:
 			PLC_FileCodeLine::__FileCodelinesList file_codelines_list;
 		};
+		class PLC_FileStructure : public PipelineContext
+		{
+		public:
+			GINL PLC_FileStructure(){}
+			GINL ~PLC_FileStructure(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_FileStructure";}
+		public:
+
+		};
 		class PLC_ObjCtn : public PipelineContext
 		{
 		public:
@@ -1472,6 +1481,64 @@ namespace PROM
 						pFile->Write(fcl.lines.lineflag(), GAIA::ALGORITHM::strlen(fcl.lines.lineflag()) * sizeof(DWARFS_MISC::TextLine::__CharType));
 					}
 				}
+
+				return GAIA::True;
+			}
+		};
+		class PL_FileStructureAnalyze : public Pipeline
+		{
+		public:
+			GINL PL_FileStructureAnalyze(){}
+			GINL ~PL_FileStructureAnalyze(){}
+			virtual const GAIA::GCH* GetName() const{return "Prom:PL_FileStructureAnalyze";}
+			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			{
+				/* Parameter check up. */
+				GAIA_AST(ppPLC != GNULL);
+				if(ppPLC == GNULL)
+					return GNULL;
+				GAIA_AST(size != 0);
+				if(size == 0)
+					return GNULL;
+
+				PLC_FileStructure* pRet = GNULL;
+				PLC_CommandParam* plc_commandparam = GNULL;
+				PLC_FileCodeLinePrepare* plc_codelineprepare = GNULL;
+				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
+				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_codelineprepare = static_cast<PLC_FileCodeLinePrepare*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLinePrepare"));
+				if(plc_codelineprepare == GNULL)
+					goto FUNCTION_END;
+
+				/* Initialize result pipeline context. */
+				pRet = new PLC_FileStructure;
+
+				/* Execute. */
+
+			FUNCTION_END:
+				if(plc_commandparam != GNULL)
+					plc_commandparam->Release();
+				if(plc_codelineprepare != GNULL)
+					plc_codelineprepare->Release();
+				return pRet;
+			}
+			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+			{
+				/* Parameter check up. */
+				GAIA_AST(pPLC != GNULL);
+				if(pPLC == GNULL)
+					return GAIA::False;
+
+				GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
+				if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+					return GAIA::False;
+
+				PLC_FileStructure* plc_filestructure = static_cast<PLC_FileStructure*>(pPLC);
+				if(plc_filestructure == GNULL)
+					return GAIA::False;
+				if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), "Prom:PLC_FileStructure") != 0)
+					return GAIA::False;
 
 				return GAIA::True;
 			}
