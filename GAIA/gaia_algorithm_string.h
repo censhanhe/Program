@@ -76,6 +76,22 @@ namespace GAIA
 			*pDst = '\0';
 			return ret;
 		}
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GINL _DataType1 strcpy(_DataType1 pDst, _DataType2 pSrc, _SizeType size)
+		{
+			GAIA_AST(!!pDst);
+			GAIA_AST(!!pSrc);
+			GAIA_AST(size != 0);
+			_DataType1 ret = pDst;
+			while(size != 0)
+			{
+				*pDst = *pSrc;
+				++pDst;
+				++pSrc;
+				--size;
+			}
+			*pDst = '\0';
+			return ret;
+		}
 		template<typename _DataType1, typename _DataType2> GINL _DataType1 strcat(_DataType1 pDst, _DataType2 pSrc)
 		{
 			GAIA_AST(!!pDst);
@@ -330,7 +346,22 @@ namespace GAIA
 				if(*pEnd == '.')
 				{
 					if(pEnd[1] != '\0')
-						return &pEnd[1];
+						return pEnd + 1;
+				}
+				--pEnd;
+			}
+			return GNULL;
+		}
+		template<typename _DataType> GINL _DataType strfilename(_DataType p)
+		{
+			_DataType pEnd = GAIA::ALGORITHM::strend(p);
+			--pEnd;
+			while(pEnd >= p)
+			{
+				if(*pEnd == '\\' || *pEnd == '/')
+				{
+					if(pEnd[1] != '\0')
+						return pEnd + 1;
 				}
 				--pEnd;
 			}

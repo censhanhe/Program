@@ -168,6 +168,17 @@ namespace GAIA
 			GINL GAIA::BL resize(const _SizeType& size){if(size > _Size) return GAIA::False; m_size = size + 1; m_chars[size] = 0; return GAIA::True;}
 			GINL GAIA::GVOID clear(){m_size = 0; if(m_chars != GNULL) m_chars[0] = 0;}
 			GINL GAIA::U32 type() const{return GAIA::ALGORITHM::strtype(m_chars);}
+			GINL __MyType& assign(const _DataType* p, const _SizeType& size)
+			{
+				if(p == GNULL || size == 0)
+					return *this;
+				if(size >= _Size)
+					return *this;
+				this->clear();
+				GAIA::ALGORITHM::strcpy(m_chars, p, size);
+				this->resize(size);
+				return *this;
+			}
 			GINL _DataType* front_ptr(){return m_chars;}
 			GINL _DataType* back_ptr(){if(this->empty()) return GNULL; return m_chars + this->size() - 1;}
 			GINL const _DataType* front_ptr() const{return m_chars;}
@@ -819,17 +830,6 @@ namespace GAIA
 			GINL operator GAIA::BL() const{return GAIA::ALGORITHM::string_cast<BL>(m_chars);}
 		private:
 			GINL GAIA::GVOID init(){m_chars[0] = 0; m_size = 0;}
-			GINL __MyType& assign(const _DataType* p, const _SizeType& size)
-			{
-				if(p == GNULL || size == 0)
-					return *this;
-				if(size >= _Size)
-					return *this;
-				this->clear();
-				GAIA::ALGORITHM::strcpy(m_chars, p);
-				this->resize(size);
-				return *this;
-			}
 			GINL __MyType& combin(const _DataType* p, const _SizeType& size)
 			{
 				if(p == GNULL)

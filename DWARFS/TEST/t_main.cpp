@@ -20,6 +20,7 @@
 #include "../../GAIA/gaia_global_impl.h"
 #include "../MISC/textline.h"
 #include "../MISC/cmdparam.h"
+#include "../misc/sendmail.h"
 #include "t_header.h"
 
 #if GAIA_OS == GAIA_OS_WINDOWS

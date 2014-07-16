@@ -1,5 +1,5 @@
-#ifndef 	__GAIA_DATAPHASE_H__
-#define 	__GAIA_DATAPHASE_H__
+#ifndef 	__GAIA_DATAPHASE_CRC_H__
+#define 	__GAIA_DATAPHASE_CRC_H__
 
 namespace GAIA
 {

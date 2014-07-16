@@ -9,6 +9,10 @@ namespace PROM
 {
 	static const GAIA::GCH VERSION_STRING[] = "00.00.01.00";
 	static const GAIA::U32 VERSION = 0x00000100;
+	static const GAIA::GCH FILEBREAK[] = "\r\n";
+
+	typedef GAIA::CONTAINER::AString __FileName;
+	typedef GAIA::CONTAINER::AString __WordType;
 
 	template<typename _DataType> GAIA::BL is_word_char(_DataType t)
 	{
@@ -52,7 +56,7 @@ namespace PROM
 				GINL GAIA::GVOID setfileline(GAIA::U32 uFileLine){m_uFileLine = uFileLine;}
 				GINL GAIA::U32 getfileline() const{return m_uFileLine;}
 			private:
-				GAIA::CONTAINER::AString m_strFileName;
+				__FileName m_strFileName;
 				GAIA::U32 m_uFileLine;
 			};
 			#define PROM_ERROR(id, stage, level, desc, sample) \
@@ -397,7 +401,6 @@ namespace PROM
 			GINL ~PLC_File(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_File";}
 		public:
-			typedef GAIA::CONTAINER::AString __FileName;
 			class File
 			{
 			public:
@@ -444,7 +447,71 @@ namespace PROM
 			GINL ~PLC_FileStructure(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_FileStructure";}
 		public:
-
+			typedef GAIA::CONTAINER::Set<__FileName> __FileLinkSet;
+			class Node
+			{
+			public:
+				GAIA_CLASS_OPERATOR_COMPARE(name, name, Node);
+				__FileName name;
+				__FileLinkSet parents;
+				__FileLinkSet childs;
+			};
+			typedef GAIA::CONTAINER::Set<Node> __FileNodeSet;
+		public:
+			GINL GAIA::BL AddLink(const GAIA::GCH* pszParentFile, const GAIA::GCH* pszChildFile)
+			{
+				GPCHR_NULLSTRPTR_RET(pszParentFile, GAIA::False);
+				GPCHR_NULLSTRPTR_RET(pszChildFile, GAIA::False);
+				if(this->IsLinkExist(pszParentFile, pszChildFile))
+					return GAIA::True;
+				Node* pFindedParent = this->FindNode(pszParentFile);
+				if(pFindedParent == GNULL)
+				{
+					Node n;
+					n.name = pszParentFile;
+					filenodeset.insert(n);
+					pFindedParent = filenodeset.find(n);
+				}
+				Node* pFindedChild = this->FindNode(pszChildFile);
+				if(pFindedChild == GNULL)
+				{
+					Node n;
+					n.name = pszChildFile;
+					filenodeset.insert(n);
+					pFindedChild = filenodeset.find(n);
+				}
+				GPCHR_NULL_RET(pFindedParent, GAIA::False);
+				GPCHR_NULL_RET(pFindedChild, GAIA::False);
+				pFindedParent->childs.insert(pszChildFile);
+				pFindedChild->parents.insert(pszParentFile);
+				return GAIA::True;
+			}
+			GINL GAIA::BL IsLinkExist(const GAIA::GCH* pszParentFile, const GAIA::GCH* pszChildFile) const
+			{
+				GPCHR_NULLSTRPTR_RET(pszParentFile, GAIA::False);
+				GPCHR_NULLSTRPTR_RET(pszChildFile, GAIA::False);
+				const Node* pFinded = this->FindNode(pszParentFile);
+				if(pFinded != GNULL)
+					if(pFinded->childs.find(pszChildFile) != GNULL)
+						return GAIA::True;
+				return GAIA::False;
+			}
+			GINL const Node* FindNode(const GAIA::GCH* pszFile) const
+			{
+				GPCHR_NULLSTRPTR_RET(pszFile, GNULL);
+				Node finder;
+				finder.name = pszFile;
+				return filenodeset.find(finder);
+			}
+			GINL Node* FindNode(const GAIA::GCH* pszFile)
+			{
+				GPCHR_NULLSTRPTR_RET(pszFile, GNULL);
+				Node finder;
+				finder.name = pszFile;
+				return filenodeset.find(finder);
+			}
+		public:
+			__FileNodeSet filenodeset;
 		};
 		class PLC_ObjCtn : public PipelineContext
 		{
@@ -564,8 +631,6 @@ namespace PROM
 		class PLC_Word : public PipelineContext
 		{
 		public:
-			typedef GAIA::CONTAINER::AString __WordType;
-		public:
 			GINL PLC_Word(){}
 			GINL ~PLC_Word(){}
 			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_Word";}
@@ -664,6 +729,9 @@ namespace PROM
 					pRet->cmdparam.cmd_decl("-E", "input directory files extension name filter", 1, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-s", "save changes to source files", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-o", "output the stage result", 1, 2, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-h", "set header file path", 0, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+					pRet->cmdparam.cmd_decl("-predefine", "set predefine macros", 0, GINVALID, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
+
 					pRet->cmdparam.cmd_decl("-linebreak", "change lines break flag, use \"\\r\" \"\\n\" or \"\\r\\n\"", 1, 1, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 					pRet->cmdparam.cmd_decl("-fmt", "format the codes", 0, 0, DWARFS_MISC::CmdParam::CMD_TYPE_INVALID);
 
@@ -808,9 +876,9 @@ namespace PROM
 				PLC_File* pRet = new PLC_File;
 
 				/* Execute. */
-				typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::AString> __FileListType;
-				typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::AString> __PathListType;
-				typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::AString> __ExtListType;
+				typedef GAIA::CONTAINER::Vector<__FileName> __FileListType;
+				typedef GAIA::CONTAINER::Vector<__FileName> __PathListType;
+				typedef GAIA::CONTAINER::Vector<__FileName> __ExtListType;
 				__FileListType listFile;
 				__PathListType listPath;
 				__ExtListType listExt;
@@ -860,7 +928,7 @@ namespace PROM
 					if(!file.Open(tempfile.name, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
 						PROM_RAISE_FILEERROR(501, tempfile.name);
 				}
-				GAIA::CONTAINER::AString strExt;
+				__FileName strExt;
 				for(__ExtListType::_sizetype x = 0; x < listExt.size(); ++x)
 				{
 					if(!strExt.empty())
@@ -1357,11 +1425,16 @@ namespace PROM
 							}
 							if(bInString)
 							{
-								if(ch == '"' && (z == 0 || strLineTemp[z - 1] != '\\'))
+								if(ch == '"')
 								{
-									bInString = GAIA::False;
-									bSign = GAIA::True;
-									sLastNotBlankIndex = z;
+									GAIA::SIZE flagcount = 0;
+									GAIA::ALGORITHM::prevcount(strLineTemp.front_ptr(), strLineTemp.front_ptr() + z - 1, '\\', flagcount);
+									if(z == 0 || flagcount % 2 == 0)
+									{
+										bInString = GAIA::False;
+										bSign = GAIA::True;
+										sLastNotBlankIndex = z;
+									}
 								}
 								continue;
 							}
@@ -1503,9 +1576,13 @@ namespace PROM
 
 				PLC_FileStructure* pRet = GNULL;
 				PLC_CommandParam* plc_commandparam = GNULL;
+				PLC_File* plc_file = GNULL;
 				PLC_FileCodeLinePrepare* plc_codelineprepare = GNULL;
 				plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_CommandParam"));
 				if(plc_commandparam == GNULL)
+					goto FUNCTION_END;
+				plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_File"));
+				if(plc_file == GNULL)
 					goto FUNCTION_END;
 				plc_codelineprepare = static_cast<PLC_FileCodeLinePrepare*>(this->GetPLCByName(ppPLC, size, "Prom:PLC_FileCodeLinePrepare"));
 				if(plc_codelineprepare == GNULL)
@@ -1515,10 +1592,42 @@ namespace PROM
 				pRet = new PLC_FileStructure;
 
 				/* Execute. */
+				for(GAIA::SIZE x = 0; x < plc_codelineprepare->file_codelines_list.size(); ++x)
+				{
+					PLC_File::File& file = plc_file->filelist[x];
+					DWARFS_MISC::TextLine& l = plc_codelineprepare->file_codelines_list[x].lines;
+					for(GAIA::SIZE y = 0; y < l.size(); ++y)
+					{
+						const DWARFS_MISC::TextLine::__CharType* pLine = l.get_line(y);
+						if(GAIA::ALGORITHM::stremp(pLine))
+							continue;
+						const DWARFS_MISC::TextLine::__CharType* pFinded = GAIA::ALGORITHM::strstr(pLine, "#include");
+						if(pFinded == GNULL)
+							continue;
+						pFinded += GAIA::ALGORITHM::strlen("#include");
+						const DWARFS_MISC::TextLine::__CharType* pFindedNext = GNULL;
+						if(*pFinded == '"')
+							pFindedNext = GAIA::ALGORITHM::strch(pFinded + 1, '"');
+						else
+							pFindedNext = GAIA::ALGORITHM::strch(pFinded + 1, '>');
+						if(pFindedNext != GNULL)
+						{
+							__FileName tempfilename;
+							tempfilename.assign(pFinded + 1, pFindedNext - pFinded - 1);
+							tempfilename.trim_left(' ');
+							tempfilename.trim_left('\t');
+							tempfilename.trim_right(' ');
+							tempfilename.trim_right('\t');
+							pRet->AddLink(tempfilename, file.name);
+						}
+					}
+				}
 
 			FUNCTION_END:
 				if(plc_commandparam != GNULL)
 					plc_commandparam->Release();
+				if(plc_file != GNULL)
+					plc_file->Release();
 				if(plc_codelineprepare != GNULL)
 					plc_codelineprepare->Release();
 				return pRet;
@@ -1540,7 +1649,99 @@ namespace PROM
 				if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), "Prom:PLC_FileStructure") != 0)
 					return GAIA::False;
 
+				/* Print parent relation. */
+				prt << "[To Parent]" << "\n";
+				if(pFile != GNULL)
+				{
+					pFile->Write("[To Parent]", GAIA::ALGORITHM::strlen("[To Parent]"));
+					pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+				}
+				PLC_FileStructure::__FileNodeSet::it it = plc_filestructure->filenodeset.front_it();
+				while(!it.empty())
+				{
+					PLC_FileStructure::__FileNodeSet::_datatype& t = *it;
+					if(t.childs.empty())
+						this->OutputParentRelation(plc_filestructure, t, pFile, prt, 0);
+					++it;
+				}
+
+				/* Print child relation. */
+				prt << "[To Child]" << "\n";
+				if(pFile != GNULL)
+				{
+					pFile->Write("[To Child]", GAIA::ALGORITHM::strlen("[To Child]"));
+					pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+				}
+				it = plc_filestructure->filenodeset.front_it();
+				while(!it.empty())
+				{
+					PLC_FileStructure::__FileNodeSet::_datatype& t = *it;
+					if(t.parents.empty())
+						this->OutputChildRelation(plc_filestructure, t, pFile, prt, 0);
+					++it;
+				}
+
 				return GAIA::True;
+			}
+		private:
+			GINL GAIA::GVOID OutputParentRelation(
+				PLC_FileStructure* plc_filestructure, 
+				PLC_FileStructure::Node& node, 
+				GAIA::FILESYSTEM::FileBase* pFile, 
+				GAIA::PRINT::PrintBase& prt,
+				GAIA::SIZE depth)
+			{
+				GPCHR_NULL(plc_filestructure);
+				prt << node.name.front_ptr() << "\n";
+				if(pFile != GNULL)
+				{
+					this->OutputDepth(prt, pFile, depth);
+					pFile->Write(node.name.front_ptr(), node.name.size() * sizeof(__FileName::_datatype));
+					pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+				}
+				PLC_FileStructure::__FileLinkSet::it itlink = node.parents.front_it();
+				while(!itlink.empty())
+				{
+					__FileName& filename = *itlink;
+					PLC_FileStructure::Node* pParentNode = plc_filestructure->FindNode(filename);
+					if(pParentNode != GNULL)
+						this->OutputParentRelation(plc_filestructure, *pParentNode, pFile, prt, depth + 1);
+					++itlink;
+				}
+			}
+			GINL GAIA::GVOID OutputChildRelation(
+				PLC_FileStructure* plc_filestructure, 
+				PLC_FileStructure::Node& node, 
+				GAIA::FILESYSTEM::FileBase* pFile, 
+				GAIA::PRINT::PrintBase& prt,
+				GAIA::SIZE depth)
+			{
+				GPCHR_NULL(plc_filestructure);
+				prt << node.name.front_ptr() << "\n";
+				if(pFile != GNULL)
+				{
+					this->OutputDepth(prt, pFile, depth);
+					pFile->Write(node.name.front_ptr(), node.name.size() * sizeof(__FileName::_datatype));
+					pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+				}
+				PLC_FileStructure::__FileLinkSet::it itlink = node.childs.front_it();
+				while(!itlink.empty())
+				{
+					__FileName& filename = *itlink;
+					PLC_FileStructure::Node* pChildNode = plc_filestructure->FindNode(filename);
+					if(pChildNode != GNULL)
+						this->OutputChildRelation(plc_filestructure, *pChildNode, pFile, prt, depth + 1);
+					++itlink;
+				}
+			}
+			GINL GAIA::GVOID OutputDepth(GAIA::PRINT::PrintBase& prt, GAIA::FILESYSTEM::FileBase* pFile, GAIA::SIZE depth)
+			{
+				for(GAIA::SIZE x = 0; x < depth; ++x)
+				{
+					prt << "\t";
+					if(pFile != GNULL)
+						pFile->Write("\t", 1);
+				}
 			}
 		};
 		class PL_ObjAnalyzeBase : public Pipeline
@@ -1851,7 +2052,7 @@ namespace PROM
 						pFile->Write("\", Count = ", sizeof("\", Count = ") - 1);
 						GAIA::ALGORITHM::int2str(word.uExistCount, szTemp);
 						pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp));
-						pFile->Write("\n", 1);
+						pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 					}
 					else
 						prt << "[" << index++ << "] \"" << word.strWord.front_ptr() << "\", Count = " << word.uExistCount << "\n";
@@ -1888,7 +2089,7 @@ namespace PROM
 						pFile->Write("\", Count = ", sizeof("\", Count = ") - 1);
 						GAIA::ALGORITHM::int2str(word.uExistCount, szTemp);
 						pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp));
-						pFile->Write("\n", 1);
+						pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 					}
 					else
 						prt << "[" << index++ << "] \"" << word.pWord->front_ptr() << "\", Count = " << word.uExistCount << "\n";
@@ -1909,7 +2110,7 @@ namespace PROM
 				}
 				GAIA_CLASS_OPERATOR_COMPARE(uExistCount, uExistCount, WordByRefCount);
 			public:
-				PLC_Word::__WordType* pWord;
+				__WordType* pWord;
 				GAIA::U32 uExistCount;
 			};
 		};
@@ -2303,10 +2504,10 @@ namespace PROM
 				pl_cmdanalyze->BindNext(pl_help);
 				pl_help->Release();
 
-				Pipeline* pl_filecollect = new PL_FileCollect;
+				PL_FileCollect* pl_filecollect = new PL_FileCollect;
 				pl_cmdanalyze->BindNext(pl_filecollect);
 				{
-					Pipeline* pl_linecollect = new PL_LineCollect;
+					PL_LineCollect* pl_linecollect = new PL_LineCollect;
 					pl_filecollect->BindNext(pl_linecollect);
 					{
 						PL_LineBreakCorrect* pl_linebreakcorrect = new PL_LineBreakCorrect;
@@ -2325,6 +2526,10 @@ namespace PROM
 						pl_linecollect->BindNext(pl_lineprepare);
 						pl_lineprepare->Release();
 						{
+							PL_FileStructureAnalyze* pl_filestructureanalyze = new PL_FileStructureAnalyze;
+							pl_lineprepare->BindNext(pl_filestructureanalyze);
+							pl_filestructureanalyze->Release();
+
 							PL_ObjAnalyzeBase* pl_objanalyzebase = new PL_ObjAnalyzeBase;
 							pl_lineprepare->BindNext(pl_objanalyzebase);
 							pl_objanalyzebase->Release();

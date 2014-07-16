@@ -4,6 +4,7 @@
 #include "../../GAIA/TEST/t_common.h"
 #include "t_textline.h"
 #include "t_cmdparam.h"
+#include "t_sendmail.h"
 
 namespace DWARFSTEST
 {
@@ -19,6 +20,7 @@ namespace DWARFSTEST
 		{
 			GTLINE1("TestLines test begin!"); nRet += t_textline(file, prt); GTLINE1("TestLines test end!"); GTLINE("\t");
 			GTLINE1("CmdParam test begin!"); nRet += t_cmdparam(file, prt); GTLINE1("CmdParam test end!"); GTLINE("\t");
+			GTLINE1("SendMail test begin!"); nRet += t_sendmail(file, prt); GTLINE1("SendMail test end!"); GTLINE("\t");
 		}
 		GTLINE("[DWARFS TEST END]");
 

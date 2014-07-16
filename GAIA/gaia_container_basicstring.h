@@ -205,6 +205,18 @@ namespace GAIA
 				}
 			}
 			GINL GAIA::U32 type() const{return GAIA::ALGORITHM::strtype(m_pFront);}
+			GINL __MyType& assign(const _DataType* p, const _SizeType& size)
+			{
+				if(p == GNULL || size == 0)
+				{
+					this->clear();
+					return *this;
+				}
+				this->clear();
+				this->resize(size);
+				GAIA::ALGORITHM::strcpy(m_pFront, p, size);
+				return *this;
+			}
 			GINL _DataType* front_ptr(){return m_pFront;}
 			GINL _DataType* back_ptr(){if(this->empty()) return GNULL; return m_pFront + this->size() - 1;}
 			GINL const _DataType* front_ptr() const{return m_pFront;}
@@ -869,18 +881,6 @@ namespace GAIA
 					delete[] m_pFront;
 			#endif
 				m_pFront = pNew;
-			}
-			GINL __MyType& assign(const _DataType* p, const _SizeType& size)
-			{
-				if(p == GNULL || size == 0)
-				{
-					this->clear();
-					return *this;
-				}
-				this->clear();
-				this->resize(size);
-				GAIA::ALGORITHM::strcpy(m_pFront, p);
-				return *this;
 			}
 			GINL __MyType& combin(const _DataType* p, const _SizeType& size)
 			{

@@ -3,6 +3,7 @@
 
 /* Include file header. */
 #include	"gaia_sysconfig.h"
+#include	"gaia_macrohelper.h"
 #include	"gaia_type.h"
 #include	"gaia_type_convert.h"
 #include	"gaia_type_traits2.h"
@@ -127,6 +128,7 @@
 #include 	"gaia_dataphase_bdiff.h"
 #include 	"gaia_dataphase_tdiff.h"
 #include 	"gaia_dataphase_crc.h"
+#include	"gaia_dataphase_base64.h"
 
 #include	"gaia_network.h"
 
