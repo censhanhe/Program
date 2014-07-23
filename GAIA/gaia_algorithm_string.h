@@ -19,6 +19,26 @@ namespace GAIA
 		template<typename _DataType> GINL GAIA::BL isalpha(const _DataType& c){if(c < 'A' || c > 'z') return GAIA::False; return c <= 'Z' || c >= 'a';}
 		template<typename _DataType> GINL GAIA::BL ispunctuation(const _DataType& c){return c > ' ' && !GAIA::ALGORITHM::isalpha(c) && !GAIA::ALGORITHM::isdigit(c) && c < 0xFF;}
 		template<typename _DataType> GINL GAIA::BL isspecial(const _DataType& c){return c < ' ';}
+		template<typename _DataType> GINL GAIA::BL isexistansi(_DataType p)
+		{
+			while(*p != '\0')
+			{
+				if(*p < 128)
+					return GAIA::True;
+				++p;
+			}
+			return GAIA::False;
+		}
+		template<typename _DataType> GINL GAIA::BL isallansi(_DataType p)
+		{
+			while(*p != '\0')
+			{
+				if(*p >= 128)
+					return GAIA::False;
+				++p;
+			}
+			return GAIA::True;
+		}
 		template<typename _DataType> GINL GAIA::BL stremp(_DataType p)
 		{
 			if(p == GNULL || *p == '\0')

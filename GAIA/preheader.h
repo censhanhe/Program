@@ -30,6 +30,8 @@
 #	include <stdio.h>
 #	include <stdlib.h>
 #	include <iostream>
+#	include <locale.h>
+#	include <xlocale>
 #	if GAIA_OS == GAIA_OS_WINDOWS
 #		define NOMINMAX
 #		include <winsock2.h>
