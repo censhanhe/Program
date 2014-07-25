@@ -13,7 +13,7 @@ namespace GAIA
 				IO_TYPE_WRITE = 1 << 1,
 			GAIA_ENUM_END(IO_TYPE)
 		public:
-			virtual GAIA::BL Open(const GAIA::CH* pszIOName, GAIA::UM uTypeMask) = 0; // uTypeMask is the IO_TYPE's mask.
+			virtual GAIA::BL Open(const GAIA::TCH* pszIOName, GAIA::UM uTypeMask) = 0; // uTypeMask is the IO_TYPE's mask.
 			virtual GAIA::BL Close() = 0;
 			virtual GAIA::BL IsOpen() const = 0;
 			virtual GAIA::UM GetType() const = 0;

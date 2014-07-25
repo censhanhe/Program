@@ -14,7 +14,7 @@ namespace GAIA
 				OPEN_TYPE_CREATEALWAYS	= 1 << 2,
 			GAIA_ENUM_END(OPEN_TYPE)
 		public:
-			virtual GAIA::BL Open(const GAIA::CH* filekey, const GAIA::UM& opentype) = 0;
+			virtual GAIA::BL Open(const GAIA::TCH* filekey, const GAIA::UM& opentype) = 0;
 			virtual GAIA::BL Close() = 0;
 			virtual GAIA::BL IsOpen() const = 0;
 			virtual GAIA::N64 Size() const = 0;
@@ -32,7 +32,7 @@ namespace GAIA
 		public:
 			GINL File(){m_fileopentype = OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNULL;}
 			GINL virtual ~File(){if(this->IsOpen()) this->Close();}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Open(const GAIA::CH* filekey, const GAIA::UM& opentype);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Open(const GAIA::TCH* filekey, const GAIA::UM& opentype);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Close();
 			GINL GAIA::BL IsOpen() const{return m_pFile != GNULL;}
 			GINL GAIA::N64 Size() const{return m_size;}

@@ -47,8 +47,10 @@ namespace GAIA
 	typedef wchar_t WCH;
 #if GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
 	typedef wchar_t TCH;
+#	define T_(x) L##x
 #else
 	typedef char TCH;
+#	define T_(x)
 #endif
 
 	/* GAIA size. */

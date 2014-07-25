@@ -31,7 +31,7 @@ int main()
 #endif
 
 	GAIA::FILESYSTEM::File file;
-	file.Open("../gaia_test.txt", GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
+	file.Open(T_("../gaia_test.txt"), GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
 	GAIA::PRINT::Print prt;
 	GAIATEST::t_all(file, prt);
 	return 0;

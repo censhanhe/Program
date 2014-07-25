@@ -7,19 +7,54 @@ namespace GAIA
 {
 	namespace FILESYSTEM
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Open(const GAIA::CH* filekey, const GAIA::UM& opentype)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Open(const GAIA::TCH* filekey, const GAIA::UM& opentype)
 		{
 			if(this->IsOpen())
 				this->Close();
 			GAIA_AST(!!filekey);
+		#if GAIA_OS == GAIA_OS_WINDOWS
 			if(opentype & OPEN_TYPE_CREATEALWAYS)
+		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+"); // Create for read and write.
+		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+				m_pFile = (GAIA::GVOID*)_wfopen(filekey, T_("wb+"));
+		#	endif
 			else if(opentype & OPEN_TYPE_WRITE)
+		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+"); // Open for read and write.
+		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+				m_pFile = (GAIA::GVOID*)_wfopen(filekey, T_("rb+"));
+		#	endif
 			else if(opentype == OPEN_TYPE_READ)
+		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb"); // Open for read.
+		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+				m_pFile = (GAIA::GVOID*)_wfopen(filekey, T_("rb"));
+		#	endif
 			else
 				return GAIA::False;
+		#else
+			if(opentype & OPEN_TYPE_CREATEALWAYS)
+		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+"); // Create for read and write.
+		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+");
+		#	endif
+			else if(opentype & OPEN_TYPE_WRITE)
+		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+"); // Open for read and write.
+		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+");
+		#	endif
+			else if(opentype == OPEN_TYPE_READ)
+		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb"); // Open for read.
+		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb");
+		#	endif
+			else
+				return GAIA::False;
+		#endif
 			if(m_pFile == GNULL)
 				return GAIA::False;
 			m_offset = 0;

@@ -17,17 +17,17 @@ namespace GAIA
 		private:
 		#if GAIA_OS == GAIA_OS_WINDOWS
 		#	if GAIA_MACHINE == GAIA_MACHINE32
-				GAIA::CH m_head[4];
+				GAIA::N8 m_head[4];
 		#	else
-				GAIA::CH m_head[8];
+				GAIA::N8 m_head[8];
 		#	endif
 		#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
-			GAIA::CH m_head[48];
-			GAIA::CH m_headmutex[64];
+			GAIA::N8 m_head[48];
+			GAIA::N8 m_headmutex[64];
 			GAIA::NM m_waitcnt;
 		#else
-			GAIA::CH m_head[64];
-			GAIA::CH m_headmutex[64];
+			GAIA::N8 m_head[64];
+			GAIA::N8 m_headmutex[64];
 			GAIA::NM m_waitcnt;
 		#endif
 		};
