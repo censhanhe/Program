@@ -118,12 +118,12 @@ namespace DWARFSTEST
 		}
 		for(GAIA::SIZE x = 0; x < cp.cmd_size(); ++x)
 		{
-			const GAIA::GCH* pszCmd = cp.cmd(x);
+			const GAIA::CH* pszCmd = cp.cmd(x);
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
 			prt << pszCmd << " ";
 			for(GAIA::SIZE y = 0; y < cp.param_size(x); ++y)
 			{
-				const GAIA::GCH* pszParam = cp.param(x, y);
+				const GAIA::CH* pszParam = cp.param(x, y);
 				GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam));
 				prt << pszParam << " ";
 			}

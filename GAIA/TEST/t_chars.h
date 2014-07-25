@@ -430,13 +430,13 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = "HelloWorld";
-		const GAIA::GCH* cpsz = chs;
+		const GAIA::CH* cpsz = chs;
 		if(GAIA::ALGORITHM::strcmp(cpsz, "HelloWorld") != 0)
 		{
 			GTLINE2("String operator const _DataType* failed!");
 			++nRet;
 		}
-		GAIA::GCH* psz = chs;
+		GAIA::CH* psz = chs;
 		if(GAIA::ALGORITHM::strcmp(psz, "HelloWorld") != 0)
 		{
 			GTLINE2("String operator _DataType* failed!");
@@ -489,7 +489,7 @@ namespace GAIATEST
 			GTLINE2("String const_back_it failed!");
 			++nRet;
 		}
-		GAIA::GCH szTemp[128];
+		GAIA::CH szTemp[128];
 		while(!citfront.empty())
 		{
 			szTemp[citfront - chs.const_front_it()] = *citfront;

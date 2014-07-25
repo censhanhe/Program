@@ -37,7 +37,7 @@ namespace GAIA
 				return GAIA::False;
 
 			// Setup socket buffer size.
-			if(setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize)) != 0)
+			if(setsockopt(m_h, SOL_SOCKET, SO_SNDBUF, (GAIA::CH*)&m_nSendBufferSize, sizeof(m_nSendBufferSize)) != 0)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS
 				closesocket(m_h);
@@ -47,7 +47,7 @@ namespace GAIA
 				m_h = GINVALID;
 				return GAIA::False;
 			}
-			if(setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize)) != 0)
+			if(setsockopt(m_h, SOL_SOCKET, SO_RCVBUF, (GAIA::CH*)&m_nRecvBufferSize, sizeof(m_nRecvBufferSize)) != 0)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS
 				closesocket(m_h);
@@ -215,10 +215,10 @@ namespace GAIA
 						{
 						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
 							nSended = static_cast<GAIA::N32>(send(
-								m_h, (const GAIA::GCH*)p, uSize, MSG_NOSIGNAL));
+								m_h, (const GAIA::CH*)p, uSize, MSG_NOSIGNAL));
 						#else
 							nSended = static_cast<GAIA::N32>(send(
-								m_h, (const GAIA::GCH*)p, uSize, 0));
+								m_h, (const GAIA::CH*)p, uSize, 0));
 						#endif
 						}
 						else
@@ -235,11 +235,11 @@ namespace GAIA
 								(na.ip.u3 << 24);
 						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
 							nSended = static_cast<GAIA::N32>(sendto(
-								m_h, (const GAIA::GCH*)p, uSize, MSG_NOSIGNAL,
+								m_h, (const GAIA::CH*)p, uSize, MSG_NOSIGNAL,
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
 						#else
 							nSended = static_cast<GAIA::N32>(sendto(
-								m_h, (const GAIA::GCH*)p, uSize, 0,
+								m_h, (const GAIA::CH*)p, uSize, 0,
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
 						#endif
 						}
@@ -322,8 +322,8 @@ namespace GAIA
 			}
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::N32& size){return gethostname(pszResult, size) != GINVALID;}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::GCH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult)
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size){return gethostname(pszResult, size) != GINVALID;}
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult)
 		{
 			hostent* pHostEnt = gethostbyname(pszHostName);
 			if(pHostEnt != GNULL)
@@ -383,7 +383,7 @@ namespace GAIA
 			listensock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 			if(listensock == GINVALID)
 				return;
-			if(setsockopt(listensock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_desc.nListenSendBufSize, sizeof(m_desc.nListenSendBufSize)) != 0)
+			if(setsockopt(listensock, SOL_SOCKET, SO_SNDBUF, (GAIA::CH*)&m_desc.nListenSendBufSize, sizeof(m_desc.nListenSendBufSize)) != 0)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS
 				closesocket(listensock);
@@ -393,7 +393,7 @@ namespace GAIA
 				listensock = GINVALID;
 				return;
 			}
-			if(setsockopt(listensock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nListenRecvBufSize, sizeof(m_desc.nListenRecvBufSize)) != 0)
+			if(setsockopt(listensock, SOL_SOCKET, SO_RCVBUF, (GAIA::CH*)&m_desc.nListenRecvBufSize, sizeof(m_desc.nListenRecvBufSize)) != 0)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS
 				closesocket(listensock);
@@ -458,7 +458,7 @@ namespace GAIA
 				if(newsock != GINVALID)
 				{
 					// Setup socket.
-					if(setsockopt(newsock, SOL_SOCKET, SO_SNDBUF, (GAIA::GCH*)&m_desc.nAcceptSendBufSize, sizeof(m_desc.nAcceptSendBufSize)) != 0)
+					if(setsockopt(newsock, SOL_SOCKET, SO_SNDBUF, (GAIA::CH*)&m_desc.nAcceptSendBufSize, sizeof(m_desc.nAcceptSendBufSize)) != 0)
 					{
 					#if GAIA_OS == GAIA_OS_WINDOWS
 						shutdown(newsock, SD_BOTH);
@@ -470,7 +470,7 @@ namespace GAIA
 						newsock = GINVALID;
 						break;
 					}
-					if(setsockopt(newsock, SOL_SOCKET, SO_RCVBUF, (GAIA::GCH*)&m_desc.nAcceptRecvBufSize, sizeof(m_desc.nAcceptRecvBufSize)) != 0)
+					if(setsockopt(newsock, SOL_SOCKET, SO_RCVBUF, (GAIA::CH*)&m_desc.nAcceptRecvBufSize, sizeof(m_desc.nAcceptRecvBufSize)) != 0)
 					{
 					#if GAIA_OS == GAIA_OS_WINDOWS
 						shutdown(newsock, SD_BOTH);

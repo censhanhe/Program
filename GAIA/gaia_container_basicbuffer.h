@@ -248,26 +248,26 @@ namespace GAIA
 			GINL GAIA::BL read(GAIA::NM& obj){}
 			GINL GAIA::GVOID write(const GAIA::UM& obj){}
 			GINL GAIA::BL read(GAIA::UM& obj){}
-			GINL GAIA::GVOID write(const GAIA::GWCH& obj){}
-			GINL GAIA::BL read(GAIA::GWCH& obj){}
+			GINL GAIA::GVOID write(const GAIA::WCH& obj){}
+			GINL GAIA::BL read(GAIA::WCH& obj){}
 			GINL GAIA::GVOID write(const GAIA::NM* psz){}
 			GINL GAIA::BL read(GAIA::NM* psz){}
 			GINL GAIA::GVOID write(const GAIA::UM* psz){}
 			GINL GAIA::BL read(GAIA::UM* psz){}
-			GINL GAIA::GVOID write(const GAIA::GWCH* psz){}
-			GINL GAIA::BL read(GAIA::GWCH* psz){}
+			GINL GAIA::GVOID write(const GAIA::WCH* psz){}
+			GINL GAIA::BL read(GAIA::WCH* psz){}
 			GINL __MyType& operator << (const GAIA::NM& obj){return *this;}
 			GINL __MyType& operator >> (GAIA::NM& obj){return *this;}
 			GINL __MyType& operator << (const GAIA::UM& obj){return *this;}
 			GINL __MyType& operator >> (GAIA::UM& obj){return *this;}
-			GINL __MyType& operator << (const GAIA::GWCH& obj){return *this;}
-			GINL __MyType& operator >> (GAIA::GWCH& obj){return *this;}
+			GINL __MyType& operator << (const GAIA::WCH& obj){return *this;}
+			GINL __MyType& operator >> (GAIA::WCH& obj){return *this;}
 			GINL __MyType& operator << (const GAIA::NM* obj){return *this;} GINL __MyType& operator << (GAIA::NM* obj){return *this;}
 			GINL __MyType& operator >> (GAIA::NM* obj){return *this;}
 			GINL __MyType& operator << (const GAIA::UM* obj){return *this;} GINL __MyType& operator << (GAIA::UM* obj){return *this;}
 			GINL __MyType& operator >> (GAIA::UM* obj){return *this;}
-			GINL __MyType& operator << (const GAIA::GWCH* obj){return *this;} GINL __MyType& operator << (GAIA::GWCH* obj){return *this;}
-			GINL __MyType& operator >> (GAIA::GWCH* obj){return *this;}
+			GINL __MyType& operator << (const GAIA::WCH* obj){return *this;} GINL __MyType& operator << (GAIA::WCH* obj){return *this;}
+			GINL __MyType& operator >> (GAIA::WCH* obj){return *this;}
 	#endif
 		private:
 			GAIA::U8* m_pFront;

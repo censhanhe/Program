@@ -8,8 +8,8 @@ namespace GAIA
 		class AstException
 		{
 		public:
-			AstException(const GAIA::GCH* pszFile, GAIA::N32 nLine){m_pszFile = pszFile; m_nLine = nLine;}
-			const GAIA::GCH* m_pszFile;
+			AstException(const GAIA::CH* pszFile, GAIA::N32 nLine){m_pszFile = pszFile; m_nLine = nLine;}
+			const GAIA::CH* m_pszFile;
 			GAIA::N32 m_nLine;
 		};
 
@@ -20,7 +20,7 @@ namespace GAIA
 							{\
 								GAIA::PRINT::Print prt;\
 								prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to ignore:";\
-								GAIA::GCH ch;\
+								GAIA::CH ch;\
 								prt >> ch;\
 								if(ch == '1')\
 									throw GAIA::DEBUG_MANAGEMENT::AstException(__FILE__, __LINE__);\

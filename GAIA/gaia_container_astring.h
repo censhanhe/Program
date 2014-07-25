@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		typedef BasicString<GAIA::GCH, GAIA::SIZE> AString;
+		typedef BasicString<GAIA::CH, GAIA::SIZE> AString;
 	};
 };
 

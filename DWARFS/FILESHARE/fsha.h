@@ -119,10 +119,10 @@
 namespace DWARFS_FSHA
 {
 	/* Constants. */
-	static const GAIA::GCH VERSION_STRING[] = "00.00.01.00";
+	static const GAIA::CH VERSION_STRING[] = "00.00.01.00";
 	static const GAIA::U32 VERSION = 0x00000100;
-	static const GAIA::GCH INTERNAL_USERNAME[] = "admin";
-	static const GAIA::GCH INTERNAL_PASSWORD[] = "password";
+	static const GAIA::CH INTERNAL_USERNAME[] = "admin";
+	static const GAIA::CH INTERNAL_PASSWORD[] = "password";
 	static const GAIA::N32 MAXPATHDEPTH = 18;
 	static const GAIA::N32 MAXPATHLEN = 240;
 	static const GAIA::U16 MAINRECVPORT = 7121;
@@ -132,13 +132,13 @@ namespace DWARFS_FSHA
 	static const GAIA::N32 USERNAMELEN = 16;
 	static const GAIA::N32 PASSWORDLEN = 16;
 	static const GAIA::N32 GROUPNAMELEN = 16;
-	static const GAIA::GCH FILE_USERGROUP[] = "usergroup";
+	static const GAIA::CH FILE_USERGROUP[] = "usergroup";
 	static const GAIA::U32 FILE_USERGROUP_FLAG = 'FSUG';
 	static const GAIA::U32 FILE_USERGROUP_VERSION = 0;
-	static const GAIA::GCH FILE_FILELIST[] = "filelist";
+	static const GAIA::CH FILE_FILELIST[] = "filelist";
 	static const GAIA::U32 FILE_FILELIST_FLAG = 'FSFL';
 	static const GAIA::U32 FILE_FILELIST_VERSION = 0;
-	static const GAIA::GCH FILE_BANIP[] = "banip";
+	static const GAIA::CH FILE_BANIP[] = "banip";
 	static const GAIA::U32 FILE_BANIP_FLAG = 'BAIP';
 	static const GAIA::U32 FILE_BANIP_VERSION = 0;
 	static const GAIA::N32 DEFAULTMAXREQFILECOUNTSAMETIME = 32;
@@ -164,14 +164,14 @@ namespace DWARFS_FSHA
 	typedef GAIA::U16 SUBCHUNKSIZETYPE;
 	typedef GAIA::U8 REQFILECOUNTTYPE;
 	typedef GAIA::U32 FILESIZETYPE;
-	typedef GAIA::CONTAINER::BasicString<GAIA::GCH, GAIA::U8> FSTR;
+	typedef GAIA::CONTAINER::BasicString<GAIA::CH, GAIA::U8> FSTR;
 	typedef GAIA::CONTAINER::BasicVector<FSTR, FILEID, GAIA::ALGORITHM::TwiceSizeIncreaser<FILEID> > FSTRLIST;
 	typedef GAIA::CONTAINER::Vector<FILEID> FIDLIST;
 	typedef GAIA::CONTAINER::BasicAVLTree<
 			FSTR, GAIA::N32, GAIA::N32,
 			GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > FSTRBTR;
 	typedef GAIA::U32 MAPINDEX; // 0 means invalid id.
-	typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::N16, MAXPATHLEN> FNAMETYPE;
+	typedef GAIA::CONTAINER::BasicChars<GAIA::CH, GAIA::N16, MAXPATHLEN> FNAMETYPE;
 	typedef GAIA::CONTAINER::Array<FNAMETYPE, MAXPATHDEPTH> FNAMEPARTLISTTYPE;
 	typedef GAIA::U32 CRCTYPE;
 
@@ -181,7 +181,7 @@ namespace DWARFS_FSHA
 	public:
 		FileSequence(){}
 		~FileSequence(){}
-		GINL GAIA::BL Add(const GAIA::GCH* pszFileName)
+		GINL GAIA::BL Add(const GAIA::CH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -201,7 +201,7 @@ namespace DWARFS_FSHA
 			return GAIA::True;
 		}
 		GINL const FILEID& GetRecCount() const{return m_files.size();}
-		GINL const GAIA::GCH* GetRec(const FILEID& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
+		GINL const GAIA::CH* GetRec(const FILEID& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
 	private:
 		FSTRLIST m_files;
 		FSTRBTR m_filesbtr;
@@ -218,7 +218,7 @@ namespace DWARFS_FSHA
 		GINL ~FileList(){}
 		GINL GAIA::GVOID SetPrint(GAIA::PRINT::PrintBase* pPr){m_pPr = pPr;}
 		GINL GAIA::PRINT::PrintBase* GetPrint() const{return m_pPr;}
-		GAIA::BL Load(const GAIA::GCH* pszFileName)
+		GAIA::BL Load(const GAIA::CH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -311,7 +311,7 @@ namespace DWARFS_FSHA
 			delete pFactory;
 			return GAIA::True;
 		}
-		GAIA::BL Save(const GAIA::GCH* pszFileName)
+		GAIA::BL Save(const GAIA::CH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -364,7 +364,7 @@ namespace DWARFS_FSHA
 			delete pFactory;
 			return GAIA::True;
 		}
-		CRCTYPE BuildFileCRC(const GAIA::GCH* pszPathName)
+		CRCTYPE BuildFileCRC(const GAIA::CH* pszPathName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszPathName));
 			if(GAIA::ALGORITHM::stremp(pszPathName))
@@ -381,7 +381,7 @@ namespace DWARFS_FSHA
 			delete[] pBuffer;
 			return m_crcbuilder.result();
 		}
-		GAIA::BL Build(const GAIA::GCH* pszPathName, const GAIA::GCH* pszFilter)
+		GAIA::BL Build(const GAIA::CH* pszPathName, const GAIA::CH* pszFilter)
 		{
 			FILE_LIST_LOG("Collision destination path files...");
 			GAIA::FILESYSTEM::Directory::__ResultTree restree;
@@ -516,10 +516,10 @@ namespace DWARFS_FSHA
 						if(m_pPr != GNULL)
 							(*m_pPr) << nLastPercent << " ";
 					}
-					GAIA::GCH szName[MAXPATHLEN];
+					GAIA::CH szName[MAXPATHLEN];
 					if(this->GetName(m_recids[x].fid, szName))
 					{
-						GAIA::GCH szFullName[MAXPATHLEN];
+						GAIA::CH szFullName[MAXPATHLEN];
 						if(GAIA::ALGORITHM::stremp(pszPathName))
 							szFullName[0] = 0;
 						else
@@ -547,12 +547,12 @@ namespace DWARFS_FSHA
 
 			return GAIA::True;
 		}
-		const FILEID* GetIDByName(const GAIA::GCH* pszFileName)
+		const FILEID* GetIDByName(const GAIA::CH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GNULL;
-			GAIA::GCH szLower[MAXPATHLEN];
+			GAIA::CH szLower[MAXPATHLEN];
 			GAIA::ALGORITHM::strcpy(szLower, pszFileName);
 			GAIA::ALGORITHM::tolowers(szLower);
 			MAPINDEX mapindex[MAXPATHDEPTH];
@@ -574,7 +574,7 @@ namespace DWARFS_FSHA
 				return GNULL;
 			return &(**pNode).fid;
 		}
-		GAIA::BL GetName(const FILEID& id, GAIA::GCH* pResult)
+		GAIA::BL GetName(const FILEID& id, GAIA::CH* pResult)
 		{
 			__FileRecIDListType::_datatype f;
 			f.fid = id;
@@ -679,7 +679,7 @@ namespace DWARFS_FSHA
 		typedef GAIA::CONTAINER::BasicVector<FileRecSeq, FILEID, GAIA::ALGORITHM::TwiceSizeIncreaser<FILEID> > __FileRecSeqListType;
 	private:
 		GINL GAIA::GVOID init(){(*m_ftree.root()).fid = (FILEID)GINVALID; (*m_ftree.root()).mapindex = (MAPINDEX)GINVALID; m_LastMaxFileID = 0; m_pPr = GNULL;}
-		GAIA::BL NameToMapIndex(const GAIA::GCH* pszFileName, MAPINDEX* pResult) const
+		GAIA::BL NameToMapIndex(const GAIA::CH* pszFileName, MAPINDEX* pResult) const
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -705,13 +705,13 @@ namespace DWARFS_FSHA
 			pResult[namelist.size()] = (MAPINDEX)GINVALID;
 			return GAIA::True;
 		}
-		GAIA::BL MapIndexToName(const MAPINDEX* pResult, GAIA::GCH* pszFileName) const
+		GAIA::BL MapIndexToName(const MAPINDEX* pResult, GAIA::CH* pszFileName) const
 		{
 			GAIA_AST(!!pResult);
 			if(pResult == GNULL)
 				return GAIA::False;
 			const MAPINDEX* p = pResult;
-			GAIA::GCH* pDst = pszFileName;
+			GAIA::CH* pDst = pszFileName;
 			while(*p != GINVALID)
 			{
 				if(pDst != pszFileName)
@@ -723,21 +723,21 @@ namespace DWARFS_FSHA
 			*pDst++ = 0;
 			return GAIA::True;
 		}
-		GAIA::BL GenerateFileNamePartList(const GAIA::GCH* pszFileName, FNAMEPARTLISTTYPE& listResult) const
+		GAIA::BL GenerateFileNamePartList(const GAIA::CH* pszFileName, FNAMEPARTLISTTYPE& listResult) const
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
 				return GAIA::False;
 			listResult.clear();
-			const GAIA::GCH* p = pszFileName;
+			const GAIA::CH* p = pszFileName;
 			for(;;)
 			{
-				const GAIA::GCH* pNew = GAIA::ALGORITHM::stridrop(p, "/\\\0");
+				const GAIA::CH* pNew = GAIA::ALGORITHM::stridrop(p, "/\\\0");
 				if(pNew != p)
 				{
 					if(pNew == GNULL || *pNew == 0)
 					{
-						GAIA::GCH sz[MAXPATHLEN];
+						GAIA::CH sz[MAXPATHLEN];
 						GAIA::ALGORITHM::strcpy(sz, p);
 						if(sz[0] != 0)
 							listResult.push_back(sz);
@@ -745,8 +745,8 @@ namespace DWARFS_FSHA
 					}
 					else
 					{
-						GAIA::GCH sz[MAXPATHLEN];
-						GAIA::ALGORITHM::xmemcpy(sz, p, (pNew - p) * sizeof(GAIA::GCH));
+						GAIA::CH sz[MAXPATHLEN];
+						GAIA::ALGORITHM::xmemcpy(sz, p, (pNew - p) * sizeof(GAIA::CH));
 						sz[pNew - p] = 0;
 						if(sz[0] != 0)
 							listResult.push_back(sz);
@@ -857,9 +857,9 @@ namespace DWARFS_FSHA
 	class __DWARFS_FILESHARE_API UserGroup : public GAIA::Entity
 	{
 	public:
-		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, USERNAMELEN> __UserNameType;
-		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, PASSWORDLEN> __PasswordType;
-		typedef GAIA::CONTAINER::BasicChars<GAIA::GCH, GAIA::U8, GROUPNAMELEN> __GroupNameType;
+		typedef GAIA::CONTAINER::BasicChars<GAIA::CH, GAIA::U8, USERNAMELEN> __UserNameType;
+		typedef GAIA::CONTAINER::BasicChars<GAIA::CH, GAIA::U8, PASSWORDLEN> __PasswordType;
+		typedef GAIA::CONTAINER::BasicChars<GAIA::CH, GAIA::U8, GROUPNAMELEN> __GroupNameType;
 		typedef GAIA::CONTAINER::Vector<__UserNameType> __UserNameListType;
 		typedef GAIA::CONTAINER::Vector<__GroupNameType> __GroupNameListType;
 	private:
@@ -902,7 +902,7 @@ namespace DWARFS_FSHA
 		typedef GAIA::CONTAINER::Pool<User> __UserPoolType;
 		typedef GAIA::CONTAINER::Pool<Group> __GroupPoolType;
 	public:
-		GINL GAIA::BL Load(const GAIA::GCH* pszFileName)
+		GINL GAIA::BL Load(const GAIA::CH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -976,7 +976,7 @@ namespace DWARFS_FSHA
 			delete pFactory;
 			return GAIA::True;
 		}
-		GINL GAIA::BL Save(const GAIA::GCH* pszFileName)
+		GINL GAIA::BL Save(const GAIA::CH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -1070,7 +1070,7 @@ namespace DWARFS_FSHA
 			pUser->pwd = pwd;
 			return GAIA::True;
 		}
-		GINL const GAIA::GCH* GetUserPassword(const __UserNameType& name) const
+		GINL const GAIA::CH* GetUserPassword(const __UserNameType& name) const
 		{
 			GAIA_AST(!name.empty());
 			if(name.empty())
@@ -1430,7 +1430,7 @@ namespace DWARFS_FSHA
 	public:
 		GINL BanIP(){}
 		GINL ~BanIP(){}
-		GINL GAIA::BL Load(const GAIA::GCH* pszFileName)
+		GINL GAIA::BL Load(const GAIA::CH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -1482,7 +1482,7 @@ namespace DWARFS_FSHA
 			delete pFactory;
 			return GAIA::True;
 		}
-		GINL GAIA::BL Save(const GAIA::GCH* pszFileName)
+		GINL GAIA::BL Save(const GAIA::CH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszFileName));
 			if(GAIA::ALGORITHM::stremp(pszFileName))
@@ -1604,7 +1604,7 @@ namespace DWARFS_FSHA
 		{
 		public:
 			virtual ~FileAccess(){}
-			virtual GAIA::BL Open(const GAIA::GCH* pszFileName, GAIA::BL bReadOnly) = 0;
+			virtual GAIA::BL Open(const GAIA::CH* pszFileName, GAIA::BL bReadOnly) = 0;
 			virtual GAIA::BL Close() = 0;
 			virtual GAIA::BL IsOpen() const = 0;
 			virtual GAIA::N64 Read(GAIA::GVOID* p, GAIA::N64 nSize) = 0;
@@ -1619,7 +1619,7 @@ namespace DWARFS_FSHA
 		class __DWARFS_FILESHARE_API DefaultFileAccess : public FileAccess
 		{
 		public:
-			virtual GAIA::BL Open(const GAIA::GCH* pszFileName, GAIA::BL bReadOnly)
+			virtual GAIA::BL Open(const GAIA::CH* pszFileName, GAIA::BL bReadOnly)
 			{
 				if(bReadOnly)
 					return m_file.Open(pszFileName, GAIA::FILESYSTEM::File::OPEN_TYPE_READ);
@@ -2406,9 +2406,9 @@ namespace DWARFS_FSHA
 		#define ERRNO_REPEATOP		((ERRNO)6)
 		#define ERRNO_NOTREADY		((ERRNO)7)
 		#define ERRNO_TIMEOUT		((ERRNO)8)
-		const GAIA::GCH* ErrorString(ERRNO en)
+		const GAIA::CH* ErrorString(ERRNO en)
 		{
-			static const GAIA::GCH* ERRNO_ANAME[] =
+			static const GAIA::CH* ERRNO_ANAME[] =
 			{
 				"NoError",
 				"Busy",
@@ -2608,10 +2608,10 @@ namespace DWARFS_FSHA
 		GINL const GAIA::U64& GetMaxUploadSpeed() const{return m_uUSpeed;}
 		GINL GAIA::GVOID SetMaxDownloadSpeed(const GAIA::U64& uSpeed){m_uDSpeed = uSpeed;}
 		GINL const GAIA::U64& GetMaxDownloadSpeed() const{return m_uDSpeed;}
-		GINL GAIA::GVOID SetReadRootPath(const GAIA::GCH* pszPathName){m_readroot = pszPathName;}
-		GINL const GAIA::GCH* GetReadRootPath() const{return m_readroot.front_ptr();}
-		GINL GAIA::GVOID SetWriteRootPath(const GAIA::GCH* pszPathName){m_writeroot = pszPathName;}
-		GINL const GAIA::GCH* GetWriteRootPath() const{return m_writeroot.front_ptr();}
+		GINL GAIA::GVOID SetReadRootPath(const GAIA::CH* pszPathName){m_readroot = pszPathName;}
+		GINL const GAIA::CH* GetReadRootPath() const{return m_readroot.front_ptr();}
+		GINL GAIA::GVOID SetWriteRootPath(const GAIA::CH* pszPathName){m_writeroot = pszPathName;}
+		GINL const GAIA::CH* GetWriteRootPath() const{return m_writeroot.front_ptr();}
 		GINL GAIA::GVOID SetFileCmpl(const FILEID& fileid, GAIA::BL bCmpl)
 		{
 			AL al(m_lr_filestate);
@@ -2684,7 +2684,7 @@ namespace DWARFS_FSHA
 		GINL GAIA::N32 GetMaxRequestFileCountSameTime() const{return m_nMaxRequestFileCountSameTime;}
 		GINL GAIA::GVOID EnableRecycleLink(GAIA::BL bEnable){m_bEnableRecycleLink = bEnable;}
 		GINL GAIA::BL IsEnableRecycleLink() const{return m_bEnableRecycleLink;}
-		GAIA::BL Command(const GAIA::GCH* pszCmd)
+		GAIA::BL Command(const GAIA::CH* pszCmd)
 		{
 			// Command analyze.
 			if(GAIA::ALGORITHM::stremp(pszCmd))
@@ -2704,7 +2704,7 @@ namespace DWARFS_FSHA
 			strCmd.clear();
 
 			// Execute command.
-			static const GAIA::GCH* COMMAND_LIST[] =
+			static const GAIA::CH* COMMAND_LIST[] =
 			{
 				"Invalid",				"Invalid, format = Invalid.",
 				"v",					"show version, format = v.",
@@ -2908,7 +2908,7 @@ namespace DWARFS_FSHA
 				m_prt >> pfold >> pfnew;
 				pfnew.align(24);
 				pfnew.left(GAIA::True);
-				for(GAIA::N32 x = 0; x < sizeof(COMMAND_LIST) / sizeof(const GAIA::GCH*) / 2; ++x)
+				for(GAIA::N32 x = 0; x < sizeof(COMMAND_LIST) / sizeof(const GAIA::CH*) / 2; ++x)
 					m_prt << "[" << x << "] " << pfnew << COMMAND_LIST[x * 2] << pfold << "Info: " << COMMAND_LIST[x * 2 + 1] << "\n";
 			}
 			else if(CMD(CMD_STATISTICS))
@@ -3045,7 +3045,7 @@ namespace DWARFS_FSHA
 				// Main address and self address.
 				{
 					m_prt << "[IP address information]" << "\n";
-					GAIA::GCH szText[128];
+					GAIA::CH szText[128];
 					m_mainna.ToString(szText);
 					m_prt << "MainAddress = " << szText << "\n";
 					m_pNH->GetSelfNetAddress().ToString(szText);
@@ -3073,7 +3073,7 @@ namespace DWARFS_FSHA
 			{
 				if(listPart.size() == 3)
 				{
-					const GAIA::GCH* psz = "";
+					const GAIA::CH* psz = "";
 					if(listPart[2] != "NULL")
 						psz = listPart[2].front_ptr();
 					AL al(m_lr_filelist);
@@ -3412,7 +3412,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 2)
 				{
 					AL al(m_lr_usergroup);
-					const GAIA::GCH* pszPassword = m_usergroup.GetUserPassword(listPart[1].front_ptr());
+					const GAIA::CH* pszPassword = m_usergroup.GetUserPassword(listPart[1].front_ptr());
 					if(pszPassword == GNULL)
 						CMDFAILED;
 					AL alprt(m_lr_prt);
@@ -3486,7 +3486,7 @@ namespace DWARFS_FSHA
 				{
 					AL al(m_lr_filelist);
 					FILEID fid = listPart[1];
-					GAIA::GCH szPathName[MAXPATHLEN];
+					GAIA::CH szPathName[MAXPATHLEN];
 					CRCTYPE crc;
 					if(m_filelist.GetName(fid, szPathName) &&
 						m_filelist.GetCRC(fid, crc))
@@ -3525,7 +3525,7 @@ namespace DWARFS_FSHA
 					AL alprt(m_lr_prt);
 					for(FILEID x = 0; x < m_filelist.GetFileCount(); ++x)
 					{
-						GAIA::GCH szPathName[MAXPATHLEN];
+						GAIA::CH szPathName[MAXPATHLEN];
 						CRCTYPE crc;
 						m_filelist.GetName(x, szPathName);
 						m_filelist.GetCRC(x, crc);
@@ -3605,7 +3605,7 @@ namespace DWARFS_FSHA
 					AL al(m_lr_banip);
 					BanIP::__BanIPSet::const_it it = m_banip.GetBanIPFrontIterator();
 					GAIA::N32 nIndex = 0;
-					GAIA::GCH szTemp[120];
+					GAIA::CH szTemp[120];
 					GAIA::U64 uCurrentTime = GAIA::TIME::clock_time();
 					AL alprt(m_lr_prt);
 					for(; !it.empty(); ++it)
@@ -3695,7 +3695,7 @@ namespace DWARFS_FSHA
 				{
 					{
 						AL alprt(m_lr_prt);
-						GAIA::GCH szText[128];
+						GAIA::CH szText[128];
 						m_mainna.ToString(szText);
 						m_prt << "MainAddress = " << szText << "\n";
 						m_pNH->GetSelfNetAddress().ToString(szText);
@@ -3707,7 +3707,7 @@ namespace DWARFS_FSHA
 					for(__LinkListType::it it = m_links.front_it(); !it.empty(); ++it)
 					{
 						NLink& nl = *it;
-						GAIA::GCH szText[128];
+						GAIA::CH szText[128];
 						nl.na.ToString(szText);
 						AL alprt(m_lr_prt);
 						m_prt << "[" << nIndex << "] " << szText << " ";
@@ -3736,7 +3736,7 @@ namespace DWARFS_FSHA
 				{
 					{
 						AL alprt(m_lr_prt);
-						GAIA::GCH szText[128];
+						GAIA::CH szText[128];
 						m_mainna.ToString(szText);
 						m_prt << "MainAddress = " << szText << "\n";
 						m_pNH->GetSelfNetAddress().ToString(szText);
@@ -3748,7 +3748,7 @@ namespace DWARFS_FSHA
 					for(__LinkPriListType::it it = m_prilinks.front_it(); !it.empty(); ++it)
 					{
 						NLinkPri& nlp = *it;
-						GAIA::GCH szText[128];
+						GAIA::CH szText[128];
 						nlp.nlink.na.ToString(szText);
 						AL alprt(m_lr_prt);
 						m_prt << "[" << nIndex << "] " << szText << " ";
@@ -3839,7 +3839,7 @@ namespace DWARFS_FSHA
 					for(; !it.empty(); ++it)
 					{
 						FileRecCache& frc = *it;
-						GAIA::GCH szFileName[MAXPATHLEN];
+						GAIA::CH szFileName[MAXPATHLEN];
 						if(!m_filelist.GetName(frc.fid, szFileName))
 							GAIA::ALGORITHM::strcpy(szFileName, "<InvalidFileName>");
 						m_prt << "[" << nIndex << "] " << " FileID=" << frc.fid << " " << szFileName <<
@@ -3869,7 +3869,7 @@ namespace DWARFS_FSHA
 			{
 				if(listPart.size() == 1)
 				{
-					static const GAIA::GCH TESTREADROOT[] = "readroot/";
+					static const GAIA::CH TESTREADROOT[] = "readroot/";
 					static const GAIA::U32 TESTFILECOUNT = 1000;
 					static const GAIA::U32 TESTFILEMINSIZE = 10;
 					static const GAIA::U32 TESTFILEMAXSIZE = 1024 * 1024;
@@ -3884,10 +3884,10 @@ namespace DWARFS_FSHA
 					GAIA::U64 uTotalFileSize = 0;
 					for(GAIA::U32 x = 0; x < TESTFILECOUNT; ++x)
 					{
-						GAIA::GCH szFile[MAXPATHLEN];
+						GAIA::CH szFile[MAXPATHLEN];
 						GAIA::ALGORITHM::int2str((GAIA::N32)x, szFile);
 						GAIA::ALGORITHM::strcat(szFile, ".t");
-						GAIA::GCH szFullName[MAXPATHLEN];
+						GAIA::CH szFullName[MAXPATHLEN];
 						GAIA::ALGORITHM::strcpy(szFullName, TESTREADROOT);
 						GAIA::ALGORITHM::strcat(szFullName, szFile);
 						GAIA::FILESYSTEM::File file;
@@ -4520,12 +4520,12 @@ namespace DWARFS_FSHA
 				GAIA::BL bCRCSuccess = GAIA::True;
 				/* File CRC checkup. */
 				{
-					GAIA::GCH szFullName[MAXPATHLEN];
+					GAIA::CH szFullName[MAXPATHLEN];
 					if(m_writeroot.empty())
 						szFullName[0] = 0;
 					else
 						GAIA::ALGORITHM::strcpy(szFullName, m_writeroot.front_ptr());
-					GAIA::GCH szFileName[MAXPATHLEN];
+					GAIA::CH szFileName[MAXPATHLEN];
 					m_filelist.GetName((*it).fid, szFileName);
 					GAIA::ALGORITHM::strcat(szFullName, szFileName);
 					CRCTYPE crc = m_filelist.BuildFileCRC(szFullName);
@@ -5095,13 +5095,13 @@ namespace DWARFS_FSHA
 					__FileHeadSendTaskListType::_datatype& t = *it;
 					/* Get file size. */
 					FILESIZETYPE fsize;
-					GAIA::GCH szFileName[MAXPATHLEN];
+					GAIA::CH szFileName[MAXPATHLEN];
 					if(!m_filelist.GetName(t.fid, szFileName))
 					{
 						GAIA_AST(GAIA::ALWAYSFALSE);
 						continue;
 					}
-					GAIA::GCH szFullName[MAXPATHLEN];
+					GAIA::CH szFullName[MAXPATHLEN];
 					if(m_readroot.empty())
 						szFullName[0] = 0;
 					else
@@ -5151,7 +5151,7 @@ namespace DWARFS_FSHA
 				if(uTime - m_uLoopCmdLastFireTime > m_uLoopCmdEscape * 1000)
 				{
 					m_uLoopCmdLastFireTime = uTime;
-					GAIA::GCH szTemp[MAXPATHLEN];
+					GAIA::CH szTemp[MAXPATHLEN];
 					GAIA::ALGORITHM::strcpy(szTemp, m_szLoopCmd);
 					GAIA::ALGORITHM::replace(szTemp, GAIA::ALGORITHM::strlen(szTemp), '-', ' ');
 					this->Command(szTemp);
@@ -5363,8 +5363,8 @@ namespace DWARFS_FSHA
 			case MSG_R_LOGIN:
 				{
 					GAIA::F64 fPerfLoginR = FSHA_PERF;
-					GAIA::GCH uname[USERNAMELEN + 1];
-					GAIA::GCH password[USERNAMELEN + 1];
+					GAIA::CH uname[USERNAMELEN + 1];
+					GAIA::CH password[USERNAMELEN + 1];
 					m_OnReceiveMsgTemp >> uname;
 					m_OnReceiveMsgTemp >> password;
 					ERRNO en = this->BeLogin(na, uname, password);
@@ -5391,7 +5391,7 @@ namespace DWARFS_FSHA
 			case MSG_R_LOGOUT:
 				{
 					GAIA::F64 fPerfLogoutR = FSHA_PERF;
-					GAIA::GCH uname[USERNAMELEN + 1];
+					GAIA::CH uname[USERNAMELEN + 1];
 					m_OnReceiveMsgTemp >> uname;
 					ERRNO en = this->BeLogout(na, uname);
 					if(en != ERRNO_NOERROR)
@@ -5972,7 +5972,7 @@ namespace DWARFS_FSHA
 					GAIA::F64 fPerfErrorA = FSHA_PERF;
 					ERRNO en;
 					m_OnReceiveMsgTemp >> en;
-					const GAIA::GCH* pszError = this->ErrorString(en);
+					const GAIA::CH* pszError = this->ErrorString(en);
 					AL alprt(m_lr_prt);
 					if(pszError == GNULL)
 						m_prt << "Known error!" << "\n";
@@ -5993,7 +5993,7 @@ namespace DWARFS_FSHA
 		GINL GAIA::GVOID OnLostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse)
 		{
 		}
-		GINL GAIA::BL NLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName, const GAIA::GCH* pszPassword)
+		GINL GAIA::BL NLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::CH* pszUserName, const GAIA::CH* pszPassword)
 		{
 			__MsgType msg;
 			msg.reserve(1024);
@@ -6036,7 +6036,7 @@ namespace DWARFS_FSHA
 
 			return this->Send(msg.front_ptr(), msg.write_size());
 		}
-		GINL ERRNO BeLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName, const GAIA::GCH* pszPassword)
+		GINL ERRNO BeLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::CH* pszUserName, const GAIA::CH* pszPassword)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszUserName));
 			if(GAIA::ALGORITHM::stremp(pszUserName))
@@ -6064,7 +6064,7 @@ namespace DWARFS_FSHA
 				AL al(m_lr_usergroup);
 				if(!m_usergroup.FindUser(pszUserName))
 					return ERRNO_USERNAME;
-				const GAIA::GCH* pszCorrectPassword = m_usergroup.GetUserPassword(pszUserName);
+				const GAIA::CH* pszCorrectPassword = m_usergroup.GetUserPassword(pszUserName);
 				if(GAIA::ALGORITHM::stremp(pszCorrectPassword) &&
 					GAIA::ALGORITHM::stremp(pszPassword))
 				{
@@ -6120,7 +6120,7 @@ namespace DWARFS_FSHA
 			}
 			return ERRNO_NOERROR;
 		}
-		GINL GAIA::BL NLogout(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName)
+		GINL GAIA::BL NLogout(const GAIA::NETWORK::NetworkAddress& na, const GAIA::CH* pszUserName)
 		{
 			// Release a exist link.
 			{
@@ -6146,7 +6146,7 @@ namespace DWARFS_FSHA
 			msg << pszUserName;
 			return this->Send(msg.front_ptr(), msg.write_size());
 		}
-		GINL ERRNO BeLogout(const GAIA::NETWORK::NetworkAddress& na, const GAIA::GCH* pszUserName)
+		GINL ERRNO BeLogout(const GAIA::NETWORK::NetworkAddress& na, const GAIA::CH* pszUserName)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszUserName));
 			if(GAIA::ALGORITHM::stremp(pszUserName))
@@ -6186,10 +6186,10 @@ namespace DWARFS_FSHA
 				pFRC->pFA = m_desc.pFAC->CreateFileAccess();
 			if(!pFRC->pFA->IsOpen())
 			{
-				GAIA::GCH szFileName[MAXPATHLEN];
+				GAIA::CH szFileName[MAXPATHLEN];
 				if(m_filelist.GetName(fid, szFileName))
 				{
-					GAIA::GCH szFullName[MAXPATHLEN];
+					GAIA::CH szFullName[MAXPATHLEN];
 					if(bWrite)
 					{
 						if(m_writeroot.empty())
@@ -6207,7 +6207,7 @@ namespace DWARFS_FSHA
 					GAIA::ALGORITHM::strcat(szFullName, szFileName);
 					if(bWrite)
 					{
-						GAIA::GCH szPath[MAXPATHLEN];
+						GAIA::CH szPath[MAXPATHLEN];
 						GAIA::ALGORITHM::strcpy(szPath, szFullName);
 						GAIA::ALGORITHM::strdropr(szPath, "/\\");
 						GAIA::FILESYSTEM::Directory dir;
@@ -6641,7 +6641,7 @@ namespace DWARFS_FSHA
 		GAIA::N32 m_nMaxRequestFileCountSameTime;
 		GAIA::BL m_bEnableRecycleLink;
 		GAIA::U64 m_uLastNotifyCmplTime;
-		GAIA::GCH m_szLoopCmd[MAXPATHLEN];
+		GAIA::CH m_szLoopCmd[MAXPATHLEN];
 		GAIA::U64 m_uLoopCmdTimes;
 		GAIA::U64 m_uLoopCmdEscape;
 		GAIA::U64 m_uLoopCmdLastFireTime;

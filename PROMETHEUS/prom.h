@@ -7,9 +7,9 @@
 
 namespace PROM
 {
-	static const GAIA::GCH VERSION_STRING[] = "00.00.01.00";
+	static const GAIA::CH VERSION_STRING[] = "00.00.01.00";
 	static const GAIA::U32 VERSION = 0x00000100;
-	static const GAIA::GCH FILEBREAK[] = "\r\n";
+	static const GAIA::CH FILEBREAK[] = "\r\n";
 
 	typedef GAIA::CONTAINER::AString __FileName;
 	typedef GAIA::CONTAINER::AString __WordType;
@@ -49,10 +49,10 @@ namespace PROM
 				virtual GAIA::U16 getid() const = 0;
 				virtual GAIA::U8 getstage() const = 0;
 				virtual GAIA::U8 getlevel() const = 0;
-				virtual const GAIA::GCH* getdesc() const = 0;
-				virtual const GAIA::GCH* getsample() const = 0;
-				GINL GAIA::GVOID setfilename(const GAIA::GCH* pszFileName){m_strFileName = pszFileName;}
-				GINL const GAIA::GCH* getfilename() const{return m_strFileName.front_ptr();}
+				virtual const GAIA::CH* getdesc() const = 0;
+				virtual const GAIA::CH* getsample() const = 0;
+				GINL GAIA::GVOID setfilename(const GAIA::CH* pszFileName){m_strFileName = pszFileName;}
+				GINL const GAIA::CH* getfilename() const{return m_strFileName.front_ptr();}
 				GINL GAIA::GVOID setfileline(GAIA::U32 uFileLine){m_uFileLine = uFileLine;}
 				GINL GAIA::U32 getfileline() const{return m_uFileLine;}
 			private:
@@ -66,8 +66,8 @@ namespace PROM
 					virtual GAIA::U16 getid() const{return id;}\
 					virtual GAIA::U8 getstage() const{return stage;}\
 					virtual GAIA::U8 getlevel() const{return level;}\
-					virtual const GAIA::GCH* getdesc() const{return desc;}\
-					virtual const GAIA::GCH* getsample() const{return sample;}\
+					virtual const GAIA::CH* getdesc() const{return desc;}\
+					virtual const GAIA::CH* getsample() const{return sample;}\
 				};
 			PROM_ERROR(101,		0x0000, 0x0000, "pipeline execute failed, no pipeline context returned", "");
 			PROM_ERROR(102,		0x0000, 0x0000, "command parameters error", "");
@@ -365,29 +365,29 @@ namespace PROM
 		public:
 			GINL PipelineContext(){}
 			GINL ~PipelineContext(){}
-			virtual const GAIA::GCH* GetName() const = 0;
+			virtual const GAIA::CH* GetName() const = 0;
 		};
 		class PLC_Empty : public PipelineContext
 		{
 		public:
 			GINL PLC_Empty(){}
 			GINL ~PLC_Empty(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_Empty";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PLC_Empty";}
 		};
 		class PLC_SourceCommand : public PipelineContext
 		{
 		public:
 			GINL PLC_SourceCommand(){pszCmd = GNULL;}
 			GINL ~PLC_SourceCommand(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_SourceCommand";}
-			const GAIA::GCH* pszCmd;
+			virtual const GAIA::CH* GetName() const{return "Prom:PLC_SourceCommand";}
+			const GAIA::CH* pszCmd;
 		};
 		class PLC_CommandParam : public PipelineContext
 		{
 		public:
 			GINL PLC_CommandParam(){this->init();}
 			GINL ~PLC_CommandParam(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_CommandParam";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PLC_CommandParam";}
 			DWARFS_MISC::CmdParam cmdparam;
 		private:
 			GINL GAIA::GVOID init()
@@ -399,7 +399,7 @@ namespace PROM
 		public:
 			GINL PLC_File(){}
 			GINL ~PLC_File(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_File";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PLC_File";}
 		public:
 			class File
 			{
@@ -420,7 +420,7 @@ namespace PROM
 		public:
 			GINL PLC_FileCodeLine(){}
 			GINL ~PLC_FileCodeLine(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_FileCodeLine";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PLC_FileCodeLine";}
 		public:
 			class FileCodeLines
 			{
@@ -436,7 +436,7 @@ namespace PROM
 		public:
 			GINL PLC_FileCodeLinePrepare(){}
 			GINL ~PLC_FileCodeLinePrepare(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_FileCodeLinePrepare";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PLC_FileCodeLinePrepare";}
 		public:
 			PLC_FileCodeLine::__FileCodelinesList file_codelines_list;
 		};
@@ -445,7 +445,7 @@ namespace PROM
 		public:
 			GINL PLC_FileStructure(){}
 			GINL ~PLC_FileStructure(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_FileStructure";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PLC_FileStructure";}
 		public:
 			typedef GAIA::CONTAINER::Set<__FileName> __FileLinkSet;
 			class Node
@@ -458,7 +458,7 @@ namespace PROM
 			};
 			typedef GAIA::CONTAINER::Set<Node> __FileNodeSet;
 		public:
-			GINL GAIA::BL AddLink(const GAIA::GCH* pszParentFile, const GAIA::GCH* pszChildFile)
+			GINL GAIA::BL AddLink(const GAIA::CH* pszParentFile, const GAIA::CH* pszChildFile)
 			{
 				GPCHR_NULLSTRPTR_RET(pszParentFile, GAIA::False);
 				GPCHR_NULLSTRPTR_RET(pszChildFile, GAIA::False);
@@ -486,7 +486,7 @@ namespace PROM
 				pFindedChild->parents.insert(pszParentFile);
 				return GAIA::True;
 			}
-			GINL GAIA::BL IsLinkExist(const GAIA::GCH* pszParentFile, const GAIA::GCH* pszChildFile) const
+			GINL GAIA::BL IsLinkExist(const GAIA::CH* pszParentFile, const GAIA::CH* pszChildFile) const
 			{
 				GPCHR_NULLSTRPTR_RET(pszParentFile, GAIA::False);
 				GPCHR_NULLSTRPTR_RET(pszChildFile, GAIA::False);
@@ -496,14 +496,14 @@ namespace PROM
 						return GAIA::True;
 				return GAIA::False;
 			}
-			GINL const Node* FindNode(const GAIA::GCH* pszFile) const
+			GINL const Node* FindNode(const GAIA::CH* pszFile) const
 			{
 				GPCHR_NULLSTRPTR_RET(pszFile, GNULL);
 				Node finder;
 				finder.name = pszFile;
 				return filenodeset.find(finder);
 			}
-			GINL Node* FindNode(const GAIA::GCH* pszFile)
+			GINL Node* FindNode(const GAIA::CH* pszFile)
 			{
 				GPCHR_NULLSTRPTR_RET(pszFile, GNULL);
 				Node finder;
@@ -622,7 +622,7 @@ namespace PROM
 		public:
 			GINL PLC_ObjCtn(){}
 			GINL ~PLC_ObjCtn(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_ObjCtn";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PLC_ObjCtn";}
 		public:
 			typedef GAIA::CONTAINER::Set<RecLocation> __RecLocationSetType;
 		public:
@@ -633,7 +633,7 @@ namespace PROM
 		public:
 			GINL PLC_Word(){}
 			GINL ~PLC_Word(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PLC_Word";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PLC_Word";}
 		public:
 			class Word
 			{
@@ -664,7 +664,7 @@ namespace PROM
 		public:
 			GINL Pipeline(){}
 			GINL ~Pipeline(){}
-			GINL PipelineContext* GetPLCByName(PipelineContext** ppPLC, const GAIA::SIZE& size, const GAIA::GCH* pszName) const
+			GINL PipelineContext* GetPLCByName(PipelineContext** ppPLC, const GAIA::SIZE& size, const GAIA::CH* pszName) const
 			{
 				GAIA_AST(ppPLC != GNULL);
 				if(ppPLC == GNULL)
@@ -676,7 +676,7 @@ namespace PROM
 				{
 					if(ppPLC[x] == GNULL)
 						continue;
-					const GAIA::GCH* pszTempName = ppPLC[x]->GetName();
+					const GAIA::CH* pszTempName = ppPLC[x]->GetName();
 					if(GAIA::ALGORITHM::strcmp(pszTempName, pszName) == 0)
 					{
 						ppPLC[x]->Reference();
@@ -695,7 +695,7 @@ namespace PROM
 				}
 				return GNULL;
 			}
-			virtual const GAIA::GCH* GetName() const = 0;
+			virtual const GAIA::CH* GetName() const = 0;
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs) = 0;
 			virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt){return GAIA::False;}
 		};
@@ -704,7 +704,7 @@ namespace PROM
 		public:
 			GINL PL_CommandAnalyze(){}
 			GINL ~PL_CommandAnalyze(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_CommandAnalyze";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_CommandAnalyze";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -774,13 +774,13 @@ namespace PROM
 
 				for(GAIA::SIZE x = 0; x < plc_sourcecommand->cmdparam.cmd_size(); ++x)
 				{
-					const GAIA::GCH* pszCmd = plc_sourcecommand->cmdparam.cmd(x);
+					const GAIA::CH* pszCmd = plc_sourcecommand->cmdparam.cmd(x);
 					if(GAIA::ALGORITHM::stremp(pszCmd))
 						continue;
 					prt << "\t\t" << pszCmd << " ";
 					for(GAIA::SIZE y = 0; y < plc_sourcecommand->cmdparam.param_size(x); ++y)
 					{
-						const GAIA::GCH* pszParam = plc_sourcecommand->cmdparam.param(x, y);
+						const GAIA::CH* pszParam = plc_sourcecommand->cmdparam.param(x, y);
 						if(GAIA::ALGORITHM::stremp(pszParam))
 							continue;
 						prt << pszParam << " ";
@@ -796,7 +796,7 @@ namespace PROM
 		public:
 			GINL PL_Help(){}
 			GINL ~PL_Help(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_Help";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_Help";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -814,7 +814,7 @@ namespace PROM
 				PLC_Empty* pRet = new PLC_Empty;
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
-					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					const GAIA::CH* pszCmd = plc_commandparam->cmdparam.cmd(x);
 					if(GAIA::ALGORITHM::stremp(pszCmd))
 						continue;
 					if(GAIA::ALGORITHM::strcmp(pszCmd, "help") == 0)
@@ -829,10 +829,10 @@ namespace PROM
 						{
 							for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.cmd_decl_size(); ++y)
 							{
-								const GAIA::GCH* pszDeclCmd = plc_commandparam->cmdparam.cmd_decl_cmd(y);
+								const GAIA::CH* pszDeclCmd = plc_commandparam->cmdparam.cmd_decl_cmd(y);
 								if(pszDeclCmd == GNULL)
 									continue;
-								const GAIA::GCH* pszDeclDesc = plc_commandparam->cmdparam.cmd_decl_desc(y);
+								const GAIA::CH* pszDeclDesc = plc_commandparam->cmdparam.cmd_decl_desc(y);
 								GAIA::SIZE min_param_size = plc_commandparam->cmdparam.cmd_decl_min_param_size(y);
 								GAIA::SIZE max_param_size = plc_commandparam->cmdparam.cmd_decl_max_param_size(y);
 								DWARFS_MISC::CmdParam::CMD_TYPE cmdtype = plc_commandparam->cmdparam.cmd_decl_type(y);
@@ -858,7 +858,7 @@ namespace PROM
 		public:
 			GINL PL_FileCollect(){}
 			GINL ~PL_FileCollect(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_FileCollect";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_FileCollect";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -884,14 +884,14 @@ namespace PROM
 				__ExtListType listExt;
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
-					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					const GAIA::CH* pszCmd = plc_commandparam->cmdparam.cmd(x);
 					if(GAIA::ALGORITHM::stremp(pszCmd))
 						continue;
 					if(GAIA::ALGORITHM::strcmp(pszCmd, "-i") == 0)
 					{
 						for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
 						{
-							const GAIA::GCH* pszParam = plc_commandparam->cmdparam.param(x, y);
+							const GAIA::CH* pszParam = plc_commandparam->cmdparam.param(x, y);
 							if(GAIA::ALGORITHM::stremp(pszParam))
 								continue;
 							listFile.push_back(pszParam);
@@ -901,7 +901,7 @@ namespace PROM
 					{
 						for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
 						{
-							const GAIA::GCH* pszParam = plc_commandparam->cmdparam.param(x, y);
+							const GAIA::CH* pszParam = plc_commandparam->cmdparam.param(x, y);
 							if(GAIA::ALGORITHM::stremp(pszParam))
 								continue;
 							listPath.push_back(pszParam);
@@ -911,7 +911,7 @@ namespace PROM
 					{
 						for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
 						{
-							const GAIA::GCH* pszParam = plc_commandparam->cmdparam.param(x, y);
+							const GAIA::CH* pszParam = plc_commandparam->cmdparam.param(x, y);
 							if(GAIA::ALGORITHM::stremp(pszParam))
 								continue;
 							listExt.push_back(pszParam);
@@ -981,7 +981,7 @@ namespace PROM
 		public:
 			GINL PL_LineCollect(){}
 			GINL ~PL_LineCollect(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_LineCollect";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_LineCollect";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -1029,7 +1029,7 @@ namespace PROM
 		public:
 			GINL PL_LineBreakCorrect(){}
 			GINL ~PL_LineBreakCorrect(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_LineBreakCorrect";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_LineBreakCorrect";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -1060,7 +1060,7 @@ namespace PROM
 				/* Execute. */
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
-					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					const GAIA::CH* pszCmd = plc_commandparam->cmdparam.cmd(x);
 					if(GAIA::ALGORITHM::stremp(pszCmd))
 						continue;
 					if(GAIA::ALGORITHM::strcmp(pszCmd, "-linebreak") == 0)
@@ -1196,7 +1196,7 @@ namespace PROM
 		public:
 			GINL PL_Format(){}
 			GINL ~PL_Format(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_Format";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_Format";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -1227,7 +1227,7 @@ namespace PROM
 				GAIA::BL bFmt = GAIA::False;
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
-					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					const GAIA::CH* pszCmd = plc_commandparam->cmdparam.cmd(x);
 					if(GAIA::ALGORITHM::stremp(pszCmd))
 						continue;
 					if(GAIA::ALGORITHM::strcmp(pszCmd, "-fmt") == 0)
@@ -1258,7 +1258,7 @@ namespace PROM
 							GAIA::BL bLineChanged = GAIA::False;
 
 							/* Get line break flag. */
-							GAIA::GCH szLineBreak[3];
+							GAIA::CH szLineBreak[3];
 							if(strLine.back() == '\n')
 							{
 								if(strLine.size() > 1)
@@ -1300,7 +1300,7 @@ namespace PROM
 							}
 
 							/* Remove continuation-space. */
-							GAIA::GCH chOld = '\0';
+							GAIA::CH chOld = '\0';
 							for(GAIA::SIZE z = 0; z < strLine.size(); ++z)
 							{
 								if(strLine[z] == ' ')
@@ -1355,7 +1355,7 @@ namespace PROM
 		public:
 			GINL PL_LinePrepare(){}
 			GINL ~PL_LinePrepare(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_LinePrepare";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_LinePrepare";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -1563,7 +1563,7 @@ namespace PROM
 		public:
 			GINL PL_FileStructureAnalyze(){}
 			GINL ~PL_FileStructureAnalyze(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_FileStructureAnalyze";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_FileStructureAnalyze";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -1749,7 +1749,7 @@ namespace PROM
 		public:
 			GINL PL_ObjAnalyzeBase(){}
 			GINL ~PL_ObjAnalyzeBase(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_ObjAnalyzeBase";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_ObjAnalyzeBase";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -1807,7 +1807,7 @@ namespace PROM
 		public:
 			GINL PL_ObjAnalyzeUnwrapMacro(){}
 			GINL ~PL_ObjAnalyzeUnwrapMacro(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_ObjAnalyzeUnwrapMacro";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_ObjAnalyzeUnwrapMacro";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -1865,7 +1865,7 @@ namespace PROM
 		public:
 			GINL PL_LineStat(){}
 			GINL ~PL_LineStat(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_LineStat";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_LineStat";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
@@ -1876,7 +1876,7 @@ namespace PROM
 		public:
 			GINL PL_WordStat(){}
 			GINL ~PL_WordStat(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_WordStat";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_WordStat";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -1907,7 +1907,7 @@ namespace PROM
 				GAIA::BL bWordStat = GAIA::False;
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
-					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					const GAIA::CH* pszCmd = plc_commandparam->cmdparam.cmd(x);
 					if(GAIA::ALGORITHM::stremp(pszCmd))
 						continue;
 					if(GAIA::ALGORITHM::strcmp(pszCmd, "-wordstat") == 0)
@@ -1971,7 +1971,7 @@ namespace PROM
 									{
 										if(z != flag_changed_index)
 										{
-											static const GAIA::GCH* LINK_SIGN_LIST[] =
+											static const GAIA::CH* LINK_SIGN_LIST[] =
 											{
 												">>", "<<",
 												"++", "--",
@@ -2043,7 +2043,7 @@ namespace PROM
 					PLC_Word::Word& word = *it;
 					if(pFile != GNULL)
 					{
-						GAIA::GCH szTemp[32];
+						GAIA::CH szTemp[32];
 						GAIA::ALGORITHM::int2str(index++, szTemp);
 						pFile->Write("[", 1);
 						pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp));
@@ -2080,7 +2080,7 @@ namespace PROM
 					WordByRefCount& word = *itcountsort;
 					if(pFile != GNULL)
 					{
-						GAIA::GCH szTemp[32];
+						GAIA::CH szTemp[32];
 						GAIA::ALGORITHM::int2str(index++, szTemp);
 						pFile->Write("[", 1);
 						pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp));
@@ -2119,7 +2119,7 @@ namespace PROM
 		public:
 			GINL PL_SymbolStat(){}
 			GINL ~PL_SymbolStat(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_SymbolStat";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_SymbolStat";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
@@ -2130,7 +2130,7 @@ namespace PROM
 		public:
 			GINL PL_SingleLineAnalyze(){}
 			GINL ~PL_SingleLineAnalyze(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_SingleLineAnalyze";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_SingleLineAnalyze";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				return GNULL;
@@ -2141,7 +2141,7 @@ namespace PROM
 		public:
 			GINL PL_Save(){}
 			GINL ~PL_Save(){}
-			virtual const GAIA::GCH* GetName() const{return "Prom:PL_Save";}
+			virtual const GAIA::CH* GetName() const{return "Prom:PL_Save";}
 			virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 			{
 				/* Parameter check up. */
@@ -2172,7 +2172,7 @@ namespace PROM
 				GAIA::BL bSaveCmd = GAIA::False;
 				for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 				{
-					const GAIA::GCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
+					const GAIA::CH* pszCmd = plc_commandparam->cmdparam.cmd(x);
 					if(GAIA::ALGORITHM::stremp(pszCmd))
 						continue;
 					if(GAIA::ALGORITHM::strcmp(pszCmd, "-s") == 0)
@@ -2414,15 +2414,15 @@ namespace PROM
 				{
 					for(GAIA::SIZE y = 0; y < m_plc_commandparam->cmdparam.cmd_size(); ++y)
 					{
-						const GAIA::GCH* pszCmd = m_plc_commandparam->cmdparam.cmd(y);
+						const GAIA::CH* pszCmd = m_plc_commandparam->cmdparam.cmd(y);
 						if(GAIA::ALGORITHM::stremp(pszCmd))
 							continue;
 						if(GAIA::ALGORITHM::strcmp(pszCmd, "-o") == 0)
 						{
 							if(m_plc_commandparam->cmdparam.param_size(y) == 2)
 							{
-								const GAIA::GCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
-								const GAIA::GCH* pszParam1 = m_plc_commandparam->cmdparam.param(y, 1);
+								const GAIA::CH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
+								const GAIA::CH* pszParam1 = m_plc_commandparam->cmdparam.param(y, 1);
 								GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
 								GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam1));
 								if(!GAIA::ALGORITHM::stremp(pszParam0) && !GAIA::ALGORITHM::stremp(pszParam1))
@@ -2444,7 +2444,7 @@ namespace PROM
 							}
 							else if(m_plc_commandparam->cmdparam.param_size(y) == 1)
 							{
-								const GAIA::GCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
+								const GAIA::CH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
 								GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
 								if(!GAIA::ALGORITHM::stremp(pszParam0))
 								{
@@ -2473,7 +2473,7 @@ namespace PROM
 		GINL ~Prom()
 		{
 		}
-		GINL GAIA::BL Command(const GAIA::GCH* psz, GAIA::PRINT::PrintBase& prt)
+		GINL GAIA::BL Command(const GAIA::CH* psz, GAIA::PRINT::PrintBase& prt)
 		{
 			GAIA_AST(psz != GNULL);
 			if(psz == GNULL)

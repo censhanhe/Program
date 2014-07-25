@@ -20,7 +20,7 @@ namespace GAIA
 	GINL GAIA::GVOID Base::operator delete[](GAIA::GVOID* p){return g_global_allocator.memory_release(p);}
 #endif
 
-	GINL TYPEID nametotype(const GAIA::GCH* psz)
+	GINL TYPEID nametotype(const GAIA::CH* psz)
 	{
 		for(GAIA::N32 x = 0; x < sizeofarray(TYPEID_ANAME); ++x)
 		{
@@ -29,7 +29,7 @@ namespace GAIA
 		}
 		return TYPEID_INVALID;
 	}
-	GINL TYPEID nametotype(const GAIA::GWCH* psz)
+	GINL TYPEID nametotype(const GAIA::WCH* psz)
 	{
 		for(GAIA::N32 x = 0; x < sizeofarray(TYPEID_WNAME); ++x)
 		{

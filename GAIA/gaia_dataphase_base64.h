@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace DATAPHASE
 	{
-		GINL GAIA::SIZE Char2Base64(GAIA::GCH* pDst, GAIA::SIZE dstlen, const GAIA::GCH* pSrc, GAIA::SIZE srclen)
+		GINL GAIA::SIZE Char2Base64(GAIA::CH* pDst, GAIA::SIZE dstlen, const GAIA::CH* pSrc, GAIA::SIZE srclen)
 		{
 			GPCHR_NULL_RET(pDst, 0);
 			GPCHR_NULL_RET(pSrc, 0);
@@ -14,11 +14,11 @@ namespace GAIA
 			GAIA_AST(dstlen >= srclen * 2 + 4);
 			if(dstlen < srclen * 2 + 4)
 				return 0;
-			static const GAIA::GCH BASE64ENCODE[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-			GAIA::GCH* pOldDst = pDst;
+			static const GAIA::CH BASE64ENCODE[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+			GAIA::CH* pOldDst = pDst;
 			GAIA::N32 point = 2;
 			GAIA::N32 index = 0;
-			GAIA::GCH n = 0;
+			GAIA::CH n = 0;
 			for(GAIA::SIZE x = 0;x < srclen;x++)
 			{
 				if(point == 2)

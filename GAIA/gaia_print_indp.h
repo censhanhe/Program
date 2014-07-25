@@ -108,14 +108,14 @@ namespace GAIA
 			std::cout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::GWCH& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::WCH& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::wcout << t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::GCH* p)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::CH* p)
 		{
 			if(p == GNULL)
 				return *this;
@@ -124,7 +124,7 @@ namespace GAIA
 			std::cout << p;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::GWCH* p)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::WCH* p)
 		{
 			if(p == GNULL)
 				return *this;
@@ -230,14 +230,14 @@ namespace GAIA
 			std::cin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::GWCH& t)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::WCH& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::wcin >> t;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::GCH* p)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::CH* p)
 		{
 			if(p == GNULL)
 				return *this;
@@ -246,7 +246,7 @@ namespace GAIA
 			std::cin >> p;
 			return *this;
 		}
-		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::GWCH* p)
+		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::WCH* p)
 		{
 			if(p == GNULL)
 				return *this;
@@ -259,7 +259,7 @@ namespace GAIA
 		{
 			if(!this->enable_read())
 				return *this;
-			GAIA::GCH sz[128];
+			GAIA::CH sz[128];
 			std::cin >> sz;
 			t = sz;
 			return *this;

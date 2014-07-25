@@ -754,8 +754,8 @@ namespace GAIA
 		GINL GAIA::BL SerializerProc::read(Serializer* p, GAIA::NM& t){return GAIA::False;}
 		GINL GAIA::BL SerializerProc::write(Serializer* p, const GAIA::UM& t){return GAIA::False;}
 		GINL GAIA::BL SerializerProc::read(Serializer* p, GAIA::UM& t){return GAIA::False;}
-		GINL GAIA::BL SerializerProc::write(Serializer* p, const GAIA::GWCH& t){return GAIA::False;}
-		GINL GAIA::BL SerializerProc::read(Serializer* p, GAIA::GWCH& t){return GAIA::False;}
+		GINL GAIA::BL SerializerProc::write(Serializer* p, const GAIA::WCH& t){return GAIA::False;}
+		GINL GAIA::BL SerializerProc::read(Serializer* p, GAIA::WCH& t){return GAIA::False;}
 	#endif
 	};
 };

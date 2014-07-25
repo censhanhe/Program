@@ -5,8 +5,8 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		typedef BasicChars<GAIA::GCH, GAIA::SIZE, 512> AChars;
-		typedef BasicChars<GAIA::GWCH, GAIA::SIZE, 512> WChars;
+		typedef BasicChars<GAIA::CH, GAIA::SIZE, 512> AChars;
+		typedef BasicChars<GAIA::WCH, GAIA::SIZE, 512> WChars;
 	};
 };
 

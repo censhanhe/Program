@@ -116,7 +116,7 @@ namespace GAIATEST
 			GTLINE2("Buffer read failed!");
 			++nRet;
 		}
-		GAIA::GCH sz[100];
+		GAIA::CH sz[100];
 		if(!b.read(sz))
 		{
 			GTLINE2("Buffer read failed!");

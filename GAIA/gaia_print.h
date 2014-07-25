@@ -28,9 +28,9 @@ namespace GAIA
 			virtual PrintBase& operator << (const GAIA::U64& t) = 0;
 			virtual PrintBase& operator << (GAIA::F32 t) = 0;
 			virtual PrintBase& operator << (const GAIA::F64& t) = 0;
-			virtual PrintBase& operator << (const GAIA::GWCH& t) = 0;
-			virtual PrintBase& operator << (const GAIA::GCH* p) = 0;
-			virtual PrintBase& operator << (const GAIA::GWCH* p) = 0;
+			virtual PrintBase& operator << (const GAIA::WCH& t) = 0;
+			virtual PrintBase& operator << (const GAIA::CH* p) = 0;
+			virtual PrintBase& operator << (const GAIA::WCH* p) = 0;
 			virtual PrintBase& operator << (const GAIA::X128& t) = 0;
 
 			virtual PrintBase& operator >> (GAIA::BL& t) = 0;
@@ -46,9 +46,9 @@ namespace GAIA
 			virtual PrintBase& operator >> (GAIA::U64& t) = 0;
 			virtual PrintBase& operator >> (GAIA::F32& t) = 0;
 			virtual PrintBase& operator >> (GAIA::F64& t) = 0;
-			virtual PrintBase& operator >> (GAIA::GWCH& t) = 0;
-			virtual PrintBase& operator >> (GAIA::GCH* p) = 0;
-			virtual PrintBase& operator >> (GAIA::GWCH* p) = 0;
+			virtual PrintBase& operator >> (GAIA::WCH& t) = 0;
+			virtual PrintBase& operator >> (GAIA::CH* p) = 0;
+			virtual PrintBase& operator >> (GAIA::WCH* p) = 0;
 			virtual PrintBase& operator >> (GAIA::X128& t) = 0;
 
 			virtual PrintBase& operator >> (PrintFormat& pf) = 0;
@@ -83,9 +83,9 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::U64& t);
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::F32 t);
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::F64& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::GWCH& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::GCH* p);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::GWCH* p);
+			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::WCH& t);
+			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::CH* p);
+			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::WCH* p);
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::X128& t);
 
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::BL& t);
@@ -101,9 +101,9 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::U64& t);
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::F32& t);
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::F64& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::GWCH& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::GCH* p);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::GWCH* p);
+			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::WCH& t);
+			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::CH* p);
+			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::WCH* p);
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::X128& t);
 
 			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (PrintFormat& pf);

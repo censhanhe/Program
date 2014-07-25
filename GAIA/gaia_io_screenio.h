@@ -28,7 +28,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 			virtual GAIA::BL IsBegin() const{return m_bBegin;}
-			virtual GAIA::BL Open(const GAIA::GCH* pszIOName, GAIA::UM uTypeMask)
+			virtual GAIA::BL Open(const GAIA::CH* pszIOName, GAIA::UM uTypeMask)
 			{
 				return GAIA::True;
 			}

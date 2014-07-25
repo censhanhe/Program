@@ -10,13 +10,13 @@ namespace GAIA
 		public:
 			GINL IP(){}
 			GINL IP(const IP& src){this->operator = (src);}
-			GINL IP(const GAIA::GCH* psz){this->operator = (psz);}
+			GINL IP(const GAIA::CH* psz){this->operator = (psz);}
 			GINL ~IP(){}
 			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(us, 0, 4);}
 			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmpk(us, 0, 4) == 0;}
-			GINL GAIA::BL FromString(const GAIA::GCH* psz)
+			GINL GAIA::BL FromString(const GAIA::CH* psz)
 			{
-				const GAIA::GCH* p = psz;
+				const GAIA::CH* p = psz;
 				GAIA::U32 uDotCnt = GAIA::ALGORITHM::strcnt(psz, '.');
 				if(uDotCnt == 3)
 				{
@@ -30,9 +30,9 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			GINL GAIA::GVOID ToString(GAIA::GCH* psz) const
+			GINL GAIA::GVOID ToString(GAIA::CH* psz) const
 			{
-				GAIA::GCH* p = psz;
+				GAIA::CH* p = psz;
 				for(GAIA::N32 x = 0; x < 4; ++x)
 				{
 					p = GAIA::ALGORITHM::int2str((GAIA::N32)us[3 - x], p);
@@ -41,7 +41,7 @@ namespace GAIA
 				*(p - 1) = 0;
 			}
 			GINL IP& operator = (const IP& src){GAIA_AST(&src != this); u = src.u; return *this;}
-			GINL IP& operator = (const GAIA::GCH* psz){this->FromString(psz); return *this;}
+			GINL IP& operator = (const GAIA::CH* psz){this->FromString(psz); return *this;}
 			GINL IP operator + (const IP& src) const{IP ret; ret.u = u + src.u; return ret;}
 			GINL IP operator - (const IP& src) const{IP ret; ret.u = u - src.u; return ret;}
 			template<typename _ParamDataType> GINL IP operator + (const _ParamDataType& t) const{IP ret; ret.u = u + t; return ret;}
@@ -73,21 +73,21 @@ namespace GAIA
 			GINL ~NetworkAddress(){}
 			GINL GAIA::GVOID Invalid(){ip.Invalid(); uPort = 0;}
 			GINL GAIA::BL IsInvalid() const{return ip.IsInvalid() || uPort == 0;}
-			GINL GAIA::BL FromString(const GAIA::GCH* psz)
+			GINL GAIA::BL FromString(const GAIA::CH* psz)
 			{
 				if(!ip.FromString(psz))
 					return GAIA::False;
-				const GAIA::GCH* p = GAIA::ALGORITHM::strch(psz, ':');
+				const GAIA::CH* p = GAIA::ALGORITHM::strch(psz, ':');
 				if(p == GNULL)
 					return GAIA::False;
 				++p;
 				GAIA::ALGORITHM::str2int(p, uPort);
 				return GAIA::True;
 			}
-			GINL GAIA::GVOID ToString(GAIA::GCH* psz) const
+			GINL GAIA::GVOID ToString(GAIA::CH* psz) const
 			{
 				ip.ToString(psz);
-				GAIA::GCH* p = GAIA::ALGORITHM::strend(psz);
+				GAIA::CH* p = GAIA::ALGORITHM::strend(psz);
 				*p = ':';
 				++p;
 				p = GAIA::ALGORITHM::int2str((GAIA::N32)uPort, p);
@@ -99,8 +99,8 @@ namespace GAIA
 			IP ip;
 			GAIA::U16 uPort;
 		};
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::GCH* pszResult, const GAIA::N32& size);
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::GCH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult);
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size);
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult);
 		class NetworkSender;
 		class NetworkReceiver;
 		class NetworkHandle : public RefObject

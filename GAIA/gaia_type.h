@@ -43,12 +43,12 @@ namespace GAIA
 	typedef float REAL;
 
 	/* Char type declaration. */
-	typedef char GCH;
-	typedef wchar_t GWCH;
+	typedef char CH;
+	typedef wchar_t WCH;
 #if GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
-	typedef wchar_t GTCH;
+	typedef wchar_t TCH;
 #else
-	typedef char GTCH;
+	typedef char TCH;
 #endif
 
 	/* GAIA size. */
@@ -233,7 +233,7 @@ namespace GAIA
 		TYPEID_GWCH,
 	GAIA_ENUM_END(TYPEID)
 
-	static const GAIA::GCH* TYPEID_ANAME[] =
+	static const GAIA::CH* TYPEID_ANAME[] =
 	{
 		"Invalid",
 		"NM",
@@ -250,11 +250,11 @@ namespace GAIA
 		"X128",
 		"F32",
 		"F64",
-		"GCH",
-		"GWCH",
+		"CH",
+		"WCH",
 	};
 
-	static const GAIA::GWCH* TYPEID_WNAME[] =
+	static const GAIA::WCH* TYPEID_WNAME[] =
 	{
 		L"Invalid",
 		L"NM",
@@ -271,12 +271,12 @@ namespace GAIA
 		L"X128",
 		L"F32",
 		L"F64",
-		L"GCH",
-		L"GWCH",
+		L"CH",
+		L"WCH",
 	};
 
-	GINL TYPEID nametotype(const GAIA::GCH* psz);
-	GINL TYPEID nametotype(const GAIA::GWCH* psz);
+	GINL TYPEID nametotype(const GAIA::CH* psz);
+	GINL TYPEID nametotype(const GAIA::WCH* psz);
 
 	/* Common type. */
 	GAIA_ENUM_BEGIN(SEEK_TYPE)

@@ -7,7 +7,7 @@ namespace DWARFSTEST
 	{
 		GAIA::N32 nRet = 0;
 
-static const GAIA::GCH FILECONTENT[] = "\
+static const GAIA::CH FILECONTENT[] = "\
 		#include <iostream>\r\n\
 		using namespace std;\r\n\
 		int main(int argc, char* argv[])\r\n\
@@ -15,8 +15,8 @@ static const GAIA::GCH FILECONTENT[] = "\
 			cout << \"HelloWorld\" << endl;\r\n\
 			return 0;\r\n\
 		}";
-		static const GAIA::GCH TESTFILENAME[] = "textline.txt";
-		static const GAIA::GCH TESTFILENAMEDST[] = "textline1.txt";
+		static const GAIA::CH TESTFILENAME[] = "textline.txt";
+		static const GAIA::CH TESTFILENAMEDST[] = "textline1.txt";
 		GAIA::FILESYSTEM::File tfile;
 		if(!tfile.Open(TESTFILENAME, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
 		{
@@ -49,7 +49,7 @@ static const GAIA::GCH FILECONTENT[] = "\
 		tfile.Close();
 		for(GAIA::SIZE x = 0; x < tl.size(); ++x)
 		{
-			const GAIA::GCH* p = tl.get_line(x);
+			const GAIA::CH* p = tl.get_line(x);
 			if(p == GNULL)
 			{
 				GTLINE2("TextLine load cause get_line failed!");
@@ -69,8 +69,8 @@ static const GAIA::GCH FILECONTENT[] = "\
 				break;
 			}
 		}
-		const GAIA::GCH* szNew[] = {"// TEST COMPLETE!\r\n", "// END.\r\n"};
-		tl.insert_lines(7, (const GAIA::GCH**)&szNew, 2);
+		const GAIA::CH* szNew[] = {"// TEST COMPLETE!\r\n", "// END.\r\n"};
+		tl.insert_lines(7, (const GAIA::CH**)&szNew, 2);
 		tl.erase_lines(0, 1);
 		tfile.Open(TESTFILENAMEDST, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
 		if(!tl.save(&tfile))

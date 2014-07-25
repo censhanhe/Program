@@ -25,19 +25,19 @@ int main()
 
 	cout << "Local machine ip list:" << endl;
 	GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listIP;
-	GAIA::GCH szHostName[260];
+	GAIA::CH szHostName[260];
 	GAIA::NETWORK::GetHostName(szHostName, 260);
 	GAIA::NETWORK::GetHostIPList(szHostName, listIP);
 	for(GAIA::N32 x = 0; x < listIP.size(); ++x)
 	{
-		GAIA::GCH szIP[128];
+		GAIA::CH szIP[128];
 		listIP[x].ToString(szIP);
 		cout << x << ") " << szIP << endl;
 	}
 	cout << "Default Port is " << DWARFS_FSHA::MAINRECVPORT << endl;
 	cout << endl;
 
-	GAIA::GCH szIP[128];
+	GAIA::CH szIP[128];
 INPUT_IP:
 	cout << "Input the ip address or select one of local ip:";
 	cin >> szIP;

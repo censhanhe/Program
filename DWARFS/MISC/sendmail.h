@@ -19,7 +19,7 @@ namespace DWARFS_MISC
 			SendMail* m_pSendMail;
 		};
 	public:
-		typedef GAIA::GCH __CharType;
+		typedef GAIA::CH __CharType;
 		typedef GAIA::CONTAINER::BasicString<__CharType, GAIA::N32> __StringType;
 		typedef GAIA::CONTAINER::BasicChars<__CharType, GAIA::N32, 1024> __ACharsType;
 		typedef __StringType __FileName;
@@ -159,7 +159,7 @@ namespace DWARFS_MISC
 			if(!this->PopRecv(strRecv, GAIA::U32MAXSIZE))
 				goto FUNCTION_END;
 
-			GAIA::GCH szTemp[1024];
+			GAIA::CH szTemp[1024];
 			GAIA::SIZE uNewSize = GAIA::DATAPHASE::Char2Base64(szTemp, 1024, m_username, m_username.size());
 			szTemp[uNewSize++] = '\r';
 			szTemp[uNewSize++] = '\n';
@@ -261,9 +261,9 @@ namespace DWARFS_MISC
 				while((nReaded = file.Read(buf.front_ptr(), PATCH_SIZE)) > 0)
 				{
 					GAIA::SIZE nBuf64Size = GAIA::DATAPHASE::Char2Base64(
-						(GAIA::GCH*)buf64.front_ptr(), 
+						(GAIA::CH*)buf64.front_ptr(), 
 						buf64.size(), 
-						(const GAIA::GCH*)buf.front_ptr(), 
+						(const GAIA::CH*)buf.front_ptr(), 
 						buf.size());
 					buf64[nBuf64Size++] = '\r';
 					buf64[nBuf64Size++] = '\n';

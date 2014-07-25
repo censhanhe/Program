@@ -24,7 +24,7 @@
 # pragma comment(lib, "ws2_32.lib")
 #endif
 
-GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
+GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 {
 #if GAIA_OS == GAIA_OS_WINDOWS
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -47,13 +47,13 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 
 	/* Combin args to single buffer. */
 	GAIA::CONTAINER::Buffer buf;
-	buf.reserve((nLen + 1) * sizeof(GAIA::GCH));
+	buf.reserve((nLen + 1) * sizeof(GAIA::CH));
 	for(GAIA::N32 x = 0; x < nargs; ++x)
 	{
-		buf.write(args[x], GAIA::ALGORITHM::strlen(args[x]) * sizeof(GAIA::GCH));
-		buf.write((GAIA::GCH)' ');
+		buf.write(args[x], GAIA::ALGORITHM::strlen(args[x]) * sizeof(GAIA::CH));
+		buf.write((GAIA::CH)' ');
 	}
-	buf.write((GAIA::GCH)'\0');
+	buf.write((GAIA::CH)'\0');
 
 	/* Find first command. */
 	GAIA::SIZE first_command_index = 0;
@@ -83,11 +83,11 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::GCH* args[])
 REPEAT:
 		GAIA::CONTAINER::AString strCombin;
 		prt << "Enter the command here : ";
-		GAIA::GCH szParam[1024];
+		GAIA::CH szParam[1024];
 		while(GAIA::ALWAYSTRUE)
 		{
 			prt >> szParam;
-			GAIA::GCH* p = GAIA::ALGORITHM::strch(szParam, ';');
+			GAIA::CH* p = GAIA::ALGORITHM::strch(szParam, ';');
 			if(p != GNULL)
 			{
 				if(p != szParam)
@@ -115,7 +115,7 @@ REPEAT:
 
 	/* Execute command. */
 	PROM::Prom prom;
-	prom.Command((GAIA::GCH*)buf.front_ptr() + first_command_index, prt);
+	prom.Command((GAIA::CH*)buf.front_ptr() + first_command_index, prt);
 
 	/* Dump system status. */
 	prt << "Allocate Times = " << g_global_allocator.alloc_times() << "\n";

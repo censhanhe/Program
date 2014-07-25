@@ -23,7 +23,7 @@ namespace GAIA
 	#else
 		static const GAIA::U32 MAXPL = 260;
 	#endif
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::SetWorkingDirectory(const GAIA::GCH* dir)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::SetWorkingDirectory(const GAIA::CH* dir)
 		{
 			if(GAIA::ALGORITHM::stremp(dir))
 				return GAIA::False;
@@ -37,7 +37,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Directory::GetWorkingDirectory(GAIA::CONTAINER::AString& result) const
 		{
-			GAIA::GCH szPath[MAXPL];
+			GAIA::CH szPath[MAXPL];
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::GetCurrentDirectoryA(MAXPL, szPath);
 		#else
@@ -48,29 +48,29 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Directory::GetBinaryDirectory(GAIA::CONTAINER::AString& result) const
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			GAIA::GCH szPath[MAXPL];
+			GAIA::CH szPath[MAXPL];
 			::GetModuleFileNameA(GNULL, szPath, MAXPL);
-			GAIA::GCH* p = GAIA::ALGORITHM::strdropr(szPath, "/\\");
+			GAIA::CH* p = GAIA::ALGORITHM::strdropr(szPath, "/\\");
 			result = szPath;
 		#else
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Create(const GAIA::GCH* pszName, GAIA::BL bOverlapped)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Create(const GAIA::CH* pszName, GAIA::BL bOverlapped)
 		{
 			if(GAIA::ALGORITHM::stremp(pszName))
 				return GAIA::False;
 			if(this->Exist(pszName))
 				return GAIA::False;
 			/* Generate szFind for recursive file collection. */
-			GAIA::GCH szFind[MAXPL];
+			GAIA::CH szFind[MAXPL];
 			GAIA::ALGORITHM::strcpy(szFind, pszName);
-			GAIA::GCH* p = GAIA::ALGORITHM::strend(szFind);
+			GAIA::CH* p = GAIA::ALGORITHM::strend(szFind);
 			--p;
 			if(*p != '\\' && *p != '/')
 				GAIA::ALGORITHM::strcat(p, "/");
 			if(bOverlapped)
 			{
-				const GAIA::GCH* pCursor = szFind;
+				const GAIA::CH* pCursor = szFind;
 			#if GAIA_OS == GAIA_OS_WINDOWS
 				/* Jump after Windows-OS disk name. */
 				if(GAIA::ALGORITHM::strch(szFind, ':') != GNULL)
@@ -83,8 +83,8 @@ namespace GAIA
 			#endif
 				while((pCursor = GAIA::ALGORITHM::strdrop(pCursor, "/\\\0")) != GNULL)
 				{
-					GAIA::GCH sz[MAXPL];
-					GAIA::ALGORITHM::xmemcpy(sz, szFind, (pCursor - szFind + 1) * sizeof(GAIA::GCH));
+					GAIA::CH sz[MAXPL];
+					GAIA::ALGORITHM::xmemcpy(sz, szFind, (pCursor - szFind + 1) * sizeof(GAIA::CH));
 					sz[pCursor - szFind + 1] = 0;
 					if(!this->Exist(sz))
 					{
@@ -113,7 +113,7 @@ namespace GAIA
 				return GAIA::False;
 			}
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Remove(const GAIA::GCH* pszName, GAIA::BL bOverlapped)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Remove(const GAIA::CH* pszName, GAIA::BL bOverlapped)
 		{
 			if(GAIA::ALGORITHM::stremp(pszName))
 				return GAIA::False;
@@ -121,14 +121,14 @@ namespace GAIA
 			if(bOverlapped)
 			{
 				/* Generate szFind for recursive file collection. */
-				GAIA::GCH szFind[MAXPL];
+				GAIA::CH szFind[MAXPL];
 				GAIA::ALGORITHM::strcpy(szFind, pszName);
-				GAIA::GCH* p = GAIA::ALGORITHM::strend(szFind);
+				GAIA::CH* p = GAIA::ALGORITHM::strend(szFind);
 				--p;
 				if(*p != '\\' && *p != '/')
 					GAIA::ALGORITHM::strcat(p, "/");
 				/* Generate szTarget for FindFirstFile. */
-				GAIA::GCH szTarget[MAXPL];
+				GAIA::CH szTarget[MAXPL];
 				GAIA::ALGORITHM::strcpy(szTarget, szFind);
 				GAIA::ALGORITHM::strcat(szTarget + (p - szFind), "*.*");
 				WIN32_FIND_DATAA fdata;
@@ -142,7 +142,7 @@ namespace GAIA
 						GAIA::ALGORITHM::strcmp(fdata.cFileName, "..") == 0){}
 					else
 					{
-						GAIA::GCH sz[MAXPL];
+						GAIA::CH sz[MAXPL];
 						GAIA::ALGORITHM::strcpy(sz, szFind);
 						GAIA::ALGORITHM::strcat(sz, fdata.cFileName);
 						if(fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
@@ -177,9 +177,9 @@ namespace GAIA
 			if(bOverlapped)
 			{
 				/* Generate szFind for recursive file collection. */
-				GAIA::GCH szFind[MAXPL];
+				GAIA::CH szFind[MAXPL];
 				GAIA::ALGORITHM::strcpy(szFind, pszName);
-				GAIA::GCH* p = GAIA::ALGORITHM::strend(szFind);
+				GAIA::CH* p = GAIA::ALGORITHM::strend(szFind);
 				--p;
 				if(*p != '/')
 					GAIA::ALGORITHM::strcat(p, "/");
@@ -195,7 +195,7 @@ namespace GAIA
 					else
 					{
 						struct stat s;
-						GAIA::GCH sz[MAXPL];
+						GAIA::CH sz[MAXPL];
 						GAIA::ALGORITHM::strcpy(sz, szFind);
 						GAIA::ALGORITHM::strcat(sz, pdirent->d_name);
 						if(lstat(sz, &s) >= 0)
@@ -230,7 +230,7 @@ namespace GAIA
 			}
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Exist(const GAIA::GCH* pszName) const
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::Exist(const GAIA::CH* pszName) const
 		{
 			if(GAIA::ALGORITHM::stremp(pszName))
 				return GAIA::False;
@@ -252,7 +252,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::RemoveFile(const GAIA::GCH* pszName)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::RemoveFile(const GAIA::CH* pszName)
 		{
 			if(GAIA::ALGORITHM::stremp(pszName))
 				return GAIA::False;
@@ -266,7 +266,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::CopyFile(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::CopyFile(const GAIA::CH* pszSrc, const GAIA::CH* pszDst)
 		{
 			if(GAIA::ALGORITHM::stremp(pszSrc))
 				return GAIA::False;
@@ -282,7 +282,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::MoveFile(const GAIA::GCH* pszSrc, const GAIA::GCH* pszDst)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::MoveFile(const GAIA::CH* pszSrc, const GAIA::CH* pszDst)
 		{
 			if(GAIA::ALGORITHM::stremp(pszSrc))
 				return GAIA::False;
@@ -298,21 +298,21 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::CollectFile(const GAIA::GCH* pszName, const GAIA::GCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Directory::CollectFile(const GAIA::CH* pszName, const GAIA::CH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult)
 		{
 			GAIA_AST(!GAIA::ALGORITHM::stremp(pszName));
 			if(GAIA::ALGORITHM::stremp(pszName))
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			/* Generate szFind for recursive file collection. */
-			GAIA::GCH szFind[MAXPL];
+			GAIA::CH szFind[MAXPL];
 			GAIA::ALGORITHM::strcpy(szFind, pszName);
-			GAIA::GCH* p = GAIA::ALGORITHM::strend(szFind);
+			GAIA::CH* p = GAIA::ALGORITHM::strend(szFind);
 			--p;
 			if(*p != '\\' && *p != '/')
 				GAIA::ALGORITHM::strcat(p, "/");
 			/* Generate szTarget for FindFirstFile. */
-			GAIA::GCH szTarget[MAXPL];
+			GAIA::CH szTarget[MAXPL];
 			GAIA::ALGORITHM::strcpy(szTarget, szFind);
 			GAIA::ALGORITHM::strcat(szTarget + (p - szFind), "*.*");
 			WIN32_FIND_DATAA fdata;
@@ -327,7 +327,7 @@ namespace GAIA
 					GAIA::ALGORITHM::strcmp(fdata.cFileName, "..") == 0){}
 				else if(fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && bOverlapped)
 				{
-					GAIA::GCH sz[MAXPL];
+					GAIA::CH sz[MAXPL];
 					GAIA::ALGORITHM::strcpy(sz, szFind);
 					GAIA::ALGORITHM::strcat(sz, fdata.cFileName);
 					this->CollectFile(sz, pszFilter, bOverlapped, treeResult);
@@ -339,25 +339,25 @@ namespace GAIA
 						bExtMatch = GAIA::True;
 					else
 					{
-						const GAIA::GCH* pExt = GAIA::ALGORITHM::strext(fdata.cFileName);
+						const GAIA::CH* pExt = GAIA::ALGORITHM::strext(fdata.cFileName);
 						if(pExt != GNULL && GAIA::ALGORITHM::striwrd(pszFilter, pExt) != GNULL)
 							bExtMatch = GAIA::True;
 					}
 					if(bExtMatch)
 					{
-						GAIA::GCH szFinal[MAXPL];
+						GAIA::CH szFinal[MAXPL];
 						GAIA::ALGORITHM::strcpy(szFinal, szFind);
 						GAIA::ALGORITHM::strcat(szFinal, fdata.cFileName);
 						GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::AString, GAIA::N16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>> listResult;
-						const GAIA::GCH* pFinal = szFinal;
+						const GAIA::CH* pFinal = szFinal;
 						for(;;)
 						{
-							const GAIA::GCH* pNew = GAIA::ALGORITHM::strdrop(pFinal, "/\\\0");
+							const GAIA::CH* pNew = GAIA::ALGORITHM::strdrop(pFinal, "/\\\0");
 							if(pNew != pFinal)
 							{
 								if(pNew == GNULL || *pNew == 0)
 								{
-									GAIA::GCH szTemp[MAXPL];
+									GAIA::CH szTemp[MAXPL];
 									GAIA::ALGORITHM::strcpy(szTemp, pFinal);
 									if(szTemp[0] != 0)
 										listResult.push_back(szTemp);
@@ -365,8 +365,8 @@ namespace GAIA
 								}
 								else
 								{
-									GAIA::GCH szTemp[MAXPL];
-									GAIA::ALGORITHM::xmemcpy(szTemp, pFinal, (pNew - pFinal) * sizeof(GAIA::GCH));
+									GAIA::CH szTemp[MAXPL];
+									GAIA::ALGORITHM::xmemcpy(szTemp, pFinal, (pNew - pFinal) * sizeof(GAIA::CH));
 									szTemp[pNew - pFinal] = 0;
 									if(szTemp[0] != 0)
 										listResult.push_back(szTemp);
@@ -383,9 +383,9 @@ namespace GAIA
 			return GAIA::True;
 		#else
 			/* Generate szFind for recursive file collection. */
-			GAIA::GCH szFind[MAXPL];
+			GAIA::CH szFind[MAXPL];
 			GAIA::ALGORITHM::strcpy(szFind, pszName);
-			GAIA::GCH* p = GAIA::ALGORITHM::strend(szFind);
+			GAIA::CH* p = GAIA::ALGORITHM::strend(szFind);
 			--p;
 			if(*p != '/')
 				GAIA::ALGORITHM::strcat(p, "/");
@@ -401,7 +401,7 @@ namespace GAIA
 				else
 				{
 					struct stat s;
-					GAIA::GCH sz[MAXPL];
+					GAIA::CH sz[MAXPL];
 					GAIA::ALGORITHM::strcpy(sz, szFind);
 					GAIA::ALGORITHM::strcat(sz, pdirent->d_name);
 					if(lstat(sz, &s) >= 0)
@@ -418,22 +418,22 @@ namespace GAIA
 								bExtMatch = GAIA::True;
 							else
 							{
-								const GAIA::GCH* pExt = GAIA::ALGORITHM::strext(pdirent->d_name);
+								const GAIA::CH* pExt = GAIA::ALGORITHM::strext(pdirent->d_name);
 								if(pExt != GNULL && GAIA::ALGORITHM::striwrd(pszFilter, pExt) != GNULL)
 									bExtMatch = GAIA::True;
 							}
 							if(bExtMatch)
 							{
 								GAIA::CONTAINER::BasicVector<GAIA::CONTAINER::AString, GAIA::N16, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > listResult;
-								const GAIA::GCH* pFinal = sz;
+								const GAIA::CH* pFinal = sz;
 								for(;;)
 								{
-									const GAIA::GCH* pNew = GAIA::ALGORITHM::strdrop(pFinal, "/\\\0");
+									const GAIA::CH* pNew = GAIA::ALGORITHM::strdrop(pFinal, "/\\\0");
 									if(pNew != pFinal)
 									{
 										if(pNew == GNULL || *pNew == 0)
 										{
-											GAIA::GCH szTemp[MAXPL];
+											GAIA::CH szTemp[MAXPL];
 											GAIA::ALGORITHM::strcpy(szTemp, pFinal);
 											if(szTemp[0] != 0)
 												listResult.push_back(szTemp);
@@ -441,8 +441,8 @@ namespace GAIA
 										}
 										else
 										{
-											GAIA::GCH szTemp[MAXPL];
-											GAIA::ALGORITHM::xmemcpy(szTemp, pFinal, (pNew - pFinal) * sizeof(GAIA::GCH));
+											GAIA::CH szTemp[MAXPL];
+											GAIA::ALGORITHM::xmemcpy(szTemp, pFinal, (pNew - pFinal) * sizeof(GAIA::CH));
 											szTemp[pNew - pFinal] = 0;
 											if(szTemp[0] != 0)
 												listResult.push_back(szTemp);

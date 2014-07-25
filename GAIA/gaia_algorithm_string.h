@@ -666,8 +666,8 @@ namespace GAIA
 		template<> class string_cast<type>\
 		{\
 		public:\
-			string_cast(const GAIA::GCH* psz){m_pGCH = psz; m_pGWCH = GNULL;}\
-			string_cast(const GAIA::GWCH* psz){m_pGCH = GNULL; m_pGWCH = psz;}\
+			string_cast(const GAIA::CH* psz){m_pGCH = psz; m_pGWCH = GNULL;}\
+			string_cast(const GAIA::WCH* psz){m_pGCH = GNULL; m_pGWCH = psz;}\
 			operator type() const\
 			{\
 				type ret;\
@@ -683,8 +683,8 @@ namespace GAIA
 				return ret;\
 			}\
 		private:\
-			const GAIA::GCH* m_pGCH;\
-			const GAIA::GWCH* m_pGWCH;\
+			const GAIA::CH* m_pGCH;\
+			const GAIA::WCH* m_pGWCH;\
 		};
 		GAIA_DECLARATION_STRINGCAST(GAIA::NM, str2int);
 		GAIA_DECLARATION_STRINGCAST(GAIA::UM, str2int);
@@ -702,8 +702,8 @@ namespace GAIA
 		class string_autocast
 		{
 		public:
-			GINL string_autocast(const GAIA::GCH* psz){m_pGCH = psz; m_pGWCH = GNULL;}
-			GINL string_autocast(const GAIA::GWCH* psz){m_pGCH = GNULL; m_pGWCH = psz;}
+			GINL string_autocast(const GAIA::CH* psz){m_pGCH = psz; m_pGWCH = GNULL;}
+			GINL string_autocast(const GAIA::WCH* psz){m_pGCH = GNULL; m_pGWCH = psz;}
 			#define GAIA_DECLARATION_STRINGAUTOCAST(type) \
 			GINL operator type()\
 			{\
@@ -733,8 +733,8 @@ namespace GAIA
 			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::F32);
 			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::F64);
 		private:
-			const GAIA::GCH* m_pGCH;
-			const GAIA::GWCH* m_pGWCH;
+			const GAIA::CH* m_pGCH;
+			const GAIA::WCH* m_pGWCH;
 		};
 	};
 };
