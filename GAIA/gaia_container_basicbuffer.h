@@ -134,7 +134,7 @@ namespace GAIA
 				if(src.write_size() != this->write_size())
 					return GAIA::False;
 				else
-					return GAIA::ALGORITHM::xmemcmp(this->write_ptr(), src.write_ptr(), this->write_size()) == 0;
+					return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->write_size()) == 0;
 			}
 			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const __MyType& src) const
@@ -144,7 +144,7 @@ namespace GAIA
 				else if(this->write_size() < src.write_size())
 					return GAIA::False;
 				else
-					return GAIA::ALGORITHM::xmemcmp(this->write_ptr(), src.write_ptr(), this->write_size()) >= 0;
+					return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->write_size()) >= 0;
 			}
 			GINL GAIA::BL operator <= (const __MyType& src) const
 			{
@@ -153,7 +153,7 @@ namespace GAIA
 				else if(this->write_size() > src.write_size())
 					return GAIA::False;
 				else
-					return GAIA::ALGORITHM::xmemcmp(this->write_ptr(), src.write_ptr(), this->write_size()) <= 0;
+					return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->write_size()) <= 0;
 			}
 			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
@@ -254,8 +254,6 @@ namespace GAIA
 			GINL GAIA::BL read(GAIA::NM* psz){}
 			GINL GAIA::GVOID write(const GAIA::UM* psz){}
 			GINL GAIA::BL read(GAIA::UM* psz){}
-			GINL GAIA::GVOID write(const GAIA::WCH* psz){}
-			GINL GAIA::BL read(GAIA::WCH* psz){}
 			GINL __MyType& operator << (const GAIA::NM& obj){return *this;}
 			GINL __MyType& operator >> (GAIA::NM& obj){return *this;}
 			GINL __MyType& operator << (const GAIA::UM& obj){return *this;}

@@ -94,8 +94,8 @@ namespace GAIATEST
 			GTLINE2("Buffer resize faile!");
 			++nRet;
 		}
-		b.write("HelloWorld", GAIA::ALGORITHM::strlen("HelloWorld") + 1);
-		if(b.write_size() != 111)
+		b.write(T_("HelloWorld"), GAIA::ALGORITHM::strlen(T_("HelloWorld")) * sizeof(GAIA::TCH) + sizeof(GAIA::TCH));
+		if(b.write_size() != 100 + GAIA::ALGORITHM::strlen(T_("HelloWorld")) * sizeof(GAIA::TCH) + sizeof(GAIA::TCH))
 		{
 			GTLINE2("Buffer write cause write_size failed");
 			++nRet;
@@ -116,13 +116,13 @@ namespace GAIATEST
 			GTLINE2("Buffer read failed!");
 			++nRet;
 		}
-		GAIA::CH sz[100];
+		GAIA::TCH sz[100];
 		if(!b.read(sz))
 		{
 			GTLINE2("Buffer read failed!");
 			++nRet;
 		}
-		if(GAIA::ALGORITHM::strcmp(sz, "HelloWorld") != 0)
+		if(GAIA::ALGORITHM::strcmp(sz, T_("HelloWorld")) != 0)
 		{
 			GTLINE2("Buffer read failed!");
 			++nRet;
@@ -150,7 +150,7 @@ namespace GAIATEST
 			GTLINE2("Buffer read failed!");
 			++nRet;
 		}
-		if(GAIA::ALGORITHM::strcmp(sz, "HelloWorld") != 0)
+		if(GAIA::ALGORITHM::strcmp(sz, T_("HelloWorld")) != 0)
 		{
 			GTLINE2("Buffer write cause content error!");
 			++nRet;
@@ -162,22 +162,22 @@ namespace GAIATEST
 		}
 		b.seek_read(b.write_size(), GAIA::SEEK_TYPE_BEGIN);
 		GAIA::ALGORITHM::xmemset(sz, 0xFF, sizeof(sz));
-		if(!b.read(sz, GAIA::ALGORITHM::strlen("HelloWorld") + 1))
+		if(!b.read(sz, GAIA::ALGORITHM::strlen(T_("HelloWorld")) * sizeof(GAIA::TCH) + sizeof(GAIA::TCH)))
 		{
 			GTLINE2("Buffer read failed!");
 			++nRet;
 		}
-		if(GAIA::ALGORITHM::strcmp(sz, "HelloWorld") != 0)
+		if(GAIA::ALGORITHM::strcmp(sz, T_("HelloWorld")) != 0)
 		{
 			GTLINE2("Buffer read failed!");
 			++nRet;
 		}
 		b.destroy();
-		b.write("HelloWorld");
+		b.write(T_("HelloWorld"));
 		__BufferType b1 = b;
 		GAIA::ALGORITHM::xmemset(sz, 0xFF, sizeof(sz));
 		b1.read(sz);
-		if(GAIA::ALGORITHM::strcmp(sz, "HelloWorld") != 0)
+		if(GAIA::ALGORITHM::strcmp(sz, T_("HelloWorld")) != 0)
 		{
 			GTLINE2("Buffer operator = failed!");
 			++nRet;

@@ -160,7 +160,7 @@ namespace DWARFS_MISC
 				goto FUNCTION_END;
 
 			GAIA::CH szTemp[1024];
-			GAIA::SIZE uNewSize = GAIA::DATAPHASE::Char2Base64(szTemp, 1024, m_username, m_username.size());
+			GAIA::SIZE uNewSize = GAIA::DATAPHASE::Char2Base64(szTemp, 1024, m_username.front_ptr(), m_username.size());
 			szTemp[uNewSize++] = '\r';
 			szTemp[uNewSize++] = '\n';
 			szTemp[uNewSize] = '\0';
@@ -168,7 +168,7 @@ namespace DWARFS_MISC
 			if(!this->PopRecv(strRecv, GAIA::U32MAXSIZE))
 				goto FUNCTION_END;
 
-			uNewSize = GAIA::DATAPHASE::Char2Base64(szTemp, 1024, m_password, m_password.size());
+			uNewSize = GAIA::DATAPHASE::Char2Base64(szTemp, 1024, m_password.front_ptr(), m_password.size());
 			szTemp[uNewSize++] = '\r';
 			szTemp[uNewSize++] = '\n';
 			szTemp[uNewSize] = '\0';

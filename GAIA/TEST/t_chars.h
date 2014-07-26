@@ -7,8 +7,8 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 
-		typedef GAIA::CONTAINER::AChars __ACharsType;
-		__ACharsType chs;
+		typedef GAIA::CONTAINER::TChars __TCharsType;
+		__TCharsType chs;
 		{
 			chs.resize(10);
 			if(chs.size() != 10)
@@ -29,8 +29,8 @@ namespace GAIATEST
 			GTLINE2("New string is not empty!");
 			++nRet;
 		}
-		__ACharsType::it newit;
-		__ACharsType::const_it newcit;
+		__TCharsType::it newit;
+		__TCharsType::const_it newcit;
 		newit = chs.front_it();
 		if(!newit.empty())
 		{
@@ -56,13 +56,13 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs.clear();
-		chs = "Hello World!";
+		chs = T_("Hello World!");
 		if(chs.empty())
 		{
 			GTLINE2("String initialized but empty!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello World!"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello World!")))
 		{
 			GTLINE2("String length error!");
 			++nRet;
@@ -72,19 +72,19 @@ namespace GAIATEST
 			GTLINE2("String capacity below size!");
 			++nRet;
 		}
-		if(chs != "Hello World!")
+		if(chs != T_("Hello World!"))
 		{
 			GTLINE2("String move or operator != error!");
 			++nRet;
 		}
-		__ACharsType chs1 = chs;
+		__TCharsType chs1 = chs;
 		if(chs != chs1)
 		{
 			GTLINE2("String copy construct error!");
 			++nRet;
 		}
 		chs = (GAIA::NM)-123456789;
-		if(chs != "-123456789")
+		if(chs != T_("-123456789"))
 		{
 			GTLINE2("String construct from GAIA::NM failed!");
 			++nRet;
@@ -95,7 +95,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::UM)123456789;
-		if(chs != "123456789")
+		if(chs != T_("123456789"))
 		{
 			GTLINE2("String construct from GAIA::UM failed!");
 			++nRet;
@@ -106,7 +106,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::N8)-123;
-		if(chs != "-123")
+		if(chs != T_("-123"))
 		{
 			GTLINE2("String construct from GAIA::N8 failed!");
 			++nRet;
@@ -117,7 +117,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::U8)123;
-		if(chs != "123")
+		if(chs != T_("123"))
 		{
 			GTLINE2("String construct from GAIA::U8 failed!");
 			++nRet;
@@ -128,7 +128,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::N16)-12345;
-		if(chs != "-12345")
+		if(chs != T_("-12345"))
 		{
 			GTLINE2("String construct from GAIA::N16 failed!");
 			++nRet;
@@ -139,7 +139,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::U16)12345;
-		if(chs != "12345")
+		if(chs != T_("12345"))
 		{
 			GTLINE2("String construct from GAIA::U16 failed!");
 			++nRet;
@@ -150,7 +150,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::N32)-123456789;
-		if(chs != "-123456789")
+		if(chs != T_("-123456789"))
 		{
 			GTLINE2("String construct from GAIA::N32 failed!");
 			++nRet;
@@ -161,7 +161,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::U32)123456789;
-		if(chs != "123456789")
+		if(chs != T_("123456789"))
 		{
 			GTLINE2("String construct from GAIA::U32 failed!");
 			++nRet;
@@ -172,7 +172,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::N64)-123456789123456789;
-		if(chs != "-123456789123456789")
+		if(chs != T_("-123456789123456789"))
 		{
 			GTLINE2("String construct from GAIA::N64 failed!");
 			++nRet;
@@ -183,7 +183,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::U64)123456789123456789;
-		if(chs != "123456789123456789")
+		if(chs != T_("123456789123456789"))
 		{
 			GTLINE2("String construct from GAIA::U64 failed!");
 			++nRet;
@@ -195,7 +195,7 @@ namespace GAIATEST
 		}
 		chs = (GAIA::F32)1234.567F;
 		chs.resize(8);
-		if(chs != "1234.567")
+		if(chs != T_("1234.567"))
 		{
 			GTLINE2("String construct from GAIA::F32 failed!");
 			++nRet;
@@ -207,7 +207,7 @@ namespace GAIATEST
 		}
 		chs = (GAIA::F64)-1234567.12345;
 		chs.resize(14);
-		if(chs != "-1234567.12345")
+		if(chs != T_("-1234567.12345"))
 		{
 			GTLINE2("String construct from GAIA::F64 failed!");
 			++nRet;
@@ -218,7 +218,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::N32)(GAIA::BL)GAIA::True;
-		if(chs != "1")
+		if(chs != T_("1"))
 		{
 			GTLINE2("String construct from GAIA::BL(GAIA::True) failed!");
 			++nRet;
@@ -229,7 +229,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		chs = (GAIA::N32)(GAIA::BL)GAIA::False;
-		if(chs != "0")
+		if(chs != T_("0"))
 		{
 			GTLINE2("String construct from GAIA::BL(GAIA::False) failed!");
 			++nRet;
@@ -242,7 +242,7 @@ namespace GAIATEST
 		GAIA::X128 x128;
 		GAIA::ALGORITHM::xmemset(&x128, 17, sizeof(x128));
 		chs = x128;
-		if(chs != "11111111111111111111111111111111")
+		if(chs != T_("11111111111111111111111111111111"))
 		{
 			GTLINE2("String construct from GAIA::X128 failed!");
 			++nRet;
@@ -252,7 +252,7 @@ namespace GAIATEST
 			GTLINE2("String operator GAIA::X128 failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld";)
 		chs1 = chs;
 		if(!(chs1 == chs && chs1 >= chs && chs1 <= chs))
 		{
@@ -264,33 +264,33 @@ namespace GAIATEST
 			GTLINE2("String compare != > < error!");
 			++nRet;
 		}
-		if(!(chs == "HelloWorld" && chs >= "HelloWorld" && chs <= "HelloWorld"))
+		if(!(chs == T_("HelloWorld") && chs >= T_("HelloWorld") && chs <= T_("HelloWorld")))
 		{
 			GTLINE2("String compare == >= <= error!");
 			++nRet;
 		}
-		if(chs != "HelloWorld" || chs > "HelloWorld" || chs < "HelloWorld")
+		if(chs != T_("HelloWorld") || chs > T_("HelloWorld") || chs < T_("HelloWorld"))
 		{
 			GTLINE2("String compare != > <!");
 			++nRet;
 		}
 		chs.resize(5);
-		if(chs != "Hello")
+		if(chs != T_("Hello"))
 		{
 			GTLINE2("String resize failed!");
 			++nRet;
 		}
 		chs.clear();
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.insert('!', chs.size());
 		chs.insert('%', chs.size() / 2);
 		chs.insert('?', 0);
-		if(chs != "?Hello%World!")
+		if(chs != T_("?Hello%World!"))
 		{
 			GTLINE2("String insert element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("?Hello%World!"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("?Hello%World!")))
 		{
 			GTLINE2("String insert element failed! The size calculate error!");
 			++nRet;
@@ -300,16 +300,16 @@ namespace GAIATEST
 			GTLINE2("String insert element failed! The size is above capacity!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.insert("Yes", chs.size());
-		chs.insert("No", chs.size() / 2);
-		chs.insert("Cancel", 0);
-		if(chs != "CancelHelloWNoorldYes")
+		chs = T_("HelloWorld");
+		chs.insert(T_("Yes"), chs.size());
+		chs.insert(T_("No"), chs.size() / 2);
+		chs.insert(T_("Cancel"), 0);
+		if(chs != T_("CancelHelloWNoorldYes"))
 		{
 			GTLINE2("String insert element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("CancelHelloWNoorldYes"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("CancelHelloWNoorldYes")))
 		{
 			GTLINE2("String insert element* failed! The size calculate error!");
 			++nRet;
@@ -319,16 +319,16 @@ namespace GAIATEST
 			GTLINE2("String insert element* failed! The size is above capacity!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.insert((__ACharsType)"Yes", chs.size());
-		chs.insert((__ACharsType)"No", chs.size() / 2);
-		chs.insert((__ACharsType)"Cancel", 0);
-		if(chs != "CancelHelloWNoorldYes")
+		chs = T_("HelloWorld");
+		chs.insert((__TCharsType)T_("Yes"), chs.size());
+		chs.insert((__TCharsType)T_("No"), chs.size() / 2);
+		chs.insert((__TCharsType)T_("Cancel"), 0);
+		if(chs != T_("CancelHelloWNoorldYes"))
 		{
 			GTLINE2("String inverse object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("CancelHelloWNoorldYes"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("CancelHelloWNoorldYes")))
 		{
 			GTLINE2("String insert element object failed! The size calculate error!");
 			++nRet;
@@ -338,7 +338,7 @@ namespace GAIATEST
 			GTLINE2("String insert element object failed! The size is above capacity!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		if(chs.isallupper())
 		{
 			GTLINE2("String isallupper failed!");
@@ -371,50 +371,50 @@ namespace GAIATEST
 			GTLINE2("String to upper failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs1 = chs + "HelloWorld";
-		if(chs1 != "HelloWorldHelloWorld")
+		chs = T_("HelloWorld");
+		chs1 = chs + T_("HelloWorld");
+		if(chs1 != T_("HelloWorldHelloWorld"))
 		{
 			GTLINE2("String operator + failed!");
 			++nRet;
 		}
-		if(chs1.size() != GAIA::ALGORITHM::strlen("HelloWorldHelloWorld"))
+		if(chs1.size() != GAIA::ALGORITHM::strlen(T_("HelloWorldHelloWorld")))
 		{
 			GTLINE2("String operator + failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs += "HelloWorld";
-		if(chs != "HelloWorldHelloWorld")
+		chs = T_("HelloWorld");
+		chs += T_("HelloWorld");
+		if(chs != T_("HelloWorldHelloWorld"))
 		{
 			GTLINE2("String operator += failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorldHelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorldHelloWorld")))
 		{
 			GTLINE2("String operator += failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs1.clear();
 		chs = chs + chs1;
-		if(chs != "HelloWorld")
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String operator + empty string failed!");
 			++nRet;
 		}
 		chs += chs1;
-		if(chs != "HelloWorld")
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String operator += empty string failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String operator + or += empty string failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		if(chs[0] != 'H' ||
 			chs[1] != 'e' ||
 			chs[2] != 'l' ||
@@ -429,27 +429,27 @@ namespace GAIATEST
 			GTLINE2("String operator [] failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		const GAIA::CH* cpsz = chs;
-		if(GAIA::ALGORITHM::strcmp(cpsz, "HelloWorld") != 0)
+		chs = T_("HelloWorld");
+		const GAIA::TCH* cpsz = chs;
+		if(GAIA::ALGORITHM::strcmp(cpsz, T_("HelloWorld")) != 0)
 		{
 			GTLINE2("String operator const _DataType* failed!");
 			++nRet;
 		}
-		GAIA::CH* psz = chs;
-		if(GAIA::ALGORITHM::strcmp(psz, "HelloWorld") != 0)
+		GAIA::TCH* psz = chs;
+		if(GAIA::ALGORITHM::strcmp(psz, T_("HelloWorld")) != 0)
 		{
 			GTLINE2("String operator _DataType* failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs = "HelloWorld" + chs;
-		if(chs != "HelloWorldHelloWorld")
+		chs = T_("HelloWorld");
+		chs = T_("HelloWorld") + chs;
+		if(chs != T_("HelloWorldHelloWorld"))
 		{
 			GTLINE2("String global operator + failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		if(*chs.front_ptr() != 'H')
 		{
 			GTLINE2("String front_ptr failed!");
@@ -460,10 +460,10 @@ namespace GAIATEST
 			GTLINE2("String back_ptr failed");
 			++nRet;
 		}
-		__ACharsType::it itfront = chs.front_it();
-		__ACharsType::it itback = chs.back_it();
-		__ACharsType::const_it citfront = chs.const_front_it();
-		__ACharsType::const_it citback = chs.const_back_it();
+		__TCharsType::it itfront = chs.front_it();
+		__TCharsType::it itback = chs.back_it();
+		__TCharsType::const_it citfront = chs.const_front_it();
+		__TCharsType::const_it citback = chs.const_back_it();
 		if(itfront.empty() || itback.empty() || citfront.empty() || citback.empty())
 		{
 			GTLINE2("String front and back iterator(include const) exist error!");
@@ -489,7 +489,7 @@ namespace GAIATEST
 			GTLINE2("String const_back_it failed!");
 			++nRet;
 		}
-		GAIA::CH szTemp[128];
+		GAIA::TCH szTemp[128];
 		while(!citfront.empty())
 		{
 			szTemp[citfront - chs.const_front_it()] = *citfront;
@@ -512,7 +512,7 @@ namespace GAIATEST
 			GTLINE2("String iterator element access exist error!");
 			nRet++;
 		}
-		chs = "Hello World! I am gaia, i am all object's base!";
+		chs = T_("Hello World! I am gaia, i am all object's base!");
 		citfront = chs.const_front_it();
 		itfront = chs.front_it();
 		if((citfront + 10) - citfront != 10)
@@ -549,113 +549,113 @@ namespace GAIATEST
 			GTLINE2("String iterator -= operator failed!");
 			++nRet;
 		}
-		chs = "Hello World! I am gaia, i am all object's base!";
+		chs = T_("Hello World! I am gaia, i am all object's base!");
 		chs.erase_index(0);
 		chs.erase_index(chs.size() - 1);
 		chs.erase_index(3);
-		if(chs != "ell World! I am gaia, i am all object's base")
+		if(chs != T_("ell World! I am gaia, i am all object's base"))
 		{
 			GTLINE2("String erase_index element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("ell World! I am gaia, i am all object's base"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("ell World! I am gaia, i am all object's base")))
 		{
 			GTLINE2("String erase_index element cause size failed!");
 			++nRet;
 		}
-		chs = "Hello World! I am gaia, i am all object's base!";
+		chs = T_("Hello World! I am gaia, i am all object's base!");
 		chs.erase_index(6, 10);
-		if(chs != "Hello ! I am gaia, i am all object's base!")
+		if(chs != T_("Hello ! I am gaia, i am all object's base!"))
 		{
 			GTLINE2("String erase_index multi elements failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello ! I am gaia, i am all object's base!"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello ! I am gaia, i am all object's base!")))
 		{
 			GTLINE2("String erase_index multi elements cause size failed!");
 		}
-		chs = "Hello World! I am gaia, i am all object's base!";
+		chs = T_("Hello World! I am gaia, i am all object's base!");
 		if(chs.erase('a', 0) != 6)
 		{
 			GTLINE2("String erase element from index failed!");
 			++nRet;
 		}
-		if(chs != "Hello World! I m gi, i m ll object's bse!")
+		if(chs != T_("Hello World! I m gi, i m ll object's bse!"))
 		{
 			GTLINE2("String erase element from index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello World! I m gi, i m ll object's bse!"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello World! I m gi, i m ll object's bse!")))
 		{
 			GTLINE2("String erase element from index cause size error!");
 			++nRet;
 		}
-		chs = "Hello World! I am gaia, i am all object's base!";
-		if(chs.erase("am ", 1) != 2)
+		chs = T_("Hello World! I am gaia, i am all object's base!");
+		if(chs.erase(T_("am "), 1) != 2)
 		{
 			GTLINE2("String erase element* from index failed!");
 			++nRet;
 		}
-		if(chs != "Hello World! I gaia, i all object's base!")
+		if(chs != T_("Hello World! I gaia, i all object's base!"))
 		{
 			GTLINE2("String erase element* from index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello World! I gaia, i all object's base!"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello World! I gaia, i all object's base!")))
 		{
 			GTLINE2("String erase element* from index cause size error!");
 			++nRet;
 		}
-		chs = "Hello World! I am gaia, i am all object's base!";
-		if(chs.erase((__ACharsType)"am ", 1) != 2)
+		chs = T_("Hello World! I am gaia, i am all object's base!");
+		if(chs.erase((__TCharsType)T_("am "), 1) != 2)
 		{
 			GTLINE2("String erase element object from index failed!");
 			++nRet;
 		}
-		if(chs != "Hello World! I gaia, i all object's base!")
+		if(chs != T_("Hello World! I gaia, i all object's base!"))
 		{
 			GTLINE2("String erase element object from index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello World! I gaia, i all object's base!"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello World! I gaia, i all object's base!")))
 		{
 			GTLINE2("String erase element object from index cause size error!");
 			++nRet;
 		}
-		chs = "Hello World! I am gaia, i am all object's base!";
-		if(chs.erase("Hello World! ", 0) != 1)
+		chs = T_("Hello World! I am gaia, i am all object's base!");
+		if(chs.erase(T_("Hello World! "), 0) != 1)
 		{
 			GTLINE2("String erase first part failed!");
 			++nRet;
 		}
-		if(chs != "I am gaia, i am all object's base!")
+		if(chs != T_("I am gaia, i am all object's base!"))
 		{
 			GTLINE2("String erase first part failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("I am gaia, i am all object's base!"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("I am gaia, i am all object's base!")))
 		{
 			GTLINE2("String erase first part cause size error!");
 			++nRet;
 		}
-		chs = "Hello World! I am gaia, i am all object's base!";
-		if(chs.erase("base!", 0) != 1)
+		chs = T_("Hello World! I am gaia, i am all object's base!");
+		if(chs.erase(T_("base!"), 0) != 1)
 		{
 			GTLINE2("String erase last part failed!");
 			++nRet;
 		}
-		if(chs != "Hello World! I am gaia, i am all object's ")
+		if(chs != T_("Hello World! I am gaia, i am all object's "))
 		{
 			GTLINE2("String erase last part failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello World! I am gaia, i am all object's "))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello World! I am gaia, i am all object's ")))
 		{
 			GTLINE2("String erase last part cause size error!");
 			++nRet;
 		}
-		chs = "Hello World! I am gaia, i am all object's base!";
-		if(chs.erase("Hello World! I am gaia, i am all object's base!", 0) != 1)
+		chs = T_("Hello World! I am gaia, i am all object's base!");
+		if(chs.erase(T_("Hello World! I am gaia, i am all object's base!"), 0) != 1)
 		{
 			GTLINE2("String erase full failed!");
 			++nRet;
@@ -665,390 +665,390 @@ namespace GAIATEST
 			GTLINE2("String erase full cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.left(5);
-		if(chs != "Hello")
+		if(chs != T_("Hello"))
 		{
 			GTLINE2("String left failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello")))
 		{
 			GTLINE2("String left cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.right(4);
-		if(chs != "World")
+		if(chs != T_("World"))
 		{
 			GTLINE2("String right failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("World"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("World")))
 		{
 			GTLINE2("String right cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.mid(5, 6);
-		if(chs != "Wo")
+		if(chs != T_("Wo"))
 		{
 			GTLINE2("String mid failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Wo"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Wo")))
 		{
 			GTLINE2("String mid cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.left(0);
 		if(!chs.empty())
 		{
 			GTLINE2("String full left failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.right(chs.size() - 1);
 		if(!chs.empty())
 		{
 			GTLINE2("String full right failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.mid(0, 0);
-		if(chs != "H")
+		if(chs != T_("H"))
 		{
 			GTLINE2("String mid left failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.mid(chs.size() - 1, chs.size() - 1);
-		if(chs != "d")
+		if(chs != T_("d"))
 		{
 			GTLINE2("String mid right failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.mid(chs.size() / 2, chs.size() / 2);
-		if(chs != "W")
+		if(chs != T_("W"))
 		{
 			GTLINE2("String mid mid failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.trim_left(5);
-		if(chs != "World")
+		if(chs != T_("World"))
 		{
 			GTLINE2("String trim_left by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("World"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("World")))
 		{
 			GTLINE2("String trim_left by index cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_left('H');
-		if(chs != "elloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_left(T_('H'));
+		if(chs != T_("elloWorld"))
 		{
 			GTLINE2("String trim_left by element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("elloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("elloWorld")))
 		{
 			GTLINE2("String trim_left by element cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_left('a');
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_left(T_('a'));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_left by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_left by index cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_left("He");
-		if(chs != "lloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_left(T_("He"));
+		if(chs != T_("lloWorld"))
 		{
 			GTLINE2("String trim_left by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("lloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("lloWorld")))
 		{
 			GTLINE2("String trim_left by element* cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_left("Ab");
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_left(T_("Ab"));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_left by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_left by element* cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_left((__ACharsType)"Hello");
-		if(chs != "World")
+		chs = T_("HelloWorld");
+		chs.trim_left((__TCharsType)T_("Hello"));
+		if(chs != T_("World"))
 		{
 			GTLINE2("String trim_left by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("World"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("World")))
 		{
 			GTLINE2("String trim_left by element object cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_left((__ACharsType)"Ab");
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_left((__TCharsType)T_("Ab"));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_left by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_left by element object cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_lefti('h');
-		if(chs != "elloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_lefti(T_('h'));
+		if(chs != T_("elloWorld"))
 		{
 			GTLINE2("String trim_lefti by element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("elloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("elloWorld")))
 		{
 			GTLINE2("String trim_lefti by element cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_lefti('a');
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_lefti(T_('a'));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_lefti by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_lefti by index cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_lefti("he");
-		if(chs != "lloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_lefti(T_("he"));
+		if(chs != T_("lloWorld"))
 		{
 			GTLINE2("String trim_lefti by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("lloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("lloWorld")))
 		{
 			GTLINE2("String trim_lefti by element* cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_lefti("ab");
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_lefti(T_("ab"));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_lefti by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_lefti by element* cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_lefti((__ACharsType)"hello");
-		if(chs != "World")
+		chs = T_("HelloWorld");
+		chs.trim_lefti((__TCharsType)T_("hello"));
+		if(chs != T_("World"))
 		{
 			GTLINE2("String trim_lefti by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("World"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("World")))
 		{
 			GTLINE2("String trim_lefti by element object cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_lefti((__ACharsType)"ab");
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_lefti((__TCharsType)T_("ab"));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_lefti by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_lefti by element object cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.trim_right(4);
-		if(chs != "Hello")
+		if(chs != T_("Hello"))
 		{
 			GTLINE2("String trim_right by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello")))
 		{
 			GTLINE2("String trim_right by index cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_right('d');
-		if(chs != "HelloWorl")
+		chs = T_("HelloWorld");
+		chs.trim_right(T_('d'));
+		if(chs != T_("HelloWorl"))
 		{
 			GTLINE2("String trim_right by element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorl"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorl")))
 		{
 			GTLINE2("String trim_right by element cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_right('a');
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_right(T_('a'));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_right by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_right by index cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_right("ld");
-		if(chs != "HelloWor")
+		chs = T_("HelloWorld");
+		chs.trim_right(T_("ld"));
+		if(chs != T_("HelloWor"))
 		{
 			GTLINE2("String trim_right by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWor"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWor")))
 		{
 			GTLINE2("String trim_right by element* cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_right("Ab");
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_right(T_("Ab"));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_right by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_right by element* cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_right((__ACharsType)"World");
-		if(chs != "Hello")
+		chs = T_("HelloWorld");
+		chs.trim_right((__TCharsType)T_("World"));
+		if(chs != T_("Hello"))
 		{
 			GTLINE2("String trim_right by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello")))
 		{
 			GTLINE2("String trim_right by element object cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_right((__ACharsType)"Ab");
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_right((__TCharsType)T_("Ab"));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_right by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_right by element object cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_righti('D');
-		if(chs != "HelloWorl")
+		chs = T_("HelloWorld");
+		chs.trim_righti(T_('D'));
+		if(chs != T_("HelloWorl"))
 		{
 			GTLINE2("String trim_righti by element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorl"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorl")))
 		{
 			GTLINE2("String trim_righti by element cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_righti('a');
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_righti(T_('a'));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_righti by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_righti by index cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_righti("LD");
-		if(chs != "HelloWor")
+		chs = T_("HelloWorld");
+		chs.trim_righti(T_("LD"));
+		if(chs != T_("HelloWor"))
 		{
 			GTLINE2("String trim_righti by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWor"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWor")))
 		{
 			GTLINE2("String trim_righti by element* cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_righti("AB");
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_righti(T_("AB"));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_righti by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_righti by element* cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_righti((__ACharsType)"WORLD");
-		if(chs != "Hello")
+		chs = T_("HelloWorld");
+		chs.trim_righti((__TCharsType)T_("WORLD"));
+		if(chs != T_("Hello"))
 		{
 			GTLINE2("String trim_righti by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("Hello"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("Hello")))
 		{
 			GTLINE2("String trim_righti by element object cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorld";
-		chs.trim_righti((__ACharsType)"AB");
-		if(chs != "HelloWorld")
+		chs = T_("HelloWorld");
+		chs.trim_righti((__TCharsType)T_("AB"));
+		if(chs != T_("HelloWorld"))
 		{
 			GTLINE2("String trim_righti by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen("HelloWorld"))
+		if(chs.size() != GAIA::ALGORITHM::strlen(T_("HelloWorld")))
 		{
 			GTLINE2("String trim_righti by element object cause size error!");
 			++nRet;
 		}
-		chs = "HelloWorldHelloWorld";
+		chs = T_("HelloWorldHelloWorld");
 		if(chs.rfind('l', chs.size() - 1) != 18)
 		{
 			GTLINE2("String rfind element failed!");
@@ -1069,133 +1069,133 @@ namespace GAIATEST
 			GTLINE2("String rfind element failed!");
 			++nRet;
 		}
-		if(chs.rfind("Hello", chs.size() - 1) != 10)
+		if(chs.rfind(T_("Hello"), chs.size() - 1) != 10)
 		{
 			GTLINE2("String rfind element* failed!");
 			++nRet;
 		}
-		if(chs.rfind("ld", chs.size() - 1) != 18)
+		if(chs.rfind(T_("ld"), chs.size() - 1) != 18)
 		{
 			GTLINE2("String rfind element* failed!");
 			++nRet;
 		}
-		if(chs.rfind("HelloWorldH", chs.size() - 1) != 0)
+		if(chs.rfind(T_("HelloWorldH"), chs.size() - 1) != 0)
 		{
 			GTLINE2("String rfind element* failed!");
 			++nRet;
 		}
-		if(chs.rfind("rr", chs.size() - 1) != GINVALID)
+		if(chs.rfind(T_("rr"), chs.size() - 1) != GINVALID)
 		{
 			GTLINE2("String rfind element* failed!");
 			++nRet;
 		}
-		if(chs.rfind((__ACharsType)"r", chs.size() - 1) != 17)
+		if(chs.rfind((__TCharsType)T_("r"), chs.size() - 1) != 17)
 		{
 			GTLINE2("String rfind element object failed!");
 			++nRet;
 		}
-		if(chs.rfind((__ACharsType)"rl", chs.size() - 1) != 17)
+		if(chs.rfind((__TCharsType)T_("rl"), chs.size() - 1) != 17)
 		{
 			GTLINE2("String rfind element object failed!");
 			++nRet;
 		}
-		if(chs.rfind((__ACharsType)"ld", chs.size() - 1) != 18)
+		if(chs.rfind((__TCharsType)T_("ld"), chs.size() - 1) != 18)
 		{
 			GTLINE2("String rfind element object failed!");
 			++nRet;
 		}
-		if(chs.rfind((__ACharsType)"HelloWorldH", chs.size() - 1) != 0)
+		if(chs.rfind((__TCharsType)T_("HelloWorldH"), chs.size() - 1) != 0)
 		{
 			GTLINE2("String rfind element object failed!");
 			++nRet;
 		}
-		if(chs.rfind((__ACharsType)"rr", chs.size() - 1) != GINVALID)
+		if(chs.rfind((__TCharsType)T_("rr"), chs.size() - 1) != GINVALID)
 		{
 			GTLINE2("String rfind element object failed!");
 			++nRet;
 		}
-		chs = "HelloWorld";
+		chs = T_("HelloWorld");
 		chs.replace('l', 'x');
-		if(chs != "HexxoWorxd")
+		if(chs != T_("HexxoWorxd"))
 		{
 			GTLINE2("String replace element failed!");
 			++nRet;
 		}
-		chs = "HelloWorldHelloWorld";
-		chs.replace("Hello", "abc");
-		if(chs != "abcWorldabcWorld")
+		chs = T_("HelloWorldHelloWorld");
+		chs.replace(T_("Hello"), T_("abc"));
+		if(chs != T_("abcWorldabcWorld"))
 		{
 			GTLINE2("String replace element* left failed!");
 			++nRet;
 		}
-		chs = "HelloWorldHelloWorld";
-		chs.replace("World", "abc");
-		if(chs != "HelloabcHelloabc")
+		chs = T_("HelloWorldHelloWorld");
+		chs.replace(T_("World"), T_("abc"));
+		if(chs != T_("HelloabcHelloabc"))
 		{
 			GTLINE2("String replace element* rightfailed!");
 			++nRet;
 		}
-		chs = "HelloWorldHelloWorld";
-		chs.replace("oW", "ab");
-		if(chs != "HellaborldHellaborld")
+		chs = T_("HelloWorldHelloWorld");
+		chs.replace(T_("oW"), T_("ab"));
+		if(chs != T_("HellaborldHellaborld"))
 		{
 			GTLINE2("String replace element* mid failed");
 			++nRet;
 		}
-		chs = "HelloWorldHelloWorld";
-		chs.replace((__ACharsType)"Hello", (__ACharsType)"abc");
-		if(chs != "abcWorldabcWorld")
+		chs = T_("HelloWorldHelloWorld");
+		chs.replace((__TCharsType)T_("Hello"), (__TCharsType)T_("abc"));
+		if(chs != T_("abcWorldabcWorld"))
 		{
 			GTLINE2("String replace element object right failed!");
 			++nRet;
 		}
-		chs = "HelloWorldHelloWorld";
-		chs.replace((__ACharsType)"World", (__ACharsType)"abc");
-		if(chs != "HelloabcHelloabc")
+		chs = T_("HelloWorldHelloWorld");
+		chs.replace((__TCharsType)T_("World"), (__TCharsType)T_("abc"));
+		if(chs != T_("HelloabcHelloabc"))
 		{
 			GTLINE2("String replace element object right failed!");
 			++nRet;
 		}
-		chs = "HelloWorldHelloWorld";
-		chs.replace((__ACharsType)"oW", (__ACharsType)"ab");
-		if(chs != "HellaborldHellaborld")
+		chs = T_("HelloWorldHelloWorld");
+		chs.replace((__TCharsType)T_("oW"), (__TCharsType)T_("ab"));
+		if(chs != T_("HellaborldHellaborld"))
 		{
 			GTLINE2("String replace element object right failed!");
 			++nRet;
 		}
-		chs = "HelloWorldHelloWorld";
-		chs.replace("Hello", "");
-		if(chs != "WorldWorld")
+		chs = T_("HelloWorldHelloWorld");
+		chs.replace(T_("Hello"), T_(""));
+		if(chs != T_("WorldWorld"))
 		{
 			GTLINE2("String replace to empty string failed!");
 			++nRet;
 		}
-		chs = "Hello";
+		chs = T_("Hello");
 		chs = 10 + chs;
-		if(chs != "10Hello")
+		if(chs != T_("10Hello"))
 		{
 			GTLINE2("String global operator + error!");
 			++nRet;
 		}
-		chs = "1234567890ABCDEF1234567890ABCDEF";
+		chs = T_("1234567890ABCDEF1234567890ABCDEF");
 		if(chs.type() != (GAIA::STRING_TYPE_RID | GAIA::STRING_TYPE_RID128))
 		{
 			GTLINE2("String type RID128 failed!");
 			++nRet;
 		}
-		chs = "Hello world 123.4F";
+		chs = T_("Hello world 123.4F");
 		if(chs.type() != GAIA::STRING_TYPE_STRING)
 		{
 			GTLINE2("String type string failed!");
 			++nRet;
 		}
-		chs = "-123.4F";
+		chs = T_("-123.4F");
 		if(!(chs.type() & GAIA::STRING_TYPE_REAL))
 		{
 			GTLINE2("String type real failed!");
 			++nRet;
 		}
-		chs = "+123123123123";
+		chs = T_("+123123123123");
 		if(!(chs.type() & GAIA::STRING_TYPE_INTEGER))
 		{
 			GTLINE2("String type integer failed!");
