@@ -21,7 +21,7 @@ namespace GAIATEST
 			p = GNULL;
 		}
 		{
-			GAIA::CH szTemp[32] = "HelloWorld";
+			GAIA::TCH szTemp[32] = _T("HelloWorld");
 			tolower(szTemp[0]);
 			isalpha(szTemp[0]);
 			isdigit(szTemp[0]);
