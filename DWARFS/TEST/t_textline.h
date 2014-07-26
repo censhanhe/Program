@@ -15,8 +15,8 @@ static const GAIA::CH FILECONTENT[] = "\
 			cout << \"HelloWorld\" << endl;\r\n\
 			return 0;\r\n\
 		}";
-		static const GAIA::TCH TESTFILENAME[] = T_("textline.txt");
-		static const GAIA::TCH TESTFILENAMEDST[] = T_("textline1.txt");
+		static const GAIA::TCH TESTFILENAME[] = _T("textline.txt");
+		static const GAIA::TCH TESTFILENAMEDST[] = _T("textline1.txt");
 		GAIA::FILESYSTEM::File tfile;
 		if(!tfile.Open(TESTFILENAME, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
 		{
