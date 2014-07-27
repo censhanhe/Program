@@ -16,17 +16,17 @@ namespace DWARFSTEST
 	//#endif
 
 	//	DWARFS_MISC::SendMail sm;
-	//	sm.username("stormtotemworks@163.com");
+	//	sm.username("sender@163.com");
 	//	sm.password("qwerasdfzxcv");
 	//	sm.smtp_address("smtp.163.com");
 	//	sm.smtp_port(25);
-	//	sm.sender_mail_address("stormtotemworks@163.com");
-	//	sm.receiver_mail_address("xingyue@stormtotem.net");
+	//	sm.sender_mail_address("sender@163.com");
+	//	sm.receiver_mail_address("receiver@163.net");
 	//	sm.sender_name("admin");
 	//	sm.title("Mail Test Title");
 	//	sm.content("Mail test content.\nMail test content.\n");
-	//	sm.add_attach("d:\\xy\\test.jpg");
-	//	sm.add_attach("d:\\xy\\test1.jpg");
+	//	sm.add_attach(_T("d:\\xy\\test.jpg"));
+	//	sm.add_attach(_T("d:\\xy\\test1.jpg"));
 	//	sm.send(GNULL, GNULL);
 
 	//#if GAIA_OS == GAIA_OS_WINDOWS
