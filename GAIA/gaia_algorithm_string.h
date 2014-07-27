@@ -23,7 +23,7 @@ namespace GAIA
 		{
 			while(*p != '\0')
 			{
-				if(*p < 128)
+				if(*p >= 0 && *p < 128)
 					return GAIA::True;
 				++p;
 			}
@@ -33,7 +33,7 @@ namespace GAIA
 		{
 			while(*p != '\0')
 			{
-				if(*p >= 128)
+				if(*p < 0 || *p >= 128)
 					return GAIA::False;
 				++p;
 			}

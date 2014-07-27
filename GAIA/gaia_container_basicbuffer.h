@@ -10,6 +10,7 @@ namespace GAIA
 		public:
 			typedef _SizeType _sizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
+			typedef GAIA::U8 _datatype;
 		public:
 			typedef BasicBuffer<_SizeType, _SizeIncreaserType> __MyType;
 		public:
