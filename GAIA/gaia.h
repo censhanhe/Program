@@ -9,11 +9,11 @@
 #include	"gaia_type_traits2.h"
 #include	"gaia_internal.h"
 
-#include	"gaia_locale.h"
 #include	"gaia_print_format.h"
 #include	"gaia_print.h"
 #include	"gaia_assert.h"
 #include	"gaia_error.h"
+#include	"gaia_locale.h"
 
 #include	"gaia_system.h"
 

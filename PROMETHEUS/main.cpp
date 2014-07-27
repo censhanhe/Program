@@ -115,7 +115,19 @@ REPEAT:
 
 	/* Execute command. */
 	PROM::Prom prom;
+#if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
 	prom.Command((GAIA::CH*)buf.front_ptr() + first_command_index, prt);
+#elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+	GAIA::SIZE newsize = GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), GNULL, 0);
+	if(newsize > 0)
+	{
+		GAIA::WCH* pNewCmd = new GAIA::WCH[newsize + 1];
+		GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), pNewCmd, newsize);
+		pNewCmd[newsize] = '\0';
+		prom.Command(pNewCmd + first_command_index, prt);
+		delete[] pNewCmd;
+	}
+#endif
 
 	/* Dump system status. */
 	prt << "Allocate Times = " << g_global_allocator.alloc_times() << "\n";
