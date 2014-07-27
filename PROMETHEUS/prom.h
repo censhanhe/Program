@@ -17,9 +17,9 @@ namespace PROM
 
 	template<typename _DataType> GAIA::BL is_word_char(_DataType t)
 	{
-		if(t >= 'a' && t <= 'z' || 
-			t >= 'A' && t <= 'Z' || 
-			t >= '0' && t <= '9' || 
+		if(t >= 'a' && t <= 'z' ||
+			t >= 'A' && t <= 'Z' ||
+			t >= '0' && t <= '9' ||
 			t == '_')
 			return GAIA::True;
 		return GAIA::False;
@@ -1448,8 +1448,8 @@ namespace PROM
 										if(z > sLastNotBlankIndex + 1)
 										{
 											GAIA::ALGORITHM::set(
-												listEraseTemp.front_ptr() + sLastNotBlankIndex + 1, 
-												GAIA::True, 
+												listEraseTemp.front_ptr() + sLastNotBlankIndex + 1,
+												GAIA::True,
 												z - sLastNotBlankIndex - 1); // Erase blank between sign and word.
 										}
 									}
@@ -1458,8 +1458,8 @@ namespace PROM
 										if(z > sLastNotBlankIndex + 2)
 										{
 											GAIA::ALGORITHM::set(
-												listEraseTemp.front_ptr() + sLastNotBlankIndex + 2, 
-												GAIA::True, 
+												listEraseTemp.front_ptr() + sLastNotBlankIndex + 2,
+												GAIA::True,
 												z - sLastNotBlankIndex - 2); // Erase blank between word and word.
 										}
 									}
@@ -1470,8 +1470,8 @@ namespace PROM
 									if(z > sLastNotBlankIndex + 1)
 									{
 										GAIA::ALGORITHM::set(
-											listEraseTemp.front_ptr() + sLastNotBlankIndex + 1, 
-											GAIA::True, 
+											listEraseTemp.front_ptr() + sLastNotBlankIndex + 1,
+											GAIA::True,
 											z - sLastNotBlankIndex - 1); // Erase blank between sign and word or between sign and sign.
 									}
 									bSign = GAIA::True;
@@ -1686,9 +1686,9 @@ namespace PROM
 			}
 		private:
 			GINL GAIA::GVOID OutputParentRelation(
-				PLC_FileStructure* plc_filestructure, 
-				PLC_FileStructure::Node& node, 
-				GAIA::FILESYSTEM::FileBase* pFile, 
+				PLC_FileStructure* plc_filestructure,
+				PLC_FileStructure::Node& node,
+				GAIA::FILESYSTEM::FileBase* pFile,
 				GAIA::PRINT::PrintBase& prt,
 				GAIA::SIZE depth)
 			{
@@ -1711,9 +1711,9 @@ namespace PROM
 				}
 			}
 			GINL GAIA::GVOID OutputChildRelation(
-				PLC_FileStructure* plc_filestructure, 
-				PLC_FileStructure::Node& node, 
-				GAIA::FILESYSTEM::FileBase* pFile, 
+				PLC_FileStructure* plc_filestructure,
+				PLC_FileStructure::Node& node,
+				GAIA::FILESYSTEM::FileBase* pFile,
 				GAIA::PRINT::PrintBase& prt,
 				GAIA::SIZE depth)
 			{

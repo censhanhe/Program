@@ -272,9 +272,9 @@ namespace DWARFS_MISC
 				while((nReaded = file.Read(buf.front_ptr(), PATCH_SIZE)) > 0)
 				{
 					GAIA::SIZE nBuf64Size = GAIA::DATAPHASE::Char2Base64(
-						(GAIA::CH*)buf64.front_ptr(), 
-						buf64.size(), 
-						(const GAIA::CH*)buf.front_ptr(), 
+						(GAIA::CH*)buf64.front_ptr(),
+						buf64.size(),
+						(const GAIA::CH*)buf.front_ptr(),
 						buf.size());
 					buf64[nBuf64Size++] = '\r';
 					buf64[nBuf64Size++] = '\n';
@@ -314,7 +314,7 @@ namespace DWARFS_MISC
 				m_combinbuf.write(p, size);
 				for(GAIA::SIZE x = 1; x < m_combinbuf.write_size(); ++x)
 				{
-					if(m_combinbuf[x - 1] == '\r' && 
+					if(m_combinbuf[x - 1] == '\r' &&
 						m_combinbuf[x] == '\n')
 					{
 						GAIA::SYNC::AutoLock al(m_lock);

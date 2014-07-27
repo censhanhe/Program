@@ -9,7 +9,7 @@ namespace GAIA
 		template<typename _DataType, typename _SizeType, _SizeType _Size>
 		template<typename _ParamSizeType>
 		BasicChars<_DataType, _SizeType, _Size>&
-			BasicChars<_DataType, _SizeType, _Size>::operator = 
+			BasicChars<_DataType, _SizeType, _Size>::operator =
 			(const GAIA::CONTAINER::BasicString<_DataType, _ParamSizeType>& src)
 		{
 			if(src.empty())
@@ -22,7 +22,7 @@ namespace GAIA
 		template<typename _DataType, typename _SizeType>
 		template<typename _ParamSizeType, _ParamSizeType _Size>
 		BasicString<_DataType, _SizeType>&
-			BasicString<_DataType, _SizeType>::operator = 
+			BasicString<_DataType, _SizeType>::operator =
 			(const GAIA::CONTAINER::BasicChars<_DataType, _ParamSizeType, _Size>& src)
 		{
 			if(src.empty())
