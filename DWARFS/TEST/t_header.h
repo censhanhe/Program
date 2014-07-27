@@ -2,6 +2,7 @@
 #define		__T_DWARFS_HEADER_H__
 
 #include "../../GAIA/TEST/t_common.h"
+#include "t_textfile.h"
 #include "t_textline.h"
 #include "t_cmdparam.h"
 #include "t_sendmail.h"
@@ -18,7 +19,8 @@ namespace DWARFSTEST
 		// Every test procedure.
 		GTLINE("[DWARFS TEST BEGIN]");
 		{
-			GTLINE1("TestLines test begin!"); nRet += t_textline(file, prt); GTLINE1("TestLines test end!"); GTLINE("\t");
+			GTLINE1("TextFile test begin!"); nRet += t_textfile(file, prt); GTLINE1("TextFile test end!"); GTLINE("\t");
+			GTLINE1("TextLine test begin!"); nRet += t_textline(file, prt); GTLINE1("TextLine test end!"); GTLINE("\t");
 			GTLINE1("CmdParam test begin!"); nRet += t_cmdparam(file, prt); GTLINE1("CmdParam test end!"); GTLINE("\t");
 			GTLINE1("SendMail test begin!"); nRet += t_sendmail(file, prt); GTLINE1("SendMail test end!"); GTLINE("\t");
 		}

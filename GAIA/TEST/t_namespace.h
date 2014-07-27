@@ -1,7 +1,7 @@
 #ifndef		__T_NAMESPACE_H__
 #define		__T_NAMESPACE_H__
 
-#include	"../gaia_using_namespace.h"
+#include "../gaia_using_namespace.h"
 
 namespace GAIATEST
 {

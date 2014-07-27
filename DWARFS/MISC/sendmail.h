@@ -246,13 +246,13 @@ namespace DWARFS_MISC
 				const __FileNameStringType::_datatype* pFileName = GAIA::ALGORITHM::strfilename(strFile.front_ptr());
 				if(pFileName == GNULL)
 					continue;
-			#if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				__CharsType attach = "--INVT\r\nContent-Type: application/octet-stream;\r\n name=\"";
 				attach += pFileName;
 				attach += "\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n filename=\"";
 				attach += pFileName;
 				attach += "\"\r\n\r\n";
-			#elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+			#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				__CharType szFileName[GAIA::FILESYSTEM::MAXPL];
 				GAIA::LOCALE::w2m(pFileName, szFileName, GAIA::FILESYSTEM::MAXPL);
 				__CharsType attach = "--INVT\r\nContent-Type: application/octet-stream;\r\n name=\"";

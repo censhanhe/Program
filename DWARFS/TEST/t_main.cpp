@@ -18,6 +18,7 @@
 
 #include "../../GAIA/gaia.h"
 #include "../../GAIA/gaia_global_impl.h"
+#include "../MISC/textfile.h"
 #include "../MISC/textline.h"
 #include "../MISC/cmdparam.h"
 #include "../misc/sendmail.h"

@@ -28,9 +28,9 @@ namespace GAIA
 			if(GAIA::ALGORITHM::stremp(dir))
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				if(::SetCurrentDirectoryA(dir))
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				if(::SetCurrentDirectoryW(dir))
 		#	endif
 		#else
@@ -43,9 +43,9 @@ namespace GAIA
 		{
 			GAIA::TCH szPath[MAXPL];
 		#if GAIA_OS == GAIA_OS_WINDOWS
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				::GetCurrentDirectoryA(MAXPL, szPath);
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				::GetCurrentDirectoryW(MAXPL, szPath);
 		#	endif
 		#else
@@ -57,9 +57,9 @@ namespace GAIA
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::TCH szPath[MAXPL];
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				::GetModuleFileNameA(GNULL, szPath, MAXPL);
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				::GetModuleFileNameW(GNULL, szPath, MAXPL);
 		#	endif
 			GAIA::TCH* p = GAIA::ALGORITHM::strdropr(szPath, _T("/\\"));
@@ -101,9 +101,9 @@ namespace GAIA
 					if(!this->Exist(sz))
 					{
 					#if GAIA_OS == GAIA_OS_WINDOWS
-					#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+					#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 							if(!::CreateDirectoryA(sz, GNULL))
-					#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+					#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 							if(!::CreateDirectoryW(sz, GNULL))
 					#	endif
 					#else
@@ -121,9 +121,9 @@ namespace GAIA
 			else
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS
-			#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+			#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 					if(::CreateDirectoryA(pszName, GNULL))
-			#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+			#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 					if(::CreateDirectoryW(pszName, GNULL))
 			#	endif
 			#else
@@ -151,10 +151,10 @@ namespace GAIA
 				GAIA::TCH szTarget[MAXPL];
 				GAIA::ALGORITHM::strcpy(szTarget, szFind);
 				GAIA::ALGORITHM::strcat(szTarget + (p - szFind), _T("*.*"));
-			#if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 					WIN32_FIND_DATAA fdata;
 					HANDLE hFF = ::FindFirstFileA(szTarget, &fdata);
-			#elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+			#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 					WIN32_FIND_DATAW fdata;
 					HANDLE hFF = ::FindFirstFileW(szTarget, &fdata);
 			#endif
@@ -187,9 +187,9 @@ namespace GAIA
 							}
 						}
 					}
-				#if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+				#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 					bFinded = ::FindNextFileA(hFF, &fdata) != 0;
-				#elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+				#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 					bFinded = ::FindNextFileW(hFF, &fdata) != 0;
 				#endif
 				}
@@ -198,9 +198,9 @@ namespace GAIA
 			}
 			else
 			{
-			#if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				if(::RemoveDirectoryA(pszName))
-			#elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+			#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				if(::RemoveDirectoryW(pszName))
 			#endif
 					return GAIA::True;
@@ -268,9 +268,9 @@ namespace GAIA
 			if(GAIA::ALGORITHM::stremp(pszName))
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				DWORD dwFileAttribute = ::GetFileAttributesA(pszName);
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				DWORD dwFileAttribute = ::GetFileAttributesW(pszName);
 		#	endif
 			if(dwFileAttribute == INVALID_FILE_ATTRIBUTES)
@@ -294,9 +294,9 @@ namespace GAIA
 			if(GAIA::ALGORITHM::stremp(pszName))
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				if(::DeleteFileA(pszName))
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				if(::DeleteFileW(pszName))
 		#	endif
 				return GAIA::True;
@@ -314,9 +314,9 @@ namespace GAIA
 			if(GAIA::ALGORITHM::stremp(pszDst))
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				if(::CopyFileA(pszSrc, pszDst, GAIA::False))
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				if(::CopyFileW(pszSrc, pszDst, GAIA::False))
 		#	endif
 				return GAIA::True;
@@ -334,9 +334,9 @@ namespace GAIA
 			if(GAIA::ALGORITHM::stremp(pszDst))
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				if(::MoveFileA(pszSrc, pszDst))
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				if(::MoveFileW(pszSrc, pszDst))
 		#	endif
 				return GAIA::True;
@@ -365,10 +365,10 @@ namespace GAIA
 			GAIA::ALGORITHM::strcpy(szTarget, szFind);
 			GAIA::ALGORITHM::strcat(szTarget + (p - szFind), _T("*.*"));
 			/* Find. */
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				WIN32_FIND_DATAA fdata;
 				HANDLE hFF = ::FindFirstFileA(szTarget, &fdata);
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				WIN32_FIND_DATAW fdata;
 				HANDLE hFF = ::FindFirstFileW(szTarget, &fdata);
 		#	endif
@@ -431,9 +431,9 @@ namespace GAIA
 						treeResult.insert(listResult.front_ptr(), listResult.size());
 					}
 				}
-			#if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				bFinded = ::FindNextFileA(hFF, &fdata) != 0;
-			#elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+			#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				bFinded = ::FindNextFileW(hFF, &fdata) != 0;
 			#endif
 			}

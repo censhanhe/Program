@@ -5,11 +5,11 @@ using namespace std;
 #include	"fsha.h"
 #include	"../../GAIA/gaia_global_impl.h"
 
-#if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 #	define tcout cout
 #	define tcin cin
 #	define tstring string
-#elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 #	define tcout wcout
 #	define tcin wcin
 #	define tstring wstring

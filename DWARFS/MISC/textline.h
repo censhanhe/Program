@@ -1,6 +1,8 @@
 #ifndef 	__DWARFS_TEXTLINE_H__
 #define 	__DWARFS_TEXTLINE_H__
 
+#include "textfile.h"
+
 namespace DWARFS_MISC
 {
 	class TextLine : public GAIA::Entity
@@ -13,6 +15,7 @@ namespace DWARFS_MISC
 		typedef GAIA::CONTAINER::Vector<__LineType> __LineListType;
 	public:
 		GINL TextLine(){this->init();}
+		GINL TextLine(const TextLine& src){this->init(); this->operator = (src);}
 		GINL ~TextLine(){}
 		GINL GAIA::BL lineflag(const __CharType* psz)
 		{

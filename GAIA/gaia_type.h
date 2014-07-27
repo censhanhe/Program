@@ -45,7 +45,7 @@ namespace GAIA
 	/* Char type declaration. */
 	typedef char CH;
 	typedef wchar_t WCH;
-#if GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+#if GAIA_CHARSET == GAIA_CHARSET_UNICODE
 	typedef wchar_t TCH;
 #	ifndef _T
 #		define _T(x) L##x
@@ -314,6 +314,18 @@ namespace GAIA
 		STRING_TYPE_RID64	= 1 << 21,
 		STRING_TYPE_RID128	= 1 << 22,
 	GAIA_ENUM_END(STRING_TYPE)
+
+	GAIA_ENUM_BEGIN(CHARSET_TYPE)
+		CHARSET_TYPE_ANSI,
+		CHARSET_TYPE_OEM,
+		CHARSET_TYPE_UTF8,
+		CHARSET_TYPE_UTF16LE,
+		CHARSET_TYPE_UTF16BE,
+	GAIA_ENUM_END(CHARSET_TYPE)
+
+	static const GAIA::U8 UTF8_FILEHEAD[3] = {0xEF, 0xBB, 0xBF};
+	static const GAIA::U8 UTF16LE_FILEHEAD[2] = {0xFF, 0xFE};
+	static const GAIA::U8 UTF16BE_FILEHEAD[2] = {0xFE, 0xFF};
 };
 
 #ifndef GAIA_DEBUG_CODEPURE

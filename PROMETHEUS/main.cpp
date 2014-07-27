@@ -115,9 +115,9 @@ REPEAT:
 
 	/* Execute command. */
 	PROM::Prom prom;
-#if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 	prom.Command((GAIA::CH*)buf.front_ptr() + first_command_index, prt);
-#elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 	GAIA::SIZE newsize = GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), GNULL, 0);
 	if(newsize > 0)
 	{

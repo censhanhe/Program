@@ -14,42 +14,42 @@ namespace GAIA
 			GAIA_AST(!!filekey);
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			if(opentype & OPEN_TYPE_CREATEALWAYS)
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+"); // Create for read and write.
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				m_pFile = (GAIA::GVOID*)_wfopen(filekey, _T("wb+"));
 		#	endif
 			else if(opentype & OPEN_TYPE_WRITE)
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+"); // Open for read and write.
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				m_pFile = (GAIA::GVOID*)_wfopen(filekey, _T("rb+"));
 		#	endif
 			else if(opentype == OPEN_TYPE_READ)
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb"); // Open for read.
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				m_pFile = (GAIA::GVOID*)_wfopen(filekey, _T("rb"));
 		#	endif
 			else
 				return GAIA::False;
 		#else
 			if(opentype & OPEN_TYPE_CREATEALWAYS)
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+"); // Create for read and write.
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+");
 		#	endif
 			else if(opentype & OPEN_TYPE_WRITE)
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+"); // Open for read and write.
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+");
 		#	endif
 			else if(opentype == OPEN_TYPE_READ)
-		#	if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb"); // Open for read.
-		#	elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb");
 		#	endif
 			else
