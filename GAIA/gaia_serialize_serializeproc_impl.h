@@ -8,7 +8,7 @@ namespace GAIA
 		class Serializer;
 
 		/* Base type serialize. */
-		template<typename _ParamType> GINL GAIA::BL SerializerProc::write(Serializer* p, const _ParamType& t)
+		template<typename _ParamType> GAIA::BL SerializerProc::write(Serializer* p, const _ParamType& t)
 		{
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
@@ -17,7 +17,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _ParamType> GINL GAIA::BL SerializerProc::read(Serializer* p, _ParamType& t)
+		template<typename _ParamType> GAIA::BL SerializerProc::read(Serializer* p, _ParamType& t)
 		{
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
@@ -28,7 +28,7 @@ namespace GAIA
 		}
 
 		/* BasicArray serialize. */
-		template<typename _DataType, typename _SizeType, _SizeType _Size> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, _SizeType _Size> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicArray<_DataType, _SizeType, _Size>& t)
 		{
 			typedef GAIA::CONTAINER::BasicArray<_DataType, _SizeType, _Size> __ArrayType;
@@ -57,7 +57,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, _SizeType _Size> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, _SizeType _Size> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicArray<_DataType, _SizeType, _Size>& t)
 		{
 			typedef GAIA::CONTAINER::BasicArray<_DataType, _SizeType, _Size> __ArrayType;
@@ -90,7 +90,7 @@ namespace GAIA
 		}
 
 		/* BasicVector serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
@@ -119,7 +119,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
@@ -152,7 +152,7 @@ namespace GAIA
 		}
 
 		/* BasicStack serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicStack<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicStack<_DataType, _SizeType, _SizeIncreaserType> __StackType;
@@ -181,7 +181,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicStack<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicStack<_DataType, _SizeType, _SizeIncreaserType> __StackType;
@@ -214,7 +214,7 @@ namespace GAIA
 		}
 
 		/* BasicQueue serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicQueue<_DataType, _SizeType, _SizeIncreaserType> __QueueType;
@@ -243,7 +243,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicQueue<_DataType, _SizeType, _SizeIncreaserType> __QueueType;
@@ -276,7 +276,7 @@ namespace GAIA
 		}
 
 		/* BasicList serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType> __ListType;
@@ -305,7 +305,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType> __ListType;
@@ -337,7 +337,7 @@ namespace GAIA
 		}
 
 		/* BasicTree serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType> __TreeType;
@@ -347,7 +347,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType> __TreeType;
@@ -360,7 +360,7 @@ namespace GAIA
 		}
 
 		/* BasicAVLTree serialize. */
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
@@ -389,7 +389,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
@@ -421,7 +421,7 @@ namespace GAIA
 		}
 
 		/* BasicTrieTree serialize. */
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType> __TrieTreeType;
@@ -474,7 +474,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType> __TrieTreeType;
@@ -515,7 +515,7 @@ namespace GAIA
 		}
 
 		/* BasicStackBitset serialize. */
-		template<typename _SizeType, _SizeType _Size> GINL GAIA::BL
+		template<typename _SizeType, _SizeType _Size> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicStackBitset<_SizeType, _Size>& t)
 		{
 			typedef GAIA::CONTAINER::BasicStackBitset<_SizeType, _Size> __StackBitsetType;
@@ -542,7 +542,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _SizeType, _SizeType _Size> GINL GAIA::BL
+		template<typename _SizeType, _SizeType _Size> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicStackBitset<_SizeType, _Size>& t)
 		{
 			typedef GAIA::CONTAINER::BasicStackBitset<_SizeType, _Size> __StackBitsetType;
@@ -572,7 +572,7 @@ namespace GAIA
 		}
 
 		/* BasicBitset serialize. */
-		template<typename _SizeType> GINL GAIA::BL
+		template<typename _SizeType> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicBitset<_SizeType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicBitset<_SizeType> __BitsetType;
@@ -599,7 +599,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _SizeType> GINL GAIA::BL
+		template<typename _SizeType> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicBitset<_SizeType> &t)
 		{
 			typedef GAIA::CONTAINER::BasicBitset<_SizeType> __BitsetType;
@@ -630,7 +630,7 @@ namespace GAIA
 		}
 
 		/* BasicChars serialize. */
-		template<typename _DataType, typename _SizeType, _SizeType _Size> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, _SizeType _Size> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicChars<_DataType, _SizeType, _Size>& t)
 		{
 			typedef GAIA::CONTAINER::BasicChars<_DataType, _SizeType, _Size> __CharsType;
@@ -657,7 +657,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType, _SizeType _Size> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType, _SizeType _Size> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicChars<_DataType, _SizeType, _Size>& t)
 		{
 			typedef GAIA::CONTAINER::BasicChars<_DataType, _SizeType, _Size> __CharsType;
@@ -693,7 +693,7 @@ namespace GAIA
 		}
 
 		/* BasicString serialize. */
-		template<typename _DataType, typename _SizeType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType> GAIA::BL
 			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicString<_DataType, _SizeType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicString<_DataType, _SizeType> __StringType;
@@ -720,7 +720,7 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _DataType, typename _SizeType> GINL GAIA::BL
+		template<typename _DataType, typename _SizeType> GAIA::BL
 			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicString<_DataType, _SizeType>& t)
 		{
 			typedef GAIA::CONTAINER::BasicString<_DataType, _SizeType> __StringType;

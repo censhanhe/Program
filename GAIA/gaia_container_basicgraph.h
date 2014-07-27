@@ -208,7 +208,7 @@ namespace GAIA
 					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
 				this->reset_tstack();
 			}
-			template<typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::GVOID navpath(const Node& src, const Node& dst, const _SizeType& navtimes, __NodeListType& result) const
+			template<typename _KeyType, _SizeType _MaxLinkCount> GAIA::GVOID navpath(const Node& src, const Node& dst, const _SizeType& navtimes, __NodeListType& result) const
 			{
 				GAIA_AST(navtimes >= 0);
 				result.clear();
@@ -216,7 +216,7 @@ namespace GAIA
 					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
 				this->reset_tstack();
 			}
-			template<typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::GVOID navpath(const Node& src, const _DataType& t, const _SizeType& navtimes, __NodeListType& result) const
+			template<typename _KeyType, _SizeType _MaxLinkCount> GAIA::GVOID navpath(const Node& src, const _DataType& t, const _SizeType& navtimes, __NodeListType& result) const
 			{
 				GAIA_AST(navtimes >= 0);
 				result.clear();
@@ -470,7 +470,7 @@ namespace GAIA
 				}
 				return dst;
 			}
-			template<typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::BL navpath_node(const Node& src, const Node& dst, const _SizeType& navtimes, __NodeListType& result) const
+			template<typename _KeyType, _SizeType _MaxLinkCount> GAIA::BL navpath_node(const Node& src, const Node& dst, const _SizeType& navtimes, __NodeListType& result) const
 			{
 				if(src.m_traveling)
 					return GAIA::False;
@@ -515,7 +515,7 @@ namespace GAIA
 					src.leave_traveling();
 				return GAIA::False;
 			}
-			template<typename _KeyType, _SizeType _MaxLinkCount> GINL GAIA::BL navpath_node(const Node& src, const _DataType& t, const _SizeType& navtimes, __NodeListType& result) const
+			template<typename _KeyType, _SizeType _MaxLinkCount> GAIA::BL navpath_node(const Node& src, const _DataType& t, const _SizeType& navtimes, __NodeListType& result) const
 			{
 				if(src.m_traveling)
 					return GAIA::False;

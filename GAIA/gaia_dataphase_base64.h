@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace DATAPHASE
 	{
-		template<typename _DataType, typename _SizeType> GINL _SizeType Char2Base64(_DataType* pDst, _SizeType dstlen, const _DataType* pSrc, _SizeType srclen)
+		template<typename _DataType, typename _SizeType> _SizeType Char2Base64(_DataType* pDst, _SizeType dstlen, const _DataType* pSrc, _SizeType srclen)
 		{
 			GPCHR_NULL_RET(pDst, 0);
 			GPCHR_NULL_RET(pSrc, 0);

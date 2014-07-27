@@ -50,7 +50,7 @@ namespace GAIA
 					m_pIO->Reference();
 				return m_pIO;
 			}
-			template<typename _ParamType> GINL Serializer& operator << (const _ParamType& t)
+			template<typename _ParamType> Serializer& operator << (const _ParamType& t)
 			{
 				if(m_pIO == GNULL)
 					return *this;
@@ -58,7 +58,7 @@ namespace GAIA
 				sp.write(this, t);
 				return *this;
 			}
-			template<typename _ParamType> GINL Serializer& operator >> (_ParamType& t)
+			template<typename _ParamType> Serializer& operator >> (_ParamType& t)
 			{
 				if(m_pIO == GNULL)
 					return *this;

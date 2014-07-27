@@ -89,7 +89,7 @@ namespace GAIA
 				m_pRead += src.write_size();
 				return GAIA::True;
 			}
-			template<typename _ParamObjType> GINL GAIA::GVOID write(const _ParamObjType* psz)
+			template<typename _ParamObjType> GAIA::GVOID write(const _ParamObjType* psz)
 			{
 				GAIA_AST(!!psz);
 				if(psz == GNULL)
@@ -98,7 +98,7 @@ namespace GAIA
 				GAIA::U8* pNew = this->alloc(bytes);
 				GAIA::ALGORITHM::xmemcpy(pNew, psz, bytes);
 			}
-			template<typename _ParamObjType> GINL GAIA::BL read(_ParamObjType* psz)
+			template<typename _ParamObjType> GAIA::BL read(_ParamObjType* psz)
 			{
 				GAIA_AST(!!psz);
 				if(psz == GNULL)
@@ -116,12 +116,12 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			template<typename _ParamObjType> GINL GAIA::GVOID write(const _ParamObjType& obj)
+			template<typename _ParamObjType> GAIA::GVOID write(const _ParamObjType& obj)
 			{
 				GAIA::U8* pNew = this->alloc(sizeof(obj));
 				GAIA::ALGORITHM::xmemcpy(pNew, &obj, sizeof(obj));
 			}
-			template<typename _ParamObjType> GINL GAIA::BL read(_ParamObjType& obj)
+			template<typename _ParamObjType> GAIA::BL read(_ParamObjType& obj)
 			{
 				if(sizeof(obj) > this->capacity() - this->read_size())
 					return GAIA::False;
@@ -157,12 +157,12 @@ namespace GAIA
 			}
 			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
-			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType& obj){this->write(obj); return *this;}
-			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType& obj){this->read(obj); return *this;}
-			template<typename _ParamObjType> GINL __MyType& operator << (const _ParamObjType* obj){this->write(obj); return *this;}
-			template<typename _ParamObjType> GINL __MyType& operator >> (_ParamObjType* obj){this->read(obj); return *this;}
-			template<typename _ParamObjType> GINL const GAIA::U8& operator [] (const _ParamObjType& index) const{GAIA_AST(index < this->write_size()); return this->front_ptr()[index];}
-			template<typename _ParamObjType> GINL GAIA::U8& operator [] (const _ParamObjType& index){GAIA_AST(index < this->write_size()); return this->front_ptr()[index];}
+			template<typename _ParamObjType> __MyType& operator << (const _ParamObjType& obj){this->write(obj); return *this;}
+			template<typename _ParamObjType> __MyType& operator >> (_ParamObjType& obj){this->read(obj); return *this;}
+			template<typename _ParamObjType> __MyType& operator << (const _ParamObjType* obj){this->write(obj); return *this;}
+			template<typename _ParamObjType> __MyType& operator >> (_ParamObjType* obj){this->read(obj); return *this;}
+			template<typename _ParamObjType> const GAIA::U8& operator [] (const _ParamObjType& index) const{GAIA_AST(index < this->write_size()); return this->front_ptr()[index];}
+			template<typename _ParamObjType> GAIA::U8& operator [] (const _ParamObjType& index){GAIA_AST(index < this->write_size()); return this->front_ptr()[index];}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				GAIA_AST(&src != this);

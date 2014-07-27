@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template<typename _DataType1, typename _DataType2> GINL const typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType maximize(const _DataType1& v1, const _DataType2& v2)
+		template<typename _DataType1, typename _DataType2> const typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType maximize(const _DataType1& v1, const _DataType2& v2)
 		{
 			if(v1 > v2)
 				return v1;
@@ -14,7 +14,7 @@ namespace GAIA
 			else
 				return v1;
 		}
-		template<typename _DataType1, typename _DataType2> GINL const typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType minimize(const _DataType1& v1, const _DataType2& v2)
+		template<typename _DataType1, typename _DataType2> const typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType minimize(const _DataType1& v1, const _DataType2& v2)
 		{
 			if(v1 < v2)
 				return v1;
@@ -23,7 +23,7 @@ namespace GAIA
 			else
 				return v1;
 		}
-		template<typename _DataType, typename _SizeType> GINL const _DataType& maximizes(_DataType p, const _SizeType& size)
+		template<typename _DataType, typename _SizeType> const _DataType& maximizes(_DataType p, const _SizeType& size)
 		{
 			_SizeType resindex = 0;
 			for(_SizeType x = 1; x < size; ++x)
@@ -33,7 +33,7 @@ namespace GAIA
 			}
 			return p[resindex];
 		}
-		template<typename _DataType, typename _SizeType> GINL const _DataType& minimizes(_DataType p, const _SizeType& size)
+		template<typename _DataType, typename _SizeType> const _DataType& minimizes(_DataType p, const _SizeType& size)
 		{
 			_SizeType resindex = 0;
 			for(_SizeType x = 1; x < size; ++x)
@@ -43,15 +43,15 @@ namespace GAIA
 			}
 			return p[resindex];
 		}
-		template<typename _DataType> GINL _DataType& maximize3(_DataType& v1, _DataType& v2, _DataType& v3)
+		template<typename _DataType> _DataType& maximize3(_DataType& v1, _DataType& v2, _DataType& v3)
 		{
 			return maximize(maximize(v1, v2), v3);
 		}
-		template<typename _DataType> GINL _DataType& minimize3(_DataType& v1, _DataType& v2, _DataType& v3)
+		template<typename _DataType> _DataType& minimize3(_DataType& v1, _DataType& v2, _DataType& v3)
 		{
 			return minimize(minimize(v1, v2), v3);
 		}
-		template<typename _DataType> GINL _DataType& middle3(_DataType& v1, _DataType& v2, _DataType& v3)
+		template<typename _DataType> _DataType& middle3(_DataType& v1, _DataType& v2, _DataType& v3)
 		{
 			if(v1 > v2)
 			{
@@ -78,7 +78,7 @@ namespace GAIA
 				}
 			}
 		}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmp(const _DataType1& v1, const _DataType2& v2)
+		template<typename _DataType1, typename _DataType2> GAIA::N32 cmp(const _DataType1& v1, const _DataType2& v2)
 		{
 			if(v1 < v2)
 				return -1;
@@ -87,7 +87,7 @@ namespace GAIA
 			else
 				return 0;
 		}
-		template<typename _DataType1, typename _DataType2, typename _SizeType> GINL GAIA::N32 cmps(_DataType1 p1, _DataType2 p2, const _SizeType& size)
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::N32 cmps(_DataType1 p1, _DataType2 p2, const _SizeType& size)
 		{
 			_SizeType sizet = size;
 			while(sizet > 0)
@@ -102,7 +102,7 @@ namespace GAIA
 			}
 			return 0;
 		}
-		template<typename _DataType, typename _KeyType, typename _SizeType> GINL GAIA::N32 cmpk(_DataType p, const _KeyType& key, const _SizeType& size)
+		template<typename _DataType, typename _KeyType, typename _SizeType> GAIA::N32 cmpk(_DataType p, const _KeyType& key, const _SizeType& size)
 		{
 			_SizeType sizet = size;
 			while(sizet > 0)
@@ -116,7 +116,7 @@ namespace GAIA
 			}
 			return 0;
 		}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmp2(_DataType1 p1, _DataType2 p2)
+		template<typename _DataType1, typename _DataType2> GAIA::N32 cmp2(_DataType1 p1, _DataType2 p2)
 		{
 			if(p1[0] < p2[0])
 				return -1;
@@ -132,7 +132,7 @@ namespace GAIA
 					return 0;
 			}
 		}
-		template<typename _DataType, typename _KeyType> GINL GAIA::N32 cmp2k(_DataType p, const _KeyType& key)
+		template<typename _DataType, typename _KeyType> GAIA::N32 cmp2k(_DataType p, const _KeyType& key)
 		{
 			if(p[0] < key)
 				return -1;
@@ -148,7 +148,7 @@ namespace GAIA
 					return 0;
 			}
 		}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmp3(_DataType1 p1, _DataType2 p2)
+		template<typename _DataType1, typename _DataType2> GAIA::N32 cmp3(_DataType1 p1, _DataType2 p2)
 		{
 			if(p1[0] < p2[0])
 				return -1;
@@ -171,7 +171,7 @@ namespace GAIA
 				}
 			}
 		}
-		template<typename _DataType, typename _KeyType> GINL GAIA::N32 cmp3k(_DataType p, const _KeyType& key)
+		template<typename _DataType, typename _KeyType> GAIA::N32 cmp3k(_DataType p, const _KeyType& key)
 		{
 			if(p[0] < key)
 				return -1;
@@ -194,7 +194,7 @@ namespace GAIA
 				}
 			}
 		}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmp4(_DataType1 p1, _DataType2 p2)
+		template<typename _DataType1, typename _DataType2> GAIA::N32 cmp4(_DataType1 p1, _DataType2 p2)
 		{
 			if(p1[0] < p2[0])
 				return -1;
@@ -224,7 +224,7 @@ namespace GAIA
 				}
 			}
 		}
-		template<typename _DataType, typename _KeyType> GINL GAIA::N32 cmp4k(_DataType p, const _KeyType& key)
+		template<typename _DataType, typename _KeyType> GAIA::N32 cmp4k(_DataType p, const _KeyType& key)
 		{
 			if(p[0] < key)
 				return -1;
@@ -254,7 +254,7 @@ namespace GAIA
 				}
 			}
 		}
-		template<typename _DataType1, typename _DataType2> GINL GAIA::N32 cmpp(_DataType1 p1, _DataType2 p2)
+		template<typename _DataType1, typename _DataType2> GAIA::N32 cmpp(_DataType1 p1, _DataType2 p2)
 		{
 			if(p1 == GNULL && p2 == GNULL)
 				return 0;
@@ -272,7 +272,7 @@ namespace GAIA
 					return 0;
 			}
 		}
-		template<typename _DataType1, typename _DataType2, typename _SizeType> GINL GAIA::GVOID copy(_DataType1 dst, _DataType2 src, const _SizeType& size)
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::GVOID copy(_DataType1 dst, _DataType2 src, const _SizeType& size)
 		{
 			_SizeType sizet = size;
 			while(sizet > 0)
@@ -283,7 +283,7 @@ namespace GAIA
 				--sizet;
 			}
 		}
-		template<typename _DataType, typename _KeyType, typename _SizeType> GINL GAIA::GVOID set(_DataType dst, const _KeyType& t, const _SizeType& size)
+		template<typename _DataType, typename _KeyType, typename _SizeType> GAIA::GVOID set(_DataType dst, const _KeyType& t, const _SizeType& size)
 		{
 			_SizeType sizet = size;
 			while(sizet > 0)

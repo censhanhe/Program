@@ -306,7 +306,7 @@ namespace GAIA
 				GAIA::ALGORITHM::copy(this->front_ptr() + index, src.front_ptr(), src.size());
 				return GAIA::True;
 			}
-			template<typename _ParamSizeType> GINL GAIA::BL erase_index(const _ParamSizeType& index)
+			template<typename _ParamSizeType> GAIA::BL erase_index(const _ParamSizeType& index)
 			{
 				if(index >= 0 && index < this->size())
 				{
@@ -316,7 +316,7 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			template<typename _ParamSizeType1, typename _ParamSizeType2> GINL GAIA::BL erase_index(const _ParamSizeType1& index_start, const _ParamSizeType2& index_end)
+			template<typename _ParamSizeType1, typename _ParamSizeType2> GAIA::BL erase_index(const _ParamSizeType1& index_start, const _ParamSizeType2& index_end)
 			{
 				GAIA_AST(index_start <= index_end);
 				if(index_start >= 0 && index_start < this->size() &&
@@ -556,7 +556,7 @@ namespace GAIA
 				this->resize(tempsize);
 				return *this;
 			}
-			template<typename _ParamSizeType> GINL GAIA::BL trim_left(const _ParamSizeType& index)
+			template<typename _ParamSizeType> GAIA::BL trim_left(const _ParamSizeType& index)
 			{
 				if(this->empty())
 					return GAIA::False;
@@ -656,7 +656,7 @@ namespace GAIA
 					return GAIA::False;
 				return this->trim_lefti(src.front_ptr());
 			}
-			template<typename _ParamSizeType> GINL GAIA::BL trim_right(const _ParamSizeType& index)
+			template<typename _ParamSizeType> GAIA::BL trim_right(const _ParamSizeType& index)
 			{
 				if(this->empty())
 					return GAIA::False;
@@ -794,14 +794,14 @@ namespace GAIA
 			GINL GAIA::BL operator <= (const __MyType& src) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), src.front_ptr()) <= 0;}
 			GINL GAIA::BL operator > (const __MyType& src) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), src.front_ptr()) > 0;}
 			GINL GAIA::BL operator < (const __MyType& src) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), src.front_ptr()) < 0;}
-			template<typename _ParamDataType> GINL GAIA::BL operator == (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) == 0;}
-			template<typename _ParamDataType> GINL GAIA::BL operator != (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) != 0;}
-			template<typename _ParamDataType> GINL GAIA::BL operator >= (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) >= 0;}
-			template<typename _ParamDataType> GINL GAIA::BL operator <= (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) <= 0;}
-			template<typename _ParamDataType> GINL GAIA::BL operator > (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) > 0;}
-			template<typename _ParamDataType> GINL GAIA::BL operator < (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) < 0;}
-			template<typename _ParamSizeType> GINL const _DataType& operator[](const _ParamSizeType& index) const{GAIA_AST(index <= this->size()); return m_chars[index];}
-			template<typename _ParamSizeType> GINL _DataType& operator[](const _ParamSizeType& index){GAIA_AST(index <= this->size()); return m_chars[index];}
+			template<typename _ParamDataType> GAIA::BL operator == (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator != (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) != 0;}
+			template<typename _ParamDataType> GAIA::BL operator >= (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) >= 0;}
+			template<typename _ParamDataType> GAIA::BL operator <= (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) <= 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (_ParamDataType p) const{return GAIA::ALGORITHM::strcmp(this->front_ptr(), p) < 0;}
+			template<typename _ParamSizeType> const _DataType& operator[](const _ParamSizeType& index) const{GAIA_AST(index <= this->size()); return m_chars[index];}
+			template<typename _ParamSizeType> _DataType& operator[](const _ParamSizeType& index){GAIA_AST(index <= this->size()); return m_chars[index];}
 			GINL operator _DataType*(){return m_chars;}
 			GINL operator const _DataType*() const{return m_chars;}
 			GINL operator GAIA::NM() const{return GAIA::ALGORITHM::string_cast<NM>(m_chars);}

@@ -9,7 +9,7 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template<typename _DataType> GINL GAIA::GVOID bsort(_DataType pBegin, _DataType pEnd)
+		template<typename _DataType> GAIA::GVOID bsort(_DataType pBegin, _DataType pEnd)
 		{
 			GAIA_AST(!!pBegin);
 			GAIA_AST(!!pEnd);
@@ -25,16 +25,16 @@ namespace GAIA
 				++pBegin;
 			}
 		}
-		template<typename _DataType> GINL GAIA::GVOID isort(_DataType pBegin, _DataType pEnd)
+		template<typename _DataType> GAIA::GVOID isort(_DataType pBegin, _DataType pEnd)
 		{
 		}
-		template<typename _DataType> GINL GAIA::GVOID ssort(_DataType pBegin, _DataType pEnd)
+		template<typename _DataType> GAIA::GVOID ssort(_DataType pBegin, _DataType pEnd)
 		{
 		}
-		template<typename _DataType> GINL GAIA::GVOID hsort(_DataType pBegin, _DataType pEnd)
+		template<typename _DataType> GAIA::GVOID hsort(_DataType pBegin, _DataType pEnd)
 		{
 		}
-		template<typename _DataType> GINL GAIA::GVOID qsort(_DataType pBegin, _DataType pEnd)
+		template<typename _DataType> GAIA::GVOID qsort(_DataType pBegin, _DataType pEnd)
 		{
 			GAIA_AST(!!pBegin);
 			GAIA_AST(!!pEnd);
@@ -65,13 +65,13 @@ namespace GAIA
 			GAIA::ALGORITHM::qsort(pSplit + 1, pEnd);
 		#endif
 		}
-		template<typename _DataType> GINL GAIA::GVOID esort(_DataType pBegin, _DataType pEnd)
+		template<typename _DataType> GAIA::GVOID esort(_DataType pBegin, _DataType pEnd)
 		{
 			GAIA_AST(!!pBegin);
 			GAIA_AST(!!pEnd);
 			GAIA_AST(pBegin < pEnd);
 		}
-		template<typename _DataType> GINL GAIA::GVOID sort(_DataType pBegin, _DataType pEnd)
+		template<typename _DataType> GAIA::GVOID sort(_DataType pBegin, _DataType pEnd)
 		{
 			GAIA_AST(!!pBegin);
 			GAIA_AST(!!pEnd);
@@ -80,7 +80,7 @@ namespace GAIA
 			else
 				GAIA::ALGORITHM::qsort(pBegin, pEnd);
 		}
-		template<typename _DataType> GINL GAIA::BL issorted(_DataType pBegin, _DataType pEnd)
+		template<typename _DataType> GAIA::BL issorted(_DataType pBegin, _DataType pEnd)
 		{
 			GAIA_AST(!!pBegin);
 			GAIA_AST(!!pEnd);

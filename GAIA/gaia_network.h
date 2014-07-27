@@ -10,11 +10,11 @@ namespace GAIA
 		public:
 			GINL IP(){}
 			GINL IP(const IP& src){this->operator = (src);}
-			template<typename _ParamDataType> GINL IP(const _ParamDataType* psz){this->operator = (psz);}
+			template<typename _ParamDataType> IP(const _ParamDataType* psz){this->operator = (psz);}
 			GINL ~IP(){}
 			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(us, 0, 4);}
 			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmpk(us, 0, 4) == 0;}
-			template<typename _ParamDataType> GINL GAIA::BL FromString(const _ParamDataType* psz)
+			template<typename _ParamDataType> GAIA::BL FromString(const _ParamDataType* psz)
 			{
 				const _ParamDataType* p = psz;
 				GAIA::U32 uDotCnt = GAIA::ALGORITHM::strcnt(psz, '.');
@@ -30,7 +30,7 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			template<typename _ParamDataType> GINL GAIA::GVOID ToString(_ParamDataType* psz) const
+			template<typename _ParamDataType> GAIA::GVOID ToString(_ParamDataType* psz) const
 			{
 				_ParamDataType* p = psz;
 				for(GAIA::N32 x = 0; x < 4; ++x)
@@ -41,15 +41,15 @@ namespace GAIA
 				*(p - 1) = 0;
 			}
 			GINL IP& operator = (const IP& src){GAIA_AST(&src != this); u = src.u; return *this;}
-			template<typename _ParamDataType> GINL IP& operator = (const _ParamDataType* psz){this->FromString(psz); return *this;}
+			template<typename _ParamDataType> IP& operator = (const _ParamDataType* psz){this->FromString(psz); return *this;}
 			GINL IP operator + (const IP& src) const{IP ret; ret.u = u + src.u; return ret;}
 			GINL IP operator - (const IP& src) const{IP ret; ret.u = u - src.u; return ret;}
-			template<typename _ParamDataType> GINL IP operator + (const _ParamDataType& t) const{IP ret; ret.u = u + t; return ret;}
-			template<typename _ParamDataType> GINL IP operator - (const _ParamDataType& t) const{IP ret; ret.u = u - t; return ret;}
+			template<typename _ParamDataType> IP operator + (const _ParamDataType& t) const{IP ret; ret.u = u + t; return ret;}
+			template<typename _ParamDataType> IP operator - (const _ParamDataType& t) const{IP ret; ret.u = u - t; return ret;}
 			GINL IP& operator += (const IP& src){u += src.u; return *this;}
 			GINL IP& operator -= (const IP& src){u -= src.u; return *this;}
-			template<typename _ParamDataType> GINL IP& operator += (const _ParamDataType& t){u += t; return *this;}
-			template<typename _ParamDataType> GINL IP& operator -= (const _ParamDataType& t){u -= t; return *this;}
+			template<typename _ParamDataType> IP& operator += (const _ParamDataType& t){u += t; return *this;}
+			template<typename _ParamDataType> IP& operator -= (const _ParamDataType& t){u -= t; return *this;}
 			GINL IP& operator ++ (){(*this) += 1; return *this;}
 			GINL IP& operator -- (){(*this) -= 1; return *this;}
 			GINL IP operator ++ (GAIA::N32){IP ret = *this; ++(*this); return ret;}
@@ -73,7 +73,7 @@ namespace GAIA
 			GINL ~NetworkAddress(){}
 			GINL GAIA::GVOID Invalid(){ip.Invalid(); uPort = 0;}
 			GINL GAIA::BL IsInvalid() const{return ip.IsInvalid() || uPort == 0;}
-			template<typename _ParamDataType> GINL GAIA::BL FromString(const _ParamDataType* psz)
+			template<typename _ParamDataType> GAIA::BL FromString(const _ParamDataType* psz)
 			{
 				if(!ip.FromString(psz))
 					return GAIA::False;
@@ -84,7 +84,7 @@ namespace GAIA
 				GAIA::ALGORITHM::str2int(p, uPort);
 				return GAIA::True;
 			}
-			template<typename _ParamDataType> GINL GAIA::GVOID ToString(_ParamDataType* psz) const
+			template<typename _ParamDataType> GAIA::GVOID ToString(_ParamDataType* psz) const
 			{
 				ip.ToString(psz);
 				GAIA::TCH* p = GAIA::ALGORITHM::strend(psz);

@@ -37,7 +37,7 @@ namespace GAIA
 			GINL GAIA::BL IsOpen() const{return m_pFile != GNULL;}
 			GINL GAIA::N64 Size() const{return m_size;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Resize(const GAIA::N64& size);
-			template<typename _ObjType> GINL GAIA::BL Read(_ObjType& obj)
+			template<typename _ObjType> GAIA::BL Read(_ObjType& obj)
 			{
 				GAIA_AST(!!m_pFile);
 				if(m_pFile == GNULL)
@@ -47,7 +47,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Read(GAIA::GVOID* pDst, const GAIA::N64& size);
-			template<typename _ObjType> GINL GAIA::BL Write(const _ObjType& obj)
+			template<typename _ObjType> GAIA::BL Write(const _ObjType& obj)
 			{
 				GAIA_AST(!!m_pFile);
 				if(m_pFile == GNULL)
@@ -61,8 +61,8 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::N64& offset);
 			GINL const GAIA::N64& Tell() const{return m_offset;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Flush();
-			template<typename _ObjType> GINL File& operator >> (_ObjType& t){this->Read(t); return *this;}
-			template<typename _ObjType> GINL File& operator << (const _ObjType& t){this->Write(t); return *this;}
+			template<typename _ObjType> File& operator >> (_ObjType& t){this->Read(t); return *this;}
+			template<typename _ObjType> File& operator << (const _ObjType& t){this->Write(t); return *this;}
 	#ifdef GAIA_DEBUG_MACHINELENGTH
 		private: // Protect for 32-64bit error.
 			GINL GAIA::BL Read(GAIA::NM& obj){return GAIA::False;}

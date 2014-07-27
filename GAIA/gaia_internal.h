@@ -3,7 +3,7 @@
 
 namespace GAIA_INTERNAL_NAMESPACE
 {
-	template<typename _SizeType> GINL GAIA::GVOID* memcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, const _SizeType& size)
+	template<typename _SizeType> GAIA::GVOID* memcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, const _SizeType& size)
 	{
 		_SizeType sizet = size;
 		GAIA::GVOID* pRet = dst;
@@ -23,8 +23,8 @@ namespace GAIA_INTERNAL_NAMESPACE
 		}
 		return pRet;
 	}
-	template<typename _DataType> GINL GAIA::SIZE strlen(const _DataType* p){GAIA::SIZE ret = 0; while(p[ret] != 0) ret++; return ret;}
-	template<typename _DataType> GINL _DataType* strcpy(_DataType* dst, const _DataType* src)
+	template<typename _DataType> GAIA::SIZE strlen(const _DataType* p){GAIA::SIZE ret = 0; while(p[ret] != 0) ret++; return ret;}
+	template<typename _DataType> _DataType* strcpy(_DataType* dst, const _DataType* src)
 	{
 		_DataType* ret = dst;
 		while(*src != 0)
@@ -36,7 +36,7 @@ namespace GAIA_INTERNAL_NAMESPACE
 		*dst = 0;
 		return ret;
 	}
-	template<typename _DataType> GINL GAIA::N32 strcmp(const _DataType* p1, const _DataType* p2)
+	template<typename _DataType> GAIA::N32 strcmp(const _DataType* p1, const _DataType* p2)
 	{
 		while(GAIA::ALWAYSTRUE)
 		{

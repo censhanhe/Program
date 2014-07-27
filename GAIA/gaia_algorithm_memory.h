@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template<typename _SizeType> GINL GAIA::GVOID* xmemcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, const _SizeType& size)
+		template<typename _SizeType> GAIA::GVOID* xmemcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, const _SizeType& size)
 		{
 			GAIA_AST(!!dst);
 			GAIA_AST(!!src);
@@ -28,7 +28,7 @@ namespace GAIA
 			}
 			return pRet;
 		}
-		template<typename _SizeType> GINL GAIA::GVOID* xmemcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, const _SizeType& dst_stride, const _SizeType& src_stride, const _SizeType& size, const _SizeType& count)
+		template<typename _SizeType> GAIA::GVOID* xmemcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, const _SizeType& dst_stride, const _SizeType& src_stride, const _SizeType& size, const _SizeType& count)
 		{
 			GAIA_AST(!!dst);
 			GAIA_AST(!!src);
@@ -48,7 +48,7 @@ namespace GAIA
 			}
 			return dst;
 		}
-		template<typename _FillType, typename _SizeType> GINL GAIA::GVOID* xmemset(GAIA::GVOID* dst, const _FillType& ch, const _SizeType& size)
+		template<typename _FillType, typename _SizeType> GAIA::GVOID* xmemset(GAIA::GVOID* dst, const _FillType& ch, const _SizeType& size)
 		{
 			GAIA_AST(!!dst);
 			GAIA_AST(size > 0);
@@ -71,7 +71,7 @@ namespace GAIA
 			}
 			return pRet;
 		}
-		template<typename _FillType, typename _SizeType> GINL GAIA::GVOID* xmemset(GAIA::GVOID* dst, const _FillType& ch, const _SizeType& stride, const _SizeType& size, const _SizeType& count)
+		template<typename _FillType, typename _SizeType> GAIA::GVOID* xmemset(GAIA::GVOID* dst, const _FillType& ch, const _SizeType& stride, const _SizeType& size, const _SizeType& count)
 		{
 			GAIA_AST(!!dst);
 			GAIA_AST(stride > 0);
@@ -86,7 +86,7 @@ namespace GAIA
 			}
 			return dst;
 		}
-		template<typename _CheckType, typename _SizeType> GINL GAIA::N32 xmemcheck(const GAIA::GVOID* p, const _CheckType& ch, const _SizeType& size)
+		template<typename _CheckType, typename _SizeType> GAIA::N32 xmemcheck(const GAIA::GVOID* p, const _CheckType& ch, const _SizeType& size)
 		{
 			GAIA_AST(!!p);
 			GAIA_AST(size > 0);
@@ -114,7 +114,7 @@ namespace GAIA
 			}
 			return 0;
 		}
-		template<typename _CheckType, typename _SizeType> GINL GAIA::N32 xmemcheck(const GAIA::GVOID* p, const _CheckType& ch, const _SizeType& stride, const _SizeType& size, const _SizeType& count)
+		template<typename _CheckType, typename _SizeType> GAIA::N32 xmemcheck(const GAIA::GVOID* p, const _CheckType& ch, const _SizeType& stride, const _SizeType& size, const _SizeType& count)
 		{
 			GAIA_AST(!!p);
 			GAIA_AST(stride > 0);
@@ -131,7 +131,7 @@ namespace GAIA
 			}
 			return 0;
 		}
-		template<typename _SizeType> GINL GAIA::N32 xmemcmp(const GAIA::GVOID* p1, const GAIA::GVOID* p2, const _SizeType& size)
+		template<typename _SizeType> GAIA::N32 xmemcmp(const GAIA::GVOID* p1, const GAIA::GVOID* p2, const _SizeType& size)
 		{
 			GAIA_AST(!!p1);
 			GAIA_AST(!!p2);
@@ -159,7 +159,7 @@ namespace GAIA
 			}
 			return 0;
 		}
-		template<typename _SizeType> GINL GAIA::N32 xmemcmp(const GAIA::GVOID* p1, const GAIA::GVOID* p2, const _SizeType& p1_stride, const _SizeType& p2_stride, const _SizeType& size, const _SizeType& count)
+		template<typename _SizeType> GAIA::N32 xmemcmp(const GAIA::GVOID* p1, const GAIA::GVOID* p2, const _SizeType& p1_stride, const _SizeType& p2_stride, const _SizeType& size, const _SizeType& count)
 		{
 			GAIA_AST(!!p1);
 			GAIA_AST(!!p2);

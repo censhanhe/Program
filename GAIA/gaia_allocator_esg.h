@@ -152,7 +152,7 @@ namespace GAIA
 				m_lr.Leave();
 			#endif
 			}
-			template<typename _DataType> GINL GAIA::GVOID push(const _DataType& t, _DataType*& p, GAIA::UM& uSize, GAIA::UM& uCapacity)
+			template<typename _DataType> GAIA::GVOID push(const _DataType& t, _DataType*& p, GAIA::UM& uSize, GAIA::UM& uCapacity)
 			{
 				if(uSize == uCapacity)
 				{
