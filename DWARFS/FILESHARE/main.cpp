@@ -8,9 +8,11 @@ using namespace std;
 #if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
 #	define tcout cout
 #	define tcin cin
+#	define tstring string
 #elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
 #	define tcout wcout
 #	define tcin wcin
+#	define tstring wstring
 #endif
 
 int main()
@@ -70,10 +72,10 @@ INPUT_IP:
 	for(;;) // Work loop.
 	{
 		tcout << _T(":");
-		wstring str_cmd;
+		tstring str_cmd;
 		for(;;) // Collect all word to command lines.
 		{
-			wstring str;
+			tstring str;
 			tcin >> str;
 			if(str.length() == 0)
 				continue;
@@ -86,7 +88,7 @@ INPUT_IP:
 				GAIA::N32 nIndex = (GAIA::N32)str_cmd.find(';');
 				if(nIndex == -1)
 					break;
-				wstring str_cmd_cur = str_cmd.substr(0, nIndex);
+				tstring str_cmd_cur = str_cmd.substr(0, nIndex);
 				str_cmd.erase(0, nIndex + 1);
 				if(str_cmd_cur == _T("q"))
 					goto FUNCTION_END;

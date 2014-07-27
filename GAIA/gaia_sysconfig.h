@@ -67,7 +67,7 @@
 /* Language code flag. */
 #define GAIA_CHARFMT_ANSI 1
 #define GAIA_CHARFMT_UNICODE 2
-#define GAIA_CHARFMT GAIA_CHARFMT_UNICODE
+#define GAIA_CHARFMT GAIA_CHARFMT_ANSI
 
 /* Machine bit count flag. */
 #define GAIA_MACHINE32 32
