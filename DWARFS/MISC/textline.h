@@ -6,7 +6,7 @@ namespace DWARFS_MISC
 	class TextLine : public GAIA::Entity
 	{
 	public:
-		typedef GAIA::CONTAINER::AString __LineType;
+		typedef GAIA::CONTAINER::TString __LineType;
 		typedef __LineType::_datatype __CharType;
 		typedef GAIA::CONTAINER::BasicChars<__CharType, GAIA::N32, 3> __FlagType;
 	private:
@@ -16,9 +16,9 @@ namespace DWARFS_MISC
 		GINL ~TextLine(){}
 		GINL GAIA::BL lineflag(const __CharType* psz)
 		{
-			if(GAIA::ALGORITHM::strcmp(psz, "\r") != 0 &&
-				GAIA::ALGORITHM::strcmp(psz, "\n") != 0 &&
-				GAIA::ALGORITHM::strcmp(psz, "\r\n") != 0)
+			if(GAIA::ALGORITHM::strcmp(psz, _T("\r")) != 0 &&
+				GAIA::ALGORITHM::strcmp(psz, _T("\n")) != 0 &&
+				GAIA::ALGORITHM::strcmp(psz, _T("\r\n")) != 0)
 				return GAIA::False;
 			m_lineflag = psz;
 			return GAIA::True;
@@ -45,28 +45,29 @@ namespace DWARFS_MISC
 			GAIA::BL bExistMatch = GAIA::False;
 			__CharType* p = (__CharType*)buf.front_ptr();
 			__CharType* pLast = p;
-			for(__BufferType::_sizetype x = 0; x < buf.read_size(); ++x)
+			GAIA::SIZE charcount = buf.read_size() / sizeof(__CharType);
+			for(GAIA::SIZE x = 0; x < charcount; ++x)
 			{
 				/* Find the new line token's last position. */
 				__CharType* pMatched = GNULL;
-				if(p[x] == '\0')
+				if(p[x] == _T('\0'))
 				{
-					if(x != 0 && p[x - 1] != '\n' && p[x - 1] != '\r')
+					if(x != 0 && p[x - 1] != _T('\n') && p[x - 1] != _T('\r'))
 						pMatched = p + x - 1;
 				}
-				else if(p[x] == '\r')
+				else if(p[x] == _T('\r'))
 				{
-					if(x + 1 < buf.read_size())
+					if(x + 1 < charcount)
 					{
-						if(p[x + 1] != '\n')
+						if(p[x + 1] != _T('\n'))
 							pMatched = p + x;
 					}
 					else
 						pMatched = p + x;
 				}
-				else if(p[x] == '\n')
+				else if(p[x] == _T('\n'))
 					pMatched = p + x;
-				else if(x == buf.read_size() - 1)
+				else if(x == charcount - 1)
 					pMatched = p + x;
 
 				/* Push to line list. */
@@ -76,7 +77,7 @@ namespace DWARFS_MISC
 					m_lines.back().resize(pMatched - pLast + 1);
 					GAIA::ALGORITHM::xmemcpy(
 						m_lines.back().front_ptr(),
-						pLast, pMatched - pLast + 1);
+						pLast, (pMatched - pLast + 1) * sizeof(__CharType));
 					pLast = pMatched + 1;
 					bExistMatch = GAIA::True;
 				}
@@ -86,7 +87,7 @@ namespace DWARFS_MISC
 				GAIA_AST(!m_lines.back().empty());
 				__LineType& l = m_lines.back();
 				__LineType::_datatype t = *l.back_it();
-				if(t != '\r' && t != '\n')
+				if(t != _T('\r') && t != _T('\n'))
 					l += m_lineflag;
 			}
 			return GAIA::True;
@@ -197,7 +198,7 @@ namespace DWARFS_MISC
 		}
 		GAIA_CLASS_OPERATOR_COMPARE2(m_lines, m_lines, m_lineflag, m_lineflag, TextLine);
 	private:
-		GINL GAIA::GVOID init(){m_lineflag = "\r"; m_bEnableCheckLine = GAIA::True;}
+		GINL GAIA::GVOID init(){m_lineflag = _T("\r"); m_bEnableCheckLine = GAIA::True;}
 		GINL GAIA::BL checkline(const __CharType* p, GAIA::SIZE& line_flag_count) const
 		{
 			if(!this->isenable_checkline())
@@ -209,11 +210,11 @@ namespace DWARFS_MISC
 			GAIA_AST(!GAIA::ALGORITHM::stremp(p));
 			if(GAIA::ALGORITHM::stremp(p))
 				return GAIA::False;
-			while(*p != '\0')
+			while(*p != _T('\0'))
 			{
-				if(*p == '\r' && *(p + 1) == '\n')
+				if(*p == _T('\r') && *(p + 1) == _T('\n'))
 				{
-					if(*(p + 2) != '\0')
+					if(*(p + 2) != _T('\0'))
 					{
 						line_flag_count = GINVALID;
 						return GAIA::False;
@@ -221,9 +222,9 @@ namespace DWARFS_MISC
 					++line_flag_count;
 					++p;
 				}
-				else if(*p == '\r' || *p == '\n')
+				else if(*p == _T('\r') || *p == _T('\n'))
 				{
-					if(*(p + 1) != '\0')
+					if(*(p + 1) != _T('\0'))
 					{
 						line_flag_count = GINVALID;
 						return GAIA::False;

@@ -258,14 +258,10 @@ namespace GAIA
 			GINL __MyType& operator >> (GAIA::NM& obj){return *this;}
 			GINL __MyType& operator << (const GAIA::UM& obj){return *this;}
 			GINL __MyType& operator >> (GAIA::UM& obj){return *this;}
-			GINL __MyType& operator << (const GAIA::WCH& obj){return *this;}
-			GINL __MyType& operator >> (GAIA::WCH& obj){return *this;}
 			GINL __MyType& operator << (const GAIA::NM* obj){return *this;} GINL __MyType& operator << (GAIA::NM* obj){return *this;}
 			GINL __MyType& operator >> (GAIA::NM* obj){return *this;}
 			GINL __MyType& operator << (const GAIA::UM* obj){return *this;} GINL __MyType& operator << (GAIA::UM* obj){return *this;}
 			GINL __MyType& operator >> (GAIA::UM* obj){return *this;}
-			GINL __MyType& operator << (const GAIA::WCH* obj){return *this;} GINL __MyType& operator << (GAIA::WCH* obj){return *this;}
-			GINL __MyType& operator >> (GAIA::WCH* obj){return *this;}
 	#endif
 		private:
 			GAIA::U8* m_pFront;

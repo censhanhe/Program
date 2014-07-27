@@ -20,9 +20,10 @@ namespace DWARFS_MISC
 		};
 	public:
 		typedef GAIA::CH __CharType;
+		typedef GAIA::CONTAINER::BasicChars<__CharType, GAIA::N32, 1024> __CharsType;
 		typedef GAIA::CONTAINER::BasicString<__CharType, GAIA::N32> __StringType;
-		typedef GAIA::CONTAINER::BasicChars<__CharType, GAIA::N32, 1024> __ACharsType;
-		typedef __StringType __FileName;
+		typedef GAIA::TCH __FileNameCharType;
+		typedef GAIA::CONTAINER::TString __FileNameStringType;
 
 	public:
 		GINL GAIA::GVOID username(const __CharType* pszUserName){m_username = pszUserName;}
@@ -43,7 +44,7 @@ namespace DWARFS_MISC
 		GINL const __CharType* title() const{return m_title;}
 		GINL GAIA::GVOID content(const __CharType* pszContent){m_content = pszContent;}
 		GINL const __CharType* content() const{return m_content;}
-		GINL GAIA::BL add_attach(const __CharType* pszFileName)
+		GINL GAIA::BL add_attach(const __FileNameCharType* pszFileName)
 		{
 			GPCHR_NULLSTRPTR_RET(pszFileName, GAIA::False);
 			if(this->get_attach_by_name(pszFileName) != GINVALID)
@@ -63,7 +64,7 @@ namespace DWARFS_MISC
 				m_attachs[uValidIndex] = pszFileName;
 			return GAIA::True;
 		}
-		GINL GAIA::BL delete_attach(const __CharType* pszFileName)
+		GINL GAIA::BL delete_attach(const __FileNameCharType* pszFileName)
 		{
 			GPCHR_NULLSTRPTR_RET(pszFileName, GAIA::False);
 			GAIA::SIZE uIndex = this->get_attach_by_name(pszFileName);
@@ -74,13 +75,13 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::GVOID delete_attach_all(){m_attachs.clear();}
 		GINL GAIA::SIZE get_attach_count() const{return m_attachs.size();}
-		GINL const __CharType* get_attach(const GAIA::SIZE& index) const
+		GINL const __FileNameCharType* get_attach(const GAIA::SIZE& index) const
 		{
 			if(index >= m_attachs.size())
 				return GNULL;
 			return m_attachs[index];
 		}
-		GINL GAIA::SIZE get_attach_by_name(const __CharType* pszFileName)
+		GINL GAIA::SIZE get_attach_by_name(const __FileNameCharType* pszFileName)
 		{
 			GPCHR_NULLSTRPTR_RET(pszFileName, GAIA::False);
 			for(GAIA::SIZE x = 0; x < m_attachs.size(); ++x)
@@ -178,7 +179,7 @@ namespace DWARFS_MISC
 
 			/* Send mail. */
 			{
-				__ACharsType from = "MAIL FROM:<";
+				__CharsType from = "MAIL FROM:<";
 				from += m_sender_mail_address;
 				from += ">\r\n";
 				h.Send((const GAIA::U8*)from.front_ptr(), from.size());
@@ -187,7 +188,7 @@ namespace DWARFS_MISC
 			}
 
 			{
-				__ACharsType to = "RCPT TO:<";
+				__CharsType to = "RCPT TO:<";
 				to += m_receiver_mail_address;
 				to += ">\r\n";
 				h.Send((const GAIA::U8*)to.front_ptr(), to.size());
@@ -200,7 +201,7 @@ namespace DWARFS_MISC
 				goto FUNCTION_END;
 
 			{
-				__ACharsType sender = "From:\"";
+				__CharsType sender = "From:\"";
 				sender += m_sender_name;
 				sender += "\"<";
 				sender += m_sender_mail_address;
@@ -209,7 +210,7 @@ namespace DWARFS_MISC
 			}
 
 			{
-				__ACharsType receiver = "To:\"";
+				__CharsType receiver = "To:\"";
 				receiver += m_receiver_mail_address;
 				receiver += "\"<";
 				receiver += m_receiver_mail_address;
@@ -218,7 +219,7 @@ namespace DWARFS_MISC
 			}
 
 			{
-				__ACharsType title = "Subject:";
+				__CharsType title = "Subject:";
 				title += m_title;
 				title += "\r\nMime-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"INVT\"\r\n\r\n";
 				h.Send((const GAIA::U8*)title.front_ptr(), title.size());
@@ -234,7 +235,7 @@ namespace DWARFS_MISC
 			/* Send attachments. */
 			for(GAIA::SIZE x = 0; x < m_attachs.size(); ++x)
 			{
-				const __FileName& strFile = m_attachs[x];
+				const __FileNameStringType& strFile = m_attachs[x];
 				GAIA::FILESYSTEM::File file;
 				if(!file.Open(strFile, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
 					continue;
@@ -242,14 +243,24 @@ namespace DWARFS_MISC
 				if(nSize == 0 || nSize == GINVALID)
 					continue;
 
-				const __FileName::_datatype* pFileName = GAIA::ALGORITHM::strfilename(strFile.front_ptr());
+				const __FileNameStringType::_datatype* pFileName = GAIA::ALGORITHM::strfilename(strFile.front_ptr());
 				if(pFileName == GNULL)
 					continue;
-				__ACharsType attach = "--INVT\r\nContent-Type: application/octet-stream;\r\n name=\"";
+			#if GAIA_CHARFMT == GAIA_CHARFMT_ANSI
+				__CharsType attach = "--INVT\r\nContent-Type: application/octet-stream;\r\n name=\"";
 				attach += pFileName;
 				attach += "\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n filename=\"";
 				attach += pFileName;
 				attach += "\"\r\n\r\n";
+			#elif GAIA_CHARFMT == GAIA_CHARFMT_UNICODE
+				__CharType szFileName[GAIA::FILESYSTEM::MAXPL];
+				GAIA::LOCALE::w2m(pFileName, szFileName, GAIA::FILESYSTEM::MAXPL);
+				__CharsType attach = "--INVT\r\nContent-Type: application/octet-stream;\r\n name=\"";
+				attach += szFileName;
+				attach += "\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n filename=\"";
+				attach += szFileName;
+				attach += "\"\r\n\r\n";
+			#endif
 				h.Send((const GAIA::U8*)attach.front_ptr(), attach.size());
 
 				static const GAIA::N64 PATCH_SIZE = 1024 * 128;
@@ -337,7 +348,7 @@ namespace DWARFS_MISC
 		__StringType m_sender_name;
 		__StringType m_title;
 		__StringType m_content;
-		GAIA::CONTAINER::Vector<__FileName> m_attachs;
+		GAIA::CONTAINER::Vector<__FileNameStringType> m_attachs;
 		GAIA::CONTAINER::Buffer m_combinbuf;
 		GAIA::CONTAINER::Buffer m_tempbuf;
 		GAIA::SYNC::Lock m_lock;

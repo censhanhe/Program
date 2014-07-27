@@ -57,7 +57,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size);
-			template<typename _ParamType> GAIA::N64 WriteText(const _ParamType* pszText){return this->Write(pszText, GAIA::ALGORITHM::strlen(pszText));}
+			template<typename _ParamType> GAIA::N64 WriteText(const _ParamType* pszText){return this->Write(pszText, GAIA::ALGORITHM::strlen(pszText) * sizeof(_ParamType));}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::N64& offset);
 			GINL const GAIA::N64& Tell() const{return m_offset;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Flush();
@@ -81,8 +81,6 @@ namespace GAIA
 			GINL GAIA::N64 Write(const GAIA::NM* pDst, const GAIA::N64& size){return GAIA::False;} GINL GAIA::N64 Write(GAIA::NM* pDst, const GAIA::N64& size){return GAIA::False;}
 			GINL GAIA::N64 Read(GAIA::UM* pDst, const GAIA::N64& size){return GAIA::False;}
 			GINL GAIA::N64 Write(const GAIA::UM* pDst, const GAIA::N64& size){return GAIA::False;} GINL GAIA::N64 Write(GAIA::UM* pDst, const GAIA::N64& size){return GAIA::False;}
-			GINL GAIA::N64 Read(GAIA::WCH* pDst, const GAIA::N64& size){return GAIA::False;}
-			GINL GAIA::N64 Write(const GAIA::WCH* pDst, const GAIA::N64& size){return GAIA::False;} GINL GAIA::N64 Write(GAIA::WCH* pDst, const GAIA::N64& size){return GAIA::False;}
 	#endif
 		private:
 			GAIA::UM m_fileopentype;

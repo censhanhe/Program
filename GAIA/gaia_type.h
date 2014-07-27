@@ -53,7 +53,7 @@ namespace GAIA
 #else
 	typedef char TCH;
 #	ifndef _T
-#		define _T(x)
+#		define _T(x) x
 #	endif
 #endif
 
@@ -323,7 +323,7 @@ namespace GAIA
 #ifndef GAIA_DEBUG_MEMORYLEAK
 	namespace GAIA{namespace ALLOCATOR{class AllocatorESG;};};
 	extern GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
-#	define GAIA_MALLOC(type, size) (type*)g_global_allocator.memory_alloc(sizeof(type) * size)
+#	define GAIA_MALLOC(type, size) (type*)g_global_allocator.memory_alloc(sizeof(type) * (size))
 #	define GAIA_MFREE(p) g_global_allocator.memory_release(p)
 #else
 #	define GAIA_MALLOC(type, size) new type[size]

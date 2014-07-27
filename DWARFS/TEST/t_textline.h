@@ -7,14 +7,14 @@ namespace DWARFSTEST
 	{
 		GAIA::N32 nRet = 0;
 
-static const GAIA::CH FILECONTENT[] = "\
-		#include <iostream>\r\n\
-		using namespace std;\r\n\
-		int main(int argc, char* argv[])\r\n\
-		{\r\n\
-			cout << \"HelloWorld\" << endl;\r\n\
-			return 0;\r\n\
-		}";
+static const GAIA::TCH FILECONTENT[] = _T("\
+#include <iostream>\r\n\
+using namespace std;\r\n\
+int main(int argc, char* argv[])\r\n\
+{\r\n\
+	cout << \"HelloWorld\" << endl;\r\n\
+	return 0;\r\n\
+}");
 		static const GAIA::TCH TESTFILENAME[] = _T("textline.txt");
 		static const GAIA::TCH TESTFILENAMEDST[] = _T("textline1.txt");
 		GAIA::FILESYSTEM::File tfile;
@@ -23,14 +23,14 @@ static const GAIA::CH FILECONTENT[] = "\
 			GTLINE2("Create textline source file failed!");
 			++nRet;
 		}
-		if(tfile.Write(FILECONTENT, sizeof(FILECONTENT) - 1) != sizeof(FILECONTENT) - 1)
+		if(tfile.Write(FILECONTENT, sizeof(FILECONTENT) - sizeof(FILECONTENT[0])) != sizeof(FILECONTENT) - sizeof(FILECONTENT[0]))
 		{
 			GTLINE2("Write textline source file failed!");
 			++nRet;
 		}
 		tfile.Close();
 		DWARFS_MISC::TextLine tl;
-		tl.lineflag("\r\n");
+		tl.lineflag(_T("\r\n"));
 		if(tl.size() != 0)
 		{
 			GTLINE2("New textline's size not zero!");
@@ -49,28 +49,28 @@ static const GAIA::CH FILECONTENT[] = "\
 		tfile.Close();
 		for(GAIA::SIZE x = 0; x < tl.size(); ++x)
 		{
-			const GAIA::CH* p = tl.get_line(x);
+			const GAIA::TCH* p = tl.get_line(x);
 			if(p == GNULL)
 			{
 				GTLINE2("TextLine load cause get_line failed!");
 				++nRet;
 				break;
 			}
-			if(	x == 0 && GAIA::ALGORITHM::strcmp(p, "#include <iostream>\r\n") != 0 ||
-				x == 1 && GAIA::ALGORITHM::strcmp(p, "using namespace std;\r\n") != 0 ||
-				x == 2 && GAIA::ALGORITHM::strcmp(p, "int main(int argc, char* argv[])\r\n") != 0 ||
-				x == 3 && GAIA::ALGORITHM::strcmp(p, "{\r\n") != 0 ||
-				x == 4 && GAIA::ALGORITHM::strcmp(p, "	cout << \"HelloWorld\" << endl;\r\n") != 0 ||
-				x == 5 && GAIA::ALGORITHM::strcmp(p, "	return 0;\r\n") != 0 ||
-				x == 6 && GAIA::ALGORITHM::strcmp(p, "}\r\n") != 0)
+			if(	x == 0 && GAIA::ALGORITHM::strcmp(p, _T("#include <iostream>\r\n")) != 0 ||
+				x == 1 && GAIA::ALGORITHM::strcmp(p, _T("using namespace std;\r\n")) != 0 ||
+				x == 2 && GAIA::ALGORITHM::strcmp(p, _T("int main(int argc, char* argv[])\r\n")) != 0 ||
+				x == 3 && GAIA::ALGORITHM::strcmp(p, _T("{\r\n")) != 0 ||
+				x == 4 && GAIA::ALGORITHM::strcmp(p, _T("	cout << \"HelloWorld\" << endl;\r\n")) != 0 ||
+				x == 5 && GAIA::ALGORITHM::strcmp(p, _T("	return 0;\r\n")) != 0 ||
+				x == 6 && GAIA::ALGORITHM::strcmp(p, _T("}\r\n")) != 0)
 			{
 				GTLINE2("TextLine content error!");
 				++nRet;
 				break;
 			}
 		}
-		const GAIA::CH* szNew[] = {"// TEST COMPLETE!\r\n", "// END.\r\n"};
-		tl.insert_lines(7, (const GAIA::CH**)&szNew, 2);
+		const GAIA::TCH* szNew[] = {_T("// TEST COMPLETE!\r\n"), _T("// END.\r\n")};
+		tl.insert_lines(7, (const GAIA::TCH**)&szNew, 2);
 		tl.erase_lines(0, 1);
 		tfile.Open(TESTFILENAMEDST, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
 		if(!tl.save(&tfile))
@@ -82,6 +82,7 @@ static const GAIA::CH FILECONTENT[] = "\
 		GAIA::FILESYSTEM::Directory dir;
 		dir.RemoveFile(TESTFILENAME);
 		dir.RemoveFile(TESTFILENAMEDST);
+
 		return nRet;
 	}
 };

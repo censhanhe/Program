@@ -105,8 +105,6 @@ namespace GAIA
 			GINL GAIA::BL read(Serializer* p, GAIA::NM& t);
 			GINL GAIA::BL write(Serializer* p, const GAIA::UM& t);
 			GINL GAIA::BL read(Serializer* p, GAIA::UM& t);
-			GINL GAIA::BL write(Serializer* p, const GAIA::WCH& t);
-			GINL GAIA::BL read(Serializer* p, GAIA::WCH& t);
 		};
 	#endif
 	};

@@ -35,7 +35,7 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 	prt << "Prometheus " << PROM::VERSION_STRING << "\n";
 
 	GAIA::FILESYSTEM::Directory dir;
-	GAIA::CONTAINER::AString strWorkPath;
+	GAIA::CONTAINER::TString strWorkPath;
 	dir.GetWorkingDirectory(strWorkPath);
 	prt << "\tWorkPath = " << strWorkPath.front_ptr() << "\n";
 	prt << "\n";
@@ -43,7 +43,7 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 	/* Calculate all args length. */
 	GAIA::N32 nLen = 1;
 	for(GAIA::N32 x = 0; x < nargs; ++x)
-		nLen += GAIA::ALGORITHM::strlen(args[x]) + 1;
+		nLen += GAIA::ALGORITHM::strlen(args[x]) + sizeof(args[0]);
 
 	/* Combin args to single buffer. */
 	GAIA::CONTAINER::Buffer buf;
