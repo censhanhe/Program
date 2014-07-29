@@ -1,5 +1,5 @@
 #ifndef		__GAIA_SYNC_LOCK_INDP_H__
-#define		__GAIA_SYNC_LOCK_INDP_N__
+#define		__GAIA_SYNC_LOCK_INDP_H__
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	define NOMINMAX
