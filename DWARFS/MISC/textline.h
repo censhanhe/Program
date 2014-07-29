@@ -27,28 +27,21 @@ namespace DWARFS_MISC
 			return GAIA::True;
 		}
 		GINL const __CharType* lineflag() const{return m_lineflag;}
-		GINL GAIA::BL load(GAIA::FILESYSTEM::FileBase* pFile)
+		GINL GAIA::BL load(GAIA::FILESYSTEM::FileBase& file)
 		{
-			GAIA_AST(pFile != GNULL);
-			if(pFile == GNULL)
-				return GAIA::False;
-			if(pFile->Size() == 0)
+			if(file.Size() == 0)
 				return GAIA::True;
-			typedef GAIA::CONTAINER::Buffer __BufferType;
-			__BufferType buf;
-			buf.resize(pFile->Size());
+			DWARFS_MISC::TextFile textfile;
+			if(!textfile.load(file))
+				return GAIA::False;
+			m_charset_type = textfile.charset_type();
+			if(m_charset_type == GAIA::CHARSET_TYPE_INVALID)
+				return GAIA::False;
+			__CharType* p = textfile.get_string().front_ptr();
+			GAIA::SIZE charcount = textfile.get_string().size();
 			__LineType empty_line;
-			GAIA::N64 nReaded = 0;
-			while((nReaded = pFile->Read(buf.front_ptr() + buf.read_size(), buf.write_size() - buf.read_size())) != 0)
-			{
-				buf.seek_read(nReaded, GAIA::SEEK_TYPE_FORWARD);
-				if(buf.read_size() == buf.write_size())
-					break;
-			}
 			GAIA::BL bExistMatch = GAIA::False;
-			__CharType* p = (__CharType*)buf.front_ptr();
 			__CharType* pLast = p;
-			GAIA::SIZE charcount = buf.read_size() / sizeof(__CharType);
 			for(GAIA::SIZE x = 0; x < charcount; ++x)
 			{
 				/* Find the new line token's last position. */
@@ -95,19 +88,23 @@ namespace DWARFS_MISC
 			}
 			return GAIA::True;
 		}
-		GINL GAIA::BL save(GAIA::FILESYSTEM::FileBase* pFile)
+		GINL GAIA::BL save(GAIA::FILESYSTEM::FileBase& file)
 		{
-			GAIA_AST(pFile != GNULL);
-			if(pFile == NULL)
-				return GAIA::False;
+			DWARFS_MISC::TextFile textfile;
+			textfile.charset_type(m_charset_type);
+			TextFile::__StringType& str = textfile.get_string();
+			GAIA::SIZE len = 0;
 			for(__LineListType::_sizetype x = 0; x < m_lines.size(); ++x)
 			{
 				GAIA_AST(m_lines[x].size() > 0);
-				pFile->Write(m_lines[x].front_ptr(), m_lines[x].size());
+				len += m_lines[x].size();
 			}
-			return GAIA::True;
+			str.reserve(len);
+			for(__LineListType::_sizetype x = 0; x < m_lines.size(); ++x)
+				str += m_lines[x];
+			return textfile.save(file);
 		}
-		GINL GAIA::GVOID clear(){m_lines.clear();}
+		GINL GAIA::GVOID clear(){m_charset_type = GAIA::CHARSET_TYPE_INVALID; m_lines.clear();}
 		GINL GAIA::SIZE size() const{return m_lines.size();}
 		GINL GAIA::BL set_line(const GAIA::SIZE& index, const __CharType* p)
 		{
@@ -201,7 +198,7 @@ namespace DWARFS_MISC
 		}
 		GAIA_CLASS_OPERATOR_COMPARE2(m_lines, m_lines, m_lineflag, m_lineflag, TextLine);
 	private:
-		GINL GAIA::GVOID init(){m_lineflag = _T("\r"); m_bEnableCheckLine = GAIA::True;}
+		GINL GAIA::GVOID init(){m_lineflag = _T("\r"); m_charset_type = GAIA::CHARSET_TYPE_INVALID; m_bEnableCheckLine = GAIA::True;}
 		GINL GAIA::BL checkline(const __CharType* p, GAIA::SIZE& line_flag_count) const
 		{
 			if(!this->isenable_checkline())
@@ -243,6 +240,7 @@ namespace DWARFS_MISC
 	private:
 		__LineListType m_lines;
 		__FlagType m_lineflag;
+		GAIA::CHARSET_TYPE m_charset_type;
 		GAIA::U8 m_bEnableCheckLine : 1;
 	};
 };

@@ -1010,7 +1010,7 @@ namespace PROM
 						PROM_RAISE_FILEERROR(502, plc_file->filelist[x].name);
 						continue;
 					}
-					if(!pRet->file_codelines_list[x].lines.load(&file))
+					if(!pRet->file_codelines_list[x].lines.load(file))
 					{
 						PROM_RAISE_FILEERROR(511, plc_file->filelist[x].name);
 						continue;
@@ -2194,7 +2194,7 @@ namespace PROM
 						if(file.Open(plc_file->filelist[x].name,
 							GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
 						{
-							if(plc_codeline->file_codelines_list[x].lines.save(&file))
+							if(plc_codeline->file_codelines_list[x].lines.save(file))
 							{
 								plc_file->filelist[x].bNeedSave = GAIA::False;
 								++save_success_count;

@@ -1835,6 +1835,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="LOCALE"
+				>
+				<File
+					RelativePath=".\TEST\t_locale.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

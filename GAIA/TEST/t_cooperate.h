@@ -75,7 +75,7 @@ namespace GAIATEST
 			}
 		}
 
-		return nRet = 0;
+		return nRet;
 	}
 };
 

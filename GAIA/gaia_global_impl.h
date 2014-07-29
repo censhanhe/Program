@@ -5,4 +5,7 @@
 	GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
 #endif
 
+	GAIA::SYNC::Lock g_localelock;
+	GAIA::CHARSET_TYPE g_charsettype = GAIA::CHARSET_TYPE_SYS;
+
 #endif

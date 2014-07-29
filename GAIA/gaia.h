@@ -13,7 +13,6 @@
 #include	"gaia_print.h"
 #include	"gaia_assert.h"
 #include	"gaia_error.h"
-#include	"gaia_locale.h"
 
 #include	"gaia_system.h"
 
@@ -23,6 +22,8 @@
 #include 	"gaia_sync_autolock.h"
 #include	"gaia_sync_event.h"
 #include	"gaia_sync_mutex.h"
+
+#include	"gaia_locale.h"
 
 #include	"gaia_math_basic.h"
 #include 	"gaia_math_random.h"

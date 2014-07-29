@@ -118,11 +118,11 @@ REPEAT:
 #if GAIA_CHARSET == GAIA_CHARSET_ANSI
 	prom.Command((GAIA::CH*)buf.front_ptr() + first_command_index, prt);
 #elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-	GAIA::SIZE newsize = GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), GNULL, 0);
+	GAIA::SIZE newsize = GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), GNULL, 0, GAIA::CHARSET_TYPE_SYS);
 	if(newsize > 0)
 	{
 		GAIA::WCH* pNewCmd = new GAIA::WCH[newsize + 1];
-		GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), pNewCmd, newsize);
+		GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), pNewCmd, newsize, GAIA::CHARSET_TYPE_SYS);
 		pNewCmd[newsize] = '\0';
 		prom.Command(pNewCmd + first_command_index, prt);
 		delete[] pNewCmd;

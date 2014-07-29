@@ -8,10 +8,95 @@ namespace GAIA
 {
 	namespace LOCALE
 	{
-		GAIA_DEBUG_CODEPURE_FUNC const GAIA::CH* strlocale(const GAIA::CH* pszLocalName){GAIA_AST(pszLocalName != GNULL); return setlocale(LC_ALL, pszLocalName);}
-		GAIA_DEBUG_CODEPURE_FUNC const GAIA::CH* strlocale(){return setlocale(LC_ALL, NULL);}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::SIZE m2w(const GAIA::CH* pszSrc, GAIA::WCH* pszDst, GAIA::SIZE dst_size_in_wchar){return (GAIA::SIZE)mbstowcs(pszDst, pszSrc, dst_size_in_wchar);}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::SIZE w2m(const GAIA::WCH* pszSrc, GAIA::CH* pszDst, GAIA::SIZE dst_size_in_bytes){return (GAIA::SIZE)wcstombs(pszDst, pszSrc, dst_size_in_bytes);}
+		extern GAIA::SYNC::Lock g_localelock;
+		extern GAIA::CHARSET_TYPE g_charsettype;
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::SIZE m2w(const GAIA::CH* pszSrc, GAIA::WCH* pszDst, GAIA::SIZE dst_size_in_wchar, GAIA::CHARSET_TYPE charset_type)
+		{
+			GAIA_AST(charset_type < GAIA::CHARSET_TYPE_COUNT);
+			if(charset_type >= GAIA::CHARSET_TYPE_COUNT)
+				return 0;
+			if(charset_type == GAIA::CHARSET_TYPE_ANSI)
+			{
+				GAIA::SIZE ret = 0;
+				while(GAIA::ALWAYSTRUE)
+				{
+					if(pszDst != GNULL && dst_size_in_wchar != 0)
+					{
+						if(ret >= dst_size_in_wchar)
+							break;
+						pszDst[ret] = (GAIA::WCH)pszSrc[ret];
+					}
+					if(pszSrc[ret] == '\0')
+					{
+						++ret;
+						break;
+					}
+					++ret;
+				}
+				return ret;
+			}
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			GAIA::U32 uCodePage;
+			if(charset_type == GAIA::CHARSET_TYPE_SYS)
+				uCodePage = CP_OEMCP;
+			else
+				uCodePage = GAIA::CHARSET_CODEPAGE[charset_type];
+			return ::MultiByteToWideChar(uCodePage, 0, pszSrc, -1, pszDst, dst_size_in_wchar);
+		#else
+			GAIA::SYNC::AutoLock al(g_localelock);
+			if(g_charsettype != charset_type)
+			{
+				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAME[charset_type]) == GNULL)
+					return 0;
+				g_charsettype = charset_type;
+			}
+			return (GAIA::SIZE)mbstowcs(pszDst, pszSrc, dst_size_in_wchar);
+		#endif
+
+		}
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::SIZE w2m(const GAIA::WCH* pszSrc, GAIA::CH* pszDst, GAIA::SIZE dst_size_in_bytes, GAIA::CHARSET_TYPE charset_type)
+		{
+			GAIA_AST(charset_type < GAIA::CHARSET_TYPE_COUNT);
+			if(charset_type >= GAIA::CHARSET_TYPE_COUNT)
+				return 0;
+			if(charset_type == GAIA::CHARSET_TYPE_ANSI)
+			{
+				GAIA::SIZE ret = 0;
+				while(GAIA::ALWAYSTRUE)
+				{
+					if(pszDst != GNULL && dst_size_in_bytes != 0)
+					{
+						if(ret >= dst_size_in_bytes)
+							break;
+						pszDst[ret] = (GAIA::CH)pszSrc[ret];
+					}
+					if(pszSrc[ret] == '\0')
+					{
+						++ret;
+						break;
+					}
+					++ret;
+				}
+				return ret;
+			}
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			GAIA::U32 uCodePage;
+			if(charset_type == GAIA::CHARSET_TYPE_SYS)
+				uCodePage = CP_OEMCP;
+			else
+				uCodePage = GAIA::CHARSET_CODEPAGE[charset_type];
+			return ::WideCharToMultiByte(uCodePage, 0, pszSrc, -1, pszDst, dst_size_in_bytes, GNULL, GNULL);
+		#else
+			GAIA::SYNC::AutoLock al(g_localelock);
+			if(g_charsettype != charset_type)
+			{
+				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAME[charset_type]) == GNULL)
+					return 0;
+				g_charsettype = charset_type;
+			}
+			return (GAIA::SIZE)wcstombs(pszDst, pszSrc, dst_size_in_bytes);
+		#endif
+		}
 	};
 };
 

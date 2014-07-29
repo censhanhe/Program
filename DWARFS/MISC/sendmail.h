@@ -254,7 +254,7 @@ namespace DWARFS_MISC
 				attach += "\"\r\n\r\n";
 			#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				__CharType szFileName[GAIA::FILESYSTEM::MAXPL];
-				GAIA::LOCALE::w2m(pFileName, szFileName, GAIA::FILESYSTEM::MAXPL);
+				GAIA::LOCALE::w2m(pFileName, szFileName, GAIA::FILESYSTEM::MAXPL, GAIA::CHARSET_TYPE_UTF8);
 				__CharsType attach = "--INVT\r\nContent-Type: application/octet-stream;\r\n name=\"";
 				attach += szFileName;
 				attach += "\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n filename=\"";

@@ -23,6 +23,7 @@ int main(int argc, char* argv[])\r\n\
 			GTLINE2("Create textline source file failed!");
 			++nRet;
 		}
+		tfile.Write(GAIA::UTF16LE_FILEHEAD, sizeof(GAIA::UTF16LE_FILEHEAD));
 		if(tfile.Write(FILECONTENT, sizeof(FILECONTENT) - sizeof(FILECONTENT[0])) != sizeof(FILECONTENT) - sizeof(FILECONTENT[0]))
 		{
 			GTLINE2("Write textline source file failed!");
@@ -41,7 +42,7 @@ int main(int argc, char* argv[])\r\n\
 			GTLINE2("Open textline source file failed!");
 			++nRet;
 		}
-		if(!tl.load(&tfile))
+		if(!tl.load(tfile))
 		{
 			GTLINE2("TextLine load failed!");
 			++nRet;
@@ -73,7 +74,7 @@ int main(int argc, char* argv[])\r\n\
 		tl.insert_lines(7, (const GAIA::TCH**)&szNew, 2);
 		tl.erase_lines(0, 1);
 		tfile.Open(TESTFILENAMEDST, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
-		if(!tl.save(&tfile))
+		if(!tl.save(tfile))
 		{
 			GTLINE2("TextLine save failed!");
 			++nRet;
