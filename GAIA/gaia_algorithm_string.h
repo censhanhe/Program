@@ -598,9 +598,9 @@ namespace GAIA
 				_DataType pTemp = p;
 				while(*pTemp != '\0')
 				{
-					if(*pTemp >= 'a' && *pTemp <= 'f' ||
-						*pTemp >= 'A' && *pTemp <= 'F' ||
-						*pTemp >= '0' && *pTemp <= '9'){}
+					if(	(*pTemp >= 'a' && *pTemp <= 'f') ||
+						(*pTemp >= 'A' && *pTemp <= 'F') ||
+						(*pTemp >= '0' && *pTemp <= '9')){}
 					else
 					{
 						bMatch = GAIA::False;
