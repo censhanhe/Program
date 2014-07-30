@@ -312,8 +312,8 @@ namespace GAIA
 				if(*p == 0)
 					return GAIA::True;
 				_SizeType newsize = GAIA::ALGORITHM::strlen(p);
-				if(this->size() == this->capacity())
-					this->exten(newsize);
+				if(this->size() + newsize > this->capacity())
+					this->exten(this->size() + newsize - this->capacity());
 				this->resize(this->size() + newsize);
 				if(this->size() - newsize - index != 0)
 				{
@@ -331,8 +331,8 @@ namespace GAIA
 					return GAIA::False;
 				if(src.empty())
 					return GAIA::True;
-				if(this->size() == this->capacity())
-					this->exten(src.size());
+				if(this->size() + src.size() > this->capacity())
+					this->exten(this->size() + src.size() - this->capacity());
 				this->resize(this->size() + src.size());
 				if(this->size() - src.size() - index != 0)
 				{
@@ -890,17 +890,10 @@ namespace GAIA
 					return *this;
 				if(size == 0)
 					return *this;
-				if(this->capacity() - this->size() >= size)
-				{
-					GAIA::ALGORITHM::strcpy(this->front_ptr() + this->size(), p);
-					this->resize(this->size() + size);
-				}
-				else
-				{
-					this->exten(size - (this->capacity() - this->size()));
-					GAIA::ALGORITHM::strcpy(this->front_ptr() + this->size(), p);
-					this->resize(this->size() + size);
-				}
+				if(this->size() + size > this->capacity())
+					this->exten(this->size() + size - this->capacity());
+				GAIA::ALGORITHM::strcpy(this->front_ptr() + this->size(), p);
+				this->resize(this->size() + size);
 				return *this;
 			}
 			GINL __MyType& combin(const _DataType* p1, const _SizeType& size1, const _DataType* p2, const _SizeType& size2)

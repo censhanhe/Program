@@ -102,6 +102,15 @@ namespace GAIA
 			}
 			return 0;
 		}
+		template<typename _DataType1, typename _SizeType1, typename _DataType2, typename _SizeType2> GAIA::N32 cmps(_DataType1 p1, const _SizeType1& size1, _DataType2 p2, const _SizeType2& size2)
+		{
+			if(size1 < size2)
+				return -1;
+			else if(size1 > size2)
+				return +1;
+			else
+				return GAIA::ALGORITHM::cmps(p1, p2, size1);
+		}
 		template<typename _DataType, typename _KeyType, typename _SizeType> GAIA::N32 cmpk(_DataType p, const _KeyType& key, const _SizeType& size)
 		{
 			_SizeType sizet = size;

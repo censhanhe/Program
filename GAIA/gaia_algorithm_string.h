@@ -88,6 +88,16 @@ namespace GAIA
 			}
 			return ret;
 		}
+		template<typename _DataType1, typename _DataType2> GAIA::SIZE strcnts(_DataType1 p, _DataType2 keys)
+		{
+			GAIA::SIZE ret = 0;
+			while(*keys != '\0')
+			{
+				ret += strcnt(p, *keys);
+				++keys;
+			}
+			return ret;
+		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strcpy(_DataType1 pDst, _DataType2 pSrc)
 		{
 			GAIA_AST(!!pDst);
@@ -393,6 +403,14 @@ namespace GAIA
 			}
 			return GNULL;
 		}
+		template<typename _DataType> _DataType strpath(_DataType p)
+		{
+			_DataType pTemp = GAIA::ALGORITHM::strfilename(p);
+			if(pTemp == GNULL)
+				return GNULL;
+			*pTemp = '\0';
+			return p;
+		}
 		template<typename _SrcDataType, typename _DstDataType> _DstDataType int2str(const _SrcDataType& src, _DstDataType pDst)
 		{
 			GAIA_AST(!!pDst);
@@ -598,9 +616,9 @@ namespace GAIA
 				_DataType pTemp = p;
 				while(*pTemp != '\0')
 				{
-					if(*pTemp >= 'a' && *pTemp <= 'f' ||
-						*pTemp >= 'A' && *pTemp <= 'F' ||
-						*pTemp >= '0' && *pTemp <= '9'){}
+					if(	(*pTemp >= 'a' && *pTemp <= 'f') ||
+						(*pTemp >= 'A' && *pTemp <= 'F') ||
+						(*pTemp >= '0' && *pTemp <= '9')){}
 					else
 					{
 						bMatch = GAIA::False;

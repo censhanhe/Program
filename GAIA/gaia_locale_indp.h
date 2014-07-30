@@ -2,7 +2,9 @@
 #define		__GAIA_LOCALE_INDP_H__
 
 #include <locale.h>
-#include <xlocale>
+#if GAIA_OS == GAIA_OS_WINDOWS
+#	include <xlocale>
+#endif
 
 namespace GAIA
 {

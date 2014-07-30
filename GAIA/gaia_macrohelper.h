@@ -133,4 +133,14 @@
 			if(GAIA::ALGORITHM::stremp(p))\
 				return ret;}while(0)
 
+#define GPCHR_ZERO(p) do{\
+			GAIA_AST((p) != 0);\
+			if((p) == 0)\
+				return;}while(0)
+
+#define GPCHR_ZERO_RET(p, ret) do{\
+			GAIA_AST((p) != 0);\
+			if((p) == 0)\
+				return ret;}while(0)
+
 #endif
