@@ -333,18 +333,6 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\ast.h"
-			>
-		</File>
-		<File
-			RelativePath=".\codectn.h"
-			>
-		</File>
-		<File
-			RelativePath=".\errcodes.h"
-			>
-		</File>
-		<File
 			RelativePath=".\main.cpp"
 			>
 		</File>
