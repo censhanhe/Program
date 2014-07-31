@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		class Bitset : public BasicBitset<GAIA::SIZE>{public:};
+		class Bitset : public BasicBitset<GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
 	};
 };
 

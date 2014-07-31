@@ -1,5 +1,5 @@
-#ifndef		__T_QUEUE_H__
-#define		__T_QUEUE_H__
+#ifndef		__T_CONTAINER_QUEUE_H__
+#define		__T_CONTAINER_QUEUE_H__
 
 namespace GAIATEST
 {

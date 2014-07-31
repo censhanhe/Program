@@ -1,5 +1,5 @@
-#ifndef		__T_MULTISET_H__
-#define		__T_MULTISET_H__
+#ifndef		__T_CONTAINER_MULTISET_H__
+#define		__T_CONTAINER_MULTISET_H__
 
 namespace GAIATEST
 {

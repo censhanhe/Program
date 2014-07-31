@@ -5892,7 +5892,7 @@ namespace DWARFS_FSHA
 					{
 						AL al(m_lr_filestate);
 						FILEID startindex = (FILEID)GINVALID;
-						for(GAIA::CONTAINER::BasicBitset<GAIA::N32>::_sizetype x = 0; x < m_filelist.GetFileCount(); ++x)
+						for(GAIA::CONTAINER::BasicBitset<GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> >::_sizetype x = 0; x < m_filelist.GetFileCount(); ++x)
 						{
 							if(startindex == GINVALID)
 							{
@@ -6622,7 +6622,7 @@ namespace DWARFS_FSHA
 		FSTR m_writeroot;
 		__LinkListType m_links; GAIA::SYNC::Lock m_lr_links;
 		__LinkPriListType m_prilinks; GAIA::SYNC::Lock m_lr_prilinks;
-		GAIA::CONTAINER::BasicBitset<GAIA::N32> m_filestate; GAIA::SYNC::Lock m_lr_filestate;
+		GAIA::CONTAINER::BasicBitset<GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > m_filestate; GAIA::SYNC::Lock m_lr_filestate;
 		FILEID m_uCmplFileCount;
 		NLink::STATE m_state;
 		GAIA::BL m_bEnableSequenceRequest;

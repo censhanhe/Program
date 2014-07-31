@@ -1,5 +1,5 @@
-#ifndef		__T_STORAGE_H__
-#define		__T_STORAGE_H__
+#ifndef		__T_CONTAINER_STORAGE_H__
+#define		__T_CONTAINER_STORAGE_H__
 
 namespace GAIATEST
 {

@@ -1,12 +1,12 @@
-#ifndef		__T_BITSET_H__
-#define		__T_BITSET_H__
+#ifndef		__T_CONTAINER_BITSET_H__
+#define		__T_CONTAINER_BITSET_H__
 
 namespace GAIATEST
 {
 	GINL GAIA::N32 t_bitset(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
-		typedef GAIA::CONTAINER::BasicBitset<GAIA::U32> __BitsetType;
+		typedef GAIA::CONTAINER::BasicBitset<GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> > __BitsetType;
 		__BitsetType b;
 		if(!b.empty())
 		{
@@ -28,15 +28,12 @@ namespace GAIATEST
 		for(__BitsetType::_sizetype x = 0; x < b.size(); ++x)
 		{
 			GAIA::BL bInvalid = GAIA::False;
-			for(__BitsetType::_sizetype y = 0; y < 8; ++y)
+			if(b.exist(x))
 			{
-				if(b.exist(x * 8 + y))
-				{
-					GTLINE2("Bitset clean failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
+				GTLINE2("Bitset clean failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
 			}
 			if(bInvalid)
 				break;
@@ -44,33 +41,30 @@ namespace GAIATEST
 		for(__BitsetType::_sizetype x = 0; x < b.size(); ++x)
 		{
 			GAIA::BL bInvalid = GAIA::False;
-			for(__BitsetType::_sizetype y = 0; y < 8; ++y)
+			__BitsetType::_sizetype index = x;
+			b.set(x);
+			if(!b.exist(x))
 			{
-				__BitsetType::_sizetype index = x * 8 + y;
-				b.set(index);
-				if(!b.exist(index))
-				{
-					GTLINE2("Bitset set failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
-				b.reset(index);
-				if(b.exist(index))
-				{
-					GTLINE2("Bitset reset failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
-				b.inverse(index);
-				if(!b.exist(index))
-				{
-					GTLINE2("Bitset inverse failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
+				GTLINE2("Bitset set failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
+			}
+			b.reset(x);
+			if(b.exist(x))
+			{
+				GTLINE2("Bitset reset failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
+			}
+			b.inverse(x);
+			if(!b.exist(x))
+			{
+				GTLINE2("Bitset inverse failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
 			}
 			if(bInvalid)
 				break;
@@ -89,15 +83,12 @@ namespace GAIATEST
 		for(__BitsetType::_sizetype x = 0; x < b.size(); ++x)
 		{
 			GAIA::BL bInvalid = GAIA::False;
-			for(__BitsetType::_sizetype y = 0; y < 8; ++y)
+			if(b.exist(x))
 			{
-				if(b.exist(x * 8 + y))
-				{
-					GTLINE2("Bitset clean failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
+				GTLINE2("Bitset clean failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
 			}
 			if(bInvalid)
 				break;
@@ -107,20 +98,17 @@ namespace GAIATEST
 		for(__BitsetType::_sizetype x = 0; x < b.size(); ++x)
 		{
 			GAIA::BL bInvalid = GAIA::False;
-			for(__BitsetType::_sizetype y = 0; y < 8; ++y)
+			if(b.exist(x) != b1.exist(x))
 			{
-				if(b.exist(x * 8 + y) != b1.exist(x * 8 + y))
-				{
-					GTLINE2("Bitset operator = failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
+				GTLINE2("Bitset operator = failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
 			}
 			if(bInvalid)
 				break;
 		}
-		if(b.back_ptr() - b.front_ptr() != 254)
+		if(b.back_ptr() - b.front_ptr() != 31)
 		{
 			GTLINE2("Bitset back_ptr or front_ptr error!");
 			++nRet;

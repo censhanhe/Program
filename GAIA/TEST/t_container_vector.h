@@ -1,5 +1,5 @@
-#ifndef		__T_VECTOR_H__
-#define		__T_VECTOR_H__
+#ifndef		__T_CONTAINER_VECTOR_H__
+#define		__T_CONTAINER_VECTOR_H__
 
 namespace GAIATEST
 {

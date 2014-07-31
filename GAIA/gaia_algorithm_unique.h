@@ -5,6 +5,22 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
+		template<typename _DataType> GAIA::BL isunique(_DataType pBegin, _DataType pEnd)
+		{
+			GAIA_AST(pBegin <= pEnd);
+			while(pBegin < pEnd)
+			{
+				_DataType pTemp = pBegin + 1;
+				while(pTemp <= pEnd)
+				{
+					if(*pTemp == *pBegin)
+						return GAIA::False;
+					++pTemp;
+				}
+				++pBegin;
+			}
+			return GAIA::True;
+		}
 		template<typename _DataType> _DataType unique_order(_DataType pBegin, _DataType pEnd)
 		{
 			GAIA_AST(pBegin <= pEnd);

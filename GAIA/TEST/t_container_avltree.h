@@ -1,5 +1,5 @@
-#ifndef		__T_AVLTREE_H__
-#define		__T_AVLTREE_H__
+#ifndef		__T_CONTAINER_AVLTREE_H__
+#define		__T_CONTAINER_AVLTREE_H__
 
 namespace GAIATEST
 {

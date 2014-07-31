@@ -50,6 +50,88 @@ namespace GAIA
 			t2 = t1;
 			t1 = t;
 		}
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::GVOID swaps(_DataType1 p1, _DataType2 p2, const _SizeType& size)
+		{
+			for(_SizeType x = 0; x < size; ++x)
+				GAIA::ALGORITHM::swap(p1[x], p2[x]);
+		}
+		template<typename _DataType, typename _KeyType> _DataType swapleft(_DataType pBegin, _DataType pEnd, const _KeyType& key)
+		{
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
+			_DataType pTemp = pBegin;
+			while(pTemp <= pEnd)
+			{
+				if(*pTemp == key)
+				{
+					if(pBegin != pTemp)
+						GAIA::ALGORITHM::swap(*pBegin, *pTemp);
+					++pBegin;
+				}
+				++pTemp;
+			}
+			return pBegin;
+		}
+		template<typename _DataType, typename _KeyType> _DataType swapleft(_DataType pBegin, _DataType pEnd, _KeyType pKeyBegin, _KeyType pKeyEnd)
+		{
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
+			GAIA_AST(!!pKeyBegin);
+			GAIA_AST(!!pKeyBegin);
+			while(pKeyBegin <= pKeyEnd)
+			{
+				pBegin = GAIA::ALGORITHM::swapleft(pBegin, pEnd, *pKeyBegin);
+				++pKeyBegin;
+			}
+			return pBegin;
+		}
+		template<typename _DataType, typename _KeyType> _DataType swapleft_inversekey(_DataType pBegin, _DataType pEnd, const _KeyType& key)
+		{
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
+			_DataType pTemp = pBegin;
+			while(pTemp <= pEnd)
+			{
+				if(*pTemp != key)
+				{
+					if(pBegin != pTemp)
+						GAIA::ALGORITHM::swap(*pBegin, *pTemp);
+					++pBegin;
+				}
+				++pTemp;
+			}
+			return pBegin;
+		}
+		template<typename _DataType, typename _KeyType> _DataType swapleft_inversekey(_DataType pBegin, _DataType pEnd, _KeyType pKeyBegin, _KeyType pKeyEnd)
+		{
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
+			GAIA_AST(!!pKeyBegin);
+			GAIA_AST(!!pKeyBegin);
+			_DataType pTemp = pBegin;
+			while(pTemp <= pEnd)
+			{
+				GAIA::BL bExist = GAIA::False;
+				_KeyType pTempKey = pKeyBegin;
+				while(pTempKey <= pKeyEnd)
+				{
+					if(*pTemp == *pTempKey)
+					{
+						bExist = GAIA::True;
+						break;
+					}
+					++pTempKey;
+				}
+				if(!bExist)
+				{
+					if(pBegin != pTemp)
+						GAIA::ALGORITHM::swap(*pBegin, *pTemp);
+					++pBegin;
+				}
+				++pTemp;
+			}
+			return pBegin;
+		}
 		template<typename _DataType> GAIA::GVOID inverse(_DataType pBegin, _DataType pEnd)
 		{
 			GAIA_AST(!!pBegin);

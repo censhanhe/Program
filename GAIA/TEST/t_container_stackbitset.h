@@ -1,5 +1,5 @@
-#ifndef		__T_STACKBITSET_H__
-#define		__T_STACKBITSET_H__
+#ifndef		__T_CONTAINER_STACKBITSET_H__
+#define		__T_CONTAINER_STACKBITSET_H__
 
 namespace GAIATEST
 {
@@ -13,12 +13,12 @@ namespace GAIATEST
 			GTLINE2("New StackBitset is empty!");
 			++nRet;
 		}
-		if(sb.size() != 255)
+		if(sb.size() != 255 * 8)
 		{
 			GTLINE2("New StackBitset size is error!");
 			++nRet;
 		}
-		if(sb.capacity() != 255)
+		if(sb.capacity() != 255 * 8)
 		{
 			GTLINE2("New StackBitset capacity is error!");
 			++nRet;
@@ -27,15 +27,12 @@ namespace GAIATEST
 		for(__StackBitsetType::_sizetype x = 0; x < sb.size(); ++x)
 		{
 			GAIA::BL bInvalid = GAIA::False;
-			for(__StackBitsetType::_sizetype y = 0; y < 8; ++y)
+			if(sb.exist(x))
 			{
-				if(sb.exist(x * 8 + y))
-				{
-					GTLINE2("StackBitset clean failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
+				GTLINE2("StackBitset clean failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
 			}
 			if(bInvalid)
 				break;
@@ -43,43 +40,40 @@ namespace GAIATEST
 		for(__StackBitsetType::_sizetype x = 0; x < sb.size(); ++x)
 		{
 			GAIA::BL bInvalid = GAIA::False;
-			for(__StackBitsetType::_sizetype y = 0; y < 8; ++y)
+			__StackBitsetType::_sizetype index = x;
+			sb.set(index);
+			if(!sb.exist(index))
 			{
-				__StackBitsetType::_sizetype index = x * 8 + y;
-				sb.set(index);
-				if(!sb.exist(index))
-				{
-					GTLINE2("StackBitset set failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
-				sb.reset(index);
-				if(sb.exist(index))
-				{
-					GTLINE2("StackBitset reset failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
-				sb.inverse(index);
-				if(!sb.exist(index))
-				{
-					GTLINE2("StackBitset inverse failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
+				GTLINE2("StackBitset set failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
+			}
+			sb.reset(index);
+			if(sb.exist(index))
+			{
+				GTLINE2("StackBitset reset failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
+			}
+			sb.inverse(index);
+			if(!sb.exist(index))
+			{
+				GTLINE2("StackBitset inverse failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
 			}
 			if(bInvalid)
 				break;
 		}
-		if(sb.size() != 255)
+		if(sb.size() != 255 * 8)
 		{
 			GTLINE2("StackBitset set reset inverse change size error!");
 			++nRet;
 		}
-		if(sb.capacity() != 255)
+		if(sb.capacity() != 255 * 8)
 		{
 			GTLINE2("StackBitset set reset inverse change capacity error!");
 			++nRet;
@@ -88,15 +82,12 @@ namespace GAIATEST
 		for(__StackBitsetType::_sizetype x = 0; x < sb.size(); ++x)
 		{
 			GAIA::BL bInvalid = GAIA::False;
-			for(__StackBitsetType::_sizetype y = 0; y < 8; ++y)
+			if(sb.exist(x))
 			{
-				if(sb.exist(x * 8 + y))
-				{
-					GTLINE2("StackBitset clean failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
+				GTLINE2("StackBitset clean failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
 			}
 			if(bInvalid)
 				break;
@@ -106,15 +97,12 @@ namespace GAIATEST
 		for(__StackBitsetType::_sizetype x = 0; x < sb.size(); ++x)
 		{
 			GAIA::BL bInvalid = GAIA::False;
-			for(__StackBitsetType::_sizetype y = 0; y < 8; ++y)
+			if(sb.exist(x) != sb1.exist(x))
 			{
-				if(sb.exist(x * 8 + y) != sb1.exist(x * 8 + y))
-				{
-					GTLINE2("StackBitset operator = failed!");
-					++nRet;
-					bInvalid = GAIA::True;
-					break;
-				}
+				GTLINE2("StackBitset operator = failed!");
+				++nRet;
+				bInvalid = GAIA::True;
+				break;
 			}
 			if(bInvalid)
 				break;

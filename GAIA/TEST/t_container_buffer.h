@@ -1,5 +1,5 @@
-#ifndef		__T_BUFFER_H__
-#define		__T_BUFFER_H__
+#ifndef		__T_CONTAINER_BUFFER_H__
+#define		__T_CONTAINER_BUFFER_H__
 
 namespace GAIATEST
 {

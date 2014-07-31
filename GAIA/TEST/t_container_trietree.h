@@ -1,5 +1,5 @@
-#ifndef		__T_TRIETREE_H__
-#define		__T_TRIETREE_H__
+#ifndef		__T_CONTAINER_TRIETREE_H__
+#define		__T_CONTAINER_TRIETREE_H__
 
 namespace GAIATEST
 {

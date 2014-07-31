@@ -1,5 +1,5 @@
-#ifndef		__T_ACCESSER_H__
-#define		__T_ACCESSER_H__
+#ifndef		__T_CONTAINER_ACCESSER_H__
+#define		__T_CONTAINER_ACCESSER_H__
 
 namespace GAIATEST
 {

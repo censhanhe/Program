@@ -87,9 +87,9 @@ namespace PROM
 							}
 							continue;
 						}
-						if(!is_blank_char(ch))
+						if(!PROM::is_blank_char(ch))
 						{
-							if(is_word_char(ch))
+							if(PROM::is_word_char(ch))
 							{
 								if(bSign)
 								{

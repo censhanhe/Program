@@ -72,10 +72,10 @@ namespace GAIA
 				read(Serializer* p, GAIA::CONTAINER::BasicStackBitset<_SizeType, _Size>& t);
 
 			/* BasicBitset serialize. */
-			template<typename _SizeType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicBitset<_SizeType>& t);
-			template<typename _SizeType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicBitset<_SizeType> &t);
+			template<typename _SizeType, typename _SizeIncreaserType> GAIA::BL
+				write(Serializer* p, const GAIA::CONTAINER::BasicBitset<_SizeType, _SizeIncreaserType>& t);
+			template<typename _SizeType, typename _SizeIncreaserType> GAIA::BL
+				read(Serializer* p, GAIA::CONTAINER::BasicBitset<_SizeType, _SizeIncreaserType> &t);
 
 			/* BasicStorage serialize. */
 

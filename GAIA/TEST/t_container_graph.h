@@ -1,5 +1,5 @@
-#ifndef		__T_GRAPH_H__
-#define		__T_GRAPH_H__
+#ifndef		__T_CONTAINER_GRAPH_H__
+#define		__T_CONTAINER_GRAPH_H__
 
 namespace GAIATEST
 {

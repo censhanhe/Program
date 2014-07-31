@@ -6,14 +6,10 @@ namespace PROM
 	class PLC_CommandParam : public PipelineContext
 	{
 	public:
-		GINL PLC_CommandParam(){this->init();}
+		GINL PLC_CommandParam(){}
 		GINL ~PLC_CommandParam(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PLC_CommandParam");}
 		DWARFS_MISC::CmdParam cmdparam;
-	private:
-		GINL GAIA::GVOID init()
-		{
-		}
 	};
 };
 

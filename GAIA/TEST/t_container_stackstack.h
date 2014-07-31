@@ -1,5 +1,5 @@
-#ifndef		__T_STACKSTACK_H__
-#define		__T_STACKSTACK_H__
+#ifndef		__T_CONTAINER_STACKSTACK_H__
+#define		__T_CONTAINER_STACKSTACK_H__
 
 namespace GAIATEST
 {

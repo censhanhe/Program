@@ -22,10 +22,7 @@ namespace PROM
 			}
 			GAIA_CLASS_OPERATOR_COMPARE(strWord, strWord, Word);
 		private:
-			GINL GAIA::GVOID init()
-			{
-				uExistCount = 0;
-			}
+			GINL GAIA::GVOID init(){uExistCount = 0;}
 		public:
 			__WordType strWord;
 			GAIA::U32 uExistCount;

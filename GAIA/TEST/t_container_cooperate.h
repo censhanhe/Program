@@ -1,5 +1,5 @@
-#ifndef		__T_COOPERATE_H__
-#define		__T_COOPERATE_H__
+#ifndef		__T_CONTAINER_COOPERATE_H__
+#define		__T_CONTAINER_COOPERATE_H__
 
 namespace GAIATEST
 {

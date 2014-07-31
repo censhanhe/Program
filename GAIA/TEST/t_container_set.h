@@ -1,5 +1,5 @@
-#ifndef		__T_SET_H__
-#define		__T_SET_H__
+#ifndef		__T_CONTAINER_SET_H__
+#define		__T_CONTAINER_SET_H__
 
 namespace GAIATEST
 {

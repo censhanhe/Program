@@ -937,6 +937,14 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="SET"
+						>
+						<File
+							RelativePath=".\gaia_algorithm_set.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="DATAPHASE"
@@ -1719,111 +1727,115 @@
 				Name="CONTAINER"
 				>
 				<File
-					RelativePath=".\TEST\t_accesser.h"
+					RelativePath=".\TEST\t_container_accesser.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_array.h"
+					RelativePath=".\TEST\t_container_array.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_arrayvector.h"
+					RelativePath=".\TEST\t_container_arrayvector.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_avltree.h"
+					RelativePath=".\TEST\t_container_avltree.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_bitset.h"
+					RelativePath=".\TEST\t_container_bitset.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_buffer.h"
+					RelativePath=".\TEST\t_container_buffer.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_chars.h"
+					RelativePath=".\TEST\t_container_chars.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_cooperate.h"
+					RelativePath=".\TEST\t_container_cooperate.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_graph.h"
+					RelativePath=".\TEST\t_container_graph.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_list.h"
+					RelativePath=".\TEST\t_container_list.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_map.h"
+					RelativePath=".\TEST\t_container_map.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_multiavltree.h"
+					RelativePath=".\TEST\t_container_multiavltree.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_multimap.h"
+					RelativePath=".\TEST\t_container_multimap.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_multiset.h"
+					RelativePath=".\TEST\t_container_multiset.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_ptr.h"
+					RelativePath=".\TEST\t_container_orderless.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_queue.h"
+					RelativePath=".\TEST\t_container_ptr.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_ref.h"
+					RelativePath=".\TEST\t_container_queue.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_set.h"
+					RelativePath=".\TEST\t_container_ref.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_stack.h"
+					RelativePath=".\TEST\t_container_set.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_stackbitset.h"
+					RelativePath=".\TEST\t_container_stack.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_stackqueue.h"
+					RelativePath=".\TEST\t_container_stackbitset.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_stackstack.h"
+					RelativePath=".\TEST\t_container_stackqueue.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_storage.h"
+					RelativePath=".\TEST\t_container_stackstack.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_string.h"
+					RelativePath=".\TEST\t_container_storage.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_tree.h"
+					RelativePath=".\TEST\t_container_string.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_trietree.h"
+					RelativePath=".\TEST\t_container_tree.h"
 					>
 				</File>
 				<File
-					RelativePath=".\TEST\t_vector.h"
+					RelativePath=".\TEST\t_container_trietree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\t_container_vector.h"
 					>
 				</File>
 			</Filter>
@@ -1840,6 +1852,14 @@
 				>
 				<File
 					RelativePath=".\TEST\t_locale.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ALGORITHM"
+				>
+				<File
+					RelativePath=".\TEST\t_algorithm_set.h"
 					>
 				</File>
 			</Filter>

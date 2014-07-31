@@ -1,5 +1,5 @@
-#ifndef		__T_STRING_H__
-#define		__T_STRING_H__
+#ifndef		__T_CONTAINER_STRING_H__
+#define		__T_CONTAINER_STRING_H__
 
 namespace GAIATEST
 {

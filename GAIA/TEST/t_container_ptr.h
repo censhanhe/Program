@@ -1,5 +1,5 @@
-#ifndef		__T_PTR_H__
-#define		__T_PTR_H__
+#ifndef		__T_CONTAINER_PTR_H__
+#define		__T_CONTAINER_PTR_H__
 
 namespace GAIATEST
 {

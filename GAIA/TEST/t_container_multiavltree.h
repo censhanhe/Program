@@ -1,5 +1,5 @@
-#ifndef		__T_MULTIAVLTREE_H__
-#define		__T_MULTIAVLTREE_H__
+#ifndef		__T_CONTAINER_MULTIAVLTREE_H__
+#define		__T_CONTAINER_MULTIAVLTREE_H__
 
 namespace GAIATEST
 {

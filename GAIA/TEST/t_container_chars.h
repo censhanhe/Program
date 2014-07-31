@@ -1,5 +1,5 @@
-#ifndef		__T_CHARS_H__
-#define		__T_CHARS_H__
+#ifndef		__T_CONTAINER_CHARS_H__
+#define		__T_CONTAINER_CHARS_H__
 
 namespace GAIATEST
 {

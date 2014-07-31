@@ -1,5 +1,5 @@
-#ifndef		__T_MULTIMAP_H__
-#define		__T_MULTIMAP_H__
+#ifndef		__T_CONTAINER_MULTIMAP_H__
+#define		__T_CONTAINER_MULTIMAP_H__
 
 namespace GAIATEST
 {

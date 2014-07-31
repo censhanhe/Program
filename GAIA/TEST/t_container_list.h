@@ -1,5 +1,5 @@
-#ifndef		__T_LIST_H__
-#define		__T_LIST_H__
+#ifndef		__T_CONTAINER_LIST_H__
+#define		__T_CONTAINER_LIST_H__
 
 namespace GAIATEST
 {

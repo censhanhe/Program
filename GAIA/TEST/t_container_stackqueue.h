@@ -1,5 +1,5 @@
-#ifndef		__T_STACKQUEUE_H__
-#define		__T_STACKQUEUE_H__
+#ifndef		__T_CONTAINER_STACKQUEUE_H__
+#define		__T_CONTAINER_STACKQUEUE_H__
 
 namespace GAIATEST
 {

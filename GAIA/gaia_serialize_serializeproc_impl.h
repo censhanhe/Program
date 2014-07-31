@@ -572,10 +572,10 @@ namespace GAIA
 		}
 
 		/* BasicBitset serialize. */
-		template<typename _SizeType> GAIA::BL
-			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicBitset<_SizeType>& t)
+		template<typename _SizeType, typename _SizeIncreaserType> GAIA::BL
+			SerializerProc::write(Serializer* p, const GAIA::CONTAINER::BasicBitset<_SizeType, _SizeIncreaserType>& t)
 		{
-			typedef GAIA::CONTAINER::BasicBitset<_SizeType> __BitsetType;
+			typedef GAIA::CONTAINER::BasicBitset<_SizeType, _SizeIncreaserType> __BitsetType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;
@@ -599,10 +599,10 @@ namespace GAIA
 			pIO->Release();
 			return GAIA::True;
 		}
-		template<typename _SizeType> GAIA::BL
-			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicBitset<_SizeType> &t)
+		template<typename _SizeType, typename _SizeIncreaserType> GAIA::BL
+			SerializerProc::read(Serializer* p, GAIA::CONTAINER::BasicBitset<_SizeType, _SizeIncreaserType> &t)
 		{
-			typedef GAIA::CONTAINER::BasicBitset<_SizeType> __BitsetType;
+			typedef GAIA::CONTAINER::BasicBitset<_SizeType, _SizeIncreaserType> __BitsetType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
 			if(pIO == GNULL)
 				return GAIA::False;
