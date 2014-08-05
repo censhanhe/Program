@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace MODEL
+	namespace LINKMODEL
 	{
 	};
 };

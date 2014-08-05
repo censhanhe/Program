@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace MODEL
+	namespace DATAMODEL
 	{
 		template<typename _SizeType, typename _KeyType> class SPDataModel : public DataModel<_SizeType, _KeyType>// SP means separation piece.
 		{

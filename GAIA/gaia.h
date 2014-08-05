@@ -176,6 +176,23 @@
 #include 	"gaia_render_dx10.h"
 #include 	"gaia_render_dx11.h"
 
+#include	"gaia_model.h"
+
+#include	"gaia_controler.h"
+
+#include	"gaia_painter.h"
+
+#include	"gaia_collisioner.h"
+
+#include	"gaia_ui_convas.h"
+#include	"gaia_ui_pushbutton.h"
+#include	"gaia_ui_checkbutton.h"
+#include	"gaia_ui_radiobutton.h"
+#include	"gaia_ui_label.h"
+#include	"gaia_ui_edit.h"
+#include	"gaia_ui_document.h"
+#include	"gaia_ui_progressbar.h"
+
 #include	"gaia_factory.h"
 
 /*

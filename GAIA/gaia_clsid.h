@@ -120,16 +120,19 @@ namespace GAIA
 			GAIA::U16 uMinorVersion;
 			GAIA::U16 uFlag;
 		};
+		/* Data traffic. */
 		static const ClsID GAIA_CLSID_GATEWAY_MEM		= ClsID(0x02, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID GAIA_CLSID_GATEWAY_SHAREMEM	= ClsID(0x02, 0x02, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID GAIA_CLSID_GATEWAY_FILE		= ClsID(0x02, 0x03, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID GAIA_CLSID_ROUTE_MEM			= ClsID(0x02, 0x04, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID GAIA_CLSID_ROUTE_NET			= ClsID(0x02, 0x05, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID GAIA_CLSID_TRANSMISSION_IDM	= ClsID(0x02, 0x06, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+		/* IO and serializer. */
 		static const ClsID GAIA_CLSID_FILEIO			= ClsID(0x03, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID GAIA_CLSID_MEMIO				= ClsID(0x03, 0x02, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID GAIA_CLSID_SCREENIO			= ClsID(0x03, 0x03, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID GAIA_CLSID_SERIALIZER		= ClsID(0x04, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+		/* UI. */
 	};
 };
 

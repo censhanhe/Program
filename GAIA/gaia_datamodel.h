@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace MODEL
+	namespace DATAMODEL
 	{
 		template<typename _SizeType, typename _KeyType> class DataModel : public GAIA::Entity
 		{
