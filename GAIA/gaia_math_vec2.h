@@ -1,5 +1,5 @@
-#ifndef		__GAIA_MATH_COOKIES_H__
-#define		__GAIA_MATH_COOKIES_H__
+#ifndef		__GAIA_MATH_VEC2_H__
+#define		__GAIA_MATH_VEC2_H__
 
 namespace GAIA
 {
@@ -63,95 +63,6 @@ namespace GAIA
 			GINL operator const _DataType*() const{return (_DataType*)this;}
 		public:
 			_DataType x, y;
-		};
-
-		template<typename _DataType> class VEC3 : public GAIA::Entity
-		{
-		public:
-		public:
-			_DataType x, y, z;
-		};
-
-		template<typename _DataType> class VEC4 : public GAIA::Entity
-		{
-		public:
-		public:
-			_DataType x, y, z, w;
-		};
-
-		template<typename _DataType> class QUA : public GAIA::Entity
-		{
-		public:
-			_DataType x, y, z, w;
-		};
-
-		template<typename _DataType> class MTX22 : public GAIA::Entity
-		{
-		public:
-			GINL GAIA::GVOID identity(){}
-			GINL GAIA::BL isidentity() const;
-			GINL GAIA::GVOID inverse(){}
-			GINL GAIA::GVOID transpose(){}
-		};
-
-		template<typename _DataType> class MTX33 : public GAIA::Entity
-		{
-		public:
-		public:
-		};
-
-		template<typename _DataType> class MTX34 : public GAIA::Entity
-		{
-		public:
-		public:
-		};
-
-		template<typename _DataType> class MTX44 : public GAIA::Entity
-		{
-		public:
-		public:
-		};
-
-		template<typename _DataType> class PLANE : public GAIA::Entity
-		{
-		public:
-		public:
-			_DataType a, b, c, d;
-		};
-
-		template<typename _DataType> class AABR : public GAIA::Entity
-		{
-		public:
-			GINL GAIA::GVOID identity(){pmin = (_DataType)+1; pmax = (_DataType)-1;}
-			GINL GAIA::GVOID isidentity() const{}
-			GINL GAIA::GVOID zero(){pmin = (_DataType)0; pmax = (_DataType)0;}
-			GINL GAIA::GVOID iszero() const{}
-		public:
-			VEC2<_DataType> pmin;
-			VEC2<_DataType> pmax;
-		};
-
-		template<typename _DataType> class AABB : public GAIA::Entity
-		{
-		public:
-
-		public:
-			VEC3<_DataType> pmin;
-			VEC3<_DataType> pmax;
-		};
-
-		template<typename _DataType> class ARGB : public GAIA::Entity
-		{
-		public:
-		public:
-			_DataType a, r, g, b;
-		};
-
-		template<typename _DataType> class RGB : public GAIA::Entity
-		{
-		public:
-		public:
-			_DataType r, g, b;
 		};
 	};
 };

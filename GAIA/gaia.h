@@ -115,8 +115,21 @@
 #include	"gaia_process.h"
 
 #include 	"gaia_math_rid.h"
-#include	"gaia_math_cookies.h"
 #include	"gaia_math_coord.h"
+
+#include	"gaia_math_vec2.h"
+#include	"gaia_math_vec3.h"
+#include	"gaia_math_vec4.h"
+#include	"gaia_math_qua.h"
+#include	"gaia_math_mtx22.h"
+#include	"gaia_math_mtx33.h"
+#include	"gaia_math_mtx34.h"
+#include	"gaia_math_mtx44.h"
+#include	"gaia_math_plane.h"
+#include	"gaia_math_aabr.h"
+#include	"gaia_math_aabb.h"
+#include	"gaia_math_argb.h"
+#include	"gaia_math_rgb.h"
 
 #include	"gaia_datamodel.h"
 #include	"gaia_linkmodel.h"
