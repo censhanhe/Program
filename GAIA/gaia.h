@@ -199,11 +199,6 @@
 
 #include	"gaia_ui_convas.h"
 #include	"gaia_ui_convasmsgdisp.h"
-#include	"gaia_ui_convas_windows.h"
-#include	"gaia_ui_convas_osx.h"
-#include	"gaia_ui_convas_ios.h"
-#include	"gaia_ui_convas_andriod.h"
-#include	"gaia_ui_convas_linux.h"
 
 #include	"gaia_painter.h"
 

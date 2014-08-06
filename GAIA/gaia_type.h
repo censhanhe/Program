@@ -374,9 +374,11 @@ namespace GAIA
 	extern GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
 #	define GAIA_MALLOC(type, size) (type*)g_global_allocator.memory_alloc(sizeof(type) * (size))
 #	define GAIA_MFREE(p) g_global_allocator.memory_release(p)
+#	define GAIA_MFREE_SAFE(p) if(p != GNULL){GAIA_MFREE(p); p = GNULL}
 #else
 #	define GAIA_MALLOC(type, size) new type[size]
 #	define GAIA_MFREE(p) delete[] (p);
+#	define GAIA_MFREE_SAFE(p) if(p != GNULL){GAIA_MFREE(p); p = GNULL}
 #endif
 
 #endif

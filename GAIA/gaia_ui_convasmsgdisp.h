@@ -5,8 +5,12 @@ namespace GAIA
 {
 	namespace UI
 	{
-		GINL GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage);
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage);
 	};
 };
+
+#ifndef GAIA_DEBUG_CODEPURE
+#	include "gaia_ui_convasmsgdisp.h"
+#endif
 
 #endif

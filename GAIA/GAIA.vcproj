@@ -1425,49 +1425,25 @@
 							>
 						</File>
 						<File
+							RelativePath=".\gaia_ui_convas_indp.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_ui_convas_indp.h"
+							>
+						</File>
+						<File
 							RelativePath=".\gaia_ui_convasmsgdisp.h"
 							>
 						</File>
-						<Filter
-							Name="WINDOWS"
+						<File
+							RelativePath=".\gaia_ui_convasmsgdisp_indp.cpp"
 							>
-							<File
-								RelativePath=".\gaia_ui_convas_windows.h"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="LINUX"
+						</File>
+						<File
+							RelativePath=".\gaia_ui_convasmsgdisp_indp.h"
 							>
-							<File
-								RelativePath=".\gaia_ui_convas_linux.h"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="OSX"
-							>
-							<File
-								RelativePath=".\gaia_ui_convas_osx.h"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="IOS"
-							>
-							<File
-								RelativePath=".\gaia_ui_convas_ios.h"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="ANDRIOD"
-							>
-							<File
-								RelativePath=".\gaia_ui_convas_andriod.h"
-								>
-							</File>
-						</Filter>
+						</File>
 					</Filter>
 					<Filter
 						Name="FORM"
