@@ -9,6 +9,7 @@ namespace GAIA
 		{
 		public:
 		public:
+			_DataType m[3][4];
 		};
 	};
 };

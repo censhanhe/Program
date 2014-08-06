@@ -9,9 +9,11 @@ namespace GAIA
 		{
 		public:
 			GINL GAIA::GVOID identity(){}
-			GINL GAIA::BL isidentity() const;
+			GINL GAIA::BL isidentity() const{}
 			GINL GAIA::GVOID inverse(){}
 			GINL GAIA::GVOID transpose(){}
+		public:
+			_DataType m[2][2];
 		};
 	};
 };

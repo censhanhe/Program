@@ -9,9 +9,7 @@ namespace GAIA
 		{
 		public:
 			GINL GAIA::GVOID identity(){pmin = (_DataType)+1; pmax = (_DataType)-1;}
-			GINL GAIA::GVOID isidentity() const{}
-			GINL GAIA::GVOID zero(){pmin = (_DataType)0; pmax = (_DataType)0;}
-			GINL GAIA::GVOID iszero() const{}
+			GINL GAIA::BL isidentity() const{}
 		public:
 			VEC2<_DataType> pmin;
 			VEC2<_DataType> pmax;

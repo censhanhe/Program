@@ -1001,7 +1001,7 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="VECTOR"
+							Name="VEC"
 							>
 							<File
 								RelativePath=".\gaia_math_vec2.h"
