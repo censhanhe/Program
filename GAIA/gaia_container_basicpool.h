@@ -39,6 +39,11 @@ namespace GAIA
 			GINL const _SizeType& capacity() const{return m_use.size();}
 			GINL GAIA::GVOID destroy()
 			{
+				if(this->bind() != GNULL)
+				{
+					for(_SizeType x = 0; x < m_use.size(); ++x)
+						m_bind->release(m_use[x]);
+				}
 				for(_SizeType x = 0; x < m_buf.size(); ++x)
 					delete m_buf[x];
 				m_buf.destroy();

@@ -28,6 +28,7 @@
 #include "t_container_tree.h"
 #include "t_container_orderless.h"
 #include "t_container_graph.h"
+#include "t_container_pool.h"
 #include "t_container_storage.h"
 #include "t_container_accesser.h"
 #include "t_container_cooperate.h"
@@ -72,6 +73,7 @@ namespace GAIATEST
 			GTLINE1("Container: MultiMap test begin!"); nRet += t_multimap(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Tree test begin!"); nRet += t_tree(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Orderless test begin!"); nRet += t_orderless(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Pool test begin!"); nRet += t_pool(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("Container: Graph test begin!"); nRet += t_graph(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Storage test begin!"); nRet += t_storage(file, prt); GTLINE1("End"); GTLINE("\t");

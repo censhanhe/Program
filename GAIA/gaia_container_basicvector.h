@@ -293,7 +293,7 @@ namespace GAIA
 				return ret;
 			}
 			GINL GAIA::GVOID sort(){if(this->empty()) return; GAIA::ALGORITHM::sort(this->front_ptr(), this->back_ptr());}
-			GINL _SizeType unique()
+			GINL _SizeType unique() // Return value is the repeat element count.
 			{
 				if(this->empty())
 					return 0;

@@ -2011,6 +2011,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TEST\t_container_pool.h"
+					>
+				</File>
+				<File
 					RelativePath=".\TEST\t_container_ptr.h"
 					>
 				</File>
