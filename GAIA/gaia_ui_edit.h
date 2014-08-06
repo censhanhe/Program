@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class Edit : public GAIA::FRAMEWORK::Instance
+		class Edit : public GAIA::UI::Form
 		{
 		};
 	};

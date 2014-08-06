@@ -1413,6 +1413,10 @@
 				<Filter
 					Name="UI"
 					>
+					<File
+						RelativePath=".\gaia_ui_view.h"
+						>
+					</File>
 					<Filter
 						Name="CONVAS"
 						>
@@ -1420,10 +1424,38 @@
 							RelativePath=".\gaia_ui_convas.h"
 							>
 						</File>
+						<File
+							RelativePath=".\gaia_ui_convas_msgdisp.h"
+							>
+						</File>
+						<Filter
+							Name="WINDOWS"
+							>
+						</Filter>
+						<Filter
+							Name="LINUX"
+							>
+						</Filter>
+						<Filter
+							Name="OSX"
+							>
+						</Filter>
+						<Filter
+							Name="IOS"
+							>
+						</Filter>
+						<Filter
+							Name="ANDRIOD"
+							>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="FORM"
 						>
+						<File
+							RelativePath=".\gaia_ui_form.h"
+							>
+						</File>
 						<Filter
 							Name="PROGRESS"
 							>
@@ -1679,6 +1711,14 @@
 									>
 								</File>
 							</Filter>
+							<Filter
+								Name="GDI+"
+								>
+							</Filter>
+							<Filter
+								Name="DDRAW"
+								>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="TARGET"
@@ -1877,12 +1917,24 @@
 						RelativePath=".\gaia_model.h"
 						>
 					</File>
+					<Filter
+						Name="TREE"
+						>
+					</Filter>
+					<Filter
+						Name="LIST"
+						>
+					</Filter>
+					<Filter
+						Name="BOOL"
+						>
+					</Filter>
 				</Filter>
 				<Filter
-					Name="CONTROLER"
+					Name="CONTROLLER"
 					>
 					<File
-						RelativePath=".\gaia_controler.h"
+						RelativePath=".\gaia_controller.h"
 						>
 					</File>
 				</Filter>

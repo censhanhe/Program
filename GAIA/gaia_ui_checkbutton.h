@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class CheckButton : public GAIA::FRAMEWORK::Instance
+		class CheckButton : public GAIA::UI::Form
 		{
 		};
 	};

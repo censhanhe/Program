@@ -24,6 +24,9 @@ namespace GAIA
 			GINL GAIA::MATH::VEC3<_DataType> size() const{}
 			GINL _DataType long_radius() const{}
 			GINL _DataType short_radius() const{}
+			GINL _DataType width() const{}
+			GINL _DataType height() const{}
+			GINL _DataType depth() const{}
 
 			GINL __MyType operator + (const __MyType& t) const{}
 			template<typename _ParamDataType> __MyType operator += (const GAIA::MATH::VEC3<_ParamDataType>& v){}

@@ -5,6 +5,10 @@ namespace GAIA
 {
 	namespace MODEL
 	{
+		class Model : public GAIA::FRAMEWORK::Instance
+		{
+		public:
+		};
 	};
 };
 

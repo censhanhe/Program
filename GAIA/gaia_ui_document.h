@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class Document : public GAIA::FRAMEWORK::Instance
+		class Document : public GAIA::UI::Form
 		{
 		};
 	};
