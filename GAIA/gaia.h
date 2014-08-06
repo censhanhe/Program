@@ -188,6 +188,8 @@
 #include 	"gaia_render_dx9.h"
 #include 	"gaia_render_dx10.h"
 #include 	"gaia_render_dx11.h"
+#include	"gaia_render_gdiplus.h"
+#include	"gaia_render_ddraw.h"
 
 #include	"gaia_model.h"
 
@@ -196,7 +198,12 @@
 #include	"gaia_collisioner.h"
 
 #include	"gaia_ui_convas.h"
-#include	"gaia_ui_convas_msgdisp.h"
+#include	"gaia_ui_convasmsgdisp.h"
+#include	"gaia_ui_convas_windows.h"
+#include	"gaia_ui_convas_osx.h"
+#include	"gaia_ui_convas_ios.h"
+#include	"gaia_ui_convas_andriod.h"
+#include	"gaia_ui_convas_linux.h"
 
 #include	"gaia_painter.h"
 

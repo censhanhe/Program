@@ -1425,28 +1425,48 @@
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_ui_convas_msgdisp.h"
+							RelativePath=".\gaia_ui_convasmsgdisp.h"
 							>
 						</File>
 						<Filter
 							Name="WINDOWS"
 							>
+							<File
+								RelativePath=".\gaia_ui_convas_windows.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="LINUX"
 							>
+							<File
+								RelativePath=".\gaia_ui_convas_linux.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="OSX"
 							>
+							<File
+								RelativePath=".\gaia_ui_convas_osx.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="IOS"
 							>
+							<File
+								RelativePath=".\gaia_ui_convas_ios.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="ANDRIOD"
 							>
+							<File
+								RelativePath=".\gaia_ui_convas_andriod.h"
+								>
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -1712,12 +1732,20 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="GDI+"
+								Name="GDIPLUS"
 								>
+								<File
+									RelativePath=".\gaia_render_gdiplus.h"
+									>
+								</File>
 							</Filter>
 							<Filter
 								Name="DDRAW"
 								>
+								<File
+									RelativePath=".\gaia_render_ddraw.h"
+									>
+								</File>
 							</Filter>
 						</Filter>
 						<Filter
