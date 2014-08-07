@@ -1953,6 +1953,10 @@
 						RelativePath=".\gaia_layout.h"
 						>
 					</File>
+					<File
+						RelativePath=".\gaia_layout_widget.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="COLLISIONER"
