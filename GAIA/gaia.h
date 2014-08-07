@@ -204,6 +204,10 @@
 
 #include	"gaia_painter.h"
 
+#include	"gaia_layout_widget.h"
+#include	"gaia_layout.h"
+#include	"gaia_layout_widget.h"
+
 #include	"gaia_ui_form.h"
 #include	"gaia_ui_pushbutton.h"
 #include	"gaia_ui_checkbutton.h"
@@ -212,9 +216,6 @@
 #include	"gaia_ui_edit.h"
 #include	"gaia_ui_document.h"
 #include	"gaia_ui_progressbar.h"
-
-#include	"gaia_layout_widget.h"
-#include	"gaia_layout.h"
 
 #include	"gaia_factory.h"
 

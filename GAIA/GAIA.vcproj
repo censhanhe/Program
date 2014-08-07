@@ -1957,6 +1957,14 @@
 						RelativePath=".\gaia_layout_widget.h"
 						>
 					</File>
+					<Filter
+						Name="GRID"
+						>
+						<File
+							RelativePath=".\gaia_layout_grid.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="COLLISIONER"
