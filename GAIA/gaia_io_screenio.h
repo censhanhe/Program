@@ -10,7 +10,7 @@ namespace GAIA
 		public:
 			GINL ScreenIO(){this->init();}
 			GINL ~ScreenIO(){}
-			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::GAIA_CLSID_SCREENIO;}
+			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_SCREENIO;}
 			virtual GAIA::BL Begin(GAIA::GVOID* pParameter)
 			{
 				if(this->IsBegin())

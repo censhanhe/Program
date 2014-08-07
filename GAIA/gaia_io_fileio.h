@@ -10,7 +10,7 @@ namespace GAIA
 		public:
 			GINL FileIO(){this->init();}
 			GINL ~FileIO(){}
-			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::GAIA_CLSID_FILEIO;}
+			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_FILEIO;}
 			virtual GAIA::BL Begin(GAIA::GVOID* pParameter)
 			{
 				if(this->IsBegin())

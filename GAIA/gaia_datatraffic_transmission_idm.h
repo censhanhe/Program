@@ -10,7 +10,7 @@ namespace GAIA
 		public:
 			GINL TransmissionIDM(){m_bBegin = GAIA::False;}
 			GINL ~TransmissionIDM(){}
-			GINL virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::GAIA_CLSID_TRANSMISSION_IDM;}
+			GINL virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_TRANSMISSION_IDM;}
 			virtual GAIA::GVOID WorkProcedure(){}
 		protected:
 			virtual GAIA::BL Begin(GAIA::GVOID* pParameter){m_bBegin = GAIA::True; return GAIA::True;}

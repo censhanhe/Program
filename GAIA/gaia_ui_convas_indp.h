@@ -49,25 +49,29 @@ namespace GAIA
 			wcex.lpfnWndProc	= WindowProc;
 			wcex.cbClsExtra		= 0;
 			wcex.cbWndExtra		= 0;
-			wcex.hInstance		= GNULL;
-			wcex.hIcon			= NULL;
-			wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
+			wcex.hInstance		= (HINSTANCE)GetModuleHandle(GNULL);
+			wcex.hIcon			= GNULL;
+			wcex.hCursor		= LoadCursor(GNULL, IDC_ARROW);
 			wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW + 1);
-			wcex.lpszMenuName	= NULL;
+			wcex.lpszMenuName	= GNULL;
 			wcex.lpszClassName	= szWindowClass;
-			wcex.hIconSm		= NULL;
+			wcex.hIconSm		= GNULL;
 			if(RegisterClassEx(&wcex) == 0)
 				return GAIA::False;
 
 			DWORD dwStyle;
 			if(desc.bFrameStyle)
-				dwStyle = WS_OVERLAPPED;
+			{
+				dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
+				if(desc.bResizeAble)
+					dwStyle |= WS_THICKFRAME;
+			}
 			else if(desc.bPopupStyle)
 				dwStyle = WS_POPUP;
 			else if(desc.bChildStyle)
 				dwStyle = WS_CHILD;
 			else
-				dwStyle = WS_OVERLAPPED;
+				dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
 			if(desc.bMinimizeBox)
 				dwStyle |= WS_MINIMIZEBOX;
 			if(desc.bMaximizeBox)
@@ -80,14 +84,14 @@ namespace GAIA
 				CW_USEDEFAULT, 
 				CW_USEDEFAULT, 
 				desc.pParent != GNULL ? desc.pParent->m_hWnd : GNULL, 
-				NULL, NULL, NULL);
+				GNULL, (HINSTANCE)GetModuleHandle(GNULL), GNULL);
 			if(m_hWnd == GNULL)
 			{
-				::UnregisterClass(szWindowClass, NULL);
+				::UnregisterClass(szWindowClass, (HINSTANCE)GetModuleHandle(GNULL));
 				return GAIA::False;
 			}
 			m_pszClassName = GAIA::ALGORITHM::strnew(szWindowClass);
-			::UpdateWindow(m_hWnd);
+			return ::UpdateWindow(m_hWnd);
 		#else
 			return GAIA::False;
 		#endif
@@ -100,9 +104,11 @@ namespace GAIA
 			::DestroyWindow(m_hWnd);
 			m_hWnd = GNULL;
 
-			::UnregisterClass(m_pszClassName, GNULL);
+			::UnregisterClass(m_pszClassName, (HINSTANCE)GetModuleHandle(GNULL));
 			GAIA_MFREE(m_pszClassName);
 			m_pszClassName = GNULL;
+
+			return GAIA::True;
 		#else
 			return GAIA::False;
 		#endif

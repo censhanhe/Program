@@ -53,26 +53,28 @@ namespace GAIA
 					return GNULL;
 				Instance* pRet = GNULL;
 				if(GAIA::ALWAYSFALSE){}
-				else if(cid == GAIA_CLSID_GATEWAY_MEM)
+				else if(cid == GAIA::FRAMEWORK::CLSID_GATEWAY_MEM)
 					pRet = new GAIA::DATATRAFFIC::GatewayMem;
-				else if(cid == GAIA_CLSID_GATEWAY_SHAREMEM)
+				else if(cid == GAIA::FRAMEWORK::CLSID_GATEWAY_SHAREMEM)
 					pRet = new GAIA::DATATRAFFIC::GatewayShareMem;
-				else if(cid == GAIA_CLSID_GATEWAY_FILE)
+				else if(cid == GAIA::FRAMEWORK::CLSID_GATEWAY_FILE)
 					pRet = new GAIA::DATATRAFFIC::GatewayFile;
-				else if(cid == GAIA_CLSID_ROUTE_MEM)
+				else if(cid == GAIA::FRAMEWORK::CLSID_ROUTE_MEM)
 					pRet = new GAIA::DATATRAFFIC::RouteMem;
-				else if(cid == GAIA_CLSID_ROUTE_NET)
+				else if(cid == GAIA::FRAMEWORK::CLSID_ROUTE_NET)
 					pRet = new GAIA::DATATRAFFIC::RouteNet;
-				else if(cid == GAIA_CLSID_TRANSMISSION_IDM)
+				else if(cid == GAIA::FRAMEWORK::CLSID_TRANSMISSION_IDM)
 					pRet = new GAIA::DATATRAFFIC::TransmissionIDM;
-				else if(cid == GAIA_CLSID_FILEIO)
+				else if(cid == GAIA::FRAMEWORK::CLSID_FILEIO)
 					pRet = new GAIA::IO::FileIO;
-				else if(cid == GAIA_CLSID_MEMIO)
+				else if(cid == GAIA::FRAMEWORK::CLSID_MEMIO)
 					pRet = new GAIA::IO::MemIO;
-				else if(cid == GAIA_CLSID_SCREENIO)
+				else if(cid == GAIA::FRAMEWORK::CLSID_SCREENIO)
 					pRet = new GAIA::IO::ScreenIO;
-				else if(cid == GAIA_CLSID_SERIALIZER)
+				else if(cid == GAIA::FRAMEWORK::CLSID_SERIALIZER)
 					pRet = new GAIA::SERIALIZER::Serializer;
+				else if(cid == GAIA::FRAMEWORK::CLSID_CONVAS)
+					pRet = new GAIA::UI::Convas;
 				if(pRet == GNULL)
 				{
 					for(LIST_CREATECALLBACK::_sizetype x = 0; x < m_listCreateCB.size(); ++x)

@@ -14,7 +14,18 @@ namespace GAIA
 			class ConvasDesc
 			{
 			public:
-				GINL ConvasDesc(){this->init();}
+				GINL ConvasDesc(){this->reset();}
+				GINL GAIA::GVOID reset()
+				{
+					pszCaptionText = GNULL;
+					pParent = GNULL;
+					bFrameStyle = GAIA::True;
+					bPopupStyle = GAIA::False;
+					bChildStyle = GAIA::False;
+					bMaximizeBox = GAIA::True;
+					bMinimizeBox = GAIA::True;
+					bResizeAble = GAIA::True;
+				}
 				GINL GAIA::BL check() const
 				{
 					GAIA::SIZE nMutexGroup = 0;
@@ -30,17 +41,6 @@ namespace GAIA
 						return GAIA::False;
 					return GAIA::True;
 				}
-			private:
-				GINL GAIA::GVOID init()
-				{
-					pszCaptionText = GNULL;
-					pParent = GNULL;
-					bFrameStyle = GAIA::True;
-					bPopupStyle = GAIA::False;
-					bChildStyle = GAIA::False;
-					bMaximizeBox = GAIA::True;
-					bMinimizeBox = GAIA::True;
-				}
 			public:
 				GAIA::TCH* pszCaptionText;
 				Convas* pParent;
@@ -49,7 +49,10 @@ namespace GAIA
 				GAIA::U8 bChildStyle : 1;
 				GAIA::U8 bMaximizeBox : 1;
 				GAIA::U8 bMinimizeBox : 1;
+				GAIA::U8 bResizeAble : 1;
 			};
+		public:
+			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_CONVAS;}
 		public:
 			GAIA_DEBUG_CODEPURE_MEMFUNC Convas();
 			GAIA_DEBUG_CODEPURE_MEMFUNC ~Convas();
