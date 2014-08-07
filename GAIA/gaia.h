@@ -191,9 +191,11 @@
 #include	"gaia_render_gdiplus.h"
 #include	"gaia_render_ddraw.h"
 
-#include	"gaia_model.h"
-#include	"gaia_controller.h"
-#include	"gaia_view.h"
+#include	"gaia_mvc_viewlinker.h"
+#include	"gaia_mvc_model.h"
+#include	"gaia_mvc_controller.h"
+#include	"gaia_mvc_view.h"
+#include	"gaia_mvc_viewlinker_impl.h"
 
 #include	"gaia_collisioner.h"
 

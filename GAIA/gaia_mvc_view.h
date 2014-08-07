@@ -1,5 +1,5 @@
-#ifndef		__GAIA_VIEW_H__
-#define		__GAIA_VIEW_H__
+#ifndef		__GAIA_MVC_VIEW_H__
+#define		__GAIA_MVC_VIEW_H__
 
 namespace GAIA
 {
@@ -35,14 +35,29 @@ namespace GAIA
 				GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
 				pModel->Reference();
 				ModelNode* pNode = this->GetModelByName(pszName);
-				if(pNode == GNULL)
+				if(pNode != GNULL)
 				{
-					ModelNode n;
-					m_models.push_back(n);
-					pNode = &m_models.back();
-					pNode->strName = pszName;
+					pNode->pModel->Release();
+					pNode->pModel = pModel;
+					return GAIA::True;
 				}
-				pNode->pModel = pModel;
+				__ModelListType::it it = m_models.front_it();
+				while(!it.empty())
+				{
+					ModelNode& n = *it;
+					if(n.pModel == GNULL)
+					{
+						GAIA_AST(n.strName.empty());
+						n.pModel = pModel;
+						return GAIA::True;
+					}
+					GAIA_AST(!n.strName.empty());
+					++it;
+				}
+				ModelNode n;
+				m_models.push_back(n);
+				m_models.back().strName = pszName;
+				m_models.back().pModel = pModel;
 				return GAIA::True;
 			}
 			GINL GAIA::MVC::Model* GetModel(const GAIA::TCH* pszName) const
@@ -78,14 +93,29 @@ namespace GAIA
 				GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
 				pController->Reference();
 				ControllerNode* pNode = this->GetControllerByName(pszName);
-				if(pNode == GNULL)
+				if(pNode != GNULL)
 				{
-					ControllerNode n;
-					m_controllers.push_back(n);
-					pNode = &m_controllers.back();
-					pNode->strName = pszName;
+					pNode->pController->Release();
+					pNode->pController = pController;
+					return GAIA::True;
 				}
-				pNode->pController = pController;
+				__ControllerListType::it it = m_controllers.front_it();
+				while(!it.empty())
+				{
+					ControllerNode& n = *it;
+					if(n.pController == GNULL)
+					{
+						GAIA_AST(n.strName.empty());
+						n.pController = pController;
+						return GAIA::True;
+					}
+					GAIA_AST(!n.strName.empty());
+					++it;
+				}
+				ControllerNode n;
+				m_controllers.push_back(n);
+				m_controllers.back().strName = pszName;
+				m_controllers.back().pController = pController;
 				return GAIA::True;
 			}
 			GINL GAIA::MVC::Controller* GetController(const GAIA::TCH* pszName) const

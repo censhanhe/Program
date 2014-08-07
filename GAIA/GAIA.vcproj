@@ -1965,11 +1965,19 @@
 				<Filter
 					Name="MVC"
 					>
+					<File
+						RelativePath=".\gaia_mvc_viewlinker.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_mvc_viewlinker_impl.h"
+						>
+					</File>
 					<Filter
 						Name="MODEL"
 						>
 						<File
-							RelativePath=".\gaia_model.h"
+							RelativePath=".\gaia_mvc_model.h"
 							>
 						</File>
 						<Filter
@@ -1989,7 +1997,7 @@
 						Name="CONTROLLER"
 						>
 						<File
-							RelativePath=".\gaia_controller.h"
+							RelativePath=".\gaia_mvc_controller.h"
 							>
 						</File>
 					</Filter>
@@ -1997,7 +2005,7 @@
 						Name="VIEW"
 						>
 						<File
-							RelativePath=".\gaia_view.h"
+							RelativePath=".\gaia_mvc_view.h"
 							>
 						</File>
 					</Filter>
