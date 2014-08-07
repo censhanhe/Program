@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SERIALIZER
 	{
-		class Serializer : public GAIA::FRAMEWORK::Instance
+		class Serializer : public virtual GAIA::FRAMEWORK::Instance
 		{
 		public:
 			GINL Serializer(){this->init();}

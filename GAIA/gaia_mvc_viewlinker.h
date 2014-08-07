@@ -6,7 +6,7 @@ namespace GAIA
 	namespace MVC
 	{
 		class View;
-		class ViewLinker : public GAIA::FRAMEWORK::Instance
+		class ViewLinker : public virtual GAIA::FRAMEWORK::Instance
 		{
 			friend class GAIA::MVC::View;
 		private:

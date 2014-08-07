@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SCENE
 	{
-		class Scene : public SceneObj
+		class Scene : public virtual SceneObj
 		{
 		public:
 			GAIA::GVOID AddSceneObj(SceneObj& sobj);

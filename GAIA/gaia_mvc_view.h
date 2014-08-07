@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MVC
 	{
-		class View : public GAIA::FRAMEWORK::Instance
+		class View : public virtual GAIA::FRAMEWORK::Instance
 		{
 		private:
 			class ModelNode

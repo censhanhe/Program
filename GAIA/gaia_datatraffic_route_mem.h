@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace DATATRAFFIC
 	{
-		class RouteMem : public Route
+		class RouteMem : public virtual Route
 		{
 		public:
 			RouteMem(){m_bBegin = GAIA::False;}

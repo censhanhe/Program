@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SCENE
 	{
-		class Camera : public SceneObj
+		class Camera : public virtual SceneObj
 		{
 		public:
 			GINL Camera();

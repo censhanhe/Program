@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace DATATRAFFIC
 	{
-		class GatewayShareMem : public Gateway
+		class GatewayShareMem : public virtual Gateway
 		{
 		public:
 			GatewayShareMem(){m_bBegin = GAIA::False;}

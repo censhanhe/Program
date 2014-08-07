@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class Label : public GAIA::UI::Form
+		class Label : public virtual GAIA::UI::Form
 		{
 		};
 	};

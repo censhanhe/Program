@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class Convas : public GAIA::FRAMEWORK::Instance
+		class Convas : public virtual GAIA::FRAMEWORK::Instance
 		{
 		public:
 			typedef GAIA::MATH::VEC2<GAIA::N32> __PosType;

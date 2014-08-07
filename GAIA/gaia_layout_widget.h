@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace LAYOUT
 	{
-		class LayoutWidget : public GAIA::FRAMEWORK::Instance
+		class LayoutWidget : public virtual GAIA::FRAMEWORK::Instance
 		{
 		public:
 		private:

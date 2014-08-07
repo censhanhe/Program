@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class Edit : public GAIA::UI::Form
+		class Edit : public virtual GAIA::UI::Form
 		{
 		};
 	};

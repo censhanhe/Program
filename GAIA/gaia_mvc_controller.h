@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MVC
 	{
-		class Controller : public GAIA::MVC::ViewLinker
+		class Controller : public virtual GAIA::MVC::ViewLinker
 		{
 		public:
 		private:

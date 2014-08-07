@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace PAINTER
 	{
-		class Painter : public GAIA::FRAMEWORK::Instance
+		class Painter : public virtual GAIA::FRAMEWORK::Instance
 		{
 		public:
 			class PainterDesc

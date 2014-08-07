@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace DATATRAFFIC
 	{
-		class GatewayMem : public Gateway
+		class GatewayMem : public virtual Gateway
 		{
 		public:
 			GatewayMem(){m_bBegin = GAIA::False;}

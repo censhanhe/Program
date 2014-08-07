@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace IO
 	{
-		class FileIO : public IO
+		class FileIO : public virtual IO
 		{
 		public:
 			GINL FileIO(){this->init();}

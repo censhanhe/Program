@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class PushButton : public GAIA::UI::Form
+		class PushButton : public virtual GAIA::UI::Form
 		{
 		};
 	};

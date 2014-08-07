@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class ProgressBar : public GAIA::UI::Form
+		class ProgressBar : public virtual GAIA::UI::Form
 		{
 		};
 	};

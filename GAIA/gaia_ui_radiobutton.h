@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class RadioButton : public GAIA::UI::Form
+		class RadioButton : public virtual GAIA::UI::Form
 		{
 		};
 	};

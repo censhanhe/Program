@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace DATATRAFFIC
 	{
-		class Transmission : public GAIA::FRAMEWORK::Instance, public GAIA::THREAD::Thread
+		class Transmission : public virtual GAIA::FRAMEWORK::Instance, public virtual GAIA::THREAD::Thread
 		{
 		private:
 			typedef GAIA::CONTAINER::Orderless<Route*> OL_ROUTE;

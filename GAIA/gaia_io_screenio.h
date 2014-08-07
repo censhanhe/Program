@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace IO
 	{
-		class ScreenIO : public IO
+		class ScreenIO : public virtual IO
 		{
 		public:
 			GINL ScreenIO(){this->init();}

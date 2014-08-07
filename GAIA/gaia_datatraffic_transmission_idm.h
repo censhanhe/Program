@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace DATATRAFFIC
 	{
-		class TransmissionIDM : public Transmission // IDM means immediately-data-mode.
+		class TransmissionIDM : public virtual Transmission // IDM means immediately-data-mode.
 		{
 		public:
 			GINL TransmissionIDM(){m_bBegin = GAIA::False;}
