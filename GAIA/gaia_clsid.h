@@ -133,8 +133,15 @@ namespace GAIA
 		static const ClsID CLSID_SCREENIO			= ClsID(0x03, 0x03, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		/* Serializer. */
 		static const ClsID CLSID_SERIALIZER			= ClsID(0x04, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+		/* Model. */
+
+		/* Controller. */
+
 		/* UI. */
 		static const ClsID CLSID_CONVAS				= ClsID(0x05, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+		/* Layout. */
+
+		/* Painter. */
 	};
 };
 
