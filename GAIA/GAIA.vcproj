@@ -1449,10 +1449,6 @@
 				<Filter
 					Name="UI"
 					>
-					<File
-						RelativePath=".\gaia_ui_view.h"
-						>
-					</File>
 					<Filter
 						Name="CONVAS"
 						>
@@ -1951,34 +1947,6 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="MODEL"
-					>
-					<File
-						RelativePath=".\gaia_model.h"
-						>
-					</File>
-					<Filter
-						Name="TREE"
-						>
-					</Filter>
-					<Filter
-						Name="LIST"
-						>
-					</Filter>
-					<Filter
-						Name="BOOL"
-						>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="CONTROLLER"
-					>
-					<File
-						RelativePath=".\gaia_controller.h"
-						>
-					</File>
-				</Filter>
-				<Filter
 					Name="LAYOUT"
 					>
 					<File
@@ -1993,6 +1961,46 @@
 						RelativePath=".\gaia_collisioner.h"
 						>
 					</File>
+				</Filter>
+				<Filter
+					Name="MVC"
+					>
+					<Filter
+						Name="MODEL"
+						>
+						<File
+							RelativePath=".\gaia_model.h"
+							>
+						</File>
+						<Filter
+							Name="TREE"
+							>
+						</Filter>
+						<Filter
+							Name="LIST"
+							>
+						</Filter>
+						<Filter
+							Name="BOOL"
+							>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="CONTROLLER"
+						>
+						<File
+							RelativePath=".\gaia_controller.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="VIEW"
+						>
+						<File
+							RelativePath=".\gaia_view.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

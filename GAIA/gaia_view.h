@@ -1,9 +1,9 @@
-#ifndef		__GAIA_UI_VIEW_H__
-#define		__GAIA_UI_VIEW_H__
+#ifndef		__GAIA_VIEW_H__
+#define		__GAIA_VIEW_H__
 
 namespace GAIA
 {
-	namespace UI
+	namespace MVC
 	{
 		class View : public GAIA::FRAMEWORK::Instance
 		{
@@ -12,13 +12,13 @@ namespace GAIA
 			{
 			public:
 				GAIA::CONTAINER::TString strName;
-				GAIA::MODEL::Model* pModel;
+				GAIA::MVC::Model* pModel;
 			};
 			class ControllerNode
 			{
 			public:
 				GAIA::CONTAINER::TString strName;
-				GAIA::CONTROLLER::Controller* pController;
+				GAIA::MVC::Controller* pController;
 			};
 		public:
 			typedef GAIA::CONTAINER::Vector<ModelNode> __ModelListType;
@@ -30,7 +30,7 @@ namespace GAIA
 				this->DeleteControllerAll();
 				this->DeleteModelAll();
 			}
-			GINL GAIA::BL SetModel(const GAIA::TCH* pszName, GAIA::MODEL::Model* pModel)
+			GINL GAIA::BL SetModel(const GAIA::TCH* pszName, GAIA::MVC::Model* pModel)
 			{
 				GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
 				pModel->Reference();
@@ -45,7 +45,7 @@ namespace GAIA
 				pNode->pModel = pModel;
 				return GAIA::True;
 			}
-			GINL GAIA::MODEL::Model* GetModel(const GAIA::TCH* pszName) const
+			GINL GAIA::MVC::Model* GetModel(const GAIA::TCH* pszName) const
 			{
 				GPCHR_NULLSTRPTR_RET(pszName, GNULL);
 				const ModelNode* pNode = this->GetModelByName(pszName);
@@ -73,7 +73,7 @@ namespace GAIA
 				}
 				m_models.destroy();
 			}
-			GINL GAIA::BL SetController(const GAIA::TCH* pszName, GAIA::CONTROLLER::Controller* pController)
+			GINL GAIA::BL SetController(const GAIA::TCH* pszName, GAIA::MVC::Controller* pController)
 			{
 				GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
 				pController->Reference();
@@ -88,7 +88,7 @@ namespace GAIA
 				pNode->pController = pController;
 				return GAIA::True;
 			}
-			GINL GAIA::CONTROLLER::Controller* GetController(const GAIA::TCH* pszName) const
+			GINL GAIA::MVC::Controller* GetController(const GAIA::TCH* pszName) const
 			{
 				GPCHR_NULLSTRPTR_RET(pszName, GNULL);
 				const ControllerNode* pNode = this->GetControllerByName(pszName);
@@ -134,7 +134,7 @@ namespace GAIA
 				}
 				return GNULL;
 			}
-			GINL const ModelNode* GetModelByName(const GAIA::TCH* pszName) const{return const_cast<GAIA::UI::View*>(this)->GetModelByName(pszName);}
+			GINL const ModelNode* GetModelByName(const GAIA::TCH* pszName) const{return const_cast<GAIA::MVC::View*>(this)->GetModelByName(pszName);}
 			GINL ControllerNode* GetControllerByName(const GAIA::TCH* pszName)
 			{
 				__ControllerListType::it it = m_controllers.front_it();
@@ -147,7 +147,7 @@ namespace GAIA
 				}
 				return GNULL;
 			}
-			GINL const ControllerNode* GetControllerByName(const GAIA::TCH* pszName) const{return const_cast<GAIA::UI::View*>(this)->GetControllerByName(pszName);}
+			GINL const ControllerNode* GetControllerByName(const GAIA::TCH* pszName) const{return const_cast<GAIA::MVC::View*>(this)->GetControllerByName(pszName);}
 		private:
 			__ModelListType m_models;
 			__ControllerListType m_controllers;

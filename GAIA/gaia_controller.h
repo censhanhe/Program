@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTROLLER
+	namespace MVC
 	{
 		class Controller : public GAIA::FRAMEWORK::Instance
 		{

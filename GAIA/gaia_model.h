@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace MODEL
+	namespace MVC
 	{
 		class Model : public GAIA::FRAMEWORK::Instance
 		{

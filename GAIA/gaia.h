@@ -192,8 +192,8 @@
 #include	"gaia_render_ddraw.h"
 
 #include	"gaia_model.h"
-
 #include	"gaia_controller.h"
+#include	"gaia_view.h"
 
 #include	"gaia_collisioner.h"
 
@@ -202,7 +202,6 @@
 
 #include	"gaia_painter.h"
 
-#include	"gaia_ui_view.h"
 #include	"gaia_ui_form.h"
 #include	"gaia_ui_pushbutton.h"
 #include	"gaia_ui_checkbutton.h"

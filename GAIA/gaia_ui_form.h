@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class Form : public GAIA::UI::View
+		class Form : public GAIA::MVC::View
 		{
 		public:
 		private:
