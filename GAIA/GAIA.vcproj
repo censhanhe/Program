@@ -1692,68 +1692,84 @@
 								>
 							</File>
 							<Filter
-								Name="DX"
+								Name="2D"
 								>
 								<File
-									RelativePath=".\gaia_render_dx10.h"
+									RelativePath=".\gaia_render_render2d.h"
 									>
 								</File>
-								<File
-									RelativePath=".\gaia_render_dx11.h"
+								<Filter
+									Name="GDIPLUS"
 									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_dx9.h"
+									<File
+										RelativePath=".\gaia_render_gdiplus.h"
+										>
+									</File>
+								</Filter>
+								<Filter
+									Name="DDRAW"
 									>
-								</File>
+									<File
+										RelativePath=".\gaia_render_ddraw.h"
+										>
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
-								Name="GL"
+								Name="3D"
 								>
 								<File
-									RelativePath=".\gaia_render_gl1.h"
+									RelativePath=".\gaia_render_render3d.h"
 									>
 								</File>
-								<File
-									RelativePath=".\gaia_render_gl2.h"
+								<Filter
+									Name="GLES"
 									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_gl3.h"
+									<File
+										RelativePath=".\gaia_render_gles1.h"
+										>
+									</File>
+									<File
+										RelativePath=".\gaia_render_gles2.h"
+										>
+									</File>
+									<File
+										RelativePath=".\gaia_render_gles3.h"
+										>
+									</File>
+								</Filter>
+								<Filter
+									Name="GL"
 									>
-								</File>
-							</Filter>
-							<Filter
-								Name="GLES"
-								>
-								<File
-									RelativePath=".\gaia_render_gles1.h"
+									<File
+										RelativePath=".\gaia_render_gl1.h"
+										>
+									</File>
+									<File
+										RelativePath=".\gaia_render_gl2.h"
+										>
+									</File>
+									<File
+										RelativePath=".\gaia_render_gl3.h"
+										>
+									</File>
+								</Filter>
+								<Filter
+									Name="DX"
 									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_gles2.h"
-									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_gles3.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="GDIPLUS"
-								>
-								<File
-									RelativePath=".\gaia_render_gdiplus.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="DDRAW"
-								>
-								<File
-									RelativePath=".\gaia_render_ddraw.h"
-									>
-								</File>
+									<File
+										RelativePath=".\gaia_render_dx10.h"
+										>
+									</File>
+									<File
+										RelativePath=".\gaia_render_dx11.h"
+										>
+									</File>
+									<File
+										RelativePath=".\gaia_render_dx9.h"
+										>
+									</File>
+								</Filter>
 							</Filter>
 						</Filter>
 						<Filter

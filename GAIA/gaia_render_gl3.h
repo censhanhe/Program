@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace RENDER
 	{
-		class RenderGL3 : public virtual GAIA::RENDER::Render
+		class RenderGL3 : public virtual GAIA::RENDER::Render3D
 		{
 		};
 	};
