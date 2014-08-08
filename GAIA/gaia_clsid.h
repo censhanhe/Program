@@ -138,7 +138,7 @@ namespace GAIA
 		/* Controller. */
 
 		/* UI. */
-		static const ClsID CLSID_CONVAS				= ClsID(0x05, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_CANVAS				= ClsID(0x05, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		/* Layout. */
 
 		/* Painter. */

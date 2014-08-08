@@ -73,7 +73,7 @@ namespace GAIA
 					pRet = new GAIA::IO::ScreenIO;
 				else if(cid == GAIA::FRAMEWORK::CLSID_SERIALIZER)
 					pRet = new GAIA::SERIALIZER::Serializer;
-				else if(cid == GAIA::FRAMEWORK::CLSID_CONVAS)
+				else if(cid == GAIA::FRAMEWORK::CLSID_CANVAS)
 					pRet = new GAIA::UI::Canvas;
 				if(pRet == GNULL)
 				{

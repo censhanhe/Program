@@ -1,5 +1,5 @@
-#ifndef		__GAIA_UI_CONVASMSGDISP_INDP_H__
-#define		__GAIA_UI_CONVASMSGDISP_INDP_H__
+#ifndef		__GAIA_UI_CANVASMSGDISP_INDP_H__
+#define		__GAIA_UI_CANVASMSGDISP_INDP_H__
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	include <windows.h>

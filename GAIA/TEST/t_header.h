@@ -34,6 +34,7 @@
 #include "t_container_cooperate.h"
 #include "t_locale.h"
 #include "t_namespace.h"
+#include "t_ui_canvas.h"
 
 namespace GAIATEST
 {
@@ -74,15 +75,15 @@ namespace GAIATEST
 			GTLINE1("Container: Tree test begin!"); nRet += t_tree(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Orderless test begin!"); nRet += t_orderless(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Pool test begin!"); nRet += t_pool(file, prt); GTLINE1("End"); GTLINE("\t");
-
 			GTLINE1("Container: Graph test begin!"); nRet += t_graph(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Storage test begin!"); nRet += t_storage(file, prt); GTLINE1("End"); GTLINE("\t");
-
 			GTLINE1("Container: Accesser test begin!"); nRet += t_accesser(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Cooperate test begin!"); nRet += t_cooperate(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("Locale test begin!"); nRet += t_locale(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Namespace test begin!"); nRet += t_namespace(file, prt); GTLINE1("End"); GTLINE("\t");
+
+			GTLINE1("UI: Canvas test begin!"); nRet += t_ui_canvas(file, prt); GTLINE1("End"); GTLINE("\t");
 		}
 		GTLINE("[GAIA TEST END]");
 

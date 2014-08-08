@@ -11,10 +11,10 @@ namespace GAIA
 			typedef GAIA::MATH::VEC2<GAIA::N32> __PosType;
 			typedef __PosType __SizeType;
 		public:
-			class ConvasDesc
+			class CanvasDesc
 			{
 			public:
-				GINL ConvasDesc(){this->reset();}
+				GINL CanvasDesc(){this->reset();}
 				GINL GAIA::GVOID reset()
 				{
 					pszCaptionText = GNULL;
@@ -52,22 +52,23 @@ namespace GAIA
 				GAIA::U8 bResizeAble : 1;
 			};
 		public:
-			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_CONVAS;}
+			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_CANVAS;}
 		public:
 			GAIA_DEBUG_CODEPURE_MEMFUNC Canvas();
 			GAIA_DEBUG_CODEPURE_MEMFUNC ~Canvas();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Create(const ConvasDesc& desc);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Create(const CanvasDesc& desc);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Destroy();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL IsCreated() const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Quit();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL SetParent(GAIA::UI::Canvas* pParent);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UI::Canvas* GetParent() const;
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Show(GAIA::BL bShow);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Show(GAIA::BL bShow);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL IsShow() const;
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Position(const __PosType& pos);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Position(const __PosType& pos);
 			GAIA_DEBUG_CODEPURE_MEMFUNC __PosType Position() const;
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Size(const __SizeType& size);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Size(const __SizeType& size);
 			GAIA_DEBUG_CODEPURE_MEMFUNC __SizeType Size() const;
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetCaptionText(const GAIA::TCH* pszCaptionText);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL SetCaptionText(const GAIA::TCH* pszCaptionText);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL GetCaptionText(GAIA::TCH* pszResult, GAIA::SIZE sResultMaxCharCount, GAIA::SIZE& sResultCount) const;
 		private:
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID init();

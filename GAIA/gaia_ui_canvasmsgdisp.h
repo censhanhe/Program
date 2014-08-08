@@ -1,5 +1,5 @@
-#ifndef		__GAIA_UI_CONVAS_MSGDISP_H__
-#define		__GAIA_UI_CONVAS_MSGDISP_H__
+#ifndef		__GAIA_UI_CANVAS_MSGDISP_H__
+#define		__GAIA_UI_CANVAS_MSGDISP_H__
 
 namespace GAIA
 {

@@ -14,7 +14,10 @@ namespace GAIA
 		static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			if(message == WM_DESTROY)
+			{
 				::PostQuitMessage(0);
+				return 0;
+			}
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 	#else
@@ -29,7 +32,7 @@ namespace GAIA
 			if(this->IsCreated())
 				this->Destroy();
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Create(const ConvasDesc& desc)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Create(const CanvasDesc& desc)
 		{
 			if(this->IsCreated())
 				return GAIA::False;
@@ -123,6 +126,16 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Quit()
+		{
+			if(!this->IsCreated())
+				return GAIA::False;
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			::PostMessage(m_hWnd, WM_QUIT, 0, 0);
+		#else
+		#endif
+			return GAIA::True;
+		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::SetParent(GAIA::UI::Canvas* pParent)
 		{
 			if(!this->IsCreated())
@@ -141,13 +154,27 @@ namespace GAIA
 			return GNULL;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::Show(GAIA::BL bShow)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Show(GAIA::BL bShow)
 		{
 			if(!this->IsCreated())
-				return;
+				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			::ShowWindow(m_hWnd, SW_SHOW);
+			if(bShow)
+			{
+				if(this->IsShow())
+					return GAIA::False;
+				::ShowWindow(m_hWnd, SW_SHOW);
+				return GAIA::True;
+			}
+			else
+			{
+				if(!this->IsShow())
+					return GAIA::False;
+				::ShowWindow(m_hWnd, SW_HIDE);
+				return GAIA::True;
+			}
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::IsShow() const
@@ -155,18 +182,23 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			::ShowWindow(m_hWnd, SW_HIDE);
+			if(::IsWindowVisible(m_hWnd))
+				return GAIA::True;
+			return GAIA::False;
 		#else
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::Position(const Canvas::__PosType& pos)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Position(const Canvas::__PosType& pos)
 		{
 			if(!this->IsCreated())
-				return;
+				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			::SetWindowPos(m_hWnd, GNULL, (GAIA::N32)pos.x, (GAIA::N32)pos.y, 0, 0, SWP_NOSIZE);
+			if(!::SetWindowPos(m_hWnd, GNULL, (GAIA::N32)pos.x, (GAIA::N32)pos.y, 0, 0, SWP_NOSIZE))
+				return GAIA::False;
+			return GAIA::True;
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::__PosType Canvas::Position() const
@@ -198,13 +230,16 @@ namespace GAIA
 			return ret;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::Size(const Canvas::__SizeType& size)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Size(const Canvas::__SizeType& size)
 		{
 			if(!this->IsCreated())
-				return;
+				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			::SetWindowPos(m_hWnd, GNULL, 0, 0, size.x, size.y, SWP_NOREPOSITION);
+			if(!::SetWindowPos(m_hWnd, GNULL, 0, 0, size.x, size.y, SWP_NOMOVE))
+				return GAIA::False;
+			return GAIA::True;
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::__SizeType Canvas::Size() const
@@ -236,15 +271,18 @@ namespace GAIA
 			return ret;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::SetCaptionText(const GAIA::TCH* pszCaptionText)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::SetCaptionText(const GAIA::TCH* pszCaptionText)
 		{
 			if(!this->IsCreated())
-				return;
+				return GAIA::False;
 			if(pszCaptionText == GNULL)
 				pszCaptionText = _T("");
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			::SetWindowText(m_hWnd, pszCaptionText);
+			if(!::SetWindowText(m_hWnd, pszCaptionText))
+				return GAIA::False;
+			return GAIA::True;
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::GetCaptionText(GAIA::TCH* pszResult, GAIA::SIZE sResultMaxCharCount, GAIA::SIZE& sResultCount) const
