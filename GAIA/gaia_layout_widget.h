@@ -5,10 +5,20 @@ namespace GAIA
 {
 	namespace LAYOUT
 	{
-		class LayoutWidget : public virtual GAIA::FRAMEWORK::Instance
+		GAIA_ENUM_BEGIN(WIDGET_TYPE)
+			WIDGET_TYPE_2D,
+			WIDGET_TYPE_3D,
+		GAIA_ENUM_END(WIDGET_TYPE)
+
+		class Widget : public virtual GAIA::FRAMEWORK::Instance
 		{
 		public:
+			GINL Widget(){}
+			GINL ~Widget(){}
+		public:
+			virtual WIDGET_TYPE GetType() const = 0;
 		private:
+			GINL GAIA::GVOID init(){}
 		};
 	};
 };

@@ -1953,15 +1953,27 @@
 						RelativePath=".\gaia_layout.h"
 						>
 					</File>
-					<File
-						RelativePath=".\gaia_layout_widget.h"
-						>
-					</File>
 					<Filter
 						Name="GRID"
 						>
 						<File
 							RelativePath=".\gaia_layout_grid.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="WIDGET"
+						>
+						<File
+							RelativePath=".\gaia_layout_widget.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_layout_widget2d.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_layout_widget3d.h"
 							>
 						</File>
 					</Filter>

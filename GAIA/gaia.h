@@ -207,6 +207,8 @@
 #include	"gaia_layout_widget.h"
 #include	"gaia_layout.h"
 #include	"gaia_layout_widget.h"
+#include	"gaia_layout_widget2d.h"
+#include	"gaia_layout_widget3d.h"
 
 #include	"gaia_ui_form.h"
 #include	"gaia_ui_pushbutton.h"
