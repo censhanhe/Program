@@ -1672,17 +1672,73 @@
 							Name="RESOURCE"
 							>
 							<File
-								RelativePath=".\gaia_render_indexbuffer.h"
+								RelativePath=".\gaia_render_resource.h"
 								>
 							</File>
-							<File
-								RelativePath=".\gaia_render_texture.h"
+							<Filter
+								Name="VERTEXDECLARATION"
 								>
-							</File>
-							<File
-								RelativePath=".\gaia_render_vertexbuffer.h"
+								<File
+									RelativePath=".\gaia_render_vertexdeclaration.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="FONT"
 								>
-							</File>
+								<File
+									RelativePath=".\gaia_render_font.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="FONTFAMILY"
+								>
+								<File
+									RelativePath=".\gaia_render_fontfamily.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="INDEXBUFFER"
+								>
+								<File
+									RelativePath=".\gaia_render_indexbuffer.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="VERTEXBUFFER"
+								>
+								<File
+									RelativePath=".\gaia_render_vertexbuffer.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="TARGET"
+								>
+								<File
+									RelativePath=".\gaia_render_target.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="SHADER"
+								>
+								<File
+									RelativePath=".\gaia_render_shader.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="TEXTURE"
+								>
+								<File
+									RelativePath=".\gaia_render_texture.h"
+									>
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="RENDER"
@@ -1771,14 +1827,6 @@
 									</File>
 								</Filter>
 							</Filter>
-						</Filter>
-						<Filter
-							Name="TARGET"
-							>
-							<File
-								RelativePath=".\gaia_render_target.h"
-								>
-							</File>
 						</Filter>
 						<Filter
 							Name="RENDERCONTEXT"

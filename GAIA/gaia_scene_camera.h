@@ -10,8 +10,8 @@ namespace GAIA
 		public:
 			GINL Camera();
 			GINL ~Camera();
-			GINL GAIA::GVOID SetRenderTarget(GAIA::U32 uIndex, GAIA::RENDER::RenderTarget* pRenderTarget);
-			GINL GAIA::RENDER::RenderTarget* GetRenderTarget(GAIA::U32 uIndex) const;
+			GINL GAIA::GVOID SetRenderTarget(GAIA::U32 uIndex, GAIA::RENDER::Target* pRenderTarget);
+			GINL GAIA::RENDER::Target* GetRenderTarget(GAIA::U32 uIndex) const;
 		};
 	};
 };
