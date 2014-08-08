@@ -180,7 +180,6 @@ namespace GAIA
 					dwStyle |= WS_MAXIMIZEBOX;
 				if(::SetWindowLong(m_hWnd, GWL_STYLE, dwStyle) == 0)
 					return GAIA::False;
-				::ShowWindow(m_hWnd, SW_SHOW);
 			}
 			else
 			{
@@ -194,6 +193,7 @@ namespace GAIA
 						return GAIA::False;
 				}
 			}
+			::ShowWindow(m_hWnd, SW_SHOW);
 			return GAIA::True;
 		#else
 			return GAIA::False;

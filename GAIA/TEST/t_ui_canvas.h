@@ -54,6 +54,8 @@ namespace GAIATEST
 			GAIA::SYNC::xsleep(SLEEP_TIME);
 			if(!m_pCanvas2->SetParent(m_pCanvas1))
 				this->SetResult(GAIA::False);
+			if(m_pCanvas2->Position(32))
+				this->SetResult(GAIA::False);
 
 			/* Get parent operation. */
 			GAIA::SYNC::xsleep(SLEEP_TIME);
