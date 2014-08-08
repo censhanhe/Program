@@ -38,9 +38,9 @@ namespace GAIA
 #	pragma warning(default : 4310)
 #endif
 	/* Float type declaration. */
-	typedef float F32;
-	typedef double F64;
-	typedef float REAL;
+	typedef float F32; // Variable will have a 'f' prefix.
+	typedef double F64; // Variable will have a 'd' prefix.
+	typedef float REAL; // variable will have a 'r' prefix.
 
 	/* Char type declaration. */
 	typedef char CH;
@@ -58,7 +58,7 @@ namespace GAIA
 #endif
 
 	/* GAIA size. */
-	typedef GAIA::N32 SIZE;
+	typedef GAIA::N32 SIZE; // The variable will have a 's' prefix.
 	static const GAIA::SIZE MINSIZE = (GAIA::SIZE)N32MINSIZE;
 	static const GAIA::SIZE MAXSIZE = (GAIA::SIZE)N32MAXSIZE;
 
