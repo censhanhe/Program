@@ -6,7 +6,7 @@ namespace GAIATEST
 	GINL GAIA::N32 t_multiset(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
-		static const GAIA::N32 ELEMENT_SIZE = 100;
+		static const GAIA::N32 ELEMENT_SIZE = 33;
 		typedef GAIA::CONTAINER::BasicMultiSet<GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MultiSetType;
 		__MultiSetType ms;
 		if(!ms.empty())

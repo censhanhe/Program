@@ -6,7 +6,7 @@ namespace GAIATEST
 	GINL GAIA::N32 t_multimap(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
-		static const GAIA::N32 ELEMENT_SIZE = 100;
+		static const GAIA::N32 ELEMENT_SIZE = 33;
 		typedef GAIA::CONTAINER::BasicMultiMap<GAIA::N32, GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MultiMapType;
 		__MultiMapType mm;
 		if(!mm.empty())

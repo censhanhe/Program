@@ -11,7 +11,7 @@ namespace GAIATEST
 		GINL GAIA::BL GetResult() const{return m_bResult;}
 		virtual GAIA::GVOID WorkProcedure()
 		{
-			static const GAIA::U32 SLEEP_TIME = 200;
+			static const GAIA::U32 SLEEP_TIME = 100;
 			GPCHR_NULL(m_pCanvas1);
 			GPCHR_NULL(m_pCanvas2);
 			
