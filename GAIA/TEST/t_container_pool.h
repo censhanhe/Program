@@ -282,6 +282,13 @@ BIND_POOL:
 				GTLINE2("Pool bind failed!");
 				++nRet;
 			}
+
+			pl.destroy();
+			parentpl.destroy();
+			parentparentpl.destroy();
+			listTemp.destroy();
+			listIndex.destroy();
+
 			goto BIND_POOL;
 		}
 		else
