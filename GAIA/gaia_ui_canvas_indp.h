@@ -1,5 +1,5 @@
-#ifndef		__GAIA_UI_CONVAS_INDP_H__
-#define		__GAIA_UI_CONVAS_INDP_H__
+#ifndef		__GAIA_UI_CANVAS_INDP_H__
+#define		__GAIA_UI_CANVAS_INDP_H__
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	include <windows.h>
@@ -20,16 +20,16 @@ namespace GAIA
 	#else
 	#endif
 
-		GAIA_DEBUG_CODEPURE_MEMFUNC Convas::Convas()
+		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::Canvas()
 		{
 			this->init();
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Convas::~Convas()
+		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::~Canvas()
 		{
 			if(this->IsCreated())
 				this->Destroy();
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Convas::Create(const ConvasDesc& desc)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Create(const ConvasDesc& desc)
 		{
 			if(this->IsCreated())
 				return GAIA::False;
@@ -96,7 +96,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Convas::Destroy()
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Destroy()
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -113,7 +113,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Convas::IsCreated() const
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::IsCreated() const
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			if(m_hWnd != GNULL)
@@ -123,7 +123,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Convas::SetParent(GAIA::UI::Convas* pParent)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::SetParent(GAIA::UI::Canvas* pParent)
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -132,7 +132,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UI::Convas* Convas::GetParent() const
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UI::Canvas* Canvas::GetParent() const
 		{
 			if(!this->IsCreated())
 				return GNULL;
@@ -141,7 +141,7 @@ namespace GAIA
 			return GNULL;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Convas::Show(GAIA::BL bShow)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::Show(GAIA::BL bShow)
 		{
 			if(!this->IsCreated())
 				return;
@@ -150,7 +150,7 @@ namespace GAIA
 		#else
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Convas::IsShow() const
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::IsShow() const
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -160,7 +160,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Convas::Position(const Convas::__PosType& pos)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::Position(const Canvas::__PosType& pos)
 		{
 			if(!this->IsCreated())
 				return;
@@ -169,7 +169,7 @@ namespace GAIA
 		#else
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Convas::__PosType Convas::Position() const
+		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::__PosType Canvas::Position() const
 		{
 			if(!this->IsCreated())
 			{
@@ -198,7 +198,7 @@ namespace GAIA
 			return ret;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Convas::Size(const Convas::__SizeType& size)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::Size(const Canvas::__SizeType& size)
 		{
 			if(!this->IsCreated())
 				return;
@@ -207,7 +207,7 @@ namespace GAIA
 		#else
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Convas::__SizeType Convas::Size() const
+		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::__SizeType Canvas::Size() const
 		{
 			if(!this->IsCreated())
 			{
@@ -236,7 +236,7 @@ namespace GAIA
 			return ret;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Convas::SetCaptionText(const GAIA::TCH* pszCaptionText)
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::SetCaptionText(const GAIA::TCH* pszCaptionText)
 		{
 			if(!this->IsCreated())
 				return;
@@ -247,7 +247,7 @@ namespace GAIA
 		#else
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Convas::GetCaptionText(GAIA::TCH* pszResult, GAIA::SIZE sResultMaxCharCount, GAIA::SIZE& sResultCount) const
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::GetCaptionText(GAIA::TCH* pszResult, GAIA::SIZE sResultMaxCharCount, GAIA::SIZE& sResultCount) const
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -261,7 +261,7 @@ namespace GAIA
 		#else
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Convas::init()
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::init()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			m_hWnd = GNULL;

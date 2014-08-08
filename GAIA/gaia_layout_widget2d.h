@@ -14,6 +14,7 @@ namespace GAIA
 			virtual WIDGET_TYPE GetType() const{return WIDGET_TYPE_2D;}
 		public:
 			virtual GAIA::MATH::AABR<GAIA::REAL> GetAABR() const = 0;
+			virtual GAIA::BL SetAABR(const GAIA::MATH::AABR<GAIA::REAL>& aabr) = 0;
 		private:
 			GINL GAIA::GVOID init(){}
 		};

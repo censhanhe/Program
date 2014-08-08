@@ -1450,30 +1450,30 @@
 					Name="UI"
 					>
 					<Filter
-						Name="CONVAS"
+						Name="CANVAS"
 						>
 						<File
-							RelativePath=".\gaia_ui_convas.h"
+							RelativePath=".\gaia_ui_canvas.h"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_ui_convas_indp.cpp"
+							RelativePath=".\gaia_ui_canvas_indp.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_ui_convas_indp.h"
+							RelativePath=".\gaia_ui_canvas_indp.h"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_ui_convasmsgdisp.h"
+							RelativePath=".\gaia_ui_canvasmsgdisp.h"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_ui_convasmsgdisp_indp.cpp"
+							RelativePath=".\gaia_ui_canvasmsgdisp_indp.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_ui_convasmsgdisp_indp.h"
+							RelativePath=".\gaia_ui_canvasmsgdisp_indp.h"
 							>
 						</File>
 					</Filter>

@@ -10,7 +10,7 @@ namespace GAIA
 };
 
 #ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_ui_convasmsgdisp_indp.h"
+#	include "gaia_ui_canvasmsgdisp_indp.h"
 #endif
 
 #endif

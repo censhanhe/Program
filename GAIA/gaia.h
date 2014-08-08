@@ -209,8 +209,8 @@
 
 #include	"gaia_collisioner.h"
 
-#include	"gaia_ui_convas.h"
-#include	"gaia_ui_convasmsgdisp.h"
+#include	"gaia_ui_canvas.h"
+#include	"gaia_ui_canvasmsgdisp.h"
 
 #include	"gaia_painter.h"
 

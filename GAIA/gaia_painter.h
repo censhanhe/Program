@@ -11,7 +11,7 @@ namespace GAIA
 			class PainterDesc
 			{
 			public:
-				GAIA::UI::Convas* pConvas;
+				GAIA::UI::Canvas* pConvas;
 			};
 		public:
 			/* Base. */

@@ -1,11 +1,11 @@
-#ifndef		__GAIA_UI_CONVAS_H__
-#define		__GAIA_UI_CONVAS_H__
+#ifndef		__GAIA_UI_CANVAS_H__
+#define		__GAIA_UI_CANVAS_H__
 
 namespace GAIA
 {
 	namespace UI
 	{
-		class Convas : public virtual GAIA::FRAMEWORK::Instance
+		class Canvas : public virtual GAIA::FRAMEWORK::Instance
 		{
 		public:
 			typedef GAIA::MATH::VEC2<GAIA::N32> __PosType;
@@ -43,7 +43,7 @@ namespace GAIA
 				}
 			public:
 				GAIA::TCH* pszCaptionText;
-				Convas* pParent;
+				Canvas* pParent;
 				GAIA::U8 bFrameStyle : 1;
 				GAIA::U8 bPopupStyle : 1;
 				GAIA::U8 bChildStyle : 1;
@@ -54,13 +54,13 @@ namespace GAIA
 		public:
 			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_CONVAS;}
 		public:
-			GAIA_DEBUG_CODEPURE_MEMFUNC Convas();
-			GAIA_DEBUG_CODEPURE_MEMFUNC ~Convas();
+			GAIA_DEBUG_CODEPURE_MEMFUNC Canvas();
+			GAIA_DEBUG_CODEPURE_MEMFUNC ~Canvas();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Create(const ConvasDesc& desc);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Destroy();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL IsCreated() const;
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL SetParent(GAIA::UI::Convas* pParent);
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UI::Convas* GetParent() const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL SetParent(GAIA::UI::Canvas* pParent);
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UI::Canvas* GetParent() const;
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Show(GAIA::BL bShow);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL IsShow() const;
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Position(const __PosType& pos);
@@ -82,7 +82,7 @@ namespace GAIA
 };
 
 #ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_ui_convas_indp.h"
+#	include "gaia_ui_canvas_indp.h"
 #endif
 
 #endif

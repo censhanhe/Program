@@ -74,7 +74,7 @@ namespace GAIA
 				else if(cid == GAIA::FRAMEWORK::CLSID_SERIALIZER)
 					pRet = new GAIA::SERIALIZER::Serializer;
 				else if(cid == GAIA::FRAMEWORK::CLSID_CONVAS)
-					pRet = new GAIA::UI::Convas;
+					pRet = new GAIA::UI::Canvas;
 				if(pRet == GNULL)
 				{
 					for(LIST_CREATECALLBACK::_sizetype x = 0; x < m_listCreateCB.size(); ++x)
