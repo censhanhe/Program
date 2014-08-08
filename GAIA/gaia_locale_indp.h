@@ -6,12 +6,13 @@
 #	include <xlocale>
 #endif
 
+extern GAIA::SYNC::Lock g_localelock;
+extern GAIA::CHARSET_TYPE g_charsettype;
+
 namespace GAIA
 {
 	namespace LOCALE
 	{
-		extern GAIA::SYNC::Lock g_localelock;
-		extern GAIA::CHARSET_TYPE g_charsettype;
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::SIZE m2w(const GAIA::CH* pszSrc, GAIA::WCH* pszDst, GAIA::SIZE dst_size_in_wchar, GAIA::CHARSET_TYPE charset_type)
 		{
 			GAIA_AST(charset_type < GAIA::CHARSET_TYPE_COUNT);

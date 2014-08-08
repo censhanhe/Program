@@ -70,8 +70,16 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC __SizeType Size() const;
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL SetCaptionText(const GAIA::TCH* pszCaptionText);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL GetCaptionText(GAIA::TCH* pszResult, GAIA::SIZE sResultMaxCharCount, GAIA::SIZE& sResultCount) const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL operator == (const GAIA::UI::Canvas& src) const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL operator != (const GAIA::UI::Canvas& src) const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL operator >= (const GAIA::UI::Canvas& src) const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL operator <= (const GAIA::UI::Canvas& src) const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL operator > (const GAIA::UI::Canvas& src) const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL operator < (const GAIA::UI::Canvas& src) const;
 		private:
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID init();
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL RegistToGlobalList();
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL UnregistToGlobalList();
 		private:
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			HWND m_hWnd;

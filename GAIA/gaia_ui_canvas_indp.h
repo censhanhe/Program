@@ -6,6 +6,12 @@
 #else
 #endif
 
+#if GAIA_OS == GAIA_OS_WINDOWS
+	extern GAIA::SYNC::Lock g_windowlistlock;
+	extern GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<GAIA::UI::Canvas> > g_windowlist;
+#else
+#endif
+
 namespace GAIA
 {
 	namespace UI
@@ -93,6 +99,11 @@ namespace GAIA
 				::UnregisterClass(szWindowClass, (HINSTANCE)GetModuleHandle(GNULL));
 				return GAIA::False;
 			}
+			if(!this->RegistToGlobalList())
+			{
+				GAIA_AST(GAIA::ALWAYSFALSE);
+				return GAIA::False;
+			}
 			m_pszClassName = GAIA::ALGORITHM::strnew(szWindowClass);
 			return ::UpdateWindow(m_hWnd);
 		#else
@@ -104,6 +115,11 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
+			if(!this->UnregistToGlobalList())
+			{
+				GAIA_AST(GAIA::ALWAYSFALSE);
+				return GAIA::False;
+			}
 			::DestroyWindow(m_hWnd);
 			m_hWnd = GNULL;
 
@@ -299,12 +315,74 @@ namespace GAIA
 		#else
 		#endif
 		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator == (const GAIA::UI::Canvas& src) const
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			return m_hWnd == src.m_hWnd;
+		#else
+			return GAIA::False;
+		#endif
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator != (const GAIA::UI::Canvas& src) const
+		{
+			return !(this->operator == (src));
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator >= (const GAIA::UI::Canvas& src) const
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			return m_hWnd >= src.m_hWnd;
+		#else
+			return GAIA::False;
+		#endif
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator <= (const GAIA::UI::Canvas& src) const
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			return m_hWnd <= src.m_hWnd;
+		#else
+			return GAIA::False;
+		#endif
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator > (const GAIA::UI::Canvas& src) const
+		{
+			return !(this->operator <= (src));
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator < (const GAIA::UI::Canvas& src) const
+		{
+			return !(this->operator >= (src));
+		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::init()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			m_hWnd = GNULL;
 			m_pszClassName = GNULL;
 		#else
+		#endif
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::RegistToGlobalList()
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			GAIA::SYNC::AutoLock al(g_windowlistlock);
+			GAIA::CONTAINER::Ref<GAIA::UI::Canvas> finder(this);
+			const GAIA::CONTAINER::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
+			if(pFinded != GNULL)
+				return GAIA::False;
+			return g_windowlist.insert(finder);
+		#else
+			return GAIA::False;
+		#endif
+		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::UnregistToGlobalList()
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			GAIA::SYNC::AutoLock al(g_windowlistlock);
+			GAIA::CONTAINER::Ref<GAIA::UI::Canvas> finder(this);
+			const GAIA::CONTAINER::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
+			if(pFinded == GNULL)
+				return GAIA::False;
+			return g_windowlist.erase(finder);
+		#else
+			return GAIA::False;
 		#endif
 		}
 	};
