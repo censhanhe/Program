@@ -231,23 +231,72 @@
 
 #include	"gaia_factory.h"
 
+#endif
+
 /*
-*	The following header files will been included by gaia's user manually.
-*	The user will include these header files by his choose.
 *
-*	[gaia_global_impl.h]
-*		gaia is designed as a header file based source code
-*		library, so gaia not exist any global variables. but unfortunately,
-*		gaia need some basic global variable, for example : global-allocator.
-*		So, if you want use this function, include this header file after
-*		include gaia.h, or will change gaia's source code for compile errors.
+*    HOW TO INCLUDE THE GAIA's HEADER ?
 *
-*	[gaia_using_namespace.h]
-*		include this file will cause all gaia namespace been used.
+*    The following header files will been included by gaia's user manually.
+*    The user will include these header files by his choose.
+*
+*    [gaia_global_impl.h]
+*        gaia is designed as a header file based source code
+*        library, so gaia not exist any global variables. but unfortunately,
+*        gaia need some basic global variable, for example : global-allocator.
+*        So, if you want use this function, include this header file after
+*        include gaia.h, or will change gaia's source code for compile errors.
+*
+*    [gaia_using_namespace.h]
+*        include this file will cause all gaia namespace been used.
 *		WARNING! gaia's namespace will protect gaia source code
-*		library's symbol been declaration as unique symbol. if you
-*		want to implement a high quality program, please NOT include
-*		this header file(RECOMMANDED).
+*        library's symbol been declaration as unique symbol. if you
+*        want to implement a high quality program, please NOT include
+*        this header file(RECOMMANDED).
+*
 */
 
-#endif
+/*
+*
+*    THIS IS THE CLASS DIAGRAM.
+*
+*    [BAISC CLASS DIAGRAM]
+*
+*         |- All derived class will been allocate by HIGH-PERFORMANCE heap.
+*         |  All simple class will derived here. Like class XxxxDesc and etc.
+*         |
+*         |              |- Support abstract statistics and optimize interface.
+*         |              |
+*         |              |               |- Not used(Reserved).
+*         |              |               |
+*         |              |               |                |- Support thread-safe reference count.
+*         |              |               |                |
+*         |              |               |                |                  |- Factory management object.
+*         |              |               |                |                  |
+*         Base -------> Entity -------> Object -------> RefObject -------> Instance
+*
+*
+*    [MVC CLASS DIAGRAM]
+*
+*        Instance -------> View
+*                 |
+*                 |
+*                 -------> ViewLinker -------> Model
+*                                     |
+*                                     |
+*                                     -------> Controller
+*
+*
+*    [LAYOUT CLASS DIAGRAM]
+*
+*        Widget -------> Widget2D -------> \
+*               |                           \
+*               |                            \
+*               -------> Widget3D             | ---> Form -------> 
+*                                            /
+*                                           /
+*        View -----------------------------/
+*
+*
+*
+*/
