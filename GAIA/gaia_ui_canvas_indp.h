@@ -7,8 +7,8 @@
 #endif
 
 #if GAIA_OS == GAIA_OS_WINDOWS
-	extern GAIA::SYNC::Lock g_windowlistlock;
-	extern GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<GAIA::UI::Canvas> > g_windowlist;
+extern GAIA::SYNC::Lock g_windowlistlock;
+extern GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<GAIA::UI::Canvas> > g_windowlist;
 #else
 #endif
 
@@ -69,21 +69,21 @@ namespace GAIA
 				return GAIA::False;
 
 			DWORD dwStyle;
-			if(desc.bFrameStyle)
+			if(desc.style.bFrameStyle)
 			{
 				dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
-				if(desc.bResizeAble)
+				if(desc.style.bResizeAble)
 					dwStyle |= WS_THICKFRAME;
 			}
-			else if(desc.bPopupStyle)
+			else if(desc.style.bPopupStyle)
 				dwStyle = WS_POPUP;
-			else if(desc.bChildStyle)
+			else if(desc.style.bChildStyle)
 				dwStyle = WS_CHILD;
 			else
 				dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
-			if(desc.bMinimizeBox)
+			if(desc.style.bMinimizeBox)
 				dwStyle |= WS_MINIMIZEBOX;
-			if(desc.bMaximizeBox)
+			if(desc.style.bMaximizeBox)
 				dwStyle |= WS_MAXIMIZEBOX;
 			m_hWnd = ::CreateWindow(szWindowClass, 
 				desc.pszCaptionText, 
@@ -105,6 +105,15 @@ namespace GAIA
 				return GAIA::False;
 			}
 			m_pszClassName = GAIA::ALGORITHM::strnew(szWindowClass);
+			if(desc.pParent != GNULL)
+			{
+				if(!this->SetParent(desc.pParent))
+				{
+					this->Destroy();
+					return GAIA::False;
+				}
+			}
+			m_style = desc.style;
 			return ::UpdateWindow(m_hWnd);
 		#else
 			return GAIA::False;
@@ -157,6 +166,35 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
+			if(pParent == GNULL)
+			{
+				if(this->GetParent() == GNULL)
+					return GAIA::False;
+				::SetParent(m_hWnd, GNULL);
+				DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
+				if(m_style.bResizeAble)
+					dwStyle |= WS_THICKFRAME;
+				if(m_style.bMinimizeBox)
+					dwStyle |= WS_MINIMIZEBOX;
+				if(m_style.bMaximizeBox)
+					dwStyle |= WS_MAXIMIZEBOX;
+				if(::SetWindowLong(m_hWnd, GWL_STYLE, dwStyle) == 0)
+					return GAIA::False;
+				::ShowWindow(m_hWnd, SW_SHOW);
+			}
+			else
+			{
+				if(!pParent->IsCreated())
+					return GAIA::False;
+				GAIA::BL bExistParent = this->GetParent() != GNULL;
+				::SetParent(m_hWnd, pParent->m_hWnd);
+				if(!bExistParent)
+				{
+					if(::SetWindowLong(m_hWnd, GWL_STYLE, WS_CHILD) == 0)
+						return GAIA::False;
+				}
+			}
+			return GAIA::True;
 		#else
 			return GAIA::False;
 		#endif
@@ -166,6 +204,27 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GNULL;
 		#if GAIA_OS == GAIA_OS_WINDOWS
+			WINDOWINFO winfo;
+			winfo.cbSize = sizeof(winfo);
+			if(!::GetWindowInfo(m_hWnd, &winfo))
+				return GAIA::False;
+			if(winfo.dwStyle & WS_CHILD)
+			{
+				HWND hParent = ::GetParent(m_hWnd);
+				if(hParent == GNULL)
+					return GNULL;
+				if(hParent == GetDesktopWindow())
+					return GNULL;
+				GAIA::UI::Canvas finder;
+				finder.m_hWnd = hParent;
+				GAIA::SYNC::AutoLock al(g_windowlistlock);
+				GAIA::CONTAINER::Ref<GAIA::UI::Canvas> finderref(&finder);
+				GAIA::CONTAINER::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finderref);
+				GAIA_AST(pFinded != GNULL);
+				finder.m_hWnd = GNULL;
+				return *pFinded;
+			}
+			return GNULL;
 		#else
 			return GNULL;
 		#endif

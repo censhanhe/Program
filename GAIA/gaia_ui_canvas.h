@@ -11,6 +11,27 @@ namespace GAIA
 			typedef GAIA::MATH::VEC2<GAIA::N32> __PosType;
 			typedef __PosType __SizeType;
 		public:
+			class CanvasStyle
+			{
+			public:
+				GINL CanvasStyle(){this->reset();}
+				GINL GAIA::GVOID reset()
+				{
+					bFrameStyle = GAIA::True;
+					bPopupStyle = GAIA::False;
+					bChildStyle = GAIA::False;
+					bMaximizeBox = GAIA::True;
+					bMinimizeBox = GAIA::True;
+					bResizeAble = GAIA::True;
+				}
+			public:
+				GAIA::U8 bFrameStyle : 1;
+				GAIA::U8 bPopupStyle : 1;
+				GAIA::U8 bChildStyle : 1;
+				GAIA::U8 bMaximizeBox : 1;
+				GAIA::U8 bMinimizeBox : 1;
+				GAIA::U8 bResizeAble : 1;
+			};
 			class CanvasDesc
 			{
 			public:
@@ -19,37 +40,27 @@ namespace GAIA
 				{
 					pszCaptionText = GNULL;
 					pParent = GNULL;
-					bFrameStyle = GAIA::True;
-					bPopupStyle = GAIA::False;
-					bChildStyle = GAIA::False;
-					bMaximizeBox = GAIA::True;
-					bMinimizeBox = GAIA::True;
-					bResizeAble = GAIA::True;
+					style.reset();
 				}
 				GINL GAIA::BL check() const
 				{
 					GAIA::SIZE nMutexGroup = 0;
-					if(bFrameStyle)
+					if(style.bFrameStyle)
 						++nMutexGroup;
-					if(bPopupStyle)
+					if(style.bPopupStyle)
 						++nMutexGroup;
-					if(bChildStyle)
+					if(style.bChildStyle)
 						++nMutexGroup;
 					if(nMutexGroup != 1)
 						return GAIA::False;
-					if(bChildStyle && pParent == GNULL)
+					if(style.bChildStyle && pParent == GNULL)
 						return GAIA::False;
 					return GAIA::True;
 				}
 			public:
 				GAIA::TCH* pszCaptionText;
 				Canvas* pParent;
-				GAIA::U8 bFrameStyle : 1;
-				GAIA::U8 bPopupStyle : 1;
-				GAIA::U8 bChildStyle : 1;
-				GAIA::U8 bMaximizeBox : 1;
-				GAIA::U8 bMinimizeBox : 1;
-				GAIA::U8 bResizeAble : 1;
+				CanvasStyle style;
 			};
 		public:
 			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_CANVAS;}
@@ -81,6 +92,7 @@ namespace GAIA
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL RegistToGlobalList();
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL UnregistToGlobalList();
 		private:
+			CanvasStyle m_style;
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			HWND m_hWnd;
 			GAIA::TCH* m_pszClassName;

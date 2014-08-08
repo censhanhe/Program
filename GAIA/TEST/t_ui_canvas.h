@@ -11,7 +11,7 @@ namespace GAIATEST
 		GINL GAIA::BL GetResult() const{return m_bResult;}
 		virtual GAIA::GVOID WorkProcedure()
 		{
-			static const GAIA::U32 SLEEP_TIME = 1000;
+			static const GAIA::U32 SLEEP_TIME = 200;
 			GPCHR_NULL(m_pCanvas1);
 			GPCHR_NULL(m_pCanvas2);
 			
@@ -48,6 +48,26 @@ namespace GAIATEST
 			if(!m_pCanvas1->SetCaptionText(_T("This is the canvas 1 !!!!!!!!!!")))
 				this->SetResult(GAIA::False);
 			if(!m_pCanvas2->SetCaptionText(_T("This is the canvas 2 !!!!!!!!!!")))
+				this->SetResult(GAIA::False);
+
+			/* Set parent operation. */
+			GAIA::SYNC::xsleep(SLEEP_TIME);
+			if(!m_pCanvas2->SetParent(m_pCanvas1))
+				this->SetResult(GAIA::False);
+
+			/* Get parent operation. */
+			GAIA::SYNC::xsleep(SLEEP_TIME);
+			if(m_pCanvas2->GetParent() != m_pCanvas1)
+				this->SetResult(GAIA::False);
+
+			/* Set parent operation. */
+			GAIA::SYNC::xsleep(SLEEP_TIME);
+			if(!m_pCanvas2->SetParent(GNULL))
+				this->SetResult(GAIA::False);
+
+			/* Get parent operation. */
+			GAIA::SYNC::xsleep(SLEEP_TIME);
+			if(m_pCanvas2->GetParent() != GNULL)
 				this->SetResult(GAIA::False);
 
 			/* Test quit operation. */
