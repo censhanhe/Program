@@ -1989,26 +1989,6 @@
 						RelativePath=".\gaia_painter.h"
 						>
 					</File>
-					<Filter
-						Name="WINDOWS"
-						>
-					</Filter>
-					<Filter
-						Name="OSX"
-						>
-					</Filter>
-					<Filter
-						Name="IOS"
-						>
-					</Filter>
-					<Filter
-						Name="LINUX"
-						>
-					</Filter>
-					<Filter
-						Name="ANDROID"
-						>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="LAYOUT"
