@@ -3,8 +3,16 @@
 
 namespace GAIA
 {
-	namespace Collisioner
+	namespace COLLISIONER
 	{
+		class Collisioner : public virtual GAIA::FRAMEWORK::Instance
+		{
+		public:
+			GINL Collisioner(){}
+			GINL ~Collisioner(){}
+
+		private:
+		};
 	};
 };
 

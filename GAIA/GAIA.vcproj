@@ -2029,6 +2029,14 @@
 						RelativePath=".\gaia_collisioner.h"
 						>
 					</File>
+					<File
+						RelativePath=".\gaia_collisioner_bounder.h"
+						>
+					</File>
+					<Filter
+						Name="SPACEPARTITION"
+						>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="MVC"

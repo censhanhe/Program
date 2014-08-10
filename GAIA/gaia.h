@@ -207,6 +207,7 @@
 #include	"gaia_mvc_view.h"
 #include	"gaia_mvc_viewlinker_impl.h"
 
+#include	"gaia_collisioner_bounder.h"
 #include	"gaia_collisioner.h"
 
 #include	"gaia_ui_canvas.h"
@@ -289,9 +290,9 @@
 *
 *    [LAYOUT CLASS DIAGRAM]
 *
-*        Widget -------> Widget2D -------> \
-*               |                           \
-*               |                            \
+*        Widget -------> Widget2D -------> \                        / ------> PushButton
+*               |                           \                      / -------> Label
+*               |                            \                    / --------> etc...
 *               -------> Widget3D             | ---> Form -------> 
 *                                            /
 *                                           /
