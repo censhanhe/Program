@@ -17,6 +17,9 @@ namespace GAIA
 			template<typename _ParamDataType> ARGB(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> ARGB(const _ParamDataType& t){this->operator = (t);}
 
+			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq());}
+			GINL _DataType lengthsq() const{return r * r + g * g + b * b;}
+
 			GINL _DataType average_rgb() const{return (r + g + b) / (_DataType)3;}
 			GINL _DataType average_argb() const{return (a + r + g + b) / (_DataType)4;}
 			GINL _DataType max_rgb() const{return GAIA::ALGORITHM::maximize3(r, g, b);}
