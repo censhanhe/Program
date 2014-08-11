@@ -1120,6 +1120,14 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="COOPERATION"
+							>
+							<File
+								RelativePath=".\gaia_math_cooperation.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="ARITHMATIC"

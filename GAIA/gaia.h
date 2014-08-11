@@ -130,6 +130,7 @@
 #include	"gaia_math_aabb.h"
 #include	"gaia_math_argb.h"
 #include	"gaia_math_rgb.h"
+#include	"gaia_math_cooperation.h"
 
 #include	"gaia_datamodel.h"
 #include	"gaia_linkmodel.h"

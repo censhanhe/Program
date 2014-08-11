@@ -87,53 +87,6 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::AABR<_ParamDataType>& t) const{return !(this->operator <= (t));}
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::AABR<_ParamDataType>& t) const{return !(this->operator >= (t));}
-
-			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::MTX33<_ParamDataType>& mtx) const
-			{
-				__MyType ret;
-				ret.pmin *= mtx;
-				ret.pmax *= mtx;
-				this->selfupdate();
-				return ret;
-			}
-			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::MTX34<_ParamDataType>& mtx) const
-			{
-				__MyType ret;
-				ret.pmin *= mtx;
-				ret.pmax *= mtx;
-				this->selfupdate();
-				return ret;
-			}
-			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::MTX44<_ParamDataType>& mtx) const
-			{
-				__MyType ret;
-				ret.pmin *= mtx;
-				ret.pmax *= mtx;
-				this->selfupdate();
-				return ret;
-			}
-			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::MTX33<_ParamDataType>& mtx)
-			{
-				pmin *= mtx;
-				pmax *= mtx;
-				this->selfupdate();
-				return *this;
-			}
-			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::MTX34<_ParamDataType>& mtx)
-			{
-				pmin *= mtx;
-				pmax *= mtx;
-				this->selfupdate();
-				return *this;
-			}
-			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::MTX44<_ParamDataType>& mtx)
-			{
-				pmin *= mtx;
-				pmax *= mtx;
-				this->selfupdate();
-				return *this;
-			}
-
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return ((_DataType*)this)[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return ((_DataType*)this)[index];}
 
