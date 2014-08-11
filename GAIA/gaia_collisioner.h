@@ -11,6 +11,18 @@ namespace GAIA
 			GINL Collisioner(){}
 			GINL ~Collisioner(){}
 
+			/* Distance trace interface. */
+
+			/* Point trace interface. */
+
+			/* Ray trace interface. */
+
+			/* Sphere trace interface. */
+
+			/* Plane trace interface. */
+
+			/* Convas trace interface. */
+
 		private:
 		};
 	};

@@ -209,6 +209,11 @@
 
 #include	"gaia_collisioner_bounder.h"
 #include	"gaia_collisioner.h"
+#include	"gaia_collisioner_prime.h"
+#include	"gaia_collisioner_bsp.h"
+#include	"gaia_collisioner_tree4.h"
+#include	"gaia_collisioner_tree8.h"
+#include	"gaia_collisioner_boundarea.h"
 
 #include	"gaia_ui_canvas.h"
 #include	"gaia_ui_canvasmsgdisp.h"

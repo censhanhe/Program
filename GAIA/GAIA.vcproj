@@ -2036,6 +2036,34 @@
 					<Filter
 						Name="SPACEPARTITION"
 						>
+						<File
+							RelativePath=".\gaia_collisioner_bsp.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_collisioner_tree4.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_collisioner_tree8.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="BOUNDAREA"
+						>
+						<File
+							RelativePath=".\gaia_collisioner_boundarea.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="PRIME"
+						>
+						<File
+							RelativePath=".\gaia_collisioner_prime.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
