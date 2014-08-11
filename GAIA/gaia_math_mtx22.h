@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		template<typename _DataType> class MTX22 : public GAIA::Entity
+		template<typename _DataType> class MTX22 : public GAIA::Base
 		{
 		public:
 			GINL GAIA::GVOID identity(){}

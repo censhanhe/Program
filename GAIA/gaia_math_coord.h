@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		template<typename _OffsetType, typename _BlockType, typename _BlockSizeType, _BlockSizeType _BlockSize> class Coord : public GAIA::Entity
+		template<typename _OffsetType, typename _BlockType, typename _BlockSizeType, _BlockSizeType _BlockSize> class Coord : public GAIA::Base
 		{
 		public:
 			typedef _OffsetType _offsettype;

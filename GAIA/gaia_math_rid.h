@@ -6,7 +6,7 @@ namespace GAIA
 	namespace MATH
 	{
 		/* 128 bit random id. */
-		class RID128 : public GAIA::Entity
+		class RID128 : public GAIA::Base
 		{
 		public:
 			GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}

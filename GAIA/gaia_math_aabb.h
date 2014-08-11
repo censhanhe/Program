@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		template<typename _DataType> class AABB : public GAIA::Entity
+		template<typename _DataType> class AABB : public GAIA::Base
 		{
 		public:
 			typedef _DataType _datatype;
@@ -40,15 +40,32 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::VEC3<_ParamDataType>& v){pmin *= v; pmax *= v; return *this;}
 			template<typename _ParamDataType> __MyType& operator /= (const GAIA::MATH::VEC3<_ParamDataType>& v){pmin /= v; pmax /= v; return *this;}
 
-			template<typename _ParamDataType> _DataType distance(const __MyType& src) const{}
-			template<typename _ParamDataType> _DataType distancesq(const __MyType& src) const{}
-			template<typename _ParamDataType> _DataType distance(const GAIA::MATH::VEC3<_ParamDataType>& v) const{}
-			template<typename _ParamDataType> _DataType distancesq(const GAIA::MATH::VEC3<_ParamDataType>& v) const{}
+			template<typename _ParamDataType> _DataType distance(const __MyType& src) const
+			{
+			}
+			template<typename _ParamDataType> _DataType distancesq(const __MyType& src) const
+			{
+			}
+			template<typename _ParamDataType> _DataType distance(const GAIA::MATH::VEC3<_ParamDataType>& v) const
+			{
+			}
+			template<typename _ParamDataType> _DataType distancesq(const GAIA::MATH::VEC3<_ParamDataType>& v) const
+			{
+			}
 
-			template<typename _ParamDataType> INTERSECT_TYPE intersect_point() const{}
-			template<typename _ParamDataType> INTERSECT_TYPE intersect_aabb() const{}
-			template<typename _ParamDataType> INTERSECT_TYPE intersect_ray() const{}
-			template<typename _ParamDataType> INTERSECT_TYPE intersect_plane() const{}
+			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_point(const GAIA::MATH::VEC3<_ParamDataType>& v) const
+			{
+			}
+			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_aabb(const GAIA::MATH::AABB<_ParamDataType>& aabb) const
+			{
+			}
+			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_ray(const GAIA::MATH::VEC3<_ParamDataType>& pos, const GAIA::MATH::VEC3<_ParamDataType>& dir) const
+			{
+			}
+			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_plane(const GAIA::MATH::PLANE* pPlanes, const GAIA::SIZE& sPlaneCount) const
+			{
+				GAIA_AST(pPlanes != GNULL);
+			}
 
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::AABB<_ParamDataType>& src){pmin = src.pmin; pmax = src.pmax; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){pmin = p; pmax = p + 3; return *this;}
@@ -77,21 +94,62 @@ namespace GAIA
 
 			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::MTX33<_ParamDataType>& mtx) const
 			{
+				__MyType ret;
+				ret.pmin *= mtx;
+				ret.pmax *= mtx;
+				this->selfupdate();
+				return ret;
 			}
 			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::MTX34<_ParamDataType>& mtx) const
 			{
+				__MyType ret;
+				ret.pmin *= mtx;
+				ret.pmax *= mtx;
+				this->selfupdate();
+				return ret;
 			}
 			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::MTX44<_ParamDataType>& mtx) const
 			{
+				__MyType ret;
+				ret.pmin *= mtx;
+				ret.pmax *= mtx;
+				this->selfupdate();
+				return ret;
 			}
 			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::MTX33<_ParamDataType>& mtx)
 			{
+				pmin *= mtx;
+				pmax *= mtx;
+				this->selfupdate();
+				return *this;
 			}
 			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::MTX34<_ParamDataType>& mtx)
 			{
+				pmin *= mtx;
+				pmax *= mtx;
+				this->selfupdate();
+				return *this;
 			}
 			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::MTX44<_ParamDataType>& mtx)
 			{
+				pmin *= mtx;
+				pmax *= mtx;
+				this->selfupdate();
+				return *this;
+			}
+
+			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return ((_DataType*)this)[index];}
+			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return ((_DataType*)this)[index];}
+
+		private:
+			GINL GAIA::GVOID selfupdate()
+			{
+				if(pmin.x > pmax.x)
+					GAIA::ALGORITHM::swap(pmin.x, pmax.x);
+				if(pmin.y > pmax.y)
+					GAIA::ALGORITHM::swap(pmin.y, pmax.y);
+				if(pmin.z > pmax.z)
+					GAIA::ALGORITHM::swap(pmin.z, pmax.z);
 			}
 
 		public:

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		template<typename _DataType> class RGB : public GAIA::Entity
+		template<typename _DataType> class RGB : public GAIA::Base
 		{
 		public:
 		public:
