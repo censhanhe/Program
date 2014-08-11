@@ -19,7 +19,7 @@ namespace GAIA
 			GINL GAIA::GVOID SetVerticalSpacingSize(const GAIA::REAL& s);
 			GINL const GAIA::REAL& GetVerticalSpacingSize() const;
 		public:
-			virtual GAIA::BL Update()
+			virtual GAIA::BL UpdateLayout()
 			{
 				return GAIA::False;
 			}

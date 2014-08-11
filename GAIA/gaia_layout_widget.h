@@ -16,7 +16,7 @@ namespace GAIA
 			GINL Widget(){}
 			GINL ~Widget(){}
 		public:
-			virtual WIDGET_TYPE GetType() const = 0;
+			virtual WIDGET_TYPE GetWidgetType() const = 0;
 		private:
 			GINL GAIA::GVOID init(){}
 		};

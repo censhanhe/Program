@@ -102,7 +102,7 @@ namespace GAIA
 				return bRet;
 			}
 		public:
-			virtual GAIA::BL Update() = 0; // If there are some widget been reposition or resize, return GAIA::True, or will return GAIA::False.
+			virtual GAIA::BL UpdateLayout() = 0; // If there are some widget been reposition or resize, return GAIA::True, or will return GAIA::False.
 		private:
 			GINL GAIA::GVOID init(){}
 		private:

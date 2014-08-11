@@ -11,10 +11,9 @@ namespace GAIA
 			GINL Widget3D(){}
 			GINL ~Widget3D(){}
 		public:
-			virtual WIDGET_TYPE GetType() const{return WIDGET_TYPE_3D;}
+			virtual WIDGET_TYPE GetWidgetType() const{return WIDGET_TYPE_3D;}
 		public:
-			virtual GAIA::MATH::AABB<GAIA::REAL> GetAABB() const = 0;
-			virtual GAIA::BL SetAABB(const GAIA::MATH::AABB<GAIA::REAL>& aabb) = 0;
+			virtual GAIA::MATH::AABB<GAIA::REAL> GetWidgetAABB() const = 0;
 		private:
 			GINL GAIA::GVOID init(){}
 		};

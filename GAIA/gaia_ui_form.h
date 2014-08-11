@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class Form : public virtual GAIA::MVC::View, public virtual GAIA::LAYOUT::Widget2D
+		class Form : public virtual GAIA::MVC::View, public virtual GAIA::LAYOUT::Widget2D, public virtual GAIA::COLLISIONER::Bounder
 		{
 		public:
 		private:

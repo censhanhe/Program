@@ -11,17 +11,31 @@ namespace GAIA
 			GINL Collisioner(){}
 			GINL ~Collisioner(){}
 
-			/* Distance trace interface. */
+			/* Bounder management. */
+			virtual GAIA::BL InsertBounder(GAIA::COLLISIONER::Bounder* pBounders, const GAIA::SIZE& sCount) = 0;
+			virtual GAIA::BL RemoveBounder(GAIA::COLLISIONER::Bounder* pBounders, const GAIA::SIZE& sCount) = 0;
+			virtual GAIA::BL RemoveBounderAll() = 0;
 
 			/* Point trace interface. */
+			virtual GAIA::BL PointTrace() = 0;
 
 			/* Ray trace interface. */
+			virtual GAIA::BL RayTraceNearest() = 0;
+			virtual GAIA::BL RayTrace() = 0;
+			virtual GAIA::BL RayTraceExist() = 0;
 
 			/* Sphere trace interface. */
+			virtual GAIA::BL SphereTraceNearest() = 0;
+			virtual GAIA::BL SphereTrace() = 0;
+			virtual GAIA::BL SphereTraceExist() = 0;
 
 			/* Plane trace interface. */
+			virtual GAIA::BL PlaneTrace() = 0;
+			virtual GAIA::BL PlaneTraceExist() = 0;
 
-			/* Convas trace interface. */
+			/* Convex trace interface. */
+			virtual GAIA::BL ConvexTrace() = 0;
+			virtual GAIA::BL ConvexTraceExist() = 0;
 
 		private:
 		};
