@@ -36,13 +36,23 @@ namespace GAIA
 		}
 		template<typename _DataType> _DataType xfloor(const _DataType& src)
 		{
+			_DataType tinteger = (_DataType)(GAIA::N64)src;
+			_DataType t = src - tinteger;
+			if(t == (_DataType)0)
+				return src;
+			return tinteger;
 		}
 		template<typename _DataType> _DataType xceil(const _DataType& src)
 		{
+			_DataType tinteger = (_DataType)(GAIA::N64)src;
+			_DataType t = src - tinteger;
+			if(t == (_DataType)0)
+				return src;
+			return tinteger + (_DataType)1;
 		}
 		template<typename _DataType1, typename _DataType2> GAIA::BL xequal(const _DataType1& t1, const _DataType2& t2)
 		{
-			if(GAIA::MATH::xabs(t1 - t2) < (typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType)0.00001)
+			if(GAIA::MATH::xabs(t1 - t2) <= (typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType)0.00001)
 				return GAIA::True;
 			return GAIA::False;
 		}
