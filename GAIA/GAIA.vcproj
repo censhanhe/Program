@@ -1009,6 +1009,10 @@
 				<Filter
 					Name="MATH"
 					>
+					<File
+						RelativePath=".\gaia_math_constant.h"
+						>
+					</File>
 					<Filter
 						Name="COOKIES"
 						>
@@ -1113,10 +1117,10 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="RGB"
+							Name="NRGB"
 							>
 							<File
-								RelativePath=".\gaia_math_rgb.h"
+								RelativePath=".\gaia_math_nrgb.h"
 								>
 							</File>
 						</Filter>
@@ -2369,11 +2373,11 @@
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_math_cookies_qua.h"
+							RelativePath=".\TEST\t_math_cookies_nrgb.h"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_math_cookies_rgb.h"
+							RelativePath=".\TEST\t_math_cookies_qua.h"
 							>
 						</File>
 						<File

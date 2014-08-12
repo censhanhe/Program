@@ -7,11 +7,11 @@
 #include "t_math_arithmatic_lerp.h"
 #include "t_math_arithmatic_random.h"
 
+#include "t_math_cookies_argb.h"
+#include "t_math_cookies_nrgb.h"
 #include "t_math_cookies_vec.h"
 #include "t_math_cookies_mtx.h"
 #include "t_math_cookies_qua.h"
-#include "t_math_cookies_argb.h"
-#include "t_math_cookies_rgb.h"
 #include "t_math_cookies_aabb.h"
 #include "t_math_cookies_aabr.h"
 
@@ -65,10 +65,10 @@ namespace GAIATEST
 			GTLINE1("MathArithmatic: Lerp test begin!"); nRet += t_math_arithmatic_lerp(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathArithmatic: Random test begin!"); nRet += t_math_arithmatic_random(file, prt); GTLINE1("End"); GTLINE("\t");
 
+			GTLINE1("MathCookies: ARGB test begin!"); nRet += t_math_cookies_argb(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: NRGB test begin!"); nRet += t_math_cookies_nrgb(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: AABB test begin!"); nRet += t_math_cookies_aabb(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: AABR test begin!"); nRet += t_math_cookies_aabr(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("MathCookies: ARGB test begin!"); nRet += t_math_cookies_argb(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("MathCookies: RGB test begin!"); nRet += t_math_cookies_rgb(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: VEC test begin!"); nRet += t_math_cookies_vec(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: MTX test begin!"); nRet += t_math_cookies_mtx(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: QUA test begin!"); nRet += t_math_cookies_qua(file, prt); GTLINE1("End"); GTLINE("\t");

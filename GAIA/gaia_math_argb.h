@@ -27,8 +27,12 @@ namespace GAIA
 			GINL _DataType min_rgb() const{return GAIA::ALGORITHM::minimize3(r, g, b);}
 			GINL _DataType min_argb() const{return GAIA::ALGORITHM::minimize(GAIA::ALGORITHM::minimize(a, r), GAIA::ALGORITHM::minimize(g, b));}
 
-			template<typename _ParamEndDataType, typename _ParamFactorDataType> __MyType& lerp(GAIA::MATH::ARGB<_ParamEndDataType>& end, const _ParamFactorDataType& factor)
+			template<typename _ParamEndDataType, typename _ParamFactorDataType> GAIA::GVOID lerp(GAIA::MATH::ARGB<_ParamEndDataType>& end, const _ParamFactorDataType& factor)
 			{
+				a = GAIA::MATH::lerp(a, end.a, factor);
+				r = GAIA::MATH::lerp(r, end.r, factor);
+				g = GAIA::MATH::lerp(g, end.g, factor);
+				b = GAIA::MATH::lerp(b, end.b, factor);
 			}
 
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::ARGB<_ParamDataType>& src){a = src.a; r = src.r; g = src.g; b = src.b; return *this;}

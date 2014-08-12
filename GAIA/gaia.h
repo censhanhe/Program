@@ -25,6 +25,7 @@
 
 #include	"gaia_locale.h"
 
+#include	"gaia_math_constant.h"
 #include	"gaia_math_basic.h"
 #include 	"gaia_math_random.h"
 #include 	"gaia_math_lerp.h"
@@ -117,6 +118,8 @@
 #include 	"gaia_math_rid.h"
 #include	"gaia_math_coord.h"
 
+#include	"gaia_math_argb.h"
+#include	"gaia_math_nrgb.h"
 #include	"gaia_math_vec2.h"
 #include	"gaia_math_vec3.h"
 #include	"gaia_math_vec4.h"
@@ -128,8 +131,6 @@
 #include	"gaia_math_plane.h"
 #include	"gaia_math_aabr.h"
 #include	"gaia_math_aabb.h"
-#include	"gaia_math_argb.h"
-#include	"gaia_math_rgb.h"
 #include	"gaia_math_cooperation.h"
 
 #include	"gaia_datamodel.h"
