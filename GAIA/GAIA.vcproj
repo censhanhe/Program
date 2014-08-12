@@ -1053,7 +1053,7 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="QUATERNION"
+							Name="QUA"
 							>
 							<File
 								RelativePath=".\gaia_math_qua.h"
@@ -1061,7 +1061,7 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="MATRIX"
+							Name="MTX"
 							>
 							<File
 								RelativePath=".\gaia_math_mtx22.h"
@@ -2329,6 +2329,58 @@
 						RelativePath=".\TEST\t_locale.h"
 						>
 					</File>
+				</Filter>
+				<Filter
+					Name="MATH"
+					>
+					<Filter
+						Name="ARITHMATIC"
+						>
+						<File
+							RelativePath=".\TEST\t_math_arithmatic_basic.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_arithmatic_lerp.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_arithmatic_random.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="COOKIES"
+						>
+						<File
+							RelativePath=".\TEST\t_math_cookies_aabb.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_aabr.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_argb.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_mtx.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_qua.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_rgb.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_vec.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>
