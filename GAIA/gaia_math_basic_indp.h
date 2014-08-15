@@ -15,7 +15,7 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_FUNC REAL xsinh(const REAL& v){return (REAL)sinh((REAL)v);}
 		GAIA_DEBUG_CODEPURE_FUNC REAL xcosh(const REAL& v){return (REAL)cosh((REAL)v);}
 		GAIA_DEBUG_CODEPURE_FUNC REAL xatan(const REAL& v){return (REAL)atan((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xatan2(const REAL& y, const REAL& x){return (REAL)atan2((REAL)x, (REAL)y);}
+		GAIA_DEBUG_CODEPURE_FUNC REAL xatan2(const REAL& y, const REAL& x){return (REAL)atan2((REAL)y, (REAL)x);}
 		GAIA_DEBUG_CODEPURE_FUNC REAL xpow(const REAL& x, const REAL& y){return (REAL)pow((REAL)x, (REAL)y);}
 		GAIA_DEBUG_CODEPURE_FUNC REAL xsqrt(const REAL& v){return (REAL)sqrt((REAL)v);}
 		GAIA_DEBUG_CODEPURE_FUNC REAL xlog(const REAL& v){return (REAL)log((REAL)v);}

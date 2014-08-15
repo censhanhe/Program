@@ -162,7 +162,81 @@ namespace GAIATEST
 			GTLINE2("xequal negative float and float error!");
 			++nRet;
 		}
-
+		if(GAIA::MATH::xcos(0.0F) != 1.0F)
+		{
+			GTLINE2("xcos zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xsin(0.0F) != 0.0F)
+		{
+			GTLINE2("xsin zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xacos(0.0F) != GAIA::MATH::PI * 0.5F)
+		{
+			GTLINE2("xacos zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xasin(0.0F) != 0.0F)
+		{
+			GTLINE2("xasin zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xtan(0.0F) != 0.0F)
+		{
+			GTLINE2("xtan zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xsinh(0.0F) != 0.0F)
+		{
+			GTLINE2("xsinh zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xcosh(0.0F) != 1.0F)
+		{
+			GTLINE2("xcosh zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xatan(0.0F) != 0.0F)
+		{
+			GTLINE2("xatan zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xatan2(0.0F, 1.0F) != 0.0F)
+		{
+			GTLINE2("xatan zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xcosh(0.0F) != 1.0F)
+		{
+			GTLINE2("xcosh zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xpow(0.0F, 1.0F) != 0.0F)
+		{
+			GTLINE2("xpow(0,1) error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xpow(0.0F, 0.0F) != 1.0F)
+		{
+			GTLINE2("xpow(0,0) error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xsqrt(1.0F) != 1.0F)
+		{
+			GTLINE2("xsqrt 1 error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xlog(1.0F) != 0.0F)
+		{
+			GTLINE2("xlog zero error!");
+			++nRet;
+		}
+		if(GAIA::MATH::xlog10(1.0F) != 0.0F)
+		{
+			GTLINE2("xlog10 zero error!");
+			++nRet;
+		}
 		return nRet;
 	}
 };
