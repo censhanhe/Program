@@ -33,6 +33,26 @@ namespace GAIATEST
 			xusleep(0);
 			xsleep(0);
 		}
+		{
+			Factory fac;
+			Canvas* pCanvas = dynamic_cast<Canvas*>(fac.CreateInstance(CLSID_CANVAS, GNULL));
+			if(pCanvas != GNULL)
+			{
+				Canvas::CanvasDesc desc;
+				desc.pszCaptionText = _T("Hello World");
+				if(!pCanvas->Create(desc))
+				{
+					GTLINE2("Canvas create failed!");
+					++nRet;
+				}
+				if(!pCanvas->Destroy())
+				{
+					GTLINE2("Canvas destroy failed!");
+					++nRet;
+				}
+				pCanvas = GNULL;
+			}
+		}
 		return nRet = 0;
 	}
 };

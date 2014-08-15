@@ -178,7 +178,7 @@ namespace GAIA
 					dwStyle |= WS_MINIMIZEBOX;
 				if(m_style.bMaximizeBox)
 					dwStyle |= WS_MAXIMIZEBOX;
-				if(::SetWindowLong(m_hWnd, GWL_STYLE, dwStyle) == 0)
+				if(::SetWindowLongPtr(m_hWnd, GWL_STYLE, dwStyle) == 0)
 					return GAIA::False;
 			}
 			else
@@ -189,7 +189,7 @@ namespace GAIA
 				::SetParent(m_hWnd, pParent->m_hWnd);
 				if(!bExistParent)
 				{
-					if(::SetWindowLong(m_hWnd, GWL_STYLE, WS_CHILD) == 0)
+					if(::SetWindowLongPtr(m_hWnd, GWL_STYLE, WS_CHILD) == 0)
 						return GAIA::False;
 				}
 			}

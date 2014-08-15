@@ -54,7 +54,7 @@ namespace GAIATEST
 			GAIA::SYNC::xsleep(SLEEP_TIME);
 			if(!m_pCanvas2->SetParent(m_pCanvas1))
 				this->SetResult(GAIA::False);
-			if(m_pCanvas2->Position(32))
+			if(!m_pCanvas2->Position(32))
 				this->SetResult(GAIA::False);
 
 			/* Get parent operation. */
@@ -91,6 +91,9 @@ namespace GAIATEST
 
 		/* Construct factory. */
 		GAIA::FRAMEWORK::Factory fac;
+
+		/* For aync ui test. */
+		while(GAIA::UI::UpdateMessage(GAIA::False)){}
 
 		/* Construct canvas instance. */
 		GAIA::UI::Canvas* pCanvas1 = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FRAMEWORK::CLSID_CANVAS, GNULL));

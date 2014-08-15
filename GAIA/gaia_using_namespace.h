@@ -26,5 +26,9 @@ using namespace GAIA::IO;
 using namespace GAIA::SERIALIZER;
 using namespace GAIA::DATATRAFFIC;
 using namespace GAIA::RENDER;
+using namespace GAIA::PAINTER;
+using namespace GAIA::LAYOUT;
+using namespace GAIA::MVC;
+using namespace GAIA::UI;
 
 #endif
