@@ -43,15 +43,15 @@ namespace GAIA
 			}
 			return p[resindex];
 		}
-		template<typename _DataType> _DataType& maximize3(_DataType& v1, _DataType& v2, _DataType& v3)
+		template<typename _DataType> _DataType maximize3(_DataType v1, _DataType v2, _DataType v3)
 		{
 			return maximize(maximize(v1, v2), v3);
 		}
-		template<typename _DataType> _DataType& minimize3(_DataType& v1, _DataType& v2, _DataType& v3)
+		template<typename _DataType> _DataType minimize3(_DataType v1, _DataType v2, _DataType v3)
 		{
 			return minimize(minimize(v1, v2), v3);
 		}
-		template<typename _DataType> _DataType& middle3(_DataType& v1, _DataType& v2, _DataType& v3)
+		template<typename _DataType> _DataType middle3(_DataType v1, _DataType v2, _DataType v3)
 		{
 			if(v1 > v2)
 			{

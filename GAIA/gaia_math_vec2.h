@@ -56,12 +56,12 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator <= (const VEC2<_ParamDataType>& v) const{return !this->operator > (v);}
 			template<typename _ParamDataType> GAIA::BL operator > (const VEC2<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamDataType>::_datatype*)&v) > 0;}
 			template<typename _ParamDataType> GAIA::BL operator < (const VEC2<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamDataType>::_datatype*)&v) < 0;}
-			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, v) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp2k((const _DataType*)this, v) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& v) const{return !this->operator < (v);}
 			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& v) const{return !this->operator > (v);}
-			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, v) > 0;}
-			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, v) < 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp2k((const _DataType*)this, v) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp2k((const _DataType*)this, v) < 0;}
 			template<typename _ParamDataType> const _DataType& operator [] (const _DataType& index) const{return ((_DataType*)this)[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _DataType& index){return ((_DataType*)this)[index];}
 			GINL operator _DataType*(){return (_DataType*)this;}
