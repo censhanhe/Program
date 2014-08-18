@@ -14,10 +14,10 @@ namespace GAIA
 		public:
 			GINL VEC2(){}
 			template<typename _ParamDataType> VEC2(const VEC2<_ParamDataType>& v){this->operator = (v);}
-			template<typename _ParamDataType1, typename _ParamDataType2> VEC2(const _ParamDataType1& tx, const _ParamDataType2& ty){x = (_DataType)tx; y = (_DataType)ty;}
+			template<typename _ParamDataType1, typename _ParamDataType2> VEC2(const _ParamDataType1& x, const _ParamDataType2& y){this->x = (_DataType)x; this->y = (_DataType)y;}
 			template<typename _ParamDataType> VEC2(const _ParamDataType& v){this->operator = (v);}
-			template<typename _ParamDataType> VEC2(const _ParamDataType* pV){this->operator = (pV);}
-			template<typename _ParamDataType> VEC2(_ParamDataType* pV){this->operator = (pV);}
+			template<typename _ParamDataType> VEC2(const _ParamDataType* p){this->operator = (p);}
+			template<typename _ParamDataType> VEC2(_ParamDataType* p){this->operator = (p);}
 			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq());}
 			GINL _DataType lengthsq() const{return x * x + y * y;}
 			GINL _DataType minimize() const{return GAIA::ALGORITHM::minimize(x, y);}
@@ -50,8 +50,8 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator /= (const _ParamDataType& v){x /= v; y /= v; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const VEC2<_ParamDataType>& v){x = (_DataType)v.x; y = (_DataType)v.y; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& v){x = y = (_DataType)v; return *this;}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* pV){x = (_DataType)pV[0]; y = (_DataType)pV[1]; return *this;}
-			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* pV){return this->operator = ((const _ParamDataType*)pV);}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){x = (_DataType)p[0]; y = (_DataType)p[1]; return *this;}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
 			template<typename _ParamDataType> GAIA::BL operator == (const VEC2<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp2((const _DataType*)this, (const typename VEC2<_ParamDataType>::_datatype*)&v) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const VEC2<_ParamDataType>& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const VEC2<_ParamDataType>& v) const{return !this->operator < (v);}
