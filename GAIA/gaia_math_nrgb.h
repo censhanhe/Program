@@ -15,6 +15,7 @@ namespace GAIA
 			GINL NRGB(){}
 			GINL NRGB(const __MyType& src){this->operator = (src);}
 			template<typename _ParamDataType> NRGB(const _ParamDataType* p){this->operator = (p);}
+			template<typename _ParamDataType> NRGB(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> NRGB(const _ParamDataType& t){this->operator = (t);}
 
 			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq());}
@@ -33,6 +34,7 @@ namespace GAIA
 
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::NRGB<_ParamDataType>& src){r = src.r; g = src.g; b = src.b; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){r = p[0]; g = p[1]; b = p[2]; return *this;}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){r = g = b = t; return *this;}
 
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::NRGB<_ParamDataType>& src) const{GAIA::ALGORITHM::cmp3((const _DataType*)this, (const _DataType*)&src) == 0;}

@@ -15,6 +15,7 @@ namespace GAIA
 			GINL MTX44(){}
 			GINL MTX44(const __MyType& src){this->operator = (src);}
 			template<typename _ParamDataType> MTX44(const _ParamDataType* p){this->operator = (p);}
+			template<typename _ParamDataType> MTX44(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> MTX44(const _ParamDataType& t){this->operator = (t);}
 
 			GINL GAIA::GVOID identity()
@@ -177,6 +178,7 @@ namespace GAIA
 				return *this;
 			}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNULL); GAIA::ALGORITHM::copy((_DataType*)m, p, sizeofarray2(m));}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGORITHM::set((_DataType*)m, t, sizeofarray2(m));}
 
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps((_DataType)m, (_DataType)src.m, sizeofarray2(m)) == 0;}

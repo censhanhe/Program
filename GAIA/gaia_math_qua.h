@@ -14,6 +14,7 @@ namespace GAIA
 			GINL QUA(){}
 			GINL QUA(const __MyType& src){this->operator = (src);}
 			template<typename _ParamDataType> QUA(const _ParamDataType* p){this->operator = (p);}
+			template<typename _ParamDataType> QUA(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> QUA(const _ParamDataType& t){this->operator = (t);}
 
 			GINL GAIA::GVOID identity();
@@ -26,6 +27,7 @@ namespace GAIA
 
 			GINL __MyType& operator = (const __MyType& src){}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){}
 
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::QUA<_ParamDataType>& src) const{}

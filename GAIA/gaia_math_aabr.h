@@ -17,6 +17,7 @@ namespace GAIA
 			GINL AABR(){}
 			template<typename _ParamDataType> AABR(const GAIA::MATH::AABR<_ParamDataType>& src){this->operator = (src);}
 			template<typename _ParamDataType> AABR(const _ParamDataType* p){this->operator = (p);}
+			template<typename _ParamDataType> AABR(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> AABR(const _ParamDataType& t){this->operator = (t);}
 			GINL GAIA::GVOID identity(){pmin = (_DataType)+1; pmax = (_DataType)-1;}
 			GINL GAIA::BL isidentity() const{return pmin.x > pmax.x || pmin.y > pmax.y;}
@@ -85,6 +86,7 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::AABR<_ParamDataType>& src){pmin = src.pmin; pmax = src.pmax; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){pmin = p; pmax = p + 2; return *this;}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& v){pmin = v; pmax = v; return *this;}
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::AABR<_ParamDataType>& t) const{return pmin == t.pmin && pmax == t.pmax;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::AABR<_ParamDataType>& t) const{return !(this->operator == (t));}
