@@ -76,9 +76,20 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_point(const GAIA::MATH::VEC2<_ParamDataType>& v) const
 			{
+				if(v.x >= pmin.x && v.y >= pmin.y && 
+					v.x <= pmax.x && v.y <= pmax.y)
+					return GAIA::INTERSECT_TYPE_IN;
+				return GAIA::INTERSECT_TYPE_OUT;
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_aabr(const GAIA::MATH::AABR<_ParamDataType>& aabb) const
 			{
+				if(pmax.x < aabb.pmin.x || pmin.x > aabb.pmax.x)
+					return GAIA::INTERSECT_TYPE_OUT;
+				if(pmax.y < aabb.pmin.y || pmin.y > aabb.pmax.y)
+					return GAIA::INTERSECT_TYPE_OUT;
+				if(pmin <= aabb.pmin && pmax >= aabb.pmax)
+					return GAIA::INTERSECT_TYPE_IN;
+				return GAIA::INTERSECT_TYPE_INTERSECT;
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_line(const GAIA::MATH::PLANE<_ParamDataType>* pPlanes, const GAIA::SIZE& sPlaneCount) const
 			{

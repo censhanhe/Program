@@ -252,6 +252,37 @@ namespace GAIATEST
 			GTLINE2("AABB operator > error!");
 			++nRet;
 		}
+		if(aabb[0] != (__AABBType::_datatype)-10)
+		{
+			GTLINE2("AABB operator [] error!");
+			++nRet;
+		}
+		if(aabb[1] != (__AABBType::_datatype)-10)
+		{
+			GTLINE2("AABB operator [] error!");
+			++nRet;
+		}
+		if(aabb[2] != (__AABBType::_datatype)-10)
+		{
+			GTLINE2("AABB operator [] error!");
+			++nRet;
+		}
+		if(aabb[3] != (__AABBType::_datatype)+10)
+		{
+			GTLINE2("AABB operator [] error!");
+			++nRet;
+		}
+		if(aabb[4] != (__AABBType::_datatype)+10)
+		{
+			GTLINE2("AABB operator [] error!");
+			++nRet;
+		}
+		if(aabb[5] != (__AABBType::_datatype)+10)
+		{
+			GTLINE2("AABB operator [] error!");
+			++nRet;
+		}
+
 		return nRet;
 	}
 };

@@ -87,9 +87,22 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_point(const GAIA::MATH::VEC3<_ParamDataType>& v) const
 			{
+				if(v.x >= pmin.x && v.y >= pmin.y && v.z >= pmin.z && 
+					v.x <= pmax.x && v.y <= pmax.y && v.z <= pmax.z)
+					return GAIA::INTERSECT_TYPE_IN;
+				return GAIA::INTERSECT_TYPE_OUT;
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_aabb(const GAIA::MATH::AABB<_ParamDataType>& aabb) const
 			{
+				if(pmax.x < aabb.pmin.x || pmin.x > aabb.pmax.x)
+					return GAIA::INTERSECT_TYPE_OUT;
+				if(pmax.y < aabb.pmin.y || pmin.y > aabb.pmax.y)
+					return GAIA::INTERSECT_TYPE_OUT;
+				if(pmax.z < aabb.pmin.z || pmin.z > aabb.pmax.z)
+					return GAIA::INTERSECT_TYPE_OUT;
+				if(pmin <= aabb.pmin && pmax >= aabb.pmax)
+					return GAIA::INTERSECT_TYPE_IN;
+				return GAIA::INTERSECT_TYPE_INTERSECT;
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_ray(const GAIA::MATH::VEC3<_ParamDataType>& pos, const GAIA::MATH::VEC3<_ParamDataType>& dir) const
 			{
