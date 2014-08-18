@@ -18,10 +18,10 @@ namespace GAIA
 				typename _ParamDataType2, 
 				typename _ParamDataType3, 
 				typename _ParamDataType4> ARGB(
-					_ParamDataType1 a,
-					_ParamDataType2 r,
-					_ParamDataType3 g,
-					_ParamDataType4 b)
+					const _ParamDataType1& a,
+					const _ParamDataType2& r,
+					const _ParamDataType3& g,
+					const _ParamDataType4& b)
 			{
 				this->a = (_DataType)a;
 				this->r = (_DataType)r;

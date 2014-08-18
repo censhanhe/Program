@@ -15,6 +15,26 @@ namespace GAIA
 			typedef GAIA::MATH::VEC2<_DataType> _vectype;
 		public:
 			GINL AABR(){}
+			template<
+				typename _ParamDataType1,
+				typename _ParamDataType2,
+				typename _ParamDataType3,
+				typename _ParamDataType4> AABR(
+				const _ParamDataType1& pmin_x,
+				const _ParamDataType2& pmin_y,
+				const _ParamDataType3& pmax_x,
+				const _ParamDataType4& pmax_y)
+			{
+				pmin.x = (_DataType)pmin_x;
+				pmin.y = (_DataType)pmin_y;
+				pmax.x = (_DataType)pmax_x;
+				pmax.y = (_DataType)pmax_y;
+			}
+			template<typename _ParamDataType1, typename _ParamDataType2> AABR(const GAIA::MATH::VEC2<_ParamDataType1>& pmin, const GAIA::MATH::VEC2<_ParamDataType2>& pmax)
+			{
+				this->pmin = pmin;
+				this->pmax = pmax;
+			}
 			template<typename _ParamDataType> AABR(const GAIA::MATH::AABR<_ParamDataType>& src){this->operator = (src);}
 			template<typename _ParamDataType> AABR(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> AABR(_ParamDataType* p){this->operator = (p);}

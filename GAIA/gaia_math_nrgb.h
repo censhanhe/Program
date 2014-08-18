@@ -17,9 +17,9 @@ namespace GAIA
 				typename _ParamDataType1, 
 				typename _ParamDataType2, 
 				typename _ParamDataType3> NRGB(
-				_ParamDataType1 r,
-				_ParamDataType2 g,
-				_ParamDataType3 b)
+					const _ParamDataType1& r,
+					const _ParamDataType2& g,
+					const _ParamDataType3& b)
 			{
 				this->r = (_DataType)r;
 				this->g = (_DataType)g;

@@ -8,10 +8,6 @@ namespace GAIA
 		template<typename _DataType> class MTX22 : public GAIA::Base
 		{
 		public:
-			GINL GAIA::GVOID identity(){}
-			GINL GAIA::BL isidentity() const{}
-			GINL GAIA::GVOID inverse(){}
-			GINL GAIA::GVOID transpose(){}
 		public:
 			_DataType m[2][2];
 		};

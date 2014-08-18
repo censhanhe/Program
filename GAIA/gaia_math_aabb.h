@@ -15,6 +15,32 @@ namespace GAIA
 			typedef GAIA::MATH::VEC3<_DataType> _vectype;
 		public:
 			GINL AABB(){}
+			template<
+				typename _ParamDataType1,
+				typename _ParamDataType2,
+				typename _ParamDataType3,
+				typename _ParamDataType4,
+				typename _ParamDataType5,
+				typename _ParamDataType6> AABB(
+					const _ParamDataType1& pmin_x,
+					const _ParamDataType2& pmin_y,
+					const _ParamDataType3& pmin_z,
+					const _ParamDataType4& pmax_x,
+					const _ParamDataType5& pmax_y,
+					const _ParamDataType6& pmax_z)
+			{
+				pmin.x = (_DataType)pmin_x;
+				pmin.y = (_DataType)pmin_y;
+				pmin.z = (_DataType)pmin_z;
+				pmax.x = (_DataType)pmax_x;
+				pmax.y = (_DataType)pmax_y;
+				pmax.z = (_DataType)pmax_z;
+			}
+			template<typename _ParamDataType1, typename _ParamDataType2> AABB(const GAIA::MATH::VEC3<_ParamDataType1>& pmin, const GAIA::MATH::VEC3<_ParamDataType2>& pmax)
+			{
+				this->pmin = pmin;
+				this->pmax = pmax;
+			}
 			template<typename _ParamDataType> AABB(const GAIA::MATH::AABB<_ParamDataType>& src){this->operator = (src);}
 			template<typename _ParamDataType> AABB(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> AABB(_ParamDataType* p){this->operator = (p);}
