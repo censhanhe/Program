@@ -62,6 +62,32 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		}
+		template<typename _DataType> _DataType xavg2(_DataType t1, _DataType t2)
+		{
+			return (t1 + t2) / (_DataType)2;
+		}
+		template<typename _DataType> _DataType xavg3(_DataType t1, _DataType t2, _DataType t3)
+		{
+			return (t1 + t2 + t3) / (_DataType)3;
+		}
+		template<typename _DataType> _DataType xavg4(_DataType t1, _DataType t2, _DataType t3, _DataType t4)
+		{
+			return (t1 + t2 + t3 + t4) / (_DataType)4;
+		}
+		template<typename _DataType, typename _ResultType> GAIA::GVOID xavgs(_DataType pBegin, _DataType pEnd, _ResultType& res)
+		{
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
+			res = (_ResultType)0;
+			_DataType p = pBegin;
+			while(p != pEnd)
+			{
+				res += *p;
+				++p;
+			}
+			res += *p;
+			res /= (pEnd - pBegin + 1);
+		}
 		GAIA_DEBUG_CODEPURE_FUNC REAL xcos(const REAL& v);
 		GAIA_DEBUG_CODEPURE_FUNC REAL xsin(const REAL& v);
 		GAIA_DEBUG_CODEPURE_FUNC REAL xacos(const REAL& v);

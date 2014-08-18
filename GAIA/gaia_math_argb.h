@@ -13,7 +13,22 @@ namespace GAIA
 			typedef ARGB<_DataType> __MyType;
 		public:
 			GINL ARGB(){}
-			GINL ARGB(const __MyType& src){this->operator = (src);}
+			template<
+				typename _ParamDataType1, 
+				typename _ParamDataType2, 
+				typename _ParamDataType3, 
+				typename _ParamDataType4> ARGB(
+					_ParamDataType1 a,
+					_ParamDataType2 r,
+					_ParamDataType3 g,
+					_ParamDataType4 b)
+			{
+				this->a = (_DataType)a;
+				this->r = (_DataType)r;
+				this->g = (_DataType)g;
+				this->b = (_DataType)b;
+			}
+			template<typename _ParamDataType> ARGB(const GAIA::MATH::ARGB<_ParamDataType>& src){this->operator = (src);}
 			template<typename _ParamDataType> ARGB(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> ARGB(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> ARGB(const _ParamDataType& t){this->operator = (t);}
@@ -21,8 +36,8 @@ namespace GAIA
 			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq());}
 			GINL _DataType lengthsq() const{return r * r + g * g + b * b;}
 
-			GINL _DataType average_rgb() const{return (r + g + b) / (_DataType)3;}
-			GINL _DataType average_argb() const{return (a + r + g + b) / (_DataType)4;}
+			GINL _DataType avg_rgb() const{return GAIA::MATH::xavg3(r, g, b);}
+			GINL _DataType avg_argb() const{return GAIA::MATH::xavg4(a, r, g, b);}
 			GINL _DataType max_rgb() const{return GAIA::ALGORITHM::maximize3(r, g, b);}
 			GINL _DataType max_argb() const{return GAIA::ALGORITHM::maximize(GAIA::ALGORITHM::maximize(a, r), GAIA::ALGORITHM::maximize(g, b));}
 			GINL _DataType min_rgb() const{return GAIA::ALGORITHM::minimize3(r, g, b);}
@@ -41,17 +56,17 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){a = r = g = b = t; return *this;}
 
-			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::ARGB<_ParamDataType>& src) const{GAIA::ALGORITHM::cmp4((const _DataType*)this, (const _DataType*)&src) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::ARGB<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmp4((const _DataType*)this, (const _DataType*)&src) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::ARGB<_ParamDataType>& src) const{return !(this->operator == (src));}
-			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::ARGB<_ParamDataType>& src) const{GAIA::ALGORITHM::cmp4((const _DataType*)this, (const _DataType*)&src) >= 0;}
-			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::ARGB<_ParamDataType>& src) const{GAIA::ALGORITHM::cmp4((const _DataType*)this, (const _DataType*)&src) <= 0;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::ARGB<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmp4((const _DataType*)this, (const _DataType*)&src) >= 0;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::ARGB<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmp4((const _DataType*)this, (const _DataType*)&src) <= 0;}
 			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::ARGB<_ParamDataType>& src) const{return !(this->operator <= (src));}
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::ARGB<_ParamDataType>& src) const{return !(this->operator >= (src));}
 
-			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& src) const{GAIA::ALGORITHM::cmp4k((const _DataType*)this, src) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& src) const{return GAIA::ALGORITHM::cmp4k((const _DataType*)this, src) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& src) const{return !(this->operator == (src));}
-			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& src) const{GAIA::ALGORITHM::cmp4k((const _DataType*)this, src) >= 0;}
-			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& src) const{GAIA::ALGORITHM::cmp4k((const _DataType*)this, src) <= 0;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& src) const{return GAIA::ALGORITHM::cmp4k((const _DataType*)this, src) >= 0;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& src) const{return GAIA::ALGORITHM::cmp4k((const _DataType*)this, src) <= 0;}
 			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& src) const{return !(this->operator <= (src));}
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& src) const{return !(this->operator >= (src));}
 

@@ -23,26 +23,6 @@ namespace GAIA
 			else
 				return v1;
 		}
-		template<typename _DataType, typename _SizeType> const _DataType& maximizes(_DataType p, const _SizeType& size)
-		{
-			_SizeType resindex = 0;
-			for(_SizeType x = 1; x < size; ++x)
-			{
-				if(p[resindex] < p[x])
-					resindex = x;
-			}
-			return p[resindex];
-		}
-		template<typename _DataType, typename _SizeType> const _DataType& minimizes(_DataType p, const _SizeType& size)
-		{
-			_SizeType resindex = 0;
-			for(_SizeType x = 1; x < size; ++x)
-			{
-				if(p[resindex] > p[x])
-					resindex = x;
-			}
-			return p[resindex];
-		}
 		template<typename _DataType> _DataType maximize3(_DataType v1, _DataType v2, _DataType v3)
 		{
 			return maximize(maximize(v1, v2), v3);
@@ -77,6 +57,32 @@ namespace GAIA
 						return v3;
 				}
 			}
+		}
+		template<typename _DataType, typename _ResultType> GAIA::GVOID maximizes(_DataType pBegin, _DataType pEnd, _ResultType& res)
+		{
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
+			while(pBegin != pEnd)
+			{
+				if(*pBegin > res)
+					res = *pBegin;
+				++pBegin;
+			}
+			if(*pBegin > res)
+				res = *pBegin;
+		}
+		template<typename _DataType, typename _ResultType> GAIA::GVOID minimizes(_DataType pBegin, _DataType pEnd, _ResultType& res)
+		{
+			GAIA_AST(!!pBegin);
+			GAIA_AST(!!pEnd);
+			while(pBegin != pEnd)
+			{
+				if(*pBegin < res)
+					res = *pBegin;
+				++pBegin;
+			}
+			if(*pBegin < res)
+				res = *pBegin;
 		}
 		template<typename _DataType1, typename _DataType2> GAIA::N32 cmp(const _DataType1& v1, const _DataType2& v2)
 		{
