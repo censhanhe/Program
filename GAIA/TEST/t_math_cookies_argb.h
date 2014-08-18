@@ -30,12 +30,12 @@ namespace GAIATEST
 			GTLINE2("ARGB construct error!");
 			++nRet;
 		}
-		if(!GAIA::MATH::xequal(argb.lengthsq(), 1 * 1 + 2 * 2 + 3 * 3))
+		if(!GAIA::MATH::xequal(argb.lengthsq(), 2 * 2 + 3 * 3 + 4 * 4))
 		{
 			GTLINE2("ARGB lengthsq error!");
 			++nRet;
 		}
-		if(!GAIA::MATH::xequal(argb.length(), GAIA::MATH::xsqrt(1 * 1 + 2 * 2 + 3 * 3)))
+		if(!GAIA::MATH::xequal(argb.length(), GAIA::MATH::xsqrt(2 * 2 + 3 * 3 + 4 * 4)))
 		{
 			GTLINE2("ARGB length error!");
 			++nRet;
@@ -45,12 +45,31 @@ namespace GAIATEST
 			GTLINE2("ARGB avg_argb error!");
 			++nRet;
 		}
-		if(argb.avg_rgb() != (__ARGBType::_datatype)2)
+		if(argb.avg_rgb() != (__ARGBType::_datatype)3)
 		{
 			GTLINE2("ARGB avg_rgb error!");
 			++nRet;
 		}
-
+		if(argb.max_argb() != (__ARGBType::_datatype)4)
+		{
+			GTLINE2("ARGB max_argb error!");
+			++nRet;
+		}
+		if(argb.min_argb() != (__ARGBType::_datatype)1)
+		{
+			GTLINE2("ARGB min_argb error!");
+			++nRet;
+		}
+		if(argb.max_rgb() != (__ARGBType::_datatype)4)
+		{
+			GTLINE2("ARGB max_rgb error!");
+			++nRet;
+		}
+		if(argb.min_rgb() != (__ARGBType::_datatype)2)
+		{
+			GTLINE2("ARGB min_rgb error!");
+			++nRet;
+		}
 		argbn16 = __ARGBN16Type(1, 2, 3, 4);
 		argb = (__ARGBN16Type::_datatype*)&argbn16;
 		if(!(argb == argbn16))
@@ -89,7 +108,7 @@ namespace GAIATEST
 			GTLINE2("ARGB operator == error!");
 			++nRet;
 		}
-		if(argb != argb1)
+		if(!(argb != argb1))
 		{
 			GTLINE2("ARGB operator != error!");
 			++nRet;
@@ -99,7 +118,7 @@ namespace GAIATEST
 			GTLINE2("ARGB operator >= error!");
 			++nRet;
 		}
-		if(argb <= argb1)
+		if(!(argb <= argb1))
 		{
 			GTLINE2("ARGB operator <= error!");
 			++nRet;
@@ -109,9 +128,30 @@ namespace GAIATEST
 			GTLINE2("ARGB operator > error!");
 			++nRet;
 		}
-		if(argb < argb1)
+		if(!(argb < argb1))
 		{
 			GTLINE2("ARGB operator < error!");
+			++nRet;
+		}
+		argb = __ARGBType(1, 2, 3, 4);
+		if(argb[0] != (__ARGBType::_datatype)1)
+		{
+			GTLINE2("ARGB operator [] error!");
+			++nRet;
+		}
+		if(argb[1] != (__ARGBType::_datatype)2)
+		{
+			GTLINE2("ARGB operator [] error!");
+			++nRet;
+		}
+		if(argb[2] != (__ARGBType::_datatype)3)
+		{
+			GTLINE2("ARGB operator [] error!");
+			++nRet;
+		}
+		if(argb[3] != (__ARGBType::_datatype)4)
+		{
+			GTLINE2("ARGB operator [] error!");
 			++nRet;
 		}
 
