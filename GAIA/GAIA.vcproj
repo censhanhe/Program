@@ -2369,7 +2369,19 @@
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_math_cookies_mtx.h"
+							RelativePath=".\TEST\t_math_cookies_mtx22.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_mtx33.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_mtx34.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_mtx44.h"
 							>
 						</File>
 						<File
@@ -2381,7 +2393,15 @@
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_math_cookies_vec.h"
+							RelativePath=".\TEST\t_math_cookies_vec2.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_vec3.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_math_cookies_vec4.h"
 							>
 						</File>
 					</Filter>

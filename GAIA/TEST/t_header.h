@@ -9,8 +9,13 @@
 
 #include "t_math_cookies_argb.h"
 #include "t_math_cookies_nrgb.h"
-#include "t_math_cookies_vec.h"
-#include "t_math_cookies_mtx.h"
+#include "t_math_cookies_vec2.h"
+#include "t_math_cookies_vec3.h"
+#include "t_math_cookies_vec4.h"
+#include "t_math_cookies_mtx22.h"
+#include "t_math_cookies_mtx33.h"
+#include "t_math_cookies_mtx44.h"
+#include "t_math_cookies_mtx34.h"
 #include "t_math_cookies_qua.h"
 #include "t_math_cookies_aabb.h"
 #include "t_math_cookies_aabr.h"
@@ -69,8 +74,13 @@ namespace GAIATEST
 			GTLINE1("MathCookies: NRGB test begin!"); nRet += t_math_cookies_nrgb(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: AABB test begin!"); nRet += t_math_cookies_aabb(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: AABR test begin!"); nRet += t_math_cookies_aabr(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("MathCookies: VEC test begin!"); nRet += t_math_cookies_vec(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("MathCookies: MTX test begin!"); nRet += t_math_cookies_mtx(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: VEC2 test begin!"); nRet += t_math_cookies_vec2(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: VEC3 test begin!"); nRet += t_math_cookies_vec3(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: VEC4 test begin!"); nRet += t_math_cookies_vec4(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX22 test begin!"); nRet += t_math_cookies_mtx22(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX33 test begin!"); nRet += t_math_cookies_mtx33(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX44 test begin!"); nRet += t_math_cookies_mtx44(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX34 test begin!"); nRet += t_math_cookies_mtx34(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: QUA test begin!"); nRet += t_math_cookies_qua(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("Algorithm: Set test begin!"); nRet += t_algorithm_set(file, prt); GTLINE1("End"); GTLINE("\t");
