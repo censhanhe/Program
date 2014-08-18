@@ -237,6 +237,21 @@ namespace GAIATEST
 			GTLINE2("List operator += self failed!");
 			++nRet;
 		}
+		l.clear();
+		for(GAIA::N32 x = 0; x < ELEMENT_SIZE; ++x)
+			l.push_back(x);
+		l.inverse();
+		cit = l.const_front_it();
+		for(GAIA::N32 x = 0; x < ELEMENT_SIZE; ++x)
+		{
+			if(*cit != ELEMENT_SIZE - x - 1)
+			{
+				GTLINE2("List inverse operation failed!");
+				++nRet;
+				break;
+			}
+			++cit;
+		}
 		return nRet;
 	}
 };
