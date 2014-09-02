@@ -372,6 +372,7 @@ namespace GAIA
 				return GAIA::False;
 			return GAIA::True;
 		#else
+			return GAIA::False;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator == (const GAIA::UI::Canvas& src) const

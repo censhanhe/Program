@@ -71,34 +71,22 @@ namespace GAIA
 		public:
 			_DataType x, y, z;
 		};
-		template<typename _DataType1, typename _DataType2> GAIA::MATH::VEC3<_DataType1> 
-			operator + (_DataType2 t, const GAIA::MATH::VEC3<_DataType1>& v)
-		{
-			GAIA::MATH::VEC3<_DataType1> ret = t;
-			ret += v;
-			return ret;
-		}
-		template<typename _DataType1, typename _DataType2> GAIA::MATH::VEC3<_DataType1> 
-			operator - (_DataType2 t, const GAIA::MATH::VEC3<_DataType1>& v)
-		{
-			GAIA::MATH::VEC3<_DataType1> ret = t;
-			ret -= v;
-			return ret;
-		}
-		template<typename _DataType1, typename _DataType2> GAIA::MATH::VEC3<_DataType1> 
-			operator * (_DataType2 t, const GAIA::MATH::VEC3<_DataType1>& v)
-		{
-			GAIA::MATH::VEC3<_DataType1> ret = t;
-			ret *= v;
-			return ret;
-		}
-		template<typename _DataType1, typename _DataType2> GAIA::MATH::VEC3<_DataType1> 
-			operator / (_DataType2 t, const GAIA::MATH::VEC3<_DataType1>& v)
-		{
-			GAIA::MATH::VEC3<_DataType1> ret = t;
-			ret /= v;
-			return ret;
-		}
+#define GAIA_TEMP_MACRO(objtype, type) \
+		template<typename _ParamDataType> objtype<_ParamDataType> operator + (type t, const objtype<_ParamDataType>& v){objtype<_ParamDataType> ret = t; ret += v; return ret;}\
+		template<typename _ParamDataType> objtype<_ParamDataType> operator - (type t, const objtype<_ParamDataType>& v){objtype<_ParamDataType> ret = t; ret -= v; return ret;}\
+		template<typename _ParamDataType> objtype<_ParamDataType> operator * (type t, const objtype<_ParamDataType>& v){objtype<_ParamDataType> ret = t; ret *= v; return ret;}\
+		template<typename _ParamDataType> objtype<_ParamDataType> operator / (type t, const objtype<_ParamDataType>& v){objtype<_ParamDataType> ret = t; ret /= v; return ret;}
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::UM)
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::NM)
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::U8)
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::N8)
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::U16)
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::N16)
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::U32)
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::N32)
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::F32)
+		GAIA_TEMP_MACRO(GAIA::MATH::VEC3, GAIA::F64)
+#undef GAIA_TEMP_MACRO
 	};
 };
 

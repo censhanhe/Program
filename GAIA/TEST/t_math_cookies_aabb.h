@@ -221,7 +221,7 @@ namespace GAIATEST
 			GTLINE2("AABB operator > error!");
 			++nRet;
 		}
-		aabb16 = (__AABBType::_datatype*)&aabb;
+		aabb16 = (__AABBType::_datatype*)&aabb.pmin;
 		if(!(aabb16 == aabb))
 		{
 			GTLINE2("AABB operator == error!");

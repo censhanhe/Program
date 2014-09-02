@@ -206,7 +206,7 @@ namespace GAIATEST
 			GTLINE2("AABR operator > error!");
 			++nRet;
 		}
-		aabr16 = (__AABRType::_datatype*)&aabr;
+		aabr16 = (__AABRType::_datatype*)&aabr.pmin;
 		if(!(aabr16 == aabr))
 		{
 			GTLINE2("AABR operator == error!");

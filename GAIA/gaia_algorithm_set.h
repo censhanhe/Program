@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALGORITHM
 	{
-		template<typename _DataType> GAIA::SIZE and_count(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
+		template<typename _DataType> GAIA::SIZE set_and_count(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
 		{
 			GAIA_AST(pDstBegin != GNULL);
 			GAIA_AST(pDstEnd != GNULL);
@@ -27,7 +27,7 @@ namespace GAIA
 			}
 			return ret;
 		}
-		template<typename _DataType, typename _SizeType> GAIA::SIZE or_count(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
+		template<typename _DataType, typename _SizeType> GAIA::SIZE set_or_count(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
 		{
 			GAIA_AST(pDstBegin != GNULL);
 			GAIA_AST(pDstEnd != GNULL);
@@ -55,7 +55,7 @@ namespace GAIA
 			}
 			return ret;
 		}
-		template<typename _DataType> GAIA::SIZE sub_count(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
+		template<typename _DataType> GAIA::SIZE set_sub_count(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
 		{
 			GAIA_AST(pDstBegin != GNULL);
 			GAIA_AST(pDstEnd != GNULL);
@@ -80,7 +80,7 @@ namespace GAIA
 			}
 			return ret;
 		}
-		template<typename _DataType> GAIA::SIZE and(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
+		template<typename _DataType> GAIA::SIZE set_and(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
 		{
 			GAIA_AST(pDstBegin != GNULL);
 			GAIA_AST(pDstEnd != GNULL);
@@ -91,7 +91,7 @@ namespace GAIA
 			_DataType pNew = GAIA::ALGORITHM::swapleft(pDstBegin, pDstEnd, pSrcBegin, pSrcEnd);
 			return (GAIA::SIZE)(pNew - pDstBegin);
 		}
-		template<typename _DataType, typename _SizeType> GAIA::SIZE or(_DataType pDstBegin, _DataType pDstEnd, _SizeType dst_max_size, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed! If the dst_max_size <= 0, it means the buffer is must enough.
+		template<typename _DataType, typename _SizeType> GAIA::SIZE set_or(_DataType pDstBegin, _DataType pDstEnd, _SizeType dst_max_size, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed! If the dst_max_size <= 0, it means the buffer is must enough.
 		{
 			GAIA_AST(pDstBegin != GNULL);
 			GAIA_AST(pDstEnd != GNULL);
@@ -119,7 +119,7 @@ namespace GAIA
 			}
 			return (GAIA::SIZE)(pWrite - pDstBegin);
 		}
-		template<typename _DataType> GAIA::SIZE sub(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
+		template<typename _DataType> GAIA::SIZE set_sub(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
 		{
 			GAIA_AST(pDstBegin != GNULL);
 			GAIA_AST(pDstEnd != GNULL);

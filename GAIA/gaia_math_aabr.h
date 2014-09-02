@@ -92,7 +92,7 @@ namespace GAIA
 			template<typename _ParamDataType> _DataType distancesq(const GAIA::MATH::VEC2<_ParamDataType>& v) const
 			{
 				_vectype nearestpoint = this->nearest_point(v);
-				return (v - nearest_point).lengthsq();
+				return (v - nearestpoint).lengthsq();
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_point(const GAIA::MATH::VEC2<_ParamDataType>& v) const
 			{
@@ -139,8 +139,8 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::AABR<_ParamDataType>& t) const{return !(this->operator <= (t));}
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::AABR<_ParamDataType>& t) const{return !(this->operator >= (t));}
-			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return ((_DataType*)this)[index];}
-			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return ((_DataType*)this)[index];}
+			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return ((_DataType*)&pmin)[index];}
+			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return ((_DataType*)&pmin)[index];}
 		private:
 			GINL GAIA::GVOID selfupdate()
 			{
