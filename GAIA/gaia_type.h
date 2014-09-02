@@ -3,6 +3,27 @@
 
 namespace GAIA
 {
+#ifdef GRCAST
+#	undef GRCAST
+#endif
+
+#ifdef GSCAST
+#	undef GSCAST
+#endif
+
+#ifdef GDCAST
+#	undef GDCAST
+#endif
+
+#ifdef GCCAST
+#	undef GCCAST
+#endif
+
+#define GRCAST(type) reinterpret_cast<type>
+#define GSCAST(type) static_cast<type>
+#define GDCAST(type) dynamic_cast<type>
+#define GCCAST(type) const_cast<type>
+
 	/* Integer type declaration. */
 	typedef long NM;
 	typedef unsigned long UM;
