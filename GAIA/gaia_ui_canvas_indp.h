@@ -52,7 +52,11 @@ namespace GAIA
 				return GAIA::False;
 			GAIA::ALGORITHM::strcpy(szWindowClass, CLASS_PREFIX);
 			GAIA::ALGORITHM::strcat(szWindowClass, desc.pszCaptionText);
-			WNDCLASSEX wcex;
+#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+			WNDCLASSEXA wcex;
+#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+			WNDCLASSEXW wcex;
+#endif
 			wcex.cbSize = sizeof(WNDCLASSEX);
 			wcex.style			= CS_HREDRAW | CS_VREDRAW;
 			wcex.lpfnWndProc	= WindowProc;
@@ -65,7 +69,11 @@ namespace GAIA
 			wcex.lpszMenuName	= GNULL;
 			wcex.lpszClassName	= szWindowClass;
 			wcex.hIconSm		= GNULL;
-			if(RegisterClassEx(&wcex) == 0)
+#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+			if(RegisterClassExA(&wcex) == 0)
+#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+			if(RegisterClassExW(&wcex) == 0)
+#endif
 				return GAIA::False;
 
 			DWORD dwStyle;
@@ -85,7 +93,8 @@ namespace GAIA
 				dwStyle |= WS_MINIMIZEBOX;
 			if(desc.style.bMaximizeBox)
 				dwStyle |= WS_MAXIMIZEBOX;
-			m_hWnd = ::CreateWindow(szWindowClass, 
+#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+			m_hWnd = ::CreateWindowA(szWindowClass, 
 				desc.pszCaptionText, 
 				dwStyle, 
 				CW_USEDEFAULT, 
@@ -94,9 +103,24 @@ namespace GAIA
 				CW_USEDEFAULT, 
 				desc.pParent != GNULL ? desc.pParent->m_hWnd : GNULL, 
 				GNULL, (HINSTANCE)GetModuleHandle(GNULL), GNULL);
+#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+			m_hWnd = ::CreateWindowW(szWindowClass, 
+				desc.pszCaptionText, 
+				dwStyle, 
+				CW_USEDEFAULT, 
+				CW_USEDEFAULT, 
+				CW_USEDEFAULT, 
+				CW_USEDEFAULT, 
+				desc.pParent != GNULL ? desc.pParent->m_hWnd : GNULL, 
+				GNULL, (HINSTANCE)GetModuleHandle(GNULL), GNULL);
+#endif
 			if(m_hWnd == GNULL)
 			{
-				::UnregisterClass(szWindowClass, (HINSTANCE)GetModuleHandle(GNULL));
+#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				::UnregisterClassA(szWindowClass, (HINSTANCE)GetModuleHandle(GNULL));
+#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				::UnregisterClassW(szWindowClass, (HINSTANCE)GetModuleHandle(GNULL));
+#endif
 				return GAIA::False;
 			}
 			if(!this->RegistToGlobalList())
@@ -132,7 +156,12 @@ namespace GAIA
 			::DestroyWindow(m_hWnd);
 			m_hWnd = GNULL;
 
-			::UnregisterClass(m_pszClassName, (HINSTANCE)GetModuleHandle(GNULL));
+#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+			::UnregisterClassA(m_pszClassName, (HINSTANCE)GetModuleHandle(GNULL));
+#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+			::UnregisterClassW(m_pszClassName, (HINSTANCE)GetModuleHandle(GNULL));
+#endif
+
 			GAIA_MFREE(m_pszClassName);
 			m_pszClassName = GNULL;
 
@@ -353,7 +382,11 @@ namespace GAIA
 			if(pszCaptionText == GNULL)
 				pszCaptionText = _T("");
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(!::SetWindowText(m_hWnd, pszCaptionText))
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(!::SetWindowTextA(m_hWnd, pszCaptionText))
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				if(!::SetWindowTextW(m_hWnd, pszCaptionText))
+		#	endif
 				return GAIA::False;
 			return GAIA::True;
 		#else
@@ -367,7 +400,11 @@ namespace GAIA
 			if(pszResult == GNULL)
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			sResultCount = ::GetWindowText(m_hWnd, pszResult, sResultMaxCharCount);
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				sResultCount = ::GetWindowTextA(m_hWnd, pszResult, sResultMaxCharCount);
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				sResultCount = ::GetWindowTextW(m_hWnd, pszResult, sResultMaxCharCount);
+		#	endif
 			if(sResultCount == 0)
 				return GAIA::False;
 			return GAIA::True;
