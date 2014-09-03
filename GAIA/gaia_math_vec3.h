@@ -52,18 +52,18 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& v){x = y = z = (_DataType)v; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){x = (_DataType)p[0]; y = (_DataType)p[1]; z = (_DataType)p[2]; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
-			template<typename _ParamDataType> GAIA::BL operator == (const VEC3<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp3((const _DataType*)this, (const typename VEC3<_ParamDataType>::_datatype*)&v) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const VEC3<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp3((const _DataType*)*this, (const _ParamDataType*)&v) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const VEC3<_ParamDataType>& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const VEC3<_ParamDataType>& v) const{return !this->operator < (v);}
 			template<typename _ParamDataType> GAIA::BL operator <= (const VEC3<_ParamDataType>& v) const{return !this->operator > (v);}
-			template<typename _ParamDataType> GAIA::BL operator > (const VEC3<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp3((const _DataType*)this, (const typename VEC3<_ParamDataType>::_datatype*)&v) > 0;}
-			template<typename _ParamDataType> GAIA::BL operator < (const VEC3<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp3((const _DataType*)this, (const typename VEC3<_ParamDataType>::_datatype*)&v) < 0;}
-			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp3k((const _DataType*)this, v) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (const VEC3<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp3((const _DataType*)*this, (const _ParamDataType*)&v) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (const VEC3<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp3((const _DataType*)*this, (const _ParamDataType*)&v) < 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp3k((const _DataType*)*this, v) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& v) const{return !this->operator < (v);}
 			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& v) const{return !this->operator > (v);}
-			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp3k((const _DataType*)this, v) > 0;}
-			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp3k((const _DataType*)this, v) < 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp3k((const _DataType*)*this, v) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp3k((const _DataType*)*this, v) < 0;}
 			template<typename _ParamDataType> const _DataType& operator [] (const _DataType& index) const{GAIA_AST(index < 3); return (&x)[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _DataType& index){GAIA_AST(index < 3); return (&x)[index];}
 			GINL operator _DataType*(){return &x;}
