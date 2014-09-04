@@ -36,28 +36,28 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType operator - (const VEC4<_ParamDataType>& v) const{__MyType ret; ret.x = x - v.x; ret.y = y - v.y; ret.z = z - v.z; ret.w = w - v.w; return ret;}
 			template<typename _ParamDataType> __MyType operator * (const VEC4<_ParamDataType>& v) const{__MyType ret; ret.x = x * v.x; ret.y = y * v.y; ret.z = z * v.z; ret.w = w * v.w; return ret;}
 			template<typename _ParamDataType> __MyType operator / (const VEC4<_ParamDataType>& v) const{__MyType ret; ret.x = x / v.x; ret.y = y / v.y; ret.z = z / v.z; ret.w = w / v.w; return ret;}
-			template<typename _ParamDataType> __MyType operator + (const _ParamDataType& v) const{__MyType ret; ret.x = x + v; ret.y = y + v; ret.z = z + v; return ret;}
-			template<typename _ParamDataType> __MyType operator - (const _ParamDataType& v) const{__MyType ret; ret.x = x - v; ret.y = y - v; ret.z = z - v; return ret;}
-			template<typename _ParamDataType> __MyType operator * (const _ParamDataType& v) const{__MyType ret; ret.x = x * v; ret.y = y * v; ret.z = z * v; return ret;}
-			template<typename _ParamDataType> __MyType operator / (const _ParamDataType& v) const{__MyType ret; ret.x = x / v; ret.y = y / v; ret.z = z / v; return ret;}
+			template<typename _ParamDataType> __MyType operator + (const _ParamDataType& v) const{__MyType ret; ret.x = x + v; ret.y = y + v; ret.z = z + v; ret.w = w + v; return ret;}
+			template<typename _ParamDataType> __MyType operator - (const _ParamDataType& v) const{__MyType ret; ret.x = x - v; ret.y = y - v; ret.z = z - v; ret.w = w - v; return ret;}
+			template<typename _ParamDataType> __MyType operator * (const _ParamDataType& v) const{__MyType ret; ret.x = x * v; ret.y = y * v; ret.z = z * v; ret.w = w * v; return ret;}
+			template<typename _ParamDataType> __MyType operator / (const _ParamDataType& v) const{__MyType ret; ret.x = x / v; ret.y = y / v; ret.z = z / v; ret.w = w / v; return ret;}
 			template<typename _ParamDataType> __MyType& operator += (const VEC4<_ParamDataType>& v){x += v.x; y += v.y; z += v.z; w += v.w; return *this;}
 			template<typename _ParamDataType> __MyType& operator -= (const VEC4<_ParamDataType>& v){x -= v.x; y -= v.y; z -= v.z; w -= v.w; return *this;}
 			template<typename _ParamDataType> __MyType& operator *= (const VEC4<_ParamDataType>& v){x *= v.x; y *= v.y; z *= v.z; w *= v.w; return *this;}
 			template<typename _ParamDataType> __MyType& operator /= (const VEC4<_ParamDataType>& v){x /= v.x; y /= v.y; z /= v.z; w /= v.w; return *this;}
-			template<typename _ParamDataType> __MyType& operator += (const _ParamDataType& v){x += v; y += v; z += v; return *this;}
-			template<typename _ParamDataType> __MyType& operator -= (const _ParamDataType& v){x -= v; y -= v; z -= v; return *this;}
-			template<typename _ParamDataType> __MyType& operator *= (const _ParamDataType& v){x *= v; y *= v; z *= v; return *this;}
-			template<typename _ParamDataType> __MyType& operator /= (const _ParamDataType& v){x /= v; y /= v; z /= v; return *this;}
+			template<typename _ParamDataType> __MyType& operator += (const _ParamDataType& v){x += v; y += v; z += v; w += v; return *this;}
+			template<typename _ParamDataType> __MyType& operator -= (const _ParamDataType& v){x -= v; y -= v; z -= v; w -= v; return *this;}
+			template<typename _ParamDataType> __MyType& operator *= (const _ParamDataType& v){x *= v; y *= v; z *= v; w *= v; return *this;}
+			template<typename _ParamDataType> __MyType& operator /= (const _ParamDataType& v){x /= v; y /= v; z /= v; w /= v; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const VEC4<_ParamDataType>& v){x = (_DataType)v.x; y = (_DataType)v.y; z = (_DataType)v.z; w = (_DataType)v.w; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& v){x = y = z = w = (_DataType)v; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){x = (_DataType)p[0]; y = (_DataType)p[1]; z = (_DataType)p[2]; w = (_DataType)p[3]; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
-			template<typename _ParamDataType> GAIA::BL operator == (const VEC4<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp4((const _DataType*)*this, (const _ParamDataType*)&v) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const VEC4<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp4((const _DataType*)*this, (const _ParamDataType*)v) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const VEC4<_ParamDataType>& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const VEC4<_ParamDataType>& v) const{return !this->operator < (v);}
 			template<typename _ParamDataType> GAIA::BL operator <= (const VEC4<_ParamDataType>& v) const{return !this->operator > (v);}
-			template<typename _ParamDataType> GAIA::BL operator > (const VEC4<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp4((const _DataType*)*this, (const _ParamDataType*)&v) > 0;}
-			template<typename _ParamDataType> GAIA::BL operator < (const VEC4<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp4((const _DataType*)*this, (const _ParamDataType*)&v) < 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (const VEC4<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp4((const _DataType*)*this, (const _ParamDataType*)v) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (const VEC4<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp4((const _DataType*)*this, (const _ParamDataType*)v) < 0;}
 			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp4k((const _DataType*)*this, v) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& v) const{return !this->operator < (v);}
