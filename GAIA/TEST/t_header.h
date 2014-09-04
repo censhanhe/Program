@@ -15,7 +15,7 @@
 #include "t_math_cookies_mtx22.h"
 #include "t_math_cookies_mtx33.h"
 #include "t_math_cookies_mtx44.h"
-#include "t_math_cookies_mtx34.h"
+#include "t_math_cookies_mtx43.h"
 #include "t_math_cookies_qua.h"
 #include "t_math_cookies_aabb.h"
 #include "t_math_cookies_aabr.h"
@@ -80,7 +80,7 @@ namespace GAIATEST
 			GTLINE1("MathCookies: MTX22 test begin!"); nRet += t_math_cookies_mtx22(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: MTX33 test begin!"); nRet += t_math_cookies_mtx33(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: MTX44 test begin!"); nRet += t_math_cookies_mtx44(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("MathCookies: MTX34 test begin!"); nRet += t_math_cookies_mtx34(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX43 test begin!"); nRet += t_math_cookies_mtx43(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: QUA test begin!"); nRet += t_math_cookies_qua(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("Algorithm: Set test begin!"); nRet += t_algorithm_set(file, prt); GTLINE1("End"); GTLINE("\t");

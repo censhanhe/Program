@@ -126,7 +126,7 @@
 #include	"gaia_math_qua.h"
 #include	"gaia_math_mtx22.h"
 #include	"gaia_math_mtx33.h"
-#include	"gaia_math_mtx34.h"
+#include	"gaia_math_mtx43.h"
 #include	"gaia_math_mtx44.h"
 #include	"gaia_math_plane.h"
 #include	"gaia_math_aabr.h"
