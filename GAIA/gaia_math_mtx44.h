@@ -34,6 +34,25 @@ namespace GAIA
 					return GAIA::True;
 				return GAIA::False;
 			}
+			GINL GAIA::BL isfinite() const
+			{
+				return GAIA::MATH::xfinite(m[0][0]) && 
+					GAIA::MATH::xfinite(m[0][1]) && 
+					GAIA::MATH::xfinite(m[0][2]) && 
+					GAIA::MATH::xfinite(m[0][3]) && 
+					GAIA::MATH::xfinite(m[1][0]) && 
+					GAIA::MATH::xfinite(m[1][1]) && 
+					GAIA::MATH::xfinite(m[1][2]) && 
+					GAIA::MATH::xfinite(m[1][3]) && 
+					GAIA::MATH::xfinite(m[2][0]) && 
+					GAIA::MATH::xfinite(m[2][1]) && 
+					GAIA::MATH::xfinite(m[2][2]) && 
+					GAIA::MATH::xfinite(m[2][3]) && 
+					GAIA::MATH::xfinite(m[3][0]) && 
+					GAIA::MATH::xfinite(m[3][1]) && 
+					GAIA::MATH::xfinite(m[3][2]) && 
+					GAIA::MATH::xfinite(m[3][3]);
+			}
 
 			GINL GAIA::GVOID transpose()
 			{

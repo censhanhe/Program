@@ -24,6 +24,7 @@ namespace GAIA
 			GINL GAIA::GVOID identity();
 			GINL GAIA::BL isidentity() const{}
 			GINL GAIA::BL iszero() const{return x == (_DataType)0 && y == (_DataType)0 && z == (_DataType)0 && w == (_DataType)0;}
+			GINL GAIA::BL isfinite() const{return GAIA::MATH::xfinite(x) && GAIA::MATH::xfinite(y) && GAIA::MATH::xfinite(z) && GAIA::MATH::xfinite(w);}
 			GINL GAIA::GVOID inverse();
 
 			template<typename _ParamDataType> _DataType dot(const GAIA::MATH::QUA<_ParamDataType>& v) const{return (x * v.x + y * v.y + z * v.z) * w * v.w;}

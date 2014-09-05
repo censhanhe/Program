@@ -54,6 +54,8 @@ namespace GAIA
 			GINL _DataType width() const{return pmax.x - pmin.x;}
 			GINL _DataType height() const{return pmax.y - pmin.y;}
 			GINL _DataType depth() const{return pmax.z - pmin.z;}
+			GINL GAIA::BL iszero() const{return pmin.iszero() && pmax.iszero();}
+			GINL GAIA::BL isfinite() const{return pmin.isfinite() && pmax.isfinite();}
 			template<typename _ParamDataType> GAIA::GVOID expand(const GAIA::MATH::AABB<_ParamDataType>& t){pmin.minimize(t.pmin); pmax.maximize(t.pmax);}
 			template<typename _ParamDataType> GAIA::GVOID expand(const GAIA::MATH::VEC3<_ParamDataType>& t){pmin.minimize(t); pmax.maximize(t);}
 			template<typename _ParamDataType> __MyType operator + (const GAIA::MATH::VEC3<_ParamDataType>& v){__MyType ret; ret.pmin = pmin + v; ret.pmax = pmax + v; return ret;}

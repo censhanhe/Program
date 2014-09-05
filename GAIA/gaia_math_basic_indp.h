@@ -2,6 +2,7 @@
 #define		__GAIA_MATH_BASIC_INDP_H__
 
 #include <math.h>
+#include <float.h>
 
 namespace GAIA
 {
@@ -20,6 +21,9 @@ namespace GAIA
 		template<typename _DataType> _DataType xsqrt(const _DataType& v){return GSCAST(_DataType)(sqrt(GSCAST(GAIA::REAL)(v)));}
 		template<typename _DataType> _DataType xlog(const _DataType& v){return GSCAST(_DataType)(log(GSCAST(GAIA::REAL)(v)));}
 		template<typename _DataType> _DataType xlog10(const _DataType& v){return GSCAST(_DataType)(log10(GSCAST(GAIA::REAL)(v)));}
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL xfinite(const GAIA::F32& v){return _finite(v) != 0;}
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL xfinite(const GAIA::F64& v){return _finite(v) != 0;}
+		template<typename _DataType> GAIA::BL xfinite(const _DataType& v){return GAIA::True;}
 	};
 };
 
