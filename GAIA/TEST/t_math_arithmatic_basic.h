@@ -237,6 +237,16 @@ namespace GAIATEST
 			GTLINE2("xlog10 zero error!");
 			++nRet;
 		}
+		if(!GAIA::MATH::xfinite(1.0))
+		{
+			GTLINE2("xfinite 1.0 error!");
+			++nRet;
+		}
+		if(!GAIA::MATH::xfinite(1))
+		{
+			GTLINE2("xfinite 1 error!");
+			++nRet;
+		}
 		return nRet;
 	}
 };

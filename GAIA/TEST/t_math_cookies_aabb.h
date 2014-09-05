@@ -282,6 +282,28 @@ namespace GAIATEST
 			GTLINE2("AABB operator [] error!");
 			++nRet;
 		}
+		aabb = 0.0F;
+		if(aabb != 0.0F)
+		{
+			GTLINE2("AABB operator = value error!");
+			++nRet;
+		}
+		if(!aabb.iszero())
+		{
+			GTLINE2("AABB operator = value error!");
+			++nRet;
+		}
+		if(!aabb.isfinite())
+		{
+			GTLINE2("AABB isfinite error!");
+			++nRet;
+		}
+		aabb.pmax /= 0.0F;
+		if(aabb.isfinite())
+		{
+			GTLINE2("AABB isfinite error!");
+			++nRet;
+		}
 
 		return nRet;
 	}

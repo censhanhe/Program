@@ -154,6 +154,28 @@ namespace GAIATEST
 			GTLINE2("ARGB operator [] error!");
 			++nRet;
 		}
+		argb = 0.0F;
+		if(argb != 0.0F)
+		{
+			GTLINE2("ARGB operator = value error!");
+			++nRet;
+		}
+		if(!argb.iszero())
+		{
+			GTLINE2("ARGB operator = value error!");
+			++nRet;
+		}
+		if(!argb.isfinite())
+		{
+			GTLINE2("ARGB isfinite error!");
+			++nRet;
+		}
+		argb /= 0.0F;
+		if(argb.isfinite())
+		{
+			GTLINE2("ARGB isfinite error!");
+			++nRet;
+		}
 
 		return nRet;
 	}

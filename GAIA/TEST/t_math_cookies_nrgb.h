@@ -133,6 +133,28 @@ namespace GAIATEST
 			GTLINE2("NRGB operator [] error!");
 			++nRet;
 		}
+		nrgb = 0.0F;
+		if(nrgb != 0.0F)
+		{
+			GTLINE2("NRGB operator = value error!");
+			++nRet;
+		}
+		if(!nrgb.iszero())
+		{
+			GTLINE2("NRGB operator = value error!");
+			++nRet;
+		}
+		if(!nrgb.isfinite())
+		{
+			GTLINE2("NRGB isfinite error!");
+			++nRet;
+		}
+		nrgb /= 0.0F;
+		if(nrgb.isfinite())
+		{
+			GTLINE2("NRGB isfinite error!");
+			++nRet;
+		}
 
 		return nRet;
 	}

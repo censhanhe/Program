@@ -33,6 +33,7 @@ namespace GAIA
 			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq());}
 			GINL _DataType lengthsq() const{return r * r + g * g + b * b;}
 
+			GINL GAIA::BL iszero() const{return r == (_DataType)0 && g == (_DataType)0 && b == (_DataType)0;}
 			GINL GAIA::BL isfinite() const{return GAIA::MATH::xfinite(r) && GAIA::MATH::xfinite(g) && GAIA::MATH::xfinite(b);}
 
 			GINL _DataType avg_rgb() const{return GAIA::MATH::xavg3(r, g, b);}
@@ -50,6 +51,24 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){r = p[0]; g = p[1]; b = p[2]; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){r = g = b = t; return *this;}
+
+			template<typename _ParamDataType> __MyType operator + (const GAIA::MATH::ARGB<_ParamDataType>& src) const{__MyType ret = *this; ret += src; return ret;}
+			template<typename _ParamDataType> __MyType operator - (const GAIA::MATH::ARGB<_ParamDataType>& src) const{__MyType ret = *this; ret -= src; return ret;}
+			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::ARGB<_ParamDataType>& src) const{__MyType ret = *this; ret *= src; return ret;}
+			template<typename _ParamDataType> __MyType operator / (const GAIA::MATH::ARGB<_ParamDataType>& src) const{__MyType ret = *this; ret /= src; return ret;}
+			template<typename _ParamDataType> __MyType& operator += (const GAIA::MATH::ARGB<_ParamDataType>& src){r += src.r; g += src.g; b += src.b; return *this;}
+			template<typename _ParamDataType> __MyType& operator -= (const GAIA::MATH::ARGB<_ParamDataType>& src){r -= src.r; g -= src.g; b -= src.b; return *this;}
+			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::ARGB<_ParamDataType>& src){r *= src.r; g *= src.g; b *= src.b; return *this;}
+			template<typename _ParamDataType> __MyType& operator /= (const GAIA::MATH::ARGB<_ParamDataType>& src){r /= src.r; g /= src.g; b /= src.b; return *this;}
+
+			template<typename _ParamDataType> __MyType operator + (const _ParamDataType& src) const{__MyType ret = *this; ret.r += src; ret.g += src; ret.b += src; return ret;}
+			template<typename _ParamDataType> __MyType operator - (const _ParamDataType& src) const{__MyType ret = *this; ret.r -= src; ret.g -= src; ret.b -= src; return ret;}
+			template<typename _ParamDataType> __MyType operator * (const _ParamDataType& src) const{__MyType ret = *this; ret.r *= src; ret.g *= src; ret.b *= src; return ret;}
+			template<typename _ParamDataType> __MyType operator / (const _ParamDataType& src) const{__MyType ret = *this; ret.r /= src; ret.g /= src; ret.b /= src; return ret;}
+			template<typename _ParamDataType> __MyType& operator += (const _ParamDataType& src){r += src; g += src; b += src; return *this;}
+			template<typename _ParamDataType> __MyType& operator -= (const _ParamDataType& src){r -= src; g -= src; b -= src; return *this;}
+			template<typename _ParamDataType> __MyType& operator *= (const _ParamDataType& src){r *= src; g *= src; b *= src; return *this;}
+			template<typename _ParamDataType> __MyType& operator /= (const _ParamDataType& src){r /= src; g /= src; b /= src; return *this;}
 
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmp3((const _DataType*)*this, (const _ParamDataType*)src) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return !(this->operator == (src));}

@@ -396,6 +396,24 @@ namespace GAIATEST
 			++nRet;
 		}
 
+		rv = 0.0F;
+		if(rv != 0.0F)
+		{
+			GTLINE2("VEC2 operator = value error!");
+			++nRet;
+		}
+		if(!rv.isfinite())
+		{
+			GTLINE2("VEC2 isfinite error!");
+			++nRet;
+		}
+		rv /= 0.0F;
+		if(rv.isfinite())
+		{
+			GTLINE2("VEC2 isfinite error!");
+			++nRet;
+		}
+
 		return nRet;
 	}
 };

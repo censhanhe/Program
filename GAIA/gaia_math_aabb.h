@@ -149,20 +149,56 @@ namespace GAIA
 			{
 				if(pmin < t.pmin)
 					return GAIA::False;
+				else if(pmin > t.pmin)
+					return GAIA::True;
 				if(pmax < t.pmax)
 					return GAIA::False;
-				return GAIA::True;
+				else if(pmax >= t.pmax)
+					return GAIA::True;
+				return GAIA::False;
 			}
 			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::AABB<_ParamDataType>& t) const
 			{
 				if(pmin > t.pmin)
 					return GAIA::False;
+				else if(pmin < t.pmin)
+					return GAIA::True;
 				if(pmax > t.pmax)
 					return GAIA::False;
-				return GAIA::True;
+				else if(pmax <= t.pmax)
+					return GAIA::True;
+				return GAIA::False;
 			}
 			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::AABB<_ParamDataType>& t) const{return !(this->operator <= (t));}
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::AABB<_ParamDataType>& t) const{return !(this->operator >= (t));}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& t) const{return pmin == t && pmax == t;}
+			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& t) const{return !this->operator == (t);}
+			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& t) const
+			{
+				if(pmin < t)
+					return GAIA::False;
+				else if(pmin > t)
+					return GAIA::True;
+				if(pmax < t)
+					return GAIA::False;
+				else if(pmax >= t)
+					return GAIA::True;
+				return GAIA::False;
+			}
+			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& t) const
+			{
+				if(pmin > t)
+					return GAIA::False;
+				else if(pmin < t)
+					return GAIA::True;
+				if(pmax > t)
+					return GAIA::False;
+				else if(pmax <= t)
+					return GAIA::True;
+				return GAIA::False;
+			}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& t) const{return !this->operator <= (t);}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& t) const{return !this->operator >= (t);}
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return ((_DataType*)&pmin)[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return ((_DataType*)&pmin)[index];}
 		private:
