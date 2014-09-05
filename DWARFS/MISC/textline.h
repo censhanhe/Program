@@ -153,7 +153,7 @@ namespace DWARFS_MISC
 			}
 			for(GAIA::SIZE x = 0; x < size; ++x)
 			{
-				if(!m_lines.insert((__LineType)p[x], index + x))
+				if(!m_lines.insert(GSCAST(__LineType)(p[x]), index + x))
 				{
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;

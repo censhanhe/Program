@@ -21,9 +21,9 @@ namespace GAIA
 					const _ParamDataType2& g,
 					const _ParamDataType3& b)
 			{
-				this->r = (_DataType)r;
-				this->g = (_DataType)g;
-				this->b = (_DataType)b;
+				this->r = GSCAST(_DataType)(r);
+				this->g = GSCAST(_DataType)(g);
+				this->b = GSCAST(_DataType)(b);
 			}
 			template<typename _ParamDataType> NRGB(const GAIA::MATH::NRGB<_ParamDataType>& src){this->operator = (src);}
 			template<typename _ParamDataType> NRGB(const _ParamDataType* p){this->operator = (p);}
@@ -46,7 +46,7 @@ namespace GAIA
 
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::NRGB<_ParamDataType>& src){r = src.r; g = src.g; b = src.b; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){r = p[0]; g = p[1]; b = p[2]; return *this;}
-			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){r = g = b = t; return *this;}
 
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmp3((const _DataType*)*this, (const _ParamDataType*)src) == 0;}

@@ -202,14 +202,14 @@ namespace GAIA
 				m[3][0] = (_DataType)src.m[3][0]; m[3][1] = (_DataType)src.m[3][1]; m[3][2] = (_DataType)src.m[3][2]; m[3][3] = (_DataType)src.m[3][3];
 				return *this;
 			}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNULL); GAIA::ALGORITHM::copy((_DataType*)m, p, sizeofarray2(m));}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNULL); GAIA::ALGORITHM::copy(GSCAST(_DataType*)(m), p, sizeofarray2(m));}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGORITHM::set((_DataType*)m, t, sizeofarray2(m));}
 
-			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps((_DataType)m, (_DataType)src.m, sizeofarray2(m)) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return !(this->operator == (src));}
-			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps((_DataType)m, (_DataType)src.m, sizeofarray2(m)) >= 0;}
-			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps((_DataType)m, (_DataType)src.m, sizeofarray2(m)) <= 0;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) >= 0;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) <= 0;}
 			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return !(this->operator <= (src));}
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return !(this->operator >= (src));}
 
@@ -365,7 +365,7 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::MTX43<_ParamDataType>& src) const{return !(this->operator >= (src));}
 
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return const_cast<__MyType*>(this)[index];}
-			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return ((_DataType*)m)[index];}
+			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return (GSCAST(_DataType*)(m))[index];}
 		public:
 			_DataType m[4][4];
 		};

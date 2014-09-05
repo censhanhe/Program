@@ -69,14 +69,14 @@ namespace GAIA
 			{
 				GAIA::U64 ret;
 				GAIA::U32* p = (GAIA::U32*)&ret;
-				p[0] = ((GAIA::U32)y << 14) & 0xFFFFC000;
-				p[0] |= ((GAIA::U32)mo << 10) & 0x00003C00;
-				p[0] |= ((GAIA::U32)d << 5) & 0x000003E0;
-				p[0] |= ((GAIA::U32)h) & 0x0000001F;
-				p[1] = ((GAIA::U32)mi << 26) & 0xFC000000;
-				p[1] |= ((GAIA::U32)sec << 20) & 0x03F00000;
-				p[1] |= ((GAIA::U32)msec << 10) & 0x000FFC00;
-				p[1] |= ((GAIA::U32)usec) & 0x000003FF;
+				p[0] = (GSCAST(GAIA::U32)(y) << 14) & 0xFFFFC000;
+				p[0] |= (GSCAST(GAIA::U32)(mo) << 10) & 0x00003C00;
+				p[0] |= (GSCAST(GAIA::U32)(d) << 5) & 0x000003E0;
+				p[0] |= (GSCAST(GAIA::U32)(h)) & 0x0000001F;
+				p[1] = (GSCAST(GAIA::U32)(mi) << 26) & 0xFC000000;
+				p[1] |= (GSCAST(GAIA::U32)(sec) << 20) & 0x03F00000;
+				p[1] |= (GSCAST(GAIA::U32)(msec) << 10) & 0x000FFC00;
+				p[1] |= (GSCAST(GAIA::U32)(usec)) & 0x000003FF;
 				return ret;
 			}
 		public:

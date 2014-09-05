@@ -95,7 +95,7 @@ namespace GAIA
 					poly |= 1 << (31 - p[x]);
 				for(GAIA::N32 x = 0; x < 256; x++)
 				{
-					GAIA::U32 c = (GAIA::U32)x;
+					GAIA::U32 c = GSCAST(GAIA::U32)(x);
 					for(GAIA::N32 y = 0; y < 8; y++)
 						c = c & 1 ? poly ^ (c >> 1) : c >> 1;
 					m_crctable[x] = c;

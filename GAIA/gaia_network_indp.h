@@ -215,15 +215,15 @@ namespace GAIA
 						{
 						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
 							nSended = static_cast<GAIA::N32>(send(
-								m_h, (const GAIA::N8*)p, uSize, MSG_NOSIGNAL));
+								m_h, GSCAST(const GAIA::N8*)(p), uSize, MSG_NOSIGNAL));
 						#else
 							nSended = static_cast<GAIA::N32>(send(
-								m_h, (const GAIA::N8*)p, uSize, 0));
+								m_h, GRCAST(const GAIA::N8*)(p), uSize, 0));
 						#endif
 						}
 						else
 						{
-							NetworkAddress& na = *(NetworkAddress*)r.p;
+							NetworkAddress& na = *GRCAST(NetworkAddress*)(r.p);
 							sockaddr_in sinaddr;
 							GAIA::ALGORITHM::xmemset(&sinaddr, 0, sizeof(sinaddr));
 							sinaddr.sin_family = AF_INET;
@@ -235,11 +235,11 @@ namespace GAIA
 								(na.ip.u3 << 24);
 						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
 							nSended = static_cast<GAIA::N32>(sendto(
-								m_h, (const GAIA::N8*)p, uSize, MSG_NOSIGNAL,
+								m_h, GSCAST(const GAIA::N8*)(p), uSize, MSG_NOSIGNAL,
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
 						#else
 							nSended = static_cast<GAIA::N32>(sendto(
-								m_h, (const GAIA::N8*)p, uSize, 0,
+								m_h, GRCAST(const GAIA::N8*)(p), uSize, 0,
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
 						#endif
 						}
@@ -263,7 +263,7 @@ namespace GAIA
 								}
 								else
 								{
-									NetworkAddress& na = *(NetworkAddress*)r.p;
+									NetworkAddress& na = *GRCAST(NetworkAddress*)(r.p);
 									this->LostConnection(na, GAIA::False);
 								}
 								break;
@@ -284,7 +284,7 @@ namespace GAIA
 								}
 								else
 								{
-									NetworkAddress& na = *(NetworkAddress*)r.p;
+									NetworkAddress& na = *GSCAST(NetworkAddress*)(r.p);
 									this->LostConnection(na, GAIA::False);
 								}
 								break;
@@ -306,7 +306,7 @@ namespace GAIA
 							}
 							else
 							{
-								NetworkAddress& na = *(NetworkAddress*)r.p;
+								NetworkAddress& na = *GRCAST(NetworkAddress*)(r.p);
 								this->LostConnection(na, GAIA::False);
 							}
 							break;

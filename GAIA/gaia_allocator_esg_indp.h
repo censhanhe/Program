@@ -102,8 +102,8 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID AllocatorESG::memory_release(GAIA::GVOID* p)
 		{
-			GAIA::U8* pOriginP = (GAIA::U8*)p - sizeof(GAIA::UM) - sizeof(GAIA::U16);
-			GAIA::U16 uOBIndex = *(GAIA::U16*)(pOriginP + sizeof(GAIA::UM));
+			GAIA::U8* pOriginP = GSCAST(GAIA::U8*)(p) - sizeof(GAIA::UM) - sizeof(GAIA::U16);
+			GAIA::U16 uOBIndex = *GRCAST(GAIA::U16*)(pOriginP + sizeof(GAIA::UM));
 			if(uOBIndex == (GAIA::U16)GINVALID)
 			{
 				m_capacity.Add(-(GAIA::N64)this->memory_size(p) - (GAIA::N64)HEAP_BUFFER_HEADERSIZE);
@@ -148,7 +148,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::memory_size(GAIA::GVOID* p)
 		{
-			return *(GAIA::UM*)((GAIA::U8*)p - sizeof(GAIA::UM) - sizeof(GAIA::U16));
+			return *GRCAST(GAIA::UM*)((GAIA::U8*)p - sizeof(GAIA::UM) - sizeof(GAIA::U16));
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::capacity()
 		{

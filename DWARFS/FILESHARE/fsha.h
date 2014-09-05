@@ -3885,7 +3885,7 @@ namespace DWARFS_FSHA
 					for(GAIA::U32 x = 0; x < TESTFILECOUNT; ++x)
 					{
 						GAIA::TCH szFile[MAXPATHLEN];
-						GAIA::ALGORITHM::int2str((GAIA::N32)x, szFile);
+						GAIA::ALGORITHM::int2str(GSCAST(GAIA::N32)(x), szFile);
 						GAIA::ALGORITHM::strcat(szFile, _T(".t"));
 						GAIA::TCH szFullName[MAXPATHLEN];
 						GAIA::ALGORITHM::strcpy(szFullName, TESTREADROOT);
@@ -5897,7 +5897,7 @@ namespace DWARFS_FSHA
 							if(startindex == GINVALID)
 							{
 								if(m_filestate.exist(x))
-									startindex = (FILEID)x;
+									startindex = GSCAST(FILEID)(x);
 							}
 							else
 							{
@@ -6304,7 +6304,7 @@ namespace DWARFS_FSHA
 			if(m_pNH == GNULL)
 				return GAIA::False;
 			/* message statistics. */
-			MSGIDTYPE msgid = *(MSGIDTYPE*)((GAIA::U8*)p + sizeof(GAIA::NETWORK::NetworkAddress));
+			MSGIDTYPE msgid = *GSCAST(const MSGIDTYPE*)((GSCAST(const GAIA::U8*)(p) + sizeof(GAIA::NETWORK::NetworkAddress)));
 			switch(msgid)
 			{
 			case MSG_R_LOGIN:
@@ -6362,7 +6362,7 @@ namespace DWARFS_FSHA
 			AL al(m_lr_send);
 			m_statistics.uNSendCount++;
 			m_statistics.uNSendBytes += size - sizeof(GAIA::NETWORK::NetworkAddress);
-			return m_pNH->Send((const GAIA::U8*)p, size);
+			return m_pNH->Send(GSCAST(const GAIA::U8*)(p), size);
 		}
 		GINL GAIA::BL SendToAll(GAIA::GVOID* p, const GAIA::U32& size)
 		{
@@ -6531,7 +6531,7 @@ namespace DWARFS_FSHA
 				jumpna = listLinkPri[GAIA::MATH::xrandom() % index]->nlink.na;
 			}
 			GAIA_AST(jumpna != na);
-			const REQFILECOUNTTYPE& fcnt = *(const REQFILECOUNTTYPE*)p;
+			const REQFILECOUNTTYPE& fcnt = *GSCAST(const REQFILECOUNTTYPE*)(p);
 			__MsgType msg;
 			msg.reserve(1024);
 			if(sizeof(na) + sizeof(MSGIDTYPE) + sizeof(jumpna) + nSize > GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE)

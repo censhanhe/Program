@@ -24,12 +24,12 @@ namespace GAIA
 			m_capacity.Add(-(GAIA::N64)this->memory_size(p) - (GAIA::N64)sizeof(GAIA::UM));
 			m_usesize.Add(-(GAIA::N64)this->memory_size(p));
 			m_piecesize.Decrease();
-			delete[] (GAIA::U8*)((GAIA::UM*)p - 1);
+			delete[] GRCAST(GAIA::U8*)(GSCAST(GAIA::UM*)(p) - 1);
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorCRT::memory_size(GAIA::GVOID* p)
 		{
 			GAIA_AST(!!p);
-			return *((GAIA::UM*)p - 1);
+			return *(GSCAST(GAIA::UM*)(p) - 1);
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorCRT::capacity()
 		{

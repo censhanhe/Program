@@ -96,21 +96,21 @@ namespace GAIA
 			_SizeType sizet = size;
 			while(sizet > sizeof(GAIA::UM))
 			{
-				if(*(GAIA::UM*)p < (GAIA::UM)clean)
+				if(*GSCAST(const GAIA::UM*)(p) < GSCAST(GAIA::UM)(clean))
 					return -1;
-				else if(*(GAIA::UM*)p > (GAIA::UM)clean)
+				else if(*GSCAST(const GAIA::UM*)(p) > GSCAST(GAIA::UM)(clean))
 					return +1;
-				p = ((GAIA::UM*)p) + 1;
-				sizet = sizet - (_SizeType)sizeof(GAIA::UM);
+				p = (GSCAST(const GAIA::UM*)(p)) + 1;
+				sizet = sizet - GSCAST(_SizeType)(sizeof(GAIA::UM));
 			}
 			while(sizet > 0)
 			{
-				if(*(GAIA::U8*)p < (GAIA::U8)ch)
+				if(*GSCAST(const GAIA::U8*)(p) < GSCAST(GAIA::U8)(ch))
 					return -1;
-				else if(*(GAIA::U8*)p > (GAIA::U8)ch)
+				else if(*GSCAST(const GAIA::U8*)(p) > GSCAST(GAIA::U8)(ch))
 					return +1;
-				p = ((GAIA::U8*)p) + 1;
-				sizet = sizet - (_SizeType)sizeof(GAIA::U8);
+				p = (GSCAST(const GAIA::U8*)(p)) + 1;
+				sizet = sizet - GSCAST(_SizeType)(sizeof(GAIA::U8));
 			}
 			return 0;
 		}
@@ -120,7 +120,7 @@ namespace GAIA
 			GAIA_AST(stride > 0);
 			GAIA_AST(size > 0);
 			GAIA_AST(count > 0);
-			const GAIA::U8* pTemp = (const GAIA::U8*)p;
+			const GAIA::U8* pTemp = GSCAST(const GAIA::U8*)(p);
 			while(count > 0)
 			{
 				GAIA::N32 res = GAIA::ALGORITHM::xmemcheck(pTemp, ch, size);
