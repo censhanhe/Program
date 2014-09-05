@@ -27,7 +27,7 @@ namespace GAIA
 					{
 						if(ret >= dst_size_in_wchar)
 							break;
-						pszDst[ret] = (GAIA::WCH)pszSrc[ret];
+						pszDst[ret] = GSCAST(GAIA::WCH)(pszSrc[ret]);
 					}
 					if(pszSrc[ret] == '\0')
 					{
@@ -71,7 +71,7 @@ namespace GAIA
 					{
 						if(ret >= dst_size_in_bytes)
 							break;
-						pszDst[ret] = (GAIA::CH)pszSrc[ret];
+						pszDst[ret] = GSCAST(GAIA::CH)(pszSrc[ret]);
 					}
 					if(pszSrc[ret] == '\0')
 					{

@@ -18,9 +18,9 @@ namespace GAIA
 				m_usesize.Add(uSize);
 
 				GAIA::GVOID* pTemp = new GAIA::U8[uSize + HEAP_BUFFER_HEADERSIZE];
-				*(GAIA::UM*)pTemp = uSize;
+				*GSCAST(GAIA::UM*)(pTemp) = uSize;
 				*GRCAST(GAIA::U16*)(GSCAST(GAIA::U8*)(pTemp) + sizeof(GAIA::UM)) = (GAIA::U16)GINVALID;
-				return (GAIA::U8*)pTemp + sizeof(GAIA::UM) + sizeof(GAIA::U16);
+				return GSCAST(GAIA::U8*)(pTemp) + sizeof(GAIA::UM) + sizeof(GAIA::U16);
 			}
 			else
 			{
@@ -72,7 +72,7 @@ namespace GAIA
 					for(GAIA::UM x = 0; x < uSectionPatchCount; ++x)
 					{
 						GAIA::U8* pTemp = (GAIA::U8*)newobref.buf + uSectionPatchSize * x;
-						*(GAIA::UM*)pTemp = uSectionPatchSize;
+						*GRCAST(GAIA::UM*)(pTemp) = uSectionPatchSize;
 						*GRCAST(GAIA::U16*)(pTemp + sizeof(GAIA::UM)) = uOriginBufferIndex;
 						this->push(pTemp, newobref.freestack, newobref.uFreeStackSize, newobref.uFreeStackCapacity);
 					}
@@ -97,8 +97,8 @@ namespace GAIA
 		#ifdef GAIA_ALLOCATOR_ESG_MULTITHREAD
 			m_lr.Leave();
 		#endif
-			*(GAIA::UM*)pRet = uSize;
-			return (GAIA::U8*)pRet + sizeof(GAIA::UM) + sizeof(GAIA::U16);
+			*GSCAST(GAIA::UM*)(pRet) = uSize;
+			return GSCAST(GAIA::U8*)(pRet) + sizeof(GAIA::UM) + sizeof(GAIA::U16);
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID AllocatorESG::memory_release(GAIA::GVOID* p)
 		{
@@ -113,7 +113,7 @@ namespace GAIA
 				delete[] pOriginP;
 				return;
 			}
-			GAIA::UM uSectionIndex = this->GetSectionIndex(*(GAIA::UM*)pOriginP + HEAP_BUFFER_HEADERSIZE);
+			GAIA::UM uSectionIndex = this->GetSectionIndex(*GRCAST(GAIA::UM*)(pOriginP) + HEAP_BUFFER_HEADERSIZE);
 			GAIA_AST(uSectionIndex != GINVALID);
 			m_size.Add(-(GAIA::N64)m_secsizelist[uSectionIndex]);
 			m_usesize.Add(-(GAIA::N64)this->memory_size(p));

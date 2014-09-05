@@ -108,9 +108,9 @@ namespace PROM
 				if(pError == GNULL)
 					continue;
 				prt << "Prometheus:";
-				prt << "P" << (GAIA::N32)pError->getstage();
-				prt << "L" << (GAIA::N32)pError->getlevel();
-				prt << "N" << (GAIA::N32)pError->getid();
+				prt << "P" << GSCAST(GAIA::N32)(pError->getstage());
+				prt << "L" << GSCAST(GAIA::N32)(pError->getlevel());
+				prt << "N" << GSCAST(GAIA::N32)(pError->getid());
 				if(!GAIA::ALGORITHM::stremp(pError->getdesc()))
 				{
 					prt << ", ";

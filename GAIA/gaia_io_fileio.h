@@ -17,7 +17,7 @@ namespace GAIA
 					return GAIA::False;
 				if(pParameter == GNULL)
 					return GAIA::False;
-				m_file = (GAIA::FILESYSTEM::FileBase*)pParameter;
+				m_file = GSCAST(GAIA::FILESYSTEM::FileBase*)(pParameter);
 				m_bBegin = GAIA::True;
 				return GAIA::True;
 			}

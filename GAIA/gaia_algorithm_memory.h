@@ -139,22 +139,22 @@ namespace GAIA
 			_SizeType sizet = size;
 			while(sizet > sizeof(GAIA::UM))
 			{
-				if(*((GAIA::UM*)p1) < *((GAIA::UM*)p2))
+				if(*(GSCAST(const GAIA::UM*)(p1)) < *(GSCAST(const GAIA::UM*)(p2)))
 					return +1;
-				else if(*((GAIA::UM*)p1) > *((GAIA::UM*)p2))
+				else if(*(GSCAST(const GAIA::UM*)(p1)) > *(GSCAST(const GAIA::UM*)(p2)))
 					return -1;
-				p1 = ((GAIA::UM*)p1) + 1;
-				p2 = ((GAIA::UM*)p2) + 1;
+				p1 = (GSCAST(const GAIA::UM*)(p1)) + 1;
+				p2 = (GSCAST(const GAIA::UM*)(p2)) + 1;
 				sizet -= sizeof(GAIA::UM);
 			}
 			while(sizet > sizeof(GAIA::U8))
 			{
-				if(*((GAIA::U8*)p1) < *((GAIA::U8*)p2))
+				if(*(GSCAST(const GAIA::U8*)(p1)) < *(GSCAST(const GAIA::U8*)(p2)))
 					return +1;
-				else if(*((GAIA::U8*)p1) > *((GAIA::U8*)p2))
+				else if(*(GSCAST(const GAIA::U8*)(p1)) > *(GSCAST(const GAIA::U8*)(p2)))
 					return -1;
-				p1 = ((GAIA::U8*)p1) + 1;
-				p2 = ((GAIA::U8*)p2) + 1;
+				p1 = (GSCAST(const GAIA::U8*)(p1)) + 1;
+				p2 = (GSCAST(const GAIA::U8*)(p2)) + 1;
 				sizet -= sizeof(GAIA::U8);
 			}
 			return 0;
@@ -167,8 +167,8 @@ namespace GAIA
 			GAIA_AST(p2_stride > 0);
 			GAIA_AST(size > 0);
 			GAIA_AST(count > 0);
-			const GAIA::U8* pA = (const GAIA::U8*)p1;
-			const GAIA::U8* pB = (const GAIA::U8*)p2;
+			const GAIA::U8* pA = GSCAST(const GAIA::U8*)(p1);
+			const GAIA::U8* pB = GSCAST(const GAIA::U8*)(p2);
 			while(count > 0)
 			{
 				GAIA::N32 nCmp = GAIA::ALGORITHM::xmemcmp(pA, pB, size);

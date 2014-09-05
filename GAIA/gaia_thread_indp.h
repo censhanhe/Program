@@ -17,9 +17,9 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::UM threadid()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			return (GAIA::UM)::GetCurrentThreadId();
+			return GSCAST(GAIA::UM)(::GetCurrentThreadId());
 		#else
-			return (GAIA::UM)pthread_self();
+			return GSCAST(GAIA::UM)(pthread_self());
 		#endif
 		}
 	#if GAIA_OS == GAIA_OS_WINDOWS

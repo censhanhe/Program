@@ -298,7 +298,7 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(!::SetWindowPos(m_hWnd, GNULL, (GAIA::N32)pos.x, (GAIA::N32)pos.y, 0, 0, SWP_NOSIZE))
+			if(!::SetWindowPos(m_hWnd, GNULL, GSCAST(GAIA::N32)(pos.x), GSCAST(GAIA::N32)(pos.y), 0, 0, SWP_NOSIZE))
 				return GAIA::False;
 			return GAIA::True;
 		#else

@@ -203,7 +203,7 @@ namespace GAIA
 				return *this;
 			}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNULL); GAIA::ALGORITHM::copy(GSCAST(_DataType*)(m), p, sizeofarray2(m));}
-			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGORITHM::set((_DataType*)m, t, sizeofarray2(m));}
 
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) == 0;}

@@ -11,12 +11,12 @@ namespace GAIA
 		{
 			GAIA_AST(uSize > 0);
 			GAIA::GVOID* pRet = new GAIA::U8[uSize + sizeof(GAIA::UM)];
-			*((GAIA::UM*)pRet) = uSize;
+			*(GSCAST(GAIA::UM*)(pRet)) = uSize;
 			m_capacity.Add(uSize + sizeof(GAIA::UM));
 			m_usesize.Add(uSize);
 			m_piecesize.Increase();
 			m_alloctimes.Increase();
-			return ((GAIA::UM*)pRet) + 1;
+			return (GSCAST(GAIA::UM*)(pRet)) + 1;
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID AllocatorCRT::memory_release(GAIA::GVOID* p)
 		{

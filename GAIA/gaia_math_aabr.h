@@ -25,10 +25,10 @@ namespace GAIA
 				const _ParamDataType3& pmax_x,
 				const _ParamDataType4& pmax_y)
 			{
-				pmin.x = (_DataType)pmin_x;
-				pmin.y = (_DataType)pmin_y;
-				pmax.x = (_DataType)pmax_x;
-				pmax.y = (_DataType)pmax_y;
+				pmin.x = GSCAST(_DataType)(pmin_x);
+				pmin.y = GSCAST(_DataType)(pmin_y);
+				pmax.x = GSCAST(_DataType)(pmax_x);
+				pmax.y = GSCAST(_DataType)(pmax_y);
 			}
 			template<typename _ParamDataType1, typename _ParamDataType2> AABR(const GAIA::MATH::VEC2<_ParamDataType1>& pmin, const GAIA::MATH::VEC2<_ParamDataType2>& pmax)
 			{
@@ -117,7 +117,7 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::AABR<_ParamDataType>& src){pmin = src.pmin; pmax = src.pmax; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){pmin = p; pmax = p + 2; return *this;}
-			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = ((const _ParamDataType*)p);}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& v){pmin = v; pmax = v; return *this;}
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::AABR<_ParamDataType>& t) const{return pmin == t.pmin && pmax == t.pmax;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::AABR<_ParamDataType>& t) const{return !(this->operator == (t));}

@@ -333,7 +333,7 @@ namespace GAIA
 				{
 					if(pHostEnt->h_addrtype == AF_INET)
 					{
-						in_addr* addr = (in_addr*)pHostEnt->h_addr_list[nIndex];
+						in_addr* addr = GRCAST(in_addr*)(pHostEnt->h_addr_list[nIndex]);
 						IP ip;
 						ip.Invalid();
 						ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)((*(GAIA::U32*)addr) & 0x000000FF) >> 0);

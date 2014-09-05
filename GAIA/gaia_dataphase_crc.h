@@ -63,7 +63,7 @@ namespace GAIA
 					return GAIA::False;
 				if(size <= 0)
 					return GAIA::False;
-				GAIA::U8* p = (GAIA::U8*)pBuf;
+				const GAIA::U8* p = GSCAST(const GAIA::U8*)(pBuf);
 				m_crc = m_crc ^ 0xFFFFFFFF;
 				while (size >= 8)
 				{

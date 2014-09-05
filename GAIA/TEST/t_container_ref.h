@@ -87,12 +87,12 @@ namespace GAIATEST
 			GTLINE2("Ref operator != > < pointer failed!");
 			++nRet;
 		}
-		if(!(r == (const GAIA::N32*)pElements && r >= (const GAIA::N32*)pElements && r <= (const GAIA::N32*)pElements))
+		if(!(r == GSCAST(const GAIA::N32*)(pElements) && r >= GSCAST(const GAIA::N32*)(pElements) && r <= GSCAST(const GAIA::N32*)(pElements)))
 		{
 			GTLINE2("Ref operator == >= <= pointer failed!");
 			++nRet;
 		}
-		if(r != (const GAIA::N32*)pElements || r > (const GAIA::N32*)pElements || r < (const GAIA::N32*)pElements)
+		if(r != GSCAST(const GAIA::N32*)(pElements) || r > GSCAST(const GAIA::N32*)(pElements) || r < GSCAST(const GAIA::N32*)(pElements))
 		{
 			GTLINE2("Ref operator != > < pointer failed!");
 			++nRet;

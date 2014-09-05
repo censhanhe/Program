@@ -259,7 +259,7 @@ namespace PROM
 			if(plc_codelineprepare == GNULL)
 			{
 				if(GAIA::ALGORITHM::strcmp(pNewPLC->GetName(), _T("Prom:PLC_FileCodeLinePrepare")) == 0)
-					plc_codelineprepare = (PLC_FileCodeLinePrepare*)pNewPLC;
+					plc_codelineprepare = GSCAST(PLC_FileCodeLinePrepare*)(pNewPLC);
 			}
 			if(plc_codelineprepare == GNULL)
 				goto FUNCTION_END;

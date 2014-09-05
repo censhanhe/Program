@@ -5118,7 +5118,7 @@ namespace DWARFS_FSHA
 						continue;
 					}
 					pFA->Seek(GAIA::SEEK_TYPE_END, 0);
-					fsize = (FILESIZETYPE)pFA->Tell();
+					fsize = GSCAST(FILESIZETYPE)(pFA->Tell());
 					m_desc.pFAC->ReleaseFileAccess(pFA);
 					pFA = GNULL;
 					/* Get file CRC. */
@@ -5592,7 +5592,7 @@ namespace DWARFS_FSHA
 							if(pFWT->fid == m_test_watchfid)
 							{
 								AL al(m_lr_prt);
-								m_prt << "[TEST] Receive file chunk, ChunkIndex = " << (GAIA::N32)pFWT->ci << ", SubChunkIndex = " << (GAIA::N32)pFWT->sci << ".\n";
+								m_prt << "[TEST] Receive file chunk, ChunkIndex = " << GSCAST(GAIA::N32)(pFWT->ci) << ", SubChunkIndex = " << GSCAST(GAIA::N32)(pFWT->sci) << ".\n";
 							}
 						}
 					}
@@ -6228,7 +6228,7 @@ namespace DWARFS_FSHA
 					if(!bWrite)
 					{
 						pFRC->pFA->Seek(GAIA::SEEK_TYPE_END, 0);
-						pFRC->fsize = (FILESIZETYPE)pFRC->pFA->Tell();
+						pFRC->fsize = GSCAST(FILESIZETYPE)(pFRC->pFA->Tell());
 						pFRC->pFA->Seek(GAIA::SEEK_TYPE_BEGIN, 0);
 					}
 				}
