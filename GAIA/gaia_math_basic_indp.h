@@ -7,19 +7,19 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		GAIA_DEBUG_CODEPURE_FUNC REAL xsin(const REAL& v){return (REAL)sin((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xcos(const REAL& v){return (REAL)cos((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xacos(const REAL& v){return (REAL)acos((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xasin(const REAL& v){return (REAL)asin((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xtan(const REAL& v){return (REAL)tan((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xsinh(const REAL& v){return (REAL)sinh((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xcosh(const REAL& v){return (REAL)cosh((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xatan(const REAL& v){return (REAL)atan((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xatan2(const REAL& y, const REAL& x){return (REAL)atan2((REAL)y, (REAL)x);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xpow(const REAL& x, const REAL& y){return (REAL)pow((REAL)x, (REAL)y);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xsqrt(const REAL& v){return (REAL)sqrt((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xlog(const REAL& v){return (REAL)log((REAL)v);}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xlog10(const REAL& v){return (REAL)log10((REAL)v);}
+		template<typename _DataType> _DataType xsin(const _DataType& v){return (_DataType)sin((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xcos(const _DataType& v){return (_DataType)cos((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xacos(const _DataType& v){return (_DataType)acos((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xasin(const _DataType& v){return (_DataType)asin((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xtan(const _DataType& v){return (_DataType)tan((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xsinh(const _DataType& v){return (_DataType)sinh((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xcosh(const _DataType& v){return (_DataType)cosh((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xatan(const _DataType& v){return (_DataType)atan((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xatan2(const _DataType& y, const _DataType& x){return (_DataType)atan2((GAIA::REAL)y, (GAIA::REAL)x);}
+		template<typename _DataType> _DataType xpow(const _DataType& x, const _DataType& y){return (_DataType)pow((GAIA::REAL)x, (GAIA::REAL)y);}
+		template<typename _DataType> _DataType xsqrt(const _DataType& v){return (_DataType)sqrt((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xlog(const _DataType& v){return (_DataType)log((GAIA::REAL)v);}
+		template<typename _DataType> _DataType xlog10(const _DataType& v){return (_DataType)log10((GAIA::REAL)v);}
 	};
 };
 

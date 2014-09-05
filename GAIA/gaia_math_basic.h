@@ -88,19 +88,19 @@ namespace GAIA
 			res += *p;
 			res /= (pEnd - pBegin + 1);
 		}
-		GAIA_DEBUG_CODEPURE_FUNC REAL xcos(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xsin(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xacos(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xasin(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xtan(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xsinh(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xcosh(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xatan(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xatan2(const REAL& y, const REAL& x);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xpow(const REAL& x, const REAL& y);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xsqrt(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xlog(const REAL& v);
-		GAIA_DEBUG_CODEPURE_FUNC REAL xlog10(const REAL& v);
+		template<typename _DataType> _DataType xcos(const _DataType& v);
+		template<typename _DataType> _DataType xsin(const _DataType& v);
+		template<typename _DataType> _DataType xacos(const _DataType& v);
+		template<typename _DataType> _DataType xasin(const _DataType& v);
+		template<typename _DataType> _DataType xtan(const _DataType& v);
+		template<typename _DataType> _DataType xsinh(const _DataType& v);
+		template<typename _DataType> _DataType xcosh(const _DataType& v);
+		template<typename _DataType> _DataType xatan(const _DataType& v);
+		template<typename _DataType> _DataType xatan2(const _DataType& y, const _DataType& x);
+		template<typename _DataType> _DataType xpow(const _DataType& x, const _DataType& y);
+		template<typename _DataType> _DataType xsqrt(const _DataType& v);
+		template<typename _DataType> _DataType xlog(const _DataType& v);
+		template<typename _DataType> _DataType xlog10(const _DataType& v);
 	};
 };
 
