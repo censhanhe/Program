@@ -52,18 +52,18 @@ namespace GAIA
 				GINL GAIA::BL operator == (const Node& src) const
 				{
 					GAIA_AST(m_acc == src.m_acc);
-					return (_DataType)(*this) == (_DataType)src;
+					return GSCAST(_DataType)(*this) == GSCAST(_DataType)src;
 				}
 				GINL GAIA::BL operator != (const Node& src) const{return !this->operator == (src);}
 				GINL GAIA::BL operator >= (const Node& src) const
 				{
 					GAIA_AST(m_acc == src.m_acc);
-					return (_DataType)(*this) >= (_DataType)src;
+					return GSCAST(_DataType)(*this) >= GSCAST(_DataType)src;
 				}
 				GINL GAIA::BL operator <= (const Node& src) const
 				{
 					GAIA_AST(m_acc == src.m_acc);
-					return (_DataType)(*this) <= (_DataType)src;
+					return GSCAST(_DataType)(*this) <= GSCAST(_DataType)src;
 				}
 				GINL GAIA::BL operator > (const Node& src) const{return !this->operator <= (src);}
 				GINL GAIA::BL operator < (const Node& src) const{return !this->operator >= (src);}
@@ -363,7 +363,7 @@ namespace GAIA
 				{
 				case BIND_TYPE_MEM:
 					{
-						*(_DataType*)((GAIA::U8*)m_p + this->practice_offset(m_index + index)) = src;
+						*GRCAST(_DataType*)(GRCAST(GAIA::U8*)(m_p) + this->practice_offset(m_index + index)) = src;
 						break;
 					}
 				case BIND_TYPE_FILE:
@@ -402,7 +402,7 @@ namespace GAIA
 				{
 				case BIND_TYPE_MEM:
 					{
-						dst = *(_DataType*)((GAIA::U8*)m_p + this->practice_offset(m_index + index));
+						dst = *GRCAST(_DataType*)(GRCAST(GAIA::U8*)(m_p) + this->practice_offset(m_index + index));
 						break;
 					}
 				case BIND_TYPE_FILE:

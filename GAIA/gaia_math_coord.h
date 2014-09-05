@@ -27,8 +27,8 @@ namespace GAIA
 			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); m_offset = src.m_offset; m_block = src.m_block; return *this;}
 			template<typename _ParamType> __MyType& operator = (const _ParamType& t)
 			{
-				m_block = (_BlockType)(t / _BlockSize);
-				m_offset = (_OffsetType)(t - m_block * _BlockSize);
+				m_block = GSCAST(_BlockType)(t / _BlockSize);
+				m_offset = GSCAST(_OffsetType)(t - m_block * _BlockSize);
 				return *this;
 			}
 			GINL __MyType& operator += (const __MyType& src){m_offset += src.m_offset; m_block += src.m_block; this->single_normalize(); return *this;}
@@ -47,7 +47,7 @@ namespace GAIA
 			template<typename _ParamType> __MyType operator - (const _ParamType& src) const{__MyType ret = *this; ret -= src; return ret;}
 			template<typename _ParamType> __MyType operator * (const _ParamType& src) const{__MyType ret = *this; ret *= src; return ret;}
 			template<typename _ParamType> __MyType operator / (const _ParamType& src) const{__MyType ret = *this; ret /= src; return ret;}
-			template<typename _ReturnType> operator _ReturnType() const{return (_ReturnType)(m_block * _BlockSize + m_offset);}
+			template<typename _ReturnType> operator _ReturnType() const{return GSCAST(_ReturnType)(m_block * _BlockSize + m_offset);}
 		private:
 			GINL GAIA::GVOID single_normalize()
 			{

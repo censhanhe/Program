@@ -65,7 +65,7 @@ namespace GAIA
 			wcex.hInstance		= (HINSTANCE)GetModuleHandle(GNULL);
 			wcex.hIcon			= GNULL;
 			wcex.hCursor		= LoadCursor(GNULL, IDC_ARROW);
-			wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW + 1);
+			wcex.hbrBackground	= GRCAST(HBRUSH)(COLOR_WINDOW + 1);
 			wcex.lpszMenuName	= GNULL;
 			wcex.lpszClassName	= szWindowClass;
 			wcex.hIconSm		= GNULL;

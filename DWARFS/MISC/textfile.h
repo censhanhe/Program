@@ -229,8 +229,8 @@ namespace DWARFS_MISC
 						buf.resize(m_str.size() * sizeof(GAIA::U16));
 						for(GAIA::SIZE x = 0; x < m_str.size(); ++x)
 						{
-							buf[x * 2 + 0] = (GAIA::U8)(m_str[x] >> 0) & 0x00FF;
-							buf[x * 2 + 1] = (GAIA::U8)(m_str[x] >> 8) & 0x00FF;
+							buf[x * 2 + 0] = GSCAST(GAIA::U8)(m_str[x] >> 0) & 0x00FF;
+							buf[x * 2 + 1] = GSCAST(GAIA::U8)(m_str[x] >> 8) & 0x00FF;
 						}
 						file.Write(buf.front_ptr(), buf.write_size());
 					}
@@ -249,8 +249,8 @@ namespace DWARFS_MISC
 						buf.resize(m_str.size() * sizeof(GAIA::U16));
 						for(GAIA::SIZE x = 0; x < m_str.size(); ++x)
 						{
-							buf[x * 2 + 0] = (GAIA::U8)(m_str[x] >> 8) & 0x00FF;
-							buf[x * 2 + 1] = (GAIA::U8)(m_str[x] >> 0) & 0x00FF;
+							buf[x * 2 + 0] = GSCAST(GAIA::U8)(m_str[x] >> 8) & 0x00FF;
+							buf[x * 2 + 1] = GSCAST(GAIA::U8)(m_str[x] >> 0) & 0x00FF;
 						}
 						file.Write(buf.front_ptr(), buf.write_size());
 					}

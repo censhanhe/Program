@@ -10,7 +10,7 @@
 							uTimeEnd = GAIA::TIME::tick_time();\
 							str.clear();\
 							str += "Timelost ";\
-							str += (GAIA::F64)(uTimeEnd - uTimeBegin) / 1000.0;\
+							str += GSCAST(GAIA::F64)(uTimeEnd - uTimeBegin) / 1000.0;\
 							str += "(MS)";\
 							GTLINEI(str.front_ptr());\
 						}\

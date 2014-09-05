@@ -450,7 +450,7 @@ namespace GAIA
 			GAIA::N64 left = (GAIA::N64)src;
 			_SrcDataType right = src - (_SrcDataType)left;
 			right = GAIA::MATH::xabs(right);
-			while(right - (_SrcDataType)(GAIA::N64)right != 0)
+			while(right - GSCAST(_SrcDataType)(GSCAST(GAIA::N64)(right)) != 0)
 				right *= 10.0F;
 			_DstDataType p = GAIA::ALGORITHM::int2str(left, pDst);
 			--p;
@@ -532,7 +532,7 @@ namespace GAIA
 				++pSrc;
 
 				// Combin.
-				*p = (GAIA::U8)(u0 * 16 + u1);
+				*p = GSCAST(GAIA::U8)(u0 * 16 + u1);
 				++p;
 				--sizet;
 			}
@@ -554,8 +554,8 @@ namespace GAIA
 			{
 				if(*pSrc < '0' || *pSrc > '9')
 					break;
-				dst = (_DstDataType)(dst * 10);
-				dst = (_DstDataType)(dst + (*pSrc - '0'));
+				dst = GSCAST(_DstDataType)(dst * 10);
+				dst = GSCAST(_DstDataType)(dst + (*pSrc - '0'));
 				++pSrc;
 			}
 			if(bSign)

@@ -89,7 +89,7 @@ namespace GAIA
 			if(!GAIA::ALGORITHM::isunique(pSrcBegin, pSrcEnd))
 				return GINVALID;
 			_DataType pNew = GAIA::ALGORITHM::swapleft(pDstBegin, pDstEnd, pSrcBegin, pSrcEnd);
-			return (GAIA::SIZE)(pNew - pDstBegin);
+			return GSCAST(GAIA::SIZE)(pNew - pDstBegin);
 		}
 		template<typename _DataType, typename _SizeType> GAIA::SIZE set_or(_DataType pDstBegin, _DataType pDstEnd, _SizeType dst_max_size, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed! If the dst_max_size <= 0, it means the buffer is must enough.
 		{
@@ -117,7 +117,7 @@ namespace GAIA
 					*(++pWrite) = *pSrcBegin;
 				++pSrcBegin;
 			}
-			return (GAIA::SIZE)(pWrite - pDstBegin);
+			return GSCAST(GAIA::SIZE)(pWrite - pDstBegin);
 		}
 		template<typename _DataType> GAIA::SIZE set_sub(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
 		{
@@ -128,7 +128,7 @@ namespace GAIA
 			if(!GAIA::ALGORITHM::isunique(pSrcBegin, pSrcEnd))
 				return GINVALID;
 			_DataType pNew = GAIA::ALGORITHM::swapleft_inversekey(pDstBegin, pDstEnd, pSrcBegin, pSrcEnd);
-			return (GAIA::SIZE)(pNew - pDstBegin);
+			return GSCAST(GAIA::SIZE)(pNew - pDstBegin);
 		}
 	};
 };

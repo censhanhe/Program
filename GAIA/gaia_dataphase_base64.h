@@ -50,7 +50,7 @@ namespace GAIA
 				*pDst++ = '=';
 				*pDst++ = '=';
 			}
-			return (_SizeType)(pDst - pOldDst);
+			return GSCAST(_SizeType)(pDst - pOldDst);
 		}
 	};
 };

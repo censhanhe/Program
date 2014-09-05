@@ -21,7 +21,7 @@ namespace GAIA
 			::Sleep((GAIA::U32)uMilliSecond);
 			return uMilliSecond;
 		#else
-			::usleep((useconds_t)(uMilliSecond * 1000));
+			::usleep(GSCAST(useconds_t)(uMilliSecond * 1000));
 			return uMilliSecond;
 		#endif
 		}

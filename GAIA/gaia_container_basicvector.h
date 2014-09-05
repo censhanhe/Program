@@ -320,7 +320,7 @@ namespace GAIA
 				const _DataType* pFinded = GAIA::ALGORITHM::search(this->front_ptr(), this->back_ptr(), t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
-				return (_SizeType)(pFinded - this->front_ptr());
+				return GSCAST(_SizeType)(pFinded - this->front_ptr());
 			}
 			GINL GAIA::GVOID swap(const _SizeType& index1, const _SizeType& index2){GAIA::ALGORITHM::swap(this->operator[](index1), this->operator[](index2));}
 			GINL it lower_bound(const _DataType& t)
@@ -332,7 +332,7 @@ namespace GAIA
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
-						iter.m_index = (_SizeType)(p - this->front_ptr());
+						iter.m_index = GSCAST(_SizeType)(p - this->front_ptr());
 					}
 				}
 				return iter;
@@ -346,7 +346,7 @@ namespace GAIA
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
-						iter.m_index = (_SizeType)(p - this->front_ptr());
+						iter.m_index = GSCAST(_SizeType)(p - this->front_ptr());
 					}
 				}
 				return iter;
@@ -360,7 +360,7 @@ namespace GAIA
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
-						iter.m_index = (_SizeType)(p - this->front_ptr());
+						iter.m_index = GSCAST(_SizeType)(p - this->front_ptr());
 					}
 				}
 				return iter;
@@ -374,7 +374,7 @@ namespace GAIA
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
-						iter.m_index = (_SizeType)(p - this->front_ptr());
+						iter.m_index = GSCAST(_SizeType)(p - this->front_ptr());
 					}
 				}
 				return iter;

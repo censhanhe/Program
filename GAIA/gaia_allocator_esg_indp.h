@@ -19,7 +19,7 @@ namespace GAIA
 
 				GAIA::GVOID* pTemp = new GAIA::U8[uSize + HEAP_BUFFER_HEADERSIZE];
 				*(GAIA::UM*)pTemp = uSize;
-				*(GAIA::U16*)((GAIA::U8*)pTemp + sizeof(GAIA::UM)) = (GAIA::U16)GINVALID;
+				*GRCAST(GAIA::U16*)(GSCAST(GAIA::U8*)(pTemp) + sizeof(GAIA::UM)) = (GAIA::U16)GINVALID;
 				return (GAIA::U8*)pTemp + sizeof(GAIA::UM) + sizeof(GAIA::U16);
 			}
 			else
@@ -73,7 +73,7 @@ namespace GAIA
 					{
 						GAIA::U8* pTemp = (GAIA::U8*)newobref.buf + uSectionPatchSize * x;
 						*(GAIA::UM*)pTemp = uSectionPatchSize;
-						*(GAIA::U16*)(pTemp + sizeof(GAIA::UM)) = uOriginBufferIndex;
+						*GRCAST(GAIA::U16*)(pTemp + sizeof(GAIA::UM)) = uOriginBufferIndex;
 						this->push(pTemp, newobref.freestack, newobref.uFreeStackSize, newobref.uFreeStackCapacity);
 					}
 					pRet = newobref.freestack[newobref.uFreeStackSize - 1];
@@ -148,7 +148,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::memory_size(GAIA::GVOID* p)
 		{
-			return *GRCAST(GAIA::UM*)((GAIA::U8*)p - sizeof(GAIA::UM) - sizeof(GAIA::U16));
+			return *GRCAST(GAIA::UM*)(GSCAST(GAIA::U8*)(p) - sizeof(GAIA::UM) - sizeof(GAIA::U16));
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorESG::capacity()
 		{

@@ -28,16 +28,16 @@ namespace GAIA
 			time_t t;
 			time(&t);
 			struct tm* pTM = localtime(&t);
-			y = (GAIA::U16)(pTM->tm_year + 1900);
-			mo = (GAIA::U8)(pTM->tm_mon + 1);
-			d = (GAIA::U8)pTM->tm_mday;
-			h = (GAIA::U8)pTM->tm_hour;
-			mi = (GAIA::U8)pTM->tm_min;
-			sec = (GAIA::U8)pTM->tm_sec;
+			y = GSCAST(GAIA::U16)(pTM->tm_year + 1900);
+			mo = GSCAST(GAIA::U8)(pTM->tm_mon + 1);
+			d = GSCAST(GAIA::U8)(pTM->tm_mday);
+			h = GSCAST(GAIA::U8)(pTM->tm_hour);
+			mi = GSCAST(GAIA::U8)(pTM->tm_min);
+			sec = GSCAST(GAIA::U8)(pTM->tm_sec);
 			timeval tv;
 			gettimeofday(&tv, GNULL);
-			msec = (GAIA::U16)(tv.tv_usec / 1000);
-			usec = (GAIA::U16)(tv.tv_usec % 1000);
+			msec = GSCAST(GAIA::U16)(tv.tv_usec / 1000);
+			usec = GSCAST(GAIA::U16)(tv.tv_usec % 1000);
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 clock_time()

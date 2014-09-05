@@ -87,7 +87,7 @@ namespace GAIA
 				if(m_pThread != GNULL)
 				{
 					pthread_join(*(pthread_t*)m_pThread, GNULL);
-					delete (pthread_t*)(const_cast<Thread*>(this))->m_pThread;
+					delete GSCAST(pthread_t*)((const_cast<Thread*>(this))->m_pThread);
 					(const_cast<Thread*>(this))->m_pThread = GNULL;
 					(const_cast<Thread*>(this))->m_state = THREAD_STATE_INVALID;
 					return GAIA::True;

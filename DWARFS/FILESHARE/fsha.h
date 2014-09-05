@@ -255,7 +255,7 @@ namespace DWARFS_FSHA
 			/* Read name map list. */
 			{
 				for(__NameMapType::it it = m_names.front_it(); !it.empty(); ++it)
-					m_namespool.release((__NameMapPool::_datatype*)(*it));
+					m_namespool.release(GSCAST(__NameMapPool::_datatype*)(*it));
 				m_names.clear();
 				__NameMapType::_sizetype size;
 				sr >> size;
@@ -398,7 +398,7 @@ namespace DWARFS_FSHA
 			FILE_LIST_LOG("Build file name's string token list...");
 			{
 				for(__NameMapType::it it = m_names.front_it(); !it.empty(); ++it)
-					m_namespool.release((__NameMapPool::_datatype*)(*it));
+					m_namespool.release(GSCAST(__NameMapPool::_datatype*)(*it));
 				m_names.clear();
 				m_names.reserve(restree.catagory_count(restree.root()));
 				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
@@ -1881,7 +1881,7 @@ namespace DWARFS_FSHA
 				}
 				else if(e + 1 == src.s)
 				{
-					if(src.ss == 0 && (SUBCHUNKINDEX)(ee + 1) == 0)
+					if(src.ss == 0 && GSCAST(SUBCHUNKINDEX)(ee + 1) == 0)
 						return GAIA::True;
 				}
 				return GAIA::False;
@@ -2668,7 +2668,7 @@ namespace DWARFS_FSHA
 					GAIA::N32 nCount = m_RequestMsgTemp.write_size() - sizeof(na) - sizeof(MSG_R_FILE) - sizeof(REQFILECOUNTTYPE);
 					nCount /= sizeof(FILEID) + sizeof(CHUNKINDEX);
 					GAIA_AST(nCount < 256);
-					*(REQFILECOUNTTYPE*)(m_RequestMsgTemp.front_ptr() + sizeof(na) + sizeof(MSG_R_FILE)) = (REQFILECOUNTTYPE)nCount;
+					*GSCAST(REQFILECOUNTTYPE*)(m_RequestMsgTemp.front_ptr() + sizeof(na) + sizeof(MSG_R_FILE)) = GSCAST(REQFILECOUNTTYPE)(nCount);
 					m_statistics.uRequestFileCount += nCount;
 					this->Send(m_RequestMsgTemp.front_ptr(), m_RequestMsgTemp.write_size());
 					m_RequestMsgTemp.clear();
@@ -2937,7 +2937,7 @@ namespace DWARFS_FSHA
 				m_prt << "FrameCount = " << m_statistics.uFrameCount << "(" << m_statistics.uFrameCount - m_statistics_last.uFrameCount << ")" << "\n";
 				m_prt << "ValidFrameCount = " << m_statistics.uValidFrameCount << "(" << m_statistics.uValidFrameCount - m_statistics_last.uValidFrameCount << ")" << "\n";
 				m_prt << "\n";
-				m_prt << "TotalCmplFileCount = " << m_statistics.uTotalCmplFileCount << "(" << (GAIA::F64)m_statistics.uTotalCmplFileCount / (GAIA::F64)(m_filelist.GetFileCount() * m_links.size()) << ")" << "\n";
+				m_prt << "TotalCmplFileCount = " << m_statistics.uTotalCmplFileCount << "(" << GSCAST(GAIA::F64)(m_statistics.uTotalCmplFileCount) / GSCAST(GAIA::F64)(m_filelist.GetFileCount() * m_links.size()) << ")" << "\n";
 				m_prt << "JumpFileCount = " << m_statistics.uJumpFileCount << "(" << m_statistics.uJumpFileCount - m_statistics_last.uJumpFileCount << ")" << "\n";
 				m_prt << "BeJumpFileCount = " << m_statistics.uBeJumpFileCount << "(" << m_statistics.uBeJumpFileCount - m_statistics_last.uBeJumpFileCount << ")" << "\n";
 				m_prt << "CRCCheckFailedCount = " << m_statistics.uCRCCheckFailedCount << "(" << m_statistics.uCRCCheckFailedCount - m_statistics_last.uCRCCheckFailedCount << ")" << "\n";
@@ -3144,14 +3144,14 @@ namespace DWARFS_FSHA
 			else if(CMD(CMD_CMPL))
 			{
 				if(listPart.size() == 3)
-					this->SetFileCmpl((FILEID)listPart[1], (GAIA::BL)(GAIA::N32)listPart[2]);
+					this->SetFileCmpl(GSCAST(FILEID)(listPart[1]), GSCAST(GAIA::BL)(GSCAST(GAIA::N32)(listPart[2])));
 				else
 					CMDFAILED;
 			}
 			else if(CMD(CMD_CMPLALL))
 			{
 				if(listPart.size() == 2)
-					this->SetAllFileCmpl((GAIA::BL)(GAIA::N32)listPart[1]);
+					this->SetAllFileCmpl(GSCAST(GAIA::BL)(GSCAST(GAIA::N32)(listPart[1])));
 				else
 					CMDFAILED;
 			}
@@ -3173,7 +3173,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 2)
 				{
 					m_uSequenceRequestIndex = 0;
-					this->EnableSequenceRequest((GAIA::BL)(GAIA::N32)listPart[1]);
+					this->EnableSequenceRequest(GSCAST(GAIA::BL)(GSCAST(GAIA::N32)(listPart[1])));
 				}
 				else
 					CMDFAILED;
@@ -3212,9 +3212,9 @@ namespace DWARFS_FSHA
 						m_prt << "[" << nIndex++ << "] FID=" << fr.fid <<
 							" Size=" << fsize <<
 							" CmplSize=" << fcmplsize <<
-							" UserReqTime=" << (GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 <<
-							" FirstReqTime=" << (GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 <<
-							" LastActiveTime=" << (GAIA::F64)(uCurrentTime - fr.uLastActiveTime) * 0.001 * 0.001 << "\n";
+							" UserReqTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 <<
+							" FirstReqTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 <<
+							" LastActiveTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uLastActiveTime) * 0.001 * 0.001 << "\n";
 						++it;
 					}
 				}
@@ -3255,9 +3255,9 @@ namespace DWARFS_FSHA
 						m_prt << "[" << nIndex++ << "] FID=" << fr.fid <<
 							" Size=" << fsize <<
 							" CmplSize=" << fcmplsize <<
-							" UserReqTime=" << (GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 <<
-							" FirstReqTime=" << (GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 <<
-							" LastActiveTime=" << (GAIA::F64)(uCurrentTime - fr.uLastActiveTime) * 0.001 * 0.001 << "\n";
+							" UserReqTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 <<
+							" FirstReqTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 <<
+							" LastActiveTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uLastActiveTime) * 0.001 * 0.001 << "\n";
 						++it;
 					}
 				}
@@ -3910,7 +3910,7 @@ namespace DWARFS_FSHA
 							}
 							while(uFileSize >= sizeof(GAIA::U8))
 							{
-								file << (GAIA::U8)(x % 256);
+								file << GSCAST(GAIA::U8)(x % 256);
 								uFileSize -= sizeof(GAIA::U8);
 							}
 							file.Flush();
@@ -6267,7 +6267,7 @@ namespace DWARFS_FSHA
 				FileReq* pFR = m_reqeds.find(fr);
 				if(pFR != GNULL)
 				{
-					GAIA::F64 fTime = (GAIA::F64)(GAIA::TIME::tick_time() - pFR->uFirstReqTime) * 0.001 * 0.001;
+					GAIA::F64 fTime = GSCAST(GAIA::F64)(GAIA::TIME::tick_time() - pFR->uFirstReqTime) * 0.001 * 0.001;
 					if(fTime > m_perf.fMaxFileCmplTime)
 						m_perf.fMaxFileCmplTime = fTime;
 					if(fTime < m_perf.fMinFileCmplTime)

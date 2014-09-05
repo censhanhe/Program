@@ -71,7 +71,7 @@ namespace PROM
 					GAIA::U64 uStartTick = GAIA::TIME::tick_time();
 					PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, prt, errs);
 					GAIA::U64 uEndTick = GAIA::TIME::tick_time();
-					prt << "\t\tTimeLost : " << (GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
+					prt << "\t\tTimeLost : " << GSCAST(GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
 					if(pNewPLC == GNULL)
 						PROM_RAISE_FATALERROR(101);
 					else
@@ -118,7 +118,7 @@ namespace PROM
 					GAIA::U64 uStartTick = GAIA::TIME::tick_time();
 					PipelineContext* pNewPLC = pTempPL->Execute(plc_list.front_ptr(), plc_list.size(), prt, errs);
 					GAIA::U64 uEndTick = GAIA::TIME::tick_time();
-					prt << "\t\tTimeLost : " << (GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
+					prt << "\t\tTimeLost : " << GSCAST(GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
 					if(pNewPLC == GNULL)
 						PROM_RAISE_FATALERROR(101);
 					else

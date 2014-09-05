@@ -36,7 +36,7 @@ namespace GAIA
 		}
 		template<typename _DataType> _DataType xfloor(const _DataType& src)
 		{
-			_DataType tinteger = (_DataType)(GAIA::N64)src;
+			_DataType tinteger = GSCAST(_DataType)(GSCAST(GAIA::N64)(src));
 			_DataType t = src - tinteger;
 			if(t == (_DataType)0)
 				return src;
@@ -44,7 +44,7 @@ namespace GAIA
 		}
 		template<typename _DataType> _DataType xceil(const _DataType& src)
 		{
-			_DataType tinteger = (_DataType)(GAIA::N64)src;
+			_DataType tinteger = GSCAST(_DataType)((GAIA::N64)src);
 			_DataType t = src - tinteger;
 			if(t == (_DataType)0)
 				return src;

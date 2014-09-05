@@ -217,7 +217,7 @@ namespace GAIATEST
 			GTLINE2("String operator GAIA::F64 failed!");
 			++nRet;
 		}
-		chs = (GAIA::N32)(GAIA::BL)GAIA::True;
+		chs = GSCAST(GAIA::N32)(GSCAST(GAIA::BL)(GAIA::True));
 		if(chs != _T("1"))
 		{
 			GTLINE2("String construct from GAIA::BL(GAIA::True) failed!");
@@ -228,7 +228,7 @@ namespace GAIATEST
 			GTLINE2("String operator GAIA::BL failed!");
 			++nRet;
 		}
-		chs = (GAIA::N32)(GAIA::BL)GAIA::False;
+		chs = GSCAST(GAIA::N32)(GSCAST(GAIA::BL)(GAIA::False));
 		if(chs != _T("0"))
 		{
 			GTLINE2("String construct from GAIA::BL(GAIA::False) failed!");

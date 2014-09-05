@@ -295,7 +295,7 @@ namespace GAIA
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
-						iter.m_index = (_SizeType)(p - this->front_ptr());
+						iter.m_index = GSCAST(_SizeType)(p - this->front_ptr());
 					}
 				}
 				return iter;
@@ -309,7 +309,7 @@ namespace GAIA
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
-						iter.m_index = (_SizeType)(p - this->front_ptr());
+						iter.m_index = GSCAST(_SizeType)(p - this->front_ptr());
 					}
 				}
 				return iter;
@@ -323,7 +323,7 @@ namespace GAIA
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
-						iter.m_index = (_SizeType)(p - this->front_ptr());
+						iter.m_index = GSCAST(_SizeType)(p - this->front_ptr());
 					}
 				}
 				return iter;
@@ -337,7 +337,7 @@ namespace GAIA
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
-						iter.m_index = (_SizeType)(p - this->front_ptr());
+						iter.m_index = GSCAST(_SizeType)(p - this->front_ptr());
 					}
 				}
 				return iter;

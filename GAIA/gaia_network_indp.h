@@ -336,10 +336,10 @@ namespace GAIA
 						in_addr* addr = (in_addr*)pHostEnt->h_addr_list[nIndex];
 						IP ip;
 						ip.Invalid();
-						ip.u0 = (GAIA::U8)((GAIA::U32)((*(GAIA::U32*)addr) & 0x000000FF) >> 0);
-						ip.u1 = (GAIA::U8)((GAIA::U32)((*(GAIA::U32*)addr) & 0x0000FF00) >> 8);
-						ip.u2 = (GAIA::U8)((GAIA::U32)((*(GAIA::U32*)addr) & 0x00FF0000) >> 16);
-						ip.u3 = (GAIA::U8)((GAIA::U32)((*(GAIA::U32*)addr) & 0xFF000000) >> 24);
+						ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)((*(GAIA::U32*)addr) & 0x000000FF) >> 0);
+						ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)((*(GAIA::U32*)addr) & 0x0000FF00) >> 8);
+						ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)((*(GAIA::U32*)addr) & 0x00FF0000) >> 16);
+						ip.u3 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)((*(GAIA::U32*)addr) & 0xFF000000) >> 24);
 						listResult.push_back(ip);
 						++nIndex;
 					}
@@ -505,10 +505,10 @@ namespace GAIA
 					{
 						h->m_h = newsock;
 						h->m_addr_self = m_desc.addr;
-						h->m_conndesc.addr.ip.u0 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x000000FF) >> 0);
-						h->m_conndesc.addr.ip.u1 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x0000FF00) >> 8);
-						h->m_conndesc.addr.ip.u2 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0x00FF0000) >> 16);
-						h->m_conndesc.addr.ip.u3 = (GAIA::U8)((GAIA::U32)(addrnew.sin_addr.s_addr & 0xFF000000) >> 24);
+						h->m_conndesc.addr.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(addrnew.sin_addr.s_addr & 0x000000FF) >> 0);
+						h->m_conndesc.addr.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(addrnew.sin_addr.s_addr & 0x0000FF00) >> 8);
+						h->m_conndesc.addr.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(addrnew.sin_addr.s_addr & 0x00FF0000) >> 16);
+						h->m_conndesc.addr.ip.u3 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(addrnew.sin_addr.s_addr & 0xFF000000) >> 24);
 						h->m_addr_self.uPort = ntohs(addrnew.sin_port);
 						this->Accept(*h);
 						h->Release();
@@ -686,10 +686,10 @@ namespace GAIA
 									else
 									{
 										NetworkAddress na_recvfrom;
-										na_recvfrom.ip.u0 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
-										na_recvfrom.ip.u1 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
-										na_recvfrom.ip.u2 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
-										na_recvfrom.ip.u3 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
+										na_recvfrom.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
+										na_recvfrom.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
+										na_recvfrom.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
+										na_recvfrom.ip.u3 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
 										na_recvfrom.uPort = ntohs(recvfrom_addr.sin_port);
 										pHandle->LostConnection(na_recvfrom, GAIA::True);
 									}
@@ -715,10 +715,10 @@ namespace GAIA
 									else
 									{
 										NetworkAddress na_recvfrom;
-										na_recvfrom.ip.u0 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
-										na_recvfrom.ip.u1 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
-										na_recvfrom.ip.u2 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
-										na_recvfrom.ip.u3 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
+										na_recvfrom.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
+										na_recvfrom.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
+										na_recvfrom.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
+										na_recvfrom.ip.u3 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
 										na_recvfrom.uPort = ntohs(recvfrom_addr.sin_port);
 										pHandle->LostConnection(na_recvfrom, GAIA::True);
 									}
@@ -743,10 +743,10 @@ namespace GAIA
 								else
 								{
 									NetworkAddress na_recvfrom;
-									na_recvfrom.ip.u0 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
-									na_recvfrom.ip.u1 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
-									na_recvfrom.ip.u2 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
-									na_recvfrom.ip.u3 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
+									na_recvfrom.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
+									na_recvfrom.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
+									na_recvfrom.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
+									na_recvfrom.ip.u3 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
 									na_recvfrom.uPort = ntohs(recvfrom_addr.sin_port);
 									pHandle->LostConnection(na_recvfrom, GAIA::True);
 								}
@@ -759,13 +759,13 @@ namespace GAIA
 								else
 								{
 									NetworkAddress na;
-									na.ip.u0 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
-									na.ip.u1 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
-									na.ip.u2 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
-									na.ip.u3 = (GAIA::U8)((GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
+									na.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
+									na.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
+									na.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
+									na.ip.u3 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
 									na.uPort = ntohs(recvfrom_addr.sin_port);
 									GAIA::ALGORITHM::xmemcpy(m_buf.front_ptr(), &na, sizeof(na));
-									this->Receive(*pHandle, m_buf.front_ptr(), (GAIA::U32)(nRecv + sizeof(NetworkAddress)));
+									this->Receive(*pHandle, m_buf.front_ptr(), GSCAST(GAIA::U32)(nRecv + sizeof(NetworkAddress)));
 								}
 								bExistWork = GAIA::True;
 								if(nRecv < m_buf.write_size())
