@@ -29,7 +29,7 @@ namespace GAIA
 			GINL GAIA::GVOID normalize(){_DataType t = this->length(); x /= t; y /= t; z /= t; w = (_DataType)1;}
 			GINL GAIA::BL isnormalized() const{return this->lengthsq() == (_DataType)1;}
 			GINL GAIA::BL iszero() const{return x == (_DataType)0 && y == (_DataType)0 && z == (_DataType)0 && w == (_DataType)0;}
-			GINL GAIA::BL isfinite() const{return GAIA::MATH::xfinite(x) && GAIA::MATH::xfinite(y) && GAIA::MATH::xfinite(z);}
+			GINL GAIA::BL isfinited() const{return GAIA::MATH::xfinite(x) && GAIA::MATH::xfinite(y) && GAIA::MATH::xfinite(z);}
 			GINL GAIA::GVOID inverse(){x = (_DataType)1 / x; y = (_DataType)1 / y; z = (_DataType)1 / z; w = (_DataType)1 / w;}
 			template<typename _ParamDataType> _DataType dot(const GAIA::MATH::VEC4<_ParamDataType>& v) const{return (x * v.x + y * v.y + z * v.z) * w * v.w;}
 			template<typename _ParamDataType> __MyType num(const GAIA::MATH::VEC4<_ParamDataType>& v) const{__MyType ret; ret.x = x * v.x; ret.y = y * v.y; ret.z = z * v.z; ret.w = w * v.w; return ret;}

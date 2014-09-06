@@ -402,15 +402,15 @@ namespace GAIATEST
 			GTLINE2("VEC2 operator = value error!");
 			++nRet;
 		}
-		if(!rv.isfinite())
+		if(!rv.isfinited())
 		{
-			GTLINE2("VEC2 isfinite error!");
+			GTLINE2("VEC2 isfinited error!");
 			++nRet;
 		}
 		rv /= 0.0F;
-		if(rv.isfinite())
+		if(rv.isfinited())
 		{
-			GTLINE2("VEC2 isfinite error!");
+			GTLINE2("VEC2 isfinited error!");
 			++nRet;
 		}
 

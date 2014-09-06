@@ -165,15 +165,15 @@ namespace GAIATEST
 			GTLINE2("ARGB operator = value error!");
 			++nRet;
 		}
-		if(!argb.isfinite())
+		if(!argb.isfinited())
 		{
-			GTLINE2("ARGB isfinite error!");
+			GTLINE2("ARGB isfinited error!");
 			++nRet;
 		}
 		argb /= 0.0F;
-		if(argb.isfinite())
+		if(argb.isfinited())
 		{
-			GTLINE2("ARGB isfinite error!");
+			GTLINE2("ARGB isfinited error!");
 			++nRet;
 		}
 

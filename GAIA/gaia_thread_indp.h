@@ -19,7 +19,7 @@ namespace GAIA
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return GSCAST(GAIA::UM)(::GetCurrentThreadId());
 		#else
-			return GSCAST(GAIA::UM)(pthread_self());
+			return GRCAST(GAIA::UM)(pthread_self());
 		#endif
 		}
 	#if GAIA_OS == GAIA_OS_WINDOWS

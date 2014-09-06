@@ -19,7 +19,7 @@ namespace GAIA
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::CoCreateGuid(GRCAST(GUID*)(u));
 		#else
-			uuid_generate(*GSCAST(uuid_t*)(u));
+			uuid_generate(*GRCAST(uuid_t*)(u));
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID RID64::uuid()

@@ -20,7 +20,7 @@ namespace GAIA
 			GINL Coord(const __MyType& src){this->operator = (src);}
 			template<typename _ParamType> Coord(const _ParamType& t){this->operator = (t);}
 			GINL ~Coord(){}
-			GINL GAIA::BL isfinite() const{return GAIA::MATH::xfinite(m_offset) && GAIA::MATH::xfinite(m_block);}
+			GINL GAIA::BL isfinited() const{return GAIA::MATH::xfinite(m_offset) && GAIA::MATH::xfinite(m_block);}
 			GINL const _OffsetType& offset() const{return m_offset;}
 			GINL const _BlockType& block() const{return m_block;}
 			GINL GAIA::GVOID offset(const _OffsetType& offset){m_offset = offset;}

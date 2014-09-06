@@ -454,15 +454,15 @@ namespace GAIATEST
 			GTLINE2("VEC4 operator = value error!");
 			++nRet;
 		}
-		if(!rv.isfinite())
+		if(!rv.isfinited())
 		{
-			GTLINE2("VEC4 isfinite error!");
+			GTLINE2("VEC4 isfinited error!");
 			++nRet;
 		}
 		rv /= 0.0F;
-		if(rv.isfinite())
+		if(rv.isfinited())
 		{
-			GTLINE2("VEC4 isfinite error!");
+			GTLINE2("VEC4 isfinited error!");
 			++nRet;
 		}
 

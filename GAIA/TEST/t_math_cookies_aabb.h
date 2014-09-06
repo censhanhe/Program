@@ -293,15 +293,15 @@ namespace GAIATEST
 			GTLINE2("AABB operator = value error!");
 			++nRet;
 		}
-		if(!aabb.isfinite())
+		if(!aabb.isfinited())
 		{
-			GTLINE2("AABB isfinite error!");
+			GTLINE2("AABB isfinited error!");
 			++nRet;
 		}
 		aabb.pmax /= 0.0F;
-		if(aabb.isfinite())
+		if(aabb.isfinited())
 		{
-			GTLINE2("AABB isfinite error!");
+			GTLINE2("AABB isfinited error!");
 			++nRet;
 		}
 

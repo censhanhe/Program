@@ -52,18 +52,18 @@ namespace GAIA
 				GINL GAIA::BL operator == (const Node& src) const
 				{
 					GAIA_AST(m_acc == src.m_acc);
-					return GSCAST(_DataType)(*this) == GSCAST(_DataType)src;
+					return GSCAST(_DataType)(*this) == GSCAST(_DataType)(src);
 				}
 				GINL GAIA::BL operator != (const Node& src) const{return !this->operator == (src);}
 				GINL GAIA::BL operator >= (const Node& src) const
 				{
 					GAIA_AST(m_acc == src.m_acc);
-					return GSCAST(_DataType)(*this) >= GSCAST(_DataType)src;
+					return GSCAST(_DataType)(*this) >= GSCAST(_DataType)(src);
 				}
 				GINL GAIA::BL operator <= (const Node& src) const
 				{
 					GAIA_AST(m_acc == src.m_acc);
-					return GSCAST(_DataType)(*this) <= GSCAST(_DataType)src;
+					return GSCAST(_DataType)(*this) <= GSCAST(_DataType)(src);
 				}
 				GINL GAIA::BL operator > (const Node& src) const{return !this->operator <= (src);}
 				GINL GAIA::BL operator < (const Node& src) const{return !this->operator >= (src);}

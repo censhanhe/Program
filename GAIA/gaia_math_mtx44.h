@@ -34,7 +34,7 @@ namespace GAIA
 					return GAIA::True;
 				return GAIA::False;
 			}
-			GINL GAIA::BL isfinite() const
+			GINL GAIA::BL isfinited() const
 			{
 				return GAIA::MATH::xfinite(m[0][0]) && 
 					GAIA::MATH::xfinite(m[0][1]) && 

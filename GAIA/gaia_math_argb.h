@@ -37,7 +37,7 @@ namespace GAIA
 			GINL _DataType lengthsq() const{return r * r + g * g + b * b;}
 
 			GINL GAIA::BL iszero() const{return a == (_DataType)0 && r == (_DataType)0 && g == (_DataType)0 && b == (_DataType)0;}
-			GINL GAIA::BL isfinite() const{return GAIA::MATH::xfinite(a) && GAIA::MATH::xfinite(r) && GAIA::MATH::xfinite(g) && GAIA::MATH::xfinite(b);}
+			GINL GAIA::BL isfinited() const{return GAIA::MATH::xfinite(a) && GAIA::MATH::xfinite(r) && GAIA::MATH::xfinite(g) && GAIA::MATH::xfinite(b);}
 
 			GINL _DataType avg_rgb() const{return GAIA::MATH::xavg3(r, g, b);}
 			GINL _DataType avg_argb() const{return GAIA::MATH::xavg4(a, r, g, b);}

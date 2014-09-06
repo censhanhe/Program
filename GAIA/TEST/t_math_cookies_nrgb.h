@@ -144,15 +144,15 @@ namespace GAIATEST
 			GTLINE2("NRGB operator = value error!");
 			++nRet;
 		}
-		if(!nrgb.isfinite())
+		if(!nrgb.isfinited())
 		{
-			GTLINE2("NRGB isfinite error!");
+			GTLINE2("NRGB isfinited error!");
 			++nRet;
 		}
 		nrgb /= 0.0F;
-		if(nrgb.isfinite())
+		if(nrgb.isfinited())
 		{
-			GTLINE2("NRGB isfinite error!");
+			GTLINE2("NRGB isfinited error!");
 			++nRet;
 		}
 

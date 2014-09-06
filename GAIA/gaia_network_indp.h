@@ -284,7 +284,7 @@ namespace GAIA
 								}
 								else
 								{
-									NetworkAddress& na = *GSCAST(NetworkAddress*)(r.p);
+									NetworkAddress& na = *GRCAST(NetworkAddress*)(r.p);
 									this->LostConnection(na, GAIA::False);
 								}
 								break;
