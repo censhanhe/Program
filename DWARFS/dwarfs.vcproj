@@ -348,6 +348,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MISC\express.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MISC\sendmail.h"
 				>
 			</File>
@@ -387,6 +391,10 @@
 				RelativePath=".\TEST\t_textline.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="EXPRESS"
+			>
 		</Filter>
 	</Files>
 	<Globals>

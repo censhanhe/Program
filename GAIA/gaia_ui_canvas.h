@@ -9,7 +9,7 @@ namespace GAIA
 		{
 		public:
 			typedef GAIA::MATH::VEC2<GAIA::N32> __PosType;
-			typedef __PosType __SizeType;
+			typedef GAIA::MATH::VEC2<GAIA::N32> __SizeType;
 		public:
 			class CanvasStyle
 			{
