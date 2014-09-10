@@ -18,7 +18,7 @@ namespace DWARFS_MISC
 		GINL GAIA::BL delete_formula(const GAIA::SIZE& index);
 		GINL GAIA::BL delete_formula_all();
 		GINL GAIA::SIZE get_formula_by_name(const _StringType* pszName) const;
-		GINL GAIA::BL calculate(const _StringType* pszName, __StringType* pResult, GAIA::SIZE& uResuleSize);
+		GINL GAIA::BL calculate(const _StringType* pszName, _StringType* pResult, GAIA::SIZE& uResuleSize);
 
 	private:
 	};

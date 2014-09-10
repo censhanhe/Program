@@ -22,7 +22,9 @@
 #include "../MISC/textfile.h"
 #include "../MISC/textline.h"
 #include "../MISC/cmdparam.h"
-#include "../misc/sendmail.h"
+#include "../MISC/sendmail.h"
+#include "../MISC/express.h"
+#include "../MISC/portscanner.h"
 #include "t_header.h"
 
 #if GAIA_OS == GAIA_OS_WINDOWS
