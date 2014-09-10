@@ -998,6 +998,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\gaia_dataphase_streamxml.h"
+						>
+					</File>
+					<File
 						RelativePath=".\gaia_dataphase_tdiff.h"
 						>
 					</File>

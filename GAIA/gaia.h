@@ -142,6 +142,7 @@
 
 #include	"gaia_container_accesser.h"
 
+#include	"gaia_dataphase_streamxml.h"
 #include	"gaia_dataphase_xml.h"
 #include 	"gaia_dataphase_bdiff.h"
 #include 	"gaia_dataphase_tdiff.h"
