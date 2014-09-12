@@ -22,22 +22,22 @@ namespace GAIA
 			GINL GAIA::BL WriteNode(const __StringType& strNode);
 			GINL GAIA::BL WriteNodeEnd();
 			GINL GAIA::BL WriteAttr(const __StringType& strAttrName, const __StringType& strAttrValue);
-			GINL GAIA::SIZE GetNodeCount() const;
-			GINL const _StringType* GetNodeName(const GAIA::SIZE& uNode) const;
-			GINL GAIA::BL SetNodeName(const GAIA::SIZE& uNode, const _StringType* pNodeName);
-			GINL GAIA::SIZE AddNode(const _StringType* pNodeName);
-			GINL GAIA::BL DeleteNode(const GAIA::SIZE& uNode);
+			GINL _DataSizeType GetNodeCount() const;
+			GINL const _StringType* GetNodeName(const _DataSizeType& uNode) const;
+			GINL GAIA::BL SetNodeName(const _DataSizeType& uNode, const _StringType* pNodeName);
+			GINL _DataSizeType AddNode(const _StringType* pNodeName);
+			GINL GAIA::BL DeleteNode(const _DataSizeType& uNode);
 			GINL GAIA::BL DeleteNodeAll();
-			GINL GAIA::SIZE GetNodeByName(const _StringType* pNodeName);
-			GINL GAIA::SIZE GetAttrCount(const GAIA::SIZE& uNode) const;
-			GINL const _StringType* GetAttrName(const GAIA::SIZE& uNode, const GAIA::SIZE& uAttr) const;
-			GINL const _StringType* GetAttrValue(const GAIA::SIZE& uNode, const GAIA::SIZE& uAttr) const;
-			GINL GAIA::BL SetAttrName(const GAIA::SIZE& uNode, const GAIA::SIZE& uAttr, const _StringType* pAttrName);
-			GINL GAIA::BL SetAttrValue(const GAIA::SIZE& uNode, const GAIA::SIZE& uAttr, const _StringType* pAttrValue);
-			GINL GAIA::SIZE AddAttr(const GAIA::SIZE& uNode, const _StringType* pAttrName, const _StringType* pAttrValue);
-			GINL GAIA::BL DeleteAttr(const GAIA::SIZE& uNode, const GAIA::SIZE& uAttr);
-			GINL GAIA::BL DeleteAttrAll(const GAIA::SIZE& uNode);
-			GINL GAIA::SIZE GetAttrByName(const GAIA::SIZE& uNode, const _StringType* pAttrName);
+			GINL _DataSizeType GetNodeByName(const _StringType* pNodeName);
+			GINL _DataSizeType GetAttrCount(const _DataSizeType& uNode) const;
+			GINL const _StringType* GetAttrName(const _DataSizeType& uNode, const _DataSizeType& uAttr) const;
+			GINL const _StringType* GetAttrValue(const _DataSizeType& uNode, const _DataSizeType& uAttr) const;
+			GINL GAIA::BL SetAttrName(const _DataSizeType& uNode, const _DataSizeType& uAttr, const _StringType* pAttrName);
+			GINL GAIA::BL SetAttrValue(const _DataSizeType& uNode, const _DataSizeType& uAttr, const _StringType* pAttrValue);
+			GINL _DataSizeType AddAttr(const _DataSizeType& uNode, const _StringType* pAttrName, const _StringType* pAttrValue);
+			GINL GAIA::BL DeleteAttr(const _DataSizeType& uNode, const _DataSizeType& uAttr);
+			GINL GAIA::BL DeleteAttrAll(const _DataSizeType& uNode);
+			GINL _DataSizeType GetAttrByName(const _DataSizeType& uNode, const _StringType* pAttrName);
 		private:
 			class Attr : public GAIA::Base
 			{
