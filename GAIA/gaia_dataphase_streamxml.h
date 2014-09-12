@@ -16,12 +16,6 @@ namespace GAIA
 			GINL GAIA::BL Save(GAIA::FILESYSTEM::FileBase& file) const;
 			GINL GAIA::BL Load(GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32>& buf);
 			GINL GAIA::BL Save(GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32>& buf) const;
-			GINL GAIA::BL BeginNodeRead(__StringType& strNode);
-			GINL GAIA::BL EndNodeRead();
-			GINL GAIA::BL ReadAttr(__StringType& strAttrName, __StringType& strAttrValue);
-			GINL GAIA::BL BeginNodeWrite(const __StringType& strNode);
-			GINL GAIA::BL EndNodeWrite();
-			GINL GAIA::BL WriteAttr(const __StringType& strAttrName, const __StringType& strAttrValue);
 		};
 	};
 };
