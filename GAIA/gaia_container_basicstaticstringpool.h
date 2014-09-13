@@ -99,7 +99,7 @@ namespace GAIA
 			};
 			typedef GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __DataListType;
 			typedef GAIA::CONTAINER::BasicSet<Node, _SizeType, _SizeType, _SizeIncreaserType> __NodeSetType;
-			typedef GAIA::CONTAINER::BasicVector<_DataType*, _SizeType, _SizeIncreaserType> __NodeListType; 
+			typedef GAIA::CONTAINER::BasicVector<Node, _SizeType, _SizeIncreaserType> __NodeListType; 
 		private:
 			__DataListType m_datalist;
 			__NodeSetType m_nodeset;
