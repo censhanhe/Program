@@ -20,26 +20,26 @@ namespace GAIA
 			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL _SizeType size() const{return m_nodelist.size();}
 			GINL _SizeType capacity() const{return m_nodelist.capacity();}
-			GINL GAIA::GVOID reserve(const _SizeType& size){this->destroy(); m_nodelist.reserve(size); m_freelist.reserve(size); m_nodeset.reserve(size);}
+			GINL GAIA::GVOID reserve(const _SizeType& size){this->destroy(); m_nodelist.reserve(size); m_freestack.reserve(size);}
 			GINL GAIA::GVOID clear()
 			{
 				this->destroy_content_all();
 				m_nodelist.clear();
-				m_freelist.clear();
+				m_freestack.clear();
 				m_nodeset.clear();
 			}
 			GINL GAIA::GVOID destroy()
 			{
 				this->destroy_content_all();
 				m_nodelist.destroy();
-				m_freelist.destroy();
+				m_freestack.destroy();
 				m_nodeset.destroy();
 			}
 			GINL _SizeType request(const _DataType* p)
 			{
 				GPCHR_NULLSTRPTR_RET(p, GNULL);
 				Node finder;
-				finder.p = p;
+				finder.data = GCCAST(_DataType*)(p);
 				Node* pFinded = m_nodeset.find(finder);
 				if(pFinded != GNULL)
 				{
@@ -47,15 +47,16 @@ namespace GAIA
 					return pFinded->index;
 				}
 				finder.refcounter = 1;
-				if(m_freelist.empty())
+				if(m_freestack.empty())
 				{
 					finder.index = m_nodelist.size();
 					m_nodelist.push_back(finder);
 				}
 				else
 				{
-					finder.index = m_freelist.top();
+					finder.index = m_freestack.back();
 					m_nodelist[finder.index] = finder;
+					m_freestack.pop_back();
 				}
 				m_nodeset.insert(finder);
 				return finder.index;
@@ -70,12 +71,20 @@ namespace GAIA
 				if(finder.refcounter == 0)
 				{
 					m_nodeset.erase(finder);
-					m_freelist.push(finder.index);
+					m_freestack.push_back(finder.index);
 				}
 				return GAIA::True;
 			}
 			GINL _SizeType string_size() const{return m_nodelist.size();}
 			GINL const _DataType* string(const _SizeType& index) const{return m_nodelist[index].data;}
+			GINL __MyType& operator = (const __MyType& src)
+			{
+				this->clear();
+				for(_SizeType x = 0; x < src.string_size(); ++x)
+					this->request(src.string(x));
+				return *this;
+			}
+			GAIA_CLASS_OPERATOR_COMPARE(m_nodeset, m_nodeset, __MyType);
 		private:
 			class Node
 			{
@@ -93,7 +102,7 @@ namespace GAIA
 				_RefCounterType refcounter;
 			};
 			typedef GAIA::CONTAINER::BasicVector<Node, _SizeType, _SizeIncreaserType> __NodeListType;
-			typedef GAIA::CONTAINER::BasicStack<_SizeType, _SizeType, _SizeIncreaserType> __FreeIndexListType;
+			typedef GAIA::CONTAINER::BasicStack<_SizeType, _SizeType, _SizeIncreaserType> __FreeIndexStackType;
 			typedef GAIA::CONTAINER::BasicSet<Node, _SizeType, _SizeType, _SizeIncreaserType> __NodeSetType;
 		private:
 			GINL GAIA::GVOID destroy_content_all()
@@ -108,7 +117,7 @@ namespace GAIA
 			}
 		private:
 			__NodeListType m_nodelist;
-			__FreeIndexListType m_freelist;
+			__FreeIndexStackType m_freestack;
 			__NodeSetType m_nodeset;
 		};
 	};

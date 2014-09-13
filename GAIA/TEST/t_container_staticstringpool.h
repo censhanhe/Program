@@ -9,6 +9,10 @@ namespace GAIATEST
 
 		typedef GAIA::CONTAINER::StaticStringPool<GAIA::TCH> __StaticStringPoolType;
 		__StaticStringPoolType sp, sp1;
+
+		__StaticStringPoolType::_sizetype s1;
+		__StaticStringPoolType::_sizetype s2;
+
 		if(!sp.empty())
 		{
 			GTLINE2("New StaticStringPool must been empty!");
@@ -103,8 +107,18 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool operator = cause operator < error!");
 			++nRet;
 		}
-		sp.request(_T("HelloWorld"));
-		sp.request(_T("HelloKitty"));
+		s1 = sp.request(_T("HelloWorld"));
+		if(GAIA::ALGORITHM::strcmp(sp.string(s1), _T("HelloWorld")) != 0)
+		{
+			GTLINE2("StaticStringPool request error!");
+			++nRet;
+		}
+		s2 = sp.request(_T("HelloKitty"));
+		if(GAIA::ALGORITHM::strcmp(sp.string(s2), _T("HelloKitty")) != 0)
+		{
+			GTLINE2("StaticStringPool request error!");
+			++nRet;
+		}
 		if(sp == sp1)
 		{
 			GTLINE2("StaticStringPool operator == error!");
@@ -135,8 +149,18 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool operator < error!");
 			++nRet;
 		}
-		sp1.request(_T("ABC"));
-		sp1.request(_T("EFG"));
+		s1 = sp1.request(_T("ABC"));
+		if(GAIA::ALGORITHM::strcmp(sp1.string(s1), _T("ABC")) != 0)
+		{
+			GTLINE2("StaticStringPool request error!");
+			++nRet;
+		}
+		s2 = sp1.request(_T("EFG"));
+		if(GAIA::ALGORITHM::strcmp(sp1.string(s2), _T("EFG")) != 0)
+		{
+			GTLINE2("StaticStringPool request error!");
+			++nRet;
+		}
 		if(sp == sp1)
 		{
 			GTLINE2("StaticStringPool operator == error!");
@@ -234,8 +258,18 @@ namespace GAIATEST
 			++nRet;
 		}
 		sp.clear();
-		__StaticStringPoolType::_sizetype s1 = sp.request(_T("HelloKitty"));
-		__StaticStringPoolType::_sizetype s2 = sp.request(_T("HelloKitty"));
+		s1 = sp.request(_T("HelloKitty"));
+		if(GAIA::ALGORITHM::strcmp(sp.string(s1), _T("HelloWorld")) != 0)
+		{
+			GTLINE2("StaticStringPool request error!");
+			++nRet;
+		}
+		s2 = sp.request(_T("HelloKitty"));
+		if(GAIA::ALGORITHM::strcmp(sp.string(s2), _T("HelloKitty")) != 0)
+		{
+			GTLINE2("StaticStringPool request error!");
+			++nRet;
+		}
 		if(s1 != s2)
 		{
 			GTLINE2("StaticStringPool same string must at same position!");

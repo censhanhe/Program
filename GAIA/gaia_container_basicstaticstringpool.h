@@ -53,12 +53,7 @@ namespace GAIA
 					this->request(src.string(x));
 				return *this;
 			}
-			GINL GAIA::BL operator == (const __MyType& src) const{return m_nodeset == src.m_nodeset;}
-			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
-			GINL GAIA::BL operator >= (const __MyType& src) const{return m_nodeset >= src.m_nodeset;}
-			GINL GAIA::BL operator <= (const __MyType& src) const{return m_nodeset <= src.m_nodeset;}
-			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
-			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
+			GAIA_CLASS_OPERATOR_COMPARE(m_nodeset, m_nodeset, __MyType);
 		private:
 			class Node : public GAIA::Base
 			{
