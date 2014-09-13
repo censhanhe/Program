@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CONTAINER
 	{
-		template<typename _DataType> class StaticStringPool : public GAIA::CONTAINER::BasicStaticStringPool<_DataType, GAIA::SIZE, GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
+		template<typename _DataType> class StaticStringPool : public GAIA::CONTAINER::BasicStaticStringPool<_DataType, GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
 	};
 };
 
