@@ -41,7 +41,10 @@ namespace GAIA
 					return finder.index;
 				}
 				else
+				{
+					m_datalist.resize(finder.offset);
 					return pFinded->index;
+				}
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
