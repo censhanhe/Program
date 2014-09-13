@@ -49,6 +49,8 @@
 #include "t_container_pool.h"
 #include "t_container_storage.h"
 #include "t_container_accesser.h"
+#include "t_container_stringpool.h"
+#include "t_container_staticstringpool.h"
 #include "t_container_cooperate.h"
 #include "t_locale.h"
 #include "t_namespace.h"
@@ -113,6 +115,8 @@ namespace GAIATEST
 			GTLINE1("Container: Graph test begin!"); nRet += t_graph(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Storage test begin!"); nRet += t_storage(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Accesser test begin!"); nRet += t_accesser(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: StringPool test begin!"); nRet += t_stringpool(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: StaticStringPool test begin!"); nRet += t_staticstringpool(file, prt); GTLINE1("End"); GTLINE("\t");	
 			GTLINE1("Container: Cooperate test begin!"); nRet += t_cooperate(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("Locale test begin!"); nRet += t_locale(file, prt); GTLINE1("End"); GTLINE("\t");
