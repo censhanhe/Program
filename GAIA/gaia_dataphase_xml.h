@@ -1,5 +1,5 @@
-#ifndef		__GAIA_DATA_ANALYZE_XML_H__
-#define		__GAIA_DATA_ANALYZE_XML_H__
+#ifndef		__GAIA_DATAPHASE_XML_H__
+#define		__GAIA_DATAPHASE_XML_H__
 
 namespace GAIA
 {
