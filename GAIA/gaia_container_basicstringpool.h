@@ -40,7 +40,7 @@ namespace GAIA
 				GPCHR_NULLSTRPTR_RET(p, GNULL);
 				Node finder;
 				finder.data = GCCAST(_DataType*)(p);
-				Node* pFinded = m_nodeset.find(finder);
+				NodeCmp* pFinded = m_nodeset.find(finder);
 				if(pFinded != GNULL)
 				{
 					++m_nodelist[pFinded->index].refcounter;
@@ -86,31 +86,37 @@ namespace GAIA
 			}
 			GAIA_CLASS_OPERATOR_COMPARE(m_nodeset, m_nodeset, __MyType);
 		private:
-			class Node
+			class NodeCmp : public GAIA::Base
 			{
 			public:
-				GINL Node& operator = (const Node& src){data = src.data; index = src.index; refcounter = src.refcounter; return *this;}
-				GINL GAIA::BL operator == (const Node& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGORITHM::strcmp(data, src.data) == 0;}
-				GINL GAIA::BL operator != (const Node& src) const{return !this->operator == (src);}
-				GINL GAIA::BL operator >= (const Node& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGORITHM::strcmp(data, src.data) >= 0;}
-				GINL GAIA::BL operator <= (const Node& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGORITHM::strcmp(data, src.data) <= 0;}
-				GINL GAIA::BL operator > (const Node& src) const{return !this->operator <= (src);}
-				GINL GAIA::BL operator < (const Node& src) const{return !this->operator >= (src);}
+				GINL NodeCmp& operator = (const NodeCmp& src){data = src.data; index = src.index; return *this;}
+				GINL GAIA::BL operator == (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGORITHM::strcmp(data, src.data) == 0;}
+				GINL GAIA::BL operator != (const NodeCmp& src) const{return !this->operator == (src);}
+				GINL GAIA::BL operator >= (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGORITHM::strcmp(data, src.data) >= 0;}
+				GINL GAIA::BL operator <= (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGORITHM::strcmp(data, src.data) <= 0;}
+				GINL GAIA::BL operator > (const NodeCmp& src) const{return !this->operator <= (src);}
+				GINL GAIA::BL operator < (const NodeCmp& src) const{return !this->operator >= (src);}
 			public:
 				_DataType* data;
 				_SizeType index;
+			};
+			class Node : public NodeCmp
+			{
+			public:
+				GINL Node& operator = (const Node& src){this->NodeCmp::operator = (src); refcounter = src.refcounter; return *this;}
+			public:
 				_RefCounterType refcounter;
 			};
 			typedef GAIA::CONTAINER::BasicVector<Node, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef GAIA::CONTAINER::BasicStack<_SizeType, _SizeType, _SizeIncreaserType> __FreeIndexStackType;
-			typedef GAIA::CONTAINER::BasicSet<Node, _SizeType, _SizeType, _SizeIncreaserType> __NodeSetType;
+			typedef GAIA::CONTAINER::BasicSet<NodeCmp, _SizeType, _SizeType, _SizeIncreaserType> __NodeSetType;
 		private:
 			GINL GAIA::GVOID destroy_content_all()
 			{
 				typename __NodeSetType::it it = m_nodeset.front_it();
 				while(!it.empty())
 				{
-					Node& n = *it;
+					NodeCmp& n = *it;
 					GAIA_MFREE(n.data);
 					++it;
 				}
