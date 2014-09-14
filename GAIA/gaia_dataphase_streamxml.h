@@ -5,10 +5,15 @@ namespace GAIA
 {
 	namespace DATAPHASE
 	{
-		template<typename _StringType, typename _StringLengthType, typename _DataSizeType, typename _SizeIncreaserType> class StreamXML : public GAIA::Entity
+		template<typename _CharType, typename _StringLengthType, typename _DataSizeType, typename _SizeIncreaserType> class StreamXML : public GAIA::Entity
 		{
 		public:
-			typedef StreamXML<_StringType, _StringLengthType, _DataSizeType, _SizeIncreaserType> __MyType;
+			typedef _CharType _chartype;
+			typedef _StringLengthType _stringlengthtype;
+			typedef _DataSizeType _datasizetype;
+			typedef _SizeIncreaserType _sizeincreasertype;
+		public:
+			typedef StreamXML<_CharType, _StringLengthType, _DataSizeType, _SizeIncreaserType> __MyType;
 		public:
 			GINL StreamXML(){}
 			GINL ~StreamXML(){}
