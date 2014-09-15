@@ -59,7 +59,7 @@ namespace GAIA
 			{
 			public:
 				GINL Node& operator = (const Node& src){pContainer = src.pContainer; offset = src.offset; index = src.index; return *this;}
-				GINL GAIA::BL operator == (const __MyType::Node& src) const
+				GINL GAIA::BL operator == (const Node& src) const
 				{
 					GAIA_AST(pContainer == src.pContainer);
 					GAIA_AST(offset < pContainer->m_datalist.size());
@@ -69,8 +69,8 @@ namespace GAIA
 						src.pContainer->m_datalist.front_ptr() + src.offset) == 0;
 
 				}
-				GINL GAIA::BL operator != (const __MyType::Node& src) const{return !this->operator == (src);}
-				GINL GAIA::BL operator >= (const __MyType::Node& src) const
+				GINL GAIA::BL operator != (const Node& src) const{return !this->operator == (src);}
+				GINL GAIA::BL operator >= (const Node& src) const
 				{
 					GAIA_AST(pContainer == src.pContainer);
 					GAIA_AST(offset < pContainer->m_datalist.size());
@@ -79,7 +79,7 @@ namespace GAIA
 						pContainer->m_datalist.front_ptr() + offset,
 						src.pContainer->m_datalist.front_ptr() + src.offset) >= 0;
 				}
-				GINL GAIA::BL operator <= (const __MyType::Node& src) const
+				GINL GAIA::BL operator <= (const Node& src) const
 				{
 					GAIA_AST(pContainer == src.pContainer);
 					GAIA_AST(offset < pContainer->m_datalist.size());
@@ -88,8 +88,8 @@ namespace GAIA
 						pContainer->m_datalist.front_ptr() + offset,
 						src.pContainer->m_datalist.front_ptr() + src.offset) <= 0;
 				}
-				GINL GAIA::BL operator > (const __MyType::Node& src) const{return !this->operator <= (src);}
-				GINL GAIA::BL operator < (const __MyType::Node& src) const{return !this->operator >= (src);}
+				GINL GAIA::BL operator > (const Node& src) const{return !this->operator <= (src);}
+				GINL GAIA::BL operator < (const Node& src) const{return !this->operator >= (src);}
 			public:
 				__MyType* pContainer;
 				_SizeType offset;

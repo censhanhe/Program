@@ -1181,6 +1181,14 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="CAL"
+						>
+						<File
+							RelativePath=".\gaia_math_cal.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="DEBUG"

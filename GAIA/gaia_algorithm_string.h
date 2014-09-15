@@ -696,15 +696,15 @@ namespace GAIA
 		template<> class string_cast<type>\
 		{\
 		public:\
-			string_cast(const GAIA::CH* psz){m_pGCH = psz; m_pGWCH = GNULL;}\
-			string_cast(const GAIA::WCH* psz){m_pGCH = GNULL; m_pGWCH = psz;}\
+			string_cast(const GAIA::CH* psz){m_pCH = psz; m_pWCH = GNULL;}\
+			string_cast(const GAIA::WCH* psz){m_pCH = GNULL; m_pWCH = psz;}\
 			operator type() const\
 			{\
 				type ret;\
-				if(m_pGCH != GNULL)\
-					convert_func(m_pGCH, ret);\
-				else if(m_pGWCH != GNULL)\
-					convert_func(m_pGWCH, ret);\
+				if(m_pCH != GNULL)\
+					convert_func(m_pCH, ret);\
+				else if(m_pWCH != GNULL)\
+					convert_func(m_pWCH, ret);\
 				else\
 				{\
 					GAIA_AST(GAIA::False);\
@@ -713,8 +713,8 @@ namespace GAIA
 				return ret;\
 			}\
 		private:\
-			const GAIA::CH* m_pGCH;\
-			const GAIA::WCH* m_pGWCH;\
+			const GAIA::CH* m_pCH;\
+			const GAIA::WCH* m_pWCH;\
 		};
 		GAIA_DECLARATION_STRINGCAST(GAIA::NM, str2int);
 		GAIA_DECLARATION_STRINGCAST(GAIA::UM, str2int);
@@ -732,16 +732,16 @@ namespace GAIA
 		class string_autocast
 		{
 		public:
-			GINL string_autocast(const GAIA::CH* psz){m_pGCH = psz; m_pGWCH = GNULL;}
-			GINL string_autocast(const GAIA::WCH* psz){m_pGCH = GNULL; m_pGWCH = psz;}
+			GINL string_autocast(const GAIA::CH* psz){m_pCH = psz; m_pWCH = GNULL;}
+			GINL string_autocast(const GAIA::WCH* psz){m_pCH = GNULL; m_pWCH = psz;}
 			#define GAIA_DECLARATION_STRINGAUTOCAST(type) \
 			GINL operator type()\
 			{\
 				type ret;\
-				if(m_pGCH != GNULL)\
-					return string_cast<type>(m_pGCH);\
-				else if(m_pGWCH != GNULL)\
-					return string_cast<type>(m_pGWCH);\
+				if(m_pCH != GNULL)\
+					return string_cast<type>(m_pCH);\
+				else if(m_pWCH != GNULL)\
+					return string_cast<type>(m_pWCH);\
 				else\
 				{\
 					GAIA_AST(GAIA::False);\
@@ -763,8 +763,8 @@ namespace GAIA
 			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::F32);
 			GAIA_DECLARATION_STRINGAUTOCAST(GAIA::F64);
 		private:
-			const GAIA::CH* m_pGCH;
-			const GAIA::WCH* m_pGWCH;
+			const GAIA::CH* m_pCH;
+			const GAIA::WCH* m_pWCH;
 		};
 	};
 };
