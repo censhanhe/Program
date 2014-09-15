@@ -148,6 +148,8 @@ namespace DWARFS_MISC
 				pNetworkReceiver->Begin();
 
 			/* Login. */
+			GAIA::CH szTemp[1024];
+			GAIA::SIZE uNewSize;
 			__StringType strRecv;
 			if(!this->PopRecv(strRecv, GAIA::U32MAXSIZE))
 				goto FUNCTION_END;
@@ -160,8 +162,7 @@ namespace DWARFS_MISC
 			if(!this->PopRecv(strRecv, GAIA::U32MAXSIZE))
 				goto FUNCTION_END;
 
-			GAIA::CH szTemp[1024];
-			GAIA::SIZE uNewSize = GAIA::DATAPHASE::Char2Base64(szTemp, 1024, m_username.front_ptr(), m_username.size());
+			uNewSize = GAIA::DATAPHASE::Char2Base64(szTemp, 1024, m_username.front_ptr(), m_username.size());
 			szTemp[uNewSize++] = '\r';
 			szTemp[uNewSize++] = '\n';
 			szTemp[uNewSize] = '\0';

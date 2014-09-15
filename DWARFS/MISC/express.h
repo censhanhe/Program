@@ -63,9 +63,15 @@ namespace DWARFS_MISC
 			m_freestack.clear();
 			return GAIA::True;
 		}
-		GINL GAIA::SIZE get_formula_by_name(const _CharType* pName) const
+		GINL GAIA::SIZE get_formula_by_name(const _CharType* pName)
 		{
 			GPCHR_NULLSTRPTR_RET(pName, GINVALID);
+			m_finder.name = pName;
+			typename __FormulaSetType::_datatype reffinder(&m_finder);
+			const typename __FormulaSetType::_datatype* pFinded = m_fmset.find(reffinder);
+			if(pFinded == GNULL)
+				return GINVALID;
+			return pFinded->index;
 		}
 		GINL GAIA::BL calculate(const _CharType* pName, _CharType* pResult, GAIA::SIZE& uResuleSize)
 		{
@@ -95,6 +101,7 @@ namespace DWARFS_MISC
 		__FormulaListType m_fmlist;
 		__FormulaSetType m_fmset;
 		__FreeStackType m_freestack;
+		Formula m_finder;
 	};
 };
 
