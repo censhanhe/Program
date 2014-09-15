@@ -43,6 +43,8 @@ namespace GAIA
 				{
 					for(_SizeType x = 0; x < m_use.size(); ++x)
 						m_bind->release(m_use[x]);
+					for(_SizeType x = 0; x < m_free.size(); ++x)
+						m_bind->release(m_free[x]);
 				}
 				for(_SizeType x = 0; x < m_buf.size(); ++x)
 					delete m_buf[x];

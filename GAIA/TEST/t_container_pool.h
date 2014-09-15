@@ -9,9 +9,9 @@ namespace GAIATEST
 
 		static const GAIA::SIZE SAMPLE_COUNT = 100;
 		typedef GAIA::CONTAINER::Pool<GAIA::CONTAINER::TString> __PoolType;
-		__PoolType pl;
-		__PoolType parentpl;
 		__PoolType parentparentpl;
+		__PoolType parentpl;
+		__PoolType pl;
 		GAIA::CONTAINER::Vector<GAIA::CONTAINER::TString*> listTemp;
 		__PoolType::__IndexListType listIndex;
 
@@ -293,12 +293,12 @@ BIND_POOL:
 		}
 		else
 		{
-			if(!parentpl.empty())
+			if(parentpl.empty())
 			{
 				GTLINE2("Pool work on bind mode error!");
 				++nRet;
 			}
-			if(parentpl.size() != 0)
+			if(parentpl.size() == 0)
 			{
 				GTLINE2("Pool work on bind mode error!");
 				++nRet;
