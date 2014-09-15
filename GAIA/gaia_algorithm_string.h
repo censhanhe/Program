@@ -112,9 +112,9 @@ namespace GAIA
 			*pDst = '\0';
 			return ret;
 		}
-		template<typename _DataType> _DataType strnew(_DataType p)
+		template<typename _DataType> _DataType* strnew(const _DataType* p)
 		{
-			_DataType ret = (_DataType)GAIA_MALLOC(GAIA::U8, GAIA::ALGORITHM::strlen(p) * sizeof(p[0]) + sizeof(p[0]));
+			_DataType* ret = (_DataType*)GAIA_MALLOC(GAIA::U8, GAIA::ALGORITHM::strlen(p) * sizeof(p[0]) + sizeof(p[0]));
 			GAIA::ALGORITHM::strcpy(ret, p);
 			return ret;
 		}

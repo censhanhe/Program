@@ -19,6 +19,7 @@ namespace GAIA
 			GINL ~BasicStringPool(){this->destroy();}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL _SizeType size() const{return m_nodelist.size();}
+			GINL _SizeType practice_size() const{return m_nodelist.size() - m_freestack.size();}
 			GINL _SizeType capacity() const{return m_nodelist.capacity();}
 			GINL GAIA::GVOID reserve(const _SizeType& size){this->destroy(); m_nodelist.reserve(size); m_freestack.reserve(size);}
 			GINL GAIA::GVOID clear()
@@ -46,6 +47,7 @@ namespace GAIA
 					++m_nodelist[pFinded->index].refcounter;
 					return pFinded->index;
 				}
+				finder.data = GAIA::ALGORITHM::strnew(p);
 				finder.refcounter = 1;
 				if(m_freestack.empty())
 				{
@@ -72,6 +74,8 @@ namespace GAIA
 				{
 					m_nodeset.erase(finder);
 					m_freestack.push_back(finder.index);
+					GAIA_MFREE(finder.data);
+					finder.data = GNULL;
 				}
 				return GAIA::True;
 			}

@@ -26,6 +26,8 @@ namespace DWARFS_MISC
 		{
 			GPCHR_NULLSTRPTR_RET(pName, GINVALID);
 			GPCHR_NULL_RET(pFormula, GINVALID);
+			if(this->get_formula_by_name(pName) != GINVALID)
+				return GINVALID;
 			if(m_freestack.empty())
 			{
 				Formula newf;

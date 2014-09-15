@@ -258,7 +258,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		sp.clear();
-		s1 = sp.request(_T("HelloKitty"));
+		s1 = sp.request(_T("HelloWorld"));
 		if(GAIA::ALGORITHM::strcmp(sp.string(s1), _T("HelloWorld")) != 0)
 		{
 			GTLINE2("StaticStringPool request error!");
@@ -270,6 +270,12 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool request error!");
 			++nRet;
 		}
+		if(s1 == s2)
+		{
+			GTLINE2("StaticStringPool different string must at different position!");
+			++nRet;
+		}
+		s2 = sp.request(_T("HelloWorld"));
 		if(s1 != s2)
 		{
 			GTLINE2("StaticStringPool same string must at same position!");

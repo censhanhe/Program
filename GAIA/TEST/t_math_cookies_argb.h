@@ -35,7 +35,7 @@ namespace GAIATEST
 			GTLINE2("ARGB lengthsq error!");
 			++nRet;
 		}
-		if(!GAIA::MATH::xequal(argb.length(), GAIA::MATH::xsqrt(2 * 2 + 3 * 3 + 4 * 4)))
+		if(!GAIA::MATH::xequal(argb.length(), GAIA::MATH::xsqrt(GAIA::REAL(2 * 2 + 3 * 3 + 4 * 4))))
 		{
 			GTLINE2("ARGB length error!");
 			++nRet;

@@ -224,16 +224,6 @@ namespace GAIATEST
 			GTLINE2("StringPool release failed!");
 			++nRet;
 		}
-		if(sp.release(s1))
-		{
-			GTLINE2("StringPool release failed!");
-			++nRet;
-		}
-		if(sp.release(s2))
-		{
-			GTLINE2("StringPool release failed!");
-			++nRet;
-		}
 		if(!sp1.release(s11))
 		{
 			GTLINE2("StringPool release failed!");
@@ -244,22 +234,12 @@ namespace GAIATEST
 			GTLINE2("StringPool release failed!");
 			++nRet;
 		}
-		if(sp1.release(s11))
-		{
-			GTLINE2("StringPool release failed!");
-			++nRet;
-		}
-		if(sp1.release(s22))
-		{
-			GTLINE2("StringPool release failed!");
-			++nRet;
-		}
-		if(sp.size() != 0)
+		if(sp.practice_size() != 0)
 		{
 			GTLINE2("StringPool size must been 0 after release all elements failed!");
 			++nRet;
 		}
-		if(sp1.size() != 0)
+		if(sp1.practice_size() != 0)
 		{
 			GTLINE2("StringPool size must been 0 after release all elements failed!");
 			++nRet;

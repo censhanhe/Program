@@ -50,6 +50,7 @@ namespace GAIATEST
 					GTLINE2("Canvas destroy failed!");
 					++nRet;
 				}
+				pCanvas->Release();
 				pCanvas = GNULL;
 			}
 		}

@@ -61,7 +61,6 @@ namespace GAIA
 				GINL Node& operator = (const Node& src){pContainer = src.pContainer; offset = src.offset; index = src.index; return *this;}
 				GINL GAIA::BL operator == (const Node& src) const
 				{
-					GAIA_AST(pContainer == src.pContainer);
 					GAIA_AST(offset < pContainer->m_datalist.size());
 					GAIA_AST(src.offset < src.pContainer->m_datalist.size());
 					return GAIA::ALGORITHM::strcmp(
@@ -72,7 +71,6 @@ namespace GAIA
 				GINL GAIA::BL operator != (const Node& src) const{return !this->operator == (src);}
 				GINL GAIA::BL operator >= (const Node& src) const
 				{
-					GAIA_AST(pContainer == src.pContainer);
 					GAIA_AST(offset < pContainer->m_datalist.size());
 					GAIA_AST(src.offset < src.pContainer->m_datalist.size());
 					return GAIA::ALGORITHM::strcmp(
@@ -81,7 +79,6 @@ namespace GAIA
 				}
 				GINL GAIA::BL operator <= (const Node& src) const
 				{
-					GAIA_AST(pContainer == src.pContainer);
 					GAIA_AST(offset < pContainer->m_datalist.size());
 					GAIA_AST(src.offset < src.pContainer->m_datalist.size());
 					return GAIA::ALGORITHM::strcmp(
