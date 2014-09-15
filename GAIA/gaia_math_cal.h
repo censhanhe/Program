@@ -90,6 +90,99 @@ namespace GAIA
 			L"CALOP_CEIL",
 			L"CALOP_ROUND",
 		};
+		template<typename _DataType> class CalUnitCmn : public GAIA::Base
+		{
+		public:
+			typedef _DataType _datatype;
+
+		public:
+			typedef CalUnitCmn<_DataType> __MyType;
+
+		public:
+			GINL CalUnitCmn(){}
+			GINL ~CalUnitCmn(){}
+
+			GINL CalUnitCmn(const __MyType& src){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::BL& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::NM& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::UM& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::U8& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::U16& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::U32& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::U64& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::N8& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::N16& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::N32& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::N64& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::F32& v){this->operator = (v);}
+			GINL CalUnitCmn(const GAIA::F64& v){this->operator = (v);}
+
+			GINL __MyType& operator = (const __MyType& src){m_v = src.m_v; return *this;}
+			GINL __MyType& operator = (const GAIA::BL& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::NM& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::UM& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::U8& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::U16& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::U32& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::U64& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::N8& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::N16& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::N32& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::N64& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::F32& v){m_v = (_DataType)v; return *this;}
+			GINL __MyType& operator = (const GAIA::F64& v){m_v = (_DataType)v; return *this;}
+
+			GINL operator GAIA::BL() const{return (GAIA::BL)m_v;}
+			GINL operator GAIA::NM() const{return (GAIA::NM)m_v;}
+			GINL operator GAIA::UM() const{return (GAIA::UM)m_v;}
+			GINL operator GAIA::U8() const{return (GAIA::U8)m_v;}
+			GINL operator GAIA::U16() const{return (GAIA::U16)m_v;}
+			GINL operator GAIA::U32() const{return (GAIA::U32)m_v;}
+			GINL operator GAIA::U64() const{return (GAIA::U64)m_v;}
+			GINL operator GAIA::N8() const{return (GAIA::N8)m_v;}
+			GINL operator GAIA::N16() const{return (GAIA::N16)m_v;}
+			GINL operator GAIA::N32() const{return (GAIA::N32)m_v;}
+			GINL operator GAIA::N64() const{return (GAIA::N64)m_v;}
+			GINL operator GAIA::F32() const{return (GAIA::F32)m_v;}
+			GINL operator GAIA::F64() const{return (GAIA::F64)m_v;}
+
+			GINL __MyType& operator = (const GAIA::CH* p){m_v = GAIA::ALGORITHM::string_cast<_DataType>(p); return *this;}
+			GINL __MyType& operator = (const GAIA::WCH* p){m_v = GAIA::ALGORITHM::string_cast<_DataType>(p); return *this;}
+			template<typename _ParamCharType, typename _ParamSizeType> GAIA::BL tostring(_ParamCharType* p, const _ParamSizeType& size) const{return GAIA::ALGORITHM::value_cast(m_v, p, size);}
+
+			GINL __MyType& operator += (const __MyType& src){m_v += src.m_v; return *this;}
+			GINL __MyType& operator += (const GAIA::BL& v){m_v += (_DataType)(v ? 1 : 0); return *this;}
+			template<typename _ParamDataType> __MyType& operator += (const _ParamDataType& v){m_v += (_DataType)v; return *this;}
+			GINL __MyType& operator -= (const __MyType& src){m_v -= src.m_v; return *this;}
+			GINL __MyType& operator -= (const GAIA::BL& v){m_v -= (_DataType)(v ? 1 : 0); return *this;}
+			template<typename _ParamDataType> __MyType& operator -= (const _ParamDataType& v){m_v -= (_DataType)v; return *this;}
+			GINL __MyType& operator *= (const __MyType& src){m_v *= src.m_v; return *this;}
+			GINL __MyType& operator *= (const GAIA::BL& v){m_v *= (_DataType)(v ? 1 : 0); return *this;}
+			template<typename _ParamDataType> __MyType& operator *= (const _ParamDataType& v){m_v *= (_DataType)v; return *this;}
+			GINL __MyType& operator /= (const __MyType& src){m_v /= src.m_v; return *this;}
+			GINL __MyType& operator /= (const GAIA::BL& v){m_v /= (_DataType)(v ? 1 : 0); return *this;}
+			template<typename _ParamDataType> __MyType& operator /= (const _ParamDataType& v){m_v /= (_DataType)v; return *this;}
+
+			GINL __MyType operator + (const __MyType& src) const{__MyType ret = *this; ret += v; return ret;}
+			GINL __MyType operator + (const GAIA::BL& v) const{__MyType ret = *this; ret += v; return ret;}
+			GINL __MyType operator + (const GAIA::NM& v) const{__MyType ret = *this; ret += v; return ret;}
+			GINL __MyType operator - (const __MyType& src) const{__MyType ret = *this; ret -= v; return ret;}
+			GINL __MyType operator - (const GAIA::BL& v) const{__MyType ret = *this; ret -= v; return ret;}
+			GINL __MyType operator - (const GAIA::NM& v) const{__MyType ret = *this; ret -= v; return ret;}
+			GINL __MyType operator * (const __MyType& src) const{__MyType ret = *this; ret *= v; return ret;}
+			GINL __MyType operator * (const GAIA::BL& v) const{__MyType ret = *this; ret *= v; return ret;}
+			GINL __MyType operator * (const GAIA::NM& v) const{__MyType ret = *this; ret *= v; return ret;}
+			GINL __MyType operator / (const __MyType& src) const{__MyType ret = *this; ret /= v; return ret;}
+			GINL __MyType operator / (const GAIA::BL& v) const{__MyType ret = *this; ret /= v; return ret;}
+			GINL __MyType operator / (const GAIA::NM& v) const{__MyType ret = *this; ret /= v; return ret;}
+
+		private:
+			_DataType m_v;
+		};
+		typedef CalUnitCmn<GAIA::N32> CalUnitN32;
+		typedef CalUnitCmn<GAIA::N64> CalUnitN64;
+		typedef CalUnitCmn<GAIA::F32> CalUnitF32;
+		typedef CalUnitCmn<GAIA::F64> CalUnitF64;
 	};
 };
 

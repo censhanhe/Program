@@ -3,13 +3,14 @@
 
 namespace DWARFS_MISC
 {
-	template<typename _CharType> class Express : public GAIA::Entity
+	template<typename _CharType, typename _CalUnitType> class Express : public GAIA::Entity
 	{
 	public:
 		typedef _CharType _chartype;
+		typedef _CalUnitType _calunittype;
 	public:
 		typedef GAIA::CONTAINER::BasicString<_CharType, GAIA::SIZE> __StringType;
-		typedef Express<_CharType> __MyType;
+		typedef Express<_CharType, _CalUnitType> __MyType;
 	public:
 		GINL Express(){}
 		GINL ~Express(){}

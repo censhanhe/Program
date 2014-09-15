@@ -729,6 +729,22 @@ namespace GAIA
 		GAIA_DECLARATION_STRINGCAST(GAIA::BL, str2int);
 		GAIA_DECLARATION_STRINGCAST(GAIA::F32, str2real);
 		GAIA_DECLARATION_STRINGCAST(GAIA::F64, str2real);
+		template<typename _ValueType, typename _CharType, typename _SizeType> GAIA::BL value_cast(const _ValueType& v, _CharType* p, const _SizeType& size);
+		template<typename _CharType, typename _SizeType> GAIA::BL value_cast(const GAIA::F32& v, _CharType* p, const _SizeType& size)
+		{
+			GAIA::ALGORITHM::real2str(v, p);
+			return GAIA::True;
+		}
+		template<typename _CharType, typename _SizeType> GAIA::BL value_cast(const GAIA::F64& v, _CharType* p, const _SizeType& size)
+		{
+			GAIA::ALGORITHM::real2str(v, p);
+			return GAIA::True;
+		}
+		template<typename _ValueType, typename _CharType, typename _SizeType> GAIA::BL value_cast(const _ValueType& v, _CharType* p, const _SizeType& size)
+		{
+			GAIA::ALGORITHM::int2str(v, p);
+			return GAIA::True;
+		}
 		class string_autocast
 		{
 		public:
