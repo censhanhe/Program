@@ -2334,11 +2334,19 @@
 						>
 					</File>
 					<File
+						RelativePath=".\TEST\t_container_staticstringpool.h"
+						>
+					</File>
+					<File
 						RelativePath=".\TEST\t_container_storage.h"
 						>
 					</File>
 					<File
 						RelativePath=".\TEST\t_container_string.h"
+						>
+					</File>
+					<File
+						RelativePath=".\TEST\t_container_stringpool.h"
 						>
 					</File>
 					<File

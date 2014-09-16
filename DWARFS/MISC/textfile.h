@@ -282,6 +282,7 @@ namespace DWARFS_MISC
 		GINL GAIA::GVOID clear(){m_charset_type = GAIA::CHARSET_TYPE_INVALID; m_str.clear();}
 		GINL __StringType& get_string(){return m_str;}
 		GINL const __StringType& get_string() const{return m_str;}
+		GINL GAIA::GVOID set_string(const __StringType& str){m_str = str;}
 		GINL TextFile& operator = (const TextFile& src){m_charset_type = src.m_charset_type; m_str = src.m_str; return *this;}
 	private:
 		GINL GAIA::GVOID init(){m_charset_type = GAIA::CHARSET_TYPE_INVALID;}

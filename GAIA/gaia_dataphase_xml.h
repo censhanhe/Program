@@ -5,225 +5,173 @@ namespace GAIA
 {
 	namespace DATAPHASE
 	{
-		template<typename _CharType, typename _StringLengthType, typename _DataSizeType, typename _SizeIncreaserType> class XML : public GAIA::Entity
+		template<typename _CharType, typename _DataSizeType, typename _SizeIncreaserType> class XML : public GAIA::Entity
 		{
 		public:
 			typedef _CharType _chartype;
-			typedef _StringLengthType _stringlengthtype;
 			typedef _DataSizeType _datasizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			typedef XML<_CharType, _StringLengthType, _DataSizeType, _SizeIncreaserType> __MyType;
+			typedef XML<_CharType, _DataSizeType, _SizeIncreaserType> __MyType;
 			typedef const _CharType* _ConstCharPtrType;
 		public:
-			GINL XML(){}
+			GINL XML(){this->init();}
 			GINL ~XML(){}
 			GINL GAIA::BL Load(GAIA::FILESYSTEM::FileBase& file);
 			GINL GAIA::BL Save(GAIA::FILESYSTEM::FileBase& file) const;
 			GINL GAIA::BL Load(GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32>& buf);
 			GINL GAIA::BL Save(GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32>& buf) const;
-			GINL GAIA::BL EnumNode(_ConstCharPtrType& pNodeName);
-			GINL GAIA::BL EnumNodeEnd();
-			GINL GAIA::BL EnumAttr(_ConstCharPtrType& pAttrName, _ConstCharPtrType& pAttrValue);
-			GINL GAIA::BL WriteNode(const _CharType* pNode);
-			GINL GAIA::BL WriteNodeEnd();
-			GINL GAIA::BL WriteAttr(const _CharType* pAttrName, const _CharType* pAttrValue);
-			GINL _DataSizeType GetNodeCount() const{return m_nodes.size();}
-			GINL const _CharType* GetNodeName(const _DataSizeType& node) const
+			GINL GAIA::GVOID Destroy()
 			{
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GNULL;
-				return m_ssp.string[n.name];
+				this->ResetCallStack();
+				m_npool.destroy();
+				m_nodes.destroy();
+				m_ssp.destroy();
 			}
-			GINL GAIA::BL SetNodeName(const _DataSizeType& node, const _CharType* pNodeName)
+			GINL GAIA::GVOID Clear()
 			{
-				GPCHR_NULLSTRPTR_RET(pNodeName, GAIA::False);
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GAIA::False;
-				n.name = m_ssp.request(pNodeName);
-				return GAIA::True;
-			}
-			GINL GAIA::BL InsertNode(const _DataSizeType& node, const _CharType* pNodeName)
-			{
-				GPCHR_NULLSTRPTR_RET(pNodeName, GAIA::False);
-				if(node > m_nodes.size())
-					return GAIA::False;
-				if(node == m_nodes.size() || m_nodes[node].name != GINVALID)
-				{
-					Node newn;
-					newn.name = GINVALID;
-					m_nodes.insert(newn, node);
-					m_nodes[node].name = m_ssp.request(pNodeName);
-				}
-				else
-					m_nodes[node].name = m_ssp.request(pNodeName);
-				return GAIA::True;
-			}
-			GINL GAIA::BL DeleteNode(const _DataSizeType& node)
-			{
-				if(!this->DeleteAttrAll(node))
-					return GAIA::False;
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GAIA::False;
-				n.name = GINVALID;
-				return GAIA::True;
-			}
-			GINL GAIA::BL DeleteNodeAll()
-			{
-				if(m_nodes.empty())
-					return GAIA::False;
+				this->ResetCallStack();
+				m_npool.clear();
 				m_nodes.clear();
 				m_ssp.clear();
-				return GAIA::True;
 			}
-			GINL _DataSizeType GetNodeByName(const _DataSizeType& node, const _CharType* pNodeName) const
+			GINL GAIA::BL EnumNode(_ConstCharPtrType& pNodeName)
 			{
-				GPCHR_NULLSTRPTR_RET(pNodeName, GINVALID);
-				typename __NodeListType::const_it cit = m_nodes.const_front_it();
-				cit += node;
-				for(; !cit.empty(); ++cit)
+				m_attrcursor = 0;
+				if(m_callstack.empty())
 				{
-					const Node& n = *cit;
-					if(n.name == GINVALID)
-						continue;
-					if(GAIA::ALGORITHM::strcmp(m_ssp.string(n.name), pNodeName) == 0)
-						return cit - m_nodes.const_front_it();
-				}
-				return GINVALID;
-			}
-			GINL _DataSizeType GetAttrCount(const _DataSizeType& node) const
-			{
-				Node& n = m_nodes[node];
-				return n.attrs.size();
-			}
-			GINL const _CharType* GetAttrName(const _DataSizeType& node, const _DataSizeType& attr) const
-			{
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GNULL;
-				Attr& a = n.attrs[attr];
-				if(a.name == GINVALID)
-					return GNULL;
-				return m_ssp.string(a.name);
-			}
-			GINL const _CharType* GetAttrValue(const _DataSizeType& node, const _DataSizeType& attr) const
-			{
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GNULL;
-				Attr& a = n.attrs[attr];
-				if(a.name == GINVALID)
-					return GNULL;
-				return m_ssp.string(a.value);
-			}
-			GINL GAIA::BL SetAttrName(const _DataSizeType& node, const _DataSizeType& attr, const _CharType* pAttrName)
-			{
-				GPCHR_NULLSTRPTR_RET(pAttrName, GAIA::False);
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GAIA::False;
-				Attr& a = n.attrs[attr];
-				if(a.name == GINVALID)
-					return GAIA::False;
-				a.name = m_ssp.request(pAttrName);
-				return GAIA::True;
-			}
-			GINL GAIA::BL SetAttrValue(const _DataSizeType& node, const _DataSizeType& attr, const _CharType* pAttrValue)
-			{
-				GPCHR_NULLSTRPTR_RET(pAttrValue, GAIA::False);
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GAIA::False;
-				Attr& a = n.attrs[attr];
-				if(a.name == GINVALID)
-					return GAIA::False;
-				a.value = m_ssp.request(pAttrValue);
-				return GAIA::True;
-			}
-			GINL GAIA::BL InsertAttr(const _DataSizeType& node, const _DataSizeType& attr, const _CharType* pAttrName, const _CharType* pAttrValue)
-			{
-				GPCHR_NULLSTRPTR_RET(pAttrName, GAIA::False);
-				GPCHR_NULLSTRPTR_RET(pAttrValue, GAIA::False);
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GAIA::False;
-				if(attr > n.attrs.size())
-					return GAIA::False;
-				if(attr == n.attrs.size() || n.attrs[attr].name != GINVALID)
-				{
-					Attr newa;
-					n.attrs.insert(newa, attr);
-					n.attrs[attr].name = m_ssp.request(pAttrName);
-					n.attrs[attr].value = m_ssp.request(pAttrValue);
+					if(m_nodes.empty())
+						return GAIA::False;
+					CallStack cs;
+					cs.pNode = m_nodes.front();
+					cs.index = 0;
+					m_callstack.push_back(cs);
 				}
 				else
 				{
-					n.attrs[attr].name = m_ssp.request(pAttrName);
-					n.attrs[attr].value = m_ssp.request(pAttrValue);
+					CallStack& curcs = m_callstack.back();
+					if(curcs.index + 1 >= curcs.pNode->nodes.size())
+						return GAIA::False;
+					while(curcs.pNode->nodes[++curcs.index]->name == GINVALID)
+					{
+						if(curcs.index + 1 >= curcs.pNode->nodes.size())
+							return GAIA::False;
+					}
+					CallStack cs;
+					cs.pNode = curcs.pNode->nodes[curcs.index];
+					cs.index = 0;
+					m_callstack.push_back(cs);
 				}
+				pNodeName = m_ssp.get(m_callstack.back().pNode->name);
 				return GAIA::True;
 			}
-			GINL GAIA::BL DeleteAttr(const _DataSizeType& node, const _DataSizeType& attr)
+			GINL GAIA::BL EnumAttr(_ConstCharPtrType& pAttrName, _ConstCharPtrType& pAttrValue)
 			{
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
+				if(m_callstack.empty())
 					return GAIA::False;
-				Attr& a = n.attrs[attr];
-				if(a.name == GINVALID)
+				__AttrListType& attrs = m_callstack.back().pNode->attrs;
+				if(m_attrcursor >= attrs.size())
 					return GAIA::False;
-				a.name = GINVALID;
-				a.value = GINVALID;
-				return GAIA::True;
-			}
-			GINL GAIA::BL DeleteAttrAll(const _DataSizeType& node)
-			{
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GAIA::False;
-				if(n.attrs.empty())
-					return GAIA::False;
-				n.attrs.clear();
-				return GAIA::True;
-			}
-			GINL _DataSizeType GetAttrByName(const _DataSizeType& node, const _CharType* pAttrName) const
-			{
-				GPCHR_NULLSTRPTR_RET(pAttrName, GINVALID);
-				Node& n = m_nodes[node];
-				if(n.name == GINVALID)
-					return GINVALID;
-				typename __AttrListType::const_it cit = n.attrs.const_front_it();
-				for(; !cit.empty(); ++cit)
+				while(attrs[m_attrcursor].name == GINVALID)
 				{
-					const Attr& a = *cit;
-					if(a.name == GINVALID)
-						continue;
-					if(GAIA::ALGORITHM::strcmp(m_ssp.string(a.name), pAttrName) == 0)
-						return cit - n.attrs.const_front_it();
+					++m_attrcursor;
+					if(m_attrcursor >= attrs.size())
+						return GAIA::False;
 				}
-				return GINVALID;
+				pAttrName = m_ssp.get(attrs[m_attrcursor].name);
+				pAttrValue = m_ssp.get(attrs[m_attrcursor].value);
+				GAIA_AST(pAttrName != GNULL);
+				GAIA_AST(pAttrValue != GNULL);
+				return GAIA::True;
 			}
+			GINL GAIA::BL WriteNode(const _CharType* pNode)
+			{
+				GPCHR_NULLSTRPTR_RET(pNode, GAIA::False);
+				Node* pNewNode = m_npool.alloc();
+				pNewNode->name = m_ssp.alloc(pNode);
+				if(m_callstack.empty())
+				{
+					GAIA_AST(m_nodes.empty());
+					if(!m_nodes.empty())
+					{
+						m_npool.release(pNewNode);
+						return GAIA::False;
+					}
+					m_nodes.push_back(pNewNode);
+				}
+				else
+					m_callstack.back().pNode->nodes.push_back(pNewNode);
+				CallStack cs;
+				cs.pNode = pNewNode;
+				cs.index = GINVALID;
+				m_callstack.push_back(pNewNode);
+				return GAIA::True;
+			}
+			GINL GAIA::BL WriteAttr(const _CharType* pAttrName, const _CharType* pAttrValue)
+			{
+				GPCHR_NULLSTRPTR_RET(pAttrName, GAIA::False);
+				GPCHR_NULL_RET(pAttrName, GAIA::False);
+				if(m_callstack.empty())
+					return GAIA::False;
+				if(this->is_attr_exit(m_callstack.back().pNode, pAttrName))
+					return GAIA::False;
+				Attr a;
+				a.name = m_ssp.alloc(pAttrName);
+				a.value = m_ssp.alloc(pAttrValue);
+				m_callstack.back().pNode->attrs.push_back(a);
+				return GAIA::True;
+			}
+			GINL GAIA::BL End(){GAIA_AST(!m_callstack.empty()); return m_callstack.pop_back(); m_attrcursor = 0;}
+			GINL GAIA::GVOID ResetCallStack(){m_callstack.clear(); m_attrcursor = 0;}
 		private:
+			class Node;
+			class Attr;
+			class CallStack;
 			typedef GAIA::CONTAINER::BasicStaticStringPool<_CharType, _DataSizeType, _SizeIncreaserType> __SSPType;
+			typedef GAIA::CONTAINER::BasicPool<Node, _DataSizeType, _SizeIncreaserType> __NodePoolType;
+			typedef GAIA::CONTAINER::BasicVector<Node*, _DataSizeType, _SizeIncreaserType> __NodeListType;
+			typedef GAIA::CONTAINER::BasicStack<CallStack, _DataSizeType, _SizeIncreaserType> __NodeStackType;
+			typedef GAIA::CONTAINER::BasicVector<Attr, _DataSizeType, _SizeIncreaserType> __AttrListType;
 			class Attr : public GAIA::Base
 			{
 			public:
 				typename __SSPType::_sizetype name;
 				typename __SSPType::_sizetype value;
 			};
-			typedef GAIA::CONTAINER::BasicVector<Attr, _DataSizeType, _SizeIncreaserType> __AttrListType;
 			class Node : public GAIA::Base
 			{
 			public:
 				typename __SSPType::sizetype name;
 				__AttrListType attrs;
+				__NodeListType nodes;
+
 			};
-			typedef GAIA::CONTAINER::BasicVector<Node, _DataSizeType, _SizeIncreaserType> __NodeListType;
+			class CallStack : public GAIA::Base
+			{
+			public:
+				Node* pNode;
+				typename __NodeListType::_sizetype index;
+			};
 		private:
-			 __NodeListType m_nodes;
-			 __SSPType m_ssp;
+			GINL GAIA::GVOID init(){this->ResetCallStack();}
+			GINL GAIA::BL is_attr_exit(const Node* pNode, const _CharType* pAttrName) const
+			{
+				GAIA_AST(pNode != GNULL);
+				GAIA_AST(pAttrName != GNULL);
+				for(__AttrListType::_sizetype x = 0; pNode->attrs.size(); ++x)
+				{
+					Attr& a = pNode->attrs[x];
+					if(GAIA::ALGORITHM::strcmp(m_ssp.get(a.name), pAttrName) == 0)
+						return GAIA::True;
+				}
+				return GAIA::False;
+			}
+		private:
+			__NodePoolType m_npool;
+			__NodeListType m_nodes;
+			__SSPType m_ssp;
+			__NodeStackType m_callstack;
+			typename __AttrListType::_sizetype m_attrcursor;
 		};
 	};
 };

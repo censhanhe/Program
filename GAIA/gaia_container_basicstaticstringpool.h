@@ -23,8 +23,8 @@ namespace GAIA
 			GINL GAIA::GVOID clear(){m_datalist.clear(); m_nodeset.clear(); m_nodelist.clear();}
 			GINL GAIA::GVOID destroy(){m_datalist.destroy(); m_nodeset.destroy(); m_nodelist.destroy();}
 			GINL _SizeType string_size() const{return m_nodelist.size();}
-			GINL const _DataType* string(const _SizeType& index) const{return m_datalist.front_ptr() + m_nodelist[index].offset;}
-			GINL _SizeType request(const _DataType* p)
+			GINL const _DataType* get(const _SizeType& index) const{return m_datalist.front_ptr() + m_nodelist[index].offset;}
+			GINL _SizeType alloc(const _DataType* p)
 			{
 				GPCHR_NULLSTRPTR_RET(p, GNULL);
 				Node finder;
@@ -50,7 +50,7 @@ namespace GAIA
 			{
 				this->clear();
 				for(_SizeType x = 0; x < src.string_size(); ++x)
-					this->request(src.string(x));
+					this->alloc(src.get(x));
 				return *this;
 			}
 			GAIA_CLASS_OPERATOR_COMPARE(m_nodeset, m_nodeset, __MyType);

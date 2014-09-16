@@ -107,16 +107,16 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool operator = cause operator < error!");
 			++nRet;
 		}
-		s1 = sp.request(_T("HelloWorld"));
-		if(GAIA::ALGORITHM::strcmp(sp.string(s1), _T("HelloWorld")) != 0)
+		s1 = sp.alloc(_T("HelloWorld"));
+		if(GAIA::ALGORITHM::strcmp(sp.get(s1), _T("HelloWorld")) != 0)
 		{
-			GTLINE2("StaticStringPool request error!");
+			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
 		}
-		s2 = sp.request(_T("HelloKitty"));
-		if(GAIA::ALGORITHM::strcmp(sp.string(s2), _T("HelloKitty")) != 0)
+		s2 = sp.alloc(_T("HelloKitty"));
+		if(GAIA::ALGORITHM::strcmp(sp.get(s2), _T("HelloKitty")) != 0)
 		{
-			GTLINE2("StaticStringPool request error!");
+			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
 		}
 		if(sp == sp1)
@@ -149,16 +149,16 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool operator < error!");
 			++nRet;
 		}
-		s1 = sp1.request(_T("ABC"));
-		if(GAIA::ALGORITHM::strcmp(sp1.string(s1), _T("ABC")) != 0)
+		s1 = sp1.alloc(_T("ABC"));
+		if(GAIA::ALGORITHM::strcmp(sp1.get(s1), _T("ABC")) != 0)
 		{
-			GTLINE2("StaticStringPool request error!");
+			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
 		}
-		s2 = sp1.request(_T("EFG"));
-		if(GAIA::ALGORITHM::strcmp(sp1.string(s2), _T("EFG")) != 0)
+		s2 = sp1.alloc(_T("EFG"));
+		if(GAIA::ALGORITHM::strcmp(sp1.get(s2), _T("EFG")) != 0)
 		{
-			GTLINE2("StaticStringPool request error!");
+			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
 		}
 		if(sp == sp1)
@@ -224,12 +224,12 @@ namespace GAIATEST
 		}
 		if(sp.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")) + 1 + GAIA::ALGORITHM::strlen(_T("HelloKitty")) + 1)
 		{
-			GTLINE2("StaticStringPool request cause size error");
+			GTLINE2("StaticStringPool alloc cause size error");
 			++nRet;
 		}
 		if(sp.capacity() < sp.size())
 		{
-			GTLINE2("StaticStringPool request cause capacity error");
+			GTLINE2("StaticStringPool alloc cause capacity error");
 			++nRet;
 		}
 		if(sp.string_size() != 2)
@@ -237,37 +237,37 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool string_size error");
 			++nRet;
 		}
-		if(sp.string(0) == GNULL)
+		if(sp.get(0) == GNULL)
 		{ 
 			GTLINE2("StaticStringPool string error");
 			++nRet;
 		}
-		if(GAIA::ALGORITHM::strcmp(sp.string(0), _T("HelloWorld")) != 0)
+		if(GAIA::ALGORITHM::strcmp(sp.get(0), _T("HelloWorld")) != 0)
 		{
 			GTLINE2("StaticStringPool string content error");
 			++nRet;
 		}
-		if(sp.string(1) == GNULL)
+		if(sp.get(1) == GNULL)
 		{
 			GTLINE2("StaticStringPool string error");
 			++nRet;
 		}
-		if(GAIA::ALGORITHM::strcmp(sp.string(1), _T("HelloKitty")) != 0)
+		if(GAIA::ALGORITHM::strcmp(sp.get(1), _T("HelloKitty")) != 0)
 		{
 			GTLINE2("StaticStringPool string content error");
 			++nRet;
 		}
 		sp.clear();
-		s1 = sp.request(_T("HelloWorld"));
-		if(GAIA::ALGORITHM::strcmp(sp.string(s1), _T("HelloWorld")) != 0)
+		s1 = sp.alloc(_T("HelloWorld"));
+		if(GAIA::ALGORITHM::strcmp(sp.get(s1), _T("HelloWorld")) != 0)
 		{
-			GTLINE2("StaticStringPool request error!");
+			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
 		}
-		s2 = sp.request(_T("HelloKitty"));
-		if(GAIA::ALGORITHM::strcmp(sp.string(s2), _T("HelloKitty")) != 0)
+		s2 = sp.alloc(_T("HelloKitty"));
+		if(GAIA::ALGORITHM::strcmp(sp.get(s2), _T("HelloKitty")) != 0)
 		{
-			GTLINE2("StaticStringPool request error!");
+			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
 		}
 		if(s1 == s2)
@@ -275,7 +275,7 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool different string must at different position!");
 			++nRet;
 		}
-		s2 = sp.request(_T("HelloWorld"));
+		s2 = sp.alloc(_T("HelloWorld"));
 		if(s1 != s2)
 		{
 			GTLINE2("StaticStringPool same string must at same position!");

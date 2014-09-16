@@ -36,7 +36,7 @@ namespace GAIA
 				m_freestack.destroy();
 				m_nodeset.destroy();
 			}
-			GINL _SizeType request(const _DataType* p)
+			GINL _SizeType alloc(const _DataType* p)
 			{
 				GPCHR_NULLSTRPTR_RET(p, GNULL);
 				Node finder;
@@ -80,12 +80,12 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL _SizeType string_size() const{return m_nodelist.size();}
-			GINL const _DataType* string(const _SizeType& index) const{return m_nodelist[index].data;}
+			GINL const _DataType* get(const _SizeType& index) const{return m_nodelist[index].data;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				this->clear();
 				for(_SizeType x = 0; x < src.string_size(); ++x)
-					this->request(src.string(x));
+					this->alloc(src.get(x));
 				return *this;
 			}
 			GAIA_CLASS_OPERATOR_COMPARE(m_nodeset, m_nodeset, __MyType);
