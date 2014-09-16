@@ -91,37 +91,37 @@ namespace GAIA
 			}
 			GINL GAIA::BL Enum(__ConstCharPtrType& pName, __ConstCharPtrType& pValue) // If pValue is GNULL, it means enum a node.
 			{
-				//if(this->EnumAttr(pName, pValue))
-				//	return GAIA::True;
-				//for(;;)
-				//{
-				//	if(this->EnumNode(pName))
-				//		return GAIA::True;
-				//	if(!this->End())
-				//		return GAIA::False;
-				//}
-				//return GAIA::False;
+				if(this->EnumAttr(pName, pValue))
+					return GAIA::True;
+				for(;;)
+				{
+					if(this->EnumNode(pName))
+						return GAIA::True;
+					if(!this->End())
+						return GAIA::False;
+				}
+				return GAIA::False;
 			}
 			GINL GAIA::BL Change(const _CharType* pName, const _CharType* pValue) // If pValue is GNULL, it means change a node name.
 			{
-				//GPCHR_NULLSTRPTR_RET(pName, GAIA::False);
-				//if(m_callstack.empty())
-				//	return GAIA::False;
-				//Node* pNode = m_callstack.back().pNode;
-				//GAIA_AST(pNode->name != GINVALID);
-				//if(pValue == GNULL)
-				//	pNode->name = m_ssp.alloc(pName);
-				//else
-				//{
-				//	if(this->is_attr_exit(pNode, pName))
-				//		return GAIA::False;
-				//	if(m_attrcursor >= pNode->attrs.size())
-				//		return GAIA::False;
-				//	Attr& attr = pNode->attrs[m_attrcursor];
-				//	attr.name = m_ssp.alloc(pName);
-				//	attr.value = m_ssp.alloc(pValue);
-				//}
-				//return GAIA::True;
+				GPCHR_NULLSTRPTR_RET(pName, GAIA::False);
+				if(m_callstack.empty())
+					return GAIA::False;
+				Node* pNode = m_callstack.back().pNode;
+				GAIA_AST(pNode->name != GINVALID);
+				if(pValue == GNULL)
+					pNode->name = m_ssp.alloc(pName);
+				else
+				{
+					if(this->is_attr_exit(pNode, pName))
+						return GAIA::False;
+					if(m_attrcursor >= pNode->attrs.size())
+						return GAIA::False;
+					Attr& attr = pNode->attrs[m_attrcursor];
+					attr.name = m_ssp.alloc(pName);
+					attr.value = m_ssp.alloc(pValue);
+				}
+				return GAIA::True;
 			}
 			GINL GAIA::BL WriteNode(const _CharType* pNode)
 			{
