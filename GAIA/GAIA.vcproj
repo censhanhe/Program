@@ -1397,6 +1397,14 @@
 						RelativePath=".\gaia_time_indp.h"
 						>
 					</File>
+					<File
+						RelativePath=".\gaia_time_realtimer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_time_timer.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="NETWORK"
@@ -2449,6 +2457,14 @@
 							>
 						</File>
 					</Filter>
+				</Filter>
+				<Filter
+					Name="DATAPHASE"
+					>
+					<File
+						RelativePath=".\TEST\t_dataphase_xml.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

@@ -74,8 +74,16 @@
 	
 	
 	DATAPHASE
+		
 		XML support compress binary mode.
+		
 		XML support namefamily match node and property.
+		
+	TIME
+		
+		Timer implement.
+		
+		RealTimer implement.
 
 
 [PROMETHEUS TASK]
