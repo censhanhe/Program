@@ -118,16 +118,10 @@ namespace GAIA
 				{
 					it iter = *this;
 					_SizeType ret = 0;
-					while(iter > src)
-					{
-						--iter;
+					for(; iter > src; --iter)
 						++ret;
-					}
-					while(iter < src)
-					{
-						++iter;
+					for(; iter < src; ++iter)
 						--ret;
-					}
 					return ret;
 				}
 				GINL GAIA::BL operator == (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) == 0;}
@@ -284,16 +278,10 @@ namespace GAIA
 				{
 					const_it iter = *this;
 					_SizeType ret = 0;
-					while(iter > src)
-					{
-						--iter;
+					for(; iter > src; --iter)
 						++ret;
-					}
-					while(iter < src)
-					{
-						++iter;
+					for(; iter < src; ++iter)
 						--ret;
-					}
 					return ret;
 				}
 				GINL GAIA::BL operator == (const const_it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) == 0;}
