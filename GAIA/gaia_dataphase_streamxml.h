@@ -13,7 +13,7 @@ namespace GAIA
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
 			typedef StreamXML<_CharType, _DataSizeType, _SizeIncreaserType> __MyType;
-			typedef const _CharType* _ConstCharPtrType;
+			typedef const _CharType* __ConstCharPtrType;
 		public:
 			GINL StreamXML(){}
 			GINL ~StreamXML(){}

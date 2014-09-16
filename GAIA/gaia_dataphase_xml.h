@@ -13,10 +13,19 @@ namespace GAIA
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
 			typedef XML<_CharType, _DataSizeType, _SizeIncreaserType> __MyType;
-			typedef const _CharType* _ConstCharPtrType;
+			typedef const _CharType* __ConstCharPtrType;
+			typedef GAIA::CTN::Accesser<_CharType, _DataSizeType> __AccesserType;
 		public:
 			GINL XML(){this->init();}
 			GINL ~XML(){this->Destroy();}
+			GINL GAIA::BL Load(const __AccesserType& acc)
+			{
+				return GAIA::True;
+			}
+			GINL GAIA::BL Save(__AccesserType& acc)
+			{
+				return GAIA::True;
+			}
 			GINL GAIA::GVOID Destroy()
 			{
 				this->ResetCallStack();
@@ -31,7 +40,7 @@ namespace GAIA
 				m_nodes.clear();
 				m_ssp.clear();
 			}
-			GINL GAIA::BL EnumNode(_ConstCharPtrType& pNodeName)
+			GINL GAIA::BL EnumNode(__ConstCharPtrType& pNodeName)
 			{
 				m_attrcursor = 0;
 				if(m_callstack.empty())
@@ -61,7 +70,7 @@ namespace GAIA
 				pNodeName = m_ssp.get(m_callstack.back().pNode->name);
 				return GAIA::True;
 			}
-			GINL GAIA::BL EnumAttr(_ConstCharPtrType& pAttrName, _ConstCharPtrType& pAttrValue)
+			GINL GAIA::BL EnumAttr(__ConstCharPtrType& pAttrName, __ConstCharPtrType& pAttrValue)
 			{
 				if(m_callstack.empty())
 					return GAIA::False;
