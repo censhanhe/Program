@@ -13,13 +13,10 @@ namespace GAIA
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
 			typedef StreamXML<_CharType, _DataSizeType, _SizeIncreaserType> __MyType;
+			typedef const _CharType* _ConstCharPtrType;
 		public:
 			GINL StreamXML(){}
 			GINL ~StreamXML(){}
-			GINL GAIA::BL Load(GAIA::FILESYSTEM::FileBase& file);
-			GINL GAIA::BL Save(GAIA::FILESYSTEM::FileBase& file) const;
-			GINL GAIA::BL Load(GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32>& buf);
-			GINL GAIA::BL Save(GAIA::CONTAINER::BasicBuffer<GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32>, GAIA::U32>& buf) const;
 		};
 	};
 };
