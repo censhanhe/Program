@@ -137,11 +137,8 @@ namespace GAIATEST
 		}
 		tsize = 0;
 		__TreeType::const_it cit = tr.const_front_it();
-		while(!cit.empty())
-		{
+		for(; !cit.empty(); ++cit)
 			++tsize;
-			++cit;
-		}
 		if(tsize != tTotalNodeCount)
 		{
 			GTLINE2("Tree const front iterator can't scan all the elements!");
@@ -149,11 +146,8 @@ namespace GAIATEST
 		}
 		tsize = 0;
 		cit = tr.const_back_it();
-		while(!cit.empty())
-		{
+		for(; !cit.empty(); --cit)
 			++tsize;
-			--cit;
-		}
 		if(tsize != tTotalNodeCount)
 		{
 			GTLINE2("Tree const back iterator can't scan all the elements!");

@@ -168,12 +168,8 @@ namespace GAIATEST
 		for(; !it.empty(); ++it)
 			*it = 10;
 		it = ss1.front_it();
-		while(!cit.empty())
-		{
+		for(; !cit.empty(); ++cit, ++it)
 			*it = *cit;
-			++it;
-			++cit;
-		}
 		if(ss != ss1)
 		{
 			GTLINE2("StackStack iterator copy element failed!");

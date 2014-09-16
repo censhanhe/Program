@@ -158,12 +158,8 @@ namespace GAIATEST
 		for(; !it.empty(); ++it)
 			*it = 10;
 		it = q1.front_it();
-		while(!cit.empty())
-		{
+		for(; !cit.empty(); ++cit, ++it)
 			*it = *cit;
-			++it;
-			++cit;
-		}
 		if(q != q1)
 		{
 			GTLINE2("Queue iterator copy element failed!");

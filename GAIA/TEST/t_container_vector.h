@@ -236,7 +236,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		__VectorType::const_it cit = vec.const_front_it();
-		while(!cit.empty())
+		for(; !cit.empty(); ++cit)
 		{
 			if(vec.search(*cit) == GINVALID)
 			{
@@ -256,7 +256,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			++cit;
 		}
 		vec.inverse();
 		__VectorType::it it = vec.front_it();
@@ -353,7 +352,7 @@ namespace GAIATEST
 		}
 		const __VectorType& arrc = vec;
 		cit = arrc.const_front_it();
-		while(!cit.empty())
+		for(; !cit.empty(); ++cit)
 		{
 			__VectorType::const_it citfinded = arrc.lower_bound(*cit);
 			if(citfinded.empty())
@@ -369,17 +368,12 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			++cit;
 		}
 		vec.inverse();
 		cit = vec.const_front_it();
 		it = vec1.front_it();
-		while(!cit.empty())
-		{
+		for(; !cit.empty(); ++cit, ++it)
 			*it = *cit;
-			++it;
-			++cit;
-		}
 		if(vec != vec1)
 		{
 			GTLINE2("Vector iterator copy element failed!");

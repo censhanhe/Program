@@ -158,12 +158,8 @@ namespace GAIATEST
 		for(; !it.empty(); ++it)
 			*it = 10;
 		it = s1.front_it();
-		while(!cit.empty())
-		{
+		for(; !cit.empty(); ++cit, ++it)
 			*it = *cit;
-			++it;
-			++cit;
-		}
 		if(s != s1)
 		{
 			GTLINE2("Stack iterator copy element failed!");

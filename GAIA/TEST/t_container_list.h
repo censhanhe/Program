@@ -82,7 +82,7 @@ namespace GAIATEST
 		}
 		GAIA::N32 nIndex = 0;
 		__ListType::const_it cit = l.const_front_it();
-		while(!cit.empty())
+		for(; !cit.empty(); ++cit)
 		{
 			if(*cit != nIndex)
 			{
@@ -90,7 +90,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			++cit;
 			++nIndex;
 		}
 		it = l.front_it();
@@ -157,7 +156,7 @@ namespace GAIATEST
 		}
 		cit = l.const_front_it();
 		nIndex = 0;
-		while(!cit.empty())
+		for(; !cit.empty(); ++cit)
 		{
 			if(*cit != nIndex)
 			{
@@ -165,7 +164,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			++cit;
 			++nIndex;
 		}
 		while(!l.empty())
@@ -194,7 +192,7 @@ namespace GAIATEST
 		}
 		cit = l.const_back_it();
 		nIndex = 0;
-		while(!cit.empty())
+		for(; !cit.empty(); --cit)
 		{
 			if(*cit != nIndex)
 			{
@@ -202,7 +200,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			--cit;
 			++nIndex;
 		}
 		while(!l.empty())

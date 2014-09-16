@@ -168,12 +168,8 @@ namespace GAIATEST
 		for(; !it.empty(); ++it)
 			*it = 10;
 		it = sq1.front_it();
-		while(!cit.empty())
-		{
+		for(; !cit.empty(); ++cit, ++it)
 			*it = *cit;
-			++it;
-			++cit;
-		}
 		if(sq != sq1)
 		{
 			GTLINE2("StackQueue iterator copy element failed!");

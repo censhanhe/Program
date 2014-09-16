@@ -93,11 +93,8 @@ namespace GAIATEST
 		}
 		cit = t.const_front_it();
 		uCount = 0;
-		while(!cit.empty())
-		{
+		for(; !cit.empty(); ++cit)
 			++uCount;
-			++cit;
-		}
 		if(uCount != 100)
 		{
 			GTLINE2("Trie const iterator operator ++ failed!");
@@ -114,11 +111,8 @@ namespace GAIATEST
 		}
 		cit = t.const_back_it();
 		uCount = 0;
-		while(!cit.empty())
-		{
+		for(; !cit.empty(); --cit)
 			++uCount;
-			--cit;
-		}
 		if(uCount != 100)
 		{
 			GTLINE2("Trie const iterator operator -- failed!");
@@ -181,11 +175,10 @@ namespace GAIATEST
 		}
 		uLeafCount = 0;
 		cit = t.const_front_it();
-		while(!cit.empty())
+		for(; !cit.empty(); ++cit)
 		{
 			if(t.leaf(cit))
 				++uLeafCount;
-			++cit;
 		}
 		if(uLeafCount != COUNTZ)
 		{
@@ -233,7 +226,7 @@ namespace GAIATEST
 			}
 		}
 		cit = t.const_front_it();
-		while(!cit.empty())
+		for(; !cit.empty(); ++cit)
 		{
 			if(t.leaf(cit))
 			{
@@ -251,7 +244,6 @@ namespace GAIATEST
 					break;
 				}
 			}
-			++cit;
 		}
 		__TrieType t1 = t;
 		if(!(t1 == t && t1 >= t && t1 <= t))
