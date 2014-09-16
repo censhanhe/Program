@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 		static const GAIA::N32 ELEMENT_SIZE = 33;
-		typedef GAIA::CONTAINER::BasicMultiSet<GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MultiSetType;
+		typedef GAIA::CTN::BasicMultiSet<GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::N32> > __MultiSetType;
 		__MultiSetType ms;
 		if(!ms.empty())
 		{
@@ -129,7 +129,7 @@ namespace GAIATEST
 		}
 		for(__MultiSetType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(!ms.erase(GAIA::CONTAINER::Pair<GAIA::N32, GAIA::U32>(x, 0)))
+			if(!ms.erase(GAIA::CTN::Pair<GAIA::N32, GAIA::U32>(x, 0)))
 			{
 				GTLINE2("MultiSet erase single element failed!");
 				++nRet;

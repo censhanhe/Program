@@ -6,7 +6,7 @@ namespace GAIATEST
 	GINL GAIA::N32 t_arrayvector(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
-		typedef GAIA::CONTAINER::BasicArrayVector<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32>, 3> __ArrayVectorType;
+		typedef GAIA::CTN::BasicArrayVector<GAIA::N32, GAIA::N32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::N32>, 3> __ArrayVectorType;
 		__ArrayVectorType av;
 		av.reserve(100);
 		if(av.capacity() != 100)
@@ -206,7 +206,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		av.sort();
-		if(!GAIA::ALGORITHM::issorted(av.front_ptr(), av.back_ptr()))
+		if(!GAIA::ALGO::issorted(av.front_ptr(), av.back_ptr()))
 		{
 			GTLINE2("ArrayVector sort failed!");
 			++nRet;
@@ -230,7 +230,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		av.sort();
-		if(!GAIA::ALGORITHM::issorted(av.front_ptr(), av.back_ptr()))
+		if(!GAIA::ALGO::issorted(av.front_ptr(), av.back_ptr()))
 		{
 			GTLINE2("ArrayVector sort failed!");
 			++nRet;

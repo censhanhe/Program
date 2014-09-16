@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace ALGORITHM
+	namespace ALGO
 	{
 		template<typename _SizeType> class SingleSizeIncreaser
 		{
@@ -21,7 +21,7 @@ namespace GAIA
 		public:
 			typedef SingleSizeIncreaser<_SizeType> __MyType;
 		public:
-			GINL _SizeType Increase(const _SizeType& size) const{GAIA_AST(size >= 0); return GAIA::ALGORITHM::minimize(GSCAST(GAIA::UM)(size * 2 + 1), GSCAST(GAIA::UM)(1024 * 1024 * 10));}
+			GINL _SizeType Increase(const _SizeType& size) const{GAIA_AST(size >= 0); return GAIA::ALGO::minimize(GSCAST(GAIA::UM)(size * 2 + 1), GSCAST(GAIA::UM)(1024 * 1024 * 10));}
 		};
 	};
 }

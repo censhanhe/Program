@@ -10,7 +10,7 @@ namespace PROM
 		GINL ~PLC_FileStructure(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PLC_FileStructure");}
 	public:
-		typedef GAIA::CONTAINER::Set<__FileName> __FileLinkSet;
+		typedef GAIA::CTN::Set<__FileName> __FileLinkSet;
 		class Node
 		{
 		public:
@@ -19,7 +19,7 @@ namespace PROM
 			__FileLinkSet parents;
 			__FileLinkSet childs;
 		};
-		typedef GAIA::CONTAINER::Set<Node> __FileNodeSet;
+		typedef GAIA::CTN::Set<Node> __FileNodeSet;
 	public:
 		GINL GAIA::BL AddLink(const GAIA::TCH* pszParentFile, const GAIA::TCH* pszChildFile)
 		{

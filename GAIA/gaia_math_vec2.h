@@ -20,8 +20,8 @@ namespace GAIA
 			template<typename _ParamDataType> VEC2(_ParamDataType* p){this->operator = (p);}
 			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq());}
 			GINL _DataType lengthsq() const{return x * x + y * y;}
-			GINL _DataType minimize() const{return GAIA::ALGORITHM::minimize(x, y);}
-			GINL _DataType maximize() const{return GAIA::ALGORITHM::maximize(x, y);}
+			GINL _DataType minimize() const{return GAIA::ALGO::minimize(x, y);}
+			GINL _DataType maximize() const{return GAIA::ALGO::maximize(x, y);}
 			template<typename _ParamDataType> __MyType& minimize(const _ParamDataType& src){if(x > src) x = src; if(y > src) y = src; return *this;}
 			template<typename _ParamDataType> __MyType& maximize(const _ParamDataType& src){if(x < src) x = src; if(y < src) y = src; return *this;}
 			template<typename _ParamDataType> __MyType& minimize(const GAIA::MATH::VEC2<_ParamDataType>& src){if(x > src.x) x = src.x; if(y > src.y) y = src.y; return *this;}
@@ -53,18 +53,18 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& v){x = y = GSCAST(_DataType)(v); return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){x = GSCAST(_DataType)(p[0]); y = GSCAST(_DataType)(p[1]); return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
-			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return !this->operator < (v);}
 			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return !this->operator > (v);}
-			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) > 0;}
-			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGORITHM::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) < 0;}
-			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp2k((const _DataType*)*this, v) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) < 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGO::cmp2k((const _DataType*)*this, v) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& v) const{return !this->operator < (v);}
 			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& v) const{return !this->operator > (v);}
-			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp2k((const _DataType*)*this, v) > 0;}
-			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return GAIA::ALGORITHM::cmp2k((const _DataType*)*this, v) < 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return GAIA::ALGO::cmp2k((const _DataType*)*this, v) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return GAIA::ALGO::cmp2k((const _DataType*)*this, v) < 0;}
 			template<typename _ParamDataType> const _DataType& operator [] (const _DataType& index) const{GAIA_AST(index < 2); return (&x)[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _DataType& index){GAIA_AST(index < 2); return (&x)[index];}
 			GINL operator _DataType*(){return &x;}

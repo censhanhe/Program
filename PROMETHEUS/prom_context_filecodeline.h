@@ -15,7 +15,7 @@ namespace PROM
 		public:
 			DWARFS_MISC::TextLine lines;
 		};
-		typedef GAIA::CONTAINER::Vector<FileCodeLines> __FileCodelinesList;
+		typedef GAIA::CTN::Vector<FileCodeLines> __FileCodelinesList;
 	public:
 		__FileCodelinesList file_codelines_list;
 	};

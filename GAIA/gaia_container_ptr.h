@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType> class Ptr : public GAIA::Entity
 		{

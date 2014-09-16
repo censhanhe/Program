@@ -8,7 +8,7 @@ namespace GAIATEST
 		GAIA::N32 nRet = 0;
 
 		static const GAIA::N32 ELEMENT_SIZE = 100;
-		typedef GAIA::CONTAINER::BasicMultiAVLTree<GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > __MultiAVLType;
+		typedef GAIA::CTN::BasicMultiAVLTree<GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::U32> > __MultiAVLType;
 		__MultiAVLType mavl;
 		if(!mavl.empty())
 		{
@@ -77,7 +77,7 @@ namespace GAIATEST
 			GTLINE2("MultiAVL capacity error!");
 			++nRet;
 		}
-		if(!GAIA::ALGORITHM::issorted(mavl.front_it(), mavl.back_it()))
+		if(!GAIA::ALGO::issorted(mavl.front_it(), mavl.back_it()))
 		{
 			GTLINE2("MultiAVL element not sorted!");
 			++nRet;

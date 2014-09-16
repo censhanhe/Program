@@ -6,7 +6,7 @@ namespace GAIATEST
 	GINL GAIA::N32 t_bitset(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
-		typedef GAIA::CONTAINER::BasicBitset<GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> > __BitsetType;
+		typedef GAIA::CTN::BasicBitset<GAIA::U32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __BitsetType;
 		__BitsetType b;
 		if(!b.empty())
 		{

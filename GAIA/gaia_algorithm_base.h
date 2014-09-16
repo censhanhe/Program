@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace ALGORITHM
+	namespace ALGO
 	{
 		template<typename _DataType1, typename _DataType2> GAIA::GVOID move(_DataType1& dst, const _DataType2& src){dst = src;}
 		template<typename _DataType, typename _SizeType> GAIA::GVOID move_prev(_DataType p, const _SizeType& size)
@@ -53,7 +53,7 @@ namespace GAIA
 		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::GVOID swaps(_DataType1 p1, _DataType2 p2, const _SizeType& size)
 		{
 			for(_SizeType x = 0; x < size; ++x)
-				GAIA::ALGORITHM::swap(p1[x], p2[x]);
+				GAIA::ALGO::swap(p1[x], p2[x]);
 		}
 		template<typename _DataType, typename _KeyType> _DataType swapleft(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
@@ -65,7 +65,7 @@ namespace GAIA
 				if(*pTemp == key)
 				{
 					if(pBegin != pTemp)
-						GAIA::ALGORITHM::swap(*pBegin, *pTemp);
+						GAIA::ALGO::swap(*pBegin, *pTemp);
 					++pBegin;
 				}
 				++pTemp;
@@ -80,7 +80,7 @@ namespace GAIA
 			GAIA_AST(!!pKeyBegin);
 			while(pKeyBegin <= pKeyEnd)
 			{
-				pBegin = GAIA::ALGORITHM::swapleft(pBegin, pEnd, *pKeyBegin);
+				pBegin = GAIA::ALGO::swapleft(pBegin, pEnd, *pKeyBegin);
 				++pKeyBegin;
 			}
 			return pBegin;
@@ -95,7 +95,7 @@ namespace GAIA
 				if(*pTemp != key)
 				{
 					if(pBegin != pTemp)
-						GAIA::ALGORITHM::swap(*pBegin, *pTemp);
+						GAIA::ALGO::swap(*pBegin, *pTemp);
 					++pBegin;
 				}
 				++pTemp;
@@ -125,7 +125,7 @@ namespace GAIA
 				if(!bExist)
 				{
 					if(pBegin != pTemp)
-						GAIA::ALGORITHM::swap(*pBegin, *pTemp);
+						GAIA::ALGO::swap(*pBegin, *pTemp);
 					++pBegin;
 				}
 				++pTemp;
@@ -138,7 +138,7 @@ namespace GAIA
 			GAIA_AST(!!pEnd);
 			while(pBegin != pEnd)
 			{
-				GAIA::ALGORITHM::swap(*pBegin, *pEnd);
+				GAIA::ALGO::swap(*pBegin, *pEnd);
 				++pBegin;
 				if(pBegin == pEnd)
 					break;

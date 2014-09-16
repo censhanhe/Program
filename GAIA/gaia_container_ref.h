@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType> class Ref : public GAIA::Entity
 		{
@@ -23,30 +23,30 @@ namespace GAIA
 			GINL const _DataType& operator * () const{return *m_p;}
 			template<typename _ParamSizeType> _DataType& operator [] (const _ParamSizeType& index){return m_p[index];}
 			template<typename _ParamSizeType> const _DataType& operator [] (const _ParamSizeType& index) const{return m_p[index];}
-			GINL GAIA::BL operator == (const __MyType& src) const{return GAIA::ALGORITHM::cmpp(m_p, src.m_p) == 0;}
-			GINL GAIA::BL operator != (const __MyType& src) const{return GAIA::ALGORITHM::cmpp(m_p, src.m_p) != 0;}
-			GINL GAIA::BL operator >= (const __MyType& src) const{return GAIA::ALGORITHM::cmpp(m_p, src.m_p) >= 0;}
-			GINL GAIA::BL operator <= (const __MyType& src) const{return GAIA::ALGORITHM::cmpp(m_p, src.m_p) <= 0;}
-			GINL GAIA::BL operator > (const __MyType& src) const{return GAIA::ALGORITHM::cmpp(m_p, src.m_p) > 0;}
-			GINL GAIA::BL operator < (const __MyType& src) const{return GAIA::ALGORITHM::cmpp(m_p, src.m_p) < 0;}
-			GINL GAIA::BL operator == (const _DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) == 0;}
-			GINL GAIA::BL operator != (const _DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) != 0;}
-			GINL GAIA::BL operator >= (const _DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) >= 0;}
-			GINL GAIA::BL operator <= (const _DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) <= 0;}
-			GINL GAIA::BL operator > (const _DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) > 0;}
-			GINL GAIA::BL operator < (const _DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) < 0;}
-			GINL GAIA::BL operator == (_DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) == 0;}
-			GINL GAIA::BL operator != (_DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) != 0;}
-			GINL GAIA::BL operator >= (_DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) >= 0;}
-			GINL GAIA::BL operator <= (_DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) <= 0;}
-			GINL GAIA::BL operator > (_DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) > 0;}
-			GINL GAIA::BL operator < (_DataType* p) const{return GAIA::ALGORITHM::cmpp(m_p, p) < 0;}
-			GINL GAIA::BL operator == (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) == 0;}
-			GINL GAIA::BL operator != (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) != 0;}
-			GINL GAIA::BL operator >= (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) >= 0;}
-			GINL GAIA::BL operator <= (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) <= 0;}
-			GINL GAIA::BL operator > (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) > 0;}
-			GINL GAIA::BL operator < (const _DataType& t) const{return GAIA::ALGORITHM::cmpp(m_p, &t) < 0;}
+			GINL GAIA::BL operator == (const __MyType& src) const{return GAIA::ALGO::cmpp(m_p, src.m_p) == 0;}
+			GINL GAIA::BL operator != (const __MyType& src) const{return GAIA::ALGO::cmpp(m_p, src.m_p) != 0;}
+			GINL GAIA::BL operator >= (const __MyType& src) const{return GAIA::ALGO::cmpp(m_p, src.m_p) >= 0;}
+			GINL GAIA::BL operator <= (const __MyType& src) const{return GAIA::ALGO::cmpp(m_p, src.m_p) <= 0;}
+			GINL GAIA::BL operator > (const __MyType& src) const{return GAIA::ALGO::cmpp(m_p, src.m_p) > 0;}
+			GINL GAIA::BL operator < (const __MyType& src) const{return GAIA::ALGO::cmpp(m_p, src.m_p) < 0;}
+			GINL GAIA::BL operator == (const _DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) == 0;}
+			GINL GAIA::BL operator != (const _DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) != 0;}
+			GINL GAIA::BL operator >= (const _DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) >= 0;}
+			GINL GAIA::BL operator <= (const _DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) <= 0;}
+			GINL GAIA::BL operator > (const _DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) > 0;}
+			GINL GAIA::BL operator < (const _DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) < 0;}
+			GINL GAIA::BL operator == (_DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) == 0;}
+			GINL GAIA::BL operator != (_DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) != 0;}
+			GINL GAIA::BL operator >= (_DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) >= 0;}
+			GINL GAIA::BL operator <= (_DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) <= 0;}
+			GINL GAIA::BL operator > (_DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) > 0;}
+			GINL GAIA::BL operator < (_DataType* p) const{return GAIA::ALGO::cmpp(m_p, p) < 0;}
+			GINL GAIA::BL operator == (const _DataType& t) const{return GAIA::ALGO::cmpp(m_p, &t) == 0;}
+			GINL GAIA::BL operator != (const _DataType& t) const{return GAIA::ALGO::cmpp(m_p, &t) != 0;}
+			GINL GAIA::BL operator >= (const _DataType& t) const{return GAIA::ALGO::cmpp(m_p, &t) >= 0;}
+			GINL GAIA::BL operator <= (const _DataType& t) const{return GAIA::ALGO::cmpp(m_p, &t) <= 0;}
+			GINL GAIA::BL operator > (const _DataType& t) const{return GAIA::ALGO::cmpp(m_p, &t) > 0;}
+			GINL GAIA::BL operator < (const _DataType& t) const{return GAIA::ALGO::cmpp(m_p, &t) < 0;}
 			GINL operator const _DataType*() const{return m_p;}
 			GINL operator _DataType*(){return m_p;}
 		private:

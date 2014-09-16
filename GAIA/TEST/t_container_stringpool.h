@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 
-		typedef GAIA::CONTAINER::StringPool<GAIA::TCH> __StringPoolType;
+		typedef GAIA::CTN::StringPool<GAIA::TCH> __StringPoolType;
 
 		__StringPoolType sp, sp1;
 		GAIA::SIZE s1, s2, s11, s22;
@@ -65,13 +65,13 @@ namespace GAIATEST
 			++nRet;
 		}
 		s1 = sp.alloc(_T("HelloWorld"));
-		if(GAIA::ALGORITHM::strcmp(sp.get(s1), _T("HelloWorld")) != 0)
+		if(GAIA::ALGO::strcmp(sp.get(s1), _T("HelloWorld")) != 0)
 		{
 			GTLINE2("StringPool alloc error!");
 			++nRet;
 		}
 		s2 = sp.alloc(_T("HelloKitty"));
-		if(GAIA::ALGORITHM::strcmp(sp.get(s2), _T("HelloKitty")) != 0)
+		if(GAIA::ALGO::strcmp(sp.get(s2), _T("HelloKitty")) != 0)
 		{
 			GTLINE2("StringPool alloc error!");
 			++nRet;
@@ -122,13 +122,13 @@ namespace GAIATEST
 			++nRet;
 		}
 		s11 = sp1.alloc(_T("ABC"));
-		if(GAIA::ALGORITHM::strcmp(sp1.get(s11), _T("ABC")) != 0)
+		if(GAIA::ALGO::strcmp(sp1.get(s11), _T("ABC")) != 0)
 		{
 			GTLINE2("StringPool alloc error!");
 			++nRet;
 		}
 		s22 = sp1.alloc(_T("DEF"));
-		if(GAIA::ALGORITHM::strcmp(sp1.get(s22), _T("DEF")) != 0)
+		if(GAIA::ALGO::strcmp(sp1.get(s22), _T("DEF")) != 0)
 		{
 			GTLINE2("StringPool alloc error!");
 			++nRet;

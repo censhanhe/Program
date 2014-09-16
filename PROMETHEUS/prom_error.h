@@ -80,7 +80,7 @@ namespace PROM
 		temp_error->setfileline(line);\
 	}while(GAIA::ALWAYSFALSE)
 
-	typedef GAIA::CONTAINER::Vector<PROM::ERROR_SYSTEM::ErrorBase*> __ErrorListType;
+	typedef GAIA::CTN::Vector<PROM::ERROR_SYSTEM::ErrorBase*> __ErrorListType;
 };
 
 #endif

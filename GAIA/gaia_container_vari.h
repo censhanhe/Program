@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		class Vari : public GAIA::Entity
 		{

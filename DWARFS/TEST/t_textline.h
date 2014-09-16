@@ -57,13 +57,13 @@ int main(int argc, char* argv[])\r\n\
 				++nRet;
 				break;
 			}
-			if(	(x == 0 && GAIA::ALGORITHM::strcmp(p, _T("#include <iostream>\r\n")) != 0) ||
-				(x == 1 && GAIA::ALGORITHM::strcmp(p, _T("using namespace std;\r\n")) != 0) ||
-				(x == 2 && GAIA::ALGORITHM::strcmp(p, _T("int main(int argc, char* argv[])\r\n")) != 0) ||
-				(x == 3 && GAIA::ALGORITHM::strcmp(p, _T("{\r\n")) != 0) ||
-				(x == 4 && GAIA::ALGORITHM::strcmp(p, _T("	cout << \"HelloWorld\" << endl;\r\n")) != 0) ||
-				(x == 5 && GAIA::ALGORITHM::strcmp(p, _T("	return 0;\r\n")) != 0) ||
-				(x == 6 && GAIA::ALGORITHM::strcmp(p, _T("}\r\n")) != 0))
+			if(	(x == 0 && GAIA::ALGO::strcmp(p, _T("#include <iostream>\r\n")) != 0) ||
+				(x == 1 && GAIA::ALGO::strcmp(p, _T("using namespace std;\r\n")) != 0) ||
+				(x == 2 && GAIA::ALGO::strcmp(p, _T("int main(int argc, char* argv[])\r\n")) != 0) ||
+				(x == 3 && GAIA::ALGO::strcmp(p, _T("{\r\n")) != 0) ||
+				(x == 4 && GAIA::ALGO::strcmp(p, _T("	cout << \"HelloWorld\" << endl;\r\n")) != 0) ||
+				(x == 5 && GAIA::ALGO::strcmp(p, _T("	return 0;\r\n")) != 0) ||
+				(x == 6 && GAIA::ALGO::strcmp(p, _T("}\r\n")) != 0))
 			{
 				GTLINE2("TextLine content error!");
 				++nRet;

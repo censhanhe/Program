@@ -56,12 +56,12 @@ namespace GAIA
 
 			GINL GAIA::GVOID transpose()
 			{
-				GAIA::ALGORITHM::swap(m[0][1], m[1][0]);
-				GAIA::ALGORITHM::swap(m[0][2], m[2][0]);
-				GAIA::ALGORITHM::swap(m[0][3], m[3][0]);
-				GAIA::ALGORITHM::swap(m[1][2], m[2][1]);
-				GAIA::ALGORITHM::swap(m[1][3], m[3][1]);
-				GAIA::ALGORITHM::swap(m[2][3], m[3][2]);
+				GAIA::ALGO::swap(m[0][1], m[1][0]);
+				GAIA::ALGO::swap(m[0][2], m[2][0]);
+				GAIA::ALGO::swap(m[0][3], m[3][0]);
+				GAIA::ALGO::swap(m[1][2], m[2][1]);
+				GAIA::ALGO::swap(m[1][3], m[3][1]);
+				GAIA::ALGO::swap(m[2][3], m[3][2]);
 			}
 			GINL GAIA::GVOID inverse()
 			{
@@ -221,14 +221,14 @@ namespace GAIA
 				m[3][0] = (_DataType)src.m[3][0]; m[3][1] = (_DataType)src.m[3][1]; m[3][2] = (_DataType)src.m[3][2]; m[3][3] = (_DataType)src.m[3][3];
 				return *this;
 			}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNULL); GAIA::ALGORITHM::copy(GSCAST(_DataType*)(m), p, sizeofarray2(m));}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNULL); GAIA::ALGO::copy(GSCAST(_DataType*)(m), p, sizeofarray2(m));}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGORITHM::set((_DataType*)m, t, sizeofarray2(m));}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGO::set((_DataType*)m, t, sizeofarray2(m));}
 
-			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGO::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return !(this->operator == (src));}
-			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) >= 0;}
-			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGORITHM::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) <= 0;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGO::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) >= 0;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGO::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) <= 0;}
 			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return !(this->operator <= (src));}
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return !(this->operator >= (src));}
 

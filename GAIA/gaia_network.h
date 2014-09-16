@@ -12,20 +12,20 @@ namespace GAIA
 			GINL IP(const IP& src){this->operator = (src);}
 			template<typename _ParamDataType> IP(const _ParamDataType* psz){this->operator = (psz);}
 			GINL ~IP(){}
-			GINL GAIA::GVOID Invalid(){GAIA::ALGORITHM::set(us, 0, 4);}
-			GINL GAIA::BL IsInvalid() const{return GAIA::ALGORITHM::cmpk(us, 0, 4) == 0;}
+			GINL GAIA::GVOID Invalid(){GAIA::ALGO::set(us, 0, 4);}
+			GINL GAIA::BL IsInvalid() const{return GAIA::ALGO::cmpk(us, 0, 4) == 0;}
 			template<typename _ParamDataType> GAIA::BL FromString(const _ParamDataType* psz)
 			{
 				const _ParamDataType* p = psz;
-				GAIA::U32 uDotCnt = GAIA::ALGORITHM::strcnt(psz, '.');
+				GAIA::U32 uDotCnt = GAIA::ALGO::strcnt(psz, '.');
 				if(uDotCnt == 3)
 				{
 					for(GAIA::N32 x = 0; x < 3; ++x)
 					{
-						p = GAIA::ALGORITHM::str2int(p, us[3 - x]);
+						p = GAIA::ALGO::str2int(p, us[3 - x]);
 						++p;
 					}
-					GAIA::ALGORITHM::str2int(p, us[0]);
+					GAIA::ALGO::str2int(p, us[0]);
 					return GAIA::True;
 				}
 				return GAIA::False;
@@ -35,7 +35,7 @@ namespace GAIA
 				_ParamDataType* p = psz;
 				for(GAIA::N32 x = 0; x < 4; ++x)
 				{
-					p = GAIA::ALGORITHM::int2str((GAIA::N32)us[3 - x], p);
+					p = GAIA::ALGO::int2str((GAIA::N32)us[3 - x], p);
 					*(p - 1) = '.';
 				}
 				*(p - 1) = 0;
@@ -77,20 +77,20 @@ namespace GAIA
 			{
 				if(!ip.FromString(psz))
 					return GAIA::False;
-				const _ParamDataType* p = GAIA::ALGORITHM::strch(psz, ':');
+				const _ParamDataType* p = GAIA::ALGO::strch(psz, ':');
 				if(p == GNULL)
 					return GAIA::False;
 				++p;
-				GAIA::ALGORITHM::str2int(p, uPort);
+				GAIA::ALGO::str2int(p, uPort);
 				return GAIA::True;
 			}
 			template<typename _ParamDataType> GAIA::GVOID ToString(_ParamDataType* psz) const
 			{
 				ip.ToString(psz);
-				GAIA::TCH* p = GAIA::ALGORITHM::strend(psz);
+				GAIA::TCH* p = GAIA::ALGO::strend(psz);
 				*p = ':';
 				++p;
-				p = GAIA::ALGORITHM::int2str((GAIA::N32)uPort, p);
+				p = GAIA::ALGO::int2str((GAIA::N32)uPort, p);
 				*(p - 1) = 0;
 			}
 			GINL NetworkAddress& operator = (const NetworkAddress& src){GAIA_AST(&src != this); ip = src.ip; uPort = src.uPort; return *this;}
@@ -100,7 +100,7 @@ namespace GAIA
 			GAIA::U16 uPort;
 		};
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size);
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CONTAINER::Vector<IP>& listResult);
+		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult);
 		class NetworkSender;
 		class NetworkReceiver;
 		class NetworkHandle : public RefObject
@@ -117,8 +117,8 @@ namespace GAIA
 				GAIA::U32 uSize;
 			};
 		private:
-			typedef GAIA::CONTAINER::Queue<SendRec> __SendQueueType;
-			typedef GAIA::CONTAINER::Vector<SendRec> __SendListType;
+			typedef GAIA::CTN::Queue<SendRec> __SendQueueType;
+			typedef GAIA::CTN::Vector<SendRec> __SendListType;
 		public:
 			static const GAIA::U32 MAX_NOSTABILITY_SENDSIZE = 840;
 			class ConnectDesc
@@ -240,8 +240,8 @@ namespace GAIA
 		private:
 			friend class NetworkHandle;
 		private:
-			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle> > __HandleSetType;
-			typedef GAIA::CONTAINER::Vector<NetworkHandle*> __HandleListType;
+			typedef GAIA::CTN::Set<GAIA::CTN::Ref<NetworkHandle> > __HandleSetType;
+			typedef GAIA::CTN::Vector<NetworkHandle*> __HandleListType;
 		public:
 			GINL NetworkSender(){this->init();}
 			GINL ~NetworkSender(){if(this->IsBegin()) this->End(); this->RemoveAll();}
@@ -296,9 +296,9 @@ namespace GAIA
 		private:
 			friend class NetworkHandle;
 		private:
-			typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<NetworkHandle> > __HandleSetType;
-			typedef GAIA::CONTAINER::Vector<NetworkHandle*> __HandleListType;
-			typedef GAIA::CONTAINER::Buffer __BufferType;
+			typedef GAIA::CTN::Set<GAIA::CTN::Ref<NetworkHandle> > __HandleSetType;
+			typedef GAIA::CTN::Vector<NetworkHandle*> __HandleListType;
+			typedef GAIA::CTN::Buffer __BufferType;
 		public:
 			GINL NetworkReceiver(){this->init();}
 			GINL ~NetworkReceiver(){if(this->IsBegin()) this->End(); this->RemoveAll();}

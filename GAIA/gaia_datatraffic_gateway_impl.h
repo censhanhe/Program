@@ -34,9 +34,9 @@ namespace GAIA
 				return GAIA::False;
 			return GAIA::True;
 		}
-		GINL GAIA::BL Gateway::CollectRoutes(GAIA::CONTAINER::Vector<Route*>& listResult) const
+		GINL GAIA::BL Gateway::CollectRoutes(GAIA::CTN::Vector<Route*>& listResult) const
 		{
-			GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype oldsize = listResult.size();
+			GAIA::CTN::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype oldsize = listResult.size();
 			for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); ++x)
 			{
 				Route* pRoute = m_routes[x];

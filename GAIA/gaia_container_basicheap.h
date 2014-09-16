@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, _SizeType _PieceSize> class BasicHeap : public GAIA::Entity
 		{

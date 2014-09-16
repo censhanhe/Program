@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, _SizeType _Size> class BasicStackStack : public GAIA::Entity
 		{
@@ -155,7 +155,7 @@ namespace GAIA
 				return GAIA::False;
 			}
 			GINL GAIA::GVOID clear(){m_size = 0;}
-			GINL _SizeType count(const _DataType& t) const{_SizeType ret = 0; GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret); return ret;}
+			GINL _SizeType count(const _DataType& t) const{_SizeType ret = 0; GAIA::ALGO::count(this->front_ptr(), this->back_ptr(), t, ret); return ret;}
 			GINL GAIA::BL push_back(const _DataType& t)
 			{
 				if(this->size() < this->capacity())
@@ -251,7 +251,7 @@ namespace GAIA
 				this->clear();
 				if(!src.empty())
 				{
-					GAIA::ALGORITHM::copy(m_data, src.m_data, src.size());
+					GAIA::ALGO::copy(m_data, src.m_data, src.size());
 					m_size = src.size();
 				}
 				return *this;

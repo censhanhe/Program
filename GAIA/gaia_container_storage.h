@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _SizeType, typename _SizeIncreaserType, _SizeType _PageSize> class Storage : public GAIA::Entity
 		{

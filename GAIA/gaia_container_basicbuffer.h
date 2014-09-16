@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _SizeType, typename _SizeIncreaserType> class BasicBuffer : public GAIA::Entity
 		{
@@ -57,7 +57,7 @@ namespace GAIA
 				if(size == 0)
 					return;
 				GAIA::U8* pNew = this->alloc(size);
-				GAIA::ALGORITHM::xmemcpy(pNew, p, size);
+				GAIA::ALGO::xmemcpy(pNew, p, size);
 			}
 			GINL GAIA::BL read(GAIA::GVOID* p, const _SizeType& size)
 			{
@@ -69,7 +69,7 @@ namespace GAIA
 					return GAIA::False;
 				if(size > this->capacity() - this->read_size())
 					return GAIA::False;
-				GAIA::ALGORITHM::xmemcpy(p, m_pRead, size);
+				GAIA::ALGO::xmemcpy(p, m_pRead, size);
 				m_pRead += size;
 				return GAIA::True;
 			}
@@ -78,7 +78,7 @@ namespace GAIA
 				if(src.write_size() == 0)
 					return;
 				GAIA::U8* pNew = this->alloc(src.write_size());
-				GAIA::ALGORITHM::xmemcpy(pNew, src.front_ptr(), src.write_size());
+				GAIA::ALGO::xmemcpy(pNew, src.front_ptr(), src.write_size());
 			}
 			GINL GAIA::BL read(__MyType& src)
 			{
@@ -86,7 +86,7 @@ namespace GAIA
 					return GAIA::False;
 				if(src.write_size() > this->capacity() - this->read_size())
 					return GAIA::False;
-				GAIA::ALGORITHM::xmemcpy(src.front_ptr(), m_pRead, src.write_size());
+				GAIA::ALGO::xmemcpy(src.front_ptr(), m_pRead, src.write_size());
 				m_pRead += src.write_size();
 				return GAIA::True;
 			}
@@ -95,9 +95,9 @@ namespace GAIA
 				GAIA_AST(!!psz);
 				if(psz == GNULL)
 					return;
-				GAIA::SIZE bytes = GAIA::ALGORITHM::strlen(psz) * sizeof(_ParamObjType) + sizeof(_ParamObjType);
+				GAIA::SIZE bytes = GAIA::ALGO::strlen(psz) * sizeof(_ParamObjType) + sizeof(_ParamObjType);
 				GAIA::U8* pNew = this->alloc(bytes);
-				GAIA::ALGORITHM::xmemcpy(pNew, psz, bytes);
+				GAIA::ALGO::xmemcpy(pNew, psz, bytes);
 			}
 			template<typename _ParamObjType> GAIA::BL read(_ParamObjType* psz)
 			{
@@ -120,13 +120,13 @@ namespace GAIA
 			template<typename _ParamObjType> GAIA::GVOID write(const _ParamObjType& obj)
 			{
 				GAIA::U8* pNew = this->alloc(sizeof(obj));
-				GAIA::ALGORITHM::xmemcpy(pNew, &obj, sizeof(obj));
+				GAIA::ALGO::xmemcpy(pNew, &obj, sizeof(obj));
 			}
 			template<typename _ParamObjType> GAIA::BL read(_ParamObjType& obj)
 			{
 				if(sizeof(obj) > this->capacity() - this->read_size())
 					return GAIA::False;
-				GAIA::ALGORITHM::xmemcpy(&obj, m_pRead, sizeof(obj));
+				GAIA::ALGO::xmemcpy(&obj, m_pRead, sizeof(obj));
 				m_pRead += sizeof(obj);
 				return GAIA::True;
 			}
@@ -135,7 +135,7 @@ namespace GAIA
 				if(src.write_size() != this->write_size())
 					return GAIA::False;
 				else
-					return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->write_size()) == 0;
+					return GAIA::ALGO::xmemcmp(this->front_ptr(), src.front_ptr(), this->write_size()) == 0;
 			}
 			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const __MyType& src) const
@@ -145,7 +145,7 @@ namespace GAIA
 				else if(this->write_size() < src.write_size())
 					return GAIA::False;
 				else
-					return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->write_size()) >= 0;
+					return GAIA::ALGO::xmemcmp(this->front_ptr(), src.front_ptr(), this->write_size()) >= 0;
 			}
 			GINL GAIA::BL operator <= (const __MyType& src) const
 			{
@@ -154,7 +154,7 @@ namespace GAIA
 				else if(this->write_size() > src.write_size())
 					return GAIA::False;
 				else
-					return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->write_size()) <= 0;
+					return GAIA::ALGO::xmemcmp(this->front_ptr(), src.front_ptr(), this->write_size()) <= 0;
 			}
 			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
@@ -170,7 +170,7 @@ namespace GAIA
 				this->reserve(src.write_size());
 				if(src.write_size() > 0)
 				{
-					GAIA::ALGORITHM::xmemcpy(this->front_ptr(), src.front_ptr(), src.write_size());
+					GAIA::ALGO::xmemcpy(this->front_ptr(), src.front_ptr(), src.write_size());
 					m_pWrite = m_pFront + src.write_size();
 				}
 				return *this;
@@ -190,12 +190,12 @@ namespace GAIA
 					return pRet;
 				}
 				_SizeIncreaserType increaser;
-				_SizeType newsize = GAIA::ALGORITHM::maximize(
+				_SizeType newsize = GAIA::ALGO::maximize(
 					increaser.Increase(this->write_size()),
 					this->write_size() + size);
 				GAIA::U8* pNew = GAIA_MALLOC(GAIA::U8, newsize);
 				if(m_pWrite != m_pFront)
-					GAIA::ALGORITHM::xmemcpy(pNew, m_pFront, this->write_size());
+					GAIA::ALGO::xmemcpy(pNew, m_pFront, this->write_size());
 				if(m_pFront != GNULL)
 					GAIA_MFREE(m_pFront);
 				m_pWrite = pNew + this->write_size();

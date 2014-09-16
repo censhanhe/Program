@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		typedef BasicString<GAIA::TCH, GAIA::SIZE> TString;
 	};

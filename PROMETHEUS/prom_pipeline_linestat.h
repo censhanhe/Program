@@ -35,9 +35,9 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 			{
 				const GAIA::TCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
-				if(GAIA::ALGORITHM::stremp(pszCmd))
+				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
-				if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-linestat")) == 0)
+				if(GAIA::ALGO::strcmp(pszCmd, _T("-linestat")) == 0)
 				{
 					bLineStat = GAIA::True;
 					break;
@@ -57,7 +57,7 @@ namespace PROM
 							++fli.uBlankLineCount;
 							continue;
 						}
-						if(GAIA::ALGORITHM::strcnts(strLine.front_ptr(), _T("\r\n\t ")) == strLine.size())
+						if(GAIA::ALGO::strcnts(strLine.front_ptr(), _T("\r\n\t ")) == strLine.size())
 						{
 							++fli.uBlankLineCount;
 							continue;

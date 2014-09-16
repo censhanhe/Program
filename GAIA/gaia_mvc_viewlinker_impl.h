@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MVC
 	{
-		GINL GAIA::BL ViewLinker::CollectLinkedViews(GAIA::CONTAINER::Vector<GAIA::MVC::View*>& listResult)
+		GINL GAIA::BL ViewLinker::CollectLinkedViews(GAIA::CTN::Vector<GAIA::MVC::View*>& listResult)
 		{
 			GAIA::BL bRet = GAIA::False;
 			__ViewList::it it = m_views.front_it();

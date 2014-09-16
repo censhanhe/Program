@@ -14,7 +14,7 @@ namespace GAIATEST
 			/* Accesser pointer operator test. */
 			{
 				typedef GAIA::N16 __DataType;
-				typedef GAIA::CONTAINER::Accesser<__DataType, GAIA::NM> __AccType;
+				typedef GAIA::CTN::Accesser<__DataType, GAIA::NM> __AccType;
 				__AccType acc;
 				__DataType arr[ACCESS_ELEMENT_COUNT];
 				if(!acc.bind(arr, ACCESS_ELEMENT_COUNT, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE))
@@ -162,7 +162,7 @@ namespace GAIATEST
 			/* Accesser pointer operator test. */
 			{
 				typedef GAIA::N16 __DataType;
-				typedef GAIA::CONTAINER::Accesser<__DataType, GAIA::NM> __AccType;
+				typedef GAIA::CTN::Accesser<__DataType, GAIA::NM> __AccType;
 				__AccType acc;
 				GAIA::FILESYSTEM::File accfile;
 				if(!accfile.Open(_T("../accesser_file"),

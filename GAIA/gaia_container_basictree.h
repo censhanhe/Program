@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicTree : public GAIA::Entity
 		{
@@ -450,7 +450,7 @@ namespace GAIA
 					this->unlink(*child.m_pParent, child);
 				Node** ppn;
 				if(!parent.m_links.empty())
-					ppn = GAIA::ALGORITHM::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), (Node*)GNULL);
+					ppn = GAIA::ALGO::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), (Node*)GNULL);
 				else
 					ppn = GNULL;
 				if(ppn == GNULL)
@@ -466,7 +466,7 @@ namespace GAIA
 					return GAIA::False;
 				if(parent.m_links.empty())
 					return GAIA::False;
-				Node** pFinded = GAIA::ALGORITHM::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), &child);
+				Node** pFinded = GAIA::ALGO::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), &child);
 				*pFinded = GNULL;
 				child.m_pParent = GNULL;
 				if(parent.m_links.count(GNULL) == parent.m_links.size())
@@ -657,7 +657,7 @@ namespace GAIA
 						pTempNode = pTempNode->m_pParent;
 					}
 					if(!listNode.empty())
-						GAIA::ALGORITHM::inverse(listNode.front_ptr(), listNode.back_ptr());
+						GAIA::ALGO::inverse(listNode.front_ptr(), listNode.back_ptr());
 					return;
 				}
 				for(_SizeType x = 0; x < n.m_links.size(); ++x)

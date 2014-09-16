@@ -34,7 +34,7 @@ int main()
 #endif
 
 	tcout << _T("Local machine ip list:") << endl;
-	GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listIP;
+	GAIA::CTN::Vector<GAIA::NETWORK::IP> listIP;
 	GAIA::CH szHostName[260];
 	GAIA::NETWORK::GetHostName(szHostName, 260);
 	GAIA::NETWORK::GetHostIPList(szHostName, listIP);

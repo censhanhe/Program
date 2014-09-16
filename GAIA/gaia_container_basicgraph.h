@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicGraph : public GAIA::Entity
 		{
@@ -43,7 +43,7 @@ namespace GAIA
 			typedef BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
 			typedef BasicTree<Node*, _SizeType, _SizeIncreaserType> __PathTreeType;
 			typedef BasicPool<Node, _SizeType, _SizeIncreaserType> __PoolType;
-			typedef BasicVector<Pair<Node*, Node*>, _SizeType, GAIA::ALGORITHM::TwiceSizeIncreaser<_SizeType> > __LinkListType;
+			typedef BasicVector<Pair<Node*, Node*>, _SizeType, GAIA::ALGO::TwiceSizeIncreaser<_SizeType> > __LinkListType;
 			typedef BasicStack<Node*, _SizeType, _SizeIncreaserType> __TravelingStackType;
 		public:
 			GINL BasicGraph(){this->init();}
@@ -198,14 +198,14 @@ namespace GAIA
 			{
 				result.clear();
 				if(this->anypath_node(src, dst, result))
-					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+					GAIA::ALGO::inverse(result.front_ptr(), result.back_ptr());
 				this->reset_tstack();
 			}
 			GINL GAIA::GVOID anypath(const Node& src, const _DataType& t, __NodeListType& result) const
 			{
 				result.clear();
 				if(this->anypath_node(src, t, result))
-					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+					GAIA::ALGO::inverse(result.front_ptr(), result.back_ptr());
 				this->reset_tstack();
 			}
 			template<typename _KeyType, _SizeType _MaxLinkCount> GAIA::GVOID navpath(const Node& src, const Node& dst, const _SizeType& navtimes, __NodeListType& result) const
@@ -213,7 +213,7 @@ namespace GAIA
 				GAIA_AST(navtimes >= 0);
 				result.clear();
 				if(this->navpath_node<_KeyType, _MaxLinkCount>(src, dst, navtimes, result))
-					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+					GAIA::ALGO::inverse(result.front_ptr(), result.back_ptr());
 				this->reset_tstack();
 			}
 			template<typename _KeyType, _SizeType _MaxLinkCount> GAIA::GVOID navpath(const Node& src, const _DataType& t, const _SizeType& navtimes, __NodeListType& result) const
@@ -221,7 +221,7 @@ namespace GAIA
 				GAIA_AST(navtimes >= 0);
 				result.clear();
 				if(this->navpath_node<_KeyType, _MaxLinkCount>(src, t, navtimes, result))
-					GAIA::ALGORITHM::inverse(result.front_ptr(), result.back_ptr());
+					GAIA::ALGO::inverse(result.front_ptr(), result.back_ptr());
 				this->reset_tstack();
 			}
 			GINL GAIA::GVOID collect_link_list(__LinkListType& result) const

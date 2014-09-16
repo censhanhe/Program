@@ -8,7 +8,7 @@
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 extern GAIA::SYNC::Lock g_windowlistlock;
-extern GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<GAIA::UI::Canvas> > g_windowlist;
+extern GAIA::CTN::Set<GAIA::CTN::Ref<GAIA::UI::Canvas> > g_windowlist;
 #else
 #endif
 
@@ -47,11 +47,11 @@ namespace GAIA
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			static const GAIA::TCH CLASS_PREFIX[] = _T("class_");
 			GAIA::TCH szWindowClass[1024];
-			if((GAIA::N32)GAIA::ALGORITHM::strlen(desc.pszCaptionText) >= 
-				(GAIA::N32)sizeofarray(szWindowClass) - GAIA::ALGORITHM::strlen(CLASS_PREFIX))
+			if((GAIA::N32)GAIA::ALGO::strlen(desc.pszCaptionText) >= 
+				(GAIA::N32)sizeofarray(szWindowClass) - GAIA::ALGO::strlen(CLASS_PREFIX))
 				return GAIA::False;
-			GAIA::ALGORITHM::strcpy(szWindowClass, CLASS_PREFIX);
-			GAIA::ALGORITHM::strcat(szWindowClass, desc.pszCaptionText);
+			GAIA::ALGO::strcpy(szWindowClass, CLASS_PREFIX);
+			GAIA::ALGO::strcat(szWindowClass, desc.pszCaptionText);
 #if GAIA_CHARSET == GAIA_CHARSET_ANSI
 			WNDCLASSEXA wcex;
 #elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
@@ -128,7 +128,7 @@ namespace GAIA
 				GAIA_AST(GAIA::ALWAYSFALSE);
 				return GAIA::False;
 			}
-			m_pszClassName = GAIA::ALGORITHM::strnew(szWindowClass);
+			m_pszClassName = GAIA::ALGO::strnew(szWindowClass);
 			if(desc.pParent != GNULL)
 			{
 				if(!this->SetParent(desc.pParent))
@@ -247,8 +247,8 @@ namespace GAIA
 				GAIA::UI::Canvas finder;
 				finder.m_hWnd = hParent;
 				GAIA::SYNC::AutoLock al(g_windowlistlock);
-				GAIA::CONTAINER::Ref<GAIA::UI::Canvas> finderref(&finder);
-				GAIA::CONTAINER::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finderref);
+				GAIA::CTN::Ref<GAIA::UI::Canvas> finderref(&finder);
+				GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finderref);
 				GAIA_AST(pFinded != GNULL);
 				finder.m_hWnd = GNULL;
 				return *pFinded;
@@ -460,8 +460,8 @@ namespace GAIA
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::SYNC::AutoLock al(g_windowlistlock);
-			GAIA::CONTAINER::Ref<GAIA::UI::Canvas> finder(this);
-			const GAIA::CONTAINER::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
+			GAIA::CTN::Ref<GAIA::UI::Canvas> finder(this);
+			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
 			if(pFinded != GNULL)
 				return GAIA::False;
 			return g_windowlist.insert(finder);
@@ -473,8 +473,8 @@ namespace GAIA
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::SYNC::AutoLock al(g_windowlistlock);
-			GAIA::CONTAINER::Ref<GAIA::UI::Canvas> finder(this);
-			const GAIA::CONTAINER::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
+			GAIA::CTN::Ref<GAIA::UI::Canvas> finder(this);
+			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
 			if(pFinded == GNULL)
 				return GAIA::False;
 			return g_windowlist.erase(finder);

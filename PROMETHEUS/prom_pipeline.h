@@ -17,7 +17,7 @@ namespace PROM
 				if(ppPLC[x] == GNULL)
 					continue;
 				const GAIA::TCH* pszTempName = ppPLC[x]->GetName();
-				if(GAIA::ALGORITHM::strcmp(pszTempName, pszName) == 0)
+				if(GAIA::ALGO::strcmp(pszTempName, pszName) == 0)
 				{
 					ppPLC[x]->Reference();
 					return ppPLC[x];

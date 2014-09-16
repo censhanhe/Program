@@ -114,10 +114,10 @@ namespace PROM
 		class RecName : public Rec
 		{
 		public:
-			GINL GAIA::BL operator == (const RecName& src) const{return GAIA::ALGORITHM::cmps(pObj->GetName(), pObj->GetNameSize(), src.pObj->GetName(), src.pObj->GetNameSize()) == 0;}
+			GINL GAIA::BL operator == (const RecName& src) const{return GAIA::ALGO::cmps(pObj->GetName(), pObj->GetNameSize(), src.pObj->GetName(), src.pObj->GetNameSize()) == 0;}
 			GINL GAIA::BL operator != (const RecName& src) const{return !this->operator == (src);}
-			GINL GAIA::BL operator >= (const RecName& src) const{return GAIA::ALGORITHM::cmps(pObj->GetName(), pObj->GetNameSize(), src.pObj->GetName(), src.pObj->GetNameSize()) >= 0;}
-			GINL GAIA::BL operator <= (const RecName& src) const{return GAIA::ALGORITHM::cmps(pObj->GetName(), pObj->GetNameSize(), src.pObj->GetName(), src.pObj->GetNameSize()) <= 0;}
+			GINL GAIA::BL operator >= (const RecName& src) const{return GAIA::ALGO::cmps(pObj->GetName(), pObj->GetNameSize(), src.pObj->GetName(), src.pObj->GetNameSize()) >= 0;}
+			GINL GAIA::BL operator <= (const RecName& src) const{return GAIA::ALGO::cmps(pObj->GetName(), pObj->GetNameSize(), src.pObj->GetName(), src.pObj->GetNameSize()) <= 0;}
 			GINL GAIA::BL operator > (const RecName& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const RecName& src) const{return !this->operator >= (src);}
 		};
@@ -184,11 +184,11 @@ namespace PROM
 				return GNULL;
 			return pFinded->pObj;
 		}
-		GINL GAIA::BL FindObjByName(const GAIA::TCH* pszName, GAIA::CONTAINER::Vector<Obj*>& listResult) const
+		GINL GAIA::BL FindObjByName(const GAIA::TCH* pszName, GAIA::CTN::Vector<Obj*>& listResult) const
 		{
 			GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
 			GAIA::BL bRet = GAIA::False;
-			GAIA::SIZE namelen = GAIA::ALGORITHM::strlen(pszName);
+			GAIA::SIZE namelen = GAIA::ALGO::strlen(pszName);
 			for(GAIA::SIZE x = 0; x < rec_name.size(); ++x)
 			{
 				if(!rec_name.exist(x))
@@ -197,11 +197,11 @@ namespace PROM
 				if(pObj == GNULL)
 					continue;
 				const GAIA::TCH* pszTempName = pObj->GetName();
-				if(GAIA::ALGORITHM::stremp(pszTempName))
+				if(GAIA::ALGO::stremp(pszTempName))
 					continue;
 				if(pObj->GetNameSize() != namelen)
 					continue;
-				if(GAIA::ALGORITHM::xmemcmp(pszTempName, pszName, namelen * sizeof(GAIA::TCH)) == 0)
+				if(GAIA::ALGO::xmemcmp(pszTempName, pszName, namelen * sizeof(GAIA::TCH)) == 0)
 				{
 					listResult.push_back(pObj);
 					bRet = GAIA::True;
@@ -209,7 +209,7 @@ namespace PROM
 			}
 			return bRet;
 		}
-		GINL GAIA::BL FindObjByType(Obj::TYPE type, GAIA::CONTAINER::Vector<Obj*> &listResult) const
+		GINL GAIA::BL FindObjByType(Obj::TYPE type, GAIA::CTN::Vector<Obj*> &listResult) const
 		{
 			GAIA::BL bRet = GAIA::False;
 			for(GAIA::SIZE x = 0; x < rec_type.size(); ++x)
@@ -228,9 +228,9 @@ namespace PROM
 			return bRet;
 		}
 	public:
-		typedef GAIA::CONTAINER::Set<RecLocation> __RecLocationSetType;
-		typedef GAIA::CONTAINER::Orderless<RecName> __RecNameListType;
-		typedef GAIA::CONTAINER::Orderless<RecType> __RecTypeListType;
+		typedef GAIA::CTN::Set<RecLocation> __RecLocationSetType;
+		typedef GAIA::CTN::Orderless<RecName> __RecNameListType;
+		typedef GAIA::CTN::Orderless<RecType> __RecTypeListType;
 	public:
 		__RecLocationSetType rec_location;
 		__RecNameListType rec_name;

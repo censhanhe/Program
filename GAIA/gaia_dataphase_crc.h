@@ -25,7 +25,7 @@ namespace GAIA
 			GINL GAIA::GVOID prepare(){}
 		private:
 			GAIA::U8 m_crc;
-			GAIA::CONTAINER::Vector<GAIA::U8> m_crctable;
+			GAIA::CTN::Vector<GAIA::U8> m_crctable;
 		};
 		class CRC16
 		{
@@ -47,7 +47,7 @@ namespace GAIA
 			GINL GAIA::GVOID prepare(){}
 		private:
 			GAIA::U16 m_crc;
-			GAIA::CONTAINER::Vector<GAIA::U16> m_crctable;
+			GAIA::CTN::Vector<GAIA::U16> m_crctable;
 		};
 		class CRC32
 		{
@@ -103,7 +103,7 @@ namespace GAIA
 			}
 		private:
 			GAIA::U32 m_crc;
-			GAIA::CONTAINER::Vector<GAIA::U32> m_crctable;
+			GAIA::CTN::Vector<GAIA::U32> m_crctable;
 		};
 	};
 };

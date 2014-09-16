@@ -8,7 +8,7 @@ namespace GAIA
 		class Transmission : public virtual GAIA::FRAMEWORK::Instance, public virtual GAIA::THREAD::Thread
 		{
 		private:
-			typedef GAIA::CONTAINER::Orderless<Route*> OL_ROUTE;
+			typedef GAIA::CTN::Orderless<Route*> OL_ROUTE;
 		public:
 			GINL ~Transmission(){this->RemoveRouteAll();}
 			GINL virtual GAIA::BL AddRoute(GAIA::DATATRAFFIC::Route* pRoute)
@@ -40,9 +40,9 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GINL virtual GAIA::BL CollectRegistedRoutes(GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>& listResult) const
+			GINL virtual GAIA::BL CollectRegistedRoutes(GAIA::CTN::Vector<GAIA::DATATRAFFIC::Route*>& listResult) const
 			{
-				GAIA::CONTAINER::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype oldsize = listResult.size();
+				GAIA::CTN::Vector<GAIA::DATATRAFFIC::Route*>::_sizetype oldsize = listResult.size();
 				for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); ++x)
 				{
 					Route* pRoute = m_routes[x];

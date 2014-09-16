@@ -15,7 +15,7 @@ namespace PROM
 			GPCHR_NULL_RET(ppPLC, GNULL);
 			GPCHR_ZERO_RET(size, GNULL);
 
-			GAIA::CONTAINER::Vector<GAIA::BL> listEraseTemp;
+			GAIA::CTN::Vector<GAIA::BL> listEraseTemp;
 			DWARFS_MISC::TextLine::__LineType strLine, strLineTemp;
 			PLC_FileCodeLinePrepare* pRet = GNULL;
 			PLC_CommandParam* plc_commandparam = GNULL;
@@ -77,7 +77,7 @@ namespace PROM
 							if(ch == _T('"'))
 							{
 								GAIA::SIZE flagcount = 0;
-								GAIA::ALGORITHM::prevcount(strLineTemp.front_ptr(), strLineTemp.front_ptr() + z - 1, _T('\\'), flagcount);
+								GAIA::ALGO::prevcount(strLineTemp.front_ptr(), strLineTemp.front_ptr() + z - 1, _T('\\'), flagcount);
 								if(z == 0 || flagcount % 2 == 0)
 								{
 									bInString = GAIA::False;
@@ -95,7 +95,7 @@ namespace PROM
 								{
 									if(z > sLastNotBlankIndex + 1)
 									{
-										GAIA::ALGORITHM::set(
+										GAIA::ALGO::set(
 											listEraseTemp.front_ptr() + sLastNotBlankIndex + 1,
 											GAIA::True,
 											z - sLastNotBlankIndex - 1); // Erase blank between sign and word.
@@ -105,7 +105,7 @@ namespace PROM
 								{
 									if(z > sLastNotBlankIndex + 2)
 									{
-										GAIA::ALGORITHM::set(
+										GAIA::ALGO::set(
 											listEraseTemp.front_ptr() + sLastNotBlankIndex + 2,
 											GAIA::True,
 											z - sLastNotBlankIndex - 2); // Erase blank between word and word.
@@ -117,7 +117,7 @@ namespace PROM
 							{
 								if(z > sLastNotBlankIndex + 1)
 								{
-									GAIA::ALGORITHM::set(
+									GAIA::ALGO::set(
 										listEraseTemp.front_ptr() + sLastNotBlankIndex + 1,
 										GAIA::True,
 										z - sLastNotBlankIndex - 1); // Erase blank between sign and word or between sign and sign.
@@ -180,14 +180,14 @@ namespace PROM
 			if(pPLC == GNULL)
 				return GAIA::False;
 
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
-			if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
+			if(GAIA::ALGO::stremp(pPLC->GetName()))
 				return GAIA::False;
 
 			PLC_FileCodeLinePrepare* plc_filecodelineprepare = static_cast<PLC_FileCodeLinePrepare*>(pPLC);
 			if(plc_filecodelineprepare == GNULL)
 				return GAIA::False;
-			if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), _T("Prom:PLC_FileCodeLinePrepare")) != 0)
+			if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_FileCodeLinePrepare")) != 0)
 				return GAIA::False;
 
 			for(GAIA::SIZE x = 0; x < plc_filecodelineprepare->file_codelines_list.size(); ++x)
@@ -199,8 +199,8 @@ namespace PROM
 					if(pszLine == GNULL)
 						continue;
 					if(pszLine[0] != _T('\0'))
-						pFile->Write(pszLine, GAIA::ALGORITHM::strlen(pszLine) * sizeof(DWARFS_MISC::TextLine::__CharType));
-					pFile->Write(fcl.lines.lineflag(), GAIA::ALGORITHM::strlen(fcl.lines.lineflag()) * sizeof(DWARFS_MISC::TextLine::__CharType));
+						pFile->Write(pszLine, GAIA::ALGO::strlen(pszLine) * sizeof(DWARFS_MISC::TextLine::__CharType));
+					pFile->Write(fcl.lines.lineflag(), GAIA::ALGO::strlen(fcl.lines.lineflag()) * sizeof(DWARFS_MISC::TextLine::__CharType));
 				}
 			}
 

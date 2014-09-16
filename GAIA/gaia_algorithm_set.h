@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace ALGORITHM
+	namespace ALGO
 	{
 		template<typename _DataType> GAIA::SIZE set_and_count(_DataType pDstBegin, _DataType pDstEnd, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed!
 		{
@@ -11,7 +11,7 @@ namespace GAIA
 			GAIA_AST(pDstEnd != GNULL);
 			GAIA_AST(pSrcBegin != GNULL);
 			GAIA_AST(pSrcEnd != GNULL);
-			if(!GAIA::ALGORITHM::isunique(pSrcBegin, pSrcEnd))
+			if(!GAIA::ALGO::isunique(pSrcBegin, pSrcEnd))
 				return GINVALID;
 			GAIA::SIZE ret = 0;
 			while(pSrcBegin <= pSrcEnd)
@@ -33,7 +33,7 @@ namespace GAIA
 			GAIA_AST(pDstEnd != GNULL);
 			GAIA_AST(pSrcBegin != GNULL);
 			GAIA_AST(pSrcEnd != GNULL);
-			if(!GAIA::ALGORITHM::isunique(pSrcBegin, pSrcEnd))
+			if(!GAIA::ALGO::isunique(pSrcBegin, pSrcEnd))
 				return GINVALID;
 			GAIA::SIZE ret = pDstEnd - pDstBegin + 1;
 			while(pSrcBegin <= pSrcEnd)
@@ -61,7 +61,7 @@ namespace GAIA
 			GAIA_AST(pDstEnd != GNULL);
 			GAIA_AST(pSrcBegin != GNULL);
 			GAIA_AST(pSrcEnd != GNULL);
-			if(!GAIA::ALGORITHM::isunique(pSrcBegin, pSrcEnd))
+			if(!GAIA::ALGO::isunique(pSrcBegin, pSrcEnd))
 				return GINVALID;
 			GAIA::SIZE ret = pDstEnd - pDstBegin + 1;
 			while(pSrcBegin <= pSrcEnd)
@@ -86,9 +86,9 @@ namespace GAIA
 			GAIA_AST(pDstEnd != GNULL);
 			GAIA_AST(pSrcBegin != GNULL);
 			GAIA_AST(pSrcEnd != GNULL);
-			if(!GAIA::ALGORITHM::isunique(pSrcBegin, pSrcEnd))
+			if(!GAIA::ALGO::isunique(pSrcBegin, pSrcEnd))
 				return GINVALID;
-			_DataType pNew = GAIA::ALGORITHM::swapleft(pDstBegin, pDstEnd, pSrcBegin, pSrcEnd);
+			_DataType pNew = GAIA::ALGO::swapleft(pDstBegin, pDstEnd, pSrcBegin, pSrcEnd);
 			return GSCAST(GAIA::SIZE)(pNew - pDstBegin);
 		}
 		template<typename _DataType, typename _SizeType> GAIA::SIZE set_or(_DataType pDstBegin, _DataType pDstEnd, _SizeType dst_max_size, _DataType pSrcBegin, _DataType pSrcEnd) // If return value is GINVALID, the call failed! If the dst_max_size <= 0, it means the buffer is must enough.
@@ -97,7 +97,7 @@ namespace GAIA
 			GAIA_AST(pDstEnd != GNULL);
 			GAIA_AST(pSrcBegin != GNULL);
 			GAIA_AST(pSrcEnd != GNULL);
-			if(!GAIA::ALGORITHM::isunique(pSrcBegin, pSrcEnd))
+			if(!GAIA::ALGO::isunique(pSrcBegin, pSrcEnd))
 				return GINVALID;
 			_DataType pWrite = pDstEnd;
 			while(pSrcBegin <= pSrcEnd)
@@ -125,9 +125,9 @@ namespace GAIA
 			GAIA_AST(pDstEnd != GNULL);
 			GAIA_AST(pSrcBegin != GNULL);
 			GAIA_AST(pSrcEnd != GNULL);
-			if(!GAIA::ALGORITHM::isunique(pSrcBegin, pSrcEnd))
+			if(!GAIA::ALGO::isunique(pSrcBegin, pSrcEnd))
 				return GINVALID;
-			_DataType pNew = GAIA::ALGORITHM::swapleft_inversekey(pDstBegin, pDstEnd, pSrcBegin, pSrcEnd);
+			_DataType pNew = GAIA::ALGO::swapleft_inversekey(pDstBegin, pDstEnd, pSrcBegin, pSrcEnd);
 			return GSCAST(GAIA::SIZE)(pNew - pDstBegin);
 		}
 	};

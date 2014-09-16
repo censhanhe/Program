@@ -80,14 +80,14 @@ namespace GAIA
 				d[1] = GAIA::MATH::xabs(pmin.x - src.pmax.x);
 				d[3] = GAIA::MATH::xabs(pmax.x - src.pmin.x);
 				d[4] = GAIA::MATH::xabs(pmax.x - src.pmax.x);
-				_DataType nearest_x = GAIA::ALGORITHM::minimize(
-					GAIA::ALGORITHM::minimize(d[0], d[1]), GAIA::ALGORITHM::minimize(d[2], d[3]));
+				_DataType nearest_x = GAIA::ALGO::minimize(
+					GAIA::ALGO::minimize(d[0], d[1]), GAIA::ALGO::minimize(d[2], d[3]));
 				d[0] = GAIA::MATH::xabs(pmin.y - src.pmin.y);
 				d[1] = GAIA::MATH::xabs(pmin.y - src.pmax.y);
 				d[3] = GAIA::MATH::xabs(pmax.y - src.pmin.y);
 				d[4] = GAIA::MATH::xabs(pmax.y - src.pmax.y);
-				_DataType nearest_y = GAIA::ALGORITHM::minimize(
-					GAIA::ALGORITHM::minimize(d[0], d[1]), GAIA::ALGORITHM::minimize(d[2], d[3]));
+				_DataType nearest_y = GAIA::ALGO::minimize(
+					GAIA::ALGO::minimize(d[0], d[1]), GAIA::ALGO::minimize(d[2], d[3]));
 				return nearest_x * nearest_x + nearest_y * nearest_y;
 			}
 			template<typename _ParamDataType> _DataType distance(const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::MATH::xsqrt(this->distancesq(v));}
@@ -183,9 +183,9 @@ namespace GAIA
 			GINL GAIA::GVOID selfupdate()
 			{
 				if(pmin.x > pmax.x)
-					GAIA::ALGORITHM::swap(pmin.x, pmax.x);
+					GAIA::ALGO::swap(pmin.x, pmax.x);
 				if(pmin.y > pmax.y)
-					GAIA::ALGORITHM::swap(pmin.y, pmax.y);
+					GAIA::ALGO::swap(pmin.y, pmax.y);
 			}
 		public:
 			_vectype pmin;

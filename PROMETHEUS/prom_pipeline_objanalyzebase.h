@@ -44,14 +44,14 @@ namespace PROM
 			if(pPLC == GNULL)
 				return GAIA::False;
 
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
-			if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
+			if(GAIA::ALGO::stremp(pPLC->GetName()))
 				return GAIA::False;
 
 			PLC_ObjCtn* plc_objctn = static_cast<PLC_ObjCtn*>(pPLC);
 			if(plc_objctn == GNULL)
 				return GAIA::False;
-			if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), _T("Prom:PLC_ObjCtn")) != 0)
+			if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_ObjCtn")) != 0)
 				return GAIA::False;
 
 			return GAIA::True;

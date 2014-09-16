@@ -15,7 +15,7 @@ namespace GAIA
 		class Factory : public Object
 		{
 		private: // Helper type declaration here for internal use.
-			typedef GAIA::CONTAINER::Vector<FactoryCreateCallBack*> LIST_CREATECALLBACK;
+			typedef GAIA::CTN::Vector<FactoryCreateCallBack*> LIST_CREATECALLBACK;
 		public:
 			GINL Factory(){}
 			GINL ~Factory(){}
@@ -46,7 +46,7 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GINL GAIA::GVOID CollectCreateCallBack(GAIA::CONTAINER::Vector<FactoryCreateCallBack*>& listResult) const{listResult = m_listCreateCB;}
+			GINL GAIA::GVOID CollectCreateCallBack(GAIA::CTN::Vector<FactoryCreateCallBack*>& listResult) const{listResult = m_listCreateCB;}
 			GINL virtual Instance* CreateInstance(const ClsID& cid, GAIA::GVOID* pParameter)
 			{
 				if(cid.IsInvalid())

@@ -8,20 +8,20 @@ namespace DWARFS_MISC
 	class TextLine : public GAIA::Entity
 	{
 	public:
-		typedef GAIA::CONTAINER::TString __LineType;
+		typedef GAIA::CTN::TString __LineType;
 		typedef __LineType::_datatype __CharType;
-		typedef GAIA::CONTAINER::BasicChars<__CharType, GAIA::N32, 3> __FlagType;
+		typedef GAIA::CTN::BasicChars<__CharType, GAIA::N32, 3> __FlagType;
 	private:
-		typedef GAIA::CONTAINER::Vector<__LineType> __LineListType;
+		typedef GAIA::CTN::Vector<__LineType> __LineListType;
 	public:
 		GINL TextLine(){this->init();}
 		GINL TextLine(const TextLine& src){this->init(); this->operator = (src);}
 		GINL ~TextLine(){}
 		GINL GAIA::BL lineflag(const __CharType* psz)
 		{
-			if(GAIA::ALGORITHM::strcmp(psz, _T("\r")) != 0 &&
-				GAIA::ALGORITHM::strcmp(psz, _T("\n")) != 0 &&
-				GAIA::ALGORITHM::strcmp(psz, _T("\r\n")) != 0)
+			if(GAIA::ALGO::strcmp(psz, _T("\r")) != 0 &&
+				GAIA::ALGO::strcmp(psz, _T("\n")) != 0 &&
+				GAIA::ALGO::strcmp(psz, _T("\r\n")) != 0)
 				return GAIA::False;
 			m_lineflag = psz;
 			return GAIA::True;
@@ -71,7 +71,7 @@ namespace DWARFS_MISC
 				{
 					m_lines.push_back(empty_line);
 					m_lines.back().resize(pMatched - pLast + 1);
-					GAIA::ALGORITHM::xmemcpy(
+					GAIA::ALGO::xmemcpy(
 						m_lines.back().front_ptr(),
 						pLast, (pMatched - pLast + 1) * sizeof(__CharType));
 					pLast = pMatched + 1;
@@ -207,8 +207,8 @@ namespace DWARFS_MISC
 				return GAIA::True;
 			}
 			line_flag_count = 0;
-			GAIA_AST(!GAIA::ALGORITHM::stremp(p));
-			if(GAIA::ALGORITHM::stremp(p))
+			GAIA_AST(!GAIA::ALGO::stremp(p));
+			if(GAIA::ALGO::stremp(p))
 				return GAIA::False;
 			while(*p != _T('\0'))
 			{

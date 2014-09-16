@@ -10,7 +10,7 @@
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 	GAIA::SYNC::Lock g_windowlistlock;
-	GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<GAIA::UI::Canvas> > g_windowlist;
+	GAIA::CTN::Set<GAIA::CTN::Ref<GAIA::UI::Canvas> > g_windowlist;
 #endif
 
 #endif

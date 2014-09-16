@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace ALGORITHM
+	namespace ALGO
 	{
 		template<typename _DataType1, typename _DataType2> const typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType maximize(const _DataType1& v1, const _DataType2& v2)
 		{
@@ -115,7 +115,7 @@ namespace GAIA
 			else if(size1 > size2)
 				return +1;
 			else
-				return GAIA::ALGORITHM::cmps(p1, p2, size1);
+				return GAIA::ALGO::cmps(p1, p2, size1);
 		}
 		template<typename _DataType, typename _KeyType, typename _SizeType> GAIA::N32 cmpk(_DataType p, const _KeyType& key, const _SizeType& size)
 		{

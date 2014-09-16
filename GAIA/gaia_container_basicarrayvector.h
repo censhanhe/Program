@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType, _SizeType _Size> class BasicArrayVector : public GAIA::Entity
 		{
@@ -15,8 +15,8 @@ namespace GAIA
 			static const _SizeType _size = _Size;
 		public:
 			typedef BasicArrayVector<_DataType, _SizeType, _SizeIncreaserType, _Size> __MyType;
-			typedef GAIA::CONTAINER::BasicArray<_DataType, _SizeType, _Size> __ArrayType;
-			typedef GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
+			typedef GAIA::CTN::BasicArray<_DataType, _SizeType, _Size> __ArrayType;
+			typedef GAIA::CTN::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
 		public:
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
@@ -153,7 +153,7 @@ namespace GAIA
 				else
 					return m_arr.size();
 			}
-			GINL _SizeType capacity() const{return GAIA::ALGORITHM::maximize(m_vec.capacity(), m_arr.capacity());}
+			GINL _SizeType capacity() const{return GAIA::ALGO::maximize(m_vec.capacity(), m_arr.capacity());}
 			GINL GAIA::GVOID resize(const _SizeType& size)
 			{
 				if(size > m_arr.capacity())

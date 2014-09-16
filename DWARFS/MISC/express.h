@@ -9,7 +9,7 @@ namespace DWARFS_MISC
 		typedef _CharType _chartype;
 		typedef _CalUnitType _calunittype;
 	public:
-		typedef GAIA::CONTAINER::BasicString<_CharType, GAIA::SIZE> __StringType;
+		typedef GAIA::CTN::BasicString<_CharType, GAIA::SIZE> __StringType;
 		typedef Express<_CharType, _CalUnitType> __MyType;
 	public:
 		GINL Express(){}
@@ -97,9 +97,9 @@ namespace DWARFS_MISC
 			GAIA::SIZE index;
 		};
 	public:
-		typedef GAIA::CONTAINER::Vector<Formula> __FormulaListType;
-		typedef GAIA::CONTAINER::Set<GAIA::CONTAINER::Ref<Formula> > __FormulaSetType;
-		typedef GAIA::CONTAINER::Stack<GAIA::SIZE> __FreeStackType;
+		typedef GAIA::CTN::Vector<Formula> __FormulaListType;
+		typedef GAIA::CTN::Set<GAIA::CTN::Ref<Formula> > __FormulaSetType;
+		typedef GAIA::CTN::Stack<GAIA::SIZE> __FreeStackType;
 	private:
 		__FormulaListType m_fmlist;
 		__FormulaSetType m_fmset;

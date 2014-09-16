@@ -63,26 +63,26 @@ namespace PROM
 			if(pPLC == GNULL)
 				return GAIA::False;
 
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
-			if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
+			if(GAIA::ALGO::stremp(pPLC->GetName()))
 				return GAIA::False;
 
 			PLC_CommandParam* plc_sourcecommand = static_cast<PLC_CommandParam*>(pPLC);
 			if(plc_sourcecommand == GNULL)
 				return GAIA::False;
-			if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), _T("Prom:PLC_CommandParam")) != 0)
+			if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_CommandParam")) != 0)
 				return GAIA::False;
 
 			for(GAIA::SIZE x = 0; x < plc_sourcecommand->cmdparam.cmd_size(); ++x)
 			{
 				const GAIA::TCH* pszCmd = plc_sourcecommand->cmdparam.cmd(x);
-				if(GAIA::ALGORITHM::stremp(pszCmd))
+				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
 				prt << "\t\t" << pszCmd << " ";
 				for(GAIA::SIZE y = 0; y < plc_sourcecommand->cmdparam.param_size(x); ++y)
 				{
 					const GAIA::TCH* pszParam = plc_sourcecommand->cmdparam.param(x, y);
-					if(GAIA::ALGORITHM::stremp(pszParam))
+					if(GAIA::ALGO::stremp(pszParam))
 						continue;
 					prt << pszParam << " ";
 				}

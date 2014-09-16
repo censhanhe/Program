@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 		static const GAIA::N32 ELEMENT_SIZE = 100;
-		typedef GAIA::CONTAINER::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __ListType;
+		typedef GAIA::CTN::BasicList<GAIA::N32, GAIA::N32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::N32> > __ListType;
 		__ListType l;
 		if(!l.empty())
 		{

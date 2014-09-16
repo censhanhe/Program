@@ -27,7 +27,7 @@ namespace PROM
 			__WordType strWord;
 			GAIA::U32 uExistCount;
 		};
-		typedef GAIA::CONTAINER::Set<Word> __WordSetType;
+		typedef GAIA::CTN::Set<Word> __WordSetType;
 	public:
 		__WordSetType wordset;
 	};

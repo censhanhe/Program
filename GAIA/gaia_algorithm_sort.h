@@ -7,7 +7,7 @@
 
 namespace GAIA
 {
-	namespace ALGORITHM
+	namespace ALGO
 	{
 		template<typename _DataType> GAIA::GVOID bsort(_DataType pBegin, _DataType pEnd)
 		{
@@ -19,7 +19,7 @@ namespace GAIA
 				while(pTemp <= pEnd)
 				{
 					if(*pBegin > *pTemp)
-						GAIA::ALGORITHM::swap(*pBegin, *pTemp);
+						GAIA::ALGO::swap(*pBegin, *pTemp);
 					++pTemp;
 				}
 				++pBegin;
@@ -46,7 +46,7 @@ namespace GAIA
 			// quick sort optimize.
 			if(pEnd - pBegin < 16)
 				return bsort(pBegin, pEnd);
-			GAIA::ALGORITHM::swap(*pEnd, *(pBegin + (pEnd - pBegin) / 2));
+			GAIA::ALGO::swap(*pEnd, *(pBegin + (pEnd - pBegin) / 2));
 
 			/* Standard quick sort algorithm. */
 			_DataType pCursor = pBegin;
@@ -55,14 +55,14 @@ namespace GAIA
 			{
 				if(*pCursor < *pEnd) // pEnd is the key.
 				{
-					GAIA::ALGORITHM::swap(*pCursor, *pSplit);
+					GAIA::ALGO::swap(*pCursor, *pSplit);
 					++pSplit;
 				}
 				++pCursor;
 			}
-			GAIA::ALGORITHM::swap(*pSplit, *pEnd);
-			GAIA::ALGORITHM::qsort(pBegin, pSplit - 1);
-			GAIA::ALGORITHM::qsort(pSplit + 1, pEnd);
+			GAIA::ALGO::swap(*pSplit, *pEnd);
+			GAIA::ALGO::qsort(pBegin, pSplit - 1);
+			GAIA::ALGO::qsort(pSplit + 1, pEnd);
 		#endif
 		}
 		template<typename _DataType> GAIA::GVOID esort(_DataType pBegin, _DataType pEnd)
@@ -76,9 +76,9 @@ namespace GAIA
 			GAIA_AST(!!pBegin);
 			GAIA_AST(!!pEnd);
 			if(pEnd - pBegin < 10)
-				GAIA::ALGORITHM::bsort(pBegin, pEnd);
+				GAIA::ALGO::bsort(pBegin, pEnd);
 			else
-				GAIA::ALGORITHM::qsort(pBegin, pEnd);
+				GAIA::ALGO::qsort(pBegin, pEnd);
 		}
 		template<typename _DataType> GAIA::BL issorted(_DataType pBegin, _DataType pEnd)
 		{

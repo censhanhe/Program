@@ -15,51 +15,51 @@ namespace GAIA
 
 			/* BasicArray serialize. */
 			template<typename _DataType, typename _SizeType, _SizeType _Size> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicArray<_DataType, _SizeType, _Size>& t);
+				write(Serializer* p, const GAIA::CTN::BasicArray<_DataType, _SizeType, _Size>& t);
 			template<typename _DataType, typename _SizeType, _SizeType _Size> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicArray<_DataType, _SizeType, _Size>& t);
+				read(Serializer* p, GAIA::CTN::BasicArray<_DataType, _SizeType, _Size>& t);
 
 			/* BasicVector serialize. */
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType>& t);
+				write(Serializer* p, const GAIA::CTN::BasicVector<_DataType, _SizeType, _SizeIncreaserType>& t);
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType>& t);
+				read(Serializer* p, GAIA::CTN::BasicVector<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 			/* BasicStack serialize. */
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicStack<_DataType, _SizeType, _SizeIncreaserType>& t);
+				write(Serializer* p, const GAIA::CTN::BasicStack<_DataType, _SizeType, _SizeIncreaserType>& t);
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicStack<_DataType, _SizeType, _SizeIncreaserType>& t);
+				read(Serializer* p, GAIA::CTN::BasicStack<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 			/* BasicQueue serialize. */
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& t);
+				write(Serializer* p, const GAIA::CTN::BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& t);
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& t);
+				read(Serializer* p, GAIA::CTN::BasicQueue<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 			/* BasicList serialize. */
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t);
+				write(Serializer* p, const GAIA::CTN::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t);
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t);
+				read(Serializer* p, GAIA::CTN::BasicList<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 			/* BasicTree serialize. */
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t);
+				write(Serializer* p, const GAIA::CTN::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t);
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t);
+				read(Serializer* p, GAIA::CTN::BasicTree<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 			/* BasicAVLTree serialize. */
 			template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t);
+				write(Serializer* p, const GAIA::CTN::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t);
 			template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t);
+				read(Serializer* p, GAIA::CTN::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType>& t);
 
 			/* BasicTrieTree serialize. */
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t);
+				write(Serializer* p, const GAIA::CTN::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t);
 			template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t);
+				read(Serializer* p, GAIA::CTN::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType>& t);
 
 			/* BasicBuffer serialize. */
 
@@ -67,29 +67,29 @@ namespace GAIA
 
 			/* BasicStackBitset serialize. */
 			template<typename _SizeType, _SizeType _Size> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicStackBitset<_SizeType, _Size>& t);
+				write(Serializer* p, const GAIA::CTN::BasicStackBitset<_SizeType, _Size>& t);
 			template<typename _SizeType, _SizeType _Size> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicStackBitset<_SizeType, _Size>& t);
+				read(Serializer* p, GAIA::CTN::BasicStackBitset<_SizeType, _Size>& t);
 
 			/* BasicBitset serialize. */
 			template<typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicBitset<_SizeType, _SizeIncreaserType>& t);
+				write(Serializer* p, const GAIA::CTN::BasicBitset<_SizeType, _SizeIncreaserType>& t);
 			template<typename _SizeType, typename _SizeIncreaserType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicBitset<_SizeType, _SizeIncreaserType> &t);
+				read(Serializer* p, GAIA::CTN::BasicBitset<_SizeType, _SizeIncreaserType> &t);
 
 			/* BasicStorage serialize. */
 
 			/* BasicChars serialize. */
 			template<typename _DataType, typename _SizeType, _SizeType _Size> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicChars<_DataType, _SizeType, _Size>& t);
+				write(Serializer* p, const GAIA::CTN::BasicChars<_DataType, _SizeType, _Size>& t);
 			template<typename _DataType, typename _SizeType, _SizeType _Size> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicChars<_DataType, _SizeType, _Size>& t);
+				read(Serializer* p, GAIA::CTN::BasicChars<_DataType, _SizeType, _Size>& t);
 
 			/* BasicString serialize. */
 			template<typename _DataType, typename _SizeType> GAIA::BL
-				write(Serializer* p, const GAIA::CONTAINER::BasicString<_DataType, _SizeType>& t);
+				write(Serializer* p, const GAIA::CTN::BasicString<_DataType, _SizeType>& t);
 			template<typename _DataType, typename _SizeType> GAIA::BL
-				read(Serializer* p, GAIA::CONTAINER::BasicString<_DataType, _SizeType>& t);
+				read(Serializer* p, GAIA::CTN::BasicString<_DataType, _SizeType>& t);
 
 			/* BasicGraph serialize. */
 

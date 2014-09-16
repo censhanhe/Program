@@ -31,7 +31,7 @@ namespace GAIA
 			GINL GAIA::BL SetParent(GAIA::UI::Form* pParent);
 			GINL GAIA::UI::Form* GetParent() const;
 			GINL GAIA::UI::Form* GetRoot() const;
-			GINL GAIA::BL CollectChild(GAIA::CONTAINER::Vector<GAIA::UI::Form*>& listResult) const;
+			GINL GAIA::BL CollectChild(GAIA::CTN::Vector<GAIA::UI::Form*>& listResult) const;
 
 			/* Msg management. */
 			GINL GAIA::GVOID EnableCallbackMsg(GAIA::BL bEnable);

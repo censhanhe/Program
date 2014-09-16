@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 
-		typedef GAIA::CONTAINER::StaticStringPool<GAIA::TCH> __StaticStringPoolType;
+		typedef GAIA::CTN::StaticStringPool<GAIA::TCH> __StaticStringPoolType;
 		__StaticStringPoolType sp, sp1;
 
 		__StaticStringPoolType::_sizetype s1;
@@ -108,13 +108,13 @@ namespace GAIATEST
 			++nRet;
 		}
 		s1 = sp.alloc(_T("HelloWorld"));
-		if(GAIA::ALGORITHM::strcmp(sp.get(s1), _T("HelloWorld")) != 0)
+		if(GAIA::ALGO::strcmp(sp.get(s1), _T("HelloWorld")) != 0)
 		{
 			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
 		}
 		s2 = sp.alloc(_T("HelloKitty"));
-		if(GAIA::ALGORITHM::strcmp(sp.get(s2), _T("HelloKitty")) != 0)
+		if(GAIA::ALGO::strcmp(sp.get(s2), _T("HelloKitty")) != 0)
 		{
 			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
@@ -150,13 +150,13 @@ namespace GAIATEST
 			++nRet;
 		}
 		s1 = sp1.alloc(_T("ABC"));
-		if(GAIA::ALGORITHM::strcmp(sp1.get(s1), _T("ABC")) != 0)
+		if(GAIA::ALGO::strcmp(sp1.get(s1), _T("ABC")) != 0)
 		{
 			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
 		}
 		s2 = sp1.alloc(_T("EFG"));
-		if(GAIA::ALGORITHM::strcmp(sp1.get(s2), _T("EFG")) != 0)
+		if(GAIA::ALGO::strcmp(sp1.get(s2), _T("EFG")) != 0)
 		{
 			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
@@ -222,7 +222,7 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool operator = cause operator < error!");
 			++nRet;
 		}
-		if(sp.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")) + 1 + GAIA::ALGORITHM::strlen(_T("HelloKitty")) + 1)
+		if(sp.size() != GAIA::ALGO::strlen(_T("HelloWorld")) + 1 + GAIA::ALGO::strlen(_T("HelloKitty")) + 1)
 		{
 			GTLINE2("StaticStringPool alloc cause size error");
 			++nRet;
@@ -242,7 +242,7 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool string error");
 			++nRet;
 		}
-		if(GAIA::ALGORITHM::strcmp(sp.get(0), _T("HelloWorld")) != 0)
+		if(GAIA::ALGO::strcmp(sp.get(0), _T("HelloWorld")) != 0)
 		{
 			GTLINE2("StaticStringPool string content error");
 			++nRet;
@@ -252,20 +252,20 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool string error");
 			++nRet;
 		}
-		if(GAIA::ALGORITHM::strcmp(sp.get(1), _T("HelloKitty")) != 0)
+		if(GAIA::ALGO::strcmp(sp.get(1), _T("HelloKitty")) != 0)
 		{
 			GTLINE2("StaticStringPool string content error");
 			++nRet;
 		}
 		sp.clear();
 		s1 = sp.alloc(_T("HelloWorld"));
-		if(GAIA::ALGORITHM::strcmp(sp.get(s1), _T("HelloWorld")) != 0)
+		if(GAIA::ALGO::strcmp(sp.get(s1), _T("HelloWorld")) != 0)
 		{
 			GTLINE2("StaticStringPool alloc error!");
 			++nRet;
 		}
 		s2 = sp.alloc(_T("HelloKitty"));
-		if(GAIA::ALGORITHM::strcmp(sp.get(s2), _T("HelloKitty")) != 0)
+		if(GAIA::ALGO::strcmp(sp.get(s2), _T("HelloKitty")) != 0)
 		{
 			GTLINE2("StaticStringPool alloc error!");
 			++nRet;

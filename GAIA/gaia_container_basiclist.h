@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicList : public GAIA::Entity
 		{
@@ -292,7 +292,7 @@ namespace GAIA
 				m_pool.release(pErase);
 				return GAIA::True;
 			}
-			GINL GAIA::GVOID swap(it& iter1, it& iter2){GAIA::ALGORITHM::swap(*iter1, *iter2);}
+			GINL GAIA::GVOID swap(it& iter1, it& iter2){GAIA::ALGO::swap(*iter1, *iter2);}
 			GINL GAIA::GVOID push_front(const _DataType& t)
 			{
 				it iter;
@@ -328,7 +328,7 @@ namespace GAIA
 			GINL GAIA::GVOID inverse()
 			{
 				if(this->size() > 1)
-					GAIA::ALGORITHM::inverse(this->front_it(), this->back_it());
+					GAIA::ALGO::inverse(this->front_it(), this->back_it());
 			}
 			GINL __MyType& operator += (const __MyType& src)
 			{

@@ -4,8 +4,8 @@
 namespace PROM
 {
 	typedef GAIA::TCH __FileNameChar;
-	typedef GAIA::CONTAINER::TString __FileName;
-	typedef GAIA::CONTAINER::TString __WordType;
+	typedef GAIA::CTN::TString __FileName;
+	typedef GAIA::CTN::TString __WordType;
 
 	template<typename _DataType> GAIA::BL is_word_char(_DataType t)
 	{

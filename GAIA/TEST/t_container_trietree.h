@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 
-		typedef GAIA::CONTAINER::BasicTrieTree<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > __TrieType;
+		typedef GAIA::CTN::BasicTrieTree<GAIA::N32, GAIA::U32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::U32> > __TrieType;
 		static const GAIA::N32 COUNTX = 10;
 		static const GAIA::N32 COUNTZ = 10;
 		__TrieType::_datatype SAMPLES[COUNTZ][COUNTX];
@@ -274,7 +274,7 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			GAIA::ALGORITHM::inverse(arr, arr + index - 1);
+			GAIA::ALGO::inverse(arr, arr + index - 1);
 			__TrieType::it itfind_l = t1.lower_bound(arr, index);
 			__TrieType::const_it citfind_l = static_cast<const __TrieType*>(&t1)->lower_bound(arr, index);
 			__TrieType::it itfind_u = t1.upper_bound(arr, index);

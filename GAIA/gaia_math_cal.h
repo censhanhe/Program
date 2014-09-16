@@ -146,9 +146,9 @@ namespace GAIA
 			GINL operator GAIA::F32() const{return (GAIA::F32)m_v;}
 			GINL operator GAIA::F64() const{return (GAIA::F64)m_v;}
 
-			GINL __MyType& operator = (const GAIA::CH* p){m_v = GAIA::ALGORITHM::string_cast<_DataType>(p); return *this;}
-			GINL __MyType& operator = (const GAIA::WCH* p){m_v = GAIA::ALGORITHM::string_cast<_DataType>(p); return *this;}
-			template<typename _ParamCharType, typename _ParamSizeType> GAIA::BL tostring(_ParamCharType* p, const _ParamSizeType& size) const{return GAIA::ALGORITHM::value_cast(m_v, p, size);}
+			GINL __MyType& operator = (const GAIA::CH* p){m_v = GAIA::ALGO::string_cast<_DataType>(p); return *this;}
+			GINL __MyType& operator = (const GAIA::WCH* p){m_v = GAIA::ALGO::string_cast<_DataType>(p); return *this;}
+			template<typename _ParamCharType, typename _ParamSizeType> GAIA::BL tostring(_ParamCharType* p, const _ParamSizeType& size) const{return GAIA::ALGO::value_cast(m_v, p, size);}
 
 			GINL __MyType& operator += (const __MyType& src){m_v += src.m_v; return *this;}
 			GINL __MyType& operator += (const GAIA::BL& v){m_v += (_DataType)(v ? 1 : 0); return *this;}

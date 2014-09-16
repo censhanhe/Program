@@ -37,9 +37,9 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 			{
 				const GAIA::TCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
-				if(GAIA::ALGORITHM::stremp(pszCmd))
+				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
-				if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-wordstat")) == 0)
+				if(GAIA::ALGO::strcmp(pszCmd, _T("-wordstat")) == 0)
 				{
 					bWordStat = GAIA::True;
 					break;
@@ -68,10 +68,10 @@ namespace PROM
 							if(strLine[z] == _T('\t') || strLine[z] == _T(' ') || strLine[z] == _T('\r') || strLine[z] == _T('\n'))
 								newflag = EMPTY_FLAG;
 							else if(
-								GAIA::ALGORITHM::isalpha(strLine[z]) ||
-								GAIA::ALGORITHM::isdigit(strLine[z]) ||
+								GAIA::ALGO::isalpha(strLine[z]) ||
+								GAIA::ALGO::isdigit(strLine[z]) ||
 								strLine[z] == _T('_') ||
-								strLine[z] == _T('.') && z + 1 < strLine.size() && GAIA::ALGORITHM::isdigit(strLine[z + 1]))
+								strLine[z] == _T('.') && z + 1 < strLine.size() && GAIA::ALGO::isdigit(strLine[z + 1]))
 								newflag = CHAR_FLAG;
 							else
 								newflag = SIGN_FLAG;
@@ -155,14 +155,14 @@ namespace PROM
 			if(pPLC == GNULL)
 				return GAIA::False;
 
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
-			if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
+			if(GAIA::ALGO::stremp(pPLC->GetName()))
 				return GAIA::False;
 
 			PLC_Word* plc_word = static_cast<PLC_Word*>(pPLC);
 			if(plc_word == GNULL)
 				return GAIA::False;
-			if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), _T("Prom:PLC_Word")) != 0)
+			if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_Word")) != 0)
 				return GAIA::False;
 			if(pFile != GNULL && pFile->Tell() == 0)
 			{
@@ -178,21 +178,21 @@ namespace PROM
 				if(pFile != GNULL)
 				{
 					GAIA::TCH szTemp[32];
-					GAIA::ALGORITHM::int2str(index++, szTemp);
+					GAIA::ALGO::int2str(index++, szTemp);
 					pFile->Write(_T("["), sizeof(GAIA::TCH));
-					pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp) * sizeof(GAIA::TCH));
+					pFile->Write(szTemp, GAIA::ALGO::strlen(szTemp) * sizeof(GAIA::TCH));
 					pFile->Write(_T("] \""), sizeof(GAIA::TCH) * 3);
 					pFile->Write(word.strWord.front_ptr(), word.strWord.size() * sizeof(__WordType::_datatype));
 					pFile->Write(_T("\", Count = "), sizeof(_T("\", Count = ")) - sizeof(GAIA::TCH));
-					GAIA::ALGORITHM::int2str(word.uExistCount, szTemp);
-					pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp) * sizeof(GAIA::TCH));
-					pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+					GAIA::ALGO::int2str(word.uExistCount, szTemp);
+					pFile->Write(szTemp, GAIA::ALGO::strlen(szTemp) * sizeof(GAIA::TCH));
+					pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 				}
 				else
 					prt << "[" << index++ << "] \"" << word.strWord.front_ptr() << "\", Count = " << word.uExistCount << "\n";
 			}
 
-			typedef GAIA::CONTAINER::Vector<WordByRefCount> __WordCountSortVectorType;
+			typedef GAIA::CTN::Vector<WordByRefCount> __WordCountSortVectorType;
 			__WordCountSortVectorType wordcountsortlist;
 			it = plc_word->wordset.front_it();
 			for(; !it.empty(); ++it)
@@ -213,15 +213,15 @@ namespace PROM
 				if(pFile != GNULL)
 				{
 					GAIA::TCH szTemp[32];
-					GAIA::ALGORITHM::int2str(index++, szTemp);
+					GAIA::ALGO::int2str(index++, szTemp);
 					pFile->Write(_T("["), sizeof(GAIA::TCH));
-					pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp) * sizeof(GAIA::TCH));
+					pFile->Write(szTemp, GAIA::ALGO::strlen(szTemp) * sizeof(GAIA::TCH));
 					pFile->Write(_T("] \""), sizeof(GAIA::TCH) * 3);
 					pFile->Write(word.pWord->front_ptr(), word.pWord->size() * sizeof(__WordType::_datatype));
 					pFile->Write(_T("\", Count = "), sizeof(_T("\", Count = ")) - sizeof(GAIA::TCH));
-					GAIA::ALGORITHM::int2str(word.uExistCount, szTemp);
-					pFile->Write(szTemp, GAIA::ALGORITHM::strlen(szTemp) * sizeof(GAIA::TCH));
-					pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+					GAIA::ALGO::int2str(word.uExistCount, szTemp);
+					pFile->Write(szTemp, GAIA::ALGO::strlen(szTemp) * sizeof(GAIA::TCH));
+					pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 				}
 				else
 					prt << "[" << index++ << "] \"" << word.pWord->front_ptr() << "\", Count = " << word.uExistCount << "\n";

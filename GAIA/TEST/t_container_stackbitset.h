@@ -6,7 +6,7 @@ namespace GAIATEST
 	GINL GAIA::N32 t_stackbitset(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
-		typedef GAIA::CONTAINER::BasicStackBitset<GAIA::U32, 255> __StackBitsetType;
+		typedef GAIA::CTN::BasicStackBitset<GAIA::U32, 255> __StackBitsetType;
 		__StackBitsetType sb;
 		if(sb.empty())
 		{

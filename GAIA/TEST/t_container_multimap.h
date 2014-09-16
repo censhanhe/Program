@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 		static const GAIA::N32 ELEMENT_SIZE = 33;
-		typedef GAIA::CONTAINER::BasicMultiMap<GAIA::N32, GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MultiMapType;
+		typedef GAIA::CTN::BasicMultiMap<GAIA::N32, GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::N32> > __MultiMapType;
 		__MultiMapType mm;
 		if(!mm.empty())
 		{
@@ -122,7 +122,7 @@ namespace GAIATEST
 		}
 		for(__MultiMapType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(!mm.erase(GAIA::CONTAINER::Pair<GAIA::N32, GAIA::U32>(x, 0)))
+			if(!mm.erase(GAIA::CTN::Pair<GAIA::N32, GAIA::U32>(x, 0)))
 			{
 				GTLINE2("MultiMap erase single element failed!");
 				++nRet;

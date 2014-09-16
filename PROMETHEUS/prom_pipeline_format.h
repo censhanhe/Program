@@ -36,9 +36,9 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 			{
 				const GAIA::TCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
-				if(GAIA::ALGORITHM::stremp(pszCmd))
+				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
-				if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-fmt")) == 0)
+				if(GAIA::ALGO::strcmp(pszCmd, _T("-fmt")) == 0)
 				{
 					bFmt = GAIA::True;
 					break;
@@ -72,16 +72,16 @@ namespace PROM
 							if(strLine.size() > 1)
 							{
 								if(strLine[strLine.size() - 2] == _T('\r'))
-									GAIA::ALGORITHM::strcpy(szLineBreak, _T("\r\n"));
+									GAIA::ALGO::strcpy(szLineBreak, _T("\r\n"));
 								else
-									GAIA::ALGORITHM::strcpy(szLineBreak, _T("\n"));
+									GAIA::ALGO::strcpy(szLineBreak, _T("\n"));
 							}
 							else
-								GAIA::ALGORITHM::strcpy(szLineBreak, _T("\n"));
+								GAIA::ALGO::strcpy(szLineBreak, _T("\n"));
 						}
 						else if(strLine.back() == _T('\r'))
-							GAIA::ALGORITHM::strcpy(szLineBreak, _T("\r"));
-						if(GAIA::ALGORITHM::strlen(szLineBreak) == 2)
+							GAIA::ALGO::strcpy(szLineBreak, _T("\r"));
+						if(GAIA::ALGO::strlen(szLineBreak) == 2)
 							strLine.resize(strLine.size() - 2);
 						else
 							strLine.resize(strLine.size() - 1);

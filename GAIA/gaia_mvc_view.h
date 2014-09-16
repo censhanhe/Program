@@ -11,18 +11,18 @@ namespace GAIA
 			class ModelNode
 			{
 			public:
-				GAIA::CONTAINER::TString strName;
+				GAIA::CTN::TString strName;
 				GAIA::MVC::Model* pModel;
 			};
 			class ControllerNode
 			{
 			public:
-				GAIA::CONTAINER::TString strName;
+				GAIA::CTN::TString strName;
 				GAIA::MVC::Controller* pController;
 			};
 		public:
-			typedef GAIA::CONTAINER::Vector<ModelNode> __ModelListType;
-			typedef GAIA::CONTAINER::Vector<ControllerNode> __ControllerListType;
+			typedef GAIA::CTN::Vector<ModelNode> __ModelListType;
+			typedef GAIA::CTN::Vector<ControllerNode> __ControllerListType;
 		public:
 			GINL View(){this->init();}
 			GINL ~View()

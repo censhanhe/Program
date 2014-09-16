@@ -123,11 +123,11 @@ namespace GAIA
 			class Node;
 			class Attr;
 			class CallStack;
-			typedef GAIA::CONTAINER::BasicStaticStringPool<_CharType, _DataSizeType, _SizeIncreaserType> __SSPType;
-			typedef GAIA::CONTAINER::BasicPool<Node, _DataSizeType, _SizeIncreaserType> __NodePoolType;
-			typedef GAIA::CONTAINER::BasicVector<Node*, _DataSizeType, _SizeIncreaserType> __NodeListType;
-			typedef GAIA::CONTAINER::BasicStack<CallStack, _DataSizeType, _SizeIncreaserType> __NodeStackType;
-			typedef GAIA::CONTAINER::BasicVector<Attr, _DataSizeType, _SizeIncreaserType> __AttrListType;
+			typedef GAIA::CTN::BasicStaticStringPool<_CharType, _DataSizeType, _SizeIncreaserType> __SSPType;
+			typedef GAIA::CTN::BasicPool<Node, _DataSizeType, _SizeIncreaserType> __NodePoolType;
+			typedef GAIA::CTN::BasicVector<Node*, _DataSizeType, _SizeIncreaserType> __NodeListType;
+			typedef GAIA::CTN::BasicStack<CallStack, _DataSizeType, _SizeIncreaserType> __NodeStackType;
+			typedef GAIA::CTN::BasicVector<Attr, _DataSizeType, _SizeIncreaserType> __AttrListType;
 			class Attr : public GAIA::Base
 			{
 			public:
@@ -157,7 +157,7 @@ namespace GAIA
 				for(__AttrListType::_sizetype x = 0; pNode->attrs.size(); ++x)
 				{
 					Attr& a = pNode->attrs[x];
-					if(GAIA::ALGORITHM::strcmp(m_ssp.get(a.name), pAttrName) == 0)
+					if(GAIA::ALGO::strcmp(m_ssp.get(a.name), pAttrName) == 0)
 						return GAIA::True;
 				}
 				return GAIA::False;

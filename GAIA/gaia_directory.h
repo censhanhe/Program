@@ -8,13 +8,13 @@ namespace GAIA
 		class Directory : public GAIA::Entity
 		{
 		public:
-			typedef GAIA::CONTAINER::BasicTrieTree<GAIA::CONTAINER::TString, GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM> > __ResultTree;
+			typedef GAIA::CTN::BasicTrieTree<GAIA::CTN::TString, GAIA::NM, GAIA::ALGO::TwiceSizeIncreaser<GAIA::NM> > __ResultTree;
 		public:
 			Directory(){}
 			~Directory(){}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL SetWorkingDirectory(const GAIA::TCH* dir);
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID GetWorkingDirectory(GAIA::CONTAINER::TString& result) const;
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID GetBinaryDirectory(GAIA::CONTAINER::TString& result) const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID GetWorkingDirectory(GAIA::CTN::TString& result) const;
+			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID GetBinaryDirectory(GAIA::CTN::TString& result) const;
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Create(const GAIA::TCH* pszName, GAIA::BL bOverlapped);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Remove(const GAIA::TCH* pszName, GAIA::BL bOverlapped);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Exist(const GAIA::TCH* pszName) const;

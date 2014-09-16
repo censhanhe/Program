@@ -111,19 +111,19 @@ namespace PROM
 				prt << "P" << GSCAST(GAIA::N32)(pError->getstage());
 				prt << "L" << GSCAST(GAIA::N32)(pError->getlevel());
 				prt << "N" << GSCAST(GAIA::N32)(pError->getid());
-				if(!GAIA::ALGORITHM::stremp(pError->getdesc()))
+				if(!GAIA::ALGO::stremp(pError->getdesc()))
 				{
 					prt << ", ";
 					prt << pError->getdesc();
 				}
-				if(!GAIA::ALGORITHM::stremp(pError->getfilename()))
+				if(!GAIA::ALGO::stremp(pError->getfilename()))
 				{
 					prt << ", ";
 					prt << pError->getfilename();
 					if(pError->getfileline() != GINVALID)
 						prt << "(" << pError->getfileline() << ")";
 				}
-				if(!GAIA::ALGORITHM::stremp(pError->getsample()))
+				if(!GAIA::ALGO::stremp(pError->getsample()))
 				{
 					prt << ", ";
 					prt << pError->getsample();

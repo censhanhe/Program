@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace ALGORITHM
+	namespace ALGO
 	{
 		template<typename _BufferType, typename _SizeType, typename _OldDataType, typename _NewDataType> _SizeType
 			replace(_BufferType* p, const _SizeType& size, const _OldDataType& old_element, const _NewDataType& new_element)

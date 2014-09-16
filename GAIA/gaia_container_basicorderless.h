@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicOrderless : public GAIA::Entity
 		{

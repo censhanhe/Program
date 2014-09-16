@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _HeightType, typename _SizeIncreaserType> class BasicAVLTree : public GAIA::Entity
 		{
@@ -124,10 +124,10 @@ namespace GAIA
 						--ret;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) == 0;}
+				GINL GAIA::BL operator == (const it& src) const{return GAIA::ALGO::cmpp(m_pNode, src.m_pNode) == 0;}
 				GINL GAIA::BL operator != (const it& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) >= 0;}
-				GINL GAIA::BL operator <= (const it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) <= 0;}
+				GINL GAIA::BL operator >= (const it& src) const{return GAIA::ALGO::cmpp(m_pNode, src.m_pNode) >= 0;}
+				GINL GAIA::BL operator <= (const it& src) const{return GAIA::ALGO::cmpp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const it& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const it& src) const{return !(*this >= src);}
 			private:
@@ -284,10 +284,10 @@ namespace GAIA
 						--ret;
 					return ret;
 				}
-				GINL GAIA::BL operator == (const const_it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) == 0;}
+				GINL GAIA::BL operator == (const const_it& src) const{return GAIA::ALGO::cmpp(m_pNode, src.m_pNode) == 0;}
 				GINL GAIA::BL operator != (const const_it& src) const{return !(*this == src);}
-				GINL GAIA::BL operator >= (const const_it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) >= 0;}
-				GINL GAIA::BL operator <= (const const_it& src) const{return GAIA::ALGORITHM::cmpp(m_pNode, src.m_pNode) <= 0;}
+				GINL GAIA::BL operator >= (const const_it& src) const{return GAIA::ALGO::cmpp(m_pNode, src.m_pNode) >= 0;}
+				GINL GAIA::BL operator <= (const const_it& src) const{return GAIA::ALGO::cmpp(m_pNode, src.m_pNode) <= 0;}
 				GINL GAIA::BL operator > (const const_it& src) const{return !(*this <= src);}
 				GINL GAIA::BL operator < (const const_it& src) const{return !(*this >= src);}
 			private:
@@ -617,7 +617,7 @@ namespace GAIA
 			{
 				_HeightType prevh = pNode->pPrev == GNULL ? 0 : pNode->pPrev->h;
 				_HeightType nexth = pNode->pNext == GNULL ? 0 : pNode->pNext->h;
-				return GAIA::ALGORITHM::maximize(prevh, nexth) + 1;
+				return GAIA::ALGO::maximize(prevh, nexth) + 1;
 			}
 			GINL GAIA::GVOID balance(Node*& pNode)
 			{

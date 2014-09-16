@@ -9,8 +9,8 @@ namespace GAIATEST
 
 		// Chars string cooperate.
 		{
-			typedef GAIA::CONTAINER::BasicChars<GAIA::TCH, GAIA::N8, 64> __CharsType;
-			typedef GAIA::CONTAINER::BasicString<GAIA::TCH, GAIA::N32> __StringType;
+			typedef GAIA::CTN::BasicChars<GAIA::TCH, GAIA::N8, 64> __CharsType;
+			typedef GAIA::CTN::BasicString<GAIA::TCH, GAIA::N32> __StringType;
 
 			__CharsType chs = _T("Hello");
 			__StringType str = _T("World");

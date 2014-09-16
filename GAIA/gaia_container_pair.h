@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _FrontDataType, typename _BackDataType> class Pair : public GAIA::Entity
 		{

@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		#define GAIA_BITSET_SRC (m_pFront[index / 8])
 		#define GAIA_BITSET_CUR (1 << (index % 8))
@@ -18,10 +18,10 @@ namespace GAIA
 			GINL BasicBitset(){this->init();}
 			GINL BasicBitset(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicBitset(){this->destroy();}
-			GINL GAIA::GVOID clear(){if(!this->empty()) GAIA::ALGORITHM::xmemset(this->front_ptr(), 0, this->buffer_size(this->size()));}
+			GINL GAIA::GVOID clear(){if(!this->empty()) GAIA::ALGO::xmemset(this->front_ptr(), 0, this->buffer_size(this->size()));}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
-			GINL GAIA::BL zero() const{if(this->empty()) return GAIA::False; return GAIA::ALGORITHM::xmemcheck(this->front_ptr(), 0, this->buffer_size(this->size())) == 0;}
-			GINL GAIA::BL one() const{if(this->empty()) return GAIA::False; return GAIA::ALGORITHM::xmemcheck(this->front_ptr(), 0xFF, this->buffer_size(this->size())) == 0;}
+			GINL GAIA::BL zero() const{if(this->empty()) return GAIA::False; return GAIA::ALGO::xmemcheck(this->front_ptr(), 0, this->buffer_size(this->size())) == 0;}
+			GINL GAIA::BL one() const{if(this->empty()) return GAIA::False; return GAIA::ALGO::xmemcheck(this->front_ptr(), 0xFF, this->buffer_size(this->size())) == 0;}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL const _SizeType& capacity() const{return m_capacity;}
 			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MFREE(m_pFront); m_pFront = GNULL;} m_size = m_capacity = 0;}
@@ -73,7 +73,7 @@ namespace GAIA
 				if(size > 0)
 				{
 					m_pFront = GAIA_MALLOC(GAIA::U8, this->buffer_size(size));
-					GAIA::ALGORITHM::set(m_pFront, 0, this->buffer_size(size));
+					GAIA::ALGO::set(m_pFront, 0, this->buffer_size(size));
 					m_capacity = size;
 					m_size = 0;
 				}
@@ -83,7 +83,7 @@ namespace GAIA
 				GAIA_AST(&src != this);
 				this->destroy();
 				this->resize(src.size());
-				GAIA::ALGORITHM::copy(this->front_ptr(), src.front_ptr(), this->buffer_size(src.size()));
+				GAIA::ALGO::copy(this->front_ptr(), src.front_ptr(), this->buffer_size(src.size()));
 				return *this;
 			}
 			GINL __MyType& operator |= (const __MyType& src)
@@ -98,14 +98,14 @@ namespace GAIA
 			}
 			GINL __MyType& operator &= (const __MyType& src)
 			{
-				_SizeType minsize = GAIA::ALGORITHM::minimize(this->buffer_size(this->size()), src.buffer_size(src.size()));
+				_SizeType minsize = GAIA::ALGO::minimize(this->buffer_size(this->size()), src.buffer_size(src.size()));
 				for(_SizeType x = 0; x < minsize; ++x)
 					this->front_ptr()[x] &= src.front_ptr()[x];
 				return *this;
 			}
 			GINL __MyType& operator ^= (const __MyType& src)
 			{
-				_SizeType minsize = GAIA::ALGORITHM::minimize(this->buffer_size(this->size()), src.buffer_size(src.size()));
+				_SizeType minsize = GAIA::ALGO::minimize(this->buffer_size(this->size()), src.buffer_size(src.size()));
 				for(_SizeType x = 0; x < minsize; ++x)
 					this->front_ptr()[x] ^= src.front_ptr()[x];
 				return *this;
@@ -114,7 +114,7 @@ namespace GAIA
 			{
 				if(this->size() != src.size())
 					return GAIA::False;
-				return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->buffer_size(this->size())) == 0;
+				return GAIA::ALGO::xmemcmp(this->front_ptr(), src.front_ptr(), this->buffer_size(this->size())) == 0;
 			}
 			GINL GAIA::BL operator != (const __MyType& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const __MyType& src) const
@@ -123,7 +123,7 @@ namespace GAIA
 					return GAIA::True;
 				else if(this->size() < src.size())
 					return GAIA::False;
-				return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->buffer_size(this->size())) >= 0;
+				return GAIA::ALGO::xmemcmp(this->front_ptr(), src.front_ptr(), this->buffer_size(this->size())) >= 0;
 			}
 			GINL GAIA::BL operator <= (const __MyType& src) const
 			{
@@ -131,7 +131,7 @@ namespace GAIA
 					return GAIA::True;
 				else if(this->size() > src.size())
 					return GAIA::False;
-				return GAIA::ALGORITHM::xmemcmp(this->front_ptr(), src.front_ptr(), this->buffer_size(this->size())) <= 0;
+				return GAIA::ALGO::xmemcmp(this->front_ptr(), src.front_ptr(), this->buffer_size(this->size())) <= 0;
 			}
 			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
@@ -153,7 +153,7 @@ namespace GAIA
 					return;
 				GAIA::U8* pNew = GAIA_MALLOC(GAIA::U8, this->buffer_size(this->capacity() + size));
 				if(this->size() > 0)
-					GAIA::ALGORITHM::xmemcpy(pNew, this->front_ptr(), this->buffer_size(this->size()));
+					GAIA::ALGO::xmemcpy(pNew, this->front_ptr(), this->buffer_size(this->size()));
 				if(m_pFront != GNULL)
 					GAIA_MFREE(m_pFront);
 				m_pFront = pNew;

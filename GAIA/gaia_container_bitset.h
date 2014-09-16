@@ -3,9 +3,9 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
-		class Bitset : public BasicBitset<GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
+		class Bitset : public BasicBitset<GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
 	};
 };
 

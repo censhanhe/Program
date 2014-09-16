@@ -8,7 +8,7 @@ namespace GAIATEST
 		GAIA::N32 nRet = 0;
 
 		static const GAIA::N32 ELEMENT_SIZE = 100;
-		typedef GAIA::CONTAINER::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > __AVLType;
+		typedef GAIA::CTN::BasicAVLTree<GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::U32> > __AVLType;
 		__AVLType avl;
 		if(!avl.empty())
 		{
@@ -51,7 +51,7 @@ namespace GAIATEST
 			GTLINE2("AVL capacity error!");
 			++nRet;
 		}
-		if(!GAIA::ALGORITHM::issorted(avl.front_it(), avl.back_it()))
+		if(!GAIA::ALGO::issorted(avl.front_it(), avl.back_it()))
 		{
 			GTLINE2("AVL element not sorted!");
 			++nRet;

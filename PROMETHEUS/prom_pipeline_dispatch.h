@@ -14,8 +14,8 @@ namespace PROM
 			GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
 			/* Internal type. */
-			typedef GAIA::CONTAINER::Vector<Pipeline*> __PipelineList;
-			typedef GAIA::CONTAINER::Vector<PipelineContext*> __PipelineContextList;
+			typedef GAIA::CTN::Vector<Pipeline*> __PipelineList;
+			typedef GAIA::CTN::Vector<PipelineContext*> __PipelineContextList;
 
 			/* Check parameter. */
 			GPCHR_NULL(ppNextPL);
@@ -180,10 +180,10 @@ namespace PROM
 		}
 		GINL GAIA::GVOID ExecuteOutput(PipelineContext* pPLC, Pipeline* pPL, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
-			if(!GAIA::ALGORITHM::stremp(pPLC->GetName()))
+			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
+			if(!GAIA::ALGO::stremp(pPLC->GetName()))
 			{
-				if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), _T("Prom:PLC_CommandParam")) == 0)
+				if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_CommandParam")) == 0)
 					m_plc_commandparam = static_cast<PLC_CommandParam*>(pPLC);
 			}
 			if(m_plc_commandparam != GNULL)
@@ -191,19 +191,19 @@ namespace PROM
 				for(GAIA::SIZE y = 0; y < m_plc_commandparam->cmdparam.cmd_size(); ++y)
 				{
 					const GAIA::TCH* pszCmd = m_plc_commandparam->cmdparam.cmd(y);
-					if(GAIA::ALGORITHM::stremp(pszCmd))
+					if(GAIA::ALGO::stremp(pszCmd))
 						continue;
-					if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-o")) == 0)
+					if(GAIA::ALGO::strcmp(pszCmd, _T("-o")) == 0)
 					{
 						if(m_plc_commandparam->cmdparam.param_size(y) == 2)
 						{
 							const GAIA::TCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
 							const GAIA::TCH* pszParam1 = m_plc_commandparam->cmdparam.param(y, 1);
-							GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
-							GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam1));
-							if(!GAIA::ALGORITHM::stremp(pszParam0) && !GAIA::ALGORITHM::stremp(pszParam1))
+							GAIA_AST(!GAIA::ALGO::stremp(pszParam0));
+							GAIA_AST(!GAIA::ALGO::stremp(pszParam1));
+							if(!GAIA::ALGO::stremp(pszParam0) && !GAIA::ALGO::stremp(pszParam1))
 							{
-								if(GAIA::ALGORITHM::strcmp(pszParam0, pPL->GetName()) == 0)
+								if(GAIA::ALGO::strcmp(pszParam0, pPL->GetName()) == 0)
 								{
 									GAIA::FILESYSTEM::File ofile;
 									if(ofile.Open(pszParam1, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
@@ -221,10 +221,10 @@ namespace PROM
 						else if(m_plc_commandparam->cmdparam.param_size(y) == 1)
 						{
 							const GAIA::TCH* pszParam0 = m_plc_commandparam->cmdparam.param(y, 0);
-							GAIA_AST(!GAIA::ALGORITHM::stremp(pszParam0));
-							if(!GAIA::ALGORITHM::stremp(pszParam0))
+							GAIA_AST(!GAIA::ALGO::stremp(pszParam0));
+							if(!GAIA::ALGO::stremp(pszParam0))
 							{
-								if(GAIA::ALGORITHM::strcmp(pszParam0, pPL->GetName()) == 0)
+								if(GAIA::ALGO::strcmp(pszParam0, pPL->GetName()) == 0)
 								{
 									if(pPL->Output(pPLC, GNULL, prt))
 										prt << "\t\tOutput " << pPL->GetName() << " successfully!\n";
@@ -258,7 +258,7 @@ namespace PROM
 			plc_codelineprepare = static_cast<PLC_FileCodeLinePrepare*>(pPL->GetPLCByName(ppPLC, plc_size, _T("Prom:PLC_FileCodeLinePrepare")));
 			if(plc_codelineprepare == GNULL)
 			{
-				if(GAIA::ALGORITHM::strcmp(pNewPLC->GetName(), _T("Prom:PLC_FileCodeLinePrepare")) == 0)
+				if(GAIA::ALGO::strcmp(pNewPLC->GetName(), _T("Prom:PLC_FileCodeLinePrepare")) == 0)
 					plc_codelineprepare = GSCAST(PLC_FileCodeLinePrepare*)(pNewPLC);
 			}
 			if(plc_codelineprepare == GNULL)
@@ -270,14 +270,14 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 			{
 				const GAIA::TCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
-				if(GAIA::ALGORITHM::stremp(pszCmd))
+				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
-				if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-export")) == 0)
+				if(GAIA::ALGO::strcmp(pszCmd, _T("-export")) == 0)
 				{
 					const GAIA::TCH* pszPLName = plc_commandparam->cmdparam.param(x, 0);
-					if(GAIA::ALGORITHM::stremp(pszPLName))
+					if(GAIA::ALGO::stremp(pszPLName))
 						continue;
-					if(GAIA::ALGORITHM::strcmp(pszPLName, pPL->GetName()) != 0)
+					if(GAIA::ALGO::strcmp(pszPLName, pPL->GetName()) != 0)
 						continue;
 					pszExportPath = plc_commandparam->cmdparam.param(x, 1);
 					if(pszExportPath == GNULL)
@@ -289,8 +289,8 @@ namespace PROM
 			if(bMatch)
 			{
 				GAIA::TCH szPath[GAIA::FILESYSTEM::MAXPL];
-				GAIA::ALGORITHM::strcpy(szPath, pszExportPath);
-				GAIA::TCH* pszEnd = GAIA::ALGORITHM::strend(szPath);
+				GAIA::ALGO::strcpy(szPath, pszExportPath);
+				GAIA::TCH* pszEnd = GAIA::ALGO::strend(szPath);
 				if(pszEnd != GNULL && *(pszEnd - 1) != '\\' && *(pszEnd - 1) != '/')
 				{
 					*pszEnd = '/';
@@ -316,12 +316,12 @@ namespace PROM
 						fname.replace(_T(":/"), _T("_disk/"));
 
 						GAIA::TCH szFinal[GAIA::FILESYSTEM::MAXPL];
-						GAIA::ALGORITHM::strcpy(szFinal, szPath);
-						GAIA::ALGORITHM::strcat(szFinal, fname.front_ptr());
+						GAIA::ALGO::strcpy(szFinal, szPath);
+						GAIA::ALGO::strcat(szFinal, fname.front_ptr());
 
 						GAIA::TCH szFinalPath[GAIA::FILESYSTEM::MAXPL];
-						GAIA::ALGORITHM::strcpy(szFinalPath, szFinal);
-						GAIA::ALGORITHM::strpath(szFinalPath);
+						GAIA::ALGO::strcpy(szFinalPath, szFinal);
+						GAIA::ALGO::strpath(szFinalPath);
 
 						if(!dir.Exist(szFinalPath) && !dir.Create(szFinalPath, GAIA::True))
 						{

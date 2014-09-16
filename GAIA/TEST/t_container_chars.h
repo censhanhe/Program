@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 
-		typedef GAIA::CONTAINER::TChars __TCharsType;
+		typedef GAIA::CTN::TChars __TCharsType;
 		__TCharsType chs;
 		{
 			chs.resize(10);
@@ -62,7 +62,7 @@ namespace GAIATEST
 			GTLINE2("String initialized but empty!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello World!")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello World!")))
 		{
 			GTLINE2("String length error!");
 			++nRet;
@@ -240,7 +240,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		GAIA::X128 x128;
-		GAIA::ALGORITHM::xmemset(&x128, 17, sizeof(x128));
+		GAIA::ALGO::xmemset(&x128, 17, sizeof(x128));
 		chs = x128;
 		if(chs != _T("11111111111111111111111111111111"))
 		{
@@ -290,7 +290,7 @@ namespace GAIATEST
 			GTLINE2("String insert element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("?Hello%World!")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("?Hello%World!")))
 		{
 			GTLINE2("String insert element failed! The size calculate error!");
 			++nRet;
@@ -309,7 +309,7 @@ namespace GAIATEST
 			GTLINE2("String insert element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("CancelHelloWNoorldYes")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("CancelHelloWNoorldYes")))
 		{
 			GTLINE2("String insert element* failed! The size calculate error!");
 			++nRet;
@@ -328,7 +328,7 @@ namespace GAIATEST
 			GTLINE2("String inverse object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("CancelHelloWNoorldYes")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("CancelHelloWNoorldYes")))
 		{
 			GTLINE2("String insert element object failed! The size calculate error!");
 			++nRet;
@@ -378,7 +378,7 @@ namespace GAIATEST
 			GTLINE2("String operator + failed!");
 			++nRet;
 		}
-		if(chs1.size() != GAIA::ALGORITHM::strlen(_T("HelloWorldHelloWorld")))
+		if(chs1.size() != GAIA::ALGO::strlen(_T("HelloWorldHelloWorld")))
 		{
 			GTLINE2("String operator + failed!");
 			++nRet;
@@ -390,7 +390,7 @@ namespace GAIATEST
 			GTLINE2("String operator += failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorldHelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorldHelloWorld")))
 		{
 			GTLINE2("String operator += failed!");
 			++nRet;
@@ -409,7 +409,7 @@ namespace GAIATEST
 			GTLINE2("String operator += empty string failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String operator + or += empty string failed!");
 			++nRet;
@@ -431,13 +431,13 @@ namespace GAIATEST
 		}
 		chs = _T("HelloWorld");
 		const GAIA::TCH* cpsz = chs;
-		if(GAIA::ALGORITHM::strcmp(cpsz, _T("HelloWorld")) != 0)
+		if(GAIA::ALGO::strcmp(cpsz, _T("HelloWorld")) != 0)
 		{
 			GTLINE2("String operator const _DataType* failed!");
 			++nRet;
 		}
 		GAIA::TCH* psz = chs;
-		if(GAIA::ALGORITHM::strcmp(psz, _T("HelloWorld")) != 0)
+		if(GAIA::ALGO::strcmp(psz, _T("HelloWorld")) != 0)
 		{
 			GTLINE2("String operator _DataType* failed!");
 			++nRet;
@@ -556,7 +556,7 @@ namespace GAIATEST
 			GTLINE2("String erase_index element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("ell World! I am gaia, i am all object's base")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("ell World! I am gaia, i am all object's base")))
 		{
 			GTLINE2("String erase_index element cause size failed!");
 			++nRet;
@@ -568,7 +568,7 @@ namespace GAIATEST
 			GTLINE2("String erase_index multi elements failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello ! I am gaia, i am all object's base!")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello ! I am gaia, i am all object's base!")))
 		{
 			GTLINE2("String erase_index multi elements cause size failed!");
 		}
@@ -583,7 +583,7 @@ namespace GAIATEST
 			GTLINE2("String erase element from index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello World! I m gi, i m ll object's bse!")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello World! I m gi, i m ll object's bse!")))
 		{
 			GTLINE2("String erase element from index cause size error!");
 			++nRet;
@@ -599,7 +599,7 @@ namespace GAIATEST
 			GTLINE2("String erase element* from index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello World! I gaia, i all object's base!")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello World! I gaia, i all object's base!")))
 		{
 			GTLINE2("String erase element* from index cause size error!");
 			++nRet;
@@ -615,7 +615,7 @@ namespace GAIATEST
 			GTLINE2("String erase element object from index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello World! I gaia, i all object's base!")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello World! I gaia, i all object's base!")))
 		{
 			GTLINE2("String erase element object from index cause size error!");
 			++nRet;
@@ -631,7 +631,7 @@ namespace GAIATEST
 			GTLINE2("String erase first part failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("I am gaia, i am all object's base!")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("I am gaia, i am all object's base!")))
 		{
 			GTLINE2("String erase first part cause size error!");
 			++nRet;
@@ -647,7 +647,7 @@ namespace GAIATEST
 			GTLINE2("String erase last part failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello World! I am gaia, i am all object's ")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello World! I am gaia, i am all object's ")))
 		{
 			GTLINE2("String erase last part cause size error!");
 			++nRet;
@@ -670,7 +670,7 @@ namespace GAIATEST
 			GTLINE2("String left failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello")))
 		{
 			GTLINE2("String left cause size error!");
 			++nRet;
@@ -682,7 +682,7 @@ namespace GAIATEST
 			GTLINE2("String right failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("World")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("World")))
 		{
 			GTLINE2("String right cause size error!");
 			++nRet;
@@ -694,7 +694,7 @@ namespace GAIATEST
 			GTLINE2("String mid failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Wo")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Wo")))
 		{
 			GTLINE2("String mid cause size error!");
 			++nRet;
@@ -741,7 +741,7 @@ namespace GAIATEST
 			GTLINE2("String trim_left by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("World")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("World")))
 		{
 			GTLINE2("String trim_left by index cause size error!");
 			++nRet;
@@ -753,7 +753,7 @@ namespace GAIATEST
 			GTLINE2("String trim_left by element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("elloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("elloWorld")))
 		{
 			GTLINE2("String trim_left by element cause size error!");
 			++nRet;
@@ -765,7 +765,7 @@ namespace GAIATEST
 			GTLINE2("String trim_left by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_left by index cause size error!");
 			++nRet;
@@ -777,7 +777,7 @@ namespace GAIATEST
 			GTLINE2("String trim_left by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("lloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("lloWorld")))
 		{
 			GTLINE2("String trim_left by element* cause size error!");
 			++nRet;
@@ -789,7 +789,7 @@ namespace GAIATEST
 			GTLINE2("String trim_left by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_left by element* cause size error!");
 			++nRet;
@@ -801,7 +801,7 @@ namespace GAIATEST
 			GTLINE2("String trim_left by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("World")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("World")))
 		{
 			GTLINE2("String trim_left by element object cause size error!");
 			++nRet;
@@ -813,7 +813,7 @@ namespace GAIATEST
 			GTLINE2("String trim_left by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_left by element object cause size error!");
 			++nRet;
@@ -825,7 +825,7 @@ namespace GAIATEST
 			GTLINE2("String trim_lefti by element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("elloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("elloWorld")))
 		{
 			GTLINE2("String trim_lefti by element cause size error!");
 			++nRet;
@@ -837,7 +837,7 @@ namespace GAIATEST
 			GTLINE2("String trim_lefti by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_lefti by index cause size error!");
 			++nRet;
@@ -849,7 +849,7 @@ namespace GAIATEST
 			GTLINE2("String trim_lefti by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("lloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("lloWorld")))
 		{
 			GTLINE2("String trim_lefti by element* cause size error!");
 			++nRet;
@@ -861,7 +861,7 @@ namespace GAIATEST
 			GTLINE2("String trim_lefti by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_lefti by element* cause size error!");
 			++nRet;
@@ -873,7 +873,7 @@ namespace GAIATEST
 			GTLINE2("String trim_lefti by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("World")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("World")))
 		{
 			GTLINE2("String trim_lefti by element object cause size error!");
 			++nRet;
@@ -885,7 +885,7 @@ namespace GAIATEST
 			GTLINE2("String trim_lefti by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_lefti by element object cause size error!");
 			++nRet;
@@ -897,7 +897,7 @@ namespace GAIATEST
 			GTLINE2("String trim_right by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello")))
 		{
 			GTLINE2("String trim_right by index cause size error!");
 			++nRet;
@@ -909,7 +909,7 @@ namespace GAIATEST
 			GTLINE2("String trim_right by element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorl")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorl")))
 		{
 			GTLINE2("String trim_right by element cause size error!");
 			++nRet;
@@ -921,7 +921,7 @@ namespace GAIATEST
 			GTLINE2("String trim_right by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_right by index cause size error!");
 			++nRet;
@@ -933,7 +933,7 @@ namespace GAIATEST
 			GTLINE2("String trim_right by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWor")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWor")))
 		{
 			GTLINE2("String trim_right by element* cause size error!");
 			++nRet;
@@ -945,7 +945,7 @@ namespace GAIATEST
 			GTLINE2("String trim_right by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_right by element* cause size error!");
 			++nRet;
@@ -957,7 +957,7 @@ namespace GAIATEST
 			GTLINE2("String trim_right by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello")))
 		{
 			GTLINE2("String trim_right by element object cause size error!");
 			++nRet;
@@ -969,7 +969,7 @@ namespace GAIATEST
 			GTLINE2("String trim_right by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_right by element object cause size error!");
 			++nRet;
@@ -981,7 +981,7 @@ namespace GAIATEST
 			GTLINE2("String trim_righti by element failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorl")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorl")))
 		{
 			GTLINE2("String trim_righti by element cause size error!");
 			++nRet;
@@ -993,7 +993,7 @@ namespace GAIATEST
 			GTLINE2("String trim_righti by index failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_righti by index cause size error!");
 			++nRet;
@@ -1005,7 +1005,7 @@ namespace GAIATEST
 			GTLINE2("String trim_righti by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWor")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWor")))
 		{
 			GTLINE2("String trim_righti by element* cause size error!");
 			++nRet;
@@ -1017,7 +1017,7 @@ namespace GAIATEST
 			GTLINE2("String trim_righti by element* failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_righti by element* cause size error!");
 			++nRet;
@@ -1029,7 +1029,7 @@ namespace GAIATEST
 			GTLINE2("String trim_righti by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("Hello")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("Hello")))
 		{
 			GTLINE2("String trim_righti by element object cause size error!");
 			++nRet;
@@ -1041,7 +1041,7 @@ namespace GAIATEST
 			GTLINE2("String trim_righti by element object failed!");
 			++nRet;
 		}
-		if(chs.size() != GAIA::ALGORITHM::strlen(_T("HelloWorld")))
+		if(chs.size() != GAIA::ALGO::strlen(_T("HelloWorld")))
 		{
 			GTLINE2("String trim_righti by element object cause size error!");
 			++nRet;

@@ -23,9 +23,9 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 			{
 				const GAIA::TCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
-				if(GAIA::ALGORITHM::stremp(pszCmd))
+				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
-				if(GAIA::ALGORITHM::strcmp(pszCmd, _T("help")) == 0)
+				if(GAIA::ALGO::strcmp(pszCmd, _T("help")) == 0)
 				{
 					if(plc_commandparam->cmdparam.param_size(x) != 0)
 					{
@@ -44,7 +44,7 @@ namespace PROM
 							GAIA::SIZE min_param_size = plc_commandparam->cmdparam.cmd_decl_min_param_size(y);
 							GAIA::SIZE max_param_size = plc_commandparam->cmdparam.cmd_decl_max_param_size(y);
 							DWARFS_MISC::CmdParam::CMD_TYPE cmdtype = plc_commandparam->cmdparam.cmd_decl_type(y);
-							if(GAIA::ALGORITHM::stremp(pszDeclDesc))
+							if(GAIA::ALGO::stremp(pszDeclDesc))
 								pszDeclDesc = _T("NoInfo");
 							prt << "\t" << "[" << y << "]" << pszDeclCmd << ", Info:" << pszDeclDesc << ", " <<
 								"[" << min_param_size << ", " << max_param_size << "] " <<

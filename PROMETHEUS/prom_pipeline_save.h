@@ -36,9 +36,9 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 			{
 				const GAIA::TCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
-				if(GAIA::ALGORITHM::stremp(pszCmd))
+				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
-				if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-s")) == 0)
+				if(GAIA::ALGO::strcmp(pszCmd, _T("-s")) == 0)
 				{
 					bSaveCmd = GAIA::True;
 					break;

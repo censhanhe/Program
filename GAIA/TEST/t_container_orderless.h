@@ -8,8 +8,8 @@ namespace GAIATEST
 		static const GAIA::SIZE SAMPLE_COUNT = 100;
 		GAIA::N32 nRet = 0;
 
-		typedef GAIA::CONTAINER::TString __StrType;
-		typedef GAIA::CONTAINER::Orderless<__StrType> __OrderlessType;
+		typedef GAIA::CTN::TString __StrType;
+		typedef GAIA::CTN::Orderless<__StrType> __OrderlessType;
 
 		__OrderlessType ol;
 		if(ol.size() != 0)
@@ -61,7 +61,7 @@ namespace GAIATEST
 		}
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::CONTAINER::TString str = x;
+			GAIA::CTN::TString str = x;
 			str = _T("HelloWorld") + str;
 			if(ol.insert(str) != x)
 			{
@@ -89,7 +89,7 @@ namespace GAIATEST
 		ol.destroy();
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::CONTAINER::TString str = x;
+			GAIA::CTN::TString str = x;
 			str = _T("HelloWorld") + str;
 			if(ol.insert(str) != x)
 			{
@@ -113,7 +113,7 @@ namespace GAIATEST
 			GTLINE2("Orderless find failed!");
 			++nRet;
 		}
-		GAIA::CONTAINER::TString strTemp = SAMPLE_COUNT - 1;
+		GAIA::CTN::TString strTemp = SAMPLE_COUNT - 1;
 		strTemp = _T("HelloWorld") + strTemp;
 		if(ol.find(strTemp) == GINVALID)
 		{
@@ -203,7 +203,7 @@ namespace GAIATEST
 		ol.destroy();
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::CONTAINER::TString str = x;
+			GAIA::CTN::TString str = x;
 			str = _T("HelloWorld") + str;
 			if(ol.insert(str) != x)
 			{
@@ -214,7 +214,7 @@ namespace GAIATEST
 		}
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::CONTAINER::TString str = x;
+			GAIA::CTN::TString str = x;
 			str = _T("HelloWorld") + str;
 			if(ol.insert(str) != x + SAMPLE_COUNT)
 			{
@@ -225,7 +225,7 @@ namespace GAIATEST
 		}
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::CONTAINER::TString str = x;
+			GAIA::CTN::TString str = x;
 			str = _T("HelloWorld") + str;
 			if(!ol.erase(str))
 			{

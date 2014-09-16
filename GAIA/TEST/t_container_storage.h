@@ -6,7 +6,7 @@ namespace GAIATEST
 	GINL GAIA::N32 t_storage(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
-		typedef GAIA::CONTAINER::Storage<GAIA::NM, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::NM>, 32> __StorageType;
+		typedef GAIA::CTN::Storage<GAIA::NM, GAIA::ALGO::TwiceSizeIncreaser<GAIA::NM>, 32> __StorageType;
 		__StorageType st;
 		if(st.capacity() != 0)
 		{
@@ -104,7 +104,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		st.increase_reserve(10000, 1024 * 1024 * __StorageType::_pagesize);
-		typedef GAIA::CONTAINER::Vector<GAIA::NM> __VectorType;
+		typedef GAIA::CTN::Vector<GAIA::NM> __VectorType;
 		__VectorType vt;
 		static const GAIA::N32 SAMPLE_COUNT = 100;
 		for(GAIA::N32 x = 0; x < SAMPLE_COUNT; ++x)

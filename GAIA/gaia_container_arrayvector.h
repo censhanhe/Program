@@ -3,9 +3,9 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
-		template<typename _DataType, GAIA::SIZE _Size> class ArrayVector : public BasicArrayVector<_DataType, GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE>, _Size>{public:};
+		template<typename _DataType, GAIA::SIZE _Size> class ArrayVector : public BasicArrayVector<_DataType, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE>, _Size>{public:};
 	};
 };
 

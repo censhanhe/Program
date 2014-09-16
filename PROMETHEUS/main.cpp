@@ -36,7 +36,7 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 	prt << "Prometheus " << PROM::VERSION_STRING << "\n";
 
 	GAIA::FILESYSTEM::Directory dir;
-	GAIA::CONTAINER::TString strWorkPath;
+	GAIA::CTN::TString strWorkPath;
 	dir.GetWorkingDirectory(strWorkPath);
 	prt << "\tWorkPath = " << strWorkPath.front_ptr() << "\n";
 	prt << "\n";
@@ -44,14 +44,14 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 	/* Calculate all args length. */
 	GAIA::N32 nLen = 1;
 	for(GAIA::N32 x = 0; x < nargs; ++x)
-		nLen += GAIA::ALGORITHM::strlen(args[x]) + sizeof(args[0]);
+		nLen += GAIA::ALGO::strlen(args[x]) + sizeof(args[0]);
 
 	/* Combin args to single buffer. */
-	GAIA::CONTAINER::Buffer buf;
+	GAIA::CTN::Buffer buf;
 	buf.reserve((nLen + 1) * sizeof(GAIA::CH));
 	for(GAIA::N32 x = 0; x < nargs; ++x)
 	{
-		buf.write(args[x], GAIA::ALGORITHM::strlen(args[x]) * sizeof(GAIA::CH));
+		buf.write(args[x], GAIA::ALGO::strlen(args[x]) * sizeof(GAIA::CH));
 		buf.write((GAIA::CH)' ');
 	}
 	buf.write((GAIA::CH)'\0');
@@ -82,13 +82,13 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 	if(first_command_index + 1 == buf.write_size())
 	{
 REPEAT:
-		GAIA::CONTAINER::AString strCombin;
+		GAIA::CTN::AString strCombin;
 		prt << "Enter the command here : ";
 		GAIA::CH szParam[1024];
 		while(GAIA::ALWAYSTRUE)
 		{
 			prt >> szParam;
-			GAIA::CH* p = GAIA::ALGORITHM::strch(szParam, ';');
+			GAIA::CH* p = GAIA::ALGO::strch(szParam, ';');
 			if(p != GNULL)
 			{
 				if(p != szParam)
@@ -109,8 +109,8 @@ REPEAT:
 		}
 		if(strCombin.empty())
 			return 0;
-		buf.resize((strCombin.size() + 1) * sizeof(GAIA::CONTAINER::AString::_datatype));
-		GAIA::ALGORITHM::xmemcpy(buf.front_ptr(), strCombin.front_ptr(), (strCombin.size() + 1) * sizeof(GAIA::CONTAINER::AString::_datatype));
+		buf.resize((strCombin.size() + 1) * sizeof(GAIA::CTN::AString::_datatype));
+		GAIA::ALGO::xmemcpy(buf.front_ptr(), strCombin.front_ptr(), (strCombin.size() + 1) * sizeof(GAIA::CTN::AString::_datatype));
 		first_command_index = 0;
 	}
 

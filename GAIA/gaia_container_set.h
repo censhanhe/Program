@@ -3,9 +3,9 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
-		template<typename _DataType> class Set : public BasicSet<_DataType, GAIA::SIZE, GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
+		template<typename _DataType> class Set : public BasicSet<_DataType, GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
 	};
 };
 

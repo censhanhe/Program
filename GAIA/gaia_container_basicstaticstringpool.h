@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicStaticStringPool : public GAIA::Entity
 		{
@@ -30,7 +30,7 @@ namespace GAIA
 				Node finder;
 				finder.pContainer = this;
 				finder.offset = m_datalist.size();
-				_SizeType len = GAIA::ALGORITHM::strlen(p);
+				_SizeType len = GAIA::ALGO::strlen(p);
 				m_datalist.push_back(p, len + 1);
 				Node* pFinded = m_nodeset.find(finder);
 				if(pFinded == GNULL)
@@ -63,7 +63,7 @@ namespace GAIA
 				{
 					GAIA_AST(offset < pContainer->m_datalist.size());
 					GAIA_AST(src.offset < src.pContainer->m_datalist.size());
-					return GAIA::ALGORITHM::strcmp(
+					return GAIA::ALGO::strcmp(
 						pContainer->m_datalist.front_ptr() + offset,
 						src.pContainer->m_datalist.front_ptr() + src.offset) == 0;
 
@@ -73,7 +73,7 @@ namespace GAIA
 				{
 					GAIA_AST(offset < pContainer->m_datalist.size());
 					GAIA_AST(src.offset < src.pContainer->m_datalist.size());
-					return GAIA::ALGORITHM::strcmp(
+					return GAIA::ALGO::strcmp(
 						pContainer->m_datalist.front_ptr() + offset,
 						src.pContainer->m_datalist.front_ptr() + src.offset) >= 0;
 				}
@@ -81,7 +81,7 @@ namespace GAIA
 				{
 					GAIA_AST(offset < pContainer->m_datalist.size());
 					GAIA_AST(src.offset < src.pContainer->m_datalist.size());
-					return GAIA::ALGORITHM::strcmp(
+					return GAIA::ALGO::strcmp(
 						pContainer->m_datalist.front_ptr() + offset,
 						src.pContainer->m_datalist.front_ptr() + src.offset) <= 0;
 				}
@@ -92,9 +92,9 @@ namespace GAIA
 				_SizeType offset;
 				_SizeType index;
 			};
-			typedef GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __DataListType;
-			typedef GAIA::CONTAINER::BasicSet<Node, _SizeType, _SizeType, _SizeIncreaserType> __NodeSetType;
-			typedef GAIA::CONTAINER::BasicVector<Node, _SizeType, _SizeIncreaserType> __NodeListType; 
+			typedef GAIA::CTN::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __DataListType;
+			typedef GAIA::CTN::BasicSet<Node, _SizeType, _SizeType, _SizeIncreaserType> __NodeSetType;
+			typedef GAIA::CTN::BasicVector<Node, _SizeType, _SizeIncreaserType> __NodeListType; 
 		private:
 			__DataListType m_datalist;
 			__NodeSetType m_nodeset;

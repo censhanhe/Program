@@ -18,7 +18,7 @@
 						prt << "\t" << (sz) << "\n"; file.WriteText("\t"); file.WriteText(sz); file.WriteText("\r\n");\
 					}while(0)
 #define GTLINE2(sz) do{prt << "\t\t" << (sz) << " " << __FILE__ << "(" << __LINE__ << ")" << "\n";\
-						GAIA::CONTAINER::AString temp;\
+						GAIA::CTN::AString temp;\
 						temp = (sz);\
 						temp += " ";\
 						temp += __FILE__;\

@@ -13,7 +13,7 @@ namespace GAIA
 			public:
 				GAIA::LAYOUT::Widget* pWidget;
 			};
-			typedef GAIA::CONTAINER::Vector<WidgetNode> __WidgetType;
+			typedef GAIA::CTN::Vector<WidgetNode> __WidgetType;
 		public:
 			GINL Layout(){this->init();}
 			GINL ~Layout(){this->RemoveWidgetAll();}
@@ -80,7 +80,7 @@ namespace GAIA
 				m_widgets.destroy();
 				return bRet;
 			}
-			GINL GAIA::BL CollectWidget(GAIA::CONTAINER::Vector<GAIA::LAYOUT::Widget*>& listResult) const
+			GINL GAIA::BL CollectWidget(GAIA::CTN::Vector<GAIA::LAYOUT::Widget*>& listResult) const
 			{
 				GAIA::BL bRet = GAIA::False;
 				__WidgetType::const_it it = m_widgets.const_front_it();

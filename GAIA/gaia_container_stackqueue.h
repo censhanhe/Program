@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, GAIA::SIZE _Size> class StackQueue : public BasicStackQueue<_DataType, GAIA::SIZE, _Size>{public:};
 	};

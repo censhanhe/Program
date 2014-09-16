@@ -6,7 +6,7 @@ namespace GAIATEST
 	GINL GAIA::N32 t_queue(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
-		typedef GAIA::CONTAINER::BasicQueue<GAIA::N32, GAIA::N32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __QueueType;
+		typedef GAIA::CTN::BasicQueue<GAIA::N32, GAIA::N32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::N32> > __QueueType;
 		__QueueType q;
 		q.reserve(100);
 		if(q.capacity() != 100)

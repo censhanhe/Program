@@ -12,7 +12,7 @@ namespace GAIATEST
 		for(GAIA::N32 x = 0; x < ELEMENT_COUNT; ++x)
 			pElements[x] = x;
 
-		typedef GAIA::CONTAINER::Ref<GAIA::N32> __RefType;
+		typedef GAIA::CTN::Ref<GAIA::N32> __RefType;
 		{
 			__RefType rr;
 			if(!rr.empty())

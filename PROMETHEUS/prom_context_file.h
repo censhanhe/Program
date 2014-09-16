@@ -20,7 +20,7 @@ namespace PROM
 		private:
 			GINL GAIA::GVOID init(){bNeedSave = GAIA::False;}
 		};
-		typedef GAIA::CONTAINER::Vector<File> __FileList;
+		typedef GAIA::CTN::Vector<File> __FileList;
 	public:
 		__FileList filelist;
 	};

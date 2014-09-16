@@ -124,13 +124,13 @@
 				return ret;}while(0)
 
 #define GPCHR_NULLSTRPTR(p) do{\
-			GAIA_AST(!GAIA::ALGORITHM::stremp(p));\
-			if(GAIA::ALGORITHM::stremp(p))\
+			GAIA_AST(!GAIA::ALGO::stremp(p));\
+			if(GAIA::ALGO::stremp(p))\
 				return;}while(0)
 
 #define GPCHR_NULLSTRPTR_RET(p, ret) do{\
-			GAIA_AST(!GAIA::ALGORITHM::stremp(p));\
-			if(GAIA::ALGORITHM::stremp(p))\
+			GAIA_AST(!GAIA::ALGO::stremp(p));\
+			if(GAIA::ALGO::stremp(p))\
 				return ret;}while(0)
 
 #define GPCHR_ZERO(p) do{\

@@ -6,9 +6,9 @@ namespace DWARFS_MISC
 	class TextFile : public GAIA::Entity
 	{
 	public:
-		typedef GAIA::CONTAINER::TString __StringType;
+		typedef GAIA::CTN::TString __StringType;
 		typedef __StringType::_datatype __CharType;
-		typedef GAIA::CONTAINER::Buffer __BufferType;
+		typedef GAIA::CTN::Buffer __BufferType;
 	public:
 		GINL TextFile(){this->init();}
 		GINL TextFile(const TextFile& src){this->init(); this->operator = (src);}
@@ -27,17 +27,17 @@ namespace DWARFS_MISC
 				return GAIA::False;
 			if(m_charset_type == GAIA::CHARSET_TYPE_INVALID && buf.write_size() >= sizeof(GAIA::UTF8_FILEHEAD))
 			{
-				if(GAIA::ALGORITHM::xmemcmp(buf.front_ptr(), GAIA::UTF8_FILEHEAD, sizeof(GAIA::UTF8_FILEHEAD)) == 0)
+				if(GAIA::ALGO::xmemcmp(buf.front_ptr(), GAIA::UTF8_FILEHEAD, sizeof(GAIA::UTF8_FILEHEAD)) == 0)
 					m_charset_type = GAIA::CHARSET_TYPE_UTF8;
 			}
 			if(m_charset_type == GAIA::CHARSET_TYPE_INVALID && buf.write_size() >= sizeof(GAIA::UTF16LE_FILEHEAD))
 			{
-				if(GAIA::ALGORITHM::xmemcmp(buf.front_ptr(), GAIA::UTF16LE_FILEHEAD, sizeof(GAIA::UTF16LE_FILEHEAD)) == 0)
+				if(GAIA::ALGO::xmemcmp(buf.front_ptr(), GAIA::UTF16LE_FILEHEAD, sizeof(GAIA::UTF16LE_FILEHEAD)) == 0)
 					m_charset_type = GAIA::CHARSET_TYPE_UTF16LE;
 			}
 			if(m_charset_type == GAIA::CHARSET_TYPE_INVALID && buf.write_size() >= sizeof(GAIA::UTF16BE_FILEHEAD))
 			{
-				if(GAIA::ALGORITHM::xmemcmp(buf.front_ptr(), GAIA::UTF16BE_FILEHEAD, sizeof(GAIA::UTF16BE_FILEHEAD)) == 0)
+				if(GAIA::ALGO::xmemcmp(buf.front_ptr(), GAIA::UTF16BE_FILEHEAD, sizeof(GAIA::UTF16BE_FILEHEAD)) == 0)
 					m_charset_type = GAIA::CHARSET_TYPE_UTF16BE;
 			}
 			if(m_charset_type == GAIA::CHARSET_TYPE_INVALID)
@@ -45,7 +45,7 @@ namespace DWARFS_MISC
 				GAIA::BL bIsAllAnsi = GAIA::True;
 				for(GAIA::SIZE x = 0; x < buf.write_size(); ++x)
 				{
-					if(!GAIA::ALGORITHM::isansi(buf[x]))
+					if(!GAIA::ALGO::isansi(buf[x]))
 					{
 						bIsAllAnsi = GAIA::False;
 						break;
@@ -80,9 +80,9 @@ namespace DWARFS_MISC
 					for(GAIA::SIZE x = 0; x < buf.write_size(); ++x)
 						m_str[x] = buf[x];
 				#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-					GAIA::CONTAINER::AString strOrigin;
+					GAIA::CTN::AString strOrigin;
 					strOrigin.resize(buf.write_size());
-					GAIA::ALGORITHM::strcpy(strOrigin.front_ptr(), buf.front_ptr(), buf.write_size());
+					GAIA::ALGO::strcpy(strOrigin.front_ptr(), buf.front_ptr(), buf.write_size());
 					GAIA::SIZE newsize = GAIA::LOCALE::m2w(strOrigin.front_ptr(), GNULL, 0, GAIA::CHARSET_TYPE_SYS);
 					if(newsize > 1)
 					{
@@ -97,9 +97,9 @@ namespace DWARFS_MISC
 				#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 					return GAIA::False;
 				#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-					GAIA::CONTAINER::AString strOrigin;
+					GAIA::CTN::AString strOrigin;
 					strOrigin.resize(buf.write_size() - sizeof(GAIA::UTF8_FILEHEAD));
-					GAIA::ALGORITHM::strcpy(strOrigin.front_ptr(), buf.front_ptr() + sizeof(GAIA::UTF8_FILEHEAD), buf.write_size() - sizeof(GAIA::UTF8_FILEHEAD));
+					GAIA::ALGO::strcpy(strOrigin.front_ptr(), buf.front_ptr() + sizeof(GAIA::UTF8_FILEHEAD), buf.write_size() - sizeof(GAIA::UTF8_FILEHEAD));
 					GAIA::SIZE newsize = GAIA::LOCALE::m2w(strOrigin.front_ptr(), GNULL, 0, GAIA::CHARSET_TYPE_UTF8);
 					if(newsize > 1)
 					{

@@ -11,7 +11,7 @@ namespace GAIATEST
 		GAIA::N32* pElements = GAIA_MALLOC(GAIA::N32, ELEMENT_COUNT);
 		for(GAIA::N32 x = 0; x < ELEMENT_COUNT; ++x)
 			pElements[x] = x;
-		typedef GAIA::CONTAINER::Ptr<GAIA::N32> __PtrType;
+		typedef GAIA::CTN::Ptr<GAIA::N32> __PtrType;
 		{
 			__PtrType pp;
 			if(!pp.empty())

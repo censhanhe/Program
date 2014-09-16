@@ -15,7 +15,7 @@ namespace GAIA
 			public:
 				GAIA::MVC::View* pView;
 			};
-			typedef GAIA::CONTAINER::Vector<ViewNode> __ViewList;
+			typedef GAIA::CTN::Vector<ViewNode> __ViewList;
 		public:
 			GINL ViewLinker(){}
 			GINL ~ViewLinker(){}
@@ -69,7 +69,7 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			GINL GAIA::BL CollectLinkedViews(GAIA::CONTAINER::Vector<GAIA::MVC::View*>& listResult);
+			GINL GAIA::BL CollectLinkedViews(GAIA::CTN::Vector<GAIA::MVC::View*>& listResult);
 		private:
 			__ViewList m_views;
 		};

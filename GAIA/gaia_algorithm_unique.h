@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace ALGORITHM
+	namespace ALGO
 	{
 		template<typename _DataType> GAIA::BL isunique(_DataType pBegin, _DataType pEnd)
 		{

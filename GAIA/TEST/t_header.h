@@ -63,7 +63,7 @@ namespace GAIATEST
 		GAIA::N32 nRet = 0;
 		GAIA::BL bOutputTime = GAIA::False;
 		GAIA::U64 uTimeBegin = 0, uTimeEnd = 0;
-		GAIA::CONTAINER::AString str;
+		GAIA::CTN::AString str;
 
 		// Every test procedure.
 		GTLINE("[GAIA TEST BEGIN]");

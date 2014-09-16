@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<GAIA::SIZE _Size> class StackBitset : public BasicStackBitset<GAIA::SIZE, _Size>{public:};
 	};

@@ -51,8 +51,8 @@ namespace PROM
 			if(pPLC == GNULL)
 				return GAIA::False;
 
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
-			if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
+			if(GAIA::ALGO::stremp(pPLC->GetName()))
 				return GAIA::False;
 
 			return GAIA::True;

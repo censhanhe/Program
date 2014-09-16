@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace ALGORITHM
+	namespace ALGO
 	{
 		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::BL equal(_DataType1 pBegin, _DataType2 p, const _SizeType& size)
 		{
@@ -42,7 +42,7 @@ namespace GAIA
 			GAIA_AST(size != 0);
 			while(pEnd - pBegin + 1 >= size)
 			{
-				if(GAIA::ALGORITHM::equal(pBegin, p, size))
+				if(GAIA::ALGO::equal(pBegin, p, size))
 					return pBegin;
 				++pBegin;
 			}
@@ -76,7 +76,7 @@ namespace GAIA
 			GAIA_AST(size != 0);
 			while(pEnd - pBegin + 1 >= size)
 			{
-				if(GAIA::ALGORITHM::equal(pEnd - size + 1, p, size))
+				if(GAIA::ALGO::equal(pEnd - size + 1, p, size))
 					return pEnd - size + 1;
 				--pEnd;
 			}
@@ -109,13 +109,13 @@ namespace GAIA
 			else
 			{
 				if(pEnd - pBegin <= 16)
-					return GAIA::ALGORITHM::ssearch(pBegin, pEnd, key);
+					return GAIA::ALGO::ssearch(pBegin, pEnd, key);
 			}
 			_DataType pMid = pBegin + (pEnd - pBegin) / 2;
 			if(key <= *pMid)
-				return GAIA::ALGORITHM::bsearch(pBegin, pMid, key);
+				return GAIA::ALGO::bsearch(pBegin, pMid, key);
 			else if(key > *pMid)
-				return GAIA::ALGORITHM::bsearch(pMid + 1, pEnd, key);
+				return GAIA::ALGO::bsearch(pMid + 1, pEnd, key);
 			return GNULL;
 		}
 		template<typename _DataType, typename _KeyType> _DataType search(_DataType pBegin, _DataType pEnd, const _KeyType& key)
@@ -131,7 +131,7 @@ namespace GAIA
 					return pBegin;
 				return GNULL;
 			}
-			return GAIA::ALGORITHM::bsearch(pBegin, pEnd, key);
+			return GAIA::ALGO::bsearch(pBegin, pEnd, key);
 		}
 		template<typename _DataType, typename _KeyType> _DataType lower_bound(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
@@ -146,13 +146,13 @@ namespace GAIA
 			_DataType pMid = pBegin + (pEnd - pBegin) / 2;
 			if(key <= *pMid)
 			{
-				_DataType pRet = GAIA::ALGORITHM::lower_bound(pBegin, pMid, key);
+				_DataType pRet = GAIA::ALGO::lower_bound(pBegin, pMid, key);
 				if(pRet != GNULL)
 					return pRet;
 			}
 			else if(key > *pMid)
 			{
-				_DataType pRet = GAIA::ALGORITHM::lower_bound(pMid + 1, pEnd, key);
+				_DataType pRet = GAIA::ALGO::lower_bound(pMid + 1, pEnd, key);
 				if(pRet != GNULL)
 					return pRet;
 			}
@@ -173,13 +173,13 @@ namespace GAIA
 				++pMid;
 			if(key >= *pMid)
 			{
-				_DataType pRet = GAIA::ALGORITHM::upper_bound(pMid, pEnd, key);
+				_DataType pRet = GAIA::ALGO::upper_bound(pMid, pEnd, key);
 				if(pRet != GNULL)
 					return pRet;
 			}
 			else if(key < *pMid)
 			{
-				_DataType pRet = GAIA::ALGORITHM::upper_bound(pBegin, pMid - 1, key);
+				_DataType pRet = GAIA::ALGO::upper_bound(pBegin, pMid - 1, key);
 				if(pRet != GNULL)
 					return pRet;
 			}
@@ -206,10 +206,10 @@ namespace GAIA
 			GAIA_AST(pKeyBegin <= pKeyEnd);
 			while(pKeyBegin != pKeyEnd)
 			{
-				GAIA::ALGORITHM::count(pBegin, pEnd, *pKeyBegin, result);
+				GAIA::ALGO::count(pBegin, pEnd, *pKeyBegin, result);
 				++pKeyBegin;
 			}
-			GAIA::ALGORITHM::count(pBegin, pEnd, *pKeyBegin, result);
+			GAIA::ALGO::count(pBegin, pEnd, *pKeyBegin, result);
 		}
 		template<typename _DataType, typename _KeyType, typename _SizeType> GAIA::GVOID prevcount(_DataType pBegin, _DataType pEnd, const _KeyType& key, _SizeType& result)
 		{

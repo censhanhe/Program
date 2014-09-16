@@ -70,11 +70,11 @@ namespace DWARFS_MISC
 			const GAIA::SIZE& max_param_size,
 			CMD_TYPE t)
 		{
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
-			if(GAIA::ALGORITHM::stremp(pszCmd))
+			GAIA_AST(!GAIA::ALGO::stremp(pszCmd));
+			if(GAIA::ALGO::stremp(pszCmd))
 				return GINVALID;
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszDesc));
-			if(GAIA::ALGORITHM::stremp(pszDesc))
+			GAIA_AST(!GAIA::ALGO::stremp(pszDesc));
+			if(GAIA::ALGO::stremp(pszDesc))
 				return GINVALID;
 			GAIA_AST(min_param_size >= 0);
 			if(min_param_size < 0)
@@ -112,8 +112,8 @@ namespace DWARFS_MISC
 			const GAIA::TCH* pszDesc,
 			PARAM_TYPE t)
 		{
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
-			if(GAIA::ALGORITHM::stremp(pszCmd))
+			GAIA_AST(!GAIA::ALGO::stremp(pszCmd));
+			if(GAIA::ALGO::stremp(pszCmd))
 				return GAIA::False;
 			GAIA_AST(min_param_size >= 0);
 			if(min_param_size < 0)
@@ -153,7 +153,7 @@ namespace DWARFS_MISC
 			ParamDecl temp;
 			temp.start_param_index = start_param_index;
 			temp.end_param_index = end_param_index;
-			if(!GAIA::ALGORITHM::stremp(pszDesc))
+			if(!GAIA::ALGO::stremp(pszDesc))
 				temp.desc = pszDesc;
 			temp.type = t;
 			for(__ParamDeclListType::_sizetype x = 0; x < pCmd->paramdecls.size(); ++x)
@@ -166,17 +166,17 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::GVOID cmd_mutex_decl(const GAIA::TCH* pszCmd1, const GAIA::TCH* pszCmd2)
 		{
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd1));
-			if(GAIA::ALGORITHM::stremp(pszCmd1))
+			GAIA_AST(!GAIA::ALGO::stremp(pszCmd1));
+			if(GAIA::ALGO::stremp(pszCmd1))
 				return;
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd2));
-			if(GAIA::ALGORITHM::stremp(pszCmd2))
+			GAIA_AST(!GAIA::ALGO::stremp(pszCmd2));
+			if(GAIA::ALGO::stremp(pszCmd2))
 				return;
 			GAIA_AST(this->is_begin_decl());
 			if(!this->is_begin_decl())
 				return;
-			if(GAIA::ALGORITHM::strcmp(pszCmd1, pszCmd2) > 0)
-				GAIA::ALGORITHM::swap(pszCmd1, pszCmd2);
+			if(GAIA::ALGO::strcmp(pszCmd1, pszCmd2) > 0)
+				GAIA::ALGO::swap(pszCmd1, pszCmd2);
 			for(__CmdMutexListType::_sizetype x = 0; x < m_mutex_decls.size(); ++x)
 			{
 				CmdMutex& temp = m_mutex_decls[x];
@@ -191,17 +191,17 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::GVOID cmd_coop_decl(const GAIA::TCH* pszCmd1, const GAIA::TCH* pszCmd2)
 		{
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd1));
-			if(GAIA::ALGORITHM::stremp(pszCmd1))
+			GAIA_AST(!GAIA::ALGO::stremp(pszCmd1));
+			if(GAIA::ALGO::stremp(pszCmd1))
 				return;
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd2));
-			if(GAIA::ALGORITHM::stremp(pszCmd2))
+			GAIA_AST(!GAIA::ALGO::stremp(pszCmd2));
+			if(GAIA::ALGO::stremp(pszCmd2))
 				return;
 			GAIA_AST(this->is_begin_decl());
 			if(!this->is_begin_decl())
 				return;
-			if(GAIA::ALGORITHM::strcmp(pszCmd1, pszCmd2) > 0)
-				GAIA::ALGORITHM::swap(pszCmd1, pszCmd2);
+			if(GAIA::ALGO::strcmp(pszCmd1, pszCmd2) > 0)
+				GAIA::ALGO::swap(pszCmd1, pszCmd2);
 			for(__CmdCoopListType::_sizetype x = 0; x < m_coop_decls.size(); ++x)
 			{
 				CmdCoop& temp = m_coop_decls[x];
@@ -259,8 +259,8 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::SIZE finddecl(const GAIA::TCH* pszCmdName, const GAIA::SIZE& min_param_size) const
 		{
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmdName));
-			if(GAIA::ALGORITHM::stremp(pszCmdName))
+			GAIA_AST(!GAIA::ALGO::stremp(pszCmdName));
+			if(GAIA::ALGO::stremp(pszCmdName))
 				return GINVALID;
 			GAIA_AST(!this->is_begin_decl());
 			if(this->is_begin_decl())
@@ -283,8 +283,8 @@ namespace DWARFS_MISC
 			GAIA_AST(!this->is_begin_decl());
 			if(this->is_begin_decl())
 				return GAIA::False;
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
-			if(GAIA::ALGORITHM::stremp(pszCmd))
+			GAIA_AST(!GAIA::ALGO::stremp(pszCmd));
+			if(GAIA::ALGO::stremp(pszCmd))
 				return GAIA::False;
 
 			GAIA::BL bCheckSuccess = GAIA::False;
@@ -301,7 +301,7 @@ namespace DWARFS_MISC
 					if(p > pLast)
 					{
 						str.resize(p - pLast);
-						GAIA::ALGORITHM::xmemcpy(str.front_ptr(), pLast, (p - pLast) * sizeof(__StringType::_datatype));
+						GAIA::ALGO::xmemcpy(str.front_ptr(), pLast, (p - pLast) * sizeof(__StringType::_datatype));
 						__StringType::_sizetype index_begin = 0, index_end = str.size() - 1;
 						for(; index_begin < str.size(); ++index_begin)
 						{
@@ -528,8 +528,8 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::SIZE findcmd(const GAIA::TCH* pszCmd) const
 		{
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pszCmd));
-			if(GAIA::ALGORITHM::stremp(pszCmd))
+			GAIA_AST(!GAIA::ALGO::stremp(pszCmd));
+			if(GAIA::ALGO::stremp(pszCmd))
 				return GINVALID;
 			GAIA_AST(!this->is_begin_decl());
 			if(this->is_begin_decl())
@@ -568,7 +568,7 @@ namespace DWARFS_MISC
 		GAIA_CLASS_OPERATOR_COMPARE3(m_opt_decls, m_opt_decls, m_mutex_decls, m_mutex_decls, m_coop_decls, m_coop_decls, CmdParam);
 
 	private:
-		typedef GAIA::CONTAINER::TString __StringType;
+		typedef GAIA::CTN::TString __StringType;
 		class ParamDecl
 		{
 		public:
@@ -586,7 +586,7 @@ namespace DWARFS_MISC
 			__StringType desc;
 			PARAM_TYPE type;
 		};
-		typedef GAIA::CONTAINER::Vector<ParamDecl> __ParamDeclListType;
+		typedef GAIA::CTN::Vector<ParamDecl> __ParamDeclListType;
 		class CmdDecl
 		{
 		public:
@@ -610,8 +610,8 @@ namespace DWARFS_MISC
 			__ParamDeclListType::_sizetype max_param_size;
 			__ParamDeclListType paramdecls;
 		};
-		typedef GAIA::CONTAINER::Vector<CmdDecl> __CmdDeclListType;
-		typedef GAIA::CONTAINER::Vector<__StringType> __ParamListType;
+		typedef GAIA::CTN::Vector<CmdDecl> __CmdDeclListType;
+		typedef GAIA::CTN::Vector<__StringType> __ParamListType;
 		class Cmd
 		{
 		public:
@@ -627,9 +627,9 @@ namespace DWARFS_MISC
 			__StringType cmd;
 			__ParamListType params;
 		};
-		typedef GAIA::CONTAINER::Vector<Cmd> __CmdListType;
-		typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::Ref<CmdDecl> > __CmdDeclOPTListType;
-		typedef GAIA::CONTAINER::Vector<GAIA::CONTAINER::Ref<Cmd> > __CmdOPTListType;
+		typedef GAIA::CTN::Vector<Cmd> __CmdListType;
+		typedef GAIA::CTN::Vector<GAIA::CTN::Ref<CmdDecl> > __CmdDeclOPTListType;
+		typedef GAIA::CTN::Vector<GAIA::CTN::Ref<Cmd> > __CmdOPTListType;
 		class CmdMutex
 		{
 		public:
@@ -656,8 +656,8 @@ namespace DWARFS_MISC
 			__StringType cmd1;
 			__StringType cmd2;
 		};
-		typedef GAIA::CONTAINER::Vector<CmdMutex> __CmdMutexListType;
-		typedef GAIA::CONTAINER::Vector<CmdCoop> __CmdCoopListType;
+		typedef GAIA::CTN::Vector<CmdMutex> __CmdMutexListType;
+		typedef GAIA::CTN::Vector<CmdCoop> __CmdCoopListType;
 
 	private:
 		GINL GAIA::GVOID init(){m_bBeginDecl = GAIA::False;}

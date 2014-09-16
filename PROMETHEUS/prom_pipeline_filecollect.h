@@ -22,43 +22,43 @@ namespace PROM
 			PLC_File* pRet = new PLC_File;
 
 			/* Execute. */
-			typedef GAIA::CONTAINER::Vector<__FileName> __FileListType;
-			typedef GAIA::CONTAINER::Vector<__FileName> __PathListType;
-			typedef GAIA::CONTAINER::Vector<__FileName> __ExtListType;
+			typedef GAIA::CTN::Vector<__FileName> __FileListType;
+			typedef GAIA::CTN::Vector<__FileName> __PathListType;
+			typedef GAIA::CTN::Vector<__FileName> __ExtListType;
 			__FileListType listFile;
 			__PathListType listPath;
 			__ExtListType listExt;
 			for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 			{
 				const GAIA::TCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
-				if(GAIA::ALGORITHM::stremp(pszCmd))
+				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
-				if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-i")) == 0)
+				if(GAIA::ALGO::strcmp(pszCmd, _T("-i")) == 0)
 				{
 					for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
 					{
 						const GAIA::TCH* pszParam = plc_commandparam->cmdparam.param(x, y);
-						if(GAIA::ALGORITHM::stremp(pszParam))
+						if(GAIA::ALGO::stremp(pszParam))
 							continue;
 						listFile.push_back(pszParam);
 					}
 				}
-				else if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-I")) == 0)
+				else if(GAIA::ALGO::strcmp(pszCmd, _T("-I")) == 0)
 				{
 					for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
 					{
 						const GAIA::TCH* pszParam = plc_commandparam->cmdparam.param(x, y);
-						if(GAIA::ALGORITHM::stremp(pszParam))
+						if(GAIA::ALGO::stremp(pszParam))
 							continue;
 						listPath.push_back(pszParam);
 					}
 				}
-				else if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-E")) == 0)
+				else if(GAIA::ALGO::strcmp(pszCmd, _T("-E")) == 0)
 				{
 					for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.param_size(x); ++y)
 					{
 						const GAIA::TCH* pszParam = plc_commandparam->cmdparam.param(x, y);
-						if(GAIA::ALGORITHM::stremp(pszParam))
+						if(GAIA::ALGO::stremp(pszParam))
 							continue;
 						listExt.push_back(pszParam);
 					}

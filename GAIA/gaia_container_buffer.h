@@ -3,9 +3,9 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
-		class Buffer : public BasicBuffer<GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
+		class Buffer : public BasicBuffer<GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
 	};
 };
 

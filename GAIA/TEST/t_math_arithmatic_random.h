@@ -8,7 +8,7 @@ namespace GAIATEST
 		static const GAIA::SIZE SAMPLE_COUNT = 100;
 
 		GAIA::N32 nRet = 0;
-		GAIA::CONTAINER::Vector<GAIA::SIZE> listRandom;
+		GAIA::CTN::Vector<GAIA::SIZE> listRandom;
 
 		GAIA::MATH::xrandom_seed(0);
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)

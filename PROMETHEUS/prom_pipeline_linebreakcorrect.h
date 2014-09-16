@@ -14,7 +14,7 @@ namespace PROM
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNULL);
 			GPCHR_ZERO_RET(size, GNULL);
-			GAIA::CONTAINER::TChars chs;
+			GAIA::CTN::TChars chs;
 			PLC_Empty* pRet = GNULL;
 			PLC_CommandParam* plc_commandparam = GNULL;
 			PLC_File* plc_file = GNULL;
@@ -36,9 +36,9 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 			{
 				const GAIA::TCH* pszCmd = plc_commandparam->cmdparam.cmd(x);
-				if(GAIA::ALGORITHM::stremp(pszCmd))
+				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
-				if(GAIA::ALGORITHM::strcmp(pszCmd, _T("-linebreak")) == 0)
+				if(GAIA::ALGO::strcmp(pszCmd, _T("-linebreak")) == 0)
 				{
 					GAIA_AST(plc_commandparam->cmdparam.param_size(x) == 1);
 					if(plc_commandparam->cmdparam.param_size(x) == 1)
@@ -141,7 +141,7 @@ namespace PROM
 					}
 				}
 
-				GAIA::CONTAINER::TChars tempchs;
+				GAIA::CTN::TChars tempchs;
 				if(chs == _T("\r\n"))
 					tempchs = _T("\\r\\n");
 				else if(chs == _T("\n"))

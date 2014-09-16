@@ -185,7 +185,7 @@ namespace PROM
 			this->UnbindPrevAll();
 		}
 	private:
-		typedef GAIA::CONTAINER::Vector<__MyType*> __DoubleLinkList;
+		typedef GAIA::CTN::Vector<__MyType*> __DoubleLinkList;
 	private:
 		__DoubleLinkList m_nexts;
 		__DoubleLinkList m_prevs;

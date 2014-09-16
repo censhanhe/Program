@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicTrieTree : public GAIA::Entity
 		{
@@ -708,7 +708,7 @@ namespace GAIA
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				GAIA_AST(&src != this);
-				typedef GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
+				typedef GAIA::CTN::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
 				__VectorType paths;
 				this->clear();
 				const_it it = src.const_front_it();

@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 		static const GAIA::N32 ELEMENT_COUNT = 100;
-		typedef GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::N32, ELEMENT_COUNT> __ArrayType;
+		typedef GAIA::CTN::BasicArray<GAIA::N32, GAIA::N32, ELEMENT_COUNT> __ArrayType;
 		__ArrayType arr;
 		if(arr.capacity() != ELEMENT_COUNT)
 		{
@@ -224,7 +224,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		arr.sort();
-		if(!GAIA::ALGORITHM::issorted(arr.front_ptr(), arr.back_ptr()))
+		if(!GAIA::ALGO::issorted(arr.front_ptr(), arr.back_ptr()))
 		{
 			GTLINE2("Array sort failed!");
 			++nRet;
@@ -248,7 +248,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		arr.sort();
-		if(!GAIA::ALGORITHM::issorted(arr.front_ptr(), arr.back_ptr()))
+		if(!GAIA::ALGO::issorted(arr.front_ptr(), arr.back_ptr()))
 		{
 			GTLINE2("Array sort failed!");
 			++nRet;
@@ -445,7 +445,7 @@ namespace GAIATEST
 		}
 
 		{
-			GAIA::CONTAINER::BasicArray<GAIA::N32, GAIA::U8, 10> tarr;
+			GAIA::CTN::BasicArray<GAIA::N32, GAIA::U8, 10> tarr;
 			tarr.erase(4);
 		}
 

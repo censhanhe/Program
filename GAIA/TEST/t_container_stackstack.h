@@ -6,7 +6,7 @@ namespace GAIATEST
 	GINL GAIA::N32 t_stackstack(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
-		typedef GAIA::CONTAINER::BasicStackStack<GAIA::N32, GAIA::N32, 100> __StackStackType;
+		typedef GAIA::CTN::BasicStackStack<GAIA::N32, GAIA::N32, 100> __StackStackType;
 		__StackStackType ss;
 		if(ss.capacity() != 100)
 		{

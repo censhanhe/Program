@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace ALGORITHM
+	namespace ALGO
 	{
 		template<typename _SizeType> GAIA::GVOID* xmemcpy(GAIA::GVOID* dst, const GAIA::GVOID* src, const _SizeType& size)
 		{
@@ -41,7 +41,7 @@ namespace GAIA
 			const GAIA::U8* pSrc = (const GAIA::U8*)src;
 			while(count > 0)
 			{
-				GAIA::ALGORITHM::xmemcpy(pDst, pSrc, size);
+				GAIA::ALGO::xmemcpy(pDst, pSrc, size);
 				pDst += dst_stride;
 				pSrc += src_stride;
 				--count;
@@ -80,7 +80,7 @@ namespace GAIA
 			GAIA::U8* p = (GAIA::U8*)dst;
 			while(count > 0)
 			{
-				GAIA::ALGORITHM::xmemset(p, ch, size);
+				GAIA::ALGO::xmemset(p, ch, size);
 				p += stride;
 				--count;
 			}
@@ -123,7 +123,7 @@ namespace GAIA
 			const GAIA::U8* pTemp = GSCAST(const GAIA::U8*)(p);
 			while(count > 0)
 			{
-				GAIA::N32 res = GAIA::ALGORITHM::xmemcheck(pTemp, ch, size);
+				GAIA::N32 res = GAIA::ALGO::xmemcheck(pTemp, ch, size);
 				if(res != 0)
 					return res;
 				pTemp += stride;
@@ -171,7 +171,7 @@ namespace GAIA
 			const GAIA::U8* pB = GSCAST(const GAIA::U8*)(p2);
 			while(count > 0)
 			{
-				GAIA::N32 nCmp = GAIA::ALGORITHM::xmemcmp(pA, pB, size);
+				GAIA::N32 nCmp = GAIA::ALGO::xmemcmp(pA, pB, size);
 				if(nCmp != 0)
 					return nCmp;
 				pA += p1_stride;

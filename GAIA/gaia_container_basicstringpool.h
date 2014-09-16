@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _RefCounterType, typename _SizeIncreaserType> class BasicStringPool : public GAIA::Entity
 		{
@@ -47,7 +47,7 @@ namespace GAIA
 					++m_nodelist[pFinded->index].refcounter;
 					return pFinded->index;
 				}
-				finder.data = GAIA::ALGORITHM::strnew(p);
+				finder.data = GAIA::ALGO::strnew(p);
 				finder.refcounter = 1;
 				if(m_freestack.empty())
 				{
@@ -94,10 +94,10 @@ namespace GAIA
 			{
 			public:
 				GINL NodeCmp& operator = (const NodeCmp& src){data = src.data; index = src.index; return *this;}
-				GINL GAIA::BL operator == (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGORITHM::strcmp(data, src.data) == 0;}
+				GINL GAIA::BL operator == (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGO::strcmp(data, src.data) == 0;}
 				GINL GAIA::BL operator != (const NodeCmp& src) const{return !this->operator == (src);}
-				GINL GAIA::BL operator >= (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGORITHM::strcmp(data, src.data) >= 0;}
-				GINL GAIA::BL operator <= (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGORITHM::strcmp(data, src.data) <= 0;}
+				GINL GAIA::BL operator >= (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGO::strcmp(data, src.data) >= 0;}
+				GINL GAIA::BL operator <= (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGO::strcmp(data, src.data) <= 0;}
 				GINL GAIA::BL operator > (const NodeCmp& src) const{return !this->operator <= (src);}
 				GINL GAIA::BL operator < (const NodeCmp& src) const{return !this->operator >= (src);}
 			public:
@@ -111,9 +111,9 @@ namespace GAIA
 			public:
 				_RefCounterType refcounter;
 			};
-			typedef GAIA::CONTAINER::BasicVector<Node, _SizeType, _SizeIncreaserType> __NodeListType;
-			typedef GAIA::CONTAINER::BasicStack<_SizeType, _SizeType, _SizeIncreaserType> __FreeIndexStackType;
-			typedef GAIA::CONTAINER::BasicSet<NodeCmp, _SizeType, _SizeType, _SizeIncreaserType> __NodeSetType;
+			typedef GAIA::CTN::BasicVector<Node, _SizeType, _SizeIncreaserType> __NodeListType;
+			typedef GAIA::CTN::BasicStack<_SizeType, _SizeType, _SizeIncreaserType> __FreeIndexStackType;
+			typedef GAIA::CTN::BasicSet<NodeCmp, _SizeType, _SizeType, _SizeIncreaserType> __NodeSetType;
 		private:
 			GINL GAIA::GVOID destroy_content_all()
 			{

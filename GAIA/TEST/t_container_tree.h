@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 		static const GAIA::N32 ELEMENT_COUNT = 10;
-		typedef GAIA::CONTAINER::BasicTree<GAIA::N32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::U32> > __TreeType;
+		typedef GAIA::CTN::BasicTree<GAIA::N32, GAIA::U32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::U32> > __TreeType;
 		__TreeType tr;
 		if(!tr.empty())
 		{
@@ -296,17 +296,17 @@ namespace GAIATEST
 			GTLINE2("Tree insert failed! The node count is not match!");
 			++nRet;
 		}
-		GAIA::CONTAINER::Vector<__TreeType::_datatype> listTemp;
+		GAIA::CTN::Vector<__TreeType::_datatype> listTemp;
 		listTemp.reserve(tTotalNodeCount);
 		it = tr.front_it();
 		for(; !it.empty(); ++it)
 			listTemp.push_back(*it);
-		if(!GAIA::ALGORITHM::issorted(listTemp.front_ptr(), listTemp.back_ptr()))
+		if(!GAIA::ALGO::issorted(listTemp.front_ptr(), listTemp.back_ptr()))
 		{
 			GTLINE2("Tree element data error!");
 			++nRet;
 		}
-		GAIA::CONTAINER::Vector<__TreeType::_datatype>::it itback_v = listTemp.back_it();
+		GAIA::CTN::Vector<__TreeType::_datatype>::it itback_v = listTemp.back_it();
 		__TreeType::it itback = tr.back_it();
 		for(; !itback.empty(); --itback, --itback_v)
 		{

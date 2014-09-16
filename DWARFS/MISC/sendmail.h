@@ -20,10 +20,10 @@ namespace DWARFS_MISC
 		};
 	public:
 		typedef GAIA::CH __CharType;
-		typedef GAIA::CONTAINER::BasicChars<__CharType, GAIA::N32, 1024> __CharsType;
-		typedef GAIA::CONTAINER::BasicString<__CharType, GAIA::N32> __StringType;
+		typedef GAIA::CTN::BasicChars<__CharType, GAIA::N32, 1024> __CharsType;
+		typedef GAIA::CTN::BasicString<__CharType, GAIA::N32> __StringType;
 		typedef GAIA::TCH __FileNameCharType;
-		typedef GAIA::CONTAINER::TString __FileNameStringType;
+		typedef GAIA::CTN::TString __FileNameStringType;
 
 	public:
 		GINL GAIA::GVOID username(const __CharType* pszUserName){m_username = pszUserName;}
@@ -114,7 +114,7 @@ namespace DWARFS_MISC
 			/* Connect. */
 			GAIA::NETWORK::NetworkHandle h;
 			GAIA::NETWORK::NetworkHandle::ConnectDesc cnndesc;
-			GAIA::CONTAINER::Vector<GAIA::NETWORK::IP> listIPResult;
+			GAIA::CTN::Vector<GAIA::NETWORK::IP> listIPResult;
 			GAIA::NETWORK::GetHostIPList(m_smtp_address, listIPResult);
 			if(listIPResult.size() == 0)
 				return GAIA::False;
@@ -244,7 +244,7 @@ namespace DWARFS_MISC
 				if(nSize == 0 || nSize == GINVALID)
 					continue;
 
-				const __FileNameStringType::_datatype* pFileName = GAIA::ALGORITHM::strfilename(strFile.front_ptr());
+				const __FileNameStringType::_datatype* pFileName = GAIA::ALGO::strfilename(strFile.front_ptr());
 				if(pFileName == GNULL)
 					continue;
 			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
@@ -265,8 +265,8 @@ namespace DWARFS_MISC
 				h.Send((const GAIA::U8*)attach.front_ptr(), attach.size());
 
 				static const GAIA::N64 PATCH_SIZE = 1024 * 128;
-				GAIA::CONTAINER::Vector<GAIA::U8> buf;
-				GAIA::CONTAINER::Vector<GAIA::U8> buf64;
+				GAIA::CTN::Vector<GAIA::U8> buf;
+				GAIA::CTN::Vector<GAIA::U8> buf64;
 				buf.resize(PATCH_SIZE + 2);
 				buf64.resize(buf.size() * 2 + 4);
 				GAIA::N64 nReaded = 0;
@@ -349,9 +349,9 @@ namespace DWARFS_MISC
 		__StringType m_sender_name;
 		__StringType m_title;
 		__StringType m_content;
-		GAIA::CONTAINER::Vector<__FileNameStringType> m_attachs;
-		GAIA::CONTAINER::Buffer m_combinbuf;
-		GAIA::CONTAINER::Buffer m_tempbuf;
+		GAIA::CTN::Vector<__FileNameStringType> m_attachs;
+		GAIA::CTN::Buffer m_combinbuf;
+		GAIA::CTN::Buffer m_tempbuf;
 		GAIA::SYNC::Lock m_lock;
 		GAIA::SYNC::Event m_event;
 		__StringType m_recv;

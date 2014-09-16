@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicVector : public GAIA::Entity
 		{
@@ -238,7 +238,7 @@ namespace GAIA
 				m_size -= size;
 				return GAIA::True;
 			}
-			GINL GAIA::GVOID inverse(){if(this->size() > 1) GAIA::ALGORITHM::inverse(this->front_ptr(), this->back_ptr());}
+			GINL GAIA::GVOID inverse(){if(this->size() > 1) GAIA::ALGO::inverse(this->front_ptr(), this->back_ptr());}
 			GINL GAIA::BL insert(const _DataType& t, const _SizeType& index)
 			{
 				GAIA_AST(index >= 0 && index <= this->size());
@@ -247,7 +247,7 @@ namespace GAIA
 				this->push_back(t);
 				if(this->size() == 1)
 					return GAIA::True;
-				GAIA::ALGORITHM::move_next(this->back_ptr(), this->front_ptr() + this->size() - 2, this->size() - index);
+				GAIA::ALGO::move_next(this->back_ptr(), this->front_ptr() + this->size() - 2, this->size() - index);
 				this->operator[](index) = t;
 				return GAIA::True;
 			}
@@ -257,7 +257,7 @@ namespace GAIA
 				if(index >= this->size())
 					return GAIA::False;
 				if(index != this->size() - 1)
-					GAIA::ALGORITHM::move_prev(this->front_ptr() + index, this->front_ptr() + index + 1, this->size() - 1 - index);
+					GAIA::ALGO::move_prev(this->front_ptr() + index, this->front_ptr() + index + 1, this->size() - 1 - index);
 				--m_size;
 				return GAIA::True;
 			}
@@ -267,7 +267,7 @@ namespace GAIA
 					return (_SizeType)GINVALID;
 				if(index >= this->size())
 					return (_SizeType)GINVALID;
-				const _DataType* pFinded = GAIA::ALGORITHM::find(this->front_ptr() + index, this->back_ptr(), t);
+				const _DataType* pFinded = GAIA::ALGO::find(this->front_ptr() + index, this->back_ptr(), t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return pFinded - m_pFront;
@@ -278,7 +278,7 @@ namespace GAIA
 					return (_SizeType)GINVALID;
 				if(index >= this->size())
 					return (_SizeType)GINVALID;
-				const _DataType* pFinded = GAIA::ALGORITHM::rfind(this->front_ptr(), this->front_ptr() + index, t);
+				const _DataType* pFinded = GAIA::ALGO::rfind(this->front_ptr(), this->front_ptr() + index, t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return pFinded - m_pFront;
@@ -289,15 +289,15 @@ namespace GAIA
 				if(this->empty())
 					return 0;
 				_SizeType ret = 0;
-				GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret);
+				GAIA::ALGO::count(this->front_ptr(), this->back_ptr(), t, ret);
 				return ret;
 			}
-			GINL GAIA::GVOID sort(){if(this->empty()) return; GAIA::ALGORITHM::sort(this->front_ptr(), this->back_ptr());}
+			GINL GAIA::GVOID sort(){if(this->empty()) return; GAIA::ALGO::sort(this->front_ptr(), this->back_ptr());}
 			GINL _SizeType unique() // Return value is the repeat element count.
 			{
 				if(this->empty())
 					return 0;
-				_DataType* p = GAIA::ALGORITHM::unique_order(this->front_ptr(), this->back_ptr());
+				_DataType* p = GAIA::ALGO::unique_order(this->front_ptr(), this->back_ptr());
 				_SizeType newsize = static_cast<_SizeType>(p - this->front_ptr()) + 1;
 				_SizeType ret = m_size - newsize;
 				m_size = newsize;
@@ -307,7 +307,7 @@ namespace GAIA
 			{
 				if(this->empty())
 					return 0;
-				_DataType* p = GAIA::ALGORITHM::unique_noorder(this->front_ptr(), this->back_ptr());
+				_DataType* p = GAIA::ALGO::unique_noorder(this->front_ptr(), this->back_ptr());
 				_SizeType newsize = static_cast<_SizeType>(p - this->front_ptr()) + 1;
 				_SizeType ret = m_size - newsize;
 				m_size = newsize;
@@ -317,18 +317,18 @@ namespace GAIA
 			{
 				if(this->size() <= 0)
 					return (_SizeType)GINVALID;
-				const _DataType* pFinded = GAIA::ALGORITHM::search(this->front_ptr(), this->back_ptr(), t);
+				const _DataType* pFinded = GAIA::ALGO::search(this->front_ptr(), this->back_ptr(), t);
 				if(pFinded == GNULL)
 					return (_SizeType)GINVALID;
 				return GSCAST(_SizeType)(pFinded - this->front_ptr());
 			}
-			GINL GAIA::GVOID swap(const _SizeType& index1, const _SizeType& index2){GAIA::ALGORITHM::swap(this->operator[](index1), this->operator[](index2));}
+			GINL GAIA::GVOID swap(const _SizeType& index1, const _SizeType& index2){GAIA::ALGO::swap(this->operator[](index1), this->operator[](index2));}
 			GINL it lower_bound(const _DataType& t)
 			{
 				it iter;
 				if(!this->empty())
 				{
-					_DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
+					_DataType* p = GAIA::ALGO::lower_bound(this->front_ptr(), this->back_ptr(), t);
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
@@ -342,7 +342,7 @@ namespace GAIA
 				const_it iter;
 				if(!this->empty())
 				{
-					const _DataType* p = GAIA::ALGORITHM::lower_bound(this->front_ptr(), this->back_ptr(), t);
+					const _DataType* p = GAIA::ALGO::lower_bound(this->front_ptr(), this->back_ptr(), t);
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
@@ -356,7 +356,7 @@ namespace GAIA
 				it iter;
 				if(!this->empty())
 				{
-					_DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
+					_DataType* p = GAIA::ALGO::upper_bound(this->front_ptr(), this->back_ptr(), t);
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
@@ -370,7 +370,7 @@ namespace GAIA
 				const_it iter;
 				if(!this->empty())
 				{
-					const _DataType* p = GAIA::ALGORITHM::upper_bound(this->front_ptr(), this->back_ptr(), t);
+					const _DataType* p = GAIA::ALGO::upper_bound(this->front_ptr(), this->back_ptr(), t);
 					if(p != GNULL)
 					{
 						iter.m_pContainer = this;
@@ -403,7 +403,7 @@ namespace GAIA
 				this->reserve(src.size());
 				if(src.size() > 0)
 				{
-					GAIA::ALGORITHM::copy(m_pFront, src.m_pFront, src.size());
+					GAIA::ALGO::copy(m_pFront, src.m_pFront, src.size());
 					m_size = src.size();
 				}
 				return *this;

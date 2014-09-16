@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicQueue : public GAIA::Entity
 		{
@@ -149,7 +149,7 @@ namespace GAIA
 				if(this->empty())
 					return 0;
 				_SizeType ret = 0;
-				GAIA::ALGORITHM::count(this->const_front_it(), this->const_back_it(), t, ret);
+				GAIA::ALGO::count(this->const_front_it(), this->const_back_it(), t, ret);
 				return ret;
 			}
 			GINL _DataType& front(){return this->operator[](0);}

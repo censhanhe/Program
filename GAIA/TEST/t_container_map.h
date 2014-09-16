@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 		static const GAIA::N32 ELEMENT_SIZE = 100;
-		typedef GAIA::CONTAINER::BasicMap<GAIA::N32, GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::N32> > __MapType;
+		typedef GAIA::CTN::BasicMap<GAIA::N32, GAIA::N32, GAIA::U32, GAIA::U32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::N32> > __MapType;
 		__MapType m;
 		if(!m.empty())
 		{

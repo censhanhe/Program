@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class BasicStack : public GAIA::Entity
 		{
@@ -176,7 +176,7 @@ namespace GAIA
 				if(this->empty())
 					return 0;
 				_SizeType ret = 0;
-				GAIA::ALGORITHM::count(this->front_ptr(), this->back_ptr(), t, ret);
+				GAIA::ALGO::count(this->front_ptr(), this->back_ptr(), t, ret);
 				return ret;
 			}
 			GINL GAIA::GVOID push_back(const _DataType& t)
@@ -272,7 +272,7 @@ namespace GAIA
 				this->reserve(src.size());
 				if(src.size() > 0)
 				{
-					GAIA::ALGORITHM::copy(m_pFront, src.m_pFront, src.size());
+					GAIA::ALGO::copy(m_pFront, src.m_pFront, src.size());
 					m_size = src.size();
 				}
 				return *this;

@@ -3,9 +3,9 @@
 
 namespace GAIA
 {
-	namespace CONTAINER
+	namespace CTN
 	{
-		template<typename _DataType> class StringPool : public GAIA::CONTAINER::BasicStringPool<_DataType, GAIA::SIZE, GAIA::SIZE, GAIA::ALGORITHM::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
+		template<typename _DataType> class StringPool : public GAIA::CTN::BasicStringPool<_DataType, GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> >{public:};
 	};
 };
 

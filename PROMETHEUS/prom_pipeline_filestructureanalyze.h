@@ -40,17 +40,17 @@ namespace PROM
 				for(GAIA::SIZE y = 0; y < l.size(); ++y)
 				{
 					const DWARFS_MISC::TextLine::__CharType* pLine = l.get_line(y);
-					if(GAIA::ALGORITHM::stremp(pLine))
+					if(GAIA::ALGO::stremp(pLine))
 						continue;
-					const DWARFS_MISC::TextLine::__CharType* pFinded = GAIA::ALGORITHM::strstr(pLine, "#include");
+					const DWARFS_MISC::TextLine::__CharType* pFinded = GAIA::ALGO::strstr(pLine, "#include");
 					if(pFinded == GNULL)
 						continue;
-					pFinded += GAIA::ALGORITHM::strlen("#include");
+					pFinded += GAIA::ALGO::strlen("#include");
 					const DWARFS_MISC::TextLine::__CharType* pFindedNext = GNULL;
 					if(*pFinded == _T('"'))
-						pFindedNext = GAIA::ALGORITHM::strch(pFinded + 1, _T('"'));
+						pFindedNext = GAIA::ALGO::strch(pFinded + 1, _T('"'));
 					else
-						pFindedNext = GAIA::ALGORITHM::strch(pFinded + 1, _T('>'));
+						pFindedNext = GAIA::ALGO::strch(pFinded + 1, _T('>'));
 					if(pFindedNext != GNULL)
 					{
 						__FileName tempfilename;
@@ -80,14 +80,14 @@ namespace PROM
 			if(pPLC == GNULL)
 				return GAIA::False;
 
-			GAIA_AST(!GAIA::ALGORITHM::stremp(pPLC->GetName()));
-			if(GAIA::ALGORITHM::stremp(pPLC->GetName()))
+			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
+			if(GAIA::ALGO::stremp(pPLC->GetName()))
 				return GAIA::False;
 
 			PLC_FileStructure* plc_filestructure = static_cast<PLC_FileStructure*>(pPLC);
 			if(plc_filestructure == GNULL)
 				return GAIA::False;
-			if(GAIA::ALGORITHM::strcmp(pPLC->GetName(), _T("Prom:PLC_FileStructure")) != 0)
+			if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_FileStructure")) != 0)
 				return GAIA::False;
 
 			/* Print parent relation. */
@@ -100,8 +100,8 @@ namespace PROM
 			prt << "[To Parent]" << "\n";
 			if(pFile != GNULL)
 			{
-				pFile->Write(_T("[To Parent]"), GAIA::ALGORITHM::strlen("[To Parent]") * sizeof(GAIA::TCH));
-				pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+				pFile->Write(_T("[To Parent]"), GAIA::ALGO::strlen("[To Parent]") * sizeof(GAIA::TCH));
+				pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
 			PLC_FileStructure::__FileNodeSet::it it = plc_filestructure->filenodeset.front_it();
 			for(; !it.empty(); ++it)
@@ -115,8 +115,8 @@ namespace PROM
 			prt << "[To Child]" << "\n";
 			if(pFile != GNULL)
 			{
-				pFile->Write(_T("[To Child]"), GAIA::ALGORITHM::strlen("[To Child]") * sizeof(GAIA::TCH));
-				pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+				pFile->Write(_T("[To Child]"), GAIA::ALGO::strlen("[To Child]") * sizeof(GAIA::TCH));
+				pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
 			it = plc_filestructure->filenodeset.front_it();
 			for(; !it.empty(); ++it)
@@ -142,7 +142,7 @@ namespace PROM
 			{
 				this->OutputDepth(prt, pFile, depth);
 				pFile->Write(node.name.front_ptr(), node.name.size() * sizeof(__FileName::_datatype));
-				pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+				pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
 			PLC_FileStructure::__FileLinkSet::it itlink = node.parents.front_it();
 			for(; !itlink.empty(); ++itlink)
@@ -166,7 +166,7 @@ namespace PROM
 			{
 				this->OutputDepth(prt, pFile, depth);
 				pFile->Write(node.name.front_ptr(), node.name.size() * sizeof(__FileName::_datatype));
-				pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
+				pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
 			PLC_FileStructure::__FileLinkSet::it itlink = node.childs.front_it();
 			for(; !itlink.empty(); ++itlink)

@@ -8,11 +8,11 @@ namespace GAIATEST
 		GAIA::N32 nRet = 0;
 
 		static const GAIA::SIZE SAMPLE_COUNT = 100;
-		typedef GAIA::CONTAINER::Pool<GAIA::CONTAINER::TString> __PoolType;
+		typedef GAIA::CTN::Pool<GAIA::CTN::TString> __PoolType;
 		__PoolType parentparentpl;
 		__PoolType parentpl;
 		__PoolType pl;
-		GAIA::CONTAINER::Vector<GAIA::CONTAINER::TString*> listTemp;
+		GAIA::CTN::Vector<GAIA::CTN::TString*> listTemp;
 		__PoolType::__IndexListType listIndex;
 
 BIND_POOL:
@@ -65,7 +65,7 @@ BIND_POOL:
 		}
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::CONTAINER::TString* p = pl.alloc();
+			GAIA::CTN::TString* p = pl.alloc();
 			GAIA_AST(p != GNULL);
 			listTemp.push_back(p);
 		}
@@ -86,7 +86,7 @@ BIND_POOL:
 		}
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::CONTAINER::TString* p = listTemp[x];
+			GAIA::CTN::TString* p = listTemp[x];
 			GAIA_AST(p != GNULL);
 			if(!pl.release(p))
 			{
@@ -145,7 +145,7 @@ BIND_POOL:
 		listTemp.clear();
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::CONTAINER::TString* p = pl.alloc();
+			GAIA::CTN::TString* p = pl.alloc();
 			GAIA_AST(p != GNULL);
 			listTemp.push_back(p);
 		}
@@ -184,7 +184,7 @@ BIND_POOL:
 		listTemp.clear();
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
-			GAIA::CONTAINER::TString* p = pl.alloc();
+			GAIA::CTN::TString* p = pl.alloc();
 			GAIA_AST(p != GNULL);
 			listTemp.push_back(p);
 		}
@@ -197,7 +197,7 @@ BIND_POOL:
 		for(GAIA::SIZE x = 0; x < listIndex.size(); ++x)
 		{
 			GAIA::SIZE index = listIndex[x];
-			GAIA::CONTAINER::TString& str = pl[index];
+			GAIA::CTN::TString& str = pl[index];
 			GAIA::BL bExist = GAIA::False;
 			for(GAIA::SIZE y = 0; y < listTemp.size(); ++y)
 			{
