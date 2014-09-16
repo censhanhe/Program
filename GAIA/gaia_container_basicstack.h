@@ -299,11 +299,8 @@ namespace GAIA
 					}
 				}
 				const_it it = src.const_front_it();
-				while(!it.empty())
-				{
+				for(; !it.empty(); ++it)
 					this->push_back(*it);
-					++it;
-				}
 				return *this;
 			}
 			GINL GAIA::BL operator == (const __MyType& src) const

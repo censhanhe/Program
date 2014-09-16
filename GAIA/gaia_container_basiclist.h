@@ -338,10 +338,9 @@ namespace GAIA
 			{
 				const_it it = src.const_front_it();
 				_SizeType size = src.size();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					this->push_back(*it);
-					++it;
 					--size;
 					if(size == 0)
 						break;

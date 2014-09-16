@@ -9,7 +9,7 @@ namespace GAIA
 		{
 			GAIA::BL bRet = GAIA::False;
 			__ViewList::it it = m_views.front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				ViewNode& n = *it;
 				if(n.pView != GNULL)
@@ -18,7 +18,6 @@ namespace GAIA
 					listResult.push_back(n.pView);
 					bRet = GAIA::True;
 				}
-				++it;
 			}
 			return bRet;
 		}

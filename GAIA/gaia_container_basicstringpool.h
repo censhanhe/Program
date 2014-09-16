@@ -118,11 +118,10 @@ namespace GAIA
 			GINL GAIA::GVOID destroy_content_all()
 			{
 				typename __NodeSetType::it it = m_nodeset.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					NodeCmp& n = *it;
 					GAIA_MFREE(n.data);
-					++it;
 				}
 			}
 		private:

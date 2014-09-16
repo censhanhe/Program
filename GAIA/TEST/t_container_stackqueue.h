@@ -165,11 +165,8 @@ namespace GAIATEST
 		}
 		__StackQueueType::const_it cit = sq.const_front_it();
 		__StackQueueType::it it = sq1.front_it();
-		while(!it.empty())
-		{
+		for(; !it.empty(); ++it)
 			*it = 10;
-			++it;
-		}
 		it = sq1.front_it();
 		while(!cit.empty())
 		{

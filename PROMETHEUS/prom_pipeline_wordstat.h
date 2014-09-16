@@ -172,7 +172,7 @@ namespace PROM
 			}
 			GAIA::SIZE index = 0;
 			PLC_Word::__WordSetType::it it = plc_word->wordset.front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				PLC_Word::Word& word = *it;
 				if(pFile != GNULL)
@@ -190,20 +190,18 @@ namespace PROM
 				}
 				else
 					prt << "[" << index++ << "] \"" << word.strWord.front_ptr() << "\", Count = " << word.uExistCount << "\n";
-				++it;
 			}
 
 			typedef GAIA::CONTAINER::Vector<WordByRefCount> __WordCountSortVectorType;
 			__WordCountSortVectorType wordcountsortlist;
 			it = plc_word->wordset.front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				PLC_Word::Word& word = *it;
 				WordByRefCount temp;
 				temp.pWord = &word.strWord;
 				temp.uExistCount = word.uExistCount;
 				wordcountsortlist.push_back(temp);
-				++it;
 			}
 			wordcountsortlist.sort();
 

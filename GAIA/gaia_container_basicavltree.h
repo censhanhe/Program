@@ -542,11 +542,8 @@ namespace GAIA
 				if(!src.empty())
 				{
 					const_it it = src.const_front_it();
-					while(!it.empty())
-					{
+					for(; !it.empty(); ++it)
 						this->insert(*it);
-						++it;
-					}
 				}
 				return *this;
 			}

@@ -276,7 +276,7 @@ namespace DWARFS_FSHA
 				this->LoadNode(sr, stack);
 				m_recids.sort();
 				__FileTreeType::const_it it = m_ftree.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(m_ftree.leaf(it))
 					{
@@ -287,7 +287,6 @@ namespace DWARFS_FSHA
 						GAIA_AST(tfinded != GINVALID);
 						m_recids[tfinded].it = it;
 					}
-					++it;
 				}
 			}
 		#ifdef FSHA_DEBUG
@@ -344,11 +343,10 @@ namespace DWARFS_FSHA
 				__NameMapType::_sizetype size = m_names.size();
 				sr << size;
 				__NameMapType::const_it it = m_names.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					const __NameMapType::_datatype& d = *it;
 					sr << (*d).name;
-					++it;
 				}
 			}
 
@@ -403,7 +401,7 @@ namespace DWARFS_FSHA
 				m_names.reserve(restree.catagory_count(restree.root()));
 				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
 				FNAMEPARTLISTTYPE::_sizetype nRootPart = listNamePart.size();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(nRootPart == 0)
 					{
@@ -414,7 +412,6 @@ namespace DWARFS_FSHA
 					}
 					else
 						--nRootPart;
-					++it;
 				}
 				m_names.sort();
 			}
@@ -429,7 +426,7 @@ namespace DWARFS_FSHA
 				FILEID id = 0;
 				typedef GAIA::CONTAINER::Vector<GAIA::FILESYSTEM::Directory::__ResultTree::_datatype*> __TempPartComineVector;
 				__TempPartComineVector listTemp;
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(restree.leaf(it))
 					{
@@ -474,7 +471,6 @@ namespace DWARFS_FSHA
 						listInsert.back_ptr()->fid = id++;
 						m_ftree.insert(listInsert.front_ptr(), listInsert.size());
 					}
-					++it;
 				}
 			}
 
@@ -483,7 +479,7 @@ namespace DWARFS_FSHA
 			{
 				m_recids.clear();
 				__FileTreeType::const_it it = m_ftree.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(m_ftree.leaf(it))
 					{
@@ -494,7 +490,6 @@ namespace DWARFS_FSHA
 						fr.uSequence = 0;
 						m_recids.push_back(fr);
 					}
-					++it;
 				}
 				m_recids.sort();
 			}
@@ -834,11 +829,10 @@ namespace DWARFS_FSHA
 
 			/* Save child node. */
 			__FileTreeType::__NodeTreeType::it it = m_ftree.child_front_it(n);
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				__FileTreeType::Node* pNode = m_ftree.tonode(it);
 				this->SaveNode(sr, *pNode);
-				++it;
 			}
 			return GAIA::True;
 		}
@@ -1032,11 +1026,10 @@ namespace DWARFS_FSHA
 					Group::__UserRefListType::_sizetype user_cnt = pGroup->refusers.size();
 					sr << user_cnt;
 					Group::__UserRefListType::it it = pGroup->refusers.front_it();
-					while(!it.empty())
+					for(; !it.empty(); ++it)
 					{
 						User* pUser = *it;
 						sr << pUser->name;
-						++it;
 					}
 				}
 				++it_g;
@@ -1089,12 +1082,11 @@ namespace DWARFS_FSHA
 			if(pUser == GNULL)
 				return GAIA::False;
 			User::__GroupRefListType::it it = pUser->refgroups.front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				Group* pGroup = *it;
 				if(pGroup != GNULL)
 					pGroup->refusers.erase(pUser);
-				++it;
 			}
 			m_users.erase(pUser);
 			m_upool.release(pUser);
@@ -1148,7 +1140,7 @@ namespace DWARFS_FSHA
 			if(pGroup == GNULL)
 				return GAIA::False;
 			Group::__UserRefListType::it it = pGroup->refusers.front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				User* pUser = *it;
 				if(pUser != GNULL)
@@ -1164,19 +1156,17 @@ namespace DWARFS_FSHA
 						++itu;
 					}
 				}
-				++it;
 			}
 			return GAIA::True;
 		}
 		GINL GAIA::GVOID DeleteGroupAll()
 		{
 			__GroupSetType::it it = m_groups.front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				Group* pGroup = *it;
 				if(pGroup != GNULL)
 					m_gpool.release(pGroup);
-				++it;
 			}
 		}
 		GINL GAIA::BL FindGroup(const __GroupNameType& name) const
@@ -1287,7 +1277,7 @@ namespace DWARFS_FSHA
 			if(pGroup == GNULL)
 				return GAIA::False;
 			Group::__UserRefListType::it it = pGroup->refusers.front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				User* pUser = *it;
 				User::__GroupRefListType::it itg = pUser->refgroups.front_it();
@@ -1298,7 +1288,6 @@ namespace DWARFS_FSHA
 						*itg = GNULL;
 					++itg;
 				}
-				++it;
 			}
 			pGroup->refusers.clear();
 			return GAIA::True;
@@ -1306,21 +1295,19 @@ namespace DWARFS_FSHA
 		GINL GAIA::GVOID EnumUser(__UserNameListType& result) const
 		{
 			__UserSetType::const_it it = m_users.const_front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				const User* pUser = *it;
 				result.push_back(pUser->name);
-				++it;
 			}
 		}
 		GINL GAIA::GVOID EnumGroup(__GroupNameListType& result) const
 		{
 			__GroupSetType::const_it it = m_groups.const_front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				const Group* pGroup = *it;
 				result.push_back(pGroup->name);
-				++it;
 			}
 		}
 		GINL GAIA::BL EnumUserGroup(const __UserNameType& name, __GroupNameListType& result) const
@@ -1332,12 +1319,11 @@ namespace DWARFS_FSHA
 			if(pUser == GNULL)
 				return GAIA::False;
 			User::__GroupRefListType::const_it it = pUser->refgroups.const_front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				const Group* pGroup = *it;
 				if(pGroup != GNULL)
 					result.push_back(pGroup->name);
-				++it;
 			}
 			return GAIA::True;
 		}
@@ -1350,12 +1336,11 @@ namespace DWARFS_FSHA
 			if(pGroup == GNULL)
 				return GAIA::False;
 			Group::__UserRefListType::const_it it = pGroup->refusers.const_front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				const User* pUser = *it;
 				if(pUser != GNULL)
 					result.push_back(pUser->name);
-				++it;
 			}
 			return GAIA::True;
 		}
@@ -1511,13 +1496,12 @@ namespace DWARFS_FSHA
 			__BanIPSet::_sizetype bansize = m_bans.size();
 			sr << bansize;
 			__BanIPSet::const_it it = m_bans.const_front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				const __BanIPSet::_datatype& t = *it;
 				sr << t.ip;
 				sr << t.uOccurTime;
 				sr << t.uBanTime;
-				++it;
 			}
 
 			/* Destruct serializer */
@@ -1533,7 +1517,7 @@ namespace DWARFS_FSHA
 			/* Collect timeout record. */
 			{
 				__BanIPSet::it it = m_bans.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					__BanIPSet::_datatype& t = *it;
 					if(t.uBanTime != GINVALID)
@@ -1541,17 +1525,13 @@ namespace DWARFS_FSHA
 						if(uCurrentTime - t.uOccurTime >= t.uBanTime)
 							m_bans_temp.push_back(t);
 					}
-					++it;
 				}
 			}
 			/* Delete timeout record. */
 			{
 				__BanIPList::const_it it = m_bans_temp.const_front_it();
-				while(!it.empty())
-				{
+				for(; !it.empty(); ++it)
 					m_bans.erase(*it);
-					++it;
-				}
 				m_bans_temp.clear();
 			}
 			return bRet;
@@ -3186,7 +3166,7 @@ namespace DWARFS_FSHA
 					__FileReqQueueType::it it = m_reqs.front_it();
 					GAIA::N32 nIndex = 0;
 					GAIA::U64 uCurrentTime = GAIA::TIME::tick_time();
-					while(!it.empty())
+					for(; !it.empty(); ++it)
 					{
 						FileReq& fr = *it;
 						FILESIZETYPE fsize;
@@ -3215,7 +3195,6 @@ namespace DWARFS_FSHA
 							" UserReqTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 <<
 							" FirstReqTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 <<
 							" LastActiveTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uLastActiveTime) * 0.001 * 0.001 << "\n";
-						++it;
 					}
 				}
 				else
@@ -3229,7 +3208,7 @@ namespace DWARFS_FSHA
 					__FileReqSetType::it it = m_reqeds.front_it();
 					GAIA::N32 nIndex = 0;
 					GAIA::U64 uCurrentTime = GAIA::TIME::tick_time();
-					while(!it.empty())
+					for(; !it.empty(); ++it)
 					{
 						FileReq& fr = *it;
 						FILESIZETYPE fsize;
@@ -3258,7 +3237,6 @@ namespace DWARFS_FSHA
 							" UserReqTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uUserReqTime) * 0.001 * 0.001 <<
 							" FirstReqTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uFirstReqTime) * 0.001 * 0.001 <<
 							" LastActiveTime=" << GSCAST(GAIA::F64)(uCurrentTime - fr.uLastActiveTime) * 0.001 * 0.001 << "\n";
-						++it;
 					}
 				}
 				else
@@ -3398,11 +3376,8 @@ namespace DWARFS_FSHA
 					UserGroup::__UserNameListType::const_it it = listUser.const_front_it();
 					GAIA::N32 nIndex = 0;
 					AL alprt(m_lr_prt);
-					while(!it.empty())
-					{
+					for(; !it.empty(); ++it)
 						m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
-						++it;
-					}
 				}
 				else
 					CMDFAILED;
@@ -3422,11 +3397,8 @@ namespace DWARFS_FSHA
 					m_usergroup.EnumUserGroup(listPart[1].front_ptr(), listGroup);
 					UserGroup::__UserNameListType::const_it it = listGroup.const_front_it();
 					GAIA::N32 nIndex = 0;
-					while(!it.empty())
-					{
+					for(; !it.empty(); ++it)
 						m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
-						++it;
-					}
 				}
 				else
 					CMDFAILED;
@@ -3441,11 +3413,8 @@ namespace DWARFS_FSHA
 					UserGroup::__UserNameListType::const_it it = listGroup.const_front_it();
 					GAIA::N32 nIndex = 0;
 					AL alprt(m_lr_prt);
-					while(!it.empty())
-					{
+					for(; !it.empty(); ++it)
 						m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
-						++it;
-					}
 				}
 				else
 					CMDFAILED;
@@ -3468,11 +3437,8 @@ namespace DWARFS_FSHA
 						m_usergroup.EnumGroupUser(listPart[1], listUser);
 						UserGroup::__UserNameListType::const_it it = listUser.const_front_it();
 						GAIA::N32 nIndex = 0;
-						while(!it.empty())
-						{
+						for(; !it.empty(); ++it)
 							m_prt << "[" << nIndex++ << "] " << (*it).front_ptr() << "\n";
-							++it;
-						}
 					}
 					else
 						CMDFAILED;
@@ -4448,7 +4414,7 @@ namespace DWARFS_FSHA
 				#ifdef FSHA_DEBUG
 					{
 						FileRecCache::__FileChunkSectionListType::it it = pFRC->pFCSL->front_it();
-						while(!it.empty())
+						for(; !it.empty(); ++it)
 						{
 							FileRecCache::__FileChunkSectionListType::it itnext = it;
 							++itnext;
@@ -4458,7 +4424,6 @@ namespace DWARFS_FSHA
 								FileChunkSection& dst = *itnext;
 								GAIA_AST(src.dbg_check(dst));
 							}
-							++it;
 						}
 					}
 				#endif

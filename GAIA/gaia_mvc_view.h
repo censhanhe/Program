@@ -42,7 +42,7 @@ namespace GAIA
 					return GAIA::True;
 				}
 				__ModelListType::it it = m_models.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					ModelNode& n = *it;
 					if(n.pModel == GNULL)
@@ -52,7 +52,6 @@ namespace GAIA
 						return GAIA::True;
 					}
 					GAIA_AST(!n.strName.empty());
-					++it;
 				}
 				ModelNode n;
 				m_models.push_back(n);
@@ -72,7 +71,7 @@ namespace GAIA
 			GINL GAIA::GVOID DeleteModelAll()
 			{
 				__ModelListType::it it = m_models.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					ModelNode& n = *it;
 					if(n.pModel == GNULL)
@@ -84,7 +83,6 @@ namespace GAIA
 					n.pModel->Release();
 					n.pModel = GNULL;
 					n.strName.destroy();
-					++it;
 				}
 				m_models.destroy();
 			}
@@ -100,7 +98,7 @@ namespace GAIA
 					return GAIA::True;
 				}
 				__ControllerListType::it it = m_controllers.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					ControllerNode& n = *it;
 					if(n.pController == GNULL)
@@ -110,7 +108,6 @@ namespace GAIA
 						return GAIA::True;
 					}
 					GAIA_AST(!n.strName.empty());
-					++it;
 				}
 				ControllerNode n;
 				m_controllers.push_back(n);
@@ -130,7 +127,7 @@ namespace GAIA
 			GINL GAIA::GVOID DeleteControllerAll()
 			{
 				__ControllerListType::it it = m_controllers.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					ControllerNode& n = *it;
 					if(n.pController == GNULL)
@@ -142,7 +139,6 @@ namespace GAIA
 					n.pController->Release();
 					n.pController = GNULL;
 					n.strName.destroy();
-					++it;
 				}
 				m_controllers.destroy();
 			}
@@ -155,12 +151,11 @@ namespace GAIA
 			GINL ModelNode* GetModelByName(const GAIA::TCH* pszName)
 			{
 				__ModelListType::it it  = m_models.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					ModelNode& n = (*it);
 					if(n.strName == pszName)
 						return &n;
-					++it;
 				}
 				return GNULL;
 			}
@@ -168,12 +163,11 @@ namespace GAIA
 			GINL ControllerNode* GetControllerByName(const GAIA::TCH* pszName)
 			{
 				__ControllerListType::it it = m_controllers.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					ControllerNode& n = (*it);
 					if(n.strName == pszName)
 						return &n;
-					++it;
 				}
 				return GNULL;
 			}

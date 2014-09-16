@@ -155,11 +155,8 @@ namespace GAIATEST
 		}
 		__StackType::const_it cit = s.const_front_it();
 		__StackType::it it = s1.front_it();
-		while(!it.empty())
-		{
+		for(; !it.empty(); ++it)
 			*it = 10;
-			++it;
-		}
 		it = s1.front_it();
 		while(!cit.empty())
 		{

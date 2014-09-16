@@ -44,14 +44,13 @@ namespace GAIA
 			if(size > 0)
 			{
 				typename __ArrayType::const_it it = t.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!write(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -75,14 +74,13 @@ namespace GAIA
 			{
 				t.resize(size);
 				typename __ArrayType::it it = t.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!read(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -106,14 +104,13 @@ namespace GAIA
 			if(size > 0)
 			{
 				typename __VectorType::const_it it = t.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!write(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -137,14 +134,13 @@ namespace GAIA
 			{
 				t.resize(size);
 				typename __VectorType::it it = t.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!read(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -168,14 +164,13 @@ namespace GAIA
 			if(size > 0)
 			{
 				typename __StackType::const_it it = t.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!write(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -199,14 +194,13 @@ namespace GAIA
 			{
 				t.resize(size);
 				typename __StackType::it it = t.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!read(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -230,14 +224,13 @@ namespace GAIA
 			if(size > 0)
 			{
 				typename __QueueType::const_it it = t.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!write(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -261,14 +254,13 @@ namespace GAIA
 			{
 				t.resize(size);
 				typename __QueueType::it it = t.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!read(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -292,14 +284,13 @@ namespace GAIA
 			if(size > 0)
 			{
 				typename __ListType::const_it it = t.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!write(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -376,14 +367,13 @@ namespace GAIA
 			if(size > 0)
 			{
 				typename __AVLTreeType::const_it it = t.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(!write(p, *it))
 					{
 						pIO->Release();
 						return GAIA::False;
 					}
-					++it;
 				}
 			}
 			pIO->Release();
@@ -430,11 +420,10 @@ namespace GAIA
 				return GAIA::False;
 			typename __TrieTreeType::_sizetype size = 0;
 			typename __TrieTreeType::const_it it = t.const_front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				if(t.leaf(it))
 					++size;
-				++it;
 			}
 			if(!write(p, size))
 			{
@@ -442,7 +431,7 @@ namespace GAIA
 				return GAIA::False;
 			}
 			it = t.const_front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				if(t.leaf(it))
 				{
@@ -469,7 +458,6 @@ namespace GAIA
 						subit = t.parent_it(subit);
 					}
 				}
-				++it;
 			}
 			pIO->Release();
 			return GAIA::True;

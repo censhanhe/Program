@@ -278,7 +278,7 @@ namespace GAIATEST
 		}
 		arr.inverse();
 		__ArrayType::it it = arr.front_it();
-		while(!it.empty())
+		for(; !it.empty(); ++it)
 		{
 			__ArrayType::it itt = it;
 			++itt;
@@ -291,7 +291,6 @@ namespace GAIATEST
 					break;
 				}
 			}
-			++it;
 		}
 		arr1 = arr;
 		if(!arr.insert(997, 0))
@@ -353,7 +352,7 @@ namespace GAIATEST
 		}
 		arr.sort();
 		it = arr.front_it();
-		while(!it.empty())
+		for(; !it.empty(); ++it)
 		{
 			__ArrayType::it itfinded = arr.lower_bound(*it);
 			if(itfinded.empty())
@@ -369,7 +368,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			++it;
 		}
 		const __ArrayType& arrc = arr;
 		cit = arrc.const_front_it();

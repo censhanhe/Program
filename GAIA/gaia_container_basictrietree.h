@@ -647,7 +647,7 @@ namespace GAIA
 					{
 						typename __NodeTreeType::it it = pNode->m_links.back_it();
 						GAIA::BL bExistChild = GAIA::False;
-						while(!it.empty())
+						for(; !it.empty(); --it)
 						{
 							if(*it != (const Node*)GNULL)
 							{
@@ -655,7 +655,6 @@ namespace GAIA
 								bExistChild = GAIA::True;
 								break;
 							}
-							--it;
 						}
 						if(!bExistChild)
 							break;
@@ -689,7 +688,7 @@ namespace GAIA
 					{
 						typename __NodeTreeType::const_it it = pNode->m_links.const_back_it();
 						GAIA::BL bExistChild = GAIA::False;
-						while(!it.empty())
+						for(; !it.empty(); --it)
 						{
 							if(*it != (const Node*)GNULL)
 							{
@@ -697,7 +696,6 @@ namespace GAIA
 								bExistChild = GAIA::True;
 								break;
 							}
-							--it;
 						}
 						if(!bExistChild)
 							break;
@@ -718,7 +716,7 @@ namespace GAIA
 				__VectorType paths;
 				this->clear();
 				const_it it = src.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					if(src.leaf(it))
 					{
@@ -735,7 +733,6 @@ namespace GAIA
 							this->insert(paths.front_ptr(), paths.size());
 						}
 					}
-					++it;
 				}
 				return *this;
 			}

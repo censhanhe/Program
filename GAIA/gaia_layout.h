@@ -23,7 +23,7 @@ namespace GAIA
 					return GAIA::False;
 				lw.Reference();
 				__WidgetType::it it = m_widgets.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					WidgetNode& n = *it;
 					if(n.pWidget == GNULL)
@@ -31,7 +31,6 @@ namespace GAIA
 						n.pWidget = &lw;
 						return GAIA::True;
 					}
-					++it;
 				}
 				WidgetNode n;
 				n.pWidget = &lw;
@@ -41,7 +40,7 @@ namespace GAIA
 			GINL GAIA::BL RemoveWidget(GAIA::LAYOUT::Widget& lw)
 			{
 				__WidgetType::it it = m_widgets.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					WidgetNode& n = *it;
 					if(n.pWidget == &lw)
@@ -50,19 +49,17 @@ namespace GAIA
 						n.pWidget = GNULL;
 						return GAIA::True;
 					}
-					++it;
 				}
 				return GAIA::False;
 			}
 			GINL GAIA::BL IsWidgetExist(GAIA::LAYOUT::Widget& lw) const
 			{
 				__WidgetType::const_it it = m_widgets.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					const WidgetNode& n = *it;
 					if(n.pWidget == &lw)
 						return GAIA::True;
-					++it;
 				}
 				return GAIA::False;
 			}
@@ -70,7 +67,7 @@ namespace GAIA
 			{
 				GAIA::BL bRet = GAIA::False;
 				__WidgetType::it it = m_widgets.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					WidgetNode& n = *it;
 					if(n.pWidget != GNULL)
@@ -79,7 +76,6 @@ namespace GAIA
 						n.pWidget = GNULL;
 						bRet = GAIA::True;
 					}
-					++it;
 				}
 				m_widgets.destroy();
 				return bRet;
@@ -88,7 +84,7 @@ namespace GAIA
 			{
 				GAIA::BL bRet = GAIA::False;
 				__WidgetType::const_it it = m_widgets.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					const WidgetNode& n = *it;
 					if(n.pWidget != GNULL)
@@ -97,7 +93,6 @@ namespace GAIA
 						listResult.push_back(n.pWidget);
 						bRet = GAIA::True;
 					}
-					++it;
 				}
 				return bRet;
 			}

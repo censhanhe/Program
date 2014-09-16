@@ -23,15 +23,14 @@ namespace GAIA
 			GINL GAIA::BL LinkView(GAIA::MVC::View& view)
 			{
 				__ViewList::it it = m_views.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					ViewNode& n = *it;
 					if(n.pView == &view)
 						return GAIA::False;
-					++it;
 				}
 				it = m_views.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					ViewNode& n = *it;
 					if(n.pView == GNULL)
@@ -39,7 +38,6 @@ namespace GAIA
 						n.pView = &view;
 						return GAIA::True;
 					}
-					++it;
 				}
 				ViewNode n;
 				n.pView = &view;
@@ -49,7 +47,7 @@ namespace GAIA
 			GINL GAIA::BL UnlinkView(GAIA::MVC::View& view)
 			{
 				__ViewList::it it = m_views.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					ViewNode& n = *it;
 					if(n.pView == &view)
@@ -57,14 +55,13 @@ namespace GAIA
 						n.pView = GNULL;
 						return GAIA::True;
 					}
-					++it;
 				}
 				return GAIA::False;
 			}
 			GINL GAIA::BL IsLinkedView(GAIA::MVC::View& view) const
 			{
 				__ViewList::const_it it = m_views.const_front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					const ViewNode& n = *it;
 					if(n.pView == &view)

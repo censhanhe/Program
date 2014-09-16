@@ -155,11 +155,8 @@ namespace GAIATEST
 		}
 		__QueueType::const_it cit = q.const_front_it();
 		__QueueType::it it = q1.front_it();
-		while(!it.empty())
-		{
+		for(; !it.empty(); ++it)
 			*it = 10;
-			++it;
-		}
 		it = q1.front_it();
 		while(!cit.empty())
 		{

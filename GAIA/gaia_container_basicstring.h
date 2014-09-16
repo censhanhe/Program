@@ -698,12 +698,11 @@ namespace GAIA
 				if(this->empty())
 					return GAIA::False;
 				it it = this->back_it();
-				while(!it.empty())
+				for(; !it.empty(); --it)
 				{
 					if(*it != t)
 						break;
 					*it = 0;
-					--it;
 				}
 				this->resize(this->size() - (this->back_it() - it));
 				return GAIA::True;
@@ -745,12 +744,11 @@ namespace GAIA
 				if(this->empty())
 					return GAIA::False;
 				it it = this->back_it();
-				while(!it.empty())
+				for(; !it.empty(); --it)
 				{
 					if(GAIA::ALGORITHM::tolower(*it) != GAIA::ALGORITHM::tolower(t))
 						break;
 					*it = 0;
-					--it;
 				}
 				this->resize(this->size() - (this->back_it() - it));
 				return GAIA::True;

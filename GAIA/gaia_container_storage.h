@@ -99,13 +99,12 @@ namespace GAIA
 				m_free_a.clear();
 				m_free_s.clear();
 				typename __AddrAVLTreeType::it it = m_origin_a.front_it();
-				while(!it.empty())
+				for(; !it.empty(); ++it)
 				{
 					NodeSize ns;
 					ns.m_n = *it;
 					m_free_a.insert(ns.m_n);
 					m_free_s.insert(ns);
-					++it;
 				}
 			}
 			GINL GAIA::GVOID destroy()

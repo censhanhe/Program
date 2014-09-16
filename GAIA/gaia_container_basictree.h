@@ -74,14 +74,13 @@ namespace GAIA
 					else
 					{
 						typename __NodeListType::it it = m_pNode->m_links.front_it();
-						while(!it.empty())
+						for(; !it.empty(); ++it)
 						{
 							if(*it != GNULL)
 							{
 								m_pNode = *it;
 								return *this;
 							}
-							++it;
 						}
 					}
 					return *this;
@@ -109,14 +108,13 @@ namespace GAIA
 								while(!m_pNode->m_links.empty())
 								{
 									typename __NodeListType::it it = m_pNode->m_links.back_it();
-									while(!it.empty())
+									for(; !it.empty(); --it)
 									{
 										if(*it != GNULL)
 										{
 											m_pNode = *it;
 											goto NEXT_LOOP;
 										}
-										--it;
 									}
 								}
 								return *this;
@@ -258,14 +256,13 @@ namespace GAIA
 					else
 					{
 						typename __NodeListType::const_it it = m_pNode->m_links.const_front_it();
-						while(!it.empty())
+						for(; !it.empty(); ++it)
 						{
 							if(*it != GNULL)
 							{
 								m_pNode = *it;
 								return *this;
 							}
-							++it;
 						}
 					}
 					return *this;
@@ -293,14 +290,13 @@ namespace GAIA
 								while(!m_pNode->m_links.empty())
 								{
 									typename __NodeListType::const_it it = m_pNode->m_links.const_back_it();
-									while(!it.empty())
+									for(; !it.empty(); --it)
 									{
 										if(*it != GNULL)
 										{
 											m_pNode = *it;
 											goto NEXT_LOOP;
 										}
-										--it;
 									}
 								}
 								return *this;
@@ -530,7 +526,7 @@ namespace GAIA
 					{
 						typename __NodeListType::it it = pNode->m_links.back_it();
 						GAIA::BL bExistChild = GAIA::False;
-						while(!it.empty())
+						for(; !it.empty(); --it)
 						{
 							if(*it != GNULL)
 							{
@@ -538,7 +534,6 @@ namespace GAIA
 								bExistChild = GAIA::True;
 								break;
 							}
-							--it;
 						}
 						if(!bExistChild)
 							break;
@@ -563,7 +558,7 @@ namespace GAIA
 					{
 						typename __NodeListType::const_it it = pNode->m_links.const_back_it();
 						GAIA::BL bExistChild = GAIA::False;
-						while(!it.empty())
+						for(; !it.empty(); --it)
 						{
 							if(*it != GNULL)
 							{
@@ -571,7 +566,6 @@ namespace GAIA
 								bExistChild = GAIA::True;
 								break;
 							}
-							--it;
 						}
 						if(!bExistChild)
 							break;

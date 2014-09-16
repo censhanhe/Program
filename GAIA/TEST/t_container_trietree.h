@@ -84,11 +84,8 @@ namespace GAIATEST
 		}
 		it = t.front_it();
 		__TrieType::_sizetype uCount = 0;
-		while(!it.empty())
-		{
+		for(; !it.empty(); ++it)
 			++uCount;
-			++it;
-		}
 		if(uCount != 100)
 		{
 			GTLINE2("Trie iterator operator ++ failed!");
@@ -108,11 +105,8 @@ namespace GAIATEST
 		}
 		it = t.back_it();
 		uCount = 0;
-		while(!it.empty())
-		{
+		for(; !it.empty(); --it)
 			++uCount;
-			--it;
-		}
 		if(uCount != 100)
 		{
 			GTLINE2("Trie iterator operator -- failed!");
@@ -175,11 +169,10 @@ namespace GAIATEST
 			t.insert(SAMPLES[z], COUNTX);
 		__TrieType::_sizetype uLeafCount = 0;
 		it = t.front_it();
-		while(!it.empty())
+		for(; !it.empty(); ++it)
 		{
 			if(t.leaf(it))
 				++uLeafCount;
-			++it;
 		}
 		if(uLeafCount != COUNTZ)
 		{
@@ -200,7 +193,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		it = t.front_it();
-		while(!it.empty())
+		for(; !it.empty(); ++it)
 		{
 			if(t.root(it))
 			{
@@ -208,10 +201,9 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			++it;
 		}
 		it = t.back_it();
-		while(!it.empty())
+		for(; !it.empty(); --it)
 		{
 			if(t.root(it))
 			{
@@ -219,10 +211,9 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			--it;
 		}
 		it = t.front_it();
-		while(!it.empty())
+		for(; !it.empty(); ++it)
 		{
 			if(t.leaf(it))
 			{
@@ -240,7 +231,6 @@ namespace GAIATEST
 					break;
 				}
 			}
-			++it;
 		}
 		cit = t.const_front_it();
 		while(!cit.empty())
@@ -276,7 +266,7 @@ namespace GAIATEST
 		}
 		it = t1.front_it();
 		cit = t1.const_front_it();
-		while(!it.empty())
+		for(; !it.empty(); ++it, ++cit)
 		{
 			__TrieType::_datatype arr[COUNTX];
 			__TrieType::_sizetype index = 0;
@@ -335,8 +325,6 @@ namespace GAIATEST
 					break;
 				}
 			}
-			++it;
-			++cit;
 		}
 		{
 			__TrieType::it it = t1.front_it();

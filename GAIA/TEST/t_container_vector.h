@@ -260,7 +260,7 @@ namespace GAIATEST
 		}
 		vec.inverse();
 		__VectorType::it it = vec.front_it();
-		while(!it.empty())
+		for(; !it.empty(); ++it)
 		{
 			__VectorType::it itt = it;
 			++itt;
@@ -273,7 +273,6 @@ namespace GAIATEST
 					break;
 				}
 			}
-			++it;
 		}
 		vec1 = vec;
 		if(!vec.insert(997, 0))
@@ -335,7 +334,7 @@ namespace GAIATEST
 		}
 		vec.sort();
 		it = vec.front_it();
-		while(!it.empty())
+		for(; !it.empty(); ++it)
 		{
 			__VectorType::it itfinded = vec.lower_bound(*it);
 			if(itfinded.empty())
@@ -351,7 +350,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			++it;
 		}
 		const __VectorType& arrc = vec;
 		cit = arrc.const_front_it();

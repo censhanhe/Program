@@ -104,12 +104,11 @@ namespace PROM
 				pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
 			PLC_FileStructure::__FileNodeSet::it it = plc_filestructure->filenodeset.front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				PLC_FileStructure::__FileNodeSet::_datatype& t = *it;
 				if(t.childs.empty())
 					this->OutputParentRelation(plc_filestructure, t, pFile, prt, 0);
-				++it;
 			}
 
 			/* Print child relation. */
@@ -120,12 +119,11 @@ namespace PROM
 				pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
 			it = plc_filestructure->filenodeset.front_it();
-			while(!it.empty())
+			for(; !it.empty(); ++it)
 			{
 				PLC_FileStructure::__FileNodeSet::_datatype& t = *it;
 				if(t.parents.empty())
 					this->OutputChildRelation(plc_filestructure, t, pFile, prt, 0);
-				++it;
 			}
 
 			return GAIA::True;

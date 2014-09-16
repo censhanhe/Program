@@ -119,11 +119,8 @@ namespace GAIATEST
 		}
 		__TreeType::_sizetype tsize = 0;
 		__TreeType::it it = tr.front_it();
-		while(!it.empty())
-		{
+		for(; !it.empty(); ++it)
 			++tsize;
-			++it;
-		}
 		if(tsize != tTotalNodeCount)
 		{
 			GTLINE2("Tree front iterator can't scan all the elements!");
@@ -131,11 +128,8 @@ namespace GAIATEST
 		}
 		tsize = 0;
 		it = tr.back_it();
-		while(!it.empty())
-		{
+		for(; !it.empty(); --it)
 			++tsize;
-			--it;
-		}
 		if(tsize != tTotalNodeCount)
 		{
 			GTLINE2("Tree back iterator can't scan all the elements!");
@@ -311,11 +305,8 @@ namespace GAIATEST
 		GAIA::CONTAINER::Vector<__TreeType::_datatype> listTemp;
 		listTemp.reserve(tTotalNodeCount);
 		it = tr.front_it();
-		while(!it.empty())
-		{
+		for(; !it.empty(); ++it)
 			listTemp.push_back(*it);
-			++it;
-		}
 		if(!GAIA::ALGORITHM::issorted(listTemp.front_ptr(), listTemp.back_ptr()))
 		{
 			GTLINE2("Tree element data error!");
