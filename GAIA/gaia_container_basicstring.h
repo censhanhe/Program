@@ -159,6 +159,7 @@ namespace GAIA
 			GINL BasicString(const _DataType* p1, const _SizeType& size1, const _DataType* p2, const _SizeType& size2){this->init(); this->combin(p1, size1, p2, size2);}
 			template<typename _ParamSizeType, _ParamSizeType _Size> BasicString(const GAIA::CTN::BasicChars<_DataType, _ParamSizeType, _Size>& src){this->operator = (src);}
 			GINL ~BasicString(){this->destroy();}
+			GAIA_CONTAINER_PROXY
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return this->front_ptr()[0] == 0;}
 			GINL _SizeType size() const{if(m_size == 0) return 0; return m_size - 1;}
 			GINL _SizeType capacity() const{if(m_capacity == 0) return 0; return m_capacity - 1;}

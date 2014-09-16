@@ -50,6 +50,7 @@
 #include	"gaia_algorithm_replace.h"
 #include	"gaia_algorithm_set.h"
 
+#include	"gaia_container.h"
 #include 	"gaia_container_datarecord.h"
 #include 	"gaia_container_ref.h"
 #include	"gaia_container_ptr.h"

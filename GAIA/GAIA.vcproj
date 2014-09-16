@@ -534,6 +534,10 @@
 					Name="CONTAINER"
 					>
 					<File
+						RelativePath=".\gaia_container.h"
+						>
+					</File>
+					<File
 						RelativePath=".\gaia_container_cooperation.h"
 						>
 					</File>

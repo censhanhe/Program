@@ -141,6 +141,7 @@ namespace GAIA
 			GINL BasicVector(){this->init();}
 			GINL BasicVector(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicVector(){if(m_pFront != GNULL) delete[] m_pFront;}
+			GAIA_CONTAINER_PROXY
 			GINL const _SizeType& size() const{return m_size;}
 			GINL const _SizeType& capacity() const{return m_capacity;}
 			GINL GAIA::BL empty() const{return this->size() == 0;}

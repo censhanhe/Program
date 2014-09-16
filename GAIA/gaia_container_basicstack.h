@@ -141,6 +141,7 @@ namespace GAIA
 			GINL BasicStack(){this->init();}
 			GINL BasicStack(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicStack(){if(m_pFront != GNULL) delete[] m_pFront;}
+			GAIA_CONTAINER_PROXY
 			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL GAIA::GVOID clear(){m_size = 0;}
 			GINL const _SizeType& size() const{return m_size;}
