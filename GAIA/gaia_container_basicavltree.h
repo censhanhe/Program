@@ -553,12 +553,10 @@ namespace GAIA
 					return GAIA::False;
 				const_it srcit = src.const_front_it();
 				const_it selfit = this->const_front_it();
-				while(!srcit.empty())
+				for(; !srcit.empty(); ++srcit, ++selfit)
 				{
 					if(*selfit != *srcit)
 						return GAIA::False;
-					++srcit;
-					++selfit;
 				}
 				return GAIA::True;
 			}
@@ -571,14 +569,12 @@ namespace GAIA
 					return GAIA::False;
 				const_it srcit = src.const_front_it();
 				const_it selfit = this->const_front_it();
-				while(!srcit.empty())
+				for(; !srcit.empty(); ++srcit, ++selfit)
 				{
 					if(*selfit > *srcit)
 						return GAIA::True;
 					else if(*selfit < *srcit)
 						return GAIA::False;
-					++srcit;
-					++selfit;
 				}
 				return GAIA::True;
 			}
@@ -590,14 +586,12 @@ namespace GAIA
 					return GAIA::False;
 				const_it srcit = src.const_front_it();
 				const_it selfit = this->const_front_it();
-				while(!srcit.empty())
+				for(; !srcit.empty(); ++srcit, ++selfit)
 				{
 					if(*selfit < *srcit)
 						return GAIA::True;
 					else if(*selfit > *srcit)
 						return GAIA::False;
-					++srcit;
-					++selfit;
 				}
 				return GAIA::True;
 			}

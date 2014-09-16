@@ -181,7 +181,7 @@ namespace GAIATEST
 		__AVLType::it backit = avl.back_it();
 		__AVLType::const_it cbackit = avl.const_back_it();
 		GAIA::N32 tdata = 0;
-		while(!frontit.empty())
+		for(; !frontit.empty(); ++frontit)
 		{
 			if(*frontit != tdata)
 			{
@@ -190,7 +190,6 @@ namespace GAIATEST
 				break;
 			}
 			++tdata;
-			++frontit;
 		}
 		if(tdata != ELEMENT_SIZE)
 		{
@@ -198,7 +197,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		tdata = 0;
-		while(!cfrontit.empty())
+		for(; !cfrontit.empty(); ++cfrontit)
 		{
 			if(*cfrontit != tdata)
 			{
@@ -207,7 +206,6 @@ namespace GAIATEST
 				break;
 			}
 			++tdata;
-			++cfrontit;
 		}
 		if(tdata != ELEMENT_SIZE)
 		{
@@ -215,7 +213,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		tdata = ELEMENT_SIZE - 1;
-		while(!backit.empty())
+		for(; !backit.empty(); --backit)
 		{
 			if(tdata != *backit)
 			{
@@ -224,7 +222,6 @@ namespace GAIATEST
 				break;
 			}
 			--tdata;
-			--backit;
 		}
 		if(tdata != -1)
 		{
@@ -232,7 +229,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		tdata = ELEMENT_SIZE - 1;
-		while(!cbackit.empty())
+		for(; !cbackit.empty(); --cbackit)
 		{
 			if(tdata != *cbackit)
 			{
@@ -241,7 +238,6 @@ namespace GAIATEST
 				break;
 			}
 			--tdata;
-			--cbackit;
 		}
 		if(tdata != -1)
 		{

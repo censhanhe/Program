@@ -93,21 +93,19 @@ namespace GAIA
 						return 0;
 					it iter = *this;
 					_SizeType ret = 0;
-					while(!iter.empty())
+					for(; !iter.empty(); --iter)
 					{
 						if(iter == src)
 							return ret;
 						++ret;
-						--iter;
 					}
 					iter = *this;
 					ret = 0;
-					while(!iter.empty())
+					for(; !iter.empty(); ++iter)
 					{
 						if(iter == src)
 							return ret;
 						--ret;
-						++iter;
 					}
 					return ret;
 				}
@@ -193,21 +191,19 @@ namespace GAIA
 						return 0;
 					const_it iter = *this;
 					_SizeType ret = 0;
-					while(!iter.empty())
+					for(; !iter.empty(); --iter)
 					{
 						if(iter == src)
 							return ret;
 						++ret;
-						--iter;
 					}
 					iter = *this;
 					ret = 0;
-					while(!iter.empty())
+					for(; !iter.empty(); ++iter)
 					{
 						if(iter == src)
 							return ret;
 						--ret;
-						++iter;
 					}
 					return ret;
 				}

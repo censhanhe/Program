@@ -88,7 +88,7 @@ namespace PROM
 
 						/* Delete space or tab at line tail. */
 						__LineType::it itback = strLine.back_it();
-						while(!itback.empty())
+						for(; !itback.empty(); --itback)
 						{
 							if(*itback != _T(' ') && *itback != _T('\t'))
 								break;
@@ -104,7 +104,6 @@ namespace PROM
 							}
 							GAIA_AST(strLine.size() > 0);
 							strLine.resize(strLine.size() - 1);
-							--itback;
 						}
 
 						/* Remove continuation-space. */

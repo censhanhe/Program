@@ -207,7 +207,7 @@ namespace GAIATEST
 		__MultiAVLType::it backit = mavl.back_it();
 		__MultiAVLType::const_it cbackit = mavl.const_back_it();
 		GAIA::N32 tdata = 0;
-		while(!frontit.empty())
+		for(; !frontit.empty(); ++frontit)
 		{
 			if(*frontit != tdata)
 			{
@@ -216,7 +216,6 @@ namespace GAIATEST
 				break;
 			}
 			++tdata;
-			++frontit;
 		}
 		if(tdata != ELEMENT_SIZE)
 		{
@@ -224,7 +223,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		tdata = 0;
-		while(!cfrontit.empty())
+		for(; !cfrontit.empty(); ++cfrontit)
 		{
 			if(*cfrontit != tdata)
 			{
@@ -233,7 +232,6 @@ namespace GAIATEST
 				break;
 			}
 			++tdata;
-			++cfrontit;
 		}
 		if(tdata != ELEMENT_SIZE)
 		{
@@ -241,7 +239,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		tdata = ELEMENT_SIZE - 1;
-		while(!backit.empty())
+		for(; !backit.empty(); --backit)
 		{
 			if(tdata != *backit)
 			{
@@ -250,7 +248,6 @@ namespace GAIATEST
 				break;
 			}
 			--tdata;
-			--backit;
 		}
 		if(tdata != -1)
 		{
@@ -258,7 +255,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		tdata = ELEMENT_SIZE - 1;
-		while(!cbackit.empty())
+		for(; !cbackit.empty(); --cbackit)
 		{
 			if(tdata != *cbackit)
 			{
@@ -267,7 +264,6 @@ namespace GAIATEST
 				break;
 			}
 			--tdata;
-			--cbackit;
 		}
 		if(tdata != -1)
 		{
@@ -334,7 +330,7 @@ namespace GAIATEST
 		backit = mavl.back_it();
 		cbackit = mavl.const_back_it();
 		tdata = 0;
-		while(!frontit.empty())
+		for(; !frontit.empty(); ++frontit)
 		{
 			if(*frontit != tdata / 11)
 			{
@@ -342,7 +338,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			++frontit;
 			++tdata;
 		}
 		if(tdata != ELEMENT_SIZE * 11)
@@ -351,7 +346,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		tdata = 0;
-		while(!cfrontit.empty())
+		for(; !cfrontit.empty(); ++cfrontit)
 		{
 			if(*cfrontit != tdata / 11)
 			{
@@ -359,7 +354,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			++cfrontit;
 			++tdata;
 		}
 		if(tdata != ELEMENT_SIZE * 11)
@@ -368,7 +362,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		tdata = 0;
-		while(!backit.empty())
+		for(; !backit.empty(); --backit)
 		{
 			if(*backit != ELEMENT_SIZE - tdata / 11 - 1)
 			{
@@ -376,7 +370,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			--backit;
 			++tdata;
 		}
 		if(tdata != ELEMENT_SIZE * 11)
@@ -385,7 +378,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		tdata = 0;
-		while(!cbackit.empty())
+		for(; !cbackit.empty(); --cbackit)
 		{
 			if(*cbackit != ELEMENT_SIZE - tdata / 11 - 1)
 			{
@@ -393,7 +386,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			--cbackit;
 			++tdata;
 		}
 		if(tdata != ELEMENT_SIZE * 11)

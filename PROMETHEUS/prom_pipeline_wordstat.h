@@ -207,7 +207,7 @@ namespace PROM
 
 			index = 0;
 			__WordCountSortVectorType::it itcountsort = wordcountsortlist.front_it();
-			while(!itcountsort.empty())
+			for(; !itcountsort.empty(); ++itcountsort)
 			{
 				WordByRefCount& word = *itcountsort;
 				if(pFile != GNULL)
@@ -225,7 +225,6 @@ namespace PROM
 				}
 				else
 					prt << "[" << index++ << "] \"" << word.pWord->front_ptr() << "\", Count = " << word.uExistCount << "\n";
-				++itcountsort;
 			}
 
 			return GAIA::True;

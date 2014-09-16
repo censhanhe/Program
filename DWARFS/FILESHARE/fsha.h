@@ -445,12 +445,11 @@ namespace DWARFS_FSHA
 						listTemp.inverse();
 						FNAMETYPE fname;
 						__TempPartComineVector::it itv = listTemp.front_it();
-						while(!itv.empty())
+						for(; !itv.empty(); ++itv)
 						{
 							if(!fname.empty())
 								fname += _T("/");
 							fname += (*itv)->front_ptr();
-							++itv;
 						}
 						fname.tolower();
 						MAPINDEX mit[MAXPATHDEPTH];
@@ -1001,7 +1000,7 @@ namespace DWARFS_FSHA
 			__UserSetType::_sizetype user_cnt = m_users.size();
 			sr << user_cnt;
 			__UserSetType::it it_u = m_users.front_it();
-			while(!it_u.empty())
+			for(; !it_u.empty(); ++it_u)
 			{
 				User* pUser = *it_u;
 				if(pUser != GNULL)
@@ -1009,14 +1008,13 @@ namespace DWARFS_FSHA
 					sr << pUser->name;
 					sr << pUser->pwd;
 				}
-				++it_u;
 			}
 
 			/* Write group information. */
 			__GroupSetType::_sizetype group_cnt = m_groups.size();
 			sr << group_cnt;
 			__GroupSetType::it it_g = m_groups.front_it();
-			while(!it_g.empty())
+			for(; !it_g.empty(); ++it_g)
 			{
 				Group* pGroup = *it_g;
 				if(pGroup != GNULL)
@@ -1032,7 +1030,6 @@ namespace DWARFS_FSHA
 						sr << pUser->name;
 					}
 				}
-				++it_g;
 			}
 
 			/* Destruct serializer */
@@ -1095,19 +1092,17 @@ namespace DWARFS_FSHA
 		GINL GAIA::GVOID DeleteUserAll()
 		{
 			__GroupSetType::it it_g = m_groups.front_it();
-			while(!it_g.empty())
+			for(; !it_g.empty(); ++it_g)
 			{
 				Group* pGroup = *it_g;
 				if(pGroup != GNULL)
 					pGroup->refusers.clear();
-				++it_g;
 			}
 			__UserSetType::it it_u = m_users.front_it();
-			while(!it_u.empty())
+			for(; !it_u.empty(); ++it_u)
 			{
 				User* pUser = *it_u;
 				m_upool.release(pUser);
-				++it_u;
 			}
 			m_users.clear();
 		}
@@ -1146,14 +1141,13 @@ namespace DWARFS_FSHA
 				if(pUser != GNULL)
 				{
 					User::__GroupRefListType::it itu = pUser->refgroups.front_it();
-					while(!itu.empty())
+					for(; !itu.empty(); ++itu)
 					{
 						if(*itu != GNULL && *itu == pGroup)
 						{
 							*itu = GNULL;
 							break;
 						}
-						++itu;
 					}
 				}
 			}

@@ -490,22 +490,20 @@ namespace GAIATEST
 			++nRet;
 		}
 		GAIA::TCH szTemp[128];
-		while(!citfront.empty())
+		for(; !citfront.empty(); ++citfront)
 		{
 			szTemp[citfront - chs.const_front_it()] = *citfront;
 			szTemp[citfront - chs.const_front_it() + 1] = 0;
-			++citfront;
 		}
 		if(chs != szTemp)
 		{
 			GTLINE2("String const iterator element access exist error!");
 			++nRet;
 		}
-		while(!itfront.empty())
+		for(; !itfront.empty(); ++itfront)
 		{
 			szTemp[itfront - chs.front_it()] = *itfront;
 			szTemp[itfront - chs.front_it() + 1] = 0;
-			++itfront;
 		}
 		if(chs != szTemp)
 		{

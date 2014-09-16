@@ -308,7 +308,7 @@ namespace GAIATEST
 		}
 		GAIA::CONTAINER::Vector<__TreeType::_datatype>::it itback_v = listTemp.back_it();
 		__TreeType::it itback = tr.back_it();
-		while(!itback.empty())
+		for(; !itback.empty(); --itback, --itback_v)
 		{
 			if(*itback != *itback_v)
 			{
@@ -316,8 +316,6 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			--itback;
-			--itback_v;
 		}
 		return nRet;
 	}

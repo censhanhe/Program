@@ -145,13 +145,12 @@ namespace PROM
 				pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
 			PLC_FileStructure::__FileLinkSet::it itlink = node.parents.front_it();
-			while(!itlink.empty())
+			for(; !itlink.empty(); ++itlink)
 			{
 				__FileName& filename = *itlink;
 				PLC_FileStructure::Node* pParentNode = plc_filestructure->FindNode(filename);
 				if(pParentNode != GNULL)
 					this->OutputParentRelation(plc_filestructure, *pParentNode, pFile, prt, depth + 1);
-				++itlink;
 			}
 		}
 		GINL GAIA::GVOID OutputChildRelation(
@@ -170,13 +169,12 @@ namespace PROM
 				pFile->Write(FILEBREAK, GAIA::ALGORITHM::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
 			PLC_FileStructure::__FileLinkSet::it itlink = node.childs.front_it();
-			while(!itlink.empty())
+			for(; !itlink.empty(); ++itlink)
 			{
 				__FileName& filename = *itlink;
 				PLC_FileStructure::Node* pChildNode = plc_filestructure->FindNode(filename);
 				if(pChildNode != GNULL)
 					this->OutputChildRelation(plc_filestructure, *pChildNode, pFile, prt, depth + 1);
-				++itlink;
 			}
 		}
 		GINL GAIA::GVOID OutputDepth(GAIA::PRINT::PrintBase& prt, GAIA::FILESYSTEM::FileBase* pFile, GAIA::SIZE depth)

@@ -101,21 +101,19 @@ namespace GAIA
 						return 0;
 					it iter = *this;
 					_SizeType ret = 0;
-					while(!iter.empty())
+					for(; !iter.empty(); --iter)
 					{
 						if(iter == src)
 							return ret;
 						++ret;
-						--iter;
 					}
 					iter = *this;
 					ret = 0;
-					while(!iter.empty())
+					for(; !iter.empty(); ++iter)
 					{
 						if(iter == src)
 							return ret;
 						--ret;
-						++iter;
 					}
 					return ret;
 				}
@@ -204,21 +202,19 @@ namespace GAIA
 						return 0;
 					const_it iter = *this;
 					_SizeType ret = 0;
-					while(!iter.empty())
+					for(; !iter.empty(); --iter)
 					{
 						if(iter == src)
 							return ret;
 						++ret;
-						--iter;
 					}
 					iter = *this;
 					ret = 0;
-					while(!iter.empty())
+					for(; !iter.empty(); ++iter)
 					{
 						if(iter == src)
 							return ret;
 						--ret;
-						++iter;
 					}
 					return ret;
 				}
@@ -352,11 +348,8 @@ namespace GAIA
 				GAIA_AST(&src != this);
 				this->destroy();
 				const_it iter = src.const_front_it();
-				while(!iter.empty())
-				{
+				for(; !iter.empty(); ++iter)
 					this->push_back(*iter);
-					++iter;
-				}
 				return *this;
 			}
 			GINL GAIA::BL operator == (const __MyType& src) const
@@ -365,12 +358,10 @@ namespace GAIA
 					return GAIA::False;
 				const_it srcit = src.const_front_it();
 				const_it selfit = this->const_front_it();
-				while(!srcit.empty())
+				for(; !srcit.empty(); ++srcit, ++selfit)
 				{
 					if(*selfit != *srcit)
 						return GAIA::False;
-					++srcit;
-					++selfit;
 				}
 				return GAIA::True;
 			}
@@ -383,14 +374,12 @@ namespace GAIA
 					return GAIA::False;
 				const_it srcit = src.const_front_it();
 				const_it selfit = this->const_front_it();
-				while(!srcit.empty())
+				for(; !srcit.empty(); ++srcit, ++selfit)
 				{
 					if(*selfit > *srcit)
 						return GAIA::True;
 					else if(*selfit < *srcit)
 						return GAIA::False;
-					++srcit;
-					++selfit;
 				}
 				return GAIA::True;
 			}
@@ -402,14 +391,12 @@ namespace GAIA
 					return GAIA::False;
 				const_it srcit = src.const_front_it();
 				const_it selfit = this->const_front_it();
-				while(!srcit.empty())
+				for(; !srcit.empty(); ++srcit, ++selfit)
 				{
 					if(*selfit < *srcit)
 						return GAIA::True;
 					else if(*selfit > *srcit)
 						return GAIA::False;
-					++srcit;
-					++selfit;
 				}
 				return GAIA::True;
 			}

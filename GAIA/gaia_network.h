@@ -272,12 +272,11 @@ namespace GAIA
 			{
 				GAIA::SYNC::AutoLock al(m_lock);
 				__HandleSetType::it iter = m_hs.front_it();
-				while(!iter.empty())
+				for(; !iter.empty(); ++iter)
 				{
 					NetworkHandle* pHandle = *iter;
 					GAIA_AST(!!pHandle);
 					pHandle->Release();
-					++iter;
 				}
 				m_hs.destroy();
 			}
@@ -330,12 +329,11 @@ namespace GAIA
 			{
 				GAIA::SYNC::AutoLock al(m_lock);
 				__HandleSetType::it iter = m_hs.front_it();
-				while(!iter.empty())
+				for(; !iter.empty(); ++iter)
 				{
 					NetworkHandle* pHandle = *iter;
 					GAIA_AST(!!pHandle);
 					pHandle->Release();
-					++iter;
 				}
 				m_hs.destroy();
 			}

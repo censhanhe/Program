@@ -560,26 +560,24 @@ namespace GAIA
 					GAIA::SYNC::AutoLock al(m_lock);
 					m_hl.clear();
 					__HandleSetType::it iter = m_hs.front_it();
-					while(!iter.empty())
+					for(; !iter.empty(); ++iter)
 					{
 						NetworkHandle* pHandle = *iter;
 						GAIA_AST(!!pHandle);
 						pHandle->Reference();
 						m_hl.push_back(pHandle);
-						++iter;
 					}
 				}
 
 				// Flush all send buffer which in the handle list.
 				{
 					__HandleListType::it iter = m_hl.front_it();
-					while(!iter.empty())
+					for(; !iter.empty(); ++iter)
 					{
 						NetworkHandle* pHandle = *iter;
 						if(pHandle->FlushSendQueue())
 							bExistWork = GAIA::True;
 						pHandle->Release();
-						++iter;
 					}
 				}
 
@@ -625,20 +623,19 @@ namespace GAIA
 					GAIA::SYNC::AutoLock al(m_lock);
 					m_hl.clear();
 					__HandleSetType::it iter = m_hs.front_it();
-					while(!iter.empty())
+					for(; !iter.empty(); ++iter)
 					{
 						NetworkHandle* pHandle = *iter;
 						GAIA_AST(!!pHandle);
 						pHandle->Reference();
 						m_hl.push_back(pHandle);
-						++iter;
 					}
 				}
 
 				// Receive all socket which in the handle list.
 				{
 					__HandleListType::it iter = m_hl.front_it();
-					while(!iter.empty())
+					for(; !iter.empty(); ++iter)
 					{
 						NetworkHandle* pHandle = *iter;
 						GAIA::BL bNeedRelease = GAIA::True;
@@ -774,7 +771,6 @@ namespace GAIA
 						}
 						if(bNeedRelease)
 							pHandle->Release();
-						++iter;
 					}
 				}
 
