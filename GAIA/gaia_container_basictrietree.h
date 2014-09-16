@@ -832,7 +832,7 @@ namespace GAIA
 				const _DataType* pTemp = p;
 				_SizeType sizetemp = size;
 				const Node* pNodeTemp = &n;
-				while(GAIA::ALWAYSTRUE)
+				for(;;)
 				{
 					Node* pFinded = pNodeTemp->find_child_node(*pTemp);
 					if(pFinded != GNULL)

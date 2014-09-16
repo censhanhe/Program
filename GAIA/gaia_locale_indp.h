@@ -21,7 +21,7 @@ namespace GAIA
 			if(charset_type == GAIA::CHARSET_TYPE_ANSI)
 			{
 				GAIA::SIZE ret = 0;
-				while(GAIA::ALWAYSTRUE)
+				for(;;)
 				{
 					if(pszDst != GNULL && dst_size_in_wchar != 0)
 					{
@@ -65,7 +65,7 @@ namespace GAIA
 			if(charset_type == GAIA::CHARSET_TYPE_ANSI)
 			{
 				GAIA::SIZE ret = 0;
-				while(GAIA::ALWAYSTRUE)
+				for(;;)
 				{
 					if(pszDst != GNULL && dst_size_in_bytes != 0)
 					{

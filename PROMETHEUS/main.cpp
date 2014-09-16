@@ -85,7 +85,7 @@ REPEAT:
 		GAIA::CTN::AString strCombin;
 		prt << "Enter the command here : ";
 		GAIA::CH szParam[1024];
-		while(GAIA::ALWAYSTRUE)
+		for(;;)
 		{
 			prt >> szParam;
 			GAIA::CH* p = GAIA::ALGO::strch(szParam, ';');

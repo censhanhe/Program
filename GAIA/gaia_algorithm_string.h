@@ -147,7 +147,7 @@ namespace GAIA
 		{
 			GAIA_AST(!!p1);
 			GAIA_AST(!!p2);
-			while(GAIA::ALWAYSTRUE)
+			for(;;)
 			{
 				if(*p1 < *p2)
 					return -1;
@@ -167,7 +167,7 @@ namespace GAIA
 		{
 			GAIA_AST(!!p1);
 			GAIA_AST(!!p2);
-			while(GAIA::ALWAYSTRUE)
+			for(;;)
 			{
 				if(GAIA::ALGO::tolower(*p1) < GAIA::ALGO::tolower(*p2))
 					return -1;

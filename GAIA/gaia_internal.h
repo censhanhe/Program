@@ -38,7 +38,7 @@ namespace GAIA_INTERNAL_NAMESPACE
 	}
 	template<typename _DataType> GAIA::N32 strcmp(const _DataType* p1, const _DataType* p2)
 	{
-		while(GAIA::ALWAYSTRUE)
+		for(;;)
 		{
 			if(*p1 < *p2)
 				return -1;

@@ -139,7 +139,7 @@ namespace GAIA
 						pNode = m_pContainer->front_node(pNode->pNext);
 					else
 					{
-						while(GAIA::ALWAYSTRUE)
+						for(;;)
 						{
 							if(pNode->pParent == GNULL)
 							{
@@ -166,7 +166,7 @@ namespace GAIA
 						pNode = m_pContainer->back_node(pNode->pPrev);
 					else
 					{
-						while(GAIA::ALWAYSTRUE)
+						for(;;)
 						{
 							if(pNode->pParent == GNULL)
 							{
@@ -299,7 +299,7 @@ namespace GAIA
 						pNode = m_pContainer->front_node(pNode->pNext);
 					else
 					{
-						while(GAIA::ALWAYSTRUE)
+						for(;;)
 						{
 							if(pNode->pParent == GNULL)
 							{
@@ -326,7 +326,7 @@ namespace GAIA
 						pNode = m_pContainer->back_node(pNode->pPrev);
 					else
 					{
-						while(GAIA::ALWAYSTRUE)
+						for(;;)
 						{
 							if(pNode->pParent == GNULL)
 							{

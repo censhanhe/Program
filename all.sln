@@ -9,6 +9,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dwarfs", "DWARFS\dwarfs.vcp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prometheus", "PROMETHEUS\prometheus.vcproj", "{DD56E02F-A3AD-425D-8883-C8808DCAF05F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{E11624AF-30B6-4368-B83F-4415D567CB8B}"
+	ProjectSection(SolutionItems) = preProject
+		DOC\concept.txt = DOC\concept.txt
+		DOC\designment.txt = DOC\designment.txt
+		DOC\gaia_reference.txt = DOC\gaia_reference.txt
+		DOC\prometheus_reference.txt = DOC\prometheus_reference.txt
+		DOC\regular_expression.txt = DOC\regular_expression.txt
+		DOC\task.txt = DOC\task.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

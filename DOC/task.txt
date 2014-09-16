@@ -29,6 +29,8 @@
 		Paragraph container implement.
 
 		Document container implement.
+		
+		Accesser container support dynamic RAM capacity's increasement.
 
 	MATH
 
@@ -68,6 +70,12 @@
 
 
 	UI System
+	
+	
+	
+	DATAPHASE
+		XML support compress binary mode.
+		XML support namefamily match node and property.
 
 
 [PROMETHEUS TASK]
