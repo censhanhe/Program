@@ -155,6 +155,20 @@ namespace GAIATEST
 					++nRet;
 				}
 			}
+
+			/* Make accesser work as a string pointer. */
+			{
+				GAIA::TCH szTemp[1024];
+				typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE> __AccType;
+				__AccType acc;
+				acc.bind(szTemp, 1024, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				GAIA::ALGO::strcpy(acc, "HelloWorld");
+				if(GAIA::ALGO::strcmp(acc, "HelloWorld") != 0)
+				{
+					GTLINE2("RAM accesser can't used as a string pointer!");
+					++nRet;
+				}
+			}
 		}
 
 		/* File based accesser test. */
@@ -309,6 +323,30 @@ namespace GAIATEST
 				if(acc2 != acc1)
 				{
 					GTLINE2("File accesser operator + failed!");
+					++nRet;
+				}
+			}
+
+			/* Make accesser work as a string pointer. */
+			{
+				GAIA::FILESYSTEM::File accfile;
+				if(!accfile.Open(_T("../accesser_file"),
+					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
+					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
+					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+				{
+					GTLINE2("Create accesser bind file failed!");
+					++nRet;
+				}
+				accfile.Resize(ACCESS_ELEMENT_COUNT);
+
+				typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE> __AccType;
+				__AccType acc;
+				acc.bind(accfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				GAIA::ALGO::strcpy(acc, "HelloWorld");
+				if(GAIA::ALGO::strcmp(acc, "HelloWorld") != 0)
+				{
+					GTLINE2("File accesser can't used as a string pointer!");
 					++nRet;
 				}
 			}
