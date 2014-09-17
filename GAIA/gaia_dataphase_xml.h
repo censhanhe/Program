@@ -96,7 +96,10 @@ namespace GAIA
 				for(;;)
 				{
 					if(this->EnumNode(pName))
+					{
+						pValue = GNULL;
 						return GAIA::True;
+					}
 					if(!this->End())
 						return GAIA::False;
 				}

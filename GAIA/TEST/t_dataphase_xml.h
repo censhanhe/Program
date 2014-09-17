@@ -144,32 +144,32 @@ namespace GAIATEST
 			GTLINE2("XML WriteNode failed!");
 			++nRet;
 		}
-		if(!xml.WriteAttr(_T("AttrName1"), _T("AttrName1")))
+		if(!xml.WriteAttr(_T("AttrName1"), _T("AttrValue1")))
 		{
 			GTLINE2("XML WriteAttr failed!");
 			++nRet;
 		}
-		if(!xml.WriteAttr(_T("AttrName2"), _T("AttrName2")))
+		if(!xml.WriteAttr(_T("AttrName2"), _T("AttrValue2")))
 		{
 			GTLINE2("XML WriteAttr failed!");
 			++nRet;
 		}
-		if(!xml.WriteAttr(_T("AttrName3"), _T("AttrName3")))
+		if(!xml.WriteAttr(_T("AttrName3"), _T("AttrValue3")))
 		{
 			GTLINE2("XML WriteAttr failed!");
 			++nRet;
 		}
-		if(xml.WriteAttr(_T("AttrName1"), _T("AttrName1")))
+		if(xml.WriteAttr(_T("AttrName1"), _T("AttrValue1")))
 		{
 			GTLINE2("XML WriteAttr write same name attr!");
 			++nRet;
 		}
-		if(xml.WriteAttr(_T("AttrName2"), _T("AttrName2")))
+		if(xml.WriteAttr(_T("AttrName2"), _T("AttrValue2")))
 		{
 			GTLINE2("XML WriteAttr write same name attr!");
 			++nRet;
 		}
-		if(xml.WriteAttr(_T("AttrName3"), _T("AttrName3")))
+		if(xml.WriteAttr(_T("AttrName3"), _T("AttrValue3")))
 		{
 			GTLINE2("XML WriteAttr write same name attr!");
 			++nRet;
@@ -179,7 +179,7 @@ namespace GAIATEST
 			GTLINE2("XML IsResetCallStack error!");
 			++nRet;
 		}
-		for(GAIA::SIZE x = 0; x < 10; ++x)
+		for(GAIA::SIZE x = 0; x < 3; ++x)
 		{
 			if(xml.IsResetCallStack())
 			{
@@ -193,44 +193,44 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			if(!xml.WriteAttr(_T("AttrName11"), _T("AttrName11")))
+			if(!xml.WriteAttr(_T("AttrName11"), _T("AttrValue11")))
 			{
 				GTLINE2("XML WriteAttr failed!");
 				++nRet;
 				break;
 			}
-			if(!xml.WriteAttr(_T("AttrName22"), _T("AttrName22")))
+			if(!xml.WriteAttr(_T("AttrName22"), _T("AttrValue22")))
 			{
 				GTLINE2("XML WriteAttr failed!");
 				++nRet;
 				break;
 			}
-			if(!xml.WriteAttr(_T("AttrName33"), _T("AttrName33")))
+			if(!xml.WriteAttr(_T("AttrName33"), _T("AttrValue33")))
 			{
 				GTLINE2("XML WriteAttr failed!");
 				++nRet;
 				break;
 			}
-			if(xml.WriteAttr(_T("AttrName11"), _T("AttrName11")))
+			if(xml.WriteAttr(_T("AttrName11"), _T("AttrValue11")))
 			{
 				GTLINE2("XML WriteAttr write same name attr!");
 				++nRet;
 				break;
 			}
-			if(xml.WriteAttr(_T("AttrName22"), _T("AttrName22")))
+			if(xml.WriteAttr(_T("AttrName22"), _T("AttrValue22")))
 			{
 				GTLINE2("XML WriteAttr write same name attr!");
 				++nRet;
 				break;
 			}
-			if(xml.WriteAttr(_T("AttrName33"), _T("AttrName33")))
+			if(xml.WriteAttr(_T("AttrName33"), _T("AttrValue33")))
 			{
 				GTLINE2("XML WriteAttr write same name attr!");
 				++nRet;
 				break;
 			}
 			GAIA::BL bExistError = GAIA::False;
-			for(GAIA::SIZE y = 0; y < 10; ++y)
+			for(GAIA::SIZE y = 0; y < 3; ++y)
 			{
 				if(xml.IsResetCallStack())
 				{
@@ -246,42 +246,42 @@ namespace GAIATEST
 					bExistError = GAIA::True;
 					break;
 				}
-				if(!xml.WriteAttr(_T("AttrName111"), _T("AttrName111")))
+				if(!xml.WriteAttr(_T("AttrName111"), _T("AttrValue111")))
 				{
 					GTLINE2("XML WriteAttr failed!");
 					++nRet;
 					bExistError = GAIA::True;
 					break;
 				}
-				if(!xml.WriteAttr(_T("AttrName222"), _T("AttrName222")))
+				if(!xml.WriteAttr(_T("AttrName222"), _T("AttrValue222")))
 				{
 					GTLINE2("XML WriteAttr failed!");
 					++nRet;
 					bExistError = GAIA::True;
 					break;
 				}
-				if(!xml.WriteAttr(_T("AttrName333"), _T("AttrName333")))
+				if(!xml.WriteAttr(_T("AttrName333"), _T("AttrValue333")))
 				{
 					GTLINE2("XML WriteAttr failed!");
 					++nRet;
 					bExistError = GAIA::True;
 					break;
 				}
-				if(xml.WriteAttr(_T("AttrName111"), _T("AttrName111")))
+				if(xml.WriteAttr(_T("AttrName111"), _T("AttrValue111")))
 				{
 					GTLINE2("XML WriteAttr write same name attr!");
 					++nRet;
 					bExistError = GAIA::True;
 					break;
 				}
-				if(xml.WriteAttr(_T("AttrName222"), _T("AttrName222")))
+				if(xml.WriteAttr(_T("AttrName222"), _T("AttrValue222")))
 				{
 					GTLINE2("XML WriteAttr write same name attr!");
 					++nRet;
 					bExistError = GAIA::True;
 					break;
 				}
-				if(xml.WriteAttr(_T("AttrName333"), _T("AttrName333")))
+				if(xml.WriteAttr(_T("AttrName333"), _T("AttrValue333")))
 				{
 					GTLINE2("XML WriteAttr write same name attr!");
 					++nRet;
@@ -324,6 +324,38 @@ namespace GAIATEST
 		{
 			GTLINE2("XML IsResetCallStack error!");
 			++nRet;
+		}
+
+		//xml.Save();
+
+		static const GAIA::TCH* CONTENT_GROUP[] = 
+		{
+			_T("ROOT_NODE"),
+			_T("AttrName1"), _T("AttrValue1"),
+		};
+		GAIA::SIZE index = 0;
+		for(;;)
+		{
+			if(!xml.Enum(cmnname, cmnvalue))
+			{
+				GTLINE2("XML Enum failed!");
+				++nRet;
+				break;
+			}
+			if(GAIA::ALGO::strcmp(cmnname, CONTENT_GROUP[index++]) != 0)
+			{
+				GTLINE2("XML Enum content error!");
+				++nRet;
+				break;
+			}
+			if(cmnvalue != GNULL && GAIA::ALGO::strcmp(cmnvalue, CONTENT_GROUP[index++]) != 0)
+			{
+				GTLINE2("XML Enum content error!");
+				++nRet;
+				break;
+			}
+			if(index == sizeofarray(CONTENT_GROUP))
+				break;
 		}
 
 		return nRet;
