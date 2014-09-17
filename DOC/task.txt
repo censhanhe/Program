@@ -79,6 +79,10 @@
 		
 		XML support namefamily match node and property.
 		
+		XML support sort.
+		
+		XML support operator =, compare operator.
+		
 	TIME
 		
 		Timer implement.

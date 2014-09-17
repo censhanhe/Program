@@ -130,7 +130,7 @@ namespace GAIA
 				pNewNode->name = m_ssp.alloc(pNode);
 				if(m_callstack.empty())
 				{
-					GAIA_AST(m_nodes.empty());
+					GAIA_ASTDEBUG(m_nodes.empty());
 					if(!m_nodes.empty())
 					{
 						m_npool.release(pNewNode);
@@ -143,7 +143,7 @@ namespace GAIA
 				CallStack cs;
 				cs.pNode = pNewNode;
 				cs.index = GINVALID;
-				m_callstack.push_back(pNewNode);
+				m_callstack.push_back(cs);
 				return GAIA::True;
 			}
 			GINL GAIA::BL WriteAttr(const _CharType* pAttrName, const _CharType* pAttrValue)
@@ -160,8 +160,9 @@ namespace GAIA
 				m_callstack.back().pNode->attrs.push_back(a);
 				return GAIA::True;
 			}
-			GINL GAIA::BL End(){GAIA_AST(!m_callstack.empty()); return m_callstack.pop_back(); m_attrcursor = 0;}
+			GINL GAIA::BL End(){GAIA_ASTDEBUG(!m_callstack.empty()); return m_callstack.pop_back(); m_attrcursor = 0;}
 			GINL GAIA::GVOID ResetCallStack(){m_callstack.clear(); m_attrcursor = 0;}
+			GINL GAIA::BL IsResetCallStack() const{return m_callstack.empty();}
 		private:
 			class Node;
 			class Attr;
@@ -180,10 +181,9 @@ namespace GAIA
 			class Node : public GAIA::Base
 			{
 			public:
-				typename __SSPType::sizetype name;
+				typename __SSPType::_sizetype name;
 				__AttrListType attrs;
 				__NodeListType nodes;
-
 			};
 			class CallStack : public GAIA::Base
 			{
@@ -197,9 +197,9 @@ namespace GAIA
 			{
 				GAIA_AST(pNode != GNULL);
 				GAIA_AST(pAttrName != GNULL);
-				for(__AttrListType::_sizetype x = 0; pNode->attrs.size(); ++x)
+				for(__AttrListType::_sizetype x = 0; x < pNode->attrs.size(); ++x)
 				{
-					Attr& a = pNode->attrs[x];
+					const Attr& a = pNode->attrs[x];
 					if(GAIA::ALGO::strcmp(m_ssp.get(a.name), pAttrName) == 0)
 						return GAIA::True;
 				}

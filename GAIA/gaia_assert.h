@@ -19,7 +19,7 @@ namespace GAIA
 							if(!(e))\
 							{\
 								GAIA::PRINT::Print prt;\
-								prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to ignore:";\
+								prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue:";\
 								GAIA::CH ch;\
 								prt >> ch;\
 								if(ch == '1')\
@@ -28,6 +28,23 @@ namespace GAIA
 						}while(0)
 #else
 #	define GAIA_AST(e)
+#endif
+
+#ifdef GAIA_DEBUG_ASTDEBUG
+#	define GAIA_ASTDEBUG(e)		do\
+								{\
+									if(!(e))\
+									{\
+										GAIA::PRINT::Print prt;\
+										prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue(Debug):";\
+										GAIA::CH ch;\
+										prt >> ch;\
+										if(ch == '1')\
+											throw GAIA::DEBUG_MANAGEMENT::AstException(__FILE__, __LINE__);\
+									}\
+								}while(0)
+#else
+#	define GAIA_ASTDEBUG(e)
 #endif
 
 #ifdef GAIA_DEBUG_STATICAST
