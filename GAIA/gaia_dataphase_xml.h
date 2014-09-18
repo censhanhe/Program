@@ -14,7 +14,7 @@ namespace GAIA
 		public:
 			typedef XML<_CharType, _SizeType, _SizeIncreaserType> __MyType;
 			typedef const _CharType* __ConstCharPtrType;
-			typedef GAIA::CTN::Accesser<_CharType, _SizeType> __AccesserType;
+			typedef GAIA::CTN::Accesser<_CharType, _SizeType, _SizeIncreaserType> __AccesserType;
 		public:
 			GINL XML(){this->init();}
 			GINL ~XML(){this->Destroy();}
@@ -35,18 +35,12 @@ namespace GAIA
 					cst != CHARSET_TYPE_UTF16BE)
 					return GAIA::False;
 				static const GAIA::TCH* VERSION_STRING = _T("1.0");
-				GAIA::ALGO::strcpy(acc, _T("<?xml version=\""));
-				acc += GAIA::ALGO::strlen(_T("<?xml version=\""));
-				GAIA::ALGO::strcpy(acc, VERSION_STRING);
-				acc += GAIA::ALGO::strlen(VERSION_STRING);
-				GAIA::ALGO::strcpy(acc, _T("\" encoding=\""));
-				acc += GAIA::ALGO::strlen(_T("\" encoding=\""));
-				GAIA::ALGO::strcpy(acc, GAIA::CHARSET_CODEPAGE_NAMEA[cst] + 1);
-				acc += GAIA::ALGO::strlen(GAIA::CHARSET_CODEPAGE_NAMEA[cst] + 1);
-				GAIA::ALGO::strcpy(acc, _T("\"?>"));
-				acc += GAIA::ALGO::strlen(_T("\"?>"));
-				GAIA::ALGO::strcpy(acc, m_lineflag.front_ptr());
-				acc += m_lineflag.size();
+				acc = GAIA::ALGO::stradd(acc, _T("<?xml version=\""));
+				acc = GAIA::ALGO::stradd(acc, VERSION_STRING);
+				acc = GAIA::ALGO::stradd(acc, _T("\" encoding=\""));
+				acc = GAIA::ALGO::stradd(acc, GAIA::CHARSET_CODEPAGE_NAMEA[cst] + 1);
+				acc = GAIA::ALGO::stradd(acc, _T("\"?>"));
+				acc = GAIA::ALGO::stradd(acc, m_lineflag.front_ptr());
 				if(!this->SaveNode(0, m_root, acc))
 					return GAIA::False;
 				return GAIA::True;
@@ -273,8 +267,7 @@ namespace GAIA
 				const _CharType* pNodeName = m_ssp.get(pNode->name);
 				GAIA_AST(pNode != GNULL);
 				GAIA::SIZE sNodeLen = GAIA::ALGO::strlen(pNodeName);
-				GAIA::ALGO::strcpy(acc, pNodeName);
-				acc += sNodeLen;
+				acc = GAIA::ALGO::stradd(acc, pNodeName);
 				for(_SizeType x = 0; x < pNode->attrs.size(); ++x)
 				{
 					const Attr& attr = pNode->attrs[x];
@@ -287,15 +280,11 @@ namespace GAIA
 					GAIA_AST(pAttrValue != GNULL);
 					GAIA::SIZE sAttrNameLen = GAIA::ALGO::strlen(pAttrName);
 					GAIA::SIZE sAttrValueLen = GAIA::ALGO::strlen(pAttrValue);
-					GAIA::ALGO::strcpy(acc, pAttrName);
-					acc += sAttrNameLen;
+					GAIA::ALGO::stradd(acc, pAttrName);
 					*acc = '='; ++acc;
 					*acc = '\"'; ++acc;
 					if(sAttrValueLen != 0)
-					{
-						GAIA::ALGO::strcpy(acc, pAttrValue);
-						acc += sAttrValueLen;
-					}
+						acc = GAIA::ALGO::stradd(acc, pAttrValue);
 					*acc = '\"'; ++acc;
 				}
 				GAIA::BL bExistChildNode = GAIA::False;
@@ -307,8 +296,7 @@ namespace GAIA
 					if(!bExistChildNode)
 					{
 						*acc = '>'; ++acc;
-						GAIA::ALGO::strcpy(acc, m_lineflag.front_ptr());
-						acc += m_lineflag.size();
+						acc = GAIA::ALGO::stradd(acc, m_lineflag.front_ptr());
 						bExistChildNode = GAIA::True;
 					}
 					if(!this->SaveNode(sDepth + 1, pChildNode, acc))
@@ -323,8 +311,7 @@ namespace GAIA
 					}
 					*acc = '<'; ++acc;
 					*acc = '/'; ++acc;
-					GAIA::ALGO::strcpy(acc, pNodeName);
-					acc += sNodeLen;
+					acc = GAIA::ALGO::stradd(acc, pNodeName);
 					*acc = '>'; ++acc;
 				}
 				else
@@ -332,8 +319,7 @@ namespace GAIA
 					*acc = '/'; ++acc;
 					*acc = '>'; ++acc;
 				}
-				GAIA::ALGO::strcpy(acc, m_lineflag.front_ptr());
-				acc += m_lineflag.size();
+				acc = GAIA::ALGO::stradd(acc, m_lineflag.front_ptr());
 				return GAIA::True;
 			}
 		private:

@@ -337,9 +337,9 @@ namespace GAIATEST
 		}
 		else
 		{
-			xmlfile.Resize(1024 * 1024 * sizeof(GAIA::TCH));
-			typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE> __AccType;
+			typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 			__AccType acc;
+			acc.expandable(GAIA::True);
 			if(!acc.bind(xmlfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE))
 			{
 				GTLINE2("Bind accesser to the file failed!");

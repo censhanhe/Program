@@ -14,7 +14,7 @@ namespace GAIATEST
 			/* Accesser pointer operator test. */
 			{
 				typedef GAIA::N16 __DataType;
-				typedef GAIA::CTN::Accesser<__DataType, GAIA::NM> __AccType;
+				typedef GAIA::CTN::Accesser<__DataType, GAIA::NM, GAIA::ALGO::TwiceSizeIncreaser<GAIA::NM> > __AccType;
 				__AccType acc;
 				__DataType arr[ACCESS_ELEMENT_COUNT];
 				if(!acc.bind(arr, ACCESS_ELEMENT_COUNT, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE))
@@ -159,7 +159,7 @@ namespace GAIATEST
 			/* Make accesser work as a string pointer. */
 			{
 				GAIA::TCH szTemp[1024];
-				typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE> __AccType;
+				typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 				__AccType acc;
 				acc.bind(szTemp, 1024, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
 				GAIA::ALGO::strcpy(acc, "HelloWorld");
@@ -176,7 +176,7 @@ namespace GAIATEST
 			/* Accesser pointer operator test. */
 			{
 				typedef GAIA::N16 __DataType;
-				typedef GAIA::CTN::Accesser<__DataType, GAIA::NM> __AccType;
+				typedef GAIA::CTN::Accesser<__DataType, GAIA::NM, GAIA::ALGO::TwiceSizeIncreaser<GAIA::NM> > __AccType;
 				__AccType acc;
 				GAIA::FILESYSTEM::File accfile;
 				if(!accfile.Open(_T("../TESTRES/accesser_file"),
@@ -340,7 +340,7 @@ namespace GAIATEST
 				}
 				accfile.Resize(ACCESS_ELEMENT_COUNT);
 
-				typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE> __AccType;
+				typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 				__AccType acc;
 				acc.bind(accfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
 				GAIA::ALGO::strcpy(acc, "HelloWorld");

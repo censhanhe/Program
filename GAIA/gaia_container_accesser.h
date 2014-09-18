@@ -5,14 +5,13 @@ namespace GAIA
 {
 	namespace CTN
 	{
-		template<typename _DataType, typename _SizeType> class Accesser : public GAIA::Entity
+		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class Accesser : public GAIA::Entity
 		{
 		public:
 			GAIA_ENUM_BEGIN(BIND_TYPE)
 				BIND_TYPE_MEM,
 				BIND_TYPE_FILE,
 			GAIA_ENUM_END(BIND_TYPE)
-
 			GAIA_ENUM_BEGIN(ACCESS_TYPE)
 				ACCESS_TYPE_READ = 1 << 0,
 				ACCESS_TYPE_WRITE = 1 << 1,
@@ -20,8 +19,9 @@ namespace GAIA
 		public:
 			typedef _DataType _datatype;
 			typedef _SizeType _sizetype;
+			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			typedef Accesser<_DataType, _SizeType> __MyType;
+			typedef Accesser<_DataType, _SizeType, _SizeIncreaserType> __MyType;
 		private:
 			class Node : public GAIA::Entity
 			{
@@ -130,7 +130,7 @@ namespace GAIA
 			};
 		public:
 			GINL Accesser(){this->init();}
-			GINL Accesser(const __MyType& src){this->init(); this->operator = (src);}
+			GINL Accesser(const __MyType& src){this->operator = (src);}
 			GINL ~Accesser(){this->destroy();}
 			GINL GAIA::BL bind(_DataType* p, const _SizeType& size, GAIA::UM access_type_mask)
 			{
@@ -162,8 +162,18 @@ namespace GAIA
 			GINL GAIA::BL isbinded() const{return m_bindtype != BIND_TYPE_INVALID;}
 			GINL _DataType* bindmem() const{return m_p;}
 			GINL GAIA::FILESYSTEM::FileBase* bindfile() const{return m_file;}
-			GINL GAIA::BL empty() const{return !this->is_valid_index(m_index);}
-			GINL GAIA::GVOID destroy(){this->init();}
+			GINL GAIA::BL empty() const{if(this->expandable() && m_index >= 0) return GAIA::False; return !this->is_valid_index(m_index);}
+			GINL GAIA::GVOID destroy()
+			{
+				m_bindtype = BIND_TYPE_INVALID;
+				m_atm = ACCESS_TYPE_INVALID;
+				m_p = GNULL;
+				m_file = GNULL;
+				m_size = 0;
+				m_offset = 0;
+				m_stride = sizeof(_DataType);
+				m_index = 0;
+			}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL GAIA::BL offset(const _SizeType& offset)
 			{
@@ -208,6 +218,8 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL const _SizeType& index() const{return m_index;}
+			GINL GAIA::GVOID expandable(GAIA::BL b){m_expandable = b;}
+			GINL GAIA::BL expandable() const{return m_expandable;}
 			GINL Node operator * (){return (*this)[0];}
 			GINL ConstNode operator * () const{return (*this)[0];}
 			GINL Node operator [] (const _SizeType& index){Node n; n.m_acc = this; n.m_index = index; return n;}
@@ -223,6 +235,7 @@ namespace GAIA
 				m_offset = src.m_offset;
 				m_stride = src.m_stride;
 				m_index = src.m_index;
+				m_expandable = src.m_expandable;
 				return *this;
 			}
 			GINL __MyType& operator ++ ()
@@ -347,14 +360,8 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID init()
 			{
-				m_bindtype = BIND_TYPE_INVALID;
-				m_atm = ACCESS_TYPE_INVALID;
-				m_p = GNULL;
-				m_file = GNULL;
-				m_size = 0;
-				m_offset = 0;
-				m_stride = sizeof(_DataType);
-				m_index = 0;
+				m_expandable = GAIA::False;
+				this->destroy();
 			}
 			GINL GAIA::BL is_valid_index(const _SizeType& index) const
 			{
@@ -364,19 +371,54 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GINL _SizeType practice_offset(const _SizeType& index) const
-			{
-				GAIA_AST(this->is_valid_index(index));
-				return m_offset + index * m_stride;
-			}
+			GINL _SizeType practice_offset(const _SizeType& index) const{return m_offset + index * m_stride;}
 			GINL GAIA::BL set(const _SizeType& index, const _DataType& src)
 			{
 				GAIA_AST(this->isbinded());
 				if(!this->isbinded())
 					return GAIA::False;
-				GAIA_AST(this->is_valid_index(m_index + index));
 				if(!this->is_valid_index(m_index + index))
-					return GAIA::False;
+				{
+					if(this->expandable())
+					{
+						_SizeType poffset = this->practice_offset(m_index + index);
+						switch(this->bindtype())
+						{
+						case BIND_TYPE_MEM:
+							{
+								_SizeIncreaserType increaser;
+								_SizeType newsize = increaser.Increase(this->size());
+								GAIA_AST(newsize > this->size());
+								newsize = GAIA::ALGO::maximize(newsize, GSCAST(_SizeType)(poffset + sizeof(_DataType)));
+								_DataType* pNew = GRCAST(_DataType*)(GAIA_MALLOC(GAIA::U8, newsize));
+								GAIA_AST(pNew != GNULL);
+								if(pNew == GNULL)
+									return GAIA::False;
+								if(m_p != GNULL)
+								{
+									GAIA::ALGO::xmemcpy(pNew, m_p, this->size());
+									GAIA_MFREE(m_p);
+								}
+								m_p = pNew;
+								m_size = newsize;
+							}
+							break;
+						case BIND_TYPE_FILE:
+							{
+								m_size = poffset + sizeof(_DataType);
+							}
+							break;
+						default:
+							GAIA_AST(GAIA::ALWAYSFALSE);
+							return GAIA::False;
+						}
+					}
+					else
+					{
+						GAIA_AST(GAIA::False);
+						return GAIA::False;
+					}
+				}
 				switch(this->bindtype())
 				{
 				case BIND_TYPE_MEM:
@@ -469,6 +511,7 @@ namespace GAIA
 			_SizeType m_offset;
 			_SizeType m_stride;
 			_SizeType m_index;
+			GAIA::BL m_expandable;
 		};
 	};
 };
