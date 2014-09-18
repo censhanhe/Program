@@ -20,12 +20,33 @@ namespace GAIA
 			GINL ~XML(){this->Destroy();}
 			GINL GAIA::BL Load(const __AccesserType& acc)
 			{
+				this->Destroy();
+
 				return GAIA::True;
 			}
-			GINL GAIA::BL Save(__AccesserType& acc)
+			GINL GAIA::BL Save(__AccesserType& acc, GAIA::CHARSET_TYPE cst)
 			{
 				if(m_root == GNULL)
 					return GAIA::False;
+				if(cst != CHARSET_TYPE_ANSI && 
+					cst != CHARSET_TYPE_UTF7 && 
+					cst != CHARSET_TYPE_UTF8 && 
+					cst != CHARSET_TYPE_UTF16LE && 
+					cst != CHARSET_TYPE_UTF16BE)
+					return GAIA::False;
+				static const GAIA::TCH* VERSION_STRING = _T("1.0");
+				GAIA::ALGO::strcpy(acc, _T("<?xml version=\""));
+				acc += GAIA::ALGO::strlen(_T("<?xml version=\""));
+				GAIA::ALGO::strcpy(acc, VERSION_STRING);
+				acc += GAIA::ALGO::strlen(VERSION_STRING);
+				GAIA::ALGO::strcpy(acc, _T("\" encoding=\""));
+				acc += GAIA::ALGO::strlen(_T("\" encoding=\""));
+				GAIA::ALGO::strcpy(acc, GAIA::CHARSET_CODEPAGE_NAMEA[cst] + 1);
+				acc += GAIA::ALGO::strlen(GAIA::CHARSET_CODEPAGE_NAMEA[cst] + 1);
+				GAIA::ALGO::strcpy(acc, _T("\"?>"));
+				acc += GAIA::ALGO::strlen(_T("\"?>"));
+				GAIA::ALGO::strcpy(acc, m_lineflag.front_ptr());
+				acc += m_lineflag.size();
 				if(!this->SaveNode(0, m_root, acc))
 					return GAIA::False;
 				return GAIA::True;

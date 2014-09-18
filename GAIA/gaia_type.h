@@ -365,7 +365,7 @@ namespace GAIA
 		1201,	// CHARSET_UTF16BE
 	};
 
-	static const GAIA::CH* CHARSET_CODEPAGE_NAME[] =
+	static const GAIA::CH* CHARSET_CODEPAGE_NAMEA[] =
 	{
 		"invalid",	// CHARSET_INVALID
 		"",			// CHARSET_SYS
@@ -374,6 +374,17 @@ namespace GAIA
 		".utf8",	// CHARSET_UTF8
 		".utf16le",	// CHARSET_UTF16LE
 		".utf16be",	// CHARSET_UTF16BE
+	};
+
+	static const GAIA::WCH* CHARSET_CODEPAGE_NAMEW[] =
+	{
+		L"invalid",	// CHARSET_INVALID
+		L"",		// CHARSET_SYS
+		L".ansi",	// CHARSET_ANSI
+		L".utf7",	// CHARSET_UTF7
+		L".utf8",	// CHARSET_UTF8
+		L".utf16le",// CHARSET_UTF16LE
+		L".utf16be",// CHARSET_UTF16BE
 	};
 
 	static const GAIA::U8 UTF8_FILEHEAD[3] = {0xEF, 0xBB, 0xBF};

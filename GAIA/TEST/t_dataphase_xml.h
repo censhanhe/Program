@@ -347,7 +347,7 @@ namespace GAIATEST
 			}
 			else
 			{
-				if(!xml.Save(acc))
+				if(!xml.Save(acc, GAIA::CHARSET_TYPE_UTF16LE))
 				{
 					GTLINE2("Save xml to file failed!");
 					++nRet;

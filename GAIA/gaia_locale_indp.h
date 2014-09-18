@@ -49,7 +49,7 @@ namespace GAIA
 			GAIA::SYNC::AutoLock al(g_localelock);
 			if(g_charsettype != charset_type)
 			{
-				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAME[charset_type]) == GNULL)
+				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAMEA[charset_type]) == GNULL)
 					return 0;
 				g_charsettype = charset_type;
 			}
@@ -93,7 +93,7 @@ namespace GAIA
 			GAIA::SYNC::AutoLock al(g_localelock);
 			if(g_charsettype != charset_type)
 			{
-				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAME[charset_type]) == GNULL)
+				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAMEA[charset_type]) == GNULL)
 					return 0;
 				g_charsettype = charset_type;
 			}
