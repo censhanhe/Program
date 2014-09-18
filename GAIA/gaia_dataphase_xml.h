@@ -24,20 +24,23 @@ namespace GAIA
 			}
 			GINL GAIA::BL Save(__AccesserType& acc)
 			{
+				if(m_root == GNULL)
+					return GAIA::False;
+				this->SaveNode(m_root, acc);
 				return GAIA::True;
 			}
 			GINL GAIA::GVOID Destroy()
 			{
 				this->ResetCursor();
 				m_npool.destroy();
-				m_nodes.destroy();
+				m_root = GNULL;
 				m_ssp.destroy();
 			}
 			GINL GAIA::GVOID Clear()
 			{
 				this->ResetCursor();
 				m_npool.clear();
-				m_nodes.clear();
+				m_root = GNULL;
 				m_ssp.clear();
 			}
 			GINL GAIA::BL EnumNode(__ConstCharPtrType& pNodeName)
@@ -47,10 +50,10 @@ namespace GAIA
 				m_attrcursor = 0;
 				if(m_callstack.empty())
 				{
-					if(m_nodes.empty())
+					if(m_root == NULL)
 						return GAIA::False;
 					CallStack cs;
-					cs.pNode = m_nodes.front();
+					cs.pNode = m_root;
 					cs.index = 0;
 					m_callstack.push_back(cs);
 				}
@@ -123,7 +126,7 @@ namespace GAIA
 					pNode->name = m_ssp.alloc(pName);
 				else
 				{
-					if(this->is_attr_exit(pNode, pName))
+					if(this->IsAttrExist(pNode, pName))
 						return GAIA::False;
 					if(m_attrcursor >= pNode->attrs.size())
 						return GAIA::False;
@@ -140,13 +143,13 @@ namespace GAIA
 				pNewNode->name = m_ssp.alloc(pNode);
 				if(m_callstack.empty())
 				{
-					GAIA_ASTDEBUG(m_nodes.empty());
-					if(!m_nodes.empty())
+					GAIA_ASTDEBUG(m_root == GNULL);
+					if(m_root != GNULL)
 					{
 						m_npool.release(pNewNode);
 						return GAIA::False;
 					}
-					m_nodes.push_back(pNewNode);
+					m_root = pNewNode;
 				}
 				else
 					m_callstack.back().pNode->nodes.push_back(pNewNode);
@@ -162,7 +165,7 @@ namespace GAIA
 				GPCHR_NULL_RET(pAttrName, GAIA::False);
 				if(m_callstack.empty())
 					return GAIA::False;
-				if(this->is_attr_exit(m_callstack.back().pNode, pAttrName))
+				if(this->IsAttrExist(m_callstack.back().pNode, pAttrName))
 					return GAIA::False;
 				Attr a;
 				a.name = m_ssp.alloc(pAttrName);
@@ -209,8 +212,8 @@ namespace GAIA
 				typename __NodeListType::_sizetype index;
 			};
 		private:
-			GINL GAIA::GVOID init(){this->ResetCursor();}
-			GINL GAIA::BL is_attr_exit(const Node* pNode, const _CharType* pAttrName) const
+			GINL GAIA::GVOID init(){this->ResetCursor(); m_root = GNULL;}
+			GINL GAIA::BL IsAttrExist(const Node* pNode, const _CharType* pAttrName) const
 			{
 				GAIA_AST(pNode != GNULL);
 				GAIA_AST(pAttrName != GNULL);
@@ -222,9 +225,13 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
+			GINL GAIA::BL SaveNode(const Node* pNode, __AccesserType& acc) const
+			{
+				return GAIA::True;
+			}
 		private:
 			__NodePoolType m_npool;
-			__NodeListType m_nodes;
+			Node* m_root;
 			__SSPType m_ssp;
 			__NodeStackType m_callstack;
 			typename __AttrListType::_sizetype m_attrcursor;
