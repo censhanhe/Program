@@ -5,16 +5,16 @@ namespace GAIA
 {
 	namespace DATAPHASE
 	{
-		template<typename _CharType, typename _DataSizeType, typename _SizeIncreaserType> class XML : public GAIA::Entity
+		template<typename _CharType, typename _SizeType, typename _SizeIncreaserType> class XML : public GAIA::Entity
 		{
 		public:
 			typedef _CharType _chartype;
-			typedef _DataSizeType _datasizetype;
+			typedef _SizeType _datasizetype;
 			typedef _SizeIncreaserType _sizeincreasertype;
 		public:
-			typedef XML<_CharType, _DataSizeType, _SizeIncreaserType> __MyType;
+			typedef XML<_CharType, _SizeType, _SizeIncreaserType> __MyType;
 			typedef const _CharType* __ConstCharPtrType;
-			typedef GAIA::CTN::Accesser<_CharType, _DataSizeType> __AccesserType;
+			typedef GAIA::CTN::Accesser<_CharType, _SizeType> __AccesserType;
 		public:
 			GINL XML(){this->init();}
 			GINL ~XML(){this->Destroy();}
@@ -26,7 +26,8 @@ namespace GAIA
 			{
 				if(m_root == GNULL)
 					return GAIA::False;
-				this->SaveNode(m_root, acc);
+				if(!this->SaveNode(0, m_root, acc))
+					return GAIA::False;
 				return GAIA::True;
 			}
 			GINL GAIA::GVOID Destroy()
@@ -62,7 +63,7 @@ namespace GAIA
 					CallStack& curcs = m_callstack.back();
 					if(curcs.index >= curcs.pNode->nodes.size())
 						return GAIA::False;
-					while(curcs.pNode->nodes[curcs.index]->name == GINVALID)
+					while(curcs.pNode->nodes[curcs.index] == GNULL)
 					{
 						++curcs.index;
 						if(curcs.index >= curcs.pNode->nodes.size())
@@ -187,11 +188,11 @@ namespace GAIA
 			class Node;
 			class Attr;
 			class CallStack;
-			typedef GAIA::CTN::BasicStaticStringPool<_CharType, _DataSizeType, _SizeIncreaserType> __SSPType;
-			typedef GAIA::CTN::BasicPool<Node, _DataSizeType, _SizeIncreaserType> __NodePoolType;
-			typedef GAIA::CTN::BasicVector<Node*, _DataSizeType, _SizeIncreaserType> __NodeListType;
-			typedef GAIA::CTN::BasicStack<CallStack, _DataSizeType, _SizeIncreaserType> __NodeStackType;
-			typedef GAIA::CTN::BasicVector<Attr, _DataSizeType, _SizeIncreaserType> __AttrListType;
+			typedef GAIA::CTN::BasicStaticStringPool<_CharType, _SizeType, _SizeIncreaserType> __SSPType;
+			typedef GAIA::CTN::BasicPool<Node, _SizeType, _SizeIncreaserType> __NodePoolType;
+			typedef GAIA::CTN::BasicVector<Node*, _SizeType, _SizeIncreaserType> __NodeListType;
+			typedef GAIA::CTN::BasicStack<CallStack, _SizeType, _SizeIncreaserType> __NodeStackType;
+			typedef GAIA::CTN::BasicVector<Attr, _SizeType, _SizeIncreaserType> __AttrListType;
 			class Attr : public GAIA::Base
 			{
 			public:
@@ -225,8 +226,77 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			GINL GAIA::BL SaveNode(const Node* pNode, __AccesserType& acc) const
+			GINL GAIA::BL SaveNode(const GAIA::SIZE& sDepth, const Node* pNode, __AccesserType& acc) const
 			{
+				for(GAIA::SIZE x = 0; x < sDepth; ++x)
+				{
+					*acc = '\t'; ++acc;
+				}
+				*acc = '<'; ++acc;
+				const _CharType* pNodeName = m_ssp.get(pNode->name);
+				GAIA_AST(pNode != GNULL);
+				GAIA::SIZE sNodeLen = GAIA::ALGO::strlen(pNodeName);
+				GAIA::ALGO::strcpy(acc, pNodeName);
+				acc += sNodeLen;
+				for(_SizeType x = 0; x < pNode->attrs.size(); ++x)
+				{
+					const Attr& attr = pNode->attrs[x];
+					if(attr.name == GINVALID)
+						continue;
+					*acc = ' '; ++acc;
+					const _CharType* pAttrName = m_ssp.get(attr.name);
+					const _CharType* pAttrValue = m_ssp.get(attr.value);
+					GAIA_AST(pAttrName != GNULL);
+					GAIA_AST(pAttrValue != GNULL);
+					GAIA::SIZE sAttrNameLen = GAIA::ALGO::strlen(pAttrName);
+					GAIA::SIZE sAttrValueLen = GAIA::ALGO::strlen(pAttrValue);
+					GAIA::ALGO::strcpy(acc, pAttrName);
+					acc += sAttrNameLen;
+					*acc = '='; ++acc;
+					*acc = '\"'; ++acc;
+					if(sAttrValueLen != 0)
+					{
+						GAIA::ALGO::strcpy(acc, pAttrValue);
+						acc += sAttrValueLen;
+					}
+					*acc = '\"'; ++acc;
+				}
+				GAIA::BL bExistChildNode = GAIA::False;
+				for(_SizeType x = 0; x < pNode->nodes.size(); ++x)
+				{
+					Node* pChildNode = pNode->nodes[x];
+					if(pChildNode == GNULL)
+						continue;
+					if(!bExistChildNode)
+					{
+						*acc = '>'; ++acc;
+						*acc = '\r'; ++acc;
+						*acc = '\n'; ++acc;
+						bExistChildNode = GAIA::True;
+					}
+					if(!this->SaveNode(sDepth + 1, pChildNode, acc))
+						return GAIA::False;
+				}
+				if(bExistChildNode)
+				{
+					for(GAIA::SIZE x = 0; x < sDepth; ++x)
+					{
+						*acc = '\t';
+						++acc;
+					}
+					*acc = '<'; ++acc;
+					*acc = '/'; ++acc;
+					GAIA::ALGO::strcpy(acc, pNodeName);
+					acc += sNodeLen;
+					*acc = '>'; ++acc;
+				}
+				else
+				{
+					*acc = '/'; ++acc;
+					*acc = '>'; ++acc;
+				}
+				*acc = '\r'; ++acc;
+				*acc = '\n'; ++acc;
 				return GAIA::True;
 			}
 		private:

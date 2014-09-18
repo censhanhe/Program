@@ -326,7 +326,34 @@ namespace GAIATEST
 			++nRet;
 		}
 
-		//xml.Save();
+		GAIA::FILESYSTEM::File xmlfile;
+		if(!xmlfile.Open(_T("../TESTRES/xmlfile.xml"), 
+			GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
+			GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
+			GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+		{
+			GTLINE2("Cannot open a file for save the xml.");
+			++nRet;
+		}
+		else
+		{
+			xmlfile.Resize(1024 * 1024 * sizeof(GAIA::TCH));
+			typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE> __AccType;
+			__AccType acc;
+			if(!acc.bind(xmlfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE))
+			{
+				GTLINE2("Bind accesser to the file failed!");
+				++nRet;
+			}
+			else
+			{
+				if(!xml.Save(acc))
+				{
+					GTLINE2("Save xml to file failed!");
+					++nRet;
+				}
+			}
+		}
 
 		static const GAIA::TCH* CONTENT_GROUP[] = 
 		{

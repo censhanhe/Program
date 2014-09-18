@@ -179,7 +179,7 @@ namespace GAIATEST
 				typedef GAIA::CTN::Accesser<__DataType, GAIA::NM> __AccType;
 				__AccType acc;
 				GAIA::FILESYSTEM::File accfile;
-				if(!accfile.Open(_T("../accesser_file"),
+				if(!accfile.Open(_T("../TESTRES/accesser_file"),
 					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
 					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
 					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
