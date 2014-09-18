@@ -95,6 +95,24 @@ namespace GAIA
 					m_acc->get(m_index, ret);
 					return ret;
 				}
+				GINL GAIA::BL operator == (const ConstNode& src) const
+				{
+					GAIA_AST(m_acc == src.m_acc);
+					return GSCAST(_DataType)(*this) == GSCAST(_DataType)(src);
+				}
+				GINL GAIA::BL operator != (const ConstNode& src) const{return !this->operator == (src);}
+				GINL GAIA::BL operator >= (const ConstNode& src) const
+				{
+					GAIA_AST(m_acc == src.m_acc);
+					return GSCAST(_DataType)(*this) >= GSCAST(_DataType)(src);
+				}
+				GINL GAIA::BL operator <= (const ConstNode& src) const
+				{
+					GAIA_AST(m_acc == src.m_acc);
+					return GSCAST(_DataType)(*this) <= GSCAST(_DataType)(src);
+				}
+				GINL GAIA::BL operator > (const ConstNode& src) const{return !this->operator <= (src);}
+				GINL GAIA::BL operator < (const ConstNode& src) const{return !this->operator >= (src);}
 			private:
 				GINL ConstNode(){this->init();}
 				GINL ConstNode& operator = (const _DataType& src)
