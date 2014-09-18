@@ -37,7 +37,7 @@ namespace GAIATEST
 			GTLINE2("New XML object cannot change attr name and value!");
 			++nRet;
 		}
-		if(!xml.IsResetCallStack())
+		if(!xml.IsResetCursor())
 		{
 			GTLINE2("New XML object must IsResetCallStack!");
 			++nRet;
@@ -69,7 +69,7 @@ namespace GAIATEST
 			GTLINE2("XML object cannot change attr name and value after Clear!");
 			++nRet;
 		}
-		if(!xml.IsResetCallStack())
+		if(!xml.IsResetCursor())
 		{
 			GTLINE2("New XML object must IsResetCallStack after Clear!");
 			++nRet;
@@ -102,7 +102,7 @@ namespace GAIATEST
 			++nRet;
 		}
 
-		if(!xml.IsResetCallStack())
+		if(!xml.IsResetCursor())
 		{
 			GTLINE2("New XML object must IsResetCallStack after Destroy!");
 			++nRet;
@@ -112,7 +112,7 @@ namespace GAIATEST
 			GTLINE2("XML write node failed!");
 			++nRet;
 		}
-		if(xml.IsResetCallStack())
+		if(xml.IsResetCursor())
 		{
 			GTLINE2("XML IsResetCallStack error!");
 			++nRet;
@@ -122,7 +122,7 @@ namespace GAIATEST
 			GTLINE2("XML End failed!");
 			++nRet;
 		}
-		if(!xml.IsResetCallStack())
+		if(xml.IsResetCursor())
 		{
 			GTLINE2("XML IsResetCallStack error!");
 			++nRet;
@@ -132,7 +132,7 @@ namespace GAIATEST
 			GTLINE2("XML must have one root node only!");
 			++nRet;
 		}
-		if(!xml.IsResetCallStack())
+		if(xml.IsResetCursor())
 		{
 			GTLINE2("XML IsResetCallStack error!");
 			++nRet;
@@ -174,14 +174,14 @@ namespace GAIATEST
 			GTLINE2("XML WriteAttr write same name attr!");
 			++nRet;
 		}
-		if(xml.IsResetCallStack())
+		if(xml.IsResetCursor())
 		{
 			GTLINE2("XML IsResetCallStack error!");
 			++nRet;
 		}
 		for(GAIA::SIZE x = 0; x < 3; ++x)
 		{
-			if(xml.IsResetCallStack())
+			if(xml.IsResetCursor())
 			{
 				GTLINE2("XML IsResetCallStack error!");
 				++nRet;
@@ -232,7 +232,7 @@ namespace GAIATEST
 			GAIA::BL bExistError = GAIA::False;
 			for(GAIA::SIZE y = 0; y < 3; ++y)
 			{
-				if(xml.IsResetCallStack())
+				if(xml.IsResetCursor())
 				{
 					GTLINE2("XML IsResetCallStack error!");
 					++nRet;
@@ -310,7 +310,7 @@ namespace GAIATEST
 			GTLINE2("XML End failed!");
 			++nRet;
 		}
-		if(!xml.IsResetCallStack())
+		if(xml.IsResetCursor())
 		{
 			GTLINE2("XML IsResetCallStack error!");
 			++nRet;
@@ -320,7 +320,7 @@ namespace GAIATEST
 			GTLINE2("XML must have one root node only!");
 			++nRet;
 		}
-		if(!xml.IsResetCallStack())
+		if(xml.IsResetCursor())
 		{
 			GTLINE2("XML IsResetCallStack error!");
 			++nRet;
@@ -332,7 +332,63 @@ namespace GAIATEST
 		{
 			_T("ROOT_NODE"),
 			_T("AttrName1"), _T("AttrValue1"),
+			_T("AttrName2"), _T("AttrValue2"),
+			_T("AttrName3"), _T("AttrValue3"),
+				_T("NODE"),
+				_T("AttrName11"), _T("AttrValue11"),
+				_T("AttrName22"), _T("AttrValue22"),
+				_T("AttrName33"), _T("AttrValue33"),
+					_T("SUB_NODE"),
+					_T("AttrName111"), _T("AttrValue111"),
+					_T("AttrName222"), _T("AttrValue222"),
+					_T("AttrName333"), _T("AttrValue333"),
+					_T("SUB_NODE"),
+					_T("AttrName111"), _T("AttrValue111"),
+					_T("AttrName222"), _T("AttrValue222"),
+					_T("AttrName333"), _T("AttrValue333"),
+					_T("SUB_NODE"),
+					_T("AttrName111"), _T("AttrValue111"),
+					_T("AttrName222"), _T("AttrValue222"),
+					_T("AttrName333"), _T("AttrValue333"),
+				_T("NODE"),
+				_T("AttrName11"), _T("AttrValue11"),
+				_T("AttrName22"), _T("AttrValue22"),
+				_T("AttrName33"), _T("AttrValue33"),
+					_T("SUB_NODE"),
+					_T("AttrName111"), _T("AttrValue111"),
+					_T("AttrName222"), _T("AttrValue222"),
+					_T("AttrName333"), _T("AttrValue333"),
+					_T("SUB_NODE"),
+					_T("AttrName111"), _T("AttrValue111"),
+					_T("AttrName222"), _T("AttrValue222"),
+					_T("AttrName333"), _T("AttrValue333"),
+					_T("SUB_NODE"),
+					_T("AttrName111"), _T("AttrValue111"),
+					_T("AttrName222"), _T("AttrValue222"),
+					_T("AttrName333"), _T("AttrValue333"),
+				_T("NODE"),
+				_T("AttrName11"), _T("AttrValue11"),
+				_T("AttrName22"), _T("AttrValue22"),
+				_T("AttrName33"), _T("AttrValue33"),
+					_T("SUB_NODE"),
+					_T("AttrName111"), _T("AttrValue111"),
+					_T("AttrName222"), _T("AttrValue222"),
+					_T("AttrName333"), _T("AttrValue333"),
+					_T("SUB_NODE"),
+					_T("AttrName111"), _T("AttrValue111"),
+					_T("AttrName222"), _T("AttrValue222"),
+					_T("AttrName333"), _T("AttrValue333"),
+					_T("SUB_NODE"),
+					_T("AttrName111"), _T("AttrValue111"),
+					_T("AttrName222"), _T("AttrValue222"),
+					_T("AttrName333"), _T("AttrValue333"),
 		};
+		xml.ResetCursor();
+		if(!xml.IsResetCursor())
+		{
+			GTLINE2("XML IsResetCursor failed!");
+			++nRet;
+		}
 		GAIA::SIZE index = 0;
 		for(;;)
 		{
@@ -355,7 +411,26 @@ namespace GAIATEST
 				break;
 			}
 			if(index == sizeofarray(CONTENT_GROUP))
+			{
+				if(xml.Enum(cmnname, cmnvalue))
+				{
+					GTLINE2("XML Enum failed! all content has been enumed.");
+					++nRet;
+				}
 				break;
+			}
+		}
+		if(xml.IsResetCursor())
+		{
+			GTLINE2("XML Enum failed!");
+			++nRet;
+		}
+
+		xml.ResetCursor();
+		if(!xml.IsResetCursor())
+		{
+			GTLINE2("XML IsResetCursor failed!");
+			++nRet;
 		}
 
 		return nRet;
