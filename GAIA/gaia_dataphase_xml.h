@@ -184,6 +184,17 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID ResetCursor(){m_callstack.clear(); m_attrcursor = 0; m_bEnd = GAIA::False;}
 			GINL GAIA::BL IsResetCursor() const{return m_callstack.empty() && !m_bEnd;}
+			GINL GAIA::BL SetLineFlag(const _CharType* p)
+			{
+				GPCHR_NULLSTRPTR_RET(p, GAIA::False);
+				if(GAIA::ALGO::strcmp(p, _T("\r")) != 0 &&
+					GAIA::ALGO::strcmp(p, _T("\n")) != 0 &&
+					GAIA::ALGO::strcmp(p, _T("\r\n")) != 0)
+					return GAIA::False;
+				m_lineflag = p;
+				return GAIA::True;
+			}
+			GINL const _CharType* GetLineFlag() const{return m_lineflag;}
 		private:
 			class Node;
 			class Attr;
@@ -213,7 +224,12 @@ namespace GAIA
 				typename __NodeListType::_sizetype index;
 			};
 		private:
-			GINL GAIA::GVOID init(){this->ResetCursor(); m_root = GNULL;}
+			GINL GAIA::GVOID init()
+			{
+				this->ResetCursor();
+				m_root = GNULL;
+				m_lineflag = _T("\r\n");
+			}
 			GINL GAIA::BL IsAttrExist(const Node* pNode, const _CharType* pAttrName) const
 			{
 				GAIA_AST(pNode != GNULL);
@@ -270,8 +286,8 @@ namespace GAIA
 					if(!bExistChildNode)
 					{
 						*acc = '>'; ++acc;
-						*acc = '\r'; ++acc;
-						*acc = '\n'; ++acc;
+						GAIA::ALGO::strcpy(acc, m_lineflag.front_ptr());
+						acc += m_lineflag.size();
 						bExistChildNode = GAIA::True;
 					}
 					if(!this->SaveNode(sDepth + 1, pChildNode, acc))
@@ -295,8 +311,8 @@ namespace GAIA
 					*acc = '/'; ++acc;
 					*acc = '>'; ++acc;
 				}
-				*acc = '\r'; ++acc;
-				*acc = '\n'; ++acc;
+				GAIA::ALGO::strcpy(acc, m_lineflag.front_ptr());
+				acc += m_lineflag.size();
 				return GAIA::True;
 			}
 		private:
@@ -306,6 +322,7 @@ namespace GAIA
 			__NodeStackType m_callstack;
 			typename __AttrListType::_sizetype m_attrcursor;
 			GAIA::BL m_bEnd;
+			GAIA::CTN::BasicChars<_CharType, _SizeType, 2> m_lineflag;
 		};
 	};
 };

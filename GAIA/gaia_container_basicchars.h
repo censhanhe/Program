@@ -172,7 +172,7 @@ namespace GAIA
 			{
 				if(p == GNULL || size == 0)
 					return *this;
-				if(size >= _Size)
+				if(size > _Size)
 					return *this;
 				this->clear();
 				GAIA::ALGO::strcpy(m_chars, p, size);

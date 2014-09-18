@@ -10,7 +10,7 @@ namespace DWARFS_MISC
 	public:
 		typedef GAIA::CTN::TString __LineType;
 		typedef __LineType::_datatype __CharType;
-		typedef GAIA::CTN::BasicChars<__CharType, GAIA::N32, 3> __FlagType;
+		typedef GAIA::CTN::BasicChars<__CharType, GAIA::N32, 2> __FlagType;
 	private:
 		typedef GAIA::CTN::Vector<__LineType> __LineListType;
 	public:
@@ -19,6 +19,7 @@ namespace DWARFS_MISC
 		GINL ~TextLine(){}
 		GINL GAIA::BL lineflag(const __CharType* psz)
 		{
+			GPCHR_NULLSTRPTR_RET(psz, GAIA::False);
 			if(GAIA::ALGO::strcmp(psz, _T("\r")) != 0 &&
 				GAIA::ALGO::strcmp(psz, _T("\n")) != 0 &&
 				GAIA::ALGO::strcmp(psz, _T("\r\n")) != 0)
