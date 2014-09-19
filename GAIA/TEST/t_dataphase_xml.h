@@ -354,6 +354,32 @@ namespace GAIATEST
 				}
 			}
 		}
+		xmlfile.Close();
+
+		if(!xmlfile.Open(_T("../TESTRES/xmlfile.xml"),
+			GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+		{
+			GTLINE2("Cannot open a file for load the xml.");
+			++nRet;
+		}
+		else
+		{
+			typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+			__AccType acc;
+			if(!acc.bind(xmlfile, __AccType::ACCESS_TYPE_READ))
+			{
+				GTLINE2("Bind accesser to file failed!");
+				++nRet;
+			}
+			else
+			{
+				if(!xml.Load(acc))
+				{
+					GTLINE2("Load xml from file failed!");
+					++nRet;
+				}
+			}
+		}
 
 		static const GAIA::TCH* CONTENT_GROUP[] = 
 		{

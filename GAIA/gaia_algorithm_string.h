@@ -322,33 +322,31 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strdrop(_DataType1 p, _DataType2 pKeys)
 		{
-			_DataType1 p1 = p;
-			while(*p1 != '\0')
+			while(*p != '\0')
 			{
 				_DataType2 p2 = pKeys;
 				while(*p2 != '\0')
 				{
-					if(*p1 == *p2)
-						return p1;
+					if(*p == *p2)
+						return p;
 					++p2;
 				}
-				++p1;
+				++p;
 			}
 			return GNULL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 stridrop(_DataType1 p, _DataType2 pKeys)
 		{
-			_DataType1 p1 = p;
-			while(*p1 != '\0')
+			while(*p != '\0')
 			{
 				_DataType2 p2 = pKeys;
 				while(*p2 != '\0')
 				{
-					if(GAIA::ALGO::tolower(*p1) == GAIA::ALGO::tolower(*p2))
-						return p1;
+					if(GAIA::ALGO::tolower(*p) == GAIA::ALGO::tolower(*p2))
+						return p;
 					++p2;
 				}
-				++p1;
+				++p;
 			}
 			return GNULL;
 		}

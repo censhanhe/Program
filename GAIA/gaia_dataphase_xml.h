@@ -18,7 +18,7 @@ namespace GAIA
 		public:
 			GINL XML(){this->init();}
 			GINL ~XML(){this->Destroy();}
-			GINL GAIA::BL Load(const __AccesserType& acc)
+			GINL GAIA::BL Load(__AccesserType& acc)
 			{
 				this->Destroy();
 
