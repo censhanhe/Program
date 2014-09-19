@@ -183,9 +183,6 @@ namespace GAIA
 				GAIA_AST(offset >= 0);
 				if(offset < 0)
 					return GAIA::False;
-				GAIA_AST(offset <= m_size);
-				if(offset > m_size)
-					return GAIA::False;
 				m_offset = offset;
 				m_index = 0;
 				return GAIA::True;
@@ -201,9 +198,6 @@ namespace GAIA
 					return GAIA::False;
 				GAIA_AST(stride >= sizeof(_DataType));
 				if(stride < sizeof(_DataType))
-					return GAIA::False;
-				GAIA_AST(stride <= m_size - m_offset);
-				if(stride > m_size - m_offset)
 					return GAIA::False;
 				m_stride = stride;
 				return GAIA::True;
@@ -367,7 +361,7 @@ namespace GAIA
 			{
 				if(index < 0)
 					return GAIA::False;
-				if(m_offset + index * m_stride + m_stride > m_size)
+				if(this->practice_offset(index + 1) > this->size())
 					return GAIA::False;
 				return GAIA::True;
 			}

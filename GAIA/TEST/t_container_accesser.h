@@ -339,7 +339,6 @@ namespace GAIATEST
 					++nRet;
 				}
 				accfile.Resize(ACCESS_ELEMENT_COUNT);
-
 				typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 				__AccType acc;
 				acc.bind(accfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
