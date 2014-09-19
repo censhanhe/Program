@@ -130,6 +130,7 @@ namespace GAIA
 			};
 		public:
 			GINL Accesser(){this->init();}
+			GINL Accesser(GAIA::N32 n){GAIA_AST(n == GNULL); this->operator = (n);}
 			GINL Accesser(const __MyType& src){this->operator = (src);}
 			GINL ~Accesser(){this->destroy();}
 			GINL GAIA::BL bind(_DataType* p, const _SizeType& size, GAIA::UM access_type_mask)
@@ -218,6 +219,7 @@ namespace GAIA
 			GINL ConstNode operator * () const{return (*this)[0];}
 			GINL Node operator [] (const _SizeType& index){Node n; n.m_acc = this; n.m_index = index; return n;}
 			GINL ConstNode operator [] (const _SizeType& index) const{ConstNode n; n.m_acc = this; n.m_index = index; return n;}
+			GINL __MyType& operator = (GAIA::N32 n){this->init(); return *this;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				GAIA_AST(&src != this);
@@ -263,6 +265,8 @@ namespace GAIA
 			GINL _SizeType operator - (const __MyType& src){return this->index() - src.index();}
 			GINL __MyType operator + (const _SizeType& size){__MyType ret; ret = *this; ret += size; return ret;}
 			GINL __MyType operator - (const _SizeType& size){__MyType ret; ret = *this; ret -= size; return ret;}
+			GINL GAIA::BL operator == (GAIA::N32 n) const{GAIA_AST(n == GNULL); return this->empty();}
+			GINL GAIA::BL operator != (GAIA::N32 n) const{GAIA_AST(n == GNULL); return !this->empty();}
 			GINL GAIA::BL operator == (const __MyType& src) const
 			{
 				if(m_bindtype != src.m_bindtype)

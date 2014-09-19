@@ -15,6 +15,7 @@ namespace GAIA
 			typedef XML<_CharType, _SizeType, _SizeIncreaserType> __MyType;
 			typedef const _CharType* __ConstCharPtrType;
 			typedef GAIA::CTN::Accesser<_CharType, _SizeType, _SizeIncreaserType> __AccesserType;
+			typedef GAIA::CTN::BasicString<_CharType, _SizeType> __StringType;
 		public:
 			GINL XML(){this->init();}
 			GINL ~XML(){this->Destroy();}
@@ -22,25 +23,45 @@ namespace GAIA
 			{
 				this->Destroy();
 
+				/* Load file header. */
+				__AccesserType newacc = GAIA::ALGO::strdrop(acc, _T("<"));
+				if(newacc == GNULL)
+					return GAIA::False;
+				if(newacc != acc)
+					acc = newacc;
+				if(acc[1] != '?')
+					return GAIA::False;
+				newacc = GAIA::ALGO::strch(acc, '>');
+				if(newacc == GNULL)
+					return GAIA::False;
+				acc =  newacc;
+
+				/* Load node. */
+				if(!this->LoadNode(acc))
+					return GAIA::False;
 				return GAIA::True;
 			}
 			GINL GAIA::BL Save(__AccesserType& acc, GAIA::CHARSET_TYPE cst)
 			{
 				if(m_root == GNULL)
 					return GAIA::False;
+
+				/* Save file header. */
 				if(cst != CHARSET_TYPE_ANSI && 
 					cst != CHARSET_TYPE_UTF7 && 
 					cst != CHARSET_TYPE_UTF8 && 
 					cst != CHARSET_TYPE_UTF16LE && 
 					cst != CHARSET_TYPE_UTF16BE)
 					return GAIA::False;
-				static const GAIA::TCH* VERSION_STRING = _T("1.0");
+				static const _CharType* VERSION_STRING = _T("1.0");
 				acc = GAIA::ALGO::stradd(acc, _T("<?xml version=\""));
 				acc = GAIA::ALGO::stradd(acc, VERSION_STRING);
 				acc = GAIA::ALGO::stradd(acc, _T("\" encoding=\""));
 				acc = GAIA::ALGO::stradd(acc, GAIA::CHARSET_CODEPAGE_NAMEA[cst] + 1);
 				acc = GAIA::ALGO::stradd(acc, _T("\"?>"));
 				acc = GAIA::ALGO::stradd(acc, m_lineflag.front_ptr());
+
+				/* Save node. */
 				if(!this->SaveNode(0, m_root, acc))
 					return GAIA::False;
 				return GAIA::True;
@@ -257,17 +278,142 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
+			GINL GAIA::BL LoadAttr(__AccesserType& acc)
+			{
+				for(;;)
+				{
+					/* Drop invalid character. */
+					while(!acc.empty())
+					{
+						_CharType ch = *acc;
+						if(ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n')
+							++acc;
+						else if(ch == '/' || ch == '>')
+							return GAIA::True;
+						else
+							break;
+					}
+
+					/* Load attr name. */
+					__AccesserType newacc = GAIA::ALGO::strdrop(acc, _T("="));
+					if(newacc == GNULL)
+						return GAIA::False;
+					const _CharType* pAttrName = GNULL;
+					if(newacc - acc > CACHE_ATTRNAME_SIZE)
+					{
+						m_strTempAttrName.clear();
+						m_strTempAttrName.resize(newacc - acc);
+						GAIA::ALGO::strcpy(m_strTempAttrName.front_ptr(), acc, newacc - acc);
+						pAttrName = m_strTempAttrName;
+					}
+					else
+					{
+						GAIA::ALGO::strcpy(m_szTempAttrName, acc, newacc - acc);
+						pAttrName = m_szTempAttrName;
+					}
+					acc = newacc;
+
+					/* Load attr value. */
+					const _CharType* pAttrValue = GNULL;
+					newacc = GAIA::ALGO::strdrop(acc, _T("\""));
+					if(newacc == GNULL)
+						return GAIA::False;
+					acc = newacc;
+					++acc;
+					newacc = GAIA::ALGO::strdrop(acc, _T("\""));
+					if(newacc == GNULL)
+						return GAIA::False;
+					if(newacc - acc > CACHE_ATTRNAME_SIZE)
+					{
+						m_strTempAttrValue.clear();
+						m_strTempAttrValue.resize(newacc - acc);
+						GAIA::ALGO::strcpy(m_strTempAttrValue.front_ptr(), acc, newacc - acc);
+						pAttrValue = m_strTempAttrValue;
+					}
+					else
+					{
+						GAIA::ALGO::strcpy(m_szTempAttrValue, acc, newacc - acc);
+						pAttrValue = m_szTempAttrValue;
+					}
+					acc = newacc;
+					++acc;
+
+					/* Write attr. */
+					this->WriteAttr(pAttrName, pAttrValue);
+				}
+				return GAIA::True;
+			}
+			GINL GAIA::BL LoadNode(__AccesserType& acc)
+			{
+				/* Load node name. */
+				__AccesserType newacc = GAIA::ALGO::strdrop(acc, _T("<"));
+				if(newacc == GNULL)
+					return GAIA::False;
+				acc = newacc;
+				++acc;
+				newacc = GAIA::ALGO::strdrop(acc, _T(" /"));
+				if(newacc == GNULL)
+					return GAIA::False;
+				if(newacc - acc > CACHE_NODENAME_SIZE)
+				{
+					m_strTempNodeName.clear();
+					m_strTempNodeName.resize(newacc - acc);
+					GAIA::ALGO::strcpy(m_strTempNodeName.front_ptr(), acc, newacc - acc);
+					this->WriteNode(m_strTempNodeName);
+				}
+				else
+				{
+					GAIA::ALGO::strcpy(m_szTempNodeName, acc, newacc - acc);
+					this->WriteNode(m_szTempNodeName);
+				}
+				acc = newacc;
+
+				/* Load attributes. */
+				if(!this->LoadAttr(acc))
+					return GAIA::False;
+
+				/* Load child node. */
+				for(;;)
+				{
+					newacc = GAIA::ALGO::strdrop(acc, _T("/<"));
+					if(newacc == GNULL)
+						return GAIA::False;
+					if(*newacc == '/' || *(newacc + 1) == '/')
+					{
+						acc = newacc;
+						break;
+					}
+					if(!this->LoadNode(acc))
+						return GAIA::False;
+				}
+
+				/* Move to node end. */
+				newacc = GAIA::ALGO::strdrop(acc, _T(">"));
+				if(newacc == GNULL)
+					return GAIA::False;
+				acc = newacc;
+
+				/* End. */
+				this->End();
+				return GAIA::True;
+			}
 			GINL GAIA::BL SaveNode(const GAIA::SIZE& sDepth, const Node* pNode, __AccesserType& acc) const
 			{
+				/* Write tabs by depth. */
 				for(GAIA::SIZE x = 0; x < sDepth; ++x)
 				{
-					*acc = '\t'; ++acc;
+					*acc = '\t';
+					++acc;
 				}
+
+				/* Write node name. */
 				*acc = '<'; ++acc;
 				const _CharType* pNodeName = m_ssp.get(pNode->name);
 				GAIA_AST(pNode != GNULL);
-				GAIA::SIZE sNodeLen = GAIA::ALGO::strlen(pNodeName);
+				_SizeType sNodeLen = GAIA::ALGO::strlen(pNodeName);
 				acc = GAIA::ALGO::stradd(acc, pNodeName);
+
+				/* Write node attr.*/
 				for(_SizeType x = 0; x < pNode->attrs.size(); ++x)
 				{
 					const Attr& attr = pNode->attrs[x];
@@ -278,15 +424,17 @@ namespace GAIA
 					const _CharType* pAttrValue = m_ssp.get(attr.value);
 					GAIA_AST(pAttrName != GNULL);
 					GAIA_AST(pAttrValue != GNULL);
-					GAIA::SIZE sAttrNameLen = GAIA::ALGO::strlen(pAttrName);
-					GAIA::SIZE sAttrValueLen = GAIA::ALGO::strlen(pAttrValue);
-					GAIA::ALGO::stradd(acc, pAttrName);
+					_SizeType sAttrNameLen = GAIA::ALGO::strlen(pAttrName);
+					_SizeType sAttrValueLen = GAIA::ALGO::strlen(pAttrValue);
+					acc = GAIA::ALGO::stradd(acc, pAttrName);
 					*acc = '='; ++acc;
 					*acc = '\"'; ++acc;
 					if(sAttrValueLen != 0)
 						acc = GAIA::ALGO::stradd(acc, pAttrValue);
 					*acc = '\"'; ++acc;
 				}
+
+				/* Write child node. */
 				GAIA::BL bExistChildNode = GAIA::False;
 				for(_SizeType x = 0; x < pNode->nodes.size(); ++x)
 				{
@@ -302,6 +450,8 @@ namespace GAIA
 					if(!this->SaveNode(sDepth + 1, pChildNode, acc))
 						return GAIA::False;
 				}
+
+				/* Write node end flag. */
 				if(bExistChildNode)
 				{
 					for(GAIA::SIZE x = 0; x < sDepth; ++x)
@@ -320,6 +470,7 @@ namespace GAIA
 					*acc = '>'; ++acc;
 				}
 				acc = GAIA::ALGO::stradd(acc, m_lineflag.front_ptr());
+
 				return GAIA::True;
 			}
 		private:
@@ -330,6 +481,16 @@ namespace GAIA
 			typename __AttrListType::_sizetype m_attrcursor;
 			GAIA::BL m_bEnd;
 			GAIA::CTN::BasicChars<_CharType, _SizeType, 2> m_lineflag;
+		private: // Temp member variables.
+			static const _SizeType CACHE_NODENAME_SIZE = 128;
+			static const _SizeType CACHE_ATTRNAME_SIZE = 128;
+			static const _SizeType CACHE_ATTRVALUE_SIZE = 1024;
+			_CharType m_szTempNodeName[CACHE_NODENAME_SIZE + 1];
+			_CharType m_szTempAttrName[CACHE_ATTRNAME_SIZE + 1];
+			_CharType m_szTempAttrValue[CACHE_ATTRVALUE_SIZE + 1];
+			__StringType m_strTempNodeName;
+			__StringType m_strTempAttrName;
+			__StringType m_strTempAttrValue;
 		};
 	};
 };
