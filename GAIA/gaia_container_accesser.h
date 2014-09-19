@@ -133,29 +133,55 @@ namespace GAIA
 			GINL Accesser(GAIA::N32 n){GAIA_AST(n == GNULL); this->operator = (n);}
 			GINL Accesser(const __MyType& src){this->operator = (src);}
 			GINL ~Accesser(){this->destroy();}
-			GINL GAIA::BL bind(_DataType* p, const _SizeType& size, GAIA::UM access_type_mask)
+			GINL GAIA::BL bindmem(_DataType* p, const _SizeType& size, GAIA::UM atm)
 			{
-				this->destroy();
 				if(p == GNULL)
-					return GAIA::False;
-				if(size <= 0)
-					return GAIA::False;
+				{
+					GAIA_AST(atm | ACCESS_TYPE_WRITE);
+					if(size != 0)
+						return GAIA::False;
+					this->expandable(GAIA::True);
+				}
+				else
+				{
+					if(size <= 0)
+						return GAIA::False;
+				}
+				this->destroy();
 				m_p = p;
 				m_size = size;
 				m_bindtype = BIND_TYPE_MEM;
-				m_atm = access_type_mask;
+				m_atm = atm;
 				return GAIA::True;
 			}
-			GINL GAIA::BL bind(GAIA::FILESYSTEM::FileBase& file, GAIA::UM access_type_mask)
+			GINL GAIA::BL bindfile(GAIA::FILESYSTEM::FileBase* pFile, GAIA::UM atm)
 			{
+				if(pFile == GNULL)
+				{
+					GAIA_AST(atm | ACCESS_TYPE_WRITE);
+					this->expandable(GAIA::True);
+					pFile = new GAIA::FILESYSTEM::File;
+					GAIA::UM opentype = 0;
+					if(atm & ACCESS_TYPE_READ)
+						opentype |= GAIA::FILESYSTEM::File::OPEN_TYPE_READ;
+					if(atm & ACCESS_TYPE_WRITE)
+						opentype |= GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE;
+					opentype |= GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS;
+					GAIA::MATH::RID128 rid128;
+					rid128.uuid();
+					GAIA::TCH szTempFileName[33];
+					rid128.tostring(szTempFileName);
+					if(!pFile->Open(szTempFileName, opentype))
+						return GAIA::False;
+				}
 				this->destroy();
-				GAIA_AST(file.IsOpen());
-				if(!file.IsOpen())
+				GAIA_AST(pFile->IsOpen());
+				if(!pFile->IsOpen())
 					return GAIA::False;
-				m_file = &file;
-				m_size = file.Size();
+				m_file = pFile;
+				m_size = pFile->Size();
 				m_bindtype = BIND_TYPE_FILE;
-				m_atm = access_type_mask;
+				m_atm = atm;
 				return GAIA::True;
 			}
 			GINL BIND_TYPE bindtype() const{return m_bindtype;}
@@ -178,9 +204,6 @@ namespace GAIA
 			GINL const _SizeType& size() const{return m_size;}
 			GINL GAIA::BL offset(const _SizeType& offset)
 			{
-				GAIA_AST(this->isbinded());
-				if(!this->isbinded())
-					return GAIA::False;
 				GAIA_AST(offset >= 0);
 				if(offset < 0)
 					return GAIA::False;
@@ -191,9 +214,6 @@ namespace GAIA
 			GINL const _SizeType& offset() const{return m_offset;}
 			GINL GAIA::BL stride(const _SizeType& stride)
 			{
-				GAIA_AST(this->isbinded());
-				if(!this->isbinded())
-					return GAIA::False;
 				GAIA_AST(stride > 0);
 				if(stride <= 0)
 					return GAIA::False;
@@ -206,9 +226,6 @@ namespace GAIA
 			GINL const _SizeType& stride() const{return m_stride;}
 			GINL GAIA::BL index(const _SizeType& index)
 			{
-				GAIA_AST(this->isbinded());
-				if(!this->isbinded())
-					return GAIA::False;
 				m_index = index;
 				return GAIA::True;
 			}
@@ -236,30 +253,22 @@ namespace GAIA
 			}
 			GINL __MyType& operator ++ ()
 			{
-				GAIA_AST(this->isbinded());
-				if(this->isbinded())
-					++m_index;
+				++m_index;
 				return *this;
 			}
 			GINL __MyType& operator -- ()
 			{
-				GAIA_AST(this->isbinded());
-				if(this->isbinded())
-					--m_index;
+				--m_index;
 				return *this;
 			}
 			GINL __MyType& operator += (const _SizeType& size)
 			{
-				GAIA_AST(this->isbinded());
-				if(this->isbinded())
-					m_index += size;
+				m_index += size;
 				return *this;
 			}
 			GINL __MyType& operator -= (const _SizeType& size)
 			{
-				GAIA_AST(this->isbinded());
-				if(this->isbinded())
-					m_index -= size;
+				m_index -= size;
 				return *this;
 			}
 			GINL _SizeType operator - (const __MyType& src){return this->index() - src.index();}
@@ -372,10 +381,7 @@ namespace GAIA
 			GINL _SizeType practice_offset(const _SizeType& index) const{return m_offset + index * m_stride;}
 			GINL GAIA::BL set(const _SizeType& index, const _DataType& src)
 			{
-				GAIA_AST(this->isbinded());
-				if(!this->isbinded())
-					return GAIA::False;
-				if(!this->is_valid_index(m_index + index))
+				if(!this->isbinded() || !this->is_valid_index(m_index + index))
 				{
 					if(this->expandable())
 					{

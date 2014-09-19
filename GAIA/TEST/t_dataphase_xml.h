@@ -340,7 +340,7 @@ namespace GAIATEST
 			typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 			__AccType acc;
 			acc.expandable(GAIA::True);
-			if(!acc.bind(xmlfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE))
+			if(!acc.bindfile(&xmlfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE))
 			{
 				GTLINE2("Bind accesser to the file failed!");
 				++nRet;
@@ -366,7 +366,7 @@ namespace GAIATEST
 		{
 			typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 			__AccType acc;
-			if(!acc.bind(xmlfile, __AccType::ACCESS_TYPE_READ))
+			if(!acc.bindfile(&xmlfile, __AccType::ACCESS_TYPE_READ))
 			{
 				GTLINE2("Bind accesser to file failed!");
 				++nRet;
