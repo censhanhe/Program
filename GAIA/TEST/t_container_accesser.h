@@ -370,6 +370,26 @@ namespace GAIATEST
 					++nRet;
 				}
 			}
+
+			/* Expandable accesser test. */
+			{
+				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+				__AccType acc;
+				acc.expandable(GAIA::True);
+				acc.bindfile(GNULL, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				for(GAIA::SIZE x = 0; x < 100; ++x)
+					acc[x] = x;
+				for(GAIA::SIZE x = 0; x < 100; ++x)
+				{
+					if(acc[x] != x)
+					{
+						GTLINE2("File accesser bind NULL test failed!");
+						++nRet;
+						break;
+					}
+				}
+				delete acc.bindfile();
+			}
 		}
 
 		return nRet;

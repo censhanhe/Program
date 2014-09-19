@@ -169,8 +169,9 @@ namespace GAIA
 					opentype |= GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS;
 					GAIA::MATH::RID128 rid128;
 					rid128.uuid();
-					GAIA::TCH szTempFileName[33];
+					GAIA::TCH szTempFileName[37];
 					rid128.tostring(szTempFileName);
+					GAIA::ALGO::strcat(szTempFileName, _T(".acc"));
 					if(!pFile->Open(szTempFileName, opentype))
 						return GAIA::False;
 				}

@@ -226,6 +226,10 @@ pip-log.txt
 
 *.xcuserstate
 
+#####################
+# My self.
+#####################
 gaia_test.txt
 accesser_file
 xmlfile.xml
+*.acc
