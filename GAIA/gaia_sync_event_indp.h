@@ -18,10 +18,10 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC Event::Event()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			*(HANDLE*)m_head = ::CreateEvent(GNULL, FALSE, FALSE, GNULL);
+			*(HANDLE*)m_head = ::CreateEvent(GNIL, FALSE, FALSE, GNIL);
 		#else
-			pthread_mutex_init((pthread_mutex_t*)m_headmutex, GNULL);
-			pthread_cond_init((pthread_cond_t*)m_head, GNULL);
+			pthread_mutex_init((pthread_mutex_t*)m_headmutex, GNIL);
+			pthread_cond_init((pthread_cond_t*)m_head, GNIL);
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Event::~Event()
@@ -68,7 +68,7 @@ namespace GAIA
 					else
 					{
 						timeval now;
-						gettimeofday(&now, GNULL);
+						gettimeofday(&now, GNIL);
 						timespec abstime;
 						abstime.tv_nsec = now.tv_usec * 1000 + (uMilliSecond % 1000) * 1000000;
 						abstime.tv_sec = now.tv_sec + uMilliSecond / 1000;

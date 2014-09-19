@@ -291,7 +291,7 @@ namespace GAIA
 			GINL GAIA::BL insert(const _DataType& t)
 			{
 				Node* pN = this->find_node(t);
-				if(pN == GNULL)
+				if(pN == GNIL)
 				{
 					Node n;
 					n.m_datas.push_back(t);
@@ -312,7 +312,7 @@ namespace GAIA
 			GINL GAIA::BL erase(const Pair<_DataType, _SizeType>& t)
 			{
 				Node* pN = this->find_node(t.front());
-				if(pN == GNULL)
+				if(pN == GNIL)
 					return GAIA::False;
 				if(t.back() >= pN->m_datas.size())
 					return GAIA::False;
@@ -321,29 +321,29 @@ namespace GAIA
 			GINL _SizeType count(const _DataType& t) const
 			{
 				Node* pN = this->find_node(t);
-				if(pN == GNULL)
+				if(pN == GNIL)
 					return 0;
 				return pN->m_datas.size();
 			}
 			GINL _DataType* find(const _DataType& t)
 			{
 				Node* pN = this->find_node(t);
-				if(pN == GNULL)
-					return GNULL;
+				if(pN == GNIL)
+					return GNIL;
 				return &pN->m_datas.front();
 			}
 			GINL const _DataType* find(const _DataType& t) const
 			{
 				const Node* pN = this->find_node(t);
-				if(pN == GNULL)
-					return GNULL;
+				if(pN == GNIL)
+					return GNIL;
 				return &pN->m_datas.front();
 			}
 			GINL GAIA::BL find(const _DataType& t, __DataListType& result) const
 			{
 				const Node* pN = this->find_node(t);
-				if(pN == GNULL)
-					return GNULL;
+				if(pN == GNIL)
+					return GNIL;
 				typename Node::__DataListType::const_it iter = pN->m_datas.const_front_it();
 				if(iter.empty())
 					return GAIA::False;
@@ -399,29 +399,29 @@ namespace GAIA
 			GINL const _DataType* minimize() const
 			{
 				const Node* pN = m_avltree.minimize();
-				if(pN == GNULL)
-					return GNULL;
+				if(pN == GNIL)
+					return GNIL;
 				return &pN->m_datas.front();
 			}
 			GINL _DataType* minimize()
 			{
 				Node* pN = m_avltree.minimize();
-				if(pN == GNULL)
-					return GNULL;
+				if(pN == GNIL)
+					return GNIL;
 				return &pN->m_datas.front();
 			}
 			GINL const _DataType* maximize() const
 			{
 				const Node* pN = m_avltree.maximize();
-				if(pN == GNULL)
-					return GNULL;
+				if(pN == GNIL)
+					return GNIL;
 				return &pN->m_datas.front();
 			}
 			GINL _DataType* maximize()
 			{
 				Node* pN = m_avltree.maximize();
-				if(pN == GNULL)
-					return GNULL;
+				if(pN == GNIL)
+					return GNIL;
 				return &pN->m_datas.front();
 			}
 			GINL it front_it()

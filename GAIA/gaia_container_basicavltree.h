@@ -37,19 +37,19 @@ namespace GAIA
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNIL;}
 				GINL virtual _DataType& operator * (){return m_pNode->t;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
 					m_pNode = this->select_next(m_pNode);
 					return *this;
 				}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
 					m_pNode = this->select_prev(m_pNode);
 					return *this;
@@ -135,15 +135,15 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 				GINL Node* select_next(Node* pNode)
 				{
-					if(pNode->pNext != GNULL)
+					if(pNode->pNext != GNIL)
 						pNode = m_pContainer->front_node(pNode->pNext);
 					else
 					{
 						for(;;)
 						{
-							if(pNode->pParent == GNULL)
+							if(pNode->pParent == GNIL)
 							{
-								pNode = GNULL;
+								pNode = GNIL;
 								break;
 							}
 							else
@@ -162,15 +162,15 @@ namespace GAIA
 				}
 				GINL Node* select_prev(Node* pNode)
 				{
-					if(pNode->pPrev != GNULL)
+					if(pNode->pPrev != GNIL)
 						pNode = m_pContainer->back_node(pNode->pPrev);
 					else
 					{
 						for(;;)
 						{
-							if(pNode->pParent == GNULL)
+							if(pNode->pParent == GNIL)
 							{
-								pNode = GNULL;
+								pNode = GNIL;
 								break;
 							}
 							else
@@ -188,7 +188,7 @@ namespace GAIA
 					return pNode;
 				}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pContainer = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNIL; m_pContainer = GNIL;}
 			private:
 				Node* m_pNode;
 				__MyType* m_pContainer;
@@ -200,18 +200,18 @@ namespace GAIA
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNIL;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
 					m_pNode = this->select_next(m_pNode);
 					return *this;
 				}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
 					m_pNode = this->select_prev(m_pNode);
 					return *this;
@@ -295,15 +295,15 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 				GINL const Node* select_next(const Node* pNode)
 				{
-					if(pNode->pNext != GNULL)
+					if(pNode->pNext != GNIL)
 						pNode = m_pContainer->front_node(pNode->pNext);
 					else
 					{
 						for(;;)
 						{
-							if(pNode->pParent == GNULL)
+							if(pNode->pParent == GNIL)
 							{
-								pNode = GNULL;
+								pNode = GNIL;
 								break;
 							}
 							else
@@ -322,15 +322,15 @@ namespace GAIA
 				}
 				GINL const Node* select_prev(const Node* pNode)
 				{
-					if(pNode->pPrev != GNULL)
+					if(pNode->pPrev != GNIL)
 						pNode = m_pContainer->back_node(pNode->pPrev);
 					else
 					{
 						for(;;)
 						{
-							if(pNode->pParent == GNULL)
+							if(pNode->pParent == GNIL)
 							{
-								pNode = GNULL;
+								pNode = GNIL;
 								break;
 							}
 							else
@@ -348,7 +348,7 @@ namespace GAIA
 					return pNode;
 				}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pContainer = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNIL; m_pContainer = GNIL;}
 			private:
 				const Node* m_pNode;
 				const __MyType* m_pContainer;
@@ -359,117 +359,117 @@ namespace GAIA
 			GINL GAIA::BL empty() const{return m_pool.empty();}
 			GINL _SizeType size() const{return m_pool.size();}
 			GINL const _SizeType& capacity() const{return m_pool.capacity();}
-			GINL GAIA::GVOID clear(){m_pRoot = GNULL; m_pool.clear();}
-			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_pool.destroy();}
+			GINL GAIA::GVOID clear(){m_pRoot = GNIL; m_pool.clear();}
+			GINL GAIA::GVOID destroy(){m_pRoot = GNIL; m_pool.destroy();}
 			GINL GAIA::BL insert(const _DataType& t)
 			{
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 				{
 					m_pRoot = m_pool.alloc();
 					m_pRoot->t = t;
 					m_pRoot->h = 1;
-					m_pRoot->pPrev = GNULL;
-					m_pRoot->pNext = GNULL;
-					m_pRoot->pParent = GNULL;
+					m_pRoot->pPrev = GNIL;
+					m_pRoot->pNext = GNIL;
+					m_pRoot->pParent = GNIL;
 					return GAIA::True;
 				}
 				else
 				{
 					GAIA::BL bResult = GAIA::False;
 					m_pRoot = this->insert_node(m_pRoot, t, bResult);
-					m_pRoot->pParent = GNULL;
+					m_pRoot->pParent = GNIL;
 					return bResult;
 				}
 			}
 			GINL GAIA::BL erase(const _DataType& t)
 			{
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 					return GAIA::False;
 				GAIA::BL bResult = GAIA::False;
 				m_pRoot = this->erase_node(m_pRoot, t, bResult);
-				if(m_pRoot != GNULL)
-					m_pRoot->pParent = GNULL;
+				if(m_pRoot != GNIL)
+					m_pRoot->pParent = GNIL;
 				return bResult;
 			}
 			GINL _DataType* find(const _DataType& t)
 			{
-				if(m_pRoot == GNULL)
-					return GNULL;
+				if(m_pRoot == GNIL)
+					return GNIL;
 				return this->find_node(m_pRoot, t);
 			}
 			GINL const _DataType* find(const _DataType& t) const
 			{
-				if(m_pRoot == GNULL)
-					return GNULL;
+				if(m_pRoot == GNIL)
+					return GNIL;
 				return this->find_node(m_pRoot, t);
 			}
 			GINL it lower_bound(const _DataType& t)
 			{
 				it iter;
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 				{
-					iter.m_pNode = GNULL;
-					iter.m_pContainer = GNULL;
+					iter.m_pNode = GNIL;
+					iter.m_pContainer = GNIL;
 					return iter;
 				}
 				iter.m_pNode = this->lower_bound_node(m_pRoot, t);
-				if(iter.m_pNode != GNULL)
+				if(iter.m_pNode != GNIL)
 					iter.m_pContainer = this;
 				return iter;
 			}
 			GINL it upper_bound(const _DataType& t)
 			{
 				it iter;
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 				{
-					iter.m_pNode = GNULL;
-					iter.m_pContainer = GNULL;
+					iter.m_pNode = GNIL;
+					iter.m_pContainer = GNIL;
 					return iter;
 				}
 				iter.m_pNode = this->upper_bound_node(m_pRoot, t);
-				if(iter.m_pNode != GNULL)
+				if(iter.m_pNode != GNIL)
 					iter.m_pContainer = this;
 				return iter;
 			}
 			GINL const_it lower_bound(const _DataType& t) const
 			{
 				const_it iter;
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 				{
-					iter.m_pNode = GNULL;
-					iter.m_pContainer = GNULL;
+					iter.m_pNode = GNIL;
+					iter.m_pContainer = GNIL;
 					return iter;
 				}
 				iter.m_pNode = this->lower_bound_node(m_pRoot, t);
-				if(iter.m_pNode != GNULL)
+				if(iter.m_pNode != GNIL)
 					iter.m_pContainer = this;
 				return iter;
 			}
 			GINL const_it upper_bound(const _DataType& t) const
 			{
 				const_it iter;
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 				{
-					iter.m_pNode = GNULL;
-					iter.m_pContainer = GNULL;
+					iter.m_pNode = GNIL;
+					iter.m_pContainer = GNIL;
 					return iter;
 				}
 				iter.m_pNode = this->upper_bound_node(m_pRoot, t);
-				if(iter.m_pNode != GNULL)
+				if(iter.m_pNode != GNIL)
 					iter.m_pContainer = this;
 				return iter;
 			}
-			GINL const _DataType* minimize() const{if(m_pRoot == GNULL) return GNULL; return &this->findmin(m_pRoot);}
-			GINL _DataType* minimize(){if(m_pRoot == GNULL) return GNULL; return &this->findmin(m_pRoot);}
-			GINL const _DataType* maximize() const{if(m_pRoot == GNULL) return GNULL; return &this->findmax(m_pRoot);}
-			GINL _DataType* maximize(){if(m_pRoot == GNULL) return GNULL; return &this->findmax(m_pRoot);}
+			GINL const _DataType* minimize() const{if(m_pRoot == GNIL) return GNIL; return &this->findmin(m_pRoot);}
+			GINL _DataType* minimize(){if(m_pRoot == GNIL) return GNIL; return &this->findmin(m_pRoot);}
+			GINL const _DataType* maximize() const{if(m_pRoot == GNIL) return GNIL; return &this->findmax(m_pRoot);}
+			GINL _DataType* maximize(){if(m_pRoot == GNIL) return GNIL; return &this->findmax(m_pRoot);}
 			GINL it front_it()
 			{
 				it iter;
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 				{
-					iter.m_pNode = GNULL;
-					iter.m_pContainer = GNULL;
+					iter.m_pNode = GNIL;
+					iter.m_pContainer = GNIL;
 				}
 				else
 				{
@@ -481,10 +481,10 @@ namespace GAIA
 			GINL it back_it()
 			{
 				it iter;
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 				{
-					iter.m_pNode = GNULL;
-					iter.m_pContainer = GNULL;
+					iter.m_pNode = GNIL;
+					iter.m_pContainer = GNIL;
 				}
 				else
 				{
@@ -496,10 +496,10 @@ namespace GAIA
 			GINL const_it const_front_it() const
 			{
 				const_it iter;
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 				{
-					iter.m_pNode = GNULL;
-					iter.m_pContainer = GNULL;
+					iter.m_pNode = GNIL;
+					iter.m_pContainer = GNIL;
 				}
 				else
 				{
@@ -511,10 +511,10 @@ namespace GAIA
 			GINL const_it const_back_it() const
 			{
 				const_it iter;
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 				{
-					iter.m_pNode = GNULL;
-					iter.m_pContainer = GNULL;
+					iter.m_pNode = GNIL;
+					iter.m_pContainer = GNIL;
 				}
 				else
 				{
@@ -586,15 +586,15 @@ namespace GAIA
 			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 		private:
-			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
+			GINL GAIA::GVOID init(){m_pRoot = GNIL;}
 			GINL GAIA::GVOID rotate_prev(Node*& pNode)
 			{
 				Node* pTemp = pNode->pNext;
 				pNode->pNext = pTemp->pPrev;
-				if(pNode->pNext != GNULL)
+				if(pNode->pNext != GNIL)
 					pNode->pNext->pParent = pNode;
 				pTemp->pPrev = pNode;
-				if(pTemp->pPrev != GNULL)
+				if(pTemp->pPrev != GNIL)
 					pTemp->pPrev->pParent = pTemp;
 				pNode->h = this->height(pNode);
 				pTemp->h = this->height(pTemp);
@@ -604,10 +604,10 @@ namespace GAIA
 			{
 				Node* pTemp = pNode->pPrev;
 				pNode->pPrev = pTemp->pNext;
-				if(pNode->pPrev != GNULL)
+				if(pNode->pPrev != GNIL)
 					pNode->pPrev->pParent = pNode;
 				pTemp->pNext = pNode;
-				if(pTemp->pNext != GNULL)
+				if(pTemp->pNext != GNIL)
 					pTemp->pNext->pParent = pTemp;
 				pNode->h = this->height(pNode);
 				pTemp->h = this->height(pTemp);
@@ -615,26 +615,26 @@ namespace GAIA
 			}
 			GINL _HeightType height(Node* pNode)
 			{
-				_HeightType prevh = pNode->pPrev == GNULL ? 0 : pNode->pPrev->h;
-				_HeightType nexth = pNode->pNext == GNULL ? 0 : pNode->pNext->h;
+				_HeightType prevh = pNode->pPrev == GNIL ? 0 : pNode->pPrev->h;
+				_HeightType nexth = pNode->pNext == GNIL ? 0 : pNode->pNext->h;
 				return GAIA::ALGO::maximize(prevh, nexth) + 1;
 			}
 			GINL GAIA::GVOID balance(Node*& pNode)
 			{
-				_HeightType prevh = pNode->pPrev == GNULL ? 0 : pNode->pPrev->h;
-				_HeightType nexth = pNode->pNext == GNULL ? 0 : pNode->pNext->h;
+				_HeightType prevh = pNode->pPrev == GNIL ? 0 : pNode->pPrev->h;
+				_HeightType nexth = pNode->pNext == GNIL ? 0 : pNode->pNext->h;
 				if(prevh > nexth + 1)
 				{
-					_HeightType prevnexth = pNode->pPrev->pNext == GNULL ? 0 : pNode->pPrev->pNext->h;
-					_HeightType prevprevh = pNode->pPrev->pPrev == GNULL ? 0 : pNode->pPrev->pPrev->h;
+					_HeightType prevnexth = pNode->pPrev->pNext == GNIL ? 0 : pNode->pPrev->pNext->h;
+					_HeightType prevprevh = pNode->pPrev->pPrev == GNIL ? 0 : pNode->pPrev->pPrev->h;
 					if(prevnexth > prevprevh)
 						this->rotate_prev(pNode->pPrev);
 					this->rotate_next(pNode);
 				}
 				else if(nexth > prevh + 1)
 				{
-					_HeightType nextprevh = pNode->pNext->pPrev == GNULL ? 0 : pNode->pNext->pPrev->h;
-					_HeightType nextnexth = pNode->pNext->pNext == GNULL ? 0 : pNode->pNext->pNext->h;
+					_HeightType nextprevh = pNode->pNext->pPrev == GNIL ? 0 : pNode->pNext->pPrev->h;
+					_HeightType nextnexth = pNode->pNext->pNext == GNIL ? 0 : pNode->pNext->pNext->h;
 					if(nextprevh > nextnexth)
 						this->rotate_next(pNode->pNext);
 					this->rotate_prev(pNode);
@@ -642,67 +642,67 @@ namespace GAIA
 			}
 			GINL Node* front_node(Node* pNode)
 			{
-				if(pNode->pPrev != GNULL)
+				if(pNode->pPrev != GNIL)
 					return this->front_node(pNode->pPrev);
 				else
 					return pNode;
 			}
 			GINL Node* back_node(Node* pNode)
 			{
-				if(pNode->pNext != GNULL)
+				if(pNode->pNext != GNIL)
 					return this->back_node(pNode->pNext);
 				else
 					return pNode;
 			}
 			GINL const Node* front_node(const Node* pNode) const
 			{
-				if(pNode->pPrev != GNULL)
+				if(pNode->pPrev != GNIL)
 					return this->front_node(pNode->pPrev);
 				else
 					return pNode;
 			}
 			GINL const Node* back_node(const Node* pNode) const
 			{
-				if(pNode->pNext != GNULL)
+				if(pNode->pNext != GNIL)
 					return this->back_node(pNode->pNext);
 				else
 					return pNode;
 			}
 			GINL _DataType& findmin(Node* pNode) const
 			{
-				if(pNode->pPrev == GNULL)
+				if(pNode->pPrev == GNIL)
 					return pNode->t;
 				return this->findmin(pNode->pPrev);
 			}
 			GINL _DataType& findmax(Node* pNode) const
 			{
-				if(pNode->pNext == GNULL)
+				if(pNode->pNext == GNIL)
 					return pNode->t;
 				return this->findmax(pNode->pNext);
 			}
 			GINL Node* insert_node(Node* pNode, const _DataType& t, GAIA::BL& bResult)
 			{
-				if(pNode == GNULL)
+				if(pNode == GNIL)
 				{
 					bResult = GAIA::True;
 					Node* pNew = m_pool.alloc();
 					pNew->t = t;
 					pNew->h = 1;
-					pNew->pPrev = GNULL;
-					pNew->pNext = GNULL;
-					pNew->pParent = GNULL;
+					pNew->pPrev = GNIL;
+					pNew->pNext = GNIL;
+					pNew->pParent = GNIL;
 					return pNew;
 				}
 				if(t < pNode->t)
 				{
 					pNode->pPrev = this->insert_node(pNode->pPrev, t, bResult);
-					if(pNode->pPrev != GNULL)
+					if(pNode->pPrev != GNIL)
 						pNode->pPrev->pParent = pNode;
 				}
 				else if(t > pNode->t)
 				{
 					pNode->pNext = this->insert_node(pNode->pNext, t, bResult);
-					if(pNode->pNext != GNULL)
+					if(pNode->pNext != GNIL)
 						pNode->pNext->pParent = pNode;
 				}
 				else
@@ -713,18 +713,18 @@ namespace GAIA
 			}
 			GINL Node* erase_node(Node* pNode, const _DataType& t, GAIA::BL& bResult)
 			{
-				if(pNode == GNULL)
-					return GNULL;
+				if(pNode == GNIL)
+					return GNIL;
 				if(t < pNode->t)
 				{
 					pNode->pPrev = this->erase_node(pNode->pPrev, t, bResult);
-					if(pNode->pPrev != GNULL)
+					if(pNode->pPrev != GNIL)
 						pNode->pPrev->pParent = pNode;
 				}
 				else if(t > pNode->t)
 				{
 					pNode->pNext = this->erase_node(pNode->pNext, t, bResult);
-					if(pNode->pNext != GNULL)
+					if(pNode->pNext != GNIL)
 						pNode->pNext->pParent = pNode;
 				}
 				else
@@ -733,9 +733,9 @@ namespace GAIA
 					if(pNode->h == 1)
 					{
 						m_pool.release(pNode);
-						return GNULL;
+						return GNIL;
 					}
-					else if(pNode->pPrev != GNULL && pNode->pNext == GNULL)
+					else if(pNode->pPrev != GNIL && pNode->pNext == GNIL)
 					{
 						pNode->pPrev->pParent = pNode->pParent;
 						Node* pTemp = pNode;
@@ -743,7 +743,7 @@ namespace GAIA
 						m_pool.release(pTemp);
 						return pNode;
 					}
-					else if(pNode->pPrev == GNULL && pNode->pNext != GNULL)
+					else if(pNode->pPrev == GNIL && pNode->pNext != GNIL)
 					{
 						pNode->pNext->pParent = pNode->pParent;
 						Node* pTemp = pNode;
@@ -751,12 +751,12 @@ namespace GAIA
 						m_pool.release(pTemp);
 						return pNode;
 					}
-					else if(pNode->pPrev != GNULL && pNode->pNext != GNULL)
+					else if(pNode->pPrev != GNIL && pNode->pNext != GNIL)
 					{
 						const _DataType& mindata = this->findmin(pNode->pNext);
 						pNode->t = mindata;
 						pNode->pNext = this->erase_node(pNode->pNext, pNode->t, bResult);
-						if(pNode->pNext != GNULL)
+						if(pNode->pNext != GNIL)
 							pNode->pNext->pParent = pNode;
 					}
 				}
@@ -768,58 +768,58 @@ namespace GAIA
 			{
 				if(t < pNode->t)
 				{
-					if(pNode->pPrev != GNULL)
+					if(pNode->pPrev != GNIL)
 						return this->find_node(pNode->pPrev, t);
 				}
 				else if(t > pNode->t)
 				{
-					if(pNode->pNext != GNULL)
+					if(pNode->pNext != GNIL)
 						return this->find_node(pNode->pNext, t);
 				}
 				else
 					return &pNode->t;
-				return GNULL;
+				return GNIL;
 			}
 			GINL const _DataType* find_node(Node* pNode, const _DataType& t) const
 			{
 				if(t < pNode->t)
 				{
-					if(pNode->pPrev != GNULL)
+					if(pNode->pPrev != GNIL)
 						return this->find_node(pNode->pPrev, t);
 				}
 				else if(t > pNode->t)
 				{
-					if(pNode->pNext != GNULL)
+					if(pNode->pNext != GNIL)
 						return this->find_node(pNode->pNext, t);
 				}
 				else
 					return &pNode->t;
-				return GNULL;
+				return GNIL;
 			}
 			GINL Node* lower_bound_node(Node* pNode, const _DataType& t) const
 			{
-				if(pNode == GNULL)
-					return GNULL;
+				if(pNode == GNIL)
+					return GNIL;
 				if(pNode->t < t)
 					return this->lower_bound_node(pNode->pNext, t);
 				else
 				{
 					Node* pNew = this->lower_bound_node(pNode->pPrev, t);
-					if(pNew == GNULL)
+					if(pNew == GNIL)
 						return pNode;
 					return pNew;
 				}
 			}
 			GINL Node* upper_bound_node(Node* pNode, const _DataType& t) const
 			{
-				if(pNode == GNULL)
-					return GNULL;
+				if(pNode == GNIL)
+					return GNIL;
 				if(pNode->t > t)
 					return this->upper_bound_node(pNode->pPrev, t);
 				else
 				{
 					Node* pNew = this->upper_bound_node(pNode->pNext, t);
-					if(pNew == GNULL)
+					if(pNew == GNIL)
 						return pNode;
 					return pNew;
 				}
@@ -831,17 +831,17 @@ namespace GAIA
 		#ifdef GAIA_DEBUG_INTERNALROUTINE
 			GINL GAIA::BL dbg_check_balance()
 			{
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 					return GAIA::True;
 				else
 					return this->dbg_check_balance_node(m_pRoot);
 			}
 			GINL GAIA::BL dbg_check_balance_node(Node* pNode)
 			{
-				if(pNode == GNULL)
+				if(pNode == GNIL)
 					return GAIA::True;
-				_HeightType prevh = pNode->pPrev == GNULL ? 0 : pNode->pPrev->h;
-				_HeightType nexth = pNode->pNext == GNULL ? 0 : pNode->pNext->h;
+				_HeightType prevh = pNode->pPrev == GNIL ? 0 : pNode->pPrev->h;
+				_HeightType nexth = pNode->pNext == GNIL ? 0 : pNode->pNext->h;
 				if(prevh > nexth + 1 || nexth > prevh + 1)
 					return GAIA::False;
 				if(!this->dbg_check_balance_node(pNode->pPrev))
@@ -852,25 +852,25 @@ namespace GAIA
 			}
 			GINL GAIA::BL dbg_check_parent()
 			{
-				if(m_pRoot == GNULL)
+				if(m_pRoot == GNIL)
 					return GAIA::True;
 				else
 				{
-					if(m_pRoot->pParent != GNULL)
+					if(m_pRoot->pParent != GNIL)
 						return GAIA::False;
 					return this->dbg_check_parent_node(m_pRoot);
 				}
 			}
 			GINL GAIA::BL dbg_check_parent_node(Node* pNode)
 			{
-				if(pNode == GNULL)
+				if(pNode == GNIL)
 					return GAIA::True;
-				if(pNode->pPrev != GNULL)
+				if(pNode->pPrev != GNIL)
 				{
 					if(pNode->pPrev->pParent != pNode)
 						return GAIA::False;
 				}
-				if(pNode->pNext != GNULL)
+				if(pNode->pNext != GNIL)
 				{
 					if(pNode->pNext->pParent != pNode)
 						return GAIA::False;

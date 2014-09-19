@@ -93,7 +93,7 @@ namespace GAIATEST
 		}
 		for(__MultiAVLType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(mavl.find(x) == GNULL)
+			if(mavl.find(x) == GNIL)
 			{
 				GTLINE2("MultiAVL find element failed!");
 				++nRet;
@@ -102,7 +102,7 @@ namespace GAIATEST
 		}
 		for(__MultiAVLType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if((*(const __MultiAVLType*)&mavl).find(x) == GNULL)
+			if((*(const __MultiAVLType*)&mavl).find(x) == GNIL)
 			{
 				GTLINE2("MultiAVL const find element failed!");
 				++nRet;
@@ -160,7 +160,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		__MultiAVLType::_datatype* pMin = mavl.minimize();
-		if(pMin == GNULL)
+		if(pMin == GNIL)
 		{
 			GTLINE2("MultiAVL minimize failed!");
 			++nRet;
@@ -171,7 +171,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		__MultiAVLType::_datatype* pMax = mavl.maximize();
-		if(pMax == GNULL)
+		if(pMax == GNIL)
 		{
 			GTLINE2("MultiAVL maximize failed!");
 			++nRet;
@@ -183,12 +183,12 @@ namespace GAIATEST
 		}
 		mavl.destroy();
 		pMin = mavl.minimize();
-		if(pMin != GNULL)
+		if(pMin != GNIL)
 		{
 			GTLINE2("MultiAVL minimize failed!");
 			++nRet;
 		}
-		if(pMin != GNULL)
+		if(pMin != GNIL)
 		{
 			GTLINE2("MultiAVL maximize failed!");
 			++nRet;

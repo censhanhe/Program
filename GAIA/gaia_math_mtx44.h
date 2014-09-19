@@ -221,7 +221,7 @@ namespace GAIA
 				m[3][0] = (_DataType)src.m[3][0]; m[3][1] = (_DataType)src.m[3][1]; m[3][2] = (_DataType)src.m[3][2]; m[3][3] = (_DataType)src.m[3][3];
 				return *this;
 			}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNULL); GAIA::ALGO::copy(GSCAST(_DataType*)(m), p, sizeofarray2(m));}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNIL); GAIA::ALGO::copy(GSCAST(_DataType*)(m), p, sizeofarray2(m));}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGO::set((_DataType*)m, t, sizeofarray2(m));}
 

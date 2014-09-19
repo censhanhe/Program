@@ -25,7 +25,7 @@ namespace GAIA
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
-				GINL virtual GAIA::BL empty() const{return m_pContainer == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pContainer == GNIL;}
 				GINL virtual _DataType& operator * (){GAIA_AST(!!m_pContainer); return (*m_pContainer)[m_index];}
 				GINL virtual const _DataType& operator * () const{GAIA_AST(!!m_pContainer); return (*m_pContainer)[m_index];}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (){GAIA_AST(!!m_pContainer); ++m_index; if(m_index >= m_pContainer->size()) this->init(); return *this;}
@@ -36,7 +36,7 @@ namespace GAIA
 				GINL it& operator = (const it& src){GAIA_AST(&src != this); m_index = src.m_index; m_pContainer = src.m_pContainer; return *this;}
 				GINL it& operator += (const _SizeType& c)
 				{
-					if(m_pContainer == GNULL)
+					if(m_pContainer == GNIL)
 						return *this;
 					m_index += c;
 					if(m_index >= m_pContainer->size() || m_index < 0)
@@ -45,7 +45,7 @@ namespace GAIA
 				}
 				GINL it& operator -= (const _SizeType& c)
 				{
-					if(m_pContainer == GNULL)
+					if(m_pContainer == GNIL)
 						return *this;
 					m_index -= c;
 					if(m_index >= m_pContainer->size() || m_index < 0)
@@ -75,7 +75,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pContainer = GNULL; m_index = 0;}
+				GINL GAIA::GVOID init(){m_pContainer = GNIL; m_index = 0;}
 			private:
 				_SizeType m_index;
 				__MyType* m_pContainer;
@@ -87,7 +87,7 @@ namespace GAIA
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
-				GINL virtual GAIA::BL empty() const{return m_pContainer == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pContainer == GNIL;}
 				GINL virtual const _DataType& operator * () const{GAIA_AST(!!m_pContainer); return (*m_pContainer)[m_index];}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){GAIA_AST(!!m_pContainer); ++m_index; if(m_index >= m_pContainer->size()) this->init(); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){GAIA_AST(!!m_pContainer); --m_index; if(m_index >= m_pContainer->size() || m_index < 0) this->init(); return *this;}
@@ -97,7 +97,7 @@ namespace GAIA
 				GINL const_it& operator = (const const_it& src){GAIA_AST(&src != this); m_index = src.m_index; m_pContainer = src.m_pContainer; return *this;}
 				GINL const_it& operator += (const _SizeType& c)
 				{
-					if(m_pContainer == GNULL)
+					if(m_pContainer == GNIL)
 						return *this;
 					m_index += c;
 					if(m_index >= m_pContainer->size() || m_index < 0)
@@ -106,7 +106,7 @@ namespace GAIA
 				}
 				GINL const_it& operator -= (const _SizeType& c)
 				{
-					if(m_pContainer == GNULL)
+					if(m_pContainer == GNIL)
 						return *this;
 					m_index -= c;
 					if(m_index >= m_pContainer->size() || m_index < 0)
@@ -136,7 +136,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pContainer = GNULL; m_index = 0;}
+				GINL GAIA::GVOID init(){m_pContainer = GNIL; m_index = 0;}
 			private:
 				_SizeType m_index;
 				const __MyType* m_pContainer;
@@ -218,7 +218,7 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID push_back(const _DataType* p, const _SizeType& size)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(p != GNIL);
 				GAIA_AST(size > 0);
 				if(m_vec.capacity() != 0)
 				{

@@ -66,7 +66,7 @@ BIND_POOL:
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::CTN::TString* p = pl.alloc();
-			GAIA_AST(p != GNULL);
+			GAIA_AST(p != GNIL);
 			listTemp.push_back(p);
 		}
 		if(pl.empty())
@@ -87,7 +87,7 @@ BIND_POOL:
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::CTN::TString* p = listTemp[x];
-			GAIA_AST(p != GNULL);
+			GAIA_AST(p != GNIL);
 			if(!pl.release(p))
 			{
 				GTLINE2("Pool release failed!");
@@ -146,7 +146,7 @@ BIND_POOL:
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::CTN::TString* p = pl.alloc();
-			GAIA_AST(p != GNULL);
+			GAIA_AST(p != GNIL);
 			listTemp.push_back(p);
 		}
 		pl.clear();
@@ -185,7 +185,7 @@ BIND_POOL:
 		for(GAIA::SIZE x = 0; x < SAMPLE_COUNT; ++x)
 		{
 			GAIA::CTN::TString* p = pl.alloc();
-			GAIA_AST(p != GNULL);
+			GAIA_AST(p != GNIL);
 			listTemp.push_back(p);
 		}
 		pl.collect_valid_index_list(listIndex);
@@ -270,7 +270,7 @@ BIND_POOL:
 			++nRet;
 		}
 		pl.destroy();
-		if(pl.bind() == GNULL)
+		if(pl.bind() == GNIL)
 		{
 			if(!pl.bind(&parentpl))
 			{

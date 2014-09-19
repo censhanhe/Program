@@ -26,7 +26,7 @@ namespace GAIA
 				for(; !it.empty(); ++it)
 				{
 					WidgetNode& n = *it;
-					if(n.pWidget == GNULL)
+					if(n.pWidget == GNIL)
 					{
 						n.pWidget = &lw;
 						return GAIA::True;
@@ -46,7 +46,7 @@ namespace GAIA
 					if(n.pWidget == &lw)
 					{
 						n.pWidget->Release();
-						n.pWidget = GNULL;
+						n.pWidget = GNIL;
 						return GAIA::True;
 					}
 				}
@@ -70,10 +70,10 @@ namespace GAIA
 				for(; !it.empty(); ++it)
 				{
 					WidgetNode& n = *it;
-					if(n.pWidget != GNULL)
+					if(n.pWidget != GNIL)
 					{
 						n.pWidget->Release();
-						n.pWidget = GNULL;
+						n.pWidget = GNIL;
 						bRet = GAIA::True;
 					}
 				}
@@ -87,7 +87,7 @@ namespace GAIA
 				for(; !it.empty(); ++it)
 				{
 					const WidgetNode& n = *it;
-					if(n.pWidget != GNULL)
+					if(n.pWidget != GNIL)
 					{
 						n.pWidget->Reference();
 						listResult.push_back(n.pWidget);

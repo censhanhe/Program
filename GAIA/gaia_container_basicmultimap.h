@@ -271,8 +271,8 @@ namespace GAIA
 				Node n;
 				n.m_key = key;
 				Node* pN = m_mavltree.find(n);
-				if(pN == GNULL)
-					return GNULL;
+				if(pN == GNIL)
+					return GNIL;
 				return &pN->m_data;
 			}
 			GINL const _DataType* find(const _KeyType& key) const
@@ -280,8 +280,8 @@ namespace GAIA
 				Node n;
 				n.m_key = key;
 				const Node* pN = m_mavltree.find(n);
-				if(pN == GNULL)
-					return GNULL;
+				if(pN == GNIL)
+					return GNIL;
 				return &pN->m_data;
 			}
 			GINL GAIA::BL find(const _KeyType& key, __DataListType& result) const

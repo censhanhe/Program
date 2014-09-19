@@ -134,9 +134,9 @@ namespace GAIA
 		{
 			if(pSender == m_pSender)
 				return;
-			if(m_pSender != GNULL)
+			if(m_pSender != GNIL)
 				m_pSender->Remove(*this);
-			if(pSender != GNULL)
+			if(pSender != GNIL)
 				pSender->Add(*this);
 			m_pSender = pSender;
 		}
@@ -144,9 +144,9 @@ namespace GAIA
 		{
 			if(pReceiver == m_pReceiver)
 				return;
-			if(m_pReceiver != GNULL)
+			if(m_pReceiver != GNIL)
 				m_pReceiver->Remove(*this);
-			if(pReceiver != GNULL)
+			if(pReceiver != GNIL)
 				pReceiver->Add(*this);
 			m_pReceiver = pReceiver;
 		}
@@ -154,7 +154,7 @@ namespace GAIA
 		{
 			GAIA_AST(!!p);
 			GAIA_AST(uSize > 0);
-			if(p == GNULL || uSize == 0)
+			if(p == GNIL || uSize == 0)
 				return GAIA::False;
 			if(!this->IsStabilityLink())
 			{
@@ -326,10 +326,10 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult)
 		{
 			hostent* pHostEnt = gethostbyname(pszHostName);
-			if(pHostEnt != GNULL)
+			if(pHostEnt != GNIL)
 			{
 				GAIA::N32 nIndex = 0;
-				while(pHostEnt->h_addr_list[nIndex] != GNULL)
+				while(pHostEnt->h_addr_list[nIndex] != GNIL)
 				{
 					if(pHostEnt->h_addrtype == AF_INET)
 					{
@@ -496,12 +496,12 @@ namespace GAIA
 				#endif
 
 					//
-					NetworkHandle* h = GNULL;
-					if(m_pAcceptCallBack != GNULL)
+					NetworkHandle* h = GNIL;
+					if(m_pAcceptCallBack != GNIL)
 						h = m_pAcceptCallBack->CreateNetworkHandle();
 					else
 						h = new NetworkHandle;
-					if(h != GNULL)
+					if(h != GNIL)
 					{
 						h->m_h = newsock;
 						h->m_addr_self = m_desc.addr;

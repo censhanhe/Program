@@ -11,7 +11,7 @@ namespace GAIA
 		template<typename _ParamType> GAIA::BL SerializerProc::write(Serializer* p, const _ParamType& t)
 		{
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			pIO->Write(&t, sizeof(t));
 			pIO->Release();
@@ -20,7 +20,7 @@ namespace GAIA
 		template<typename _ParamType> GAIA::BL SerializerProc::read(Serializer* p, _ParamType& t)
 		{
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			pIO->Read(&t, sizeof(t));
 			pIO->Release();
@@ -33,7 +33,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicArray<_DataType, _SizeType, _Size> __ArrayType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __ArrayType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -61,7 +61,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicArray<_DataType, _SizeType, _Size> __ArrayType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __ArrayType::_sizetype size;
@@ -93,7 +93,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __VectorType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -121,7 +121,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __VectorType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __VectorType::_sizetype size;
@@ -153,7 +153,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicStack<_DataType, _SizeType, _SizeIncreaserType> __StackType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __StackType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -181,7 +181,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicStack<_DataType, _SizeType, _SizeIncreaserType> __StackType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __StackType::_sizetype size;
@@ -213,7 +213,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicQueue<_DataType, _SizeType, _SizeIncreaserType> __QueueType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __QueueType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -241,7 +241,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicQueue<_DataType, _SizeType, _SizeIncreaserType> __QueueType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __QueueType::_sizetype size;
@@ -273,7 +273,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicList<_DataType, _SizeType, _SizeIncreaserType> __ListType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __ListType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -301,7 +301,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicList<_DataType, _SizeType, _SizeIncreaserType> __ListType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __ListType::_sizetype size;
@@ -333,7 +333,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicTree<_DataType, _SizeType, _SizeIncreaserType> __TreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			pIO->Release();
 			return GAIA::True;
@@ -343,7 +343,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicTree<_DataType, _SizeType, _SizeIncreaserType> __TreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			pIO->Release();
@@ -356,7 +356,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __AVLTreeType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -384,7 +384,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicAVLTree<_DataType, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __AVLTreeType::_sizetype size;
@@ -416,7 +416,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType> __TrieTreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __TrieTreeType::_sizetype size = 0;
 			typename __TrieTreeType::const_it it = t.const_front_it();
@@ -467,7 +467,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicTrieTree<_DataType, _SizeType, _SizeIncreaserType> __TrieTreeType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __TrieTreeType::_sizetype size;
@@ -508,7 +508,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicStackBitset<_SizeType, _Size> __StackBitsetType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __StackBitsetType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -535,7 +535,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicStackBitset<_SizeType, _Size> __StackBitsetType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __StackBitsetType::_sizetype size;
@@ -565,7 +565,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicBitset<_SizeType, _SizeIncreaserType> __BitsetType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __BitsetType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -592,7 +592,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicBitset<_SizeType, _SizeIncreaserType> __BitsetType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __BitsetType::_sizetype size;
@@ -623,7 +623,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicChars<_DataType, _SizeType, _Size> __CharsType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __CharsType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -650,7 +650,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicChars<_DataType, _SizeType, _Size> __CharsType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __CharsType::_sizetype size;
@@ -686,7 +686,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicString<_DataType, _SizeType> __StringType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			typename __StringType::_sizetype size = t.size();
 			if(!write(p, size))
@@ -713,7 +713,7 @@ namespace GAIA
 		{
 			typedef GAIA::CTN::BasicString<_DataType, _SizeType> __StringType;
 			GAIA::IO::IO* pIO = p->GetBindIO();
-			if(pIO == GNULL)
+			if(pIO == GNIL)
 				return GAIA::False;
 			t.clear();
 			typename __StringType::_sizetype size;

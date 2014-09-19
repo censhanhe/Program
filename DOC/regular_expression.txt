@@ -9,11 +9,11 @@ CONDITION EXPRESS MOVE OPERATION CHECK UP.
 
 ASSERT EXPRESS CHECK UP.
 
-	Sample : GAIA_AST(p != GNULL)
-			 GAIA_AST(p == GNULL)
+	Sample : GAIA_AST(p != GNIL)
+			 GAIA_AST(p == GNIL)
 	Correct : GAIA_AST(!p)
 			  GAIA_AST(p)
-	Regular express : \<GAIA_AST(.\{1,}\(==\|!=\).\{0,}GNULL)
+	Regular express : \<GAIA_AST(.\{1,}\(==\|!=\).\{0,}GNIL)
 
 
 

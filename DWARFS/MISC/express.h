@@ -72,7 +72,7 @@ namespace DWARFS_MISC
 			m_finder.name = pName;
 			typename __FormulaSetType::_datatype reffinder(&m_finder);
 			const typename __FormulaSetType::_datatype* pFinded = m_fmset.find(reffinder);
-			if(pFinded == GNULL)
+			if(pFinded == GNIL)
 				return GINVALID;
 			return pFinded->index;
 		}

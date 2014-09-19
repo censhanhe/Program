@@ -11,7 +11,7 @@ namespace PROM
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_SymbolStat");}
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
-			return GNULL;
+			return GNIL;
 		}
 	};
 };

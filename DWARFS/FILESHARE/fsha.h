@@ -188,7 +188,7 @@ namespace DWARFS_FSHA
 				return GAIA::False;
 			FSTR str = pszFileName;
 			str.tolower();
-			if(m_filesbtr.find(str) != GNULL)
+			if(m_filesbtr.find(str) != GNIL)
 				return GAIA::False;
 			m_files.push_back(str);
 			m_filesbtr.insert(str);
@@ -201,7 +201,7 @@ namespace DWARFS_FSHA
 			return GAIA::True;
 		}
 		GINL const FILEID& GetRecCount() const{return m_files.size();}
-		GINL const GAIA::TCH* GetRec(const FILEID& index){if(index >= this->GetRecCount()) return GNULL; return m_files[index];}
+		GINL const GAIA::TCH* GetRec(const FILEID& index){if(index >= this->GetRecCount()) return GNIL; return m_files[index];}
 	private:
 		FSTRLIST m_files;
 		FSTRBTR m_filesbtr;
@@ -210,9 +210,9 @@ namespace DWARFS_FSHA
 	/* File list class. */
 	class __DWARFS_FILESHARE_API FileList : public GAIA::Entity
 	{
-	#define FILE_LIST_LOG(msg) do{if(m_pPr != GNULL){*m_pPr << (msg) << "\n";}}while(GAIA::ALWAYSFALSE)
-	#define FILE_LIST_LOG2(msg1, msg2) do{if(m_pPr != GNULL){*m_pPr << (msg1) << (msg2) << "\n";}}while(GAIA::ALWAYSFALSE)
-	#define FILE_LIST_LOG3(msg1, msg2, msg3) do{if(m_pPr != GNULL){*m_pPr << (msg1) << (msg2) << (msg3) << "\n";}}while(GAIA::ALWAYSFALSE)
+	#define FILE_LIST_LOG(msg) do{if(m_pPr != GNIL){*m_pPr << (msg) << "\n";}}while(GAIA::ALWAYSFALSE)
+	#define FILE_LIST_LOG2(msg1, msg2) do{if(m_pPr != GNIL){*m_pPr << (msg1) << (msg2) << "\n";}}while(GAIA::ALWAYSFALSE)
+	#define FILE_LIST_LOG3(msg1, msg2, msg3) do{if(m_pPr != GNIL){*m_pPr << (msg1) << (msg2) << (msg3) << "\n";}}while(GAIA::ALWAYSFALSE)
 	public:
 		GINL FileList(){this->init();}
 		GINL ~FileList(){}
@@ -228,7 +228,7 @@ namespace DWARFS_FSHA
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
-				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNULL));
+				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
 			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_FILEIO, &fileiofile));
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_READ))
 			{
@@ -320,7 +320,7 @@ namespace DWARFS_FSHA
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
-				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNULL));
+				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
 			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_FILEIO, &fileiofile));
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_WRITE))
 			{
@@ -507,7 +507,7 @@ namespace DWARFS_FSHA
 					if(nNewPercent != nLastPercent)
 					{
 						nLastPercent = nNewPercent;
-						if(m_pPr != GNULL)
+						if(m_pPr != GNIL)
 							(*m_pPr) << nLastPercent << " ";
 					}
 					GAIA::TCH szName[MAXPATHLEN];
@@ -524,7 +524,7 @@ namespace DWARFS_FSHA
 					else
 						GAIA_AST(GAIA::ALWAYSFALSE);
 				}
-				if(m_pPr != GNULL)
+				if(m_pPr != GNIL)
 					(*m_pPr) << "\n";
 			}
 
@@ -545,13 +545,13 @@ namespace DWARFS_FSHA
 		{
 			GAIA_AST(!GAIA::ALGO::stremp(pszFileName));
 			if(GAIA::ALGO::stremp(pszFileName))
-				return GNULL;
+				return GNIL;
 			GAIA::TCH szLower[MAXPATHLEN];
 			GAIA::ALGO::strcpy(szLower, pszFileName);
 			GAIA::ALGO::tolowers(szLower);
 			MAPINDEX mapindex[MAXPATHDEPTH];
 			if(!this->NameToMapIndex(szLower, mapindex))
-				return GNULL;
+				return GNIL;
 			TrieNode tnlist[MAXPATHDEPTH];
 			MAPINDEX* p = mapindex;
 			for(;;)
@@ -563,9 +563,9 @@ namespace DWARFS_FSHA
 				++p;
 			}
 			GAIA_AST(p != mapindex);
-			__FileTreeType::Node* pNode = m_ftree.find(GNULL, tnlist, p - mapindex);
-			if(pNode == GNULL)
-				return GNULL;
+			__FileTreeType::Node* pNode = m_ftree.find(GNIL, tnlist, p - mapindex);
+			if(pNode == GNIL)
+				return GNIL;
 			return &(**pNode).fid;
 		}
 		GAIA::BL GetName(const FILEID& id, GAIA::TCH* pResult)
@@ -672,14 +672,14 @@ namespace DWARFS_FSHA
 		typedef GAIA::CTN::BasicVector<FileRec, FILEID, GAIA::ALGO::TwiceSizeIncreaser<FILEID> > __FileRecIDListType;
 		typedef GAIA::CTN::BasicVector<FileRecSeq, FILEID, GAIA::ALGO::TwiceSizeIncreaser<FILEID> > __FileRecSeqListType;
 	private:
-		GINL GAIA::GVOID init(){(*m_ftree.root()).fid = (FILEID)GINVALID; (*m_ftree.root()).mapindex = (MAPINDEX)GINVALID; m_LastMaxFileID = 0; m_pPr = GNULL;}
+		GINL GAIA::GVOID init(){(*m_ftree.root()).fid = (FILEID)GINVALID; (*m_ftree.root()).mapindex = (MAPINDEX)GINVALID; m_LastMaxFileID = 0; m_pPr = GNIL;}
 		GAIA::BL NameToMapIndex(const GAIA::TCH* pszFileName, MAPINDEX* pResult) const
 		{
 			GAIA_AST(!GAIA::ALGO::stremp(pszFileName));
 			if(GAIA::ALGO::stremp(pszFileName))
 				return GAIA::False;
 			GAIA_AST(!!pResult);
-			if(pResult == GNULL)
+			if(pResult == GNIL)
 				return GAIA::False;
 			FNAMEPARTLISTTYPE namelist;
 			if(!this->GenerateFileNamePartList(pszFileName, namelist))
@@ -702,7 +702,7 @@ namespace DWARFS_FSHA
 		GAIA::BL MapIndexToName(const MAPINDEX* pResult, GAIA::TCH* pszFileName) const
 		{
 			GAIA_AST(!!pResult);
-			if(pResult == GNULL)
+			if(pResult == GNIL)
 				return GAIA::False;
 			const MAPINDEX* p = pResult;
 			GAIA::TCH* pDst = pszFileName;
@@ -729,7 +729,7 @@ namespace DWARFS_FSHA
 				const GAIA::TCH* pNew = GAIA::ALGO::stridrop(p, _T("/\\\0"));
 				if(pNew != p)
 				{
-					if(pNew == GNULL || *pNew == 0)
+					if(pNew == GNIL || *pNew == 0)
 					{
 						GAIA::TCH sz[MAXPATHLEN];
 						GAIA::ALGO::strcpy(sz, p);
@@ -905,7 +905,7 @@ namespace DWARFS_FSHA
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
-				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNULL));
+				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
 			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_FILEIO, &fileiofile));
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_READ))
 			{
@@ -979,7 +979,7 @@ namespace DWARFS_FSHA
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
-				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNULL));
+				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
 			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_FILEIO, &fileiofile));
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_WRITE))
 			{
@@ -1003,7 +1003,7 @@ namespace DWARFS_FSHA
 			for(; !it_u.empty(); ++it_u)
 			{
 				User* pUser = *it_u;
-				if(pUser != GNULL)
+				if(pUser != GNIL)
 				{
 					sr << pUser->name;
 					sr << pUser->pwd;
@@ -1017,7 +1017,7 @@ namespace DWARFS_FSHA
 			for(; !it_g.empty(); ++it_g)
 			{
 				Group* pGroup = *it_g;
-				if(pGroup != GNULL)
+				if(pGroup != GNIL)
 				{
 					sr << pGroup->name;
 					sr << pGroup->right;
@@ -1055,7 +1055,7 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			User* pUser = this->FindUserInternal(name);
-			if(pUser == GNULL)
+			if(pUser == GNIL)
 				return GAIA::False;
 			pUser->pwd = pwd;
 			return GAIA::True;
@@ -1064,10 +1064,10 @@ namespace DWARFS_FSHA
 		{
 			GAIA_AST(!name.empty());
 			if(name.empty())
-				return GNULL;
+				return GNIL;
 			const User* pUser = this->FindUserInternal(name);
-			if(pUser == GNULL)
-				return GNULL;
+			if(pUser == GNIL)
+				return GNIL;
 			return pUser->pwd;
 		}
 		GINL GAIA::BL DeleteUser(const __UserNameType& name)
@@ -1076,13 +1076,13 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			User* pUser = this->FindUserInternal(name);
-			if(pUser == GNULL)
+			if(pUser == GNIL)
 				return GAIA::False;
 			User::__GroupRefListType::it it = pUser->refgroups.front_it();
 			for(; !it.empty(); ++it)
 			{
 				Group* pGroup = *it;
-				if(pGroup != GNULL)
+				if(pGroup != GNIL)
 					pGroup->refusers.erase(pUser);
 			}
 			m_users.erase(pUser);
@@ -1095,7 +1095,7 @@ namespace DWARFS_FSHA
 			for(; !it_g.empty(); ++it_g)
 			{
 				Group* pGroup = *it_g;
-				if(pGroup != GNULL)
+				if(pGroup != GNIL)
 					pGroup->refusers.clear();
 			}
 			__UserSetType::it it_u = m_users.front_it();
@@ -1112,7 +1112,7 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			const User* pUser = this->FindUserInternal(name);
-			return pUser != GNULL;
+			return pUser != GNIL;
 		}
 		GINL GAIA::BL AddGroup(const __GroupNameType& name)
 		{
@@ -1132,20 +1132,20 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			Group* pGroup = this->FindGroupInternal(name);
-			if(pGroup == GNULL)
+			if(pGroup == GNIL)
 				return GAIA::False;
 			Group::__UserRefListType::it it = pGroup->refusers.front_it();
 			for(; !it.empty(); ++it)
 			{
 				User* pUser = *it;
-				if(pUser != GNULL)
+				if(pUser != GNIL)
 				{
 					User::__GroupRefListType::it itu = pUser->refgroups.front_it();
 					for(; !itu.empty(); ++itu)
 					{
-						if(*itu != GNULL && *itu == pGroup)
+						if(*itu != GNIL && *itu == pGroup)
 						{
-							*itu = GNULL;
+							*itu = GNIL;
 							break;
 						}
 					}
@@ -1159,7 +1159,7 @@ namespace DWARFS_FSHA
 			for(; !it.empty(); ++it)
 			{
 				Group* pGroup = *it;
-				if(pGroup != GNULL)
+				if(pGroup != GNIL)
 					m_gpool.release(pGroup);
 			}
 		}
@@ -1169,7 +1169,7 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			const Group* pGroup = this->FindGroupInternal(name);
-			return pGroup != GNULL;
+			return pGroup != GNIL;
 		}
 		GINL GAIA::BL SetGroupRightRead(const __GroupNameType& name, GAIA::BL bRead)
 		{
@@ -1177,7 +1177,7 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			Group* pGroup = this->FindGroupInternal(name);
-			if(pGroup == GNULL)
+			if(pGroup == GNIL)
 				return GAIA::False;
 			pGroup->right.m_bRead = bRead;
 			return GAIA::True;
@@ -1188,7 +1188,7 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			Group* pGroup = this->FindGroupInternal(name);
-			if(pGroup == GNULL)
+			if(pGroup == GNIL)
 				return GAIA::False;
 			bRead = pGroup->right.m_bRead;
 			return GAIA::True;
@@ -1199,7 +1199,7 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			Group* pGroup = this->FindGroupInternal(name);
-			if(pGroup == GNULL)
+			if(pGroup == GNIL)
 				return GAIA::False;
 			pGroup->right.m_bWrite = bWrite;
 			return GAIA::True;
@@ -1210,7 +1210,7 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			Group* pGroup = this->FindGroupInternal(name);
-			if(pGroup == GNULL)
+			if(pGroup == GNIL)
 				return GAIA::False;
 			bWrite = pGroup->right.m_bWrite;
 			return GAIA::True;
@@ -1224,16 +1224,16 @@ namespace DWARFS_FSHA
 			if(uname.empty())
 				return GAIA::False;
 			Group* pGroup = this->FindGroupInternal(gname);
-			if(pGroup == GNULL)
+			if(pGroup == GNIL)
 				return GAIA::False;
 			User* pUser = this->FindUserInternal(uname);
-			if(pUser == GNULL)
+			if(pUser == GNIL)
 				return GAIA::False;
 			Group::__UserRefListType::_datatype* pFinded = pGroup->refusers.find(pUser);
-			if(pFinded != GNULL)
+			if(pFinded != GNIL)
 				return GAIA::False;
 			pGroup->refusers.insert(pUser);
-			User::__GroupRefListType::_sizetype nFreePos = pUser->refgroups.find(GNULL, 0);
+			User::__GroupRefListType::_sizetype nFreePos = pUser->refgroups.find(GNIL, 0);
 			if(nFreePos == GINVALID)
 				pUser->refgroups.push_back(pGroup);
 			else
@@ -1249,17 +1249,17 @@ namespace DWARFS_FSHA
 			if(uname.empty())
 				return GAIA::False;
 			Group* pGroup = this->FindGroupInternal(gname);
-			if(pGroup == GNULL)
+			if(pGroup == GNIL)
 				return GAIA::False;
 			User* pUser = this->FindUserInternal(uname);
-			if(pUser == GNULL)
+			if(pUser == GNIL)
 				return GAIA::False;
 			User::__GroupRefListType::it itg = pUser->refgroups.front_it();
 			if(!itg.empty())
 			{
 				Group* pGroupTemp = *itg;
 				if(pGroupTemp == pGroup)
-					*itg = GNULL;
+					*itg = GNIL;
 				++itg;
 			}
 			pGroup->refusers.erase(pUser);
@@ -1268,7 +1268,7 @@ namespace DWARFS_FSHA
 		GINL GAIA::BL DeleteGroupUserAll(const __GroupNameType& name)
 		{
 			Group* pGroup = this->FindGroupInternal(name);
-			if(pGroup == GNULL)
+			if(pGroup == GNIL)
 				return GAIA::False;
 			Group::__UserRefListType::it it = pGroup->refusers.front_it();
 			for(; !it.empty(); ++it)
@@ -1279,7 +1279,7 @@ namespace DWARFS_FSHA
 				{
 					Group* pGroupTemp = *itg;
 					if(pGroupTemp == pGroup)
-						*itg = GNULL;
+						*itg = GNIL;
 					++itg;
 				}
 			}
@@ -1310,13 +1310,13 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			const User* pUser = this->FindUserInternal(name);
-			if(pUser == GNULL)
+			if(pUser == GNIL)
 				return GAIA::False;
 			User::__GroupRefListType::const_it it = pUser->refgroups.const_front_it();
 			for(; !it.empty(); ++it)
 			{
 				const Group* pGroup = *it;
-				if(pGroup != GNULL)
+				if(pGroup != GNIL)
 					result.push_back(pGroup->name);
 			}
 			return GAIA::True;
@@ -1327,13 +1327,13 @@ namespace DWARFS_FSHA
 			if(name.empty())
 				return GAIA::False;
 			const Group* pGroup = this->FindGroupInternal(name);
-			if(pGroup == GNULL)
+			if(pGroup == GNIL)
 				return GAIA::False;
 			Group::__UserRefListType::const_it it = pGroup->refusers.const_front_it();
 			for(; !it.empty(); ++it)
 			{
 				const User* pUser = *it;
-				if(pUser != GNULL)
+				if(pUser != GNIL)
 					result.push_back(pUser->name);
 			}
 			return GAIA::True;
@@ -1344,8 +1344,8 @@ namespace DWARFS_FSHA
 			User finder;
 			finder.name = name;
 			const __UserSetType::_datatype* pFinded = m_users.find(&finder);
-			if(pFinded == GNULL)
-				return GNULL;
+			if(pFinded == GNIL)
+				return GNIL;
 			return *pFinded;
 		}
 		GINL User* FindUserInternal(const __UserNameType& name)
@@ -1353,8 +1353,8 @@ namespace DWARFS_FSHA
 			User finder;
 			finder.name = name;
 			__UserSetType::_datatype* pFinded = m_users.find(&finder);
-			if(pFinded == GNULL)
-				return GNULL;
+			if(pFinded == GNIL)
+				return GNIL;
 			return *pFinded;
 		}
 		GINL const Group* FindGroupInternal(const __GroupNameType& name) const
@@ -1362,8 +1362,8 @@ namespace DWARFS_FSHA
 			Group finder;
 			finder.name = name;
 			const __GroupSetType::_datatype* pFinded = m_groups.find(&finder);
-			if(pFinded == GNULL)
-				return GNULL;
+			if(pFinded == GNIL)
+				return GNIL;
 			return *pFinded;
 		}
 		GINL Group* FindGroupInternal(const __GroupNameType& name)
@@ -1371,8 +1371,8 @@ namespace DWARFS_FSHA
 			Group finder;
 			finder.name = name;
 			__GroupSetType::_datatype* pFinded = m_groups.find(&finder);
-			if(pFinded == GNULL)
-				return GNULL;
+			if(pFinded == GNIL)
+				return GNIL;
 			return *pFinded;
 		}
 	private:
@@ -1419,7 +1419,7 @@ namespace DWARFS_FSHA
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
-				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNULL));
+				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
 			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_FILEIO, &fileiofile));
 			if(!pFileIO->Open(FILE_BANIP, GAIA::IO::IO::IO_TYPE_READ))
 			{
@@ -1471,7 +1471,7 @@ namespace DWARFS_FSHA
 			GAIA::FILESYSTEM::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
-				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNULL));
+				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
 			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_FILEIO, &fileiofile));
 			if(!pFileIO->Open(FILE_BANIP, GAIA::IO::IO::IO_TYPE_WRITE))
 			{
@@ -1537,7 +1537,7 @@ namespace DWARFS_FSHA
 			n.uOccurTime = GAIA::TIME::clock_time();
 			n.uBanTime = uBanTime;
 			BanIPNode* pBan = m_bans.find(n);
-			if(pBan == GNULL)
+			if(pBan == GNIL)
 				m_bans.insert(n);
 			else
 				*pBan = n;
@@ -1554,11 +1554,11 @@ namespace DWARFS_FSHA
 			BanIPNode n;
 			n.ip = ip;
 			const BanIPNode* pBan = m_bans.find(n);
-			if(pBan == GNULL)
+			if(pBan == GNIL)
 				return GAIA::False;
-			if(pOccurTime != GNULL)
+			if(pOccurTime != GNIL)
 				*pOccurTime = pBan->uOccurTime;
-			if(pBanTime != GNULL)
+			if(pBanTime != GNIL)
 				*pBanTime = pBan->uBanTime;
 			return GAIA::True;
 		}
@@ -1650,7 +1650,7 @@ namespace DWARFS_FSHA
 		class __DWARFS_FILESHARE_API NHandle : public GAIA::NETWORK::NetworkHandle
 		{
 		public:
-			GINL NHandle(){m_pFS = GNULL;}
+			GINL NHandle(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
 			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse)
@@ -1664,7 +1664,7 @@ namespace DWARFS_FSHA
 		class __DWARFS_FILESHARE_API NAcceptCallBack : public GAIA::NETWORK::NetworkListener::AcceptCallBack
 		{
 		public:
-			GINL NAcceptCallBack(){m_pFS = GNULL;}
+			GINL NAcceptCallBack(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
 			virtual GAIA::NETWORK::NetworkHandle* CreateNetworkHandle(){return new NHandle;}
@@ -1675,7 +1675,7 @@ namespace DWARFS_FSHA
 		class __DWARFS_FILESHARE_API NListener : public GAIA::NETWORK::NetworkListener
 		{
 		public:
-			GINL NListener(){m_pFS = GNULL;}
+			GINL NListener(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
 			virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h)
@@ -1691,7 +1691,7 @@ namespace DWARFS_FSHA
 		class __DWARFS_FILESHARE_API NReceiver : public GAIA::NETWORK::NetworkReceiver
 		{
 		public:
-			GINL NReceiver(){m_pFS = GNULL;}
+			GINL NReceiver(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
 			virtual GAIA::BL Receive(GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
@@ -1705,7 +1705,7 @@ namespace DWARFS_FSHA
 		class __DWARFS_FILESHARE_API NSender : public GAIA::NETWORK::NetworkSender
 		{
 		public:
-			GINL NSender(){m_pFS = GNULL;}
+			GINL NSender(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
 		private:
@@ -1715,7 +1715,7 @@ namespace DWARFS_FSHA
 		class __DWARFS_FILESHARE_API MainWorkThread : public GAIA::THREAD::Thread
 		{
 		public:
-			GINL MainWorkThread(){m_pFS = GNULL; m_bExitCmd = GAIA::False;}
+			GINL MainWorkThread(){m_pFS = GNIL; m_bExitCmd = GAIA::False;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
 			virtual GAIA::GVOID WorkProcedure()
@@ -1745,7 +1745,7 @@ namespace DWARFS_FSHA
 		class __DWARFS_FILESHARE_API HeartTickThread : public GAIA::THREAD::Thread
 		{
 		public:
-			GINL HeartTickThread(){m_pFS = GNULL; m_bExitCmd = GAIA::False;}
+			GINL HeartTickThread(){m_pFS = GNIL; m_bExitCmd = GAIA::False;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
 			virtual GAIA::GVOID WorkProcedure()
@@ -1793,7 +1793,7 @@ namespace DWARFS_FSHA
 				na.Invalid();
 				state = STATE_DISCONNECT;
 				uCmplFileCnt = 0;
-				pCmplFiles = GNULL;
+				pCmplFiles = GNIL;
 				uLastHeartTime = 0;
 				bBeLink = GAIA::False;
 			}
@@ -1906,7 +1906,7 @@ namespace DWARFS_FSHA
 		public:
 			typedef GAIA::CTN::Set<FileChunkSection> __FileChunkSectionListType;
 		public:
-			GINL FileRecCache(){fid = (FILEID)GINVALID; pFA = GNULL; fsize = 0; uCRC = 0; pFCSL = GNULL; bWrite = GAIA::False;}
+			GINL FileRecCache(){fid = (FILEID)GINVALID; pFA = GNIL; fsize = 0; uCRC = 0; pFCSL = GNIL; bWrite = GAIA::False;}
 			GAIA_CLASS_OPERATOR_COMPARE2(fid, fid, bWrite, bWrite, FileRecCache);
 			GINL FileRecCache& operator = (const FileRecCache& src)
 			{
@@ -2395,7 +2395,7 @@ namespace DWARFS_FSHA
 				_T("Timeout"),
 			};
 			if(en >= sizeofarray(ERRNO_NAME))
-				return GNULL;
+				return GNIL;
 			return ERRNO_NAME[en];
 		}
 	private:
@@ -2454,7 +2454,7 @@ namespace DWARFS_FSHA
 		#endif
 			delete m_pMWThread;
 			delete m_pHeartTickThread;
-			m_pNH->Release(); m_pNH = GNULL;
+			m_pNH->Release(); m_pNH = GNIL;
 			delete m_pNReceiver;
 			delete m_pNSender;
 			delete m_pNListener;
@@ -2518,7 +2518,7 @@ namespace DWARFS_FSHA
 			m_pHeartTickThread->SetExitCmd(GAIA::False);
 			m_pNSender->End();
 			m_pNReceiver->End();
-			m_pNH->SetReceiver(GNULL);
+			m_pNH->SetReceiver(GNIL);
 			if(m_pNH->IsConnected())
 				m_pNH->Disconnect();
 			for(__LinkListType::it it = m_links.front_it(); !it.empty(); ++it)
@@ -2532,9 +2532,9 @@ namespace DWARFS_FSHA
 			for(__FileRecCacheListType::it it = m_fcaches.front_it(); !it.empty(); ++it)
 			{
 				FileRecCache& frc = *it;
-				if(frc.pFA != GNULL)
+				if(frc.pFA != GNIL)
 					m_desc.pFAC->ReleaseFileAccess(frc.pFA);
-				if(frc.pFCSL != GNULL)
+				if(frc.pFCSL != GNIL)
 					delete frc.pFCSL;
 			}
 			m_fcaches.clear();
@@ -3171,7 +3171,7 @@ namespace DWARFS_FSHA
 							frc.fid = fr.fid;
 							frc.bWrite = GAIA::True;
 							FileRecCache* pFRC = m_fcaches.find(frc);
-							if(pFRC == GNULL)
+							if(pFRC == GNIL)
 							{
 								fsize = 0;
 								fcmplsize = 0;
@@ -3213,7 +3213,7 @@ namespace DWARFS_FSHA
 							frc.fid = fr.fid;
 							frc.bWrite = GAIA::True;
 							FileRecCache* pFRC = m_fcaches.find(frc);
-							if(pFRC == GNULL)
+							if(pFRC == GNIL)
 							{
 								fsize = 0;
 								fcmplsize = 0;
@@ -3382,7 +3382,7 @@ namespace DWARFS_FSHA
 				{
 					AL al(m_lr_usergroup);
 					const GAIA::TCH* pszPassword = m_usergroup.GetUserPassword(listPart[1].front_ptr());
-					if(pszPassword == GNULL)
+					if(pszPassword == GNIL)
 						CMDFAILED;
 					AL alprt(m_lr_prt);
 					m_prt << "Password = " << pszPassword << "\n";
@@ -3467,7 +3467,7 @@ namespace DWARFS_FSHA
 					AL al(m_lr_filelist);
 					const FILEID* pFileID = m_filelist.GetIDByName(listPart[1]);
 					CRCTYPE crc;
-					if(pFileID != GNULL && m_filelist.GetCRC(*pFileID, crc))
+					if(pFileID != GNIL && m_filelist.GetCRC(*pFileID, crc))
 					{
 						AL alprt(m_lr_prt);
 						m_prt << *pFileID << " CRC=" << crc << "\n";
@@ -3955,12 +3955,12 @@ namespace DWARFS_FSHA
 			m_uUSpeed = (GAIA::U64)GINVALID;
 			m_uDSpeed = (GAIA::U64)GINVALID;
 			m_filelist.SetPrint(&m_prt);
-			m_pMWThread = GNULL;
-			m_pHeartTickThread = GNULL;
-			m_pNH = GNULL;
-			m_pNReceiver = GNULL;
-			m_pNSender = GNULL;
-			m_pNListener = GNULL;
+			m_pMWThread = GNIL;
+			m_pHeartTickThread = GNIL;
+			m_pNH = GNIL;
+			m_pNReceiver = GNIL;
+			m_pNSender = GNIL;
+			m_pNListener = GNIL;
 			m_uCmplFileCount = 0;
 			m_state = NLink::STATE_DISCONNECT;
 			m_bEnableSequenceRequest = GAIA::False;
@@ -4038,7 +4038,7 @@ namespace DWARFS_FSHA
 					{
 						if(m_listFileReqTemp.size() == m_nMaxRequestFileCountSameTime - m_reqeds.size())
 							break;
-						if(m_reqeds.find(m_reqs.front()) == GNULL)
+						if(m_reqeds.find(m_reqs.front()) == GNIL)
 							m_listFileReqTemp.push_back(m_reqs.front());
 					}
 					if(!m_listFileReqTemp.empty())
@@ -4099,7 +4099,7 @@ namespace DWARFS_FSHA
 				FileSendTask& fst = *it;
 				AL al2(m_lr_fcaches);
 				FileRecCache* pFRC = this->RequestFileRecCache(fst.fid, GAIA::False);
-				if(pFRC == GNULL)
+				if(pFRC == GNIL)
 				{
 					m_listFileDeleteTemp.push_back(fst);
 					continue;
@@ -4169,11 +4169,11 @@ namespace DWARFS_FSHA
 						m_listFileDeleteTemp.push_back(fst);
 						pFRC->pFA->Close();
 						m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
-						pFRC->pFA = GNULL;
-						if(pFRC->pFCSL != GNULL)
+						pFRC->pFA = GNIL;
+						if(pFRC->pFCSL != GNIL)
 						{
 							delete pFRC->pFCSL;
-							pFRC->pFCSL = GNULL;
+							pFRC->pFCSL = GNIL;
 						}
 						m_fcaches.erase(*pFRC);
 						break;
@@ -4199,7 +4199,7 @@ namespace DWARFS_FSHA
 				ChunkSendTask& cst = *it;
 				AL al2(m_lr_fcaches);
 				FileRecCache* pFRC = this->RequestFileRecCache(cst.fid, GAIA::False);
-				if(pFRC == GNULL)
+				if(pFRC == GNIL)
 				{
 					m_listChunkDeleteTemp.push_back(cst);
 					continue;
@@ -4260,11 +4260,11 @@ namespace DWARFS_FSHA
 						m_listChunkDeleteTemp.push_back(cst);
 						pFRC->pFA->Close();
 						m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
-						pFRC->pFA = GNULL;
-						if(pFRC->pFCSL != GNULL)
+						pFRC->pFA = GNIL;
+						if(pFRC->pFCSL != GNIL)
 						{
 							delete pFRC->pFCSL;
-							pFRC->pFCSL = GNULL;
+							pFRC->pFCSL = GNIL;
 						}
 						m_fcaches.erase(*pFRC);
 						break;
@@ -4312,7 +4312,7 @@ namespace DWARFS_FSHA
 					AL al2(m_lr_fcaches);
 					FileRecCache* pFRC = this->RequestFileRecCache(fwt.fid, GAIA::True);
 					m_perf.fExecuteFileWriteRequest += FSHA_PERF - fPerfRequest;
-					if(pFRC == GNULL)
+					if(pFRC == GNIL)
 					{
 						GAIA_AST(GAIA::ALWAYSFALSE);
 						AL al3(m_lr_fwtpool);
@@ -4327,7 +4327,7 @@ namespace DWARFS_FSHA
 
 					/* Combin file chunk section. */
 					GAIA::F64 fPerfCombin = FSHA_PERF;
-					if(pFRC->pFCSL == GNULL)
+					if(pFRC->pFCSL == GNIL)
 						pFRC->pFCSL = new FileRecCache::__FileChunkSectionListType;
 					FileChunkSection fcs;
 					fcs.e = fcs.s = fwt.ci;
@@ -4451,7 +4451,7 @@ namespace DWARFS_FSHA
 						fcs.e = fcs.s = 0;
 						fcs.ee = fcs.ss = 0;
 						FileChunkSection* pFCS = pFRC->pFCSL->find(fcs);
-						if(pFCS != GNULL)
+						if(pFCS != GNIL)
 						{
 							GAIA::U32 uSubChunkCount = (pFCS->e * 256 + pFCS->ee) - (pFCS->s * 256 + pFCS->ss) + 1;
 							GAIA::U32 uCorrectSubChunkCount = pFRC->fsize / SUBCHUNKSIZE;
@@ -4459,7 +4459,7 @@ namespace DWARFS_FSHA
 								++uCorrectSubChunkCount;
 							if(uSubChunkCount == uCorrectSubChunkCount)
 							{
-								if(pFRC->pFA != GNULL)
+								if(pFRC->pFA != GNIL)
 									pFRC->pFA->Flush();
 								m_listCompleteTemp.push_back(*pFRC);
 							}
@@ -4495,18 +4495,18 @@ namespace DWARFS_FSHA
 						{
 							AL al(m_lr_fcaches);
 							FileRecCache* pFRC = m_fcaches.find(*it);
-							if(pFRC != GNULL)
+							if(pFRC != GNIL)
 							{
-								if(pFRC->pFA != GNULL)
+								if(pFRC->pFA != GNIL)
 								{
 									pFRC->pFA->Close();
 									m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
-									pFRC->pFA = GNULL;
+									pFRC->pFA = GNIL;
 								}
-								if(pFRC->pFCSL != GNULL)
+								if(pFRC->pFCSL != GNIL)
 								{
 									delete pFRC->pFCSL;
-									pFRC->pFCSL = GNULL;
+									pFRC->pFCSL = GNIL;
 								}
 								m_fcaches.erase(*it);
 							}
@@ -4696,7 +4696,7 @@ namespace DWARFS_FSHA
 						JumpReq jr;
 						jr.na = nl.na;
 						JumpReq* pJR = m_jumpreqs.find(jr);
-						if(pJR != GNULL)
+						if(pJR != GNIL)
 							listJR.push_back(*pJR);
 					}
 					for(GAIA::CTN::Vector<JumpReq>::it it = listJR.front_it(); !it.empty(); ++it)
@@ -4726,9 +4726,9 @@ namespace DWARFS_FSHA
 					frc.fid = fr.fid;
 					frc.bWrite = GAIA::True;
 					FileRecCache* pFRC = m_fcaches.find(frc);
-					if(pFRC != GNULL)
+					if(pFRC != GNIL)
 					{
-						if(pFRC->pFCSL != GNULL)
+						if(pFRC->pFCSL != GNIL)
 						{
 							FileRecCache::__FileChunkSectionListType::it it = pFRC->pFCSL->front_it();
 							for(; !it.empty(); ++it)
@@ -4796,7 +4796,7 @@ namespace DWARFS_FSHA
 							if(m_test_enablewatch && m_test_watchfid == fr.fid)
 							{
 								AL al(m_lr_prt);
-								m_prt << "[TEST] Request full file for time out, the pFCSL is GNULL.\n";
+								m_prt << "[TEST] Request full file for time out, the pFCSL is GNIL.\n";
 							}
 							GAIA::NETWORK::NetworkAddress selectna;
 							this->SelectRequestNetworkAddress(selectna);
@@ -4817,7 +4817,7 @@ namespace DWARFS_FSHA
 						if(m_test_enablewatch && m_test_watchfid == fr.fid)
 						{
 							AL al(m_lr_prt);
-							m_prt << "[TEST] Request full file for time out, the pFRC is GNULL.\n";
+							m_prt << "[TEST] Request full file for time out, the pFRC is GNIL.\n";
 						}
 						GAIA::NETWORK::NetworkAddress selectna;
 						this->SelectRequestNetworkAddress(selectna);
@@ -4856,9 +4856,9 @@ namespace DWARFS_FSHA
 					frc.fid = fr.fid;
 					frc.bWrite = GAIA::True;
 					FileRecCache* pFRC = m_fcaches.find(frc);
-					if(pFRC != GNULL)
+					if(pFRC != GNIL)
 					{
-						if(pFRC->pFCSL != GNULL)
+						if(pFRC->pFCSL != GNIL)
 						{
 							if(pFRC->fsize > 0)
 							{
@@ -4979,7 +4979,7 @@ namespace DWARFS_FSHA
 							frc.fid = fr.fid;
 							frc.bWrite = GAIA::True;
 							FileRecCache* pFRC = m_fcaches.find(frc);
-							if(pFRC != GNULL)
+							if(pFRC != GNIL)
 								fsize = pFRC->fsize;
 							else
 								fsize = 0;
@@ -5008,17 +5008,17 @@ namespace DWARFS_FSHA
 						frc.fid = fr.fid;
 						frc.bWrite = GAIA::True;
 						FileRecCache* pFRC = m_fcaches.find(frc);
-						if(pFRC != GNULL)
+						if(pFRC != GNIL)
 						{
-							if(pFRC->pFCSL != GNULL)
+							if(pFRC->pFCSL != GNIL)
 							{
 								delete pFRC->pFCSL;
-								pFRC->pFCSL = GNULL;
+								pFRC->pFCSL = GNIL;
 							}
-							if(pFRC->pFA != GNULL)
+							if(pFRC->pFA != GNIL)
 							{
 								m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
-								pFRC->pFA = GNULL;
+								pFRC->pFA = GNIL;
 							}
 						}
 					}
@@ -5068,7 +5068,7 @@ namespace DWARFS_FSHA
 					GAIA::ALGO::strcat(szFullName, szFileName);
 					FileAccess* pFA = m_desc.pFAC->CreateFileAccess();
 					GAIA_AST(!!pFA);
-					if(pFA == GNULL)
+					if(pFA == GNIL)
 						continue;
 					if(!pFA->Open(szFullName, GAIA::True))
 					{
@@ -5079,7 +5079,7 @@ namespace DWARFS_FSHA
 					pFA->Seek(GAIA::SEEK_TYPE_END, 0);
 					fsize = GSCAST(FILESIZETYPE)(pFA->Tell());
 					m_desc.pFAC->ReleaseFileAccess(pFA);
-					pFA = GNULL;
+					pFA = GNIL;
 					/* Get file CRC. */
 					CRCTYPE crc;
 					if(!m_filelist.GetCRC(t.fid, crc))
@@ -5187,7 +5187,7 @@ namespace DWARFS_FSHA
 				NLink* pBeNL = m_links.find(nl);
 				nl.bBeLink = GAIA::False;
 				NLink* pNL = m_links.find(nl);
-				if(pBeNL == GNULL && pNL == GNULL)
+				if(pBeNL == GNIL && pNL == GNIL)
 				{
 					m_perf.fOnRecv += FSHA_PERF - fPerf;
 					return GAIA::False; // Ignore not login's msg.
@@ -5204,22 +5204,22 @@ namespace DWARFS_FSHA
 				nl.na = na;
 				nl.bBeLink = GAIA::True;
 				NLink* pNL = m_links.find(nl);
-				if(pNL != GNULL)
+				if(pNL != GNIL)
 					pNL->uLastHeartTime = uClockTime;
 				nl.bBeLink = GAIA::False;
 				pNL = m_links.find(nl);
-				if(pNL != GNULL)
+				if(pNL != GNIL)
 					pNL->uLastHeartTime = uClockTime;
 
 				NLinkPri nlp;
 				nlp.nlink = nl;
 				nlp.nlink.bBeLink = GAIA::True;
 				NLinkPri* pNLP = m_prilinks.find(nlp);
-				if(pNLP != GNULL)
+				if(pNLP != GNIL)
 					pNLP->nlink.uLastHeartTime = uClockTime;
 				nlp.nlink.bBeLink = GAIA::False;
 				pNLP = m_prilinks.find(nlp);
-				if(pNLP != GNULL)
+				if(pNLP != GNIL)
 					pNLP->nlink.uLastHeartTime = uClockTime;
 
 				m_perf.fOnRecvNoopC += FSHA_PERF - fPerfNoopC;
@@ -5416,7 +5416,7 @@ namespace DWARFS_FSHA
 							{
 								AL al(m_lr_filesendtasks);
 								FileSendTask* pFST = m_filesendtasks.find(fst);
-								if(pFST == GNULL)
+								if(pFST == GNIL)
 								{
 									if(m_filesendtasks.insert(fst))
 										m_statistics.uSendFileCount++;
@@ -5461,7 +5461,7 @@ namespace DWARFS_FSHA
 					cst.sci = 0;
 					AL al(m_lr_chunksendtasks);
 					ChunkSendTask* pCST = m_chunksendtasks.find(cst);
-					if(pCST == GNULL)
+					if(pCST == GNIL)
 						m_chunksendtasks.insert(cst);
 					else
 						*pCST = cst;
@@ -5486,7 +5486,7 @@ namespace DWARFS_FSHA
 					frc.bWrite = GAIA::True;
 					AL al(m_lr_fcaches);
 					FileRecCache* pFRC = m_fcaches.find(frc);
-					if(pFRC == GNULL)
+					if(pFRC == GNIL)
 						m_fcaches.insert(frc);
 					else
 						pFRC->fsize = frc.fsize;
@@ -5510,7 +5510,7 @@ namespace DWARFS_FSHA
 				break;
 			case MSG_A_FILECHUNK:
 				{
-					FileWriteTask* pFWT = GNULL;
+					FileWriteTask* pFWT = GNIL;
 					{
 						AL al(m_lr_fwtpool);
 						pFWT = m_fwtpool.alloc();
@@ -5542,7 +5542,7 @@ namespace DWARFS_FSHA
 							FileReq fr;
 							fr.fid = pFWT->fid;
 							FileReq* pFR = m_reqeds.find(fr);
-							if(pFR != GNULL)
+							if(pFR != GNIL)
 								pFR->uLastActiveTime = GAIA::TIME::tick_time();
 						}
 
@@ -5575,7 +5575,7 @@ namespace DWARFS_FSHA
 					FileReq fr;
 					fr.fid = fid;
 					FileReq* pFinded = m_reqeds.find(fr);
-					if(pFinded != GNULL)
+					if(pFinded != GNIL)
 					{
 						FIDLIST listRequest;
 						listRequest.push_back(fid);
@@ -5646,7 +5646,7 @@ namespace DWARFS_FSHA
 					NLink* pBeLink = m_links.find(np.nlink);
 					np.nlink.bBeLink = GAIA::False;
 					NLink* pLink = m_links.find(np.nlink);
-					if(pLink == GNULL && (pBeLink == GNULL || pBeLink->state != NLink::STATE_READY))
+					if(pLink == GNIL && (pBeLink == GNIL || pBeLink->state != NLink::STATE_READY))
 					{
 						__MsgType newmsg;
 						newmsg.reserve(1024);
@@ -5658,7 +5658,7 @@ namespace DWARFS_FSHA
 						break;
 					}
 					GAIA::BL bExistStatistics = GAIA::False;
-					if(pBeLink != GNULL)
+					if(pBeLink != GNIL)
 					{
 						m_statistics.uTotalCmplFileCount += filecount - pBeLink->uCmplFileCnt;
 						bExistStatistics = GAIA::True;
@@ -5671,7 +5671,7 @@ namespace DWARFS_FSHA
 						np.nlink.uCmplFileCnt = filecount;
 						m_prilinks.insert(np);
 					}
-					if(pLink != GNULL)
+					if(pLink != GNIL)
 					{
 						if(!bExistStatistics)
 						{
@@ -5708,7 +5708,7 @@ namespace DWARFS_FSHA
 					NLink* pBeLink = m_links.find(np.nlink);
 					np.nlink.bBeLink = GAIA::False;
 					NLink* pLink = m_links.find(np.nlink);
-					if(pLink == GNULL && (pBeLink == GNULL || pBeLink->state != NLink::STATE_READY))
+					if(pLink == GNIL && (pBeLink == GNIL || pBeLink->state != NLink::STATE_READY))
 					{
 						__MsgType newmsg;
 						newmsg.reserve(1024);
@@ -5719,7 +5719,7 @@ namespace DWARFS_FSHA
 						m_perf.fOnRecvCmplFileSectionN += FSHA_PERF - fPerfCmplFileSectionN;
 						break;
 					}
-					if(pBeLink != GNULL)
+					if(pBeLink != GNIL)
 					{
 						np.nlink.uCmplFileCnt = pBeLink->uCmplFileCnt;
 						FILEID uIncreaseFileCnt = 0;
@@ -5762,7 +5762,7 @@ namespace DWARFS_FSHA
 									FileReq fr;
 									fr.fid = fid;
 									FileReq* pFinded = m_reqeds.find(fr);
-									if(pFinded != GNULL)
+									if(pFinded != GNIL)
 										listValidFile.push_back(fid);
 								}
 							}
@@ -5774,7 +5774,7 @@ namespace DWARFS_FSHA
 								nl.na = jumpna;
 								nl.bBeLink = GAIA::False;
 								NLink* pNL = m_links.find(nl);
-								if(pNL == GNULL)
+								if(pNL == GNIL)
 								{
 									this->NLogin(jumpna, INTERNAL_USERNAME, INTERNAL_PASSWORD);
 									pNL = m_links.find(nl);
@@ -5789,7 +5789,7 @@ namespace DWARFS_FSHA
 									jr.listFID = listValidFile;
 									AL al(m_lr_jumpreqs);
 									JumpReq* pJR = m_jumpreqs.find(jr);
-									if(pJR == GNULL)
+									if(pJR == GNIL)
 										m_jumpreqs.insert(jr);
 									else
 									{
@@ -5819,14 +5819,14 @@ namespace DWARFS_FSHA
 						nl.na = na;
 						nl.bBeLink = GAIA::False;
 						NLink* pNL = m_links.find(nl);
-						if(pNL != GNULL)
+						if(pNL != GNIL)
 						{
 							pNL->state = NLink::STATE_READY;
 							NLinkPri nlp;
 							nlp.nlink = *pNL;
 							AL al2(m_lr_prilinks);
 							NLinkPri* pNLP = m_prilinks.find(nlp);
-							if(pNLP != GNULL)
+							if(pNLP != GNIL)
 								pNLP->nlink.state = NLink::STATE_READY;
 						}
 						else
@@ -5909,7 +5909,7 @@ namespace DWARFS_FSHA
 						JumpReq jr;
 						jr.na = na;
 						JumpReq* pJR = m_jumpreqs.find(jr);
-						if(pJR != GNULL)
+						if(pJR != GNIL)
 						{
 							this->Request(pJR->na, pJR->listFID);
 							m_jumpreqs.erase(jr);
@@ -5933,7 +5933,7 @@ namespace DWARFS_FSHA
 					m_OnReceiveMsgTemp >> en;
 					const GAIA::TCH* pszError = this->ErrorString(en);
 					AL alprt(m_lr_prt);
-					if(pszError == GNULL)
+					if(pszError == GNIL)
 						m_prt << "Known error!" << "\n";
 					else
 						m_prt << "Error! ErrorNo = " << pszError << "\n";
@@ -5970,14 +5970,14 @@ namespace DWARFS_FSHA
 				nl.na = na;
 				nl.bBeLink = GAIA::False;
 				NLink* pNL = m_links.find(nl);
-				if(pNL != GNULL)
+				if(pNL != GNIL)
 				{
 					pNL->state = NLink::STATE_DISCONNECT;
 					NLinkPri nlp;
 					nlp.nlink = *pNL;
 					AL al2(m_lr_prilinks);
 					NLinkPri* pNLP = m_prilinks.find(nlp);
-					if(pNLP != GNULL)
+					if(pNLP != GNIL)
 						pNLP->nlink.state = NLink::STATE_DISCONNECT;
 				}
 				else
@@ -6045,7 +6045,7 @@ namespace DWARFS_FSHA
 			nl.bBeLink = GAIA::True;
 			AL al1(m_lr_links);
 			NLink* pNL = m_links.find(nl);
-			if(pNL != GNULL)
+			if(pNL != GNIL)
 			{
 				if(pNL->state == NLink::STATE_READY)
 					return ERRNO_REPEATOP;
@@ -6054,7 +6054,7 @@ namespace DWARFS_FSHA
 				nlp.nlink = *pNL;
 				AL al2(m_lr_prilinks);
 				NLinkPri* pNLP = m_prilinks.find(nlp);
-				if(pNLP != GNULL)
+				if(pNLP != GNIL)
 					pNLP->nlink.state = NLink::STATE_READY;
 			}
 			else
@@ -6088,7 +6088,7 @@ namespace DWARFS_FSHA
 				nl.na = na;
 				nl.bBeLink = GAIA::False;
 				NLink* pNL = m_links.find(nl);
-				if(pNL != GNULL)
+				if(pNL != GNIL)
 				{
 					NLinkPri nlp;
 					nlp.nlink = *pNL;
@@ -6118,7 +6118,7 @@ namespace DWARFS_FSHA
 			nl.bBeLink = GAIA::True;
 			AL al2(m_lr_links);
 			NLink* pLink = m_links.find(nl);
-			if(pLink == GNULL)
+			if(pLink == GNIL)
 				return ERRNO_NOTREADY;
 			else
 			{
@@ -6134,14 +6134,14 @@ namespace DWARFS_FSHA
 			frc.fid = fid;
 			frc.bWrite = bWrite;
 			FileRecCache* pFRC = m_fcaches.find(frc);
-			if(pFRC == GNULL)
+			if(pFRC == GNIL)
 			{
 				if(!m_filelist.GetCRC(fid, frc.uCRC))
-					return GNULL;
+					return GNIL;
 				m_fcaches.insert(frc);
 				pFRC = m_fcaches.find(frc);
 			}
-			if(pFRC->pFA == GNULL)
+			if(pFRC->pFA == GNIL)
 				pFRC->pFA = m_desc.pFAC->CreateFileAccess();
 			if(!pFRC->pFA->IsOpen())
 			{
@@ -6175,14 +6175,14 @@ namespace DWARFS_FSHA
 							if(!dir.Create(szPath, GAIA::True))
 							{
 								GAIA_AST(GAIA::ALWAYSFALSE);
-								return GNULL;
+								return GNIL;
 							}
 						}
 					}
 					if(!pFRC->pFA->Open(szFullName, !bWrite))
 					{
 						GAIA_AST(GAIA::ALWAYSFALSE);
-						return GNULL;
+						return GNIL;
 					}
 					if(!bWrite)
 					{
@@ -6202,18 +6202,18 @@ namespace DWARFS_FSHA
 			{
 				AL al(m_lr_fcaches);
 				FileRecCache* pFRC = m_fcaches.find(frc);
-				if(pFRC != GNULL)
+				if(pFRC != GNIL)
 				{
-					if(pFRC->pFA != GNULL)
+					if(pFRC->pFA != GNIL)
 					{
 						pFRC->pFA->Close();
 						m_desc.pFAC->ReleaseFileAccess(pFRC->pFA);
-						pFRC->pFA = GNULL;
+						pFRC->pFA = GNIL;
 					}
-					if(pFRC->pFCSL != GNULL)
+					if(pFRC->pFCSL != GNIL)
 					{
 						delete pFRC->pFCSL;
-						pFRC->pFCSL = GNULL;
+						pFRC->pFCSL = GNIL;
 					}
 					m_fcaches.erase(frc);
 				}
@@ -6224,7 +6224,7 @@ namespace DWARFS_FSHA
 				FileReq fr;
 				fr.fid = frc.fid;
 				FileReq* pFR = m_reqeds.find(fr);
-				if(pFR != GNULL)
+				if(pFR != GNIL)
 				{
 					GAIA::F64 fTime = GSCAST(GAIA::F64)(GAIA::TIME::tick_time() - pFR->uFirstReqTime) * 0.001 * 0.001;
 					if(fTime > m_perf.fMaxFileCmplTime)
@@ -6245,7 +6245,7 @@ namespace DWARFS_FSHA
 		GINL FILESIZETYPE GetFileCacheCompleteSize(const FileRecCache& frc) const
 		{
 			FILESIZETYPE tRet = 0;
-			if(frc.pFCSL != GNULL)
+			if(frc.pFCSL != GNIL)
 			{
 				FileRecCache::__FileChunkSectionListType::const_it it = frc.pFCSL->const_front_it();
 				for(; !it.empty(); ++it)
@@ -6260,7 +6260,7 @@ namespace DWARFS_FSHA
 		{
 			GAIA_AST(!!p);
 			GAIA_AST(size > 0);
-			if(m_pNH == GNULL)
+			if(m_pNH == GNIL)
 				return GAIA::False;
 			/* message statistics. */
 			MSGIDTYPE msgid = *GSCAST(const MSGIDTYPE*)((GSCAST(const GAIA::U8*)(p) + sizeof(GAIA::NETWORK::NetworkAddress)));
@@ -6327,7 +6327,7 @@ namespace DWARFS_FSHA
 		{
 			GAIA_AST(!!p);
 			GAIA_AST(size > 0);
-			if(m_pNH == GNULL)
+			if(m_pNH == GNIL)
 				return GAIA::False;
 			GAIA::BL bRet = GAIA::True;
 			AL al(m_lr_links);
@@ -6460,7 +6460,7 @@ namespace DWARFS_FSHA
 				nl.na = na;
 				nl.bBeLink = GAIA::True;
 				NLink* pNL = m_links.find(nl);
-				if(pNL == GNULL)
+				if(pNL == GNIL)
 					return GAIA::False;
 				NLinkPri nlp;
 				nlp.nlink = *pNL;

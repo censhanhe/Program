@@ -297,7 +297,7 @@ namespace GAIATEST
 			if(index > 0)
 			{
 				__TrieType::Node* pFinded = t1.find(t1.tonode(it), arr, index);
-				if(pFinded == GNULL)
+				if(pFinded == GNIL)
 				{
 					GTLINE2("Trie find failed!");
 					++nRet;
@@ -381,7 +381,7 @@ namespace GAIATEST
 				break;
 			}
 			__TrieType::Node* pNode = t1.tonode(it);
-			if(pNode == GNULL)
+			if(pNode == GNIL)
 			{
 				GTLINE2("Trie tonode failed!");
 				++nRet;
@@ -395,7 +395,7 @@ namespace GAIATEST
 				break;
 			}
 			const __TrieType::Node* pConstNode = static_cast<const __TrieType*>(&t1)->tonode(cit);
-			if(pConstNode == GNULL)
+			if(pConstNode == GNIL)
 			{
 				GTLINE2("Trie const tonode failed!");
 				++nRet;
@@ -468,7 +468,7 @@ namespace GAIATEST
 				}
 				__TrieType::Node* pChildNodeFront = t1.tonode(c_itfront);
 				__TrieType::Node* pChildNodeBack = t1.tonode(c_itback);
-				if(pChildNodeFront == GNULL || pChildNodeFront != pChildNodeBack)
+				if(pChildNodeFront == GNIL || pChildNodeFront != pChildNodeBack)
 				{
 					GTLINE2("Trie tonode by childlist iterator failed!");
 					++nRet;
@@ -496,7 +496,7 @@ namespace GAIATEST
 				}
 				const __TrieType::Node* pConstChildNodeFront = t1.tonode(c_citfront);
 				const __TrieType::Node* pConstChildNodeBack = t1.tonode(c_citback);
-				if(pConstChildNodeFront == GNULL || pConstChildNodeFront != pConstChildNodeBack)
+				if(pConstChildNodeFront == GNIL || pConstChildNodeFront != pConstChildNodeBack)
 				{
 					GTLINE2("Trie tonode by childlist const iterator failed!");
 					++nRet;

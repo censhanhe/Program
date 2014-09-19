@@ -38,8 +38,8 @@ namespace GAIA
 				GINL CanvasDesc(){this->reset();}
 				GINL GAIA::GVOID reset()
 				{
-					pszCaptionText = GNULL;
-					pParent = GNULL;
+					pszCaptionText = GNIL;
+					pParent = GNIL;
 					style.reset();
 				}
 				GINL GAIA::BL check() const
@@ -53,7 +53,7 @@ namespace GAIA
 						++nMutexGroup;
 					if(nMutexGroup != 1)
 						return GAIA::False;
-					if(style.bChildStyle && pParent == GNULL)
+					if(style.bChildStyle && pParent == GNIL)
 						return GAIA::False;
 					return GAIA::True;
 				}

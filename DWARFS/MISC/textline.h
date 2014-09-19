@@ -46,7 +46,7 @@ namespace DWARFS_MISC
 			for(GAIA::SIZE x = 0; x < charcount; ++x)
 			{
 				/* Find the new line token's last position. */
-				__CharType* pMatched = GNULL;
+				__CharType* pMatched = GNIL;
 				if(p[x] == _T('\0'))
 				{
 					if(x != 0 && p[x - 1] != _T('\n') && p[x - 1] != _T('\r'))
@@ -68,7 +68,7 @@ namespace DWARFS_MISC
 					pMatched = p + x;
 
 				/* Push to line list. */
-				if(pMatched != GNULL)
+				if(pMatched != GNIL)
 				{
 					m_lines.push_back(empty_line);
 					m_lines.back().resize(pMatched - pLast + 1);
@@ -112,8 +112,8 @@ namespace DWARFS_MISC
 			GAIA_AST(index < m_lines.size());
 			if(index >= m_lines.size())
 				return GAIA::False;
-			GAIA_AST(p != GNULL);
-			if(p == GNULL)
+			GAIA_AST(p != GNIL);
+			if(p == GNIL)
 				return GAIA::False;
 			GAIA::SIZE line_flag_count = 0;
 			GAIA::BL bAppendLineFlag = GAIA::False;
@@ -135,15 +135,15 @@ namespace DWARFS_MISC
 			GAIA_AST(index <= m_lines.size());
 			if(index > m_lines.size())
 				return GAIA::False;
-			GAIA_AST(p != GNULL);
-			if(p == GNULL)
+			GAIA_AST(p != GNIL);
+			if(p == GNIL)
 				return GAIA::False;
 			GAIA_AST(size > 0);
 			if(size <= 0)
 				return GAIA::False;
 			for(GAIA::SIZE x = 0; x < size; ++x)
 			{
-				if(p[x] == GNULL)
+				if(p[x] == GNIL)
 					return GAIA::False;
 				GAIA::SIZE line_flag_count = 0;
 				if(!this->checkline(p[x], line_flag_count))

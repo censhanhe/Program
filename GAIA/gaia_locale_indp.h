@@ -23,7 +23,7 @@ namespace GAIA
 				GAIA::SIZE ret = 0;
 				for(;;)
 				{
-					if(pszDst != GNULL && dst_size_in_wchar != 0)
+					if(pszDst != GNIL && dst_size_in_wchar != 0)
 					{
 						if(ret >= dst_size_in_wchar)
 							break;
@@ -49,7 +49,7 @@ namespace GAIA
 			GAIA::SYNC::AutoLock al(g_localelock);
 			if(g_charsettype != charset_type)
 			{
-				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAMEA[charset_type]) == GNULL)
+				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAMEA[charset_type]) == GNIL)
 					return 0;
 				g_charsettype = charset_type;
 			}
@@ -67,7 +67,7 @@ namespace GAIA
 				GAIA::SIZE ret = 0;
 				for(;;)
 				{
-					if(pszDst != GNULL && dst_size_in_bytes != 0)
+					if(pszDst != GNIL && dst_size_in_bytes != 0)
 					{
 						if(ret >= dst_size_in_bytes)
 							break;
@@ -88,12 +88,12 @@ namespace GAIA
 				uCodePage = CP_OEMCP;
 			else
 				uCodePage = GAIA::CHARSET_CODEPAGE[charset_type];
-			return ::WideCharToMultiByte(uCodePage, 0, pszSrc, -1, pszDst, dst_size_in_bytes, GNULL, GNULL);
+			return ::WideCharToMultiByte(uCodePage, 0, pszSrc, -1, pszDst, dst_size_in_bytes, GNIL, GNIL);
 		#else
 			GAIA::SYNC::AutoLock al(g_localelock);
 			if(g_charsettype != charset_type)
 			{
-				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAMEA[charset_type]) == GNULL)
+				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAMEA[charset_type]) == GNIL)
 					return 0;
 				g_charsettype = charset_type;
 			}

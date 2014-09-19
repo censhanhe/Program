@@ -15,7 +15,7 @@ namespace GAIA
 			{
 				if(this->IsBegin())
 					return GAIA::False;
-				if(pParameter == GNULL)
+				if(pParameter == GNIL)
 					return GAIA::False;
 				m_file = GSCAST(GAIA::FILESYSTEM::FileBase*)(pParameter);
 				m_bBegin = GAIA::True;
@@ -35,7 +35,7 @@ namespace GAIA
 			{
 				if(this->IsOpen())
 					this->Close();
-				if(pszIOName == GNULL)
+				if(pszIOName == GNIL)
 					return GAIA::False;
 				if(uTypeMask & GAIA::IO::IO::IO_TYPE_READ)
 				{
@@ -78,7 +78,7 @@ namespace GAIA
 				return GAIA::False;
 			}
 		private:
-			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_uTypeMask = 0; m_file = GNULL;}
+			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_uTypeMask = 0; m_file = GNIL;}
 		private:
 			GAIA::U8 m_bBegin : 1;
 			GAIA::UM m_uTypeMask;

@@ -24,11 +24,11 @@ namespace GAIA
 			GINL GAIA::BL one() const{if(this->empty()) return GAIA::False; return GAIA::ALGO::xmemcheck(this->front_ptr(), 0xFF, this->buffer_size(this->size())) == 0;}
 			GINL const _SizeType& size() const{return m_size;}
 			GINL const _SizeType& capacity() const{return m_capacity;}
-			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MFREE(m_pFront); m_pFront = GNULL;} m_size = m_capacity = 0;}
-			GINL GAIA::U8* front_ptr(){if(this->empty()) return GNULL; return m_pFront;}
-			GINL GAIA::U8* back_ptr(){if(this->empty()) return GNULL; return &m_pFront[this->buffer_size(this->size()) - 1];}
-			GINL const GAIA::U8* front_ptr() const{if(this->empty()) return GNULL; return m_pFront;}
-			GINL const GAIA::U8* back_ptr() const{if(this->empty()) return GNULL; return &m_pFront[this->buffer_size(this->size()) - 1];}
+			GINL GAIA::GVOID destroy(){if(m_pFront != GNIL){GAIA_MFREE(m_pFront); m_pFront = GNIL;} m_size = m_capacity = 0;}
+			GINL GAIA::U8* front_ptr(){if(this->empty()) return GNIL; return m_pFront;}
+			GINL GAIA::U8* back_ptr(){if(this->empty()) return GNIL; return &m_pFront[this->buffer_size(this->size()) - 1];}
+			GINL const GAIA::U8* front_ptr() const{if(this->empty()) return GNIL; return m_pFront;}
+			GINL const GAIA::U8* back_ptr() const{if(this->empty()) return GNIL; return &m_pFront[this->buffer_size(this->size()) - 1];}
 			GINL GAIA::BL exist(const _SizeType& index) const{GAIA_AST(index < this->size()); if(index >= this->size()) return GAIA::False; return (GAIA_BITSET_SRC & GAIA_BITSET_CUR) != 0;}
 			GINL GAIA::GVOID set(const _SizeType& index){GAIA_AST(index < this->size()); if(index >= this->size()) return; GAIA_BITSET_SRC |= GAIA_BITSET_CUR;}
 			GINL GAIA::GVOID reset(const _SizeType& index){GAIA_AST(index < this->size()); if(index >= this->size()) return; GAIA_BITSET_SRC &= ~GAIA_BITSET_CUR;}
@@ -145,7 +145,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL operator[](const _SizeType& index) const{return this->exist(index);}
 		private:
-			GINL GAIA::GVOID init(){m_pFront = GNULL; m_size = m_capacity = 0;}
+			GINL GAIA::GVOID init(){m_pFront = GNIL; m_size = m_capacity = 0;}
 			GINL GAIA::GVOID exten(const _SizeType& size)
 			{
 				GAIA_AST(size >= 0);
@@ -154,7 +154,7 @@ namespace GAIA
 				GAIA::U8* pNew = GAIA_MALLOC(GAIA::U8, this->buffer_size(this->capacity() + size));
 				if(this->size() > 0)
 					GAIA::ALGO::xmemcpy(pNew, this->front_ptr(), this->buffer_size(this->size()));
-				if(m_pFront != GNULL)
+				if(m_pFront != GNIL)
 					GAIA_MFREE(m_pFront);
 				m_pFront = pNew;
 				m_capacity += size;

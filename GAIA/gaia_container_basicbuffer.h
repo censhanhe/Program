@@ -16,11 +16,11 @@ namespace GAIA
 		public:
 			GINL BasicBuffer(){this->init();}
 			GINL BasicBuffer(const __MyType& src){this->init(); this->operator = (src);}
-			GINL ~BasicBuffer(){if(m_pFront != GNULL) GAIA_MFREE(m_pFront);}
+			GINL ~BasicBuffer(){if(m_pFront != GNIL) GAIA_MFREE(m_pFront);}
 			GINL GAIA::BL empty() const{return this->write_size() == 0;}
 			GINL _SizeType capacity() const{return static_cast<_SizeType>(m_pBack - m_pFront);}
 			GINL GAIA::GVOID clear(){m_pWrite = m_pRead = m_pFront;}
-			GINL GAIA::GVOID destroy(){if(m_pFront != GNULL){GAIA_MFREE(m_pFront); this->init();}}
+			GINL GAIA::GVOID destroy(){if(m_pFront != GNIL){GAIA_MFREE(m_pFront); this->init();}}
 			GINL GAIA::GVOID reserve(const _SizeType& size)
 			{
 				if(size == this->capacity())
@@ -51,7 +51,7 @@ namespace GAIA
 			GINL GAIA::GVOID write(const GAIA::GVOID* p, const _SizeType& size)
 			{
 				GAIA_AST(!!p);
-				if(p == GNULL)
+				if(p == GNIL)
 					return;
 				GAIA_AST(size != 0);
 				if(size == 0)
@@ -62,7 +62,7 @@ namespace GAIA
 			GINL GAIA::BL read(GAIA::GVOID* p, const _SizeType& size)
 			{
 				GAIA_AST(!!p);
-				if(p == GNULL)
+				if(p == GNIL)
 					return GAIA::False;
 				GAIA_AST(size != 0);
 				if(size == 0)
@@ -93,7 +93,7 @@ namespace GAIA
 			template<typename _ParamObjType> GAIA::GVOID write(const _ParamObjType* psz)
 			{
 				GAIA_AST(!!psz);
-				if(psz == GNULL)
+				if(psz == GNIL)
 					return;
 				GAIA::SIZE bytes = GAIA::ALGO::strlen(psz) * sizeof(_ParamObjType) + sizeof(_ParamObjType);
 				GAIA::U8* pNew = this->alloc(bytes);
@@ -102,7 +102,7 @@ namespace GAIA
 			template<typename _ParamObjType> GAIA::BL read(_ParamObjType* psz)
 			{
 				GAIA_AST(!!psz);
-				if(psz == GNULL)
+				if(psz == GNIL)
 					return GAIA::False;
 				if(m_pRead == m_pBack)
 					return GAIA::False;
@@ -177,11 +177,11 @@ namespace GAIA
 			}
 			GINL operator GAIA::U8*(){return m_pFront;}
 		private:
-			GINL GAIA::GVOID init(){m_pFront = m_pBack = m_pWrite = m_pRead = GNULL;}
+			GINL GAIA::GVOID init(){m_pFront = m_pBack = m_pWrite = m_pRead = GNIL;}
 			GINL GAIA::U8* alloc(const _SizeType& size)
 			{
 				if(size == 0)
-					return GNULL;
+					return GNIL;
 				GAIA_AST(m_pBack >= m_pWrite);
 				if(this->capacity() - this->write_size() >= size)
 				{
@@ -196,7 +196,7 @@ namespace GAIA
 				GAIA::U8* pNew = GAIA_MALLOC(GAIA::U8, newsize);
 				if(m_pWrite != m_pFront)
 					GAIA::ALGO::xmemcpy(pNew, m_pFront, this->write_size());
-				if(m_pFront != GNULL)
+				if(m_pFront != GNIL)
 					GAIA_MFREE(m_pFront);
 				m_pWrite = pNew + this->write_size();
 				m_pRead = pNew + this->read_size();

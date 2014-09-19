@@ -12,20 +12,20 @@ namespace PROM
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
-			GPCHR_NULL_RET(ppPLC, GNULL);
-			GPCHR_ZERO_RET(size, GNULL);
-			PLC_Empty* pRet = GNULL;
-			PLC_CommandParam* plc_commandparam = GNULL;
-			PLC_File* plc_file = GNULL;
-			PLC_FileCodeLine* plc_codeline = GNULL;
+			GPCHR_NULL_RET(ppPLC, GNIL);
+			GPCHR_ZERO_RET(size, GNIL);
+			PLC_Empty* pRet = GNIL;
+			PLC_CommandParam* plc_commandparam = GNIL;
+			PLC_File* plc_file = GNIL;
+			PLC_FileCodeLine* plc_codeline = GNIL;
 			plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_CommandParam")));
-			if(plc_commandparam == GNULL)
+			if(plc_commandparam == GNIL)
 				goto FUNCTION_END;
 			plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_File")));
-			if(plc_file == GNULL)
+			if(plc_file == GNIL)
 				goto FUNCTION_END;
 			plc_codeline = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_FileCodeLine")));
-			if(plc_codeline == GNULL)
+			if(plc_codeline == GNIL)
 				goto FUNCTION_END;
 
 			/* Initialize result pipeline context. */
@@ -75,11 +75,11 @@ namespace PROM
 
 			/* Release. */
 		FUNCTION_END:
-			if(plc_commandparam != GNULL)
+			if(plc_commandparam != GNIL)
 				plc_commandparam->Release();
-			if(plc_file != GNULL)
+			if(plc_file != GNIL)
 				plc_file->Release();
-			if(plc_codeline != GNULL)
+			if(plc_codeline != GNIL)
 				plc_codeline->Release();
 
 			return pRet;

@@ -35,7 +35,7 @@ namespace GAIA
 				GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
 				pModel->Reference();
 				ModelNode* pNode = this->GetModelByName(pszName);
-				if(pNode != GNULL)
+				if(pNode != GNIL)
 				{
 					pNode->pModel->Release();
 					pNode->pModel = pModel;
@@ -45,7 +45,7 @@ namespace GAIA
 				for(; !it.empty(); ++it)
 				{
 					ModelNode& n = *it;
-					if(n.pModel == GNULL)
+					if(n.pModel == GNIL)
 					{
 						GAIA_AST(n.strName.empty());
 						n.pModel = pModel;
@@ -61,10 +61,10 @@ namespace GAIA
 			}
 			GINL GAIA::MVC::Model* GetModel(const GAIA::TCH* pszName) const
 			{
-				GPCHR_NULLSTRPTR_RET(pszName, GNULL);
+				GPCHR_NULLSTRPTR_RET(pszName, GNIL);
 				const ModelNode* pNode = this->GetModelByName(pszName);
-				if(pNode == GNULL)
-					return GNULL;
+				if(pNode == GNIL)
+					return GNIL;
 				pNode->pModel->Reference();
 				return pNode->pModel;
 			}
@@ -74,14 +74,14 @@ namespace GAIA
 				for(; !it.empty(); ++it)
 				{
 					ModelNode& n = *it;
-					if(n.pModel == GNULL)
+					if(n.pModel == GNIL)
 					{
 						GAIA_AST(n.strName.empty());
 						continue;
 					}
 					GAIA_AST(!n.strName.empty());
 					n.pModel->Release();
-					n.pModel = GNULL;
+					n.pModel = GNIL;
 					n.strName.destroy();
 				}
 				m_models.destroy();
@@ -91,7 +91,7 @@ namespace GAIA
 				GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
 				pController->Reference();
 				ControllerNode* pNode = this->GetControllerByName(pszName);
-				if(pNode != GNULL)
+				if(pNode != GNIL)
 				{
 					pNode->pController->Release();
 					pNode->pController = pController;
@@ -101,7 +101,7 @@ namespace GAIA
 				for(; !it.empty(); ++it)
 				{
 					ControllerNode& n = *it;
-					if(n.pController == GNULL)
+					if(n.pController == GNIL)
 					{
 						GAIA_AST(n.strName.empty());
 						n.pController = pController;
@@ -117,10 +117,10 @@ namespace GAIA
 			}
 			GINL GAIA::MVC::Controller* GetController(const GAIA::TCH* pszName) const
 			{
-				GPCHR_NULLSTRPTR_RET(pszName, GNULL);
+				GPCHR_NULLSTRPTR_RET(pszName, GNIL);
 				const ControllerNode* pNode = this->GetControllerByName(pszName);
-				if(pNode == GNULL)
-					return GNULL;
+				if(pNode == GNIL)
+					return GNIL;
 				pNode->pController->Reference();
 				return pNode->pController;
 			}
@@ -130,14 +130,14 @@ namespace GAIA
 				for(; !it.empty(); ++it)
 				{
 					ControllerNode& n = *it;
-					if(n.pController == GNULL)
+					if(n.pController == GNIL)
 					{
 						GAIA_AST(n.strName.empty());
 						continue;
 					}
 					GAIA_AST(!n.strName.empty());
 					n.pController->Release();
-					n.pController = GNULL;
+					n.pController = GNIL;
 					n.strName.destroy();
 				}
 				m_controllers.destroy();
@@ -157,7 +157,7 @@ namespace GAIA
 					if(n.strName == pszName)
 						return &n;
 				}
-				return GNULL;
+				return GNIL;
 			}
 			GINL const ModelNode* GetModelByName(const GAIA::TCH* pszName) const{return const_cast<GAIA::MVC::View*>(this)->GetModelByName(pszName);}
 			GINL ControllerNode* GetControllerByName(const GAIA::TCH* pszName)
@@ -169,7 +169,7 @@ namespace GAIA
 					if(n.strName == pszName)
 						return &n;
 				}
-				return GNULL;
+				return GNIL;
 			}
 			GINL const ControllerNode* GetControllerByName(const GAIA::TCH* pszName) const{return const_cast<GAIA::MVC::View*>(this)->GetControllerByName(pszName);}
 		private:

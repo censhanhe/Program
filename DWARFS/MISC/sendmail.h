@@ -78,7 +78,7 @@ namespace DWARFS_MISC
 		GINL const __FileNameCharType* get_attach(const GAIA::SIZE& index) const
 		{
 			if(index >= m_attachs.size())
-				return GNULL;
+				return GNIL;
 			return m_attachs[index];
 		}
 		GINL GAIA::SIZE get_attach_by_name(const __FileNameCharType* pszFileName)
@@ -126,14 +126,14 @@ namespace DWARFS_MISC
 
 			GAIA::NETWORK::NetworkSender sender;
 			GAIA::BL bSenderChange = GAIA::False;
-			if(pNetworkSender == GNULL)
+			if(pNetworkSender == GNIL)
 			{
 				pNetworkSender = &sender;
 				bSenderChange = GAIA::True;
 			}
 			SendMailNReceiver receiver(this);
 			GAIA::BL bRecverChange = GAIA::False;
-			if(pNetworkReceiver == GNULL)
+			if(pNetworkReceiver == GNIL)
 			{
 				pNetworkReceiver = &receiver;
 				bRecverChange = GAIA::True;
@@ -245,7 +245,7 @@ namespace DWARFS_MISC
 					continue;
 
 				const __FileNameStringType::_datatype* pFileName = GAIA::ALGO::strfilename(strFile.front_ptr());
-				if(pFileName == GNULL)
+				if(pFileName == GNIL)
 					continue;
 			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				__CharsType attach = "--INVT\r\nContent-Type: application/octet-stream;\r\n name=\"";
@@ -294,8 +294,8 @@ namespace DWARFS_MISC
 
 			/* Disconnect. */
 		FUNCTION_END:
-			h.SetSender(GNULL);
-			h.SetReceiver(GNULL);
+			h.SetSender(GNIL);
+			h.SetReceiver(GNIL);
 
 			if(bSenderChange)
 				pNetworkSender->End();
@@ -311,7 +311,7 @@ namespace DWARFS_MISC
 		{
 			if(size > 0)
 			{
-				GAIA_AST(p != GNULL);
+				GAIA_AST(p != GNIL);
 				m_combinbuf.write(p, size);
 				for(GAIA::SIZE x = 1; x < m_combinbuf.write_size(); ++x)
 				{

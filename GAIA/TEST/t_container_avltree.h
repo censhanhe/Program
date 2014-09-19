@@ -67,7 +67,7 @@ namespace GAIATEST
 		}
 		for(__AVLType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(avl.find(x) == GNULL)
+			if(avl.find(x) == GNIL)
 			{
 				GTLINE2("AVL find element failed!");
 				++nRet;
@@ -76,7 +76,7 @@ namespace GAIATEST
 		}
 		for(__AVLType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if((*(const __AVLType*)&avl).find(x) == GNULL)
+			if((*(const __AVLType*)&avl).find(x) == GNIL)
 			{
 				GTLINE2("AVL const find element failed!");
 				++nRet;
@@ -134,7 +134,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		__AVLType::_datatype* pMin = avl.minimize();
-		if(pMin == GNULL)
+		if(pMin == GNIL)
 		{
 			GTLINE2("AVL minimize failed!");
 			++nRet;
@@ -145,7 +145,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		__AVLType::_datatype* pMax = avl.maximize();
-		if(pMax == GNULL)
+		if(pMax == GNIL)
 		{
 			GTLINE2("AVL maximize failed!");
 			++nRet;
@@ -157,12 +157,12 @@ namespace GAIATEST
 		}
 		avl.destroy();
 		pMin = avl.minimize();
-		if(pMin != GNULL)
+		if(pMin != GNIL)
 		{
 			GTLINE2("AVL minimize failed!");
 			++nRet;
 		}
-		if(pMin != GNULL)
+		if(pMin != GNIL)
 		{
 			GTLINE2("AVL maximize failed!");
 			++nRet;

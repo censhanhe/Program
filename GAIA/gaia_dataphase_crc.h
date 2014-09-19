@@ -15,7 +15,7 @@ namespace GAIA
 			{
 				GAIA_AST(!!pBuf);
 				GAIA_AST(size > 0);
-				if(pBuf == GNULL)
+				if(pBuf == GNIL)
 					return GAIA::False;
 				if(size <= 0)
 					return GAIA::False;
@@ -37,7 +37,7 @@ namespace GAIA
 			{
 				GAIA_AST(!!pBuf);
 				GAIA_AST(size > 0);
-				if(pBuf == GNULL)
+				if(pBuf == GNIL)
 					return GAIA::False;
 				if(size <= 0)
 					return GAIA::False;
@@ -59,7 +59,7 @@ namespace GAIA
 			{
 				GAIA_AST(!!pBuf);
 				GAIA_AST(size > 0);
-				if(pBuf == GNULL)
+				if(pBuf == GNIL)
 					return GAIA::False;
 				if(size <= 0)
 					return GAIA::False;

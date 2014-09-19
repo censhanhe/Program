@@ -27,7 +27,7 @@ namespace GAIATEST
 			GTLINE2("New XML object must cannot Enum!");
 			++nRet;
 		}
-		if(xml.Change(_T("NodeName"), GNULL))
+		if(xml.Change(_T("NodeName"), GNIL))
 		{
 			GTLINE2("New XML object cannot change node name!");
 			++nRet;
@@ -59,7 +59,7 @@ namespace GAIATEST
 			GTLINE2("XML object must cannot Enum after Clear!");
 			++nRet;
 		}
-		if(xml.Change(_T("NodeName"), GNULL))
+		if(xml.Change(_T("NodeName"), GNIL))
 		{
 			GTLINE2("XML object cannot change node name after Clear!");
 			++nRet;
@@ -91,7 +91,7 @@ namespace GAIATEST
 			GTLINE2("XML object must cannot Enum after Destroy!");
 			++nRet;
 		}
-		if(xml.Change(_T("NodeName"), GNULL))
+		if(xml.Change(_T("NodeName"), GNIL))
 		{
 			GTLINE2("XML object cannot change node name after Destroy!");
 			++nRet;
@@ -457,7 +457,7 @@ namespace GAIATEST
 				++nRet;
 				break;
 			}
-			if(cmnvalue != GNULL && GAIA::ALGO::strcmp(cmnvalue, CONTENT_GROUP[index++]) != 0)
+			if(cmnvalue != GNIL && GAIA::ALGO::strcmp(cmnvalue, CONTENT_GROUP[index++]) != 0)
 			{
 				GTLINE2("XML Enum content error!");
 				++nRet;

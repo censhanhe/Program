@@ -10,11 +10,11 @@ namespace PROM
 		GINL ~Pipeline(){}
 		GINL PipelineContext* GetPLCByName(PipelineContext** ppPLC, const GAIA::SIZE& size, const GAIA::TCH* pszName) const
 		{
-			GPCHR_NULL_RET(ppPLC, GNULL);
-			GPCHR_ZERO_RET(size, GNULL);
+			GPCHR_NULL_RET(ppPLC, GNIL);
+			GPCHR_ZERO_RET(size, GNIL);
 			for(GAIA::SIZE x = 0; x < size; ++x)
 			{
-				if(ppPLC[x] == GNULL)
+				if(ppPLC[x] == GNIL)
 					continue;
 				const GAIA::TCH* pszTempName = ppPLC[x]->GetName();
 				if(GAIA::ALGO::strcmp(pszTempName, pszName) == 0)
@@ -25,15 +25,15 @@ namespace PROM
 				for(GAIA::SIZE y = 0; y < ppPLC[x]->GetPrevSize(); ++y)
 				{
 					PipelineContext* pPrevPLC = static_cast<PipelineContext*>(ppPLC[x]->GetPrev(y));
-					if(pPrevPLC == GNULL)
+					if(pPrevPLC == GNIL)
 						continue;
 					PipelineContext* pPrevResult = this->GetPLCByName(&pPrevPLC, 1, pszName);
 					pPrevPLC->Release();
-					if(pPrevResult != GNULL)
+					if(pPrevResult != GNIL)
 						return pPrevResult;
 				}
 			}
-			return GNULL;
+			return GNIL;
 		}
 		virtual const GAIA::TCH* GetName() const = 0;
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs) = 0;

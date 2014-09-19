@@ -32,15 +32,15 @@ namespace GAIA
 			GINL GAIA::BL pop_front()
 			{
 				const _DataType* p = m_avltree.minimize();
-				if(p == GNULL)
-					return GNULL;
+				if(p == GNIL)
+					return GNIL;
 				return m_avltree.erase(*p);
 			}
 			GINL GAIA::BL pop_back()
 			{
 				const _DataType* p = m_avltree.maximize();
-				if(p == GNULL)
-					return GNULL;
+				if(p == GNIL)
+					return GNIL;
 				return m_avltree.erase(*p);
 			}
 			GINL const _DataType& front() const{return *m_avltree.minimize();}

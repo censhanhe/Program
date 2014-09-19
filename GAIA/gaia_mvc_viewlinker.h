@@ -33,7 +33,7 @@ namespace GAIA
 				for(; !it.empty(); ++it)
 				{
 					ViewNode& n = *it;
-					if(n.pView == GNULL)
+					if(n.pView == GNIL)
 					{
 						n.pView = &view;
 						return GAIA::True;
@@ -52,7 +52,7 @@ namespace GAIA
 					ViewNode& n = *it;
 					if(n.pView == &view)
 					{
-						n.pView = GNULL;
+						n.pView = GNIL;
 						return GAIA::True;
 					}
 				}

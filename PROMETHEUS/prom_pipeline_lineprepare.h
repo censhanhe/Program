@@ -12,19 +12,19 @@ namespace PROM
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
-			GPCHR_NULL_RET(ppPLC, GNULL);
-			GPCHR_ZERO_RET(size, GNULL);
+			GPCHR_NULL_RET(ppPLC, GNIL);
+			GPCHR_ZERO_RET(size, GNIL);
 
 			GAIA::CTN::Vector<GAIA::BL> listEraseTemp;
 			DWARFS_MISC::TextLine::__LineType strLine, strLineTemp;
-			PLC_FileCodeLinePrepare* pRet = GNULL;
-			PLC_CommandParam* plc_commandparam = GNULL;
-			PLC_FileCodeLine* plc_codeline = GNULL;
+			PLC_FileCodeLinePrepare* pRet = GNIL;
+			PLC_CommandParam* plc_commandparam = GNIL;
+			PLC_FileCodeLine* plc_codeline = GNIL;
 			plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_CommandParam")));
-			if(plc_commandparam == GNULL)
+			if(plc_commandparam == GNIL)
 				goto FUNCTION_END;
 			plc_codeline = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_FileCodeLine")));
-			if(plc_codeline == GNULL)
+			if(plc_codeline == GNIL)
 				goto FUNCTION_END;
 
 			/* Initialize result pipeline context. */
@@ -167,17 +167,17 @@ namespace PROM
 			}
 
 		FUNCTION_END:
-			if(plc_commandparam != GNULL)
+			if(plc_commandparam != GNIL)
 				plc_commandparam->Release();
-			if(plc_codeline != GNULL)
+			if(plc_codeline != GNIL)
 				plc_codeline->Release();
 			return pRet;
 		}
 		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 		{
 			/* Parameter check up. */
-			GAIA_AST(pPLC != GNULL);
-			if(pPLC == GNULL)
+			GAIA_AST(pPLC != GNIL);
+			if(pPLC == GNIL)
 				return GAIA::False;
 
 			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
@@ -185,7 +185,7 @@ namespace PROM
 				return GAIA::False;
 
 			PLC_FileCodeLinePrepare* plc_filecodelineprepare = static_cast<PLC_FileCodeLinePrepare*>(pPLC);
-			if(plc_filecodelineprepare == GNULL)
+			if(plc_filecodelineprepare == GNIL)
 				return GAIA::False;
 			if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_FileCodeLinePrepare")) != 0)
 				return GAIA::False;
@@ -196,7 +196,7 @@ namespace PROM
 				for(GAIA::SIZE y = 0; y < fcl.lines.size(); ++y)
 				{
 					const DWARFS_MISC::TextLine::__CharType* pszLine = fcl.lines.get_line(y);
-					if(pszLine == GNULL)
+					if(pszLine == GNIL)
 						continue;
 					if(pszLine[0] != _T('\0'))
 						pFile->Write(pszLine, GAIA::ALGO::strlen(pszLine) * sizeof(DWARFS_MISC::TextLine::__CharType));

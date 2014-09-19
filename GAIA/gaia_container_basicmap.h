@@ -105,7 +105,7 @@ namespace GAIA
 				Node n;
 				n.m_key = key;
 				Node* pNode = m_avltree.find(n);
-				if(pNode == GNULL)
+				if(pNode == GNIL)
 				{
 					m_avltree.insert(n);
 					pNode = m_avltree.find(n);
@@ -123,8 +123,8 @@ namespace GAIA
 				Node n;
 				n.m_key = key;
 				const Node* pNode = m_avltree.find(n);
-				if(pNode == GNULL)
-					return GNULL;
+				if(pNode == GNIL)
+					return GNIL;
 				return &pNode->m_data;
 			}
 			GINL it lower_bound(const _KeyType& key){it ret; Node f; f.m_key = key; ret.m_iter = m_avltree.lower_bound(f); return ret;}

@@ -12,7 +12,7 @@ namespace GAIA
 			for(; !it.empty(); ++it)
 			{
 				ViewNode& n = *it;
-				if(n.pView != GNULL)
+				if(n.pView != GNIL)
 				{
 					n.pView->Reference();
 					listResult.push_back(n.pView);

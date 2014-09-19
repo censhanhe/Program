@@ -43,9 +43,9 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID init()
 			{
-				m_seclist = GNULL;
+				m_seclist = GNIL;
 				m_uSecListSize = 0;
-				m_secsizelist = GNULL;
+				m_secsizelist = GNIL;
 				m_uSecSizeListSize = 0;
 				m_capacity = 0;
 				m_size = 0;
@@ -95,10 +95,10 @@ namespace GAIA
 					for(GAIA::UM x = 0; x < HEAP_SECTION_COUNT; ++x)
 					{
 						Section temp;
-						temp.oblist = GNULL;
+						temp.oblist = GNIL;
 						temp.uObListSize = 0;
 						temp.uObListCapacity = 0;
-						temp.freestack = GNULL;
+						temp.freestack = GNIL;
 						temp.uFreeStackSize = 0;
 						temp.uFreeStackCapacity = 0;
 						temp.uMinFreeIndex = (GAIA::UM)GINVALID;
@@ -117,19 +117,19 @@ namespace GAIA
 				m_lr.Enter();
 			#endif
 				{
-					if(m_seclist != GNULL)
+					if(m_seclist != GNIL)
 					{
 						for(GAIA::UM x = 0; x < HEAP_SECTION_COUNT; ++x)
 						{
 							Section& sec = m_seclist[x];
-							if(sec.oblist != GNULL)
+							if(sec.oblist != GNIL)
 							{
 								for(GAIA::UM y = 0; y < sec.uObListSize; ++y)
 								{
 									OriginBuffer& ob = sec.oblist[y];
-									if(ob.freestack != GNULL)
+									if(ob.freestack != GNIL)
 										delete[] ob.freestack;
-									if(ob.buf != GNULL)
+									if(ob.buf != GNIL)
 										delete[] ob.buf;
 								}
 								delete[] sec.oblist;
@@ -138,13 +138,13 @@ namespace GAIA
 								delete[] sec.freestack;
 						}
 						delete[] m_seclist;
-						m_seclist = GNULL;
+						m_seclist = GNIL;
 						m_uSecListSize = 0;
 					}
-					if(m_secsizelist != GNULL)
+					if(m_secsizelist != GNIL)
 					{
 						delete[] m_secsizelist;
-						m_secsizelist = GNULL;
+						m_secsizelist = GNIL;
 						m_uSecSizeListSize = 0;
 					}
 				}
@@ -158,7 +158,7 @@ namespace GAIA
 				{
 					GAIA::UM uNewCapacity = uCapacity * 2 + 1;
 					_DataType* pNew = new _DataType[uNewCapacity];
-					if(p != GNULL)
+					if(p != GNIL)
 					{
 						for(GAIA::UM x = 0; x < uSize; ++x)
 							pNew[x] = p[x];

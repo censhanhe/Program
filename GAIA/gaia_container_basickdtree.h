@@ -56,49 +56,49 @@ namespace GAIA
 			GINL ~BasicKDTree(){}
 			GINL GAIA::BL empty() const{return this->size() == 0;}
 			GINL const _SizeType& size() const{return m_size;}
-			GINL GAIA::GVOID clear(){m_pRoot = GNULL; m_nodepool.clear(); m_splitpool.clear(); m_avltree.clear();}
-			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_nodepool.destroy(); m_splitpool.destroy(); m_avltree.destroy();}
+			GINL GAIA::GVOID clear(){m_pRoot = GNIL; m_nodepool.clear(); m_splitpool.clear(); m_avltree.clear();}
+			GINL GAIA::GVOID destroy(){m_pRoot = GNIL; m_nodepool.destroy(); m_splitpool.destroy(); m_avltree.destroy();}
 			GINL GAIA::BL insert(const _DataType& t)
 			{
 				return GAIA::True;
 			}
 			GINL GAIA::BL erase(const _DataType& t)
 			{
-				typename __AVLTreeType::_datatype pr(t, GNULL);
+				typename __AVLTreeType::_datatype pr(t, GNIL);
 				typename __AVLTreeType::_datatype* pGlobalRec = m_avltree.find(pr);
-				if(pGlobalRec == GNULL)
+				if(pGlobalRec == GNIL)
 					return GAIA::False;
 				Node* pNode = pGlobalRec->back();
 				GAIA_AST(!!pNode);
 				GAIA::BL ret = pNode->m_avltree.erase(&pGlobalRec->front());
 				if(ret)
 					--m_size;
-				Split* pSplit = GNULL;
-				while(pNode != GNULL || pSplit != GNULL)
+				Split* pSplit = GNIL;
+				while(pNode != GNIL || pSplit != GNIL)
 				{
-					if(pSplit != GNULL)
+					if(pSplit != GNIL)
 					{
 						if(pSplit->m_pLeft == pNode)
-							pSplit->m_pLeft = GNULL;
+							pSplit->m_pLeft = GNIL;
 						else
-							pSplit->m_pRight = GNULL;
-						if(pSplit->m_pLeft != GNULL || pSplit->m_pRight != GNULL)
+							pSplit->m_pRight = GNIL;
+						if(pSplit->m_pLeft != GNIL || pSplit->m_pRight != GNIL)
 							break;
 						else
 						{
-							pSplit->m_pParent->m_pSplit = GNULL;
+							pSplit->m_pParent->m_pSplit = GNIL;
 							pNode = pSplit->m_pParent;
 							m_splitpool.release(pSplit);
-							pSplit = GNULL;
+							pSplit = GNIL;
 						}
 					}
-					else if(pNode != GNULL)
+					else if(pNode != GNIL)
 					{
 						if(!pNode->m_avltree.empty())
 							break;
 						pSplit = pNode->m_pParent;
 						m_nodepool.release(pNode);
-						pNode = GNULL;
+						pNode = GNIL;
 					}
 				}
 				return ret;
@@ -107,7 +107,7 @@ namespace GAIA
 			GINL const _DataType* find(const _DataType& t) const{return m_avltree.find(t);}
 			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); return *this;}
 		private:
-			GINL GAIA::GVOID init(){m_pRoot = GNULL; m_size = 0;}
+			GINL GAIA::GVOID init(){m_pRoot = GNIL; m_size = 0;}
 		private:
 			Node* m_pRoot;
 			_SizeType m_size;

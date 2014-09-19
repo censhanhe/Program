@@ -16,7 +16,7 @@ namespace GAIA
 			GINL Ptr(const __MyType& src){this->init(); this->operator = (src);}
 			GINL Ptr(_DataType* p){this->init(); this->operator = (p);}
 			GINL ~Ptr(){}
-			GINL GAIA::BL empty() const{return m_p == GNULL;}
+			GINL GAIA::BL empty() const{return m_p == GNIL;}
 			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); m_p = src.m_p; return *this;}
 			GINL __MyType& operator = (_DataType* p){m_p = p; return *this;}
 			GINL _DataType& operator * (){return *m_p;}
@@ -54,7 +54,7 @@ namespace GAIA
 			GINL operator const _DataType*() const{return m_p;}
 			GINL operator _DataType*(){return m_p;}
 		private:
-			GINL GAIA::GVOID init(){m_p = GNULL;}
+			GINL GAIA::GVOID init(){m_p = GNIL;}
 		private:
 			_DataType* m_p;
 		};

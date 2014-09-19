@@ -161,7 +161,7 @@ namespace GAIA
 				NodeSize ns;
 				ns.m_n.m_head = head;
 				Node* pNode = m_using_a.find(ns.m_n);
-				if(pNode == GNULL)
+				if(pNode == GNIL)
 					return GAIA::False;
 				ns.m_n.m_size = 0;
 				ns.m_n.m_capacity = pNode->m_capacity;

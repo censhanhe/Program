@@ -152,7 +152,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		GAIA_MFREE(pElements);
-		pElements = GNULL;
+		pElements = GNIL;
 		return nRet;
 	}
 };

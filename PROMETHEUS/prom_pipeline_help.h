@@ -12,11 +12,11 @@ namespace PROM
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
-			GPCHR_NULL_RET(ppPLC, GNULL);
-			GPCHR_ZERO_RET(size, GNULL);
+			GPCHR_NULL_RET(ppPLC, GNIL);
+			GPCHR_ZERO_RET(size, GNIL);
 			PLC_CommandParam* plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_CommandParam")));
-			if(plc_commandparam == GNULL)
-				return GNULL;
+			if(plc_commandparam == GNIL)
+				return GNIL;
 
 			/* Initialize result pipeline context. */
 			PLC_Empty* pRet = new PLC_Empty;
@@ -38,7 +38,7 @@ namespace PROM
 						for(GAIA::SIZE y = 0; y < plc_commandparam->cmdparam.cmd_decl_size(); ++y)
 						{
 							const GAIA::TCH* pszDeclCmd = plc_commandparam->cmdparam.cmd_decl_cmd(y);
-							if(pszDeclCmd == GNULL)
+							if(pszDeclCmd == GNIL)
 								continue;
 							const GAIA::TCH* pszDeclDesc = plc_commandparam->cmdparam.cmd_decl_desc(y);
 							GAIA::SIZE min_param_size = plc_commandparam->cmdparam.cmd_decl_min_param_size(y);
@@ -56,7 +56,7 @@ namespace PROM
 			}
 
 		FUNCTION_END:
-			if(plc_commandparam != GNULL)
+			if(plc_commandparam != GNIL)
 				plc_commandparam->Release();
 			return pRet;
 		}

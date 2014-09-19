@@ -27,7 +27,7 @@ namespace DWARFSTEST
 	//	sm.content("Mail test content.\nMail test content.\n");
 	//	sm.add_attach(_T("d:\\xy\\test.jpg"));
 	//	sm.add_attach(_T("d:\\xy\\test1.jpg"));
-	//	sm.send(GNULL, GNULL);
+	//	sm.send(GNIL, GNIL);
 
 	//#if GAIA_OS == GAIA_OS_WINDOWS
 	//	WSACleanup();

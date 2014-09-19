@@ -39,7 +39,7 @@ namespace PROM
 		public:
 			GINL Obj(){this->init();}
 		public:
-			virtual const GAIA::TCH* GetName() const{return GNULL;}
+			virtual const GAIA::TCH* GetName() const{return GNIL;}
 			virtual GAIA::SIZE GetNameSize() const{return GINVALID;}
 			virtual TYPE GetType() const{return TYPE_INVALID;}
 			virtual STRUCTTYPE GetStructType() const{return STRUCTTYPE_INVALID;}
@@ -140,7 +140,7 @@ namespace PROM
 			GPCHR_NULL_RET(pObj, GAIA::False);
 			GAIA_AST(pObj->GetNameIndex() == GINVALID);
 			GAIA_AST(pObj->GetTypeIndex() == GINVALID);
-			if(this->FindObjByLoc(pObj->GetLocation()) != GNULL)
+			if(this->FindObjByLoc(pObj->GetLocation()) != GNIL)
 				return GAIA::False;
 			RecLocation rl;
 			rl.pObj = pObj;
@@ -157,7 +157,7 @@ namespace PROM
 		GINL GAIA::BL DeleteObj(Obj* pObj)
 		{
 			GPCHR_NULL_RET(pObj, GAIA::False);
-			if(this->FindObjByLoc(pObj->GetLocation()) == GNULL)
+			if(this->FindObjByLoc(pObj->GetLocation()) == GNIL)
 				return GAIA::False;
 			RecLocation rl;
 			rl.pObj = pObj;
@@ -180,8 +180,8 @@ namespace PROM
 			RecLocation rl;
 			rl.pObj = &obj;
 			const RecLocation* pFinded = rec_location.find(rl);
-			if(pFinded == GNULL)
-				return GNULL;
+			if(pFinded == GNIL)
+				return GNIL;
 			return pFinded->pObj;
 		}
 		GINL GAIA::BL FindObjByName(const GAIA::TCH* pszName, GAIA::CTN::Vector<Obj*>& listResult) const
@@ -194,7 +194,7 @@ namespace PROM
 				if(!rec_name.exist(x))
 					continue;
 				Obj* pObj = rec_name[x].pObj;
-				if(pObj == GNULL)
+				if(pObj == GNIL)
 					continue;
 				const GAIA::TCH* pszTempName = pObj->GetName();
 				if(GAIA::ALGO::stremp(pszTempName))
@@ -217,7 +217,7 @@ namespace PROM
 				if(!rec_type.exist(x))
 					continue;
 				Obj* pObj = rec_type[x].pObj;
-				if(pObj == GNULL)
+				if(pObj == GNIL)
 					continue;
 				if(pObj->GetType() == type)
 				{

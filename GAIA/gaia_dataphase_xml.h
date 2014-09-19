@@ -25,14 +25,14 @@ namespace GAIA
 
 				/* Load file header. */
 				__AccesserType newacc = GAIA::ALGO::strdrop(acc, _T("<"));
-				if(newacc == GNULL)
+				if(newacc == GNIL)
 					return GAIA::False;
 				if(newacc != acc)
 					acc = newacc;
 				if(acc[1] != '?')
 					return GAIA::False;
 				newacc = GAIA::ALGO::strch(acc, '>');
-				if(newacc == GNULL)
+				if(newacc == GNIL)
 					return GAIA::False;
 				acc =  newacc;
 
@@ -43,7 +43,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL Save(__AccesserType& acc, GAIA::CHARSET_TYPE cst)
 			{
-				if(m_root == GNULL)
+				if(m_root == GNIL)
 					return GAIA::False;
 
 				/* Save file header. */
@@ -70,14 +70,14 @@ namespace GAIA
 			{
 				this->ResetCursor();
 				m_npool.destroy();
-				m_root = GNULL;
+				m_root = GNIL;
 				m_ssp.destroy();
 			}
 			GINL GAIA::GVOID Clear()
 			{
 				this->ResetCursor();
 				m_npool.clear();
-				m_root = GNULL;
+				m_root = GNIL;
 				m_ssp.clear();
 			}
 			GINL GAIA::BL EnumNode(__ConstCharPtrType& pNodeName)
@@ -99,7 +99,7 @@ namespace GAIA
 					CallStack& curcs = m_callstack.back();
 					if(curcs.index >= curcs.pNode->nodes.size())
 						return GAIA::False;
-					while(curcs.pNode->nodes[curcs.index] == GNULL)
+					while(curcs.pNode->nodes[curcs.index] == GNIL)
 					{
 						++curcs.index;
 						if(curcs.index >= curcs.pNode->nodes.size())
@@ -132,11 +132,11 @@ namespace GAIA
 				pAttrName = m_ssp.get(attrs[m_attrcursor].name);
 				pAttrValue = m_ssp.get(attrs[m_attrcursor].value);
 				++m_attrcursor;
-				GAIA_AST(pAttrName != GNULL);
-				GAIA_AST(pAttrValue != GNULL);
+				GAIA_AST(pAttrName != GNIL);
+				GAIA_AST(pAttrValue != GNIL);
 				return GAIA::True;
 			}
-			GINL GAIA::BL Enum(__ConstCharPtrType& pName, __ConstCharPtrType& pValue) // If pValue is GNULL, it means enum a node.
+			GINL GAIA::BL Enum(__ConstCharPtrType& pName, __ConstCharPtrType& pValue) // If pValue is GNIL, it means enum a node.
 			{
 				if(this->EnumAttr(pName, pValue))
 					return GAIA::True;
@@ -144,7 +144,7 @@ namespace GAIA
 				{
 					if(this->EnumNode(pName))
 					{
-						pValue = GNULL;
+						pValue = GNIL;
 						return GAIA::True;
 					}
 					if(!this->End())
@@ -152,14 +152,14 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			GINL GAIA::BL Change(const _CharType* pName, const _CharType* pValue) // If pValue is GNULL, it means change a node name.
+			GINL GAIA::BL Change(const _CharType* pName, const _CharType* pValue) // If pValue is GNIL, it means change a node name.
 			{
 				GPCHR_NULLSTRPTR_RET(pName, GAIA::False);
 				if(m_callstack.empty())
 					return GAIA::False;
 				Node* pNode = m_callstack.back().pNode;
 				GAIA_AST(pNode->name != GINVALID);
-				if(pValue == GNULL)
+				if(pValue == GNIL)
 					pNode->name = m_ssp.alloc(pName);
 				else
 				{
@@ -180,8 +180,8 @@ namespace GAIA
 				pNewNode->name = m_ssp.alloc(pNode);
 				if(m_callstack.empty())
 				{
-					GAIA_ASTDEBUG(m_root == GNULL);
-					if(m_root != GNULL)
+					GAIA_ASTDEBUG(m_root == GNIL);
+					if(m_root != GNIL)
 					{
 						m_npool.release(pNewNode);
 						return GAIA::False;
@@ -233,8 +233,8 @@ namespace GAIA
 			GINL const _CharType* GetLineFlag() const{return m_lineflag;}
 			GINL const _CharType* NameFamily(const _CharType* pNF, const _CharType* pConditionName, const _CharType* pConditionValue) const
 			{
-				GPCHR_NULLSTRPTR_RET(pNF, GNULL);
-				return GNULL;
+				GPCHR_NULLSTRPTR_RET(pNF, GNIL);
+				return GNIL;
 			}
 		private:
 			class Node;
@@ -268,13 +268,13 @@ namespace GAIA
 			GINL GAIA::GVOID init()
 			{
 				this->ResetCursor();
-				m_root = GNULL;
+				m_root = GNIL;
 				m_lineflag = _T("\r\n");
 			}
 			GINL GAIA::BL IsAttrExist(const Node* pNode, const _CharType* pAttrName) const
 			{
-				GAIA_AST(pNode != GNULL);
-				GAIA_AST(pAttrName != GNULL);
+				GAIA_AST(pNode != GNIL);
+				GAIA_AST(pAttrName != GNIL);
 				for(__AttrListType::_sizetype x = 0; x < pNode->attrs.size(); ++x)
 				{
 					const Attr& a = pNode->attrs[x];
@@ -301,9 +301,9 @@ namespace GAIA
 
 					/* Load attr name. */
 					__AccesserType newacc = GAIA::ALGO::strdrop(acc, _T("="));
-					if(newacc == GNULL)
+					if(newacc == GNIL)
 						return GAIA::False;
-					const _CharType* pAttrName = GNULL;
+					const _CharType* pAttrName = GNIL;
 					if(newacc - acc > CACHE_ATTRNAME_SIZE)
 					{
 						m_strTempAttrName.clear();
@@ -319,14 +319,14 @@ namespace GAIA
 					acc = newacc;
 
 					/* Load attr value. */
-					const _CharType* pAttrValue = GNULL;
+					const _CharType* pAttrValue = GNIL;
 					newacc = GAIA::ALGO::strdrop(acc, _T("\""));
-					if(newacc == GNULL)
+					if(newacc == GNIL)
 						return GAIA::False;
 					acc = newacc;
 					++acc;
 					newacc = GAIA::ALGO::strdrop(acc, _T("\""));
-					if(newacc == GNULL)
+					if(newacc == GNIL)
 						return GAIA::False;
 					if(newacc - acc > CACHE_ATTRNAME_SIZE)
 					{
@@ -352,12 +352,12 @@ namespace GAIA
 			{
 				/* Load node name. */
 				__AccesserType newacc = GAIA::ALGO::strdrop(acc, _T("<"));
-				if(newacc == GNULL)
+				if(newacc == GNIL)
 					return GAIA::False;
 				acc = newacc;
 				++acc;
 				newacc = GAIA::ALGO::strdrop(acc, _T(" /"));
-				if(newacc == GNULL)
+				if(newacc == GNIL)
 					return GAIA::False;
 				if(newacc - acc > CACHE_NODENAME_SIZE)
 				{
@@ -381,7 +381,7 @@ namespace GAIA
 				for(;;)
 				{
 					newacc = GAIA::ALGO::strdrop(acc, _T("/<"));
-					if(newacc == GNULL)
+					if(newacc == GNIL)
 						return GAIA::False;
 					if(*newacc == '/' || *(newacc + 1) == '/')
 					{
@@ -394,7 +394,7 @@ namespace GAIA
 
 				/* Move to node end. */
 				newacc = GAIA::ALGO::strdrop(acc, _T(">"));
-				if(newacc == GNULL)
+				if(newacc == GNIL)
 					return GAIA::False;
 				acc = newacc;
 
@@ -414,7 +414,7 @@ namespace GAIA
 				/* Write node name. */
 				*acc = '<'; ++acc;
 				const _CharType* pNodeName = m_ssp.get(pNode->name);
-				GAIA_AST(pNode != GNULL);
+				GAIA_AST(pNode != GNIL);
 				_SizeType sNodeLen = GAIA::ALGO::strlen(pNodeName);
 				acc = GAIA::ALGO::stradd(acc, pNodeName);
 
@@ -427,8 +427,8 @@ namespace GAIA
 					*acc = ' '; ++acc;
 					const _CharType* pAttrName = m_ssp.get(attr.name);
 					const _CharType* pAttrValue = m_ssp.get(attr.value);
-					GAIA_AST(pAttrName != GNULL);
-					GAIA_AST(pAttrValue != GNULL);
+					GAIA_AST(pAttrName != GNIL);
+					GAIA_AST(pAttrValue != GNIL);
 					_SizeType sAttrNameLen = GAIA::ALGO::strlen(pAttrName);
 					_SizeType sAttrValueLen = GAIA::ALGO::strlen(pAttrValue);
 					acc = GAIA::ALGO::stradd(acc, pAttrName);
@@ -444,7 +444,7 @@ namespace GAIA
 				for(_SizeType x = 0; x < pNode->nodes.size(); ++x)
 				{
 					Node* pChildNode = pNode->nodes[x];
-					if(pChildNode == GNULL)
+					if(pChildNode == GNIL)
 						continue;
 					if(!bExistChildNode)
 					{

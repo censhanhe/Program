@@ -12,21 +12,21 @@ namespace PROM
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
-			GPCHR_NULL_RET(ppPLC, GNULL);
-			GPCHR_ZERO_RET(size, GNULL);
+			GPCHR_NULL_RET(ppPLC, GNIL);
+			GPCHR_ZERO_RET(size, GNIL);
 
-			PLC_FileStructure* pRet = GNULL;
-			PLC_CommandParam* plc_commandparam = GNULL;
-			PLC_File* plc_file = GNULL;
-			PLC_FileCodeLinePrepare* plc_codelineprepare = GNULL;
+			PLC_FileStructure* pRet = GNIL;
+			PLC_CommandParam* plc_commandparam = GNIL;
+			PLC_File* plc_file = GNIL;
+			PLC_FileCodeLinePrepare* plc_codelineprepare = GNIL;
 			plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_CommandParam")));
-			if(plc_commandparam == GNULL)
+			if(plc_commandparam == GNIL)
 				goto FUNCTION_END;
 			plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_File")));
-			if(plc_file == GNULL)
+			if(plc_file == GNIL)
 				goto FUNCTION_END;
 			plc_codelineprepare = static_cast<PLC_FileCodeLinePrepare*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_FileCodeLinePrepare")));
-			if(plc_codelineprepare == GNULL)
+			if(plc_codelineprepare == GNIL)
 				goto FUNCTION_END;
 
 			/* Initialize result pipeline context. */
@@ -43,15 +43,15 @@ namespace PROM
 					if(GAIA::ALGO::stremp(pLine))
 						continue;
 					const DWARFS_MISC::TextLine::__CharType* pFinded = GAIA::ALGO::strstr(pLine, "#include");
-					if(pFinded == GNULL)
+					if(pFinded == GNIL)
 						continue;
 					pFinded += GAIA::ALGO::strlen("#include");
-					const DWARFS_MISC::TextLine::__CharType* pFindedNext = GNULL;
+					const DWARFS_MISC::TextLine::__CharType* pFindedNext = GNIL;
 					if(*pFinded == _T('"'))
 						pFindedNext = GAIA::ALGO::strch(pFinded + 1, _T('"'));
 					else
 						pFindedNext = GAIA::ALGO::strch(pFinded + 1, _T('>'));
-					if(pFindedNext != GNULL)
+					if(pFindedNext != GNIL)
 					{
 						__FileName tempfilename;
 						tempfilename.assign(pFinded + 1, pFindedNext - pFinded - 1);
@@ -65,19 +65,19 @@ namespace PROM
 			}
 
 		FUNCTION_END:
-			if(plc_commandparam != GNULL)
+			if(plc_commandparam != GNIL)
 				plc_commandparam->Release();
-			if(plc_file != GNULL)
+			if(plc_file != GNIL)
 				plc_file->Release();
-			if(plc_codelineprepare != GNULL)
+			if(plc_codelineprepare != GNIL)
 				plc_codelineprepare->Release();
 			return pRet;
 		}
 		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 		{
 			/* Parameter check up. */
-			GAIA_AST(pPLC != GNULL);
-			if(pPLC == GNULL)
+			GAIA_AST(pPLC != GNIL);
+			if(pPLC == GNIL)
 				return GAIA::False;
 
 			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
@@ -85,20 +85,20 @@ namespace PROM
 				return GAIA::False;
 
 			PLC_FileStructure* plc_filestructure = static_cast<PLC_FileStructure*>(pPLC);
-			if(plc_filestructure == GNULL)
+			if(plc_filestructure == GNIL)
 				return GAIA::False;
 			if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_FileStructure")) != 0)
 				return GAIA::False;
 
 			/* Print parent relation. */
-			if(pFile != GNULL && pFile->Tell() == 0)
+			if(pFile != GNIL && pFile->Tell() == 0)
 			{
 			#if GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				pFile->Write(GAIA::UTF16LE_FILEHEAD, sizeof(GAIA::UTF16LE_FILEHEAD));
 			#endif
 			}
 			prt << "[To Parent]" << "\n";
-			if(pFile != GNULL)
+			if(pFile != GNIL)
 			{
 				pFile->Write(_T("[To Parent]"), GAIA::ALGO::strlen("[To Parent]") * sizeof(GAIA::TCH));
 				pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
@@ -113,7 +113,7 @@ namespace PROM
 
 			/* Print child relation. */
 			prt << "[To Child]" << "\n";
-			if(pFile != GNULL)
+			if(pFile != GNIL)
 			{
 				pFile->Write(_T("[To Child]"), GAIA::ALGO::strlen("[To Child]") * sizeof(GAIA::TCH));
 				pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
@@ -138,7 +138,7 @@ namespace PROM
 		{
 			GPCHR_NULL(plc_filestructure);
 			prt << node.name.front_ptr() << "\n";
-			if(pFile != GNULL)
+			if(pFile != GNIL)
 			{
 				this->OutputDepth(prt, pFile, depth);
 				pFile->Write(node.name.front_ptr(), node.name.size() * sizeof(__FileName::_datatype));
@@ -149,7 +149,7 @@ namespace PROM
 			{
 				__FileName& filename = *itlink;
 				PLC_FileStructure::Node* pParentNode = plc_filestructure->FindNode(filename);
-				if(pParentNode != GNULL)
+				if(pParentNode != GNIL)
 					this->OutputParentRelation(plc_filestructure, *pParentNode, pFile, prt, depth + 1);
 			}
 		}
@@ -162,7 +162,7 @@ namespace PROM
 		{
 			GPCHR_NULL(plc_filestructure);
 			prt << node.name.front_ptr() << "\n";
-			if(pFile != GNULL)
+			if(pFile != GNIL)
 			{
 				this->OutputDepth(prt, pFile, depth);
 				pFile->Write(node.name.front_ptr(), node.name.size() * sizeof(__FileName::_datatype));
@@ -173,7 +173,7 @@ namespace PROM
 			{
 				__FileName& filename = *itlink;
 				PLC_FileStructure::Node* pChildNode = plc_filestructure->FindNode(filename);
-				if(pChildNode != GNULL)
+				if(pChildNode != GNIL)
 					this->OutputChildRelation(plc_filestructure, *pChildNode, pFile, prt, depth + 1);
 			}
 		}
@@ -182,7 +182,7 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < depth; ++x)
 			{
 				prt << "\t";
-				if(pFile != GNULL)
+				if(pFile != GNIL)
 					pFile->Write(_T("\t"), sizeof(GAIA::TCH));
 			}
 		}

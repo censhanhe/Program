@@ -148,7 +148,7 @@ namespace GAIATEST
 		vec.push_back(pTemp, arrsize);
 
 		delete[] pTemp;
-		pTemp = GNULL;
+		pTemp = GNIL;
 		if(vec1.size() != arrsize ||
 			vec.size() != arrsize)
 		{

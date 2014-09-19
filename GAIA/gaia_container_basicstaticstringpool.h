@@ -26,14 +26,14 @@ namespace GAIA
 			GINL const _DataType* get(const _SizeType& index) const{return m_datalist.front_ptr() + m_nodelist[index].offset;}
 			GINL _SizeType alloc(const _DataType* p)
 			{
-				GPCHR_NULLSTRPTR_RET(p, GNULL);
+				GPCHR_NULLSTRPTR_RET(p, GNIL);
 				Node finder;
 				finder.pContainer = this;
 				finder.offset = m_datalist.size();
 				_SizeType len = GAIA::ALGO::strlen(p);
 				m_datalist.push_back(p, len + 1);
 				Node* pFinded = m_nodeset.find(finder);
-				if(pFinded == GNULL)
+				if(pFinded == GNIL)
 				{
 					finder.index = m_nodelist.size();
 					m_nodelist.push_back(finder);

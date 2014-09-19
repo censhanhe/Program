@@ -39,7 +39,7 @@ namespace GAIA
 					for(GAIA::UM x = 0; x < hs.uObListSize; ++x)
 					{
 						OriginBuffer& ob = hs.oblist[x];
-						if(ob.buf != GNULL && ob.uFreeStackSize != 0 && ob.uFreeStackSize < hs.uMinFreeSize)
+						if(ob.buf != GNIL && ob.uFreeStackSize != 0 && ob.uFreeStackSize < hs.uMinFreeSize)
 						{
 							hs.uMinFreeSize = (GAIA::UM)ob.uFreeStackSize;
 							hs.uMinFreeIndex = x;
@@ -52,8 +52,8 @@ namespace GAIA
 					if(hs.uFreeStackSize == 0)
 					{
 						OriginBuffer newob;
-						newob.buf = GNULL;
-						newob.freestack = GNULL;
+						newob.buf = GNIL;
+						newob.freestack = GNIL;
 						newob.uFreeStackSize = 0;
 						newob.uFreeStackCapacity = 0;
 						uOriginBufferIndex = (GAIA::U16)hs.uObListSize;
@@ -134,11 +134,11 @@ namespace GAIA
 						hs.uMinFreeSize = (GAIA::UM)GINVALID;
 					}
 					delete[] ob.freestack;
-					ob.freestack = GNULL;
+					ob.freestack = GNIL;
 					ob.uFreeStackSize = 0;
 					ob.uFreeStackCapacity = 0;
 					delete[] ob.buf;
-					ob.buf = GNULL;
+					ob.buf = GNIL;
 					this->push(uOBIndex, hs.freestack, hs.uFreeStackSize, hs.uFreeStackCapacity);
 				}
 			}

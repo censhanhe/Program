@@ -117,7 +117,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::CH* p)
 		{
-			if(p == GNULL)
+			if(p == GNIL)
 				return *this;
 			if(!this->enable_write())
 				return *this;
@@ -126,7 +126,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator << (const GAIA::WCH* p)
 		{
-			if(p == GNULL)
+			if(p == GNIL)
 				return *this;
 			if(!this->enable_write())
 				return *this;
@@ -239,7 +239,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::CH* p)
 		{
-			if(p == GNULL)
+			if(p == GNIL)
 				return *this;
 			if(!this->enable_read())
 				return *this;
@@ -248,7 +248,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL Print& Print::operator >> (GAIA::WCH* p)
 		{
-			if(p == GNULL)
+			if(p == GNIL)
 				return *this;
 			if(!this->enable_read())
 				return *this;

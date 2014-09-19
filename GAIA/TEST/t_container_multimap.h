@@ -60,13 +60,13 @@ namespace GAIATEST
 		__MultiMapType::__DataListType listResult;
 		for(__MultiMapType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(mm.find(x) == GNULL)
+			if(mm.find(x) == GNIL)
 			{
 				GTLINE2("MultiMap find element failed!");
 				++nRet;
 				break;
 			}
-			if(static_cast<const __MultiMapType*>(&mm)->find(x) == GNULL)
+			if(static_cast<const __MultiMapType*>(&mm)->find(x) == GNIL)
 			{
 				GTLINE2("MultiMap const find element failed!");
 				++nRet;

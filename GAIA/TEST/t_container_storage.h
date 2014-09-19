@@ -121,7 +121,7 @@ namespace GAIATEST
 		__StorageType st1 = st;
 		for(__VectorType::_sizetype x = 0; x < vt.size(); x += 2)
 		{
-			if(st.find(vt[x]) == GNULL)
+			if(st.find(vt[x]) == GNIL)
 			{
 				GTLINE2("Storage find failed!");
 				++nRet;
@@ -147,7 +147,7 @@ namespace GAIATEST
 		}
 		for(__VectorType::_sizetype x = 0; x < vt.size(); x += 2)
 		{
-			if(st1.find(vt[x]) == GNULL)
+			if(st1.find(vt[x]) == GNIL)
 			{
 				GTLINE2("Storage find failed!");
 				++nRet;

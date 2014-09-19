@@ -12,21 +12,21 @@ namespace PROM
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
-			GPCHR_NULL_RET(ppPLC, GNULL);
-			GPCHR_ZERO_RET(size, GNULL);
+			GPCHR_NULL_RET(ppPLC, GNIL);
+			GPCHR_ZERO_RET(size, GNIL);
 
-			PLC_Word* pRet = GNULL;
-			PLC_CommandParam* plc_commandparam = GNULL;
-			PLC_File* plc_file = GNULL;
-			PLC_FileCodeLine* plc_codeline = GNULL;
+			PLC_Word* pRet = GNIL;
+			PLC_CommandParam* plc_commandparam = GNIL;
+			PLC_File* plc_file = GNIL;
+			PLC_FileCodeLine* plc_codeline = GNIL;
 			plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_CommandParam")));
-			if(plc_commandparam == GNULL)
+			if(plc_commandparam == GNIL)
 				goto FUNCTION_END;
 			plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_File")));
-			if(plc_file == GNULL)
+			if(plc_file == GNIL)
 				goto FUNCTION_END;
 			plc_codeline = static_cast<PLC_FileCodeLine*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_FileCodeLine")));
-			if(plc_codeline == GNULL)
+			if(plc_codeline == GNIL)
 				goto FUNCTION_END;
 
 			/* Initialize result pipeline context. */
@@ -83,7 +83,7 @@ namespace PROM
 									word.strWord = strLine;
 									word.strWord.mid(flag_changed_index, z > flag_changed_index ? z - 1 : z);
 									PLC_Word::Word* pWord = pRet->wordset.find(word);
-									if(pWord == GNULL)
+									if(pWord == GNIL)
 									{
 										word.uExistCount = 1;
 										pRet->wordset.insert(word);
@@ -122,7 +122,7 @@ namespace PROM
 											word.strWord = strLine;
 											word.strWord.mid(flag_changed_index, z > flag_changed_index ? z - 1 : z);
 											PLC_Word::Word* pWord = pRet->wordset.find(word);
-											if(pWord == GNULL)
+											if(pWord == GNIL)
 											{
 												word.uExistCount = 1;
 												pRet->wordset.insert(word);
@@ -140,19 +140,19 @@ namespace PROM
 			}
 
 		FUNCTION_END:
-			if(plc_commandparam != GNULL)
+			if(plc_commandparam != GNIL)
 				plc_commandparam->Release();
-			if(plc_file != GNULL)
+			if(plc_file != GNIL)
 				plc_file->Release();
-			if(plc_codeline != GNULL)
+			if(plc_codeline != GNIL)
 				plc_codeline->Release();
 			return pRet;
 		}
 		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 		{
 			/* Parameter check up. */
-			GAIA_AST(pPLC != GNULL);
-			if(pPLC == GNULL)
+			GAIA_AST(pPLC != GNIL);
+			if(pPLC == GNIL)
 				return GAIA::False;
 
 			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
@@ -160,11 +160,11 @@ namespace PROM
 				return GAIA::False;
 
 			PLC_Word* plc_word = static_cast<PLC_Word*>(pPLC);
-			if(plc_word == GNULL)
+			if(plc_word == GNIL)
 				return GAIA::False;
 			if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_Word")) != 0)
 				return GAIA::False;
-			if(pFile != GNULL && pFile->Tell() == 0)
+			if(pFile != GNIL && pFile->Tell() == 0)
 			{
 			#if GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				pFile->Write(GAIA::UTF16LE_FILEHEAD, sizeof(GAIA::UTF16LE_FILEHEAD));
@@ -175,7 +175,7 @@ namespace PROM
 			for(; !it.empty(); ++it)
 			{
 				PLC_Word::Word& word = *it;
-				if(pFile != GNULL)
+				if(pFile != GNIL)
 				{
 					GAIA::TCH szTemp[32];
 					GAIA::ALGO::int2str(index++, szTemp);
@@ -210,7 +210,7 @@ namespace PROM
 			for(; !itcountsort.empty(); ++itcountsort)
 			{
 				WordByRefCount& word = *itcountsort;
-				if(pFile != GNULL)
+				if(pFile != GNIL)
 				{
 					GAIA::TCH szTemp[32];
 					GAIA::ALGO::int2str(index++, szTemp);

@@ -10,8 +10,8 @@ namespace PROM
 		GINL ~Prom(){}
 		GINL GAIA::BL Command(const GAIA::TCH* psz, GAIA::PRINT::PrintBase& prt)
 		{
-			GAIA_AST(psz != GNULL);
-			if(psz == GNULL)
+			GAIA_AST(psz != GNIL);
+			if(psz == GNIL)
 				return GAIA::False;
 			if(*psz == 0)
 				return GAIA::False;
@@ -20,13 +20,13 @@ namespace PROM
 			PLC_SourceCommand* pPLC = new PLC_SourceCommand; pPLC->pszCmd = psz;
 			Pipeline* pPL = this->ConstructPipeline();
 			{
-				pPLD->Run(GNULL, 0, &pPL, 1, (PipelineContext**)&pPLC, 1, prt, m_errors);
+				pPLD->Run(GNIL, 0, &pPL, 1, (PipelineContext**)&pPLC, 1, prt, m_errors);
 				this->PrintError(prt);
 				this->ClearError();
 			}
-			this->DestructPipeline(pPL); pPL = GNULL;
-			pPLC->Release(); pPLC = GNULL;
-			pPLD->Release(); pPLD = GNULL;
+			this->DestructPipeline(pPL); pPL = GNIL;
+			pPLC->Release(); pPLC = GNIL;
+			pPLD->Release(); pPLD = GNIL;
 
 			return GAIA::True;
 		}
@@ -105,7 +105,7 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < m_errors.size(); ++x)
 			{
 				ERROR_SYSTEM::ErrorBase* pError = m_errors[x];
-				if(pError == GNULL)
+				if(pError == GNIL)
 					continue;
 				prt << "Prometheus:";
 				prt << "P" << GSCAST(GAIA::N32)(pError->getstage());
@@ -137,7 +137,7 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < m_errors.size(); ++x)
 			{
 				ERROR_SYSTEM::ErrorBase* pError = m_errors[x];
-				if(pError == GNULL)
+				if(pError == GNIL)
 					continue;
 				delete pError;
 			}

@@ -237,7 +237,7 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool string_size error");
 			++nRet;
 		}
-		if(sp.get(0) == GNULL)
+		if(sp.get(0) == GNIL)
 		{ 
 			GTLINE2("StaticStringPool string error");
 			++nRet;
@@ -247,7 +247,7 @@ namespace GAIATEST
 			GTLINE2("StaticStringPool string content error");
 			++nRet;
 		}
-		if(sp.get(1) == GNULL)
+		if(sp.get(1) == GNIL)
 		{
 			GTLINE2("StaticStringPool string error");
 			++nRet;

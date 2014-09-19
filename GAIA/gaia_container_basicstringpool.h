@@ -38,11 +38,11 @@ namespace GAIA
 			}
 			GINL _SizeType alloc(const _DataType* p)
 			{
-				GPCHR_NULLSTRPTR_RET(p, GNULL);
+				GPCHR_NULLSTRPTR_RET(p, GNIL);
 				Node finder;
 				finder.data = GCCAST(_DataType*)(p);
 				NodeCmp* pFinded = m_nodeset.find(finder);
-				if(pFinded != GNULL)
+				if(pFinded != GNIL)
 				{
 					++m_nodelist[pFinded->index].refcounter;
 					return pFinded->index;
@@ -75,7 +75,7 @@ namespace GAIA
 					m_nodeset.erase(finder);
 					m_freestack.push_back(finder.index);
 					GAIA_MFREE(finder.data);
-					finder.data = GNULL;
+					finder.data = GNIL;
 				}
 				return GAIA::True;
 			}
@@ -94,10 +94,10 @@ namespace GAIA
 			{
 			public:
 				GINL NodeCmp& operator = (const NodeCmp& src){data = src.data; index = src.index; return *this;}
-				GINL GAIA::BL operator == (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGO::strcmp(data, src.data) == 0;}
+				GINL GAIA::BL operator == (const NodeCmp& src) const{GAIA_AST(data != GNIL); GAIA_AST(src.data != GNIL); return GAIA::ALGO::strcmp(data, src.data) == 0;}
 				GINL GAIA::BL operator != (const NodeCmp& src) const{return !this->operator == (src);}
-				GINL GAIA::BL operator >= (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGO::strcmp(data, src.data) >= 0;}
-				GINL GAIA::BL operator <= (const NodeCmp& src) const{GAIA_AST(data != GNULL); GAIA_AST(src.data != GNULL); return GAIA::ALGO::strcmp(data, src.data) <= 0;}
+				GINL GAIA::BL operator >= (const NodeCmp& src) const{GAIA_AST(data != GNIL); GAIA_AST(src.data != GNIL); return GAIA::ALGO::strcmp(data, src.data) >= 0;}
+				GINL GAIA::BL operator <= (const NodeCmp& src) const{GAIA_AST(data != GNIL); GAIA_AST(src.data != GNIL); return GAIA::ALGO::strcmp(data, src.data) <= 0;}
 				GINL GAIA::BL operator > (const NodeCmp& src) const{return !this->operator <= (src);}
 				GINL GAIA::BL operator < (const NodeCmp& src) const{return !this->operator >= (src);}
 			public:

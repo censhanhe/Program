@@ -35,7 +35,7 @@ namespace GAIA
 			mi = GSCAST(GAIA::U8)(pTM->tm_min);
 			sec = GSCAST(GAIA::U8)(pTM->tm_sec);
 			timeval tv;
-			gettimeofday(&tv, GNULL);
+			gettimeofday(&tv, GNIL);
 			msec = GSCAST(GAIA::U16)(tv.tv_usec / 1000);
 			usec = GSCAST(GAIA::U16)(tv.tv_usec % 1000);
 		#endif
@@ -48,7 +48,7 @@ namespace GAIA
 			return (GAIA::U64)time * 1000 * 1000;
 		#else
 			timeval now;
-			gettimeofday(&now, GNULL);
+			gettimeofday(&now, GNIL);
 			return (GAIA::U64)now.tv_sec * 1000 * 1000 + (GAIA::U64)now.tv_usec;
 		#endif
 		}
@@ -58,7 +58,7 @@ namespace GAIA
 			return (GAIA::U64)clock() * 1000;
 		#else
 			timeval now;
-			gettimeofday(&now, GNULL);
+			gettimeofday(&now, GNIL);
 			return (GAIA::U64)now.tv_sec * 1000 * 1000 + (GAIA::U64)now.tv_usec;
 		#endif
 		}

@@ -49,11 +49,11 @@ namespace GAIA
 			GINL BasicGraph(){this->init();}
 			GINL BasicGraph(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicGraph(){}
-			GINL GAIA::BL empty() const{return m_pRoot == GNULL;}
+			GINL GAIA::BL empty() const{return m_pRoot == GNIL;}
 			GINL _SizeType size() const{return m_pool.size();}
 			GINL const _SizeType& capacity() const{return m_pool.capacity();}
-			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_pool.destroy(); m_tstack.destroy();}
-			GINL GAIA::GVOID clear(){m_pRoot = GNULL; m_pool.clear();}
+			GINL GAIA::GVOID destroy(){m_pRoot = GNIL; m_pool.destroy(); m_tstack.destroy();}
+			GINL GAIA::GVOID clear(){m_pRoot = GNIL; m_pool.clear();}
 			GINL GAIA::GVOID resize(const _SizeType& size){}
 			GINL GAIA::GVOID reserve(const _SizeType& size){}
 			GINL Node* root(){return m_pRoot;}
@@ -65,9 +65,9 @@ namespace GAIA
 				pNew->m_t = t;
 				pNew->m_links.clear();
 				pNew->m_traveling = GAIA::False;
-				if(pNode == GNULL)
+				if(pNode == GNIL)
 				{
-					if(m_pRoot == GNULL)
+					if(m_pRoot == GNIL)
 						m_pRoot = pNew;
 					else
 						this->link(*m_pRoot, *pNew);
@@ -84,13 +84,13 @@ namespace GAIA
 				for(_SizeType x = 0; x < n.m_links.size(); ++x)
 				{
 					Node* pNode = n.m_links[x];
-					if(pNode != GNULL)
+					if(pNode != GNIL)
 					{
 						for(_SizeType y = 0; y < pNode->m_links.size(); ++y)
 						{
 							if(pNode->m_links[y] == &n)
 							{
-								pNode->m_links[y] = GNULL;
+								pNode->m_links[y] = GNIL;
 								break;
 							}
 						}
@@ -99,17 +99,17 @@ namespace GAIA
 				n.m_links.clear();
 				m_pool.release(&n);
 				if(&n == m_pRoot)
-					m_pRoot = GNULL;
+					m_pRoot = GNIL;
 			}
 			GINL GAIA::BL link(Node& n1, Node& n2)
 			{
 				if(this->islinked(n1, n2))
 					return GAIA::False;
-				Node** ppn1 = GNULL;
-				Node** ppn2 = GNULL;
+				Node** ppn1 = GNIL;
+				Node** ppn2 = GNIL;
 				for(_SizeType x = 0; x < n1.m_links.size(); ++x)
 				{
-					if(n1.m_links[x] == GNULL)
+					if(n1.m_links[x] == GNIL)
 					{
 						ppn1 = &n1.m_links[x];
 						break;
@@ -117,17 +117,17 @@ namespace GAIA
 				}
 				for(_SizeType x = 0; x < n2.m_links.size(); ++x)
 				{
-					if(n2.m_links[x] == GNULL)
+					if(n2.m_links[x] == GNIL)
 					{
 						ppn2 = &n2.m_links[x];
 						break;
 					}
 				}
-				if(ppn1 == GNULL)
+				if(ppn1 == GNIL)
 					n1.m_links.push_back(&n2);
 				else
 					*ppn1 = &n2;
-				if(ppn2 == GNULL)
+				if(ppn2 == GNIL)
 					n2.m_links.push_back(&n1);
 				else
 					*ppn2 = &n1;
@@ -140,7 +140,7 @@ namespace GAIA
 				{
 					if(n1.m_links[x] == &n2)
 					{
-						n1.m_links[x] = GNULL;
+						n1.m_links[x] = GNIL;
 						bRet = GAIA::True;
 						break;
 					}
@@ -151,7 +151,7 @@ namespace GAIA
 					{
 						if(n2.m_links[x] == &n1)
 						{
-							n2.m_links[x] = GNULL;
+							n2.m_links[x] = GNIL;
 							break;
 						}
 					}
@@ -173,9 +173,9 @@ namespace GAIA
 			GINL _SizeType count(const _DataType& t) const;
 			GINL GAIA::GVOID find(const Node* pSrc, const _DataType& t, __NodeListType& result) const
 			{
-				if(pSrc == GNULL)
+				if(pSrc == GNIL)
 					pSrc = m_pRoot;
-				if(pSrc == GNULL)
+				if(pSrc == GNIL)
 					return;
 				this->find_node(pSrc, t, result);
 				if(!result.empty())
@@ -187,12 +187,12 @@ namespace GAIA
 			GINL GAIA::GVOID paths(const Node& src, const Node& dst, __PathTreeType& result) const
 			{
 				result.clear();
-				this->paths_node(src, dst, result, GNULL);
+				this->paths_node(src, dst, result, GNIL);
 			}
 			GINL GAIA::GVOID paths(const Node& src, const _DataType& t, __PathTreeType& result) const
 			{
 				result.clear();
-				this->paths_node(src, t, result, GNULL);
+				this->paths_node(src, t, result, GNIL);
 			}
 			GINL GAIA::GVOID anypath(const Node& src, const Node& dst, __NodeListType& result) const
 			{
@@ -235,7 +235,7 @@ namespace GAIA
 					for(_SizeType y = 0; y < n.m_links.size(); ++y)
 					{
 						Node* pNext = n.m_links[y];
-						if(pNext == GNULL)
+						if(pNext == GNIL)
 							continue;
 						Pair<Node*, Node*> rec;
 						if(&n > pNext)
@@ -280,7 +280,7 @@ namespace GAIA
 					for(_SizeType y = 0; y < t.m_links.size(); ++y)
 					{
 						Node* pNode = t.m_links[y];
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						GAIA::BL bExist = GAIA::False;
 						for(_SizeType z = 0; z < pNode->m_links.size(); ++z)
@@ -299,7 +299,7 @@ namespace GAIA
 			}
 		#endif
 		private:
-			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
+			GINL GAIA::GVOID init(){m_pRoot = GNIL;}
 			GINL GAIA::GVOID reset_tstack() const
 			{
 				while(!m_tstack.empty())
@@ -333,7 +333,7 @@ namespace GAIA
 					for(_SizeType x = 0; x < pSrc->m_links.size(); ++x)
 					{
 						const Node* pNode = pSrc->m_links[x];
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						this->find_node(pNode, t, result);
 					}
@@ -355,7 +355,7 @@ namespace GAIA
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
 					{
 						const Node* pNode = src.m_links[x];
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						this->paths_node(*pNode, dst, result, pNewTreeNode);
 					}
@@ -379,7 +379,7 @@ namespace GAIA
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
 					{
 						const Node* pNode = src.m_links[x];
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						this->paths_node(*pNode, t, result, pNewTreeNode);
 					}
@@ -402,7 +402,7 @@ namespace GAIA
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
 					{
 						const Node* pNode = src.m_links[x];
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						if(this->anypath_node(*pNode, dst, result))
 						{
@@ -412,7 +412,7 @@ namespace GAIA
 						}
 					}
 				}
-				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
+				if(src.m_links.size() - src.m_links.count(GNIL) <= 2)
 					const_cast<__MyType*>(this)->m_tstack.push_back(const_cast<Node*>(&src));
 				else
 					src.leave_traveling();
@@ -432,7 +432,7 @@ namespace GAIA
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
 					{
 						const Node* pNode = src.m_links[x];
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						if(this->anypath_node(*pNode, t, result))
 						{
@@ -442,7 +442,7 @@ namespace GAIA
 						}
 					}
 				}
-				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
+				if(src.m_links.size() - src.m_links.count(GNIL) <= 2)
 					const_cast<__MyType*>(this)->m_tstack.push_back(const_cast<Node*>(&src));
 				else
 					src.leave_traveling();
@@ -452,11 +452,11 @@ namespace GAIA
 			{
 				if(traveling_count == 0)
 					return dst;
-				if(dst.m_links.size() - dst.m_links.count(GNULL) != 2)
+				if(dst.m_links.size() - dst.m_links.count(GNIL) != 2)
 					return dst;
 				for(_SizeType x = 0; x < dst.m_links.size(); ++x)
 				{
-					if(dst.m_links[x] == GNULL)
+					if(dst.m_links[x] == GNIL)
 						continue;
 					if(dst.m_links[x] == &src)
 						continue;
@@ -485,7 +485,7 @@ namespace GAIA
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
 					{
 						const Node* pNode = src.m_links[x];
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						_SizeType traveling_count = 0;
 						const Node& navdst = this->navfind(src, *pNode, navtimes, traveling_count);
@@ -499,7 +499,7 @@ namespace GAIA
 					for(_SizeType x = 0; x < arrlink.size(); ++x)
 					{
 						const Node* pNode = arrlink[x].back();
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						if(this->navpath_node<_KeyType, _MaxLinkCount>(*pNode, dst, navtimes, result))
 						{
@@ -509,7 +509,7 @@ namespace GAIA
 						}
 					}
 				}
-				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
+				if(src.m_links.size() - src.m_links.count(GNIL) <= 2)
 					const_cast<__MyType*>(this)->m_tstack.push_back(const_cast<Node*>(&src));
 				else
 					src.leave_traveling();
@@ -530,7 +530,7 @@ namespace GAIA
 					for(_SizeType x = 0; x < src.m_links.size(); ++x)
 					{
 						const Node* pNode = src.m_links[x];
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						_SizeType traveling_count = 0;
 						const Node& navdst = this->navfind(src, *pNode, navtimes, traveling_count);
@@ -544,7 +544,7 @@ namespace GAIA
 					for(_SizeType x = 0; x < arrlink.size(); ++x)
 					{
 						const Node* pNode = arrlink[x].back();
-						if(pNode == GNULL)
+						if(pNode == GNIL)
 							continue;
 						if(this->navpath_node<_KeyType, _MaxLinkCount>(*pNode, t, navtimes, result))
 						{
@@ -554,7 +554,7 @@ namespace GAIA
 						}
 					}
 				}
-				if(src.m_links.size() - src.m_links.count(GNULL) <= 2)
+				if(src.m_links.size() - src.m_links.count(GNIL) <= 2)
 					const_cast<__MyType*>(this)->m_tstack.push_back(const_cast<Node*>(&src));
 				else
 					src.leave_traveling();

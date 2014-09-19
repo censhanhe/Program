@@ -24,12 +24,12 @@ namespace GAIATEST
 			GTLINE2("New tree capacity is not zero!");
 			++nRet;
 		}
-		if(tr.root() != GNULL)
+		if(tr.root() != GNIL)
 		{
-			GTLINE2("New tree root is not GNULL!");
+			GTLINE2("New tree root is not GNIL!");
 			++nRet;
 		}
-		if(static_cast<__TreeType*>(&tr)->root() != GNULL)
+		if(static_cast<__TreeType*>(&tr)->root() != GNIL)
 		{
 			GTLINE2("New tree const root is not NULL!");
 			++nRet;
@@ -60,12 +60,12 @@ namespace GAIATEST
 			GTLINE2("New tree const_back_it is not empty!");
 			++nRet;
 		}
-		if(tr.insert(123, GNULL) == GNULL)
+		if(tr.insert(123, GNIL) == GNIL)
 		{
 			GTLINE2("Tree insert root failed!");
 			++nRet;
 		}
-		if(tr.insert(321, GNULL) != GNULL)
+		if(tr.insert(321, GNIL) != GNIL)
 		{
 			GTLINE2("Tree insert root twice failed!");
 			++nRet;
@@ -73,7 +73,7 @@ namespace GAIATEST
 		for(GAIA::N32 x = 0; x < ELEMENT_COUNT; ++x)
 		{
 			__TreeType::Node* pNode = tr.insert(x, tr.root());
-			if(pNode == GNULL)
+			if(pNode == GNIL)
 			{
 				GTLINE2("Tree insert child node failed!");
 				++nRet;
@@ -83,7 +83,7 @@ namespace GAIATEST
 			for(GAIA::N32 y = 0; y < ELEMENT_COUNT; ++y)
 			{
 				__TreeType::Node* pChild = tr.insert(x + y, pNode);
-				if(pChild == GNULL)
+				if(pChild == GNIL)
 				{
 					GTLINE2("Tree insert child child node failed!");
 					++nRet;
@@ -94,7 +94,7 @@ namespace GAIATEST
 				for(GAIA::N32 z = 0; z < ELEMENT_COUNT; ++z)
 				{
 					__TreeType::Node* pChildChild = tr.insert(x + y + z, pChild);
-					if(pChildChild == GNULL)
+					if(pChildChild == GNIL)
 					{
 						GTLINE2("Tree insert child child child node failed!");
 						++nRet;
@@ -172,7 +172,7 @@ namespace GAIATEST
 			__TreeType::it itnext = it;
 			++itnext;
 			__TreeType::Node* pNode = tr.tonode(it);
-			GAIA_AST(pNode != GNULL);
+			GAIA_AST(pNode != GNIL);
 			tr.erase(*pNode);
 			if(tr.empty())
 				break;
@@ -200,7 +200,7 @@ namespace GAIATEST
 			__TreeType::it itprev = it;
 			--itprev;
 			__TreeType::Node* pNode = tr.tonode(it);
-			GAIA_AST(pNode != GNULL);
+			GAIA_AST(pNode != GNIL);
 			tr.erase(*pNode);
 			if(tr.empty())
 				break;
@@ -245,7 +245,7 @@ namespace GAIATEST
 		tr.clear();
 		tr.destroy();
 		__TreeType::_datatype tdata = 0;
-		if(tr.insert(tdata++, GNULL) == GNULL)
+		if(tr.insert(tdata++, GNIL) == GNIL)
 		{
 			GTLINE2("Tree insert root failed!");
 			++nRet;
@@ -253,7 +253,7 @@ namespace GAIATEST
 		for(GAIA::N32 x = 0; x < ELEMENT_COUNT; ++x)
 		{
 			__TreeType::Node* pNode = tr.insert(tdata++, tr.root());
-			if(pNode == GNULL)
+			if(pNode == GNIL)
 			{
 				GTLINE2("Tree insert child node failed!");
 				++nRet;
@@ -263,7 +263,7 @@ namespace GAIATEST
 			for(GAIA::N32 y = 0; y < ELEMENT_COUNT; ++y)
 			{
 				__TreeType::Node* pChild = tr.insert(tdata++, pNode);
-				if(pChild == GNULL)
+				if(pChild == GNIL)
 				{
 					GTLINE2("Tree insert child child node failed!");
 					++nRet;
@@ -274,7 +274,7 @@ namespace GAIATEST
 				for(GAIA::N32 z = 0; z < ELEMENT_COUNT; ++z)
 				{
 					__TreeType::Node* pChildChild = tr.insert(tdata++, pChild);
-					if(pChildChild == GNULL)
+					if(pChildChild == GNIL)
 					{
 						GTLINE2("Tree insert child child child node failed!");
 						++nRet;

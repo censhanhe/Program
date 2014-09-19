@@ -30,7 +30,7 @@ namespace GAIA
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNIL;}
 				GINL virtual _DataType& operator * (){return m_pNode->t;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (){m_pNode = m_pNode->pNext; return *this;}
@@ -121,7 +121,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNIL;}
 			private:
 				Node* m_pNode;
 			};
@@ -132,7 +132,7 @@ namespace GAIA
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNIL;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->t;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (){m_pNode = m_pNode->pNext; return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (){m_pNode = m_pNode->pPrev; return *this;}
@@ -222,7 +222,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNIL;}
 			private:
 				const Node* m_pNode;
 			};
@@ -235,18 +235,18 @@ namespace GAIA
 			GINL GAIA::BL empty() const{return m_pool.empty();}
 			GINL GAIA::GVOID reserve(const _SizeType& size){}
 			GINL GAIA::GVOID resize(const _SizeType& size){}
-			GINL GAIA::GVOID destroy(){m_pFront = m_pBack = GNULL; m_pool.destroy();}
-			GINL GAIA::GVOID clear(){m_pFront = m_pBack = GNULL; m_pool.clear();}
+			GINL GAIA::GVOID destroy(){m_pFront = m_pBack = GNIL; m_pool.destroy();}
+			GINL GAIA::GVOID clear(){m_pFront = m_pBack = GNIL; m_pool.clear();}
 			GINL GAIA::GVOID insert(it& iter, const _DataType& t)
 			{
 				if(iter.empty())
 				{
-					if(m_pBack == GNULL)
+					if(m_pBack == GNIL)
 					{
 						m_pFront = m_pBack = m_pool.alloc();
 						m_pBack->t = t;
-						m_pBack->pPrev = GNULL;
-						m_pBack->pNext = GNULL;
+						m_pBack->pPrev = GNIL;
+						m_pBack->pNext = GNIL;
 					}
 					else
 					{
@@ -254,7 +254,7 @@ namespace GAIA
 						pNew->t = t;
 						m_pBack->pNext = pNew;
 						pNew->pPrev = m_pBack;
-						pNew->pNext = GNULL;
+						pNew->pNext = GNIL;
 						m_pBack = pNew;
 					}
 				}
@@ -264,7 +264,7 @@ namespace GAIA
 					pNew->t = t;
 					pNew->pNext = iter.m_pNode;
 					pNew->pPrev = iter.m_pNode->pPrev;
-					if(iter.m_pNode->pPrev != GNULL)
+					if(iter.m_pNode->pPrev != GNIL)
 						iter.m_pNode->pPrev->pNext = pNew;
 					else
 						m_pFront = pNew;
@@ -278,14 +278,14 @@ namespace GAIA
 				if(iter.m_pNode == m_pFront)
 				{
 					m_pFront = m_pFront->pNext;
-					if(m_pFront != GNULL)
-						m_pFront->pPrev = GNULL;
+					if(m_pFront != GNIL)
+						m_pFront->pPrev = GNIL;
 				}
 				if(iter.m_pNode == m_pBack)
 				{
 					m_pBack = m_pBack->pPrev;
-					if(m_pBack != GNULL)
-						m_pBack->pNext = GNULL;
+					if(m_pBack != GNIL)
+						m_pBack->pNext = GNIL;
 				}
 				Node* pErase = iter.m_pNode;
 				++iter;
@@ -308,7 +308,7 @@ namespace GAIA
 			GINL GAIA::GVOID push_back(const _DataType& t)
 			{
 				it iter;
-				iter.m_pNode = GNULL;
+				iter.m_pNode = GNIL;
 				this->insert(iter, t);
 			}
 			GINL GAIA::BL pop_back()
@@ -403,7 +403,7 @@ namespace GAIA
 			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 		private:
-			GINL GAIA::GVOID init(){m_pFront = m_pBack = GNULL;}
+			GINL GAIA::GVOID init(){m_pFront = m_pBack = GNIL;}
 		private:
 			Node* m_pFront;
 			Node* m_pBack;

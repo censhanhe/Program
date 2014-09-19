@@ -47,7 +47,7 @@ namespace GAIA
 		}
 		template<typename _DataType> GAIA::BL stremp(_DataType p)
 		{
-			if(p == GNULL || *p == '\0')
+			if(p == GNIL || *p == '\0')
 				return GAIA::True;
 			return GAIA::False;
 		}
@@ -64,7 +64,7 @@ namespace GAIA
 					return p;
 				++p;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strich(_DataType1 p, const _DataType2& c)
 		{
@@ -74,7 +74,7 @@ namespace GAIA
 					return p;
 				++p;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType> GAIA::SIZE strlen(_DataType p){GAIA_AST(!!p); GAIA::SIZE ret = 0; while(p[ret] != '\0') ret++; return ret;}
 		template<typename _DataType1, typename _DataType2> GAIA::SIZE strcnt(_DataType1 p, const _DataType2& key)
@@ -215,7 +215,7 @@ namespace GAIA
 					return p1;
 				++p1;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 stristr(_DataType1 p1, _DataType2 p2)
 		{
@@ -236,12 +236,12 @@ namespace GAIA
 					return p1;
 				++p1;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1* strwrd(const _DataType1* p1, const _DataType2* p2)
 		{
 			const _DataType1* p = p1;
-			while((p = GAIA::ALGO::strstr(p, p2)) != GNULL)
+			while((p = GAIA::ALGO::strstr(p, p2)) != GNIL)
 			{
 				if(p != p1)
 				{
@@ -260,12 +260,12 @@ namespace GAIA
 				}
 				return const_cast<_DataType1*>(p);
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1* striwrd(const _DataType1* p1, const _DataType2* p2)
 		{
 			const _DataType1* p = p1;
-			while((p = GAIA::ALGO::stristr(p, p2)) != GNULL)
+			while((p = GAIA::ALGO::stristr(p, p2)) != GNIL)
 			{
 				if(p != p1)
 				{
@@ -284,7 +284,7 @@ namespace GAIA
 				}
 				return const_cast<_DataType1*>(p);
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strmch(_DataType1 p1, _DataType2 p2)
 		{
@@ -295,13 +295,13 @@ namespace GAIA
 			while(*p != '\0' && *p2 != '\0')
 			{
 				if(*p2 != *p)
-					return GNULL;
+					return GNIL;
 				++p;
 				++p2;
 			}
 			if(*p2 == '\0')
 				return p1;
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strimch(_DataType1 p1, _DataType2 p2)
 		{
@@ -312,13 +312,13 @@ namespace GAIA
 			while(GAIA::ALGO::tolower(*p) != '\0' && GAIA::ALGO::tolower(*p2) != '\0')
 			{
 				if(*p2 != *p)
-					return GNULL;
+					return GNIL;
 				++p;
 				++p2;
 			}
 			if(*p2 == '\0')
 				return p1;
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strdrop(_DataType1 p, _DataType2 pKeys)
 		{
@@ -333,7 +333,7 @@ namespace GAIA
 				}
 				++p;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 stridrop(_DataType1 p, _DataType2 pKeys)
 		{
@@ -348,7 +348,7 @@ namespace GAIA
 				}
 				++p;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strdropr(_DataType1 p, _DataType2 pKeys)
 		{
@@ -367,7 +367,7 @@ namespace GAIA
 				}
 				--p1;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 stridropr(_DataType1 p, _DataType2 pKeys)
 		{
@@ -386,7 +386,7 @@ namespace GAIA
 				}
 				--p1;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType> _DataType strext(_DataType p)
 		{
@@ -395,7 +395,7 @@ namespace GAIA
 			while(pEnd >= p)
 			{
 				if(*pEnd == '\\' || *pEnd == '/')
-					return GNULL;
+					return GNIL;
 				if(*pEnd == '.')
 				{
 					if(pEnd[1] != '\0')
@@ -403,7 +403,7 @@ namespace GAIA
 				}
 				--pEnd;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType> _DataType strfilename(_DataType p)
 		{
@@ -418,13 +418,13 @@ namespace GAIA
 				}
 				--pEnd;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType> _DataType strpath(_DataType p)
 		{
 			_DataType pTemp = GAIA::ALGO::strfilename(p);
-			if(pTemp == GNULL)
-				return GNULL;
+			if(pTemp == GNIL)
+				return GNIL;
 			*pTemp = '\0';
 			return p;
 		}
@@ -707,14 +707,14 @@ namespace GAIA
 		template<> class string_cast<type>\
 		{\
 		public:\
-			string_cast(const GAIA::CH* psz){m_pCH = psz; m_pWCH = GNULL;}\
-			string_cast(const GAIA::WCH* psz){m_pCH = GNULL; m_pWCH = psz;}\
+			string_cast(const GAIA::CH* psz){m_pCH = psz; m_pWCH = GNIL;}\
+			string_cast(const GAIA::WCH* psz){m_pCH = GNIL; m_pWCH = psz;}\
 			operator type() const\
 			{\
 				type ret;\
-				if(m_pCH != GNULL)\
+				if(m_pCH != GNIL)\
 					convert_func(m_pCH, ret);\
-				else if(m_pWCH != GNULL)\
+				else if(m_pWCH != GNIL)\
 					convert_func(m_pWCH, ret);\
 				else\
 				{\
@@ -759,15 +759,15 @@ namespace GAIA
 		class string_autocast
 		{
 		public:
-			GINL string_autocast(const GAIA::CH* psz){m_pCH = psz; m_pWCH = GNULL;}
-			GINL string_autocast(const GAIA::WCH* psz){m_pCH = GNULL; m_pWCH = psz;}
+			GINL string_autocast(const GAIA::CH* psz){m_pCH = psz; m_pWCH = GNIL;}
+			GINL string_autocast(const GAIA::WCH* psz){m_pCH = GNIL; m_pWCH = psz;}
 			#define GAIA_DECLARATION_STRINGAUTOCAST(type) \
 			GINL operator type()\
 			{\
 				type ret;\
-				if(m_pCH != GNULL)\
+				if(m_pCH != GNIL)\
 					return string_cast<type>(m_pCH);\
-				else if(m_pWCH != GNULL)\
+				else if(m_pWCH != GNIL)\
 					return string_cast<type>(m_pWCH);\
 				else\
 				{\

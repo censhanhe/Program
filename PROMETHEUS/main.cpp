@@ -89,7 +89,7 @@ REPEAT:
 		{
 			prt >> szParam;
 			GAIA::CH* p = GAIA::ALGO::strch(szParam, ';');
-			if(p != GNULL)
+			if(p != GNIL)
 			{
 				if(p != szParam)
 				{
@@ -119,7 +119,7 @@ REPEAT:
 #if GAIA_CHARSET == GAIA_CHARSET_ANSI
 	prom.Command((GAIA::CH*)buf.front_ptr() + first_command_index, prt);
 #elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-	GAIA::SIZE newsize = GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), GNULL, 0, GAIA::CHARSET_TYPE_SYS);
+	GAIA::SIZE newsize = GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), GNIL, 0, GAIA::CHARSET_TYPE_SYS);
 	if(newsize > 0)
 	{
 		GAIA::WCH* pNewCmd = new GAIA::WCH[newsize + 1];

@@ -12,11 +12,11 @@ namespace PROM
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
-			GPCHR_NULL_RET(ppPLC, GNULL);
-			GPCHR_ZERO_RET(size, GNULL);
+			GPCHR_NULL_RET(ppPLC, GNIL);
+			GPCHR_ZERO_RET(size, GNIL);
 			PLC_File* plc_file = static_cast<PLC_File*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_File")));
-			if(plc_file == GNULL)
-				return GNULL;
+			if(plc_file == GNIL)
+				return GNIL;
 
 			/* Initialize result pipeline context. */
 			PLC_FileCodeLine* pRet = new PLC_FileCodeLine;

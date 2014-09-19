@@ -115,7 +115,7 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_line(const GAIA::MATH::PLANE<_ParamDataType>* pPlanes, const GAIA::SIZE& sPlaneCount) const
 			{
-				GAIA_AST(pPlanes != GNULL);
+				GAIA_AST(pPlanes != GNIL);
 			}
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::AABR<_ParamDataType>& src){pmin = src.pmin; pmax = src.pmax; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){pmin = p; pmax = p + 2; return *this;}

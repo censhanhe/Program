@@ -22,7 +22,7 @@ namespace GAIA
 		{
 			for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); ++x)
 			{
-				if(m_routes[x] != GNULL)
+				if(m_routes[x] != GNIL)
 					m_routes[x]->Release();
 			}
 			m_routes.destroy();
@@ -40,7 +40,7 @@ namespace GAIA
 			for(OL_ROUTE::_sizetype x = 0; x < m_routes.size(); ++x)
 			{
 				Route* pRoute = m_routes[x];
-				if(pRoute != GNULL)
+				if(pRoute != GNIL)
 				{
 					pRoute->Reference();
 					listResult.push_back(pRoute);
@@ -67,7 +67,7 @@ namespace GAIA
 		{
 			for(OL_GATEWAY::_sizetype x = 0; x < m_gateways.size(); ++x)
 			{
-				if(m_gateways[x] != GNULL)
+				if(m_gateways[x] != GNIL)
 					m_gateways[x]->Release();
 			}
 			m_gateways.destroy();
@@ -85,7 +85,7 @@ namespace GAIA
 			for(OL_ROUTE::_sizetype x = 0; x < m_gateways.size(); ++x)
 			{
 				Gateway* pGateway = m_gateways[x];
-				if(pGateway != GNULL)
+				if(pGateway != GNIL)
 				{
 					pGateway->Reference();
 					listResult.push_back(pGateway);

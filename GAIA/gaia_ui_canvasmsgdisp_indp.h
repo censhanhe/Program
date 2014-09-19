@@ -16,7 +16,7 @@ namespace GAIA
 			MSG msg;
 			if(bWaitForMessage)
 			{
-				if(::GetMessage(&msg, GNULL, 0, 0))
+				if(::GetMessage(&msg, GNIL, 0, 0))
 				{
 					::TranslateMessage(&msg);
 					::DispatchMessage(&msg);
@@ -25,7 +25,7 @@ namespace GAIA
 			}
 			else
 			{
-				if(::PeekMessage(&msg, GNULL, 0, 0, PM_REMOVE))
+				if(::PeekMessage(&msg, GNIL, 0, 0, PM_REMOVE))
 				{
 					::TranslateMessage(&msg);
 					::DispatchMessage(&msg);

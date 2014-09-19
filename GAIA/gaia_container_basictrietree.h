@@ -40,8 +40,8 @@ namespace GAIA
 					n.m_t = t;
 					Ref<Node> rn = &n;
 					Ref<Node>* pResult = const_cast<Ref<Node>*>(m_links.find(rn));
-					if(pResult == GNULL)
-						return GNULL;
+					if(pResult == GNIL)
+						return GNIL;
 					return *pResult;
 				}
 			private:
@@ -67,19 +67,19 @@ namespace GAIA
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL || m_pNode->m_pParent == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNIL || m_pNode->m_pParent == GNIL;}
 				GINL virtual _DataType& operator * (){return m_pNode->m_t;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->m_t;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
 					if(m_pNode->m_links.empty())
 					{
 					NEXT_LOOP:
-						if(m_pNode->m_pParent == GNULL)
+						if(m_pNode->m_pParent == GNIL)
 						{
-							m_pNode = GNULL;
+							m_pNode = GNIL;
 							return *this;
 						}
 						typename __NodeTreeType::it it = m_pNode->m_pParent->m_links.lower_bound(Ref<Node>(m_pNode));
@@ -101,9 +101,9 @@ namespace GAIA
 				}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
-					if(m_pNode->m_pParent != GNULL)
+					if(m_pNode->m_pParent != GNIL)
 					{
 						typename __NodeTreeType::it it = m_pNode->m_pParent->m_links.lower_bound(Ref<Node>(m_pNode));
 						GAIA_AST(!it.empty());
@@ -116,14 +116,14 @@ namespace GAIA
 						else
 						{
 							m_pNode = m_pNode->m_pParent;
-							if(m_pNode->m_pParent == GNULL)
-								m_pNode = GNULL;
+							if(m_pNode->m_pParent == GNIL)
+								m_pNode = GNIL;
 							return *this;
 						}
 					}
 					else
 					{
-						m_pNode = GNULL;
+						m_pNode = GNIL;
 						return *this;
 					}
 				}
@@ -213,7 +213,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pContainer = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNIL; m_pContainer = GNIL;}
 			private:
 				Node* m_pNode;
 				__MyType* m_pContainer;
@@ -225,18 +225,18 @@ namespace GAIA
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL || m_pNode->m_pParent == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNIL || m_pNode->m_pParent == GNIL;}
 				GINL virtual const _DataType& operator * () const{return m_pNode->m_t;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
 					if(m_pNode->m_links.empty())
 					{
 					NEXT_LOOP:
-						if(m_pNode->m_pParent == GNULL)
+						if(m_pNode->m_pParent == GNIL)
 						{
-							m_pNode = GNULL;
+							m_pNode = GNIL;
 							return *this;
 						}
 						typename __NodeTreeType::const_it it =
@@ -260,9 +260,9 @@ namespace GAIA
 				}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
-					if(m_pNode->m_pParent != GNULL)
+					if(m_pNode->m_pParent != GNIL)
 					{
 						typename __NodeTreeType::const_it it =
 							(const_cast<const Node*>(m_pNode->m_pParent))->m_links.lower_bound(
@@ -277,14 +277,14 @@ namespace GAIA
 						else
 						{
 							m_pNode = m_pNode->m_pParent;
-							if(m_pNode->m_pParent == GNULL)
-								m_pNode = GNULL;
+							if(m_pNode->m_pParent == GNIL)
+								m_pNode = GNIL;
 							return *this;
 						}
 					}
 					else
 					{
-						m_pNode = GNULL;
+						m_pNode = GNIL;
 						return *this;
 					}
 				}
@@ -374,7 +374,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL; m_pContainer = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNIL; m_pContainer = GNIL;}
 			private:
 				const Node* m_pNode;
 				const __MyType* m_pContainer;
@@ -400,18 +400,18 @@ namespace GAIA
 				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				Node* pNode = this->match_node(m_root, p, size);
-				if(pNode == GNULL)
+				if(pNode == GNIL)
 					return GAIA::False;
 				else
 				{
 					if(pNode->m_count == 0)
 						return GAIA::False;
 					--pNode->m_count;
-					while(pNode != GNULL)
+					while(pNode != GNIL)
 					{
 						--pNode->m_category_count;
 						--pNode->m_full_count;
-						if(pNode->m_pParent != GNULL &&
+						if(pNode->m_pParent != GNIL &&
 							pNode->m_count == 0 &&
 							pNode->m_category_count == 0 &&
 							pNode->m_full_count == 0)
@@ -429,7 +429,7 @@ namespace GAIA
 				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				Node* pFinded = this->match_node(m_root, p, size);
-				if(pFinded == GNULL)
+				if(pFinded == GNIL)
 					return GAIA::False;
 				return GAIA::True;
 			}
@@ -438,7 +438,7 @@ namespace GAIA
 				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
 				Node* pFinded = this->match_node(m_root, p, size);
-				if(pFinded != GNULL)
+				if(pFinded != GNIL)
 				{
 					if(pFinded->m_links.empty())
 						return GAIA::True;
@@ -457,8 +457,8 @@ namespace GAIA
 			GINL const_it root_it() const{const_it iter; iter.m_pNode = &m_root; iter.m_pContainer = this; return iter;}
 			GINL const Node* parent(const Node& n) const{return n.m_pParent;}
 			GINL Node* parent(Node& n){return n.m_pParent;}
-			GINL it parent_it(const it& iter){it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; ret.m_pContainer = this; return ret;}
-			GINL const_it parent_it(const const_it& iter) const{const_it ret; ret.m_pNode = iter.m_pNode == GNULL ? GNULL : iter.m_pNode->m_pParent; ret.m_pContainer = this; return ret;}
+			GINL it parent_it(const it& iter){it ret; ret.m_pNode = iter.m_pNode == GNIL ? GNIL : iter.m_pNode->m_pParent; ret.m_pContainer = this; return ret;}
+			GINL const_it parent_it(const const_it& iter) const{const_it ret; ret.m_pNode = iter.m_pNode == GNIL ? GNIL : iter.m_pNode->m_pParent; ret.m_pContainer = this; return ret;}
 			GINL typename __NodeTreeType::_sizetype childsize(Node& n) const{return n.m_links.size();}
 			GINL typename __NodeTreeType::const_it child_const_front_it(const Node& n) const{return n.m_links.const_front_it();}
 			GINL typename __NodeTreeType::it child_front_it(Node& n){return n.m_links.front_it();}
@@ -474,7 +474,7 @@ namespace GAIA
 			{
 				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
-				return this->match_node(pNode == GNULL? m_root : *pNode, p, size);
+				return this->match_node(pNode == GNIL? m_root : *pNode, p, size);
 			}
 			GINL it lower_bound(const _DataType* p, const _SizeType& size)
 			{
@@ -489,7 +489,7 @@ namespace GAIA
 					typename __NodeTreeType::it itsub = pNode->m_links.lower_bound(rn);
 					if(itsub.empty())
 					{
-						if(pNode->m_pParent == GNULL)
+						if(pNode->m_pParent == GNIL)
 							break;
 						typename __NodeTreeType::it itsubb = pNode->m_links.back_it();
 						it itertemp;
@@ -510,7 +510,7 @@ namespace GAIA
 					}
 				}
 				it iter;
-				if(pNode != GNULL && pNode != &m_root)
+				if(pNode != GNIL && pNode != &m_root)
 				{
 					iter.m_pNode = pNode;
 					iter.m_pContainer = this;
@@ -557,7 +557,7 @@ namespace GAIA
 					typename __NodeTreeType::const_it itsub = pNode->m_links.lower_bound(rn);
 					if(itsub.empty())
 					{
-						if(pNode->m_pParent == GNULL)
+						if(pNode->m_pParent == GNIL)
 							break;
 						typename __NodeTreeType::const_it itsubb = pNode->m_links.const_back_it();
 						const_it itertemp;
@@ -578,7 +578,7 @@ namespace GAIA
 					}
 				}
 				const_it iter;
-				if(pNode != GNULL && pNode != &m_root)
+				if(pNode != GNIL && pNode != &m_root)
 				{
 					iter.m_pNode = pNode;
 					iter.m_pContainer = this;
@@ -616,8 +616,8 @@ namespace GAIA
 			{
 				GAIA_AST(!!p);
 				GAIA_AST(size > 0);
-				Node* pTempNode = this->match_node(pNode == GNULL ? m_root : *pNode, p, size);
-				if(pTempNode == GNULL)
+				Node* pTempNode = this->match_node(pNode == GNIL ? m_root : *pNode, p, size);
+				if(pTempNode == GNIL)
 					return;
 			}
 			GINL _SizeType count(const Node& n) const{return n.m_count;} // The insert element list stopped at parameter n's count.
@@ -637,7 +637,7 @@ namespace GAIA
 			GINL it back_it()
 			{
 				Node* pNode = &m_root;
-				if(pNode != GNULL)
+				if(pNode != GNIL)
 				{
 					for(;;)
 					{
@@ -645,7 +645,7 @@ namespace GAIA
 						GAIA::BL bExistChild = GAIA::False;
 						for(; !it.empty(); --it)
 						{
-							if(*it != (const Node*)GNULL)
+							if(*it != (const Node*)GNIL)
 							{
 								pNode = *it;
 								bExistChild = GAIA::True;
@@ -678,7 +678,7 @@ namespace GAIA
 			GINL const_it const_back_it() const
 			{
 				const Node* pNode = &m_root;
-				if(pNode != GNULL)
+				if(pNode != GNIL)
 				{
 					for(;;)
 					{
@@ -686,7 +686,7 @@ namespace GAIA
 						GAIA::BL bExistChild = GAIA::False;
 						for(; !it.empty(); --it)
 						{
-							if(*it != (const Node*)GNULL)
+							if(*it != (const Node*)GNIL)
 							{
 								pNode = *it;
 								bExistChild = GAIA::True;
@@ -785,7 +785,7 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID init()
 			{
-				m_root.m_pParent = GNULL;
+				m_root.m_pParent = GNIL;
 				m_root.m_count = 0;
 				m_root.m_category_count = 0;
 				m_root.m_full_count = 0;
@@ -802,7 +802,7 @@ namespace GAIA
 				}
 				++n.m_full_count;
 				Node* pFinded = n.find_child_node(*p);
-				if(pFinded != GNULL)
+				if(pFinded != GNIL)
 				{
 					if(this->insert_node(*pFinded, p + 1, size - 1))
 					{
@@ -835,7 +835,7 @@ namespace GAIA
 				for(;;)
 				{
 					Node* pFinded = pNodeTemp->find_child_node(*pTemp);
-					if(pFinded != GNULL)
+					if(pFinded != GNIL)
 					{
 						pNodeTemp = pFinded;
 						++pTemp;
@@ -844,9 +844,9 @@ namespace GAIA
 							return const_cast<Node*>(pNodeTemp);
 					}
 					else
-						return GNULL;
+						return GNIL;
 				}
-				return GNULL;
+				return GNIL;
 			}
 			GINL Node* front_node(Node* pNode)
 			{

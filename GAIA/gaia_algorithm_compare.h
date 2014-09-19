@@ -271,11 +271,11 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GAIA::N32 cmpp(_DataType1 p1, _DataType2 p2)
 		{
-			if(p1 == GNULL && p2 == GNULL)
+			if(p1 == GNIL && p2 == GNIL)
 				return 0;
-			else if(p1 != GNULL && p2 == GNULL)
+			else if(p1 != GNIL && p2 == GNIL)
 				return -1;
-			else if(p1 == GNULL && p2 != GNULL)
+			else if(p1 == GNIL && p2 != GNIL)
 				return +1;
 			else
 			{

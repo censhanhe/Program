@@ -12,11 +12,11 @@ namespace PROM
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
-			GPCHR_NULL_RET(ppPLC, GNULL);
-			GPCHR_ZERO_RET(size, GNULL);
+			GPCHR_NULL_RET(ppPLC, GNIL);
+			GPCHR_ZERO_RET(size, GNIL);
 			PLC_SourceCommand* plc_sourcecommand = static_cast<PLC_SourceCommand*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_SourceCommand")));
-			if(plc_sourcecommand == GNULL)
-				return GNULL;
+			if(plc_sourcecommand == GNIL)
+				return GNIL;
 
 			/* Initialize result pipeline context. */
 			PLC_CommandParam* pRet = new PLC_CommandParam;
@@ -48,7 +48,7 @@ namespace PROM
 				PROM_RAISE_FATALERROR(102);
 				pRet->Release();
 				plc_sourcecommand->Release();
-				return GNULL;
+				return GNIL;
 			}
 
 			/* Release. */
@@ -59,8 +59,8 @@ namespace PROM
 		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 		{
 			/* Parameter check up. */
-			GAIA_AST(pPLC != GNULL);
-			if(pPLC == GNULL)
+			GAIA_AST(pPLC != GNIL);
+			if(pPLC == GNIL)
 				return GAIA::False;
 
 			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
@@ -68,7 +68,7 @@ namespace PROM
 				return GAIA::False;
 
 			PLC_CommandParam* plc_sourcecommand = static_cast<PLC_CommandParam*>(pPLC);
-			if(plc_sourcecommand == GNULL)
+			if(plc_sourcecommand == GNIL)
 				return GAIA::False;
 			if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_CommandParam")) != 0)
 				return GAIA::False;

@@ -22,10 +22,10 @@ namespace GAIA
 			{
 				if(!this->IsBegin())
 					return GAIA::False;
-				if(m_pIO != GNULL)
+				if(m_pIO != GNIL)
 				{
 					m_pIO->Release();
-					m_pIO = GNULL;
+					m_pIO = GNIL;
 				}
 				m_bBegin = GAIA::False;
 				return GAIA::True;
@@ -37,22 +37,22 @@ namespace GAIA
 					return GAIA::True;
 				if(!pIO->IsOpen())
 					return GAIA::False;
-				if(m_pIO != GNULL)
+				if(m_pIO != GNIL)
 					m_pIO->Release();
-				if(pIO != GNULL)
+				if(pIO != GNIL)
 					pIO->Reference();
 				m_pIO = pIO;
 				return GAIA::True;
 			}
 			GINL GAIA::IO::IO* GetBindIO() const
 			{
-				if(m_pIO != GNULL)
+				if(m_pIO != GNIL)
 					m_pIO->Reference();
 				return m_pIO;
 			}
 			template<typename _ParamType> Serializer& operator << (const _ParamType& t)
 			{
-				if(m_pIO == GNULL)
+				if(m_pIO == GNIL)
 					return *this;
 				SerializerProc sp;
 				sp.write(this, t);
@@ -60,14 +60,14 @@ namespace GAIA
 			}
 			template<typename _ParamType> Serializer& operator >> (_ParamType& t)
 			{
-				if(m_pIO == GNULL)
+				if(m_pIO == GNIL)
 					return *this;
 				SerializerProc sp;
 				sp.read(this, t);
 				return *this;
 			}
 		private:
-			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_pIO = GNULL;}
+			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_pIO = GNIL;}
 		private:
 			GAIA::U8 m_bBegin : 1;
 			GAIA::IO::IO* m_pIO;

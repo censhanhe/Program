@@ -30,17 +30,17 @@ namespace GAIA
 		class File : public FileBase
 		{
 		public:
-			GINL File(){m_fileopentype = OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNULL;}
+			GINL File(){m_fileopentype = OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNIL;}
 			GINL virtual ~File(){if(this->IsOpen()) this->Close();}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Open(const GAIA::TCH* filekey, const GAIA::UM& opentype);
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Close();
-			GINL GAIA::BL IsOpen() const{return m_pFile != GNULL;}
+			GINL GAIA::BL IsOpen() const{return m_pFile != GNIL;}
 			GINL GAIA::N64 Size() const{return m_size;}
 			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Resize(const GAIA::N64& size);
 			template<typename _ObjType> GAIA::BL Read(_ObjType& obj)
 			{
 				GAIA_AST(!!m_pFile);
-				if(m_pFile == GNULL)
+				if(m_pFile == GNIL)
 					return GAIA::False;
 				if(this->Read(&obj, sizeof(obj)) != sizeof(obj))
 					return GAIA::False;
@@ -50,7 +50,7 @@ namespace GAIA
 			template<typename _ObjType> GAIA::BL Write(const _ObjType& obj)
 			{
 				GAIA_AST(!!m_pFile);
-				if(m_pFile == GNULL)
+				if(m_pFile == GNIL)
 					return GAIA::False;
 				if(this->Write(&obj, sizeof(obj)) != sizeof(obj))
 					return GAIA::False;

@@ -5,7 +5,7 @@
 			GINL GAIA::GVOID proxy(const _DataType* p)\
 			{\
 				m_pFront = GCCAST(const _DataType*)(p);\
-				if(m_pFront != GNULL)\
+				if(m_pFront != GNIL)\
 					m_capacity = m_size = GAIA::ALGO::strlen(m_pFront);\
 				else\
 					m_capacity = m_size = 0;\

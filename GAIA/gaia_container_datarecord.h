@@ -24,7 +24,7 @@ namespace GAIA
 			GINL DataRecord& operator = (const DataRecord& src){GAIA_AST(&src != this); m_pFront = src.m_pFront; m_size = src.m_size; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE2(m_pFront, m_pFront, m_size, m_size, DataRecord);
 		private:
-			GINL GAIA::GVOID init(){m_pFront = GNULL; m_size = 0;}
+			GINL GAIA::GVOID init(){m_pFront = GNIL; m_size = 0;}
 		private:
 			GAIA::GVOID* m_pFront;
 			_SizeType m_size;

@@ -141,7 +141,7 @@ namespace GAIA
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSFALSE = GAIA::False;
 
 	/* Common constants. */
-	#define GNULL 0
+	#define GNIL 0
 	#define GINVALID (~0)
 
 	/* Undefine origin type. */
@@ -407,11 +407,11 @@ namespace GAIA
 	extern GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
 #	define GAIA_MALLOC(type, size) (type*)g_global_allocator.memory_alloc(sizeof(type) * (size))
 #	define GAIA_MFREE(p) g_global_allocator.memory_release(p)
-#	define GAIA_MFREE_SAFE(p) if(p != GNULL){GAIA_MFREE(p); p = GNULL}
+#	define GAIA_MFREE_SAFE(p) if(p != GNIL){GAIA_MFREE(p); p = GNIL}
 #else
 #	define GAIA_MALLOC(type, size) new type[size]
 #	define GAIA_MFREE(p) delete[] (p);
-#	define GAIA_MFREE_SAFE(p) if(p != GNULL){GAIA_MFREE(p); p = GNULL}
+#	define GAIA_MFREE_SAFE(p) if(p != GNIL){GAIA_MFREE(p); p = GNIL}
 #endif
 
 #endif

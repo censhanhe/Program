@@ -58,9 +58,9 @@ namespace GAIA
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::TCH szPath[MAXPL];
 		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
-				::GetModuleFileNameA(GNULL, szPath, MAXPL);
+				::GetModuleFileNameA(GNIL, szPath, MAXPL);
 		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-				::GetModuleFileNameW(GNULL, szPath, MAXPL);
+				::GetModuleFileNameW(GNIL, szPath, MAXPL);
 		#	endif
 			GAIA::TCH* p = GAIA::ALGO::strdropr(szPath, _T("/\\"));
 			result = szPath;
@@ -85,15 +85,15 @@ namespace GAIA
 				const GAIA::TCH* pCursor = szFind;
 			#if GAIA_OS == GAIA_OS_WINDOWS
 				/* Jump after Windows-OS disk name. */
-				if(GAIA::ALGO::strch(szFind, ':') != GNULL)
+				if(GAIA::ALGO::strch(szFind, ':') != GNIL)
 				{
 					pCursor = GAIA::ALGO::strdrop(pCursor, _T("/\\"));
-					if(pCursor == GNULL)
+					if(pCursor == GNIL)
 						return GAIA::False;
 					++pCursor;
 				}
 			#endif
-				while((pCursor = GAIA::ALGO::strdrop(pCursor, _T("/\\\0"))) != GNULL)
+				while((pCursor = GAIA::ALGO::strdrop(pCursor, _T("/\\\0"))) != GNIL)
 				{
 					GAIA::TCH sz[MAXPL];
 					GAIA::ALGO::xmemcpy(sz, szFind, (pCursor - szFind + 1) * sizeof(GAIA::TCH));
@@ -102,9 +102,9 @@ namespace GAIA
 					{
 					#if GAIA_OS == GAIA_OS_WINDOWS
 					#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
-							if(!::CreateDirectoryA(sz, GNULL))
+							if(!::CreateDirectoryA(sz, GNIL))
 					#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-							if(!::CreateDirectoryW(sz, GNULL))
+							if(!::CreateDirectoryW(sz, GNIL))
 					#	endif
 					#else
 						if(mkdir(sz, S_IRWXU | S_IRWXG | S_IRWXO) != 0)
@@ -122,9 +122,9 @@ namespace GAIA
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS
 			#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
-					if(::CreateDirectoryA(pszName, GNULL))
+					if(::CreateDirectoryA(pszName, GNIL))
 			#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-					if(::CreateDirectoryW(pszName, GNULL))
+					if(::CreateDirectoryW(pszName, GNIL))
 			#	endif
 			#else
 				if(mkdir(pszName, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
@@ -218,10 +218,10 @@ namespace GAIA
 					GAIA::ALGO::strcat(p, _T("/"));
 				/* find */
 				DIR* pdir = opendir(pszName);
-				if(pdir == GNULL)
+				if(pdir == GNIL)
 					return GAIA::False;
 				dirent* pdirent;
-				while((pdirent = readdir(pdir)) != GNULL)
+				while((pdirent = readdir(pdir)) != GNIL)
 				{
 					if(GAIA::ALGO::strcmp(pdirent->d_name, _T(".")) == 0 ||
 						GAIA::ALGO::strcmp(pdirent->d_name, _T("..")) == 0){}
@@ -394,7 +394,7 @@ namespace GAIA
 					else
 					{
 						const GAIA::TCH* pExt = GAIA::ALGO::strext(fdata.cFileName);
-						if(pExt != GNULL && GAIA::ALGO::striwrd(pszFilter, pExt) != GNULL)
+						if(pExt != GNIL && GAIA::ALGO::striwrd(pszFilter, pExt) != GNIL)
 							bExtMatch = GAIA::True;
 					}
 					if(bExtMatch)
@@ -409,7 +409,7 @@ namespace GAIA
 							const GAIA::TCH* pNew = GAIA::ALGO::strdrop(pFinal, _T("/\\\0"));
 							if(pNew != pFinal)
 							{
-								if(pNew == GNULL || *pNew == 0)
+								if(pNew == GNIL || *pNew == 0)
 								{
 									GAIA::TCH szTemp[MAXPL];
 									GAIA::ALGO::strcpy(szTemp, pFinal);
@@ -449,10 +449,10 @@ namespace GAIA
 				GAIA::ALGO::strcat(p, _T("/"));
 			/* find */
 			DIR* pdir = opendir(pszName);
-			if(pdir == GNULL)
+			if(pdir == GNIL)
 				return GAIA::False;
 			dirent* pdirent;
-			while((pdirent = readdir(pdir)) != GNULL)
+			while((pdirent = readdir(pdir)) != GNIL)
 			{
 				if(GAIA::ALGO::strcmp(pdirent->d_name, _T(".")) == 0 ||
 					GAIA::ALGO::strcmp(pdirent->d_name, _T("..")) == 0){}
@@ -477,7 +477,7 @@ namespace GAIA
 							else
 							{
 								const GAIA::TCH* pExt = GAIA::ALGO::strext(pdirent->d_name);
-								if(pExt != GNULL && GAIA::ALGO::striwrd(pszFilter, pExt) != GNULL)
+								if(pExt != GNIL && GAIA::ALGO::striwrd(pszFilter, pExt) != GNIL)
 									bExtMatch = GAIA::True;
 							}
 							if(bExtMatch)
@@ -489,7 +489,7 @@ namespace GAIA
 									const GAIA::TCH* pNew = GAIA::ALGO::strdrop(pFinal, _T("/\\\0"));
 									if(pNew != pFinal)
 									{
-										if(pNew == GNULL || *pNew == 0)
+										if(pNew == GNIL || *pNew == 0)
 										{
 											GAIA::TCH szTemp[MAXPL];
 											GAIA::ALGO::strcpy(szTemp, pFinal);

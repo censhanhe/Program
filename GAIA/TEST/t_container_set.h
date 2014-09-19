@@ -63,13 +63,13 @@ namespace GAIATEST
 		}
 		for(__SetType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(s.find(x) == GNULL)
+			if(s.find(x) == GNIL)
 			{
 				GTLINE2("Set find element failed!");
 				++nRet;
 				break;
 			}
-			if(static_cast<const __SetType*>(&s)->find(x) == GNULL)
+			if(static_cast<const __SetType*>(&s)->find(x) == GNIL)
 			{
 				GTLINE2("Set const find element failed!");
 				++nRet;

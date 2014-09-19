@@ -10,8 +10,8 @@ namespace PROM
 	public:
 		GINL GAIA::BL BindNext(__MyType* p)
 		{
-			GAIA_AST(p != GNULL);
-			if(p == GNULL)
+			GAIA_AST(p != GNIL);
+			if(p == GNIL)
 				return GAIA::False;
 			GAIA_AST(p != this);
 			if(p == this)
@@ -25,7 +25,7 @@ namespace PROM
 			GAIA::BL bExist = GAIA::False;
 			for(GAIA::SIZE x = 0; x < m_nexts.size(); ++x)
 			{
-				if(m_nexts[x] == GNULL)
+				if(m_nexts[x] == GNIL)
 				{
 					m_nexts[x] = p;
 					bExist = GAIA::True;
@@ -37,7 +37,7 @@ namespace PROM
 			bExist = GAIA::False;
 			for(GAIA::SIZE x = 0; x < p->m_prevs.size(); ++x)
 			{
-				if(p->m_prevs[x] == GNULL)
+				if(p->m_prevs[x] == GNIL)
 				{
 					p->m_prevs[x] = this;
 					bExist = GAIA::True;
@@ -50,8 +50,8 @@ namespace PROM
 		}
 		GINL GAIA::BL UnbindNext(__MyType* p)
 		{
-			GAIA_AST(p != GNULL);
-			if(p == GNULL)
+			GAIA_AST(p != GNIL);
+			if(p == GNIL)
 				return GAIA::False;
 			GAIA_AST(p != this);
 			if(p == this)
@@ -61,7 +61,7 @@ namespace PROM
 			{
 				if(m_nexts[x] == p)
 				{
-					m_nexts[x] = GNULL;
+					m_nexts[x] = GNIL;
 					bExist = GAIA::True;
 					break;
 				}
@@ -73,7 +73,7 @@ namespace PROM
 			{
 				if(p->m_prevs[x] == this)
 				{
-					p->m_prevs[x] = GNULL;
+					p->m_prevs[x] = GNIL;
 					bExist = GAIA::True;
 					break;
 				}
@@ -92,7 +92,7 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < m_nexts.size(); ++x)
 			{
 				__MyType* pPLC = m_nexts[x];
-				if(pPLC == GNULL)
+				if(pPLC == GNIL)
 					continue;
 				this->UnbindNext(pPLC);
 			}
@@ -101,9 +101,9 @@ namespace PROM
 		GINL __MyType* GetNext(const GAIA::SIZE& index) const
 		{
 			if(index >= m_nexts.size())
-				return GNULL;
-			if(m_nexts[index] == GNULL)
-				return GNULL;
+				return GNIL;
+			if(m_nexts[index] == GNIL)
+				return GNIL;
 			m_nexts[index]->Reference();
 			return m_nexts[index];
 		}
@@ -114,7 +114,7 @@ namespace PROM
 			for(GAIA::SIZE x = 0; x < this->GetPrevSize(); ++x)
 			{
 				__MyType* pPLC = m_prevs[x];
-				if(pPLC == GNULL)
+				if(pPLC == GNIL)
 					continue;
 				this->UnbindPrev(pPLC);
 			}
@@ -123,22 +123,22 @@ namespace PROM
 		GINL __MyType* GetPrev(const GAIA::SIZE& index) const
 		{
 			if(index >= m_prevs.size())
-				return GNULL;
-			if(m_prevs[index] == GNULL)
-				return GNULL;
+				return GNIL;
+			if(m_prevs[index] == GNIL)
+				return GNIL;
 			m_prevs[index]->Reference();
 			return m_prevs[index];
 		}
 	private:
 		GINL GAIA::BL next_exist(__MyType* p) const
 		{
-			GAIA_AST(p != GNULL);
-			if(p == GNULL)
+			GAIA_AST(p != GNIL);
+			if(p == GNIL)
 				return GAIA::False;
 			for(GAIA::SIZE x = 0; x < this->GetNextSize(); ++x)
 			{
 				__MyType* pNext = this->GetNext(x);
-				if(pNext == GNULL)
+				if(pNext == GNIL)
 					continue;
 				if(pNext == p)
 				{
@@ -156,13 +156,13 @@ namespace PROM
 		}
 		GINL GAIA::BL prev_exist(__MyType* p) const
 		{
-			GAIA_AST(p != GNULL);
-			if(p == GNULL)
+			GAIA_AST(p != GNIL);
+			if(p == GNIL)
 				return GAIA::False;
 			for(GAIA::SIZE x = 0; x < this->GetPrevSize(); ++x)
 			{
 				__MyType* pPrev = this->GetPrev(x);
-				if(pPrev == GNULL)
+				if(pPrev == GNIL)
 					continue;
 				if(pPrev == p)
 				{

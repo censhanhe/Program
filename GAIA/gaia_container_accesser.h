@@ -32,7 +32,7 @@ namespace GAIA
 				{
 					GAIA_AST(&src != this);
 					GAIA_AST(!!m_acc);
-					if(m_acc != GNULL && m_index != src.m_index)
+					if(m_acc != GNIL && m_index != src.m_index)
 						(*this) = (const _DataType&)src;
 					return *this;
 				}
@@ -70,7 +70,7 @@ namespace GAIA
 			private:
 				GINL Node(){this->init();}
 			private:
-				GINL GAIA::GVOID init(){m_acc = GNULL; m_index = 0;}
+				GINL GAIA::GVOID init(){m_acc = GNIL; m_index = 0;}
 			private:
 				__MyType* m_acc;
 				_SizeType m_index;
@@ -84,7 +84,7 @@ namespace GAIA
 				{
 					GAIA_AST(&src != this);
 					GAIA_AST(!!m_acc);
-					if(m_acc != GNULL && m_index != src.m_index)
+					if(m_acc != GNIL && m_index != src.m_index)
 						(*this) = (const _DataType&)src;
 					return *this;
 				}
@@ -123,19 +123,19 @@ namespace GAIA
 					return *this;
 				}
 			private:
-				GINL GAIA::GVOID init(){m_acc = GNULL; m_index = 0;}
+				GINL GAIA::GVOID init(){m_acc = GNIL; m_index = 0;}
 			private:
 				const __MyType* m_acc;
 				_SizeType m_index;
 			};
 		public:
 			GINL Accesser(){this->init();}
-			GINL Accesser(GAIA::N32 n){GAIA_AST(n == GNULL); this->operator = (n);}
+			GINL Accesser(GAIA::N32 n){GAIA_AST(n == GNIL); this->operator = (n);}
 			GINL Accesser(const __MyType& src){this->operator = (src);}
 			GINL ~Accesser(){this->destroy();}
 			GINL GAIA::BL bindmem(_DataType* p, const _SizeType& size, GAIA::UM atm)
 			{
-				if(p == GNULL)
+				if(p == GNIL)
 				{
 					GAIA_AST(atm | ACCESS_TYPE_WRITE);
 					if(size != 0)
@@ -156,7 +156,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL bindfile(GAIA::FILESYSTEM::FileBase* pFile, GAIA::UM atm)
 			{
-				if(pFile == GNULL)
+				if(pFile == GNIL)
 				{
 					GAIA_AST(atm | ACCESS_TYPE_WRITE);
 					this->expandable(GAIA::True);
@@ -195,8 +195,8 @@ namespace GAIA
 			{
 				m_bindtype = BIND_TYPE_INVALID;
 				m_atm = ACCESS_TYPE_INVALID;
-				m_p = GNULL;
-				m_file = GNULL;
+				m_p = GNIL;
+				m_file = GNIL;
 				m_size = 0;
 				m_offset = 0;
 				m_stride = sizeof(_DataType);
@@ -275,8 +275,8 @@ namespace GAIA
 			GINL _SizeType operator - (const __MyType& src){return this->index() - src.index();}
 			GINL __MyType operator + (const _SizeType& size){__MyType ret; ret = *this; ret += size; return ret;}
 			GINL __MyType operator - (const _SizeType& size){__MyType ret; ret = *this; ret -= size; return ret;}
-			GINL GAIA::BL operator == (GAIA::N32 n) const{GAIA_AST(n == GNULL); return this->empty();}
-			GINL GAIA::BL operator != (GAIA::N32 n) const{GAIA_AST(n == GNULL); return !this->empty();}
+			GINL GAIA::BL operator == (GAIA::N32 n) const{GAIA_AST(n == GNIL); return this->empty();}
+			GINL GAIA::BL operator != (GAIA::N32 n) const{GAIA_AST(n == GNIL); return !this->empty();}
 			GINL GAIA::BL operator == (const __MyType& src) const
 			{
 				if(m_bindtype != src.m_bindtype)
@@ -396,10 +396,10 @@ namespace GAIA
 								GAIA_AST(newsize > this->size());
 								newsize = GAIA::ALGO::maximize(newsize, GSCAST(_SizeType)(poffset + sizeof(_DataType)));
 								_DataType* pNew = GRCAST(_DataType*)(GAIA_MALLOC(GAIA::U8, newsize));
-								GAIA_AST(pNew != GNULL);
-								if(pNew == GNULL)
+								GAIA_AST(pNew != GNIL);
+								if(pNew == GNIL)
 									return GAIA::False;
-								if(m_p != GNULL)
+								if(m_p != GNIL)
 								{
 									GAIA::ALGO::xmemcpy(pNew, m_p, this->size());
 									GAIA_MFREE(m_p);

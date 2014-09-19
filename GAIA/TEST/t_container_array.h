@@ -162,7 +162,7 @@ namespace GAIATEST
 			++nRet;
 		}
 		delete[] pTemp;
-		pTemp = GNULL;
+		pTemp = GNIL;
 		if(arr1.size() != arrsize ||
 			arr.size() != arrsize)
 		{

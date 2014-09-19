@@ -51,7 +51,7 @@ int main(int argc, char* argv[])\r\n\
 		for(GAIA::SIZE x = 0; x < tl.size(); ++x)
 		{
 			const GAIA::TCH* p = tl.get_line(x);
-			if(p == GNULL)
+			if(p == GNIL)
 			{
 				GTLINE2("TextLine load cause get_line failed!");
 				++nRet;

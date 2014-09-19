@@ -148,7 +148,7 @@ namespace GAIATEST
 		av.push_back(pTemp, arrsize);
 
 		delete[] pTemp;
-		pTemp = GNULL;
+		pTemp = GNIL;
 		if(av1.size() != arrsize ||
 			av.size() != arrsize)
 		{

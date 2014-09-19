@@ -18,7 +18,7 @@ namespace GAIA
 				friend class BasicTree;
 			public:
 			#ifdef GAIA_DEBUG_INTERNALROUTINE
-				Node(){m_pParent = GNULL;}
+				Node(){m_pParent = GNIL;}
 				GINL _DataType& operator * (){return m_t;}
 				GINL const _DataType& operator * () const{return m_t;}
 			#endif
@@ -43,26 +43,26 @@ namespace GAIA
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNIL;}
 				GINL virtual _DataType& operator * (){return **m_pNode;}
 				GINL virtual const _DataType& operator * () const{return **m_pNode;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
 					if(m_pNode->m_links.empty())
 					{
 					NEXT_LOOP:
-						if(m_pNode->m_pParent == GNULL)
+						if(m_pNode->m_pParent == GNIL)
 						{
-							m_pNode = GNULL;
+							m_pNode = GNIL;
 							return *this;
 						}
 						_SizeType index = m_pNode->m_pParent->m_links.find(m_pNode, 0);
 						GAIA_AST(index != GINVALID);
 						for(_SizeType x = index + 1; x < m_pNode->m_pParent->m_links.size(); ++x)
 						{
-							if(m_pNode->m_pParent->m_links[x] != GNULL)
+							if(m_pNode->m_pParent->m_links[x] != GNIL)
 							{
 								m_pNode = m_pNode->m_pParent->m_links[x];
 								return *this;
@@ -76,7 +76,7 @@ namespace GAIA
 						typename __NodeListType::it it = m_pNode->m_links.front_it();
 						for(; !it.empty(); ++it)
 						{
-							if(*it != GNULL)
+							if(*it != GNIL)
 							{
 								m_pNode = *it;
 								return *this;
@@ -87,11 +87,11 @@ namespace GAIA
 				}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
-					if(m_pNode->m_pParent == GNULL)
+					if(m_pNode->m_pParent == GNIL)
 					{
-						m_pNode = GNULL;
+						m_pNode = GNIL;
 						return *this;
 					}
 					_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode), 0);
@@ -101,7 +101,7 @@ namespace GAIA
 						_SizeType x = index - 1;
 						for(;;)
 						{
-							if(m_pNode->m_pParent->m_links[x] != GNULL)
+							if(m_pNode->m_pParent->m_links[x] != GNIL)
 							{
 								m_pNode = m_pNode->m_pParent->m_links[x];
 							NEXT_LOOP:
@@ -110,7 +110,7 @@ namespace GAIA
 									typename __NodeListType::it it = m_pNode->m_links.back_it();
 									for(; !it.empty(); --it)
 									{
-										if(*it != GNULL)
+										if(*it != GNIL)
 										{
 											m_pNode = *it;
 											goto NEXT_LOOP;
@@ -213,7 +213,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::Iterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNIL;}
 			private:
 				Node* m_pNode;
 			};
@@ -224,25 +224,25 @@ namespace GAIA
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
-				GINL virtual GAIA::BL empty() const{return m_pNode == GNULL;}
+				GINL virtual GAIA::BL empty() const{return m_pNode == GNIL;}
 				GINL virtual const _DataType& operator * () const{return **m_pNode;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
 					if(m_pNode->m_links.empty())
 					{
 					NEXT_LOOP:
-						if(m_pNode->m_pParent == GNULL)
+						if(m_pNode->m_pParent == GNIL)
 						{
-							m_pNode = GNULL;
+							m_pNode = GNIL;
 							return *this;
 						}
 						_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode), 0);
 						GAIA_AST(index != GINVALID);
 						for(_SizeType x = index + 1; x < m_pNode->m_pParent->m_links.size(); ++x)
 						{
-							if(m_pNode->m_pParent->m_links[x] != GNULL)
+							if(m_pNode->m_pParent->m_links[x] != GNIL)
 							{
 								m_pNode = m_pNode->m_pParent->m_links[x];
 								return *this;
@@ -256,7 +256,7 @@ namespace GAIA
 						typename __NodeListType::const_it it = m_pNode->m_links.const_front_it();
 						for(; !it.empty(); ++it)
 						{
-							if(*it != GNULL)
+							if(*it != GNIL)
 							{
 								m_pNode = *it;
 								return *this;
@@ -267,11 +267,11 @@ namespace GAIA
 				}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- ()
 				{
-					if(m_pNode == GNULL)
+					if(m_pNode == GNIL)
 						return *this;
-					if(m_pNode->m_pParent == GNULL)
+					if(m_pNode->m_pParent == GNIL)
 					{
-						m_pNode = GNULL;
+						m_pNode = GNIL;
 						return *this;
 					}
 					_SizeType index = m_pNode->m_pParent->m_links.find(const_cast<Node* const>(m_pNode), 0);
@@ -281,7 +281,7 @@ namespace GAIA
 						_SizeType x = index - 1;
 						for(;;)
 						{
-							if(m_pNode->m_pParent->m_links[x] != GNULL)
+							if(m_pNode->m_pParent->m_links[x] != GNIL)
 							{
 								m_pNode = m_pNode->m_pParent->m_links[x];
 							NEXT_LOOP:
@@ -290,7 +290,7 @@ namespace GAIA
 									typename __NodeListType::const_it it = m_pNode->m_links.const_back_it();
 									for(; !it.empty(); --it)
 									{
-										if(*it != GNULL)
+										if(*it != GNIL)
 										{
 											m_pNode = *it;
 											goto NEXT_LOOP;
@@ -393,7 +393,7 @@ namespace GAIA
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator ++ (GAIA::N32){++(*this); return *this;}
 				GINL virtual GAIA::ITERATOR::ConstIterator<_DataType>& operator -- (GAIA::N32){--(*this); return *this;}
 			private:
-				GINL GAIA::GVOID init(){m_pNode = GNULL;}
+				GINL GAIA::GVOID init(){m_pNode = GNIL;}
 			private:
 				const Node* m_pNode;
 			};
@@ -401,26 +401,26 @@ namespace GAIA
 			GINL BasicTree(){this->init();}
 			GINL BasicTree(const __MyType& src){this->init(); this->operator = (src);}
 			GINL ~BasicTree(){}
-			GINL GAIA::BL empty() const{return m_pRoot == GNULL;}
+			GINL GAIA::BL empty() const{return m_pRoot == GNIL;}
 			GINL _SizeType size() const{return m_pool.size();}
 			GINL const _SizeType& capacity() const{return m_pool.capacity();}
-			GINL GAIA::GVOID destroy(){m_pRoot = GNULL; m_pool.destroy();}
-			GINL GAIA::GVOID clear(){m_pRoot = GNULL; m_pool.clear();}
+			GINL GAIA::GVOID destroy(){m_pRoot = GNIL; m_pool.destroy();}
+			GINL GAIA::GVOID clear(){m_pRoot = GNIL; m_pool.clear();}
 			GINL GAIA::GVOID resize(const _SizeType& size){}
 			GINL GAIA::GVOID reserve(const _SizeType& size){}
 			GINL Node* root(){return m_pRoot;}
 			GINL const Node* root() const{return m_pRoot;}
-			GINL Node* parent(Node* p){if(p != GNULL) return p->m_pParent; return GNULL;}
-			GINL const Node* parent(Node* p) const{if(p != GNULL) return p->m_pParent; return GNULL;}
+			GINL Node* parent(Node* p){if(p != GNIL) return p->m_pParent; return GNIL;}
+			GINL const Node* parent(Node* p) const{if(p != GNIL) return p->m_pParent; return GNIL;}
 			GINL Node* insert(const _DataType& t, Node* pNode)
 			{
-				if(pNode == GNULL && m_pRoot != GNULL)
-					return GNULL;
+				if(pNode == GNIL && m_pRoot != GNIL)
+					return GNIL;
 				Node* pNew = m_pool.alloc();
 				pNew->m_t = t;
-				pNew->m_pParent = GNULL;
+				pNew->m_pParent = GNIL;
 				pNew->m_links.clear();
-				if(pNode == GNULL)
+				if(pNode == GNIL)
 					m_pRoot = pNew;
 				else
 				{
@@ -434,26 +434,26 @@ namespace GAIA
 				for(_SizeType x = 0; x < n.m_links.size(); ++x)
 				{
 					Node* pNode = n.m_links[x];
-					if(pNode == GNULL)
+					if(pNode == GNIL)
 						continue;
 					this->erase(*pNode);
 				}
-				if(n.m_pParent != GNULL)
+				if(n.m_pParent != GNIL)
 					this->unlink(*n.m_pParent, n);
 				m_pool.release(&n);
 				if(&n == m_pRoot)
-					m_pRoot = GNULL;
+					m_pRoot = GNIL;
 			}
 			GINL GAIA::BL link(Node& parent, Node& child)
 			{
-				if(child.m_pParent != GNULL)
+				if(child.m_pParent != GNIL)
 					this->unlink(*child.m_pParent, child);
 				Node** ppn;
 				if(!parent.m_links.empty())
-					ppn = GAIA::ALGO::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), (Node*)GNULL);
+					ppn = GAIA::ALGO::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), (Node*)GNIL);
 				else
-					ppn = GNULL;
-				if(ppn == GNULL)
+					ppn = GNIL;
+				if(ppn == GNIL)
 					parent.m_links.push_back(&child);
 				else
 					*ppn = &child;
@@ -467,9 +467,9 @@ namespace GAIA
 				if(parent.m_links.empty())
 					return GAIA::False;
 				Node** pFinded = GAIA::ALGO::find(parent.m_links.front_ptr(), parent.m_links.back_ptr(), &child);
-				*pFinded = GNULL;
-				child.m_pParent = GNULL;
-				if(parent.m_links.count(GNULL) == parent.m_links.size())
+				*pFinded = GNIL;
+				child.m_pParent = GNIL;
+				if(parent.m_links.count(GNIL) == parent.m_links.size())
 					parent.m_links.clear();
 				return GAIA::True;
 			}
@@ -479,31 +479,31 @@ namespace GAIA
 			GINL Node* getlink(const Node& n, const _SizeType& index) const{return n.m_links[index];}
 			GINL GAIA::BL leaf(const Node& n) const
 			{
-				if(n.m_links.count(GNULL) == this->getlinksize(n))
+				if(n.m_links.count(GNIL) == this->getlinksize(n))
 					return GAIA::True;
 				return GAIA::False;
 			}
 			GINL GAIA::GVOID find(const Node* pSrc, const _DataType& t, __NodeListType& result) const
 			{
-				if(pSrc == GNULL)
+				if(pSrc == GNIL)
 					pSrc = m_pRoot;
-				if(pSrc == GNULL)
+				if(pSrc == GNIL)
 					return;
 				if(pSrc->m_t == t)
 					result.push_back((const_cast<Node*>(pSrc)));
 				for(_SizeType x = 0; x < pSrc->m_links.size(); ++x)
 				{
 					const Node* pNode = pSrc->m_links[x];
-					if(pNode == GNULL)
+					if(pNode == GNIL)
 						continue;
 					this->find(pNode, t, result);
 				}
 			}
 			GINL GAIA::GVOID paths(const Node* pSrc, __PathListType& result) const
 			{
-				if(pSrc == GNULL)
+				if(pSrc == GNIL)
 					pSrc = m_pRoot;
-				if(pSrc == GNULL)
+				if(pSrc == GNIL)
 					return;
 				this->paths_node(*pSrc, *pSrc, result);
 			}
@@ -516,7 +516,7 @@ namespace GAIA
 			GINL it back_it()
 			{
 				Node* pNode = m_pRoot;
-				if(pNode != GNULL)
+				if(pNode != GNIL)
 				{
 					for(;;)
 					{
@@ -524,7 +524,7 @@ namespace GAIA
 						GAIA::BL bExistChild = GAIA::False;
 						for(; !it.empty(); --it)
 						{
-							if(*it != GNULL)
+							if(*it != GNIL)
 							{
 								pNode = *it;
 								bExistChild = GAIA::True;
@@ -548,7 +548,7 @@ namespace GAIA
 			GINL const_it const_back_it() const
 			{
 				const Node* pNode = m_pRoot;
-				if(pNode != GNULL)
+				if(pNode != GNIL)
 				{
 					for(;;)
 					{
@@ -556,7 +556,7 @@ namespace GAIA
 						GAIA::BL bExistChild = GAIA::False;
 						for(; !it.empty(); --it)
 						{
-							if(*it != GNULL)
+							if(*it != GNIL)
 							{
 								pNode = *it;
 								bExistChild = GAIA::True;
@@ -585,7 +585,7 @@ namespace GAIA
 				if(!src.empty())
 				{
 					m_pRoot = m_pool.alloc();
-					m_pRoot->m_pParent = GNULL;
+					m_pRoot->m_pParent = GNIL;
 					m_pRoot->m_links.clear();
 					this->copy_node(*m_pRoot, *src.m_pRoot);
 				}
@@ -642,7 +642,7 @@ namespace GAIA
 			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 		private:
-			GINL GAIA::GVOID init(){m_pRoot = GNULL;}
+			GINL GAIA::GVOID init(){m_pRoot = GNIL;}
 			GINL GAIA::GVOID paths_node(const Node& root, const Node& n, __PathListType& result) const
 			{
 				if(this->leaf(n))
@@ -651,7 +651,7 @@ namespace GAIA
 					result.push_back(temp);
 					__NodeListType& listNode = result[result.size() - 1];
 					const Node* pTempNode = &n;
-					while(pTempNode != GNULL)
+					while(pTempNode != GNIL)
 					{
 						listNode.push_back(const_cast<Node*>(pTempNode));
 						pTempNode = pTempNode->m_pParent;
@@ -663,7 +663,7 @@ namespace GAIA
 				for(_SizeType x = 0; x < n.m_links.size(); ++x)
 				{
 					Node* pNode = n.m_links[x];
-					if(pNode == GNULL)
+					if(pNode == GNIL)
 						continue;
 					this->paths_node(root, *pNode, result);
 				}
@@ -674,7 +674,7 @@ namespace GAIA
 				for(_SizeType x = 0; x < src.m_links.size(); ++x)
 				{
 					const typename __NodeListType::_datatype& c = src.m_links[x];
-					if(c != GNULL)
+					if(c != GNIL)
 					{
 						Node* pNew = m_pool.alloc();
 						pNew->m_pParent = &dst;

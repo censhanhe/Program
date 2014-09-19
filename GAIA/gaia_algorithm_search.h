@@ -22,7 +22,7 @@ namespace GAIA
 					return pBegin;
 				++pBegin;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _KeyType> _DataType* findp(const _DataType** ppBegin, const _DataType** ppEnd, const _KeyType& key)
 		{
@@ -32,7 +32,7 @@ namespace GAIA
 					return const_cast<_DataType*>(*ppBegin);
 				++ppBegin;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _KeyType, typename _SizeType> _DataType finds(_DataType pBegin, _DataType pEnd, _KeyType p, const _SizeType& size)
 		{
@@ -46,7 +46,7 @@ namespace GAIA
 					return pBegin;
 				++pBegin;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _KeyType> _DataType rfind(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
@@ -56,7 +56,7 @@ namespace GAIA
 					return pEnd;
 				--pEnd;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _KeyType> _DataType* rfindp(const _DataType** ppBegin, const _DataType** ppEnd, const _KeyType& key)
 		{
@@ -66,7 +66,7 @@ namespace GAIA
 					return const_cast<_DataType*>(*ppEnd);
 				--ppEnd;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _KeyType, typename _SizeType> _DataType rfinds(_DataType pBegin, _DataType pEnd, _KeyType p, const _SizeType& size)
 		{
@@ -80,7 +80,7 @@ namespace GAIA
 					return pEnd - size + 1;
 				--pEnd;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _KeyType> _DataType ssearch(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
@@ -93,7 +93,7 @@ namespace GAIA
 					return pBegin;
 				++pBegin;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _KeyType> _DataType bsearch(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
@@ -104,7 +104,7 @@ namespace GAIA
 			{
 				if(*pBegin == key)
 					return pBegin;
-				return GNULL;
+				return GNIL;
 			}
 			else
 			{
@@ -116,7 +116,7 @@ namespace GAIA
 				return GAIA::ALGO::bsearch(pBegin, pMid, key);
 			else if(key > *pMid)
 				return GAIA::ALGO::bsearch(pMid + 1, pEnd, key);
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _KeyType> _DataType search(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
@@ -124,12 +124,12 @@ namespace GAIA
 			GAIA_AST(!!pEnd);
 			GAIA_AST(pBegin <= pEnd);
 			if(pEnd < pBegin)
-				return GNULL;
+				return GNIL;
 			if(pEnd == pBegin)
 			{
 				if(*pBegin == key)
 					return pBegin;
-				return GNULL;
+				return GNIL;
 			}
 			return GAIA::ALGO::bsearch(pBegin, pEnd, key);
 		}
@@ -141,22 +141,22 @@ namespace GAIA
 			{
 				if(*pBegin >= key)
 					return pBegin;
-				return GNULL;
+				return GNIL;
 			}
 			_DataType pMid = pBegin + (pEnd - pBegin) / 2;
 			if(key <= *pMid)
 			{
 				_DataType pRet = GAIA::ALGO::lower_bound(pBegin, pMid, key);
-				if(pRet != GNULL)
+				if(pRet != GNIL)
 					return pRet;
 			}
 			else if(key > *pMid)
 			{
 				_DataType pRet = GAIA::ALGO::lower_bound(pMid + 1, pEnd, key);
-				if(pRet != GNULL)
+				if(pRet != GNIL)
 					return pRet;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _KeyType> _DataType upper_bound(_DataType pBegin, _DataType pEnd, const _KeyType& key)
 		{
@@ -166,7 +166,7 @@ namespace GAIA
 			{
 				if(*pEnd <= key)
 					return pEnd;
-				return GNULL;
+				return GNIL;
 			}
 			_DataType pMid = pBegin + (pEnd - pBegin) / 2;
 			if((pEnd - pBegin) % 2 != 0)
@@ -174,16 +174,16 @@ namespace GAIA
 			if(key >= *pMid)
 			{
 				_DataType pRet = GAIA::ALGO::upper_bound(pMid, pEnd, key);
-				if(pRet != GNULL)
+				if(pRet != GNIL)
 					return pRet;
 			}
 			else if(key < *pMid)
 			{
 				_DataType pRet = GAIA::ALGO::upper_bound(pBegin, pMid - 1, key);
-				if(pRet != GNULL)
+				if(pRet != GNIL)
 					return pRet;
 			}
-			return GNULL;
+			return GNIL;
 		}
 		template<typename _DataType, typename _SizeType> GAIA::GVOID index(_DataType pBegin, _DataType pCurrent, _SizeType& result)
 		{

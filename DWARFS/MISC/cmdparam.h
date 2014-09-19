@@ -136,7 +136,7 @@ namespace DWARFS_MISC
 			GAIA_AST(this->is_begin_decl());
 			if(!this->is_begin_decl())
 				return GAIA::False;
-			CmdDecl* pCmd = GNULL;
+			CmdDecl* pCmd = GNIL;
 			for(__CmdDeclListType::_sizetype x = 0; x < m_decls.size(); ++x)
 			{
 				CmdDecl& temp = m_decls[x];
@@ -148,7 +148,7 @@ namespace DWARFS_MISC
 					break;
 				}
 			}
-			if(pCmd == GNULL)
+			if(pCmd == GNIL)
 				return GAIA::False;
 			ParamDecl temp;
 			temp.start_param_index = start_param_index;
@@ -219,14 +219,14 @@ namespace DWARFS_MISC
 		{
 			GAIA_AST(decl < m_decls.size());
 			if(decl >= m_decls.size())
-				return GNULL;
+				return GNIL;
 			return m_decls[decl].cmd;
 		}
 		GINL const GAIA::TCH* cmd_decl_desc(const GAIA::SIZE& decl) const
 		{
 			GAIA_AST(decl < m_decls.size());
 			if(decl >= m_decls.size())
-				return GNULL;
+				return GNIL;
 			return m_decls[decl].desc;
 		}
 		GINL GAIA::SIZE cmd_decl_min_param_size(const GAIA::SIZE& decl) const
@@ -427,12 +427,12 @@ namespace DWARFS_MISC
 				for(__CmdMutexListType::_sizetype y = 0; y < m_mutex_decls.size(); ++y)
 				{
 					const CmdMutex& cm = m_mutex_decls[y];
-					const __StringType* pCmd = GNULL;
+					const __StringType* pCmd = GNIL;
 					if(cm.cmd1 == temp.cmd)
 						pCmd = &cm.cmd2;
 					else if(cm.cmd2 == temp.cmd)
 						pCmd = &cm.cmd1;
-					if(pCmd != GNULL)
+					if(pCmd != GNIL)
 					{
 						for(__CmdListType::_sizetype z = 0; z < m_cmds.size(); ++z)
 						{
@@ -449,12 +449,12 @@ namespace DWARFS_MISC
 				for(__CmdCoopListType::_sizetype y = 0; y < m_coop_decls.size(); ++y)
 				{
 					const CmdCoop& cc = m_coop_decls[y];
-					const __StringType* pCmd = GNULL;
+					const __StringType* pCmd = GNIL;
 					if(cc.cmd1 == temp.cmd)
 						pCmd = &cc.cmd2;
 					else if(cc.cmd2 == temp.cmd)
 						pCmd = &cc.cmd1;
-					if(pCmd != GNULL)
+					if(pCmd != GNIL)
 					{
 						GAIA::BL bExist = GAIA::False;
 						for(__CmdListType::_sizetype z = 0; z < m_cmds.size(); ++z)
@@ -509,21 +509,21 @@ namespace DWARFS_MISC
 		const GAIA::TCH* cmd(const GAIA::SIZE& cmd) const
 		{
 			if(cmd >= this->cmd_size())
-				return GNULL;
+				return GNIL;
 			return m_cmds[cmd].cmd.front_ptr();
 		}
 		GINL GAIA::SIZE param_size(const GAIA::SIZE& cmd) const
 		{
 			if(cmd >= this->cmd_size())
-				return GNULL;
+				return GNIL;
 			return m_cmds[cmd].params.size();
 		}
 		const GAIA::TCH* param(const GAIA::SIZE& cmd, const GAIA::SIZE& param) const
 		{
 			if(cmd >= this->cmd_size())
-				return GNULL;
+				return GNIL;
 			if(param >= this->param_size(cmd))
-				return GNULL;
+				return GNIL;
 			return m_cmds[cmd].params[param];
 		}
 		GINL GAIA::SIZE findcmd(const GAIA::TCH* pszCmd) const

@@ -27,30 +27,30 @@ namespace GAIA
 	#else
 		static GAIA::GVOID* thread_procedure(GAIA::GVOID* p){Thread* pThread = static_cast<Thread*>(p); pThread->WorkProcedure(); pthread_exit(0);}
 	#endif
-		GAIA_DEBUG_CODEPURE_MEMFUNC Thread::Thread(){m_stacksize = 1024 * 1024; m_state = THREAD_STATE_INVALID; m_pThread = GNULL;}
+		GAIA_DEBUG_CODEPURE_MEMFUNC Thread::Thread(){m_stacksize = 1024 * 1024; m_state = THREAD_STATE_INVALID; m_pThread = GNIL;}
 		GAIA_DEBUG_CODEPURE_MEMFUNC Thread::~Thread()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(m_pThread != GNULL)
+			if(m_pThread != GNIL)
 			{
 				::WaitForSingleObject((HANDLE)m_pThread, INFINITE);
 				::CloseHandle((HANDLE)m_pThread);
 			}
 		#else
-			if(m_pThread != GNULL)
+			if(m_pThread != GNIL)
 			{
-				pthread_join(*(pthread_t*)m_pThread, GNULL);
+				pthread_join(*(pthread_t*)m_pThread, GNIL);
 				delete (pthread_t*)m_pThread;
 			}
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Thread::Run()
 		{
-			if(m_pThread != GNULL)
+			if(m_pThread != GNIL)
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			m_pThread = ::CreateThread(GNULL, m_stacksize, thread_procedure, static_cast<GAIA::GVOID*>(this), 0, GNULL);
-			if(m_pThread == GNULL)
+			m_pThread = ::CreateThread(GNIL, m_stacksize, thread_procedure, static_cast<GAIA::GVOID*>(this), 0, GNIL);
+			if(m_pThread == GNIL)
 				return GAIA::False;
 			m_state = THREAD_STATE_RUNING;
 			return GAIA::True;
@@ -70,25 +70,25 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Thread::Wait() const
 		{
-			if(m_pThread != GNULL)
+			if(m_pThread != GNIL)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS
-				if(m_pThread != GNULL)
+				if(m_pThread != GNIL)
 				{
 					if(::WaitForSingleObject((HANDLE)m_pThread, INFINITE) == WAIT_OBJECT_0)
 					{
 						::CloseHandle((HANDLE)m_pThread);
-						(const_cast<Thread*>(this))->m_pThread = GNULL;
+						(const_cast<Thread*>(this))->m_pThread = GNIL;
 						(const_cast<Thread*>(this))->m_state = THREAD_STATE_INVALID;
 						return GAIA::True;
 					}
 				}
 			#else
-				if(m_pThread != GNULL)
+				if(m_pThread != GNIL)
 				{
-					pthread_join(*(pthread_t*)m_pThread, GNULL);
+					pthread_join(*(pthread_t*)m_pThread, GNIL);
 					delete GSCAST(pthread_t*)((const_cast<Thread*>(this))->m_pThread);
-					(const_cast<Thread*>(this))->m_pThread = GNULL;
+					(const_cast<Thread*>(this))->m_pThread = GNIL;
 					(const_cast<Thread*>(this))->m_state = THREAD_STATE_INVALID;
 					return GAIA::True;
 				}

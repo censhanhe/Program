@@ -29,24 +29,24 @@ namespace GAIATEST
 			GTLINE2("New buffer capacity is not zero!");
 			++nRet;
 		}
-		if(b.front_ptr() != GNULL || b.back_ptr() != GNULL)
+		if(b.front_ptr() != GNIL || b.back_ptr() != GNIL)
 		{
-			GTLINE2("New buffer front_ptr or back_ptr is not GNULL!");
+			GTLINE2("New buffer front_ptr or back_ptr is not GNIL!");
 			++nRet;
 		}
-		if(b.read_ptr() != GNULL || b.write_ptr() != GNULL)
+		if(b.read_ptr() != GNIL || b.write_ptr() != GNIL)
 		{
-			GTLINE2("New buffer read_ptr or write_ptr is not GNULL!");
+			GTLINE2("New buffer read_ptr or write_ptr is not GNIL!");
 			++nRet;
 		}
-		if(static_cast<const __BufferType*>(&b)->front_ptr() != GNULL || static_cast<const __BufferType*>(&b)->back_ptr() != GNULL)
+		if(static_cast<const __BufferType*>(&b)->front_ptr() != GNIL || static_cast<const __BufferType*>(&b)->back_ptr() != GNIL)
 		{
-			GTLINE2("New buffer front_ptr or back_ptr is not GNULL!");
+			GTLINE2("New buffer front_ptr or back_ptr is not GNIL!");
 			++nRet;
 		}
-		if(static_cast<const __BufferType*>(&b)->read_ptr() != GNULL || static_cast<const __BufferType*>(&b)->write_ptr() != GNULL)
+		if(static_cast<const __BufferType*>(&b)->read_ptr() != GNIL || static_cast<const __BufferType*>(&b)->write_ptr() != GNIL)
 		{
-			GTLINE2("New buffer read_ptr or write_ptr is not GNULL!");
+			GTLINE2("New buffer read_ptr or write_ptr is not GNIL!");
 			++nRet;
 		}
 		b.reserve(100);

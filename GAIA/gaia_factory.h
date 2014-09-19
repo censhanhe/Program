@@ -29,7 +29,7 @@ namespace GAIA
 			GINL GAIA::BL UnregistCreateCallBack(FactoryCreateCallBack* pCallBack)
 			{
 				GAIA_AST(!!pCallBack);
-				if(pCallBack == GNULL)
+				if(pCallBack == GNIL)
 					return GAIA::False;
 				LIST_CREATECALLBACK::_sizetype t = m_listCreateCB.find(pCallBack, 0);
 				if(t == (LIST_CREATECALLBACK::_sizetype)-1)
@@ -40,7 +40,7 @@ namespace GAIA
 			GINL GAIA::BL IsRegistedCreateCallBack(FactoryCreateCallBack* pCallBack) const
 			{
 				GAIA_AST(!!pCallBack);
-				if(pCallBack == GNULL)
+				if(pCallBack == GNIL)
 					return GAIA::False;
 				if(m_listCreateCB.find(pCallBack, 0) == (LIST_CREATECALLBACK::_sizetype)-1)
 					return GAIA::False;
@@ -50,8 +50,8 @@ namespace GAIA
 			GINL virtual Instance* CreateInstance(const ClsID& cid, GAIA::GVOID* pParameter)
 			{
 				if(cid.IsInvalid())
-					return GNULL;
-				Instance* pRet = GNULL;
+					return GNIL;
+				Instance* pRet = GNIL;
 				if(GAIA::ALWAYSFALSE){}
 				else if(cid == GAIA::FRAMEWORK::CLSID_GATEWAY_MEM)
 					pRet = new GAIA::DATATRAFFIC::GatewayMem;
@@ -75,29 +75,29 @@ namespace GAIA
 					pRet = new GAIA::SERIALIZER::Serializer;
 				else if(cid == GAIA::FRAMEWORK::CLSID_CANVAS)
 					pRet = new GAIA::UI::Canvas;
-				if(pRet == GNULL)
+				if(pRet == GNIL)
 				{
 					for(LIST_CREATECALLBACK::_sizetype x = 0; x < m_listCreateCB.size(); ++x)
 					{
 						FactoryCreateCallBack* pCallBack = m_listCreateCB[x];
 						pRet = pCallBack->Create(this, cid);
-						if(pRet != GNULL)
+						if(pRet != GNIL)
 							break;
 					}
 				}
-				if(pRet != GNULL)
+				if(pRet != GNIL)
 				{
 					if(!pRet->Begin(pParameter))
 					{
 						pRet->Release();
-						pRet = GNULL;
+						pRet = GNIL;
 					}
 				}
 				return pRet;
 			}
 			GINL virtual Instance* RequestInstance(const ClsID& cid, GAIA::GVOID* pParameter)
 			{
-				return GNULL;
+				return GNIL;
 			}
 		private:
 			GINL virtual GAIA::GVOID CacheInstance(Instance* pInstance)

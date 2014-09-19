@@ -12,21 +12,21 @@ namespace PROM
 		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
-			GPCHR_NULL_RET(ppPLC, GNULL);
-			GPCHR_ZERO_RET(size, GNULL);
+			GPCHR_NULL_RET(ppPLC, GNIL);
+			GPCHR_ZERO_RET(size, GNIL);
 
-			PLC_Empty* pRet = GNULL;
-			PLC_CommandParam* plc_commandparam = GNULL;
-			PLC_FileCodeLinePrepare* plc_codelineprepare = GNULL;
-			PLC_ObjCtn* plc_objctn = GNULL;
+			PLC_Empty* pRet = GNIL;
+			PLC_CommandParam* plc_commandparam = GNIL;
+			PLC_FileCodeLinePrepare* plc_codelineprepare = GNIL;
+			PLC_ObjCtn* plc_objctn = GNIL;
 			plc_commandparam = static_cast<PLC_CommandParam*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_CommandParam")));
-			if(plc_commandparam == GNULL)
+			if(plc_commandparam == GNIL)
 				goto FUNCTION_END;
 			plc_codelineprepare = static_cast<PLC_FileCodeLinePrepare*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_FileCodeLinePrepare")));
-			if(plc_codelineprepare == GNULL)
+			if(plc_codelineprepare == GNIL)
 				goto FUNCTION_END;
 			plc_objctn = static_cast<PLC_ObjCtn*>(this->GetPLCByName(ppPLC, size, _T("Prom:PLC_ObjCtn")));
-			if(plc_objctn == GNULL)
+			if(plc_objctn == GNIL)
 				goto FUNCTION_END;
 
 			/* Initialize result pipeline context. */
@@ -36,19 +36,19 @@ namespace PROM
 
 
 		FUNCTION_END:
-			if(plc_commandparam != GNULL)
+			if(plc_commandparam != GNIL)
 				plc_commandparam->Release();
-			if(plc_codelineprepare != GNULL)
+			if(plc_codelineprepare != GNIL)
 				plc_codelineprepare->Release();
-			if(plc_objctn != GNULL)
+			if(plc_objctn != GNIL)
 				plc_objctn->Release();
 			return pRet;
 		}
 		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 		{
 			/* Parameter check up. */
-			GAIA_AST(pPLC != GNULL);
-			if(pPLC == GNULL)
+			GAIA_AST(pPLC != GNIL);
+			if(pPLC == GNIL)
 				return GAIA::False;
 
 			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));

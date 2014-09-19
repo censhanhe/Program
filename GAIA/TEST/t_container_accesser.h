@@ -175,7 +175,7 @@ namespace GAIATEST
 				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 				__AccType acc;
 				acc.expandable(GAIA::True);
-				acc.bindmem(GNULL, 0, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				acc.bindmem(GNIL, 0, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
 				for(GAIA::SIZE x = 0; x < 100; ++x)
 					acc[x] = x;
 				for(GAIA::SIZE x = 0; x < 100; ++x)
@@ -376,7 +376,7 @@ namespace GAIATEST
 				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 				__AccType acc;
 				acc.expandable(GAIA::True);
-				acc.bindfile(GNULL, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				acc.bindfile(GNIL, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
 				for(GAIA::SIZE x = 0; x < 100; ++x)
 					acc[x] = x;
 				for(GAIA::SIZE x = 0; x < 100; ++x)

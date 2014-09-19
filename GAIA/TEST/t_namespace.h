@@ -18,7 +18,7 @@ namespace GAIATEST
 			xmemcpy(p, p + 1, sizeof(GAIA::N32));
 			xmemcmp(p, p + 1, sizeof(GAIA::N32));
 			GAIA_MFREE(p);
-			p = GNULL;
+			p = GNIL;
 		}
 		{
 			GAIA::TCH szTemp[32] = _T("HelloWorld");
@@ -35,8 +35,8 @@ namespace GAIATEST
 		}
 		{
 			Factory fac;
-			Canvas* pCanvas = dynamic_cast<Canvas*>(fac.CreateInstance(CLSID_CANVAS, GNULL));
-			if(pCanvas != GNULL)
+			Canvas* pCanvas = dynamic_cast<Canvas*>(fac.CreateInstance(CLSID_CANVAS, GNIL));
+			if(pCanvas != GNIL)
 			{
 				Canvas::CanvasDesc desc;
 				desc.pszCaptionText = _T("Hello World");
@@ -51,7 +51,7 @@ namespace GAIATEST
 					++nRet;
 				}
 				pCanvas->Release();
-				pCanvas = GNULL;
+				pCanvas = GNIL;
 			}
 		}
 		return nRet = 0;

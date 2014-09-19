@@ -23,7 +23,7 @@ namespace PROM
 			GPCHR_NULL(ppPLC);
 			GPCHR_ZERO(plc_size);
 
-			if(ppPrevPL == GNULL)
+			if(ppPrevPL == GNIL)
 			{
 				GAIA_AST(prevpl_size == 0);
 				if(prevpl_size != 0)
@@ -37,14 +37,14 @@ namespace PROM
 			}
 			for(GAIA::SIZE x = 0; x < prevpl_size; ++x)
 			{
-				GAIA_AST(ppPrevPL[x] != GNULL);
-				if(ppPrevPL[x] == GNULL)
+				GAIA_AST(ppPrevPL[x] != GNIL);
+				if(ppPrevPL[x] == GNIL)
 					return;
 			}
 			for(GAIA::SIZE x = 0; x < nextpl_size; ++x)
 			{
-				GAIA_AST(ppNextPL[x] != GNULL);
-				if(ppNextPL[x] == GNULL)
+				GAIA_AST(ppNextPL[x] != GNIL);
+				if(ppNextPL[x] == GNIL)
 					return;
 			}
 
@@ -60,7 +60,7 @@ namespace PROM
 				for(GAIA::SIZE y = 0; y < pTempPL->GetPrevSize(); ++y)
 				{
 					Pipeline* pTempPrevPL = dynamic_cast<Pipeline*>(pTempPL->GetPrev(y));
-					if(pTempPrevPL == GNULL)
+					if(pTempPrevPL == GNIL)
 						continue;
 					pTempPrevPL->Release();
 					++uPracPrevSize;
@@ -72,7 +72,7 @@ namespace PROM
 					PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, prt, errs);
 					GAIA::U64 uEndTick = GAIA::TIME::tick_time();
 					prt << "\t\tTimeLost : " << GSCAST(GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
-					if(pNewPLC == GNULL)
+					if(pNewPLC == GNIL)
 						PROM_RAISE_FATALERROR(101);
 					else
 					{
@@ -80,7 +80,7 @@ namespace PROM
 						this->ExecuteExportTempResult(ppPLC, plc_size, pNewPLC, pTempPL, prt, errs);
 						for(GAIA::SIZE y = 0; y < plc_size; y++)
 						{
-							if(ppPLC[y] == GNULL)
+							if(ppPLC[y] == GNIL)
 								continue;
 							ppPLC[y]->BindNext(pNewPLC);
 						}
@@ -94,7 +94,7 @@ namespace PROM
 					for(GAIA::SIZE y = 0; y < pTempPL->GetPrevSize(); ++y)
 					{
 						Pipeline* pTempPrevPL = dynamic_cast<Pipeline*>(pTempPL->GetPrev(y));
-						if(pTempPrevPL == GNULL)
+						if(pTempPrevPL == GNIL)
 							continue;
 						GAIA::BL bFindedMatchedPLC = GAIA::False;
 						for(GAIA::SIZE z = 0; z < prevpl_size; ++z)
@@ -119,7 +119,7 @@ namespace PROM
 					PipelineContext* pNewPLC = pTempPL->Execute(plc_list.front_ptr(), plc_list.size(), prt, errs);
 					GAIA::U64 uEndTick = GAIA::TIME::tick_time();
 					prt << "\t\tTimeLost : " << GSCAST(GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
-					if(pNewPLC == GNULL)
+					if(pNewPLC == GNIL)
 						PROM_RAISE_FATALERROR(101);
 					else
 					{
@@ -127,7 +127,7 @@ namespace PROM
 						this->ExecuteExportTempResult(plc_list.front_ptr(), plc_list.size(), pNewPLC, pTempPL, prt, errs);
 						for(GAIA::SIZE y = 0; y < plc_size; y++)
 						{
-							if(ppPLC[y] == GNULL)
+							if(ppPLC[y] == GNIL)
 								continue;
 							ppPLC[y]->BindNext(pNewPLC);
 						}
@@ -143,7 +143,7 @@ namespace PROM
 				for(GAIA::SIZE y = 0; y < ppNextPL[x]->GetNextSize(); ++y)
 				{
 					Pipeline* pTempNext = dynamic_cast<Pipeline*>(ppNextPL[x]->GetNext(y));
-					if(pTempNext == GNULL)
+					if(pTempNext == GNIL)
 						continue;
 					pl_list.push_back(pTempNext);
 				}
@@ -161,7 +161,7 @@ namespace PROM
 			/* Release new pipeline context. */
 			for(GAIA::SIZE x = 0; x < new_plc_list.size(); ++x)
 			{
-				if(new_plc_list[x] != GNULL)
+				if(new_plc_list[x] != GNIL)
 				{
 					new_plc_list[x]->UnbindPrevAll();
 					new_plc_list[x]->UnbindNextAll();
@@ -176,7 +176,7 @@ namespace PROM
 	private:
 		GINL GAIA::GVOID init()
 		{
-			m_plc_commandparam = GNULL;
+			m_plc_commandparam = GNIL;
 		}
 		GINL GAIA::GVOID ExecuteOutput(PipelineContext* pPLC, Pipeline* pPL, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
 		{
@@ -186,7 +186,7 @@ namespace PROM
 				if(GAIA::ALGO::strcmp(pPLC->GetName(), _T("Prom:PLC_CommandParam")) == 0)
 					m_plc_commandparam = static_cast<PLC_CommandParam*>(pPLC);
 			}
-			if(m_plc_commandparam != GNULL)
+			if(m_plc_commandparam != GNIL)
 			{
 				for(GAIA::SIZE y = 0; y < m_plc_commandparam->cmdparam.cmd_size(); ++y)
 				{
@@ -226,7 +226,7 @@ namespace PROM
 							{
 								if(GAIA::ALGO::strcmp(pszParam0, pPL->GetName()) == 0)
 								{
-									if(pPL->Output(pPLC, GNULL, prt))
+									if(pPL->Output(pPLC, GNIL, prt))
 										prt << "\t\tOutput " << pPL->GetName() << " successfully!\n";
 									else
 										PROM_RAISE_FATALERROR(104);
@@ -246,26 +246,26 @@ namespace PROM
 			GPCHR_NULL(pNewPLC);
 			GPCHR_NULL(pPL);
 
-			PLC_CommandParam* plc_commandparam = GNULL;
-			PLC_File* plc_file = GNULL;
-			PLC_FileCodeLinePrepare* plc_codelineprepare = GNULL;
+			PLC_CommandParam* plc_commandparam = GNIL;
+			PLC_File* plc_file = GNIL;
+			PLC_FileCodeLinePrepare* plc_codelineprepare = GNIL;
 			plc_commandparam = static_cast<PLC_CommandParam*>(pPL->GetPLCByName(ppPLC, plc_size, _T("Prom:PLC_CommandParam")));
-			if(plc_commandparam == GNULL)
+			if(plc_commandparam == GNIL)
 				goto FUNCTION_END;
 			plc_file = static_cast<PLC_File*>(pPL->GetPLCByName(ppPLC, plc_size, _T("Prom:PLC_File")));
-			if(plc_file == GNULL)
+			if(plc_file == GNIL)
 				goto FUNCTION_END;
 			plc_codelineprepare = static_cast<PLC_FileCodeLinePrepare*>(pPL->GetPLCByName(ppPLC, plc_size, _T("Prom:PLC_FileCodeLinePrepare")));
-			if(plc_codelineprepare == GNULL)
+			if(plc_codelineprepare == GNIL)
 			{
 				if(GAIA::ALGO::strcmp(pNewPLC->GetName(), _T("Prom:PLC_FileCodeLinePrepare")) == 0)
 					plc_codelineprepare = GSCAST(PLC_FileCodeLinePrepare*)(pNewPLC);
 			}
-			if(plc_codelineprepare == GNULL)
+			if(plc_codelineprepare == GNIL)
 				goto FUNCTION_END;
 
 			/* Execute. */
-			const GAIA::TCH* pszExportPath = GNULL;
+			const GAIA::TCH* pszExportPath = GNIL;
 			GAIA::BL bMatch = GAIA::False;
 			for(GAIA::SIZE x = 0; x < plc_commandparam->cmdparam.cmd_size(); ++x)
 			{
@@ -280,7 +280,7 @@ namespace PROM
 					if(GAIA::ALGO::strcmp(pszPLName, pPL->GetName()) != 0)
 						continue;
 					pszExportPath = plc_commandparam->cmdparam.param(x, 1);
-					if(pszExportPath == GNULL)
+					if(pszExportPath == GNIL)
 						continue;
 					bMatch = GAIA::True;
 					break;
@@ -291,7 +291,7 @@ namespace PROM
 				GAIA::TCH szPath[GAIA::FILESYSTEM::MAXPL];
 				GAIA::ALGO::strcpy(szPath, pszExportPath);
 				GAIA::TCH* pszEnd = GAIA::ALGO::strend(szPath);
-				if(pszEnd != GNULL && *(pszEnd - 1) != '\\' && *(pszEnd - 1) != '/')
+				if(pszEnd != GNIL && *(pszEnd - 1) != '\\' && *(pszEnd - 1) != '/')
 				{
 					*pszEnd = '/';
 					*(pszEnd + 1) = '\0';
@@ -355,11 +355,11 @@ namespace PROM
 			}
 
 		FUNCTION_END:
-			if(plc_commandparam != GNULL)
+			if(plc_commandparam != GNIL)
 				plc_commandparam->Release();
-			if(plc_file != GNULL)
+			if(plc_file != GNIL)
 				plc_file->Release();
-			if(plc_codelineprepare != GNULL && plc_codelineprepare != pNewPLC)
+			if(plc_codelineprepare != GNIL && plc_codelineprepare != pNewPLC)
 				plc_codelineprepare->Release();
 		}
 	private:

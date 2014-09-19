@@ -39,7 +39,7 @@ namespace GAIA
 			GINL const _SizeType& capacity() const{return m_use.size();}
 			GINL GAIA::GVOID destroy()
 			{
-				if(this->bind() != GNULL)
+				if(this->bind() != GNIL)
 				{
 					for(_SizeType x = 0; x < m_use.size(); ++x)
 						m_bind->release(m_use[x]);
@@ -56,7 +56,7 @@ namespace GAIA
 			{
 				if(this->size() == this->capacity())
 				{
-					if(this->bind() != GNULL)
+					if(this->bind() != GNIL)
 						this->alloc_bind();
 					else
 						this->alloc_group();
@@ -91,10 +91,10 @@ namespace GAIA
 				}
 			}
 		private:
-			GINL GAIA::GVOID init(){m_bind = GNULL;}
+			GINL GAIA::GVOID init(){m_bind = GNIL;}
 			GINL GAIA::GVOID alloc_bind()
 			{
-				GAIA_AST(m_bind != GNULL);
+				GAIA_AST(m_bind != GNIL);
 				_DataType* pNew = m_bind->alloc();
 				m_use.push_back(pNew);
 				m_free.push_back(pNew);

@@ -56,13 +56,13 @@ namespace GAIATEST
 			m.insert(x, x);
 		for(__MapType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(m.find(x) == GNULL)
+			if(m.find(x) == GNIL)
 			{
 				GTLINE2("Map find element failed!");
 				++nRet;
 				break;
 			}
-			if(static_cast<const __MapType*>(&m)->find(x) == GNULL)
+			if(static_cast<const __MapType*>(&m)->find(x) == GNIL)
 			{
 				GTLINE2("Map const find element failed!");
 				++nRet;

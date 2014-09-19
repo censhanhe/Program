@@ -62,13 +62,13 @@ namespace GAIA
 			wcex.lpfnWndProc	= WindowProc;
 			wcex.cbClsExtra		= 0;
 			wcex.cbWndExtra		= 0;
-			wcex.hInstance		= (HINSTANCE)GetModuleHandle(GNULL);
-			wcex.hIcon			= GNULL;
-			wcex.hCursor		= LoadCursor(GNULL, IDC_ARROW);
+			wcex.hInstance		= (HINSTANCE)GetModuleHandle(GNIL);
+			wcex.hIcon			= GNIL;
+			wcex.hCursor		= LoadCursor(GNIL, IDC_ARROW);
 			wcex.hbrBackground	= GRCAST(HBRUSH)(COLOR_WINDOW + 1);
-			wcex.lpszMenuName	= GNULL;
+			wcex.lpszMenuName	= GNIL;
 			wcex.lpszClassName	= szWindowClass;
-			wcex.hIconSm		= GNULL;
+			wcex.hIconSm		= GNIL;
 #if GAIA_CHARSET == GAIA_CHARSET_ANSI
 			if(RegisterClassExA(&wcex) == 0)
 #elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
@@ -101,8 +101,8 @@ namespace GAIA
 				CW_USEDEFAULT, 
 				CW_USEDEFAULT, 
 				CW_USEDEFAULT, 
-				desc.pParent != GNULL ? desc.pParent->m_hWnd : GNULL, 
-				GNULL, (HINSTANCE)GetModuleHandle(GNULL), GNULL);
+				desc.pParent != GNIL ? desc.pParent->m_hWnd : GNIL, 
+				GNIL, (HINSTANCE)GetModuleHandle(GNIL), GNIL);
 #elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 			m_hWnd = ::CreateWindowW(szWindowClass, 
 				desc.pszCaptionText, 
@@ -111,15 +111,15 @@ namespace GAIA
 				CW_USEDEFAULT, 
 				CW_USEDEFAULT, 
 				CW_USEDEFAULT, 
-				desc.pParent != GNULL ? desc.pParent->m_hWnd : GNULL, 
-				GNULL, (HINSTANCE)GetModuleHandle(GNULL), GNULL);
+				desc.pParent != GNIL ? desc.pParent->m_hWnd : GNIL, 
+				GNIL, (HINSTANCE)GetModuleHandle(GNIL), GNIL);
 #endif
-			if(m_hWnd == GNULL)
+			if(m_hWnd == GNIL)
 			{
 #if GAIA_CHARSET == GAIA_CHARSET_ANSI
-				::UnregisterClassA(szWindowClass, (HINSTANCE)GetModuleHandle(GNULL));
+				::UnregisterClassA(szWindowClass, (HINSTANCE)GetModuleHandle(GNIL));
 #elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-				::UnregisterClassW(szWindowClass, (HINSTANCE)GetModuleHandle(GNULL));
+				::UnregisterClassW(szWindowClass, (HINSTANCE)GetModuleHandle(GNIL));
 #endif
 				return GAIA::False;
 			}
@@ -129,7 +129,7 @@ namespace GAIA
 				return GAIA::False;
 			}
 			m_pszClassName = GAIA::ALGO::strnew(szWindowClass);
-			if(desc.pParent != GNULL)
+			if(desc.pParent != GNIL)
 			{
 				if(!this->SetParent(desc.pParent))
 				{
@@ -154,16 +154,16 @@ namespace GAIA
 				return GAIA::False;
 			}
 			::DestroyWindow(m_hWnd);
-			m_hWnd = GNULL;
+			m_hWnd = GNIL;
 
 #if GAIA_CHARSET == GAIA_CHARSET_ANSI
-			::UnregisterClassA(m_pszClassName, (HINSTANCE)GetModuleHandle(GNULL));
+			::UnregisterClassA(m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
 #elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-			::UnregisterClassW(m_pszClassName, (HINSTANCE)GetModuleHandle(GNULL));
+			::UnregisterClassW(m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
 #endif
 
 			GAIA_MFREE(m_pszClassName);
-			m_pszClassName = GNULL;
+			m_pszClassName = GNIL;
 
 			return GAIA::True;
 		#else
@@ -173,7 +173,7 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::IsCreated() const
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(m_hWnd != GNULL)
+			if(m_hWnd != GNIL)
 				return GAIA::True;
 			return GAIA::False;
 		#else
@@ -195,11 +195,11 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(pParent == GNULL)
+			if(pParent == GNIL)
 			{
-				if(this->GetParent() == GNULL)
+				if(this->GetParent() == GNIL)
 					return GAIA::False;
-				::SetParent(m_hWnd, GNULL);
+				::SetParent(m_hWnd, GNIL);
 				DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
 				if(m_style.bResizeAble)
 					dwStyle |= WS_THICKFRAME;
@@ -214,7 +214,7 @@ namespace GAIA
 			{
 				if(!pParent->IsCreated())
 					return GAIA::False;
-				GAIA::BL bExistParent = this->GetParent() != GNULL;
+				GAIA::BL bExistParent = this->GetParent() != GNIL;
 				::SetParent(m_hWnd, pParent->m_hWnd);
 				if(!bExistParent)
 				{
@@ -231,7 +231,7 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UI::Canvas* Canvas::GetParent() const
 		{
 			if(!this->IsCreated())
-				return GNULL;
+				return GNIL;
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			WINDOWINFO winfo;
 			winfo.cbSize = sizeof(winfo);
@@ -240,22 +240,22 @@ namespace GAIA
 			if(winfo.dwStyle & WS_CHILD)
 			{
 				HWND hParent = ::GetParent(m_hWnd);
-				if(hParent == GNULL)
-					return GNULL;
+				if(hParent == GNIL)
+					return GNIL;
 				if(hParent == GetDesktopWindow())
-					return GNULL;
+					return GNIL;
 				GAIA::UI::Canvas finder;
 				finder.m_hWnd = hParent;
 				GAIA::SYNC::AutoLock al(g_windowlistlock);
 				GAIA::CTN::Ref<GAIA::UI::Canvas> finderref(&finder);
 				GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finderref);
-				GAIA_AST(pFinded != GNULL);
-				finder.m_hWnd = GNULL;
+				GAIA_AST(pFinded != GNIL);
+				finder.m_hWnd = GNIL;
 				return *pFinded;
 			}
-			return GNULL;
+			return GNIL;
 		#else
-			return GNULL;
+			return GNIL;
 		#endif
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Show(GAIA::BL bShow)
@@ -298,7 +298,7 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(!::SetWindowPos(m_hWnd, GNULL, GSCAST(GAIA::N32)(pos.x), GSCAST(GAIA::N32)(pos.y), 0, 0, SWP_NOSIZE))
+			if(!::SetWindowPos(m_hWnd, GNIL, GSCAST(GAIA::N32)(pos.x), GSCAST(GAIA::N32)(pos.y), 0, 0, SWP_NOSIZE))
 				return GAIA::False;
 			return GAIA::True;
 		#else
@@ -339,7 +339,7 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(!::SetWindowPos(m_hWnd, GNULL, 0, 0, size.x, size.y, SWP_NOMOVE))
+			if(!::SetWindowPos(m_hWnd, GNIL, 0, 0, size.x, size.y, SWP_NOMOVE))
 				return GAIA::False;
 			return GAIA::True;
 		#else
@@ -379,7 +379,7 @@ namespace GAIA
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
-			if(pszCaptionText == GNULL)
+			if(pszCaptionText == GNIL)
 				pszCaptionText = _T("");
 		#if GAIA_OS == GAIA_OS_WINDOWS
 		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
@@ -397,7 +397,7 @@ namespace GAIA
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
-			if(pszResult == GNULL)
+			if(pszResult == GNIL)
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
 		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
@@ -451,8 +451,8 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::init()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			m_hWnd = GNULL;
-			m_pszClassName = GNULL;
+			m_hWnd = GNIL;
+			m_pszClassName = GNIL;
 		#else
 		#endif
 		}
@@ -462,7 +462,7 @@ namespace GAIA
 			GAIA::SYNC::AutoLock al(g_windowlistlock);
 			GAIA::CTN::Ref<GAIA::UI::Canvas> finder(this);
 			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
-			if(pFinded != GNULL)
+			if(pFinded != GNIL)
 				return GAIA::False;
 			return g_windowlist.insert(finder);
 		#else
@@ -475,7 +475,7 @@ namespace GAIA
 			GAIA::SYNC::AutoLock al(g_windowlistlock);
 			GAIA::CTN::Ref<GAIA::UI::Canvas> finder(this);
 			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
-			if(pFinded == GNULL)
+			if(pFinded == GNIL)
 				return GAIA::False;
 			return g_windowlist.erase(finder);
 		#else

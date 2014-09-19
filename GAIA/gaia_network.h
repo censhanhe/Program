@@ -78,7 +78,7 @@ namespace GAIA
 				if(!ip.FromString(psz))
 					return GAIA::False;
 				const _ParamDataType* p = GAIA::ALGO::strch(psz, ':');
-				if(p == GNULL)
+				if(p == GNIL)
 					return GAIA::False;
 				++p;
 				GAIA::ALGO::str2int(p, uPort);
@@ -158,8 +158,8 @@ namespace GAIA
 				m_h = GINVALID;
 				m_addr_self.Invalid();
 				m_conndesc.Reset();
-				m_pSender = GNULL;
-				m_pReceiver = GNULL;
+				m_pSender = GNIL;
+				m_pReceiver = GNIL;
 				m_nSendBufferSize = 1024;
 				m_nRecvBufferSize = 1024;
 				while(!m_sendque.empty())
@@ -227,7 +227,7 @@ namespace GAIA
 				m_desc.Reset();
 				m_bBegin = GAIA::False;
 				m_bStopCmd = GAIA::False;
-				m_pAcceptCallBack = GNULL;
+				m_pAcceptCallBack = GNIL;
 			}
 		private:
 			ListenDesc m_desc;
@@ -253,7 +253,7 @@ namespace GAIA
 			{
 				__HandleSetType::_datatype finder = &h;
 				GAIA::SYNC::AutoLock al(m_lock);
-				if(m_hs.find(finder) != GNULL)
+				if(m_hs.find(finder) != GNIL)
 					return GAIA::False;
 				h.Reference();
 				m_hs.insert(&h);
@@ -310,7 +310,7 @@ namespace GAIA
 			{
 				__HandleSetType::_datatype finder = &h;
 				GAIA::SYNC::AutoLock al(m_lock);
-				if(m_hs.find(finder) != GNULL)
+				if(m_hs.find(finder) != GNIL)
 					return GAIA::False;
 				h.Reference();
 				m_hs.insert(&h);

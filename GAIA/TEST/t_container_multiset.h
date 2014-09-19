@@ -67,13 +67,13 @@ namespace GAIATEST
 		__MultiSetType::__DataListType listResult;
 		for(__MultiSetType::_datatype x = 0; x < ELEMENT_SIZE; ++x)
 		{
-			if(ms.find(x) == GNULL)
+			if(ms.find(x) == GNIL)
 			{
 				GTLINE2("MultiSet find element failed!");
 				++nRet;
 				break;
 			}
-			if(static_cast<const __MultiSetType*>(&ms)->find(x) == GNULL)
+			if(static_cast<const __MultiSetType*>(&ms)->find(x) == GNIL)
 			{
 				GTLINE2("MultiSet const find element failed!");
 				++nRet;

@@ -83,7 +83,7 @@ namespace DWARFS_MISC
 					GAIA::CTN::AString strOrigin;
 					strOrigin.resize(buf.write_size());
 					GAIA::ALGO::strcpy(strOrigin.front_ptr(), buf.front_ptr(), buf.write_size());
-					GAIA::SIZE newsize = GAIA::LOCALE::m2w(strOrigin.front_ptr(), GNULL, 0, GAIA::CHARSET_TYPE_SYS);
+					GAIA::SIZE newsize = GAIA::LOCALE::m2w(strOrigin.front_ptr(), GNIL, 0, GAIA::CHARSET_TYPE_SYS);
 					if(newsize > 1)
 					{
 						m_str.resize(newsize - 1);
@@ -100,7 +100,7 @@ namespace DWARFS_MISC
 					GAIA::CTN::AString strOrigin;
 					strOrigin.resize(buf.write_size() - sizeof(GAIA::UTF8_FILEHEAD));
 					GAIA::ALGO::strcpy(strOrigin.front_ptr(), buf.front_ptr() + sizeof(GAIA::UTF8_FILEHEAD), buf.write_size() - sizeof(GAIA::UTF8_FILEHEAD));
-					GAIA::SIZE newsize = GAIA::LOCALE::m2w(strOrigin.front_ptr(), GNULL, 0, GAIA::CHARSET_TYPE_UTF8);
+					GAIA::SIZE newsize = GAIA::LOCALE::m2w(strOrigin.front_ptr(), GNIL, 0, GAIA::CHARSET_TYPE_UTF8);
 					if(newsize > 1)
 					{
 						m_str.resize(newsize - 1);
@@ -183,7 +183,7 @@ namespace DWARFS_MISC
 					#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 						file.Write(m_str.front_ptr(), m_str.size() * sizeof(__StringType::_datatype));
 					#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-						GAIA::SIZE newsize = GAIA::LOCALE::w2m(m_str, GNULL, 0, GAIA::CHARSET_TYPE_SYS);
+						GAIA::SIZE newsize = GAIA::LOCALE::w2m(m_str, GNIL, 0, GAIA::CHARSET_TYPE_SYS);
 						GAIA_AST(newsize > 0);
 						if(newsize > 1)
 						{
@@ -204,7 +204,7 @@ namespace DWARFS_MISC
 					file.Write(GAIA::UTF8_FILEHEAD, sizeof(GAIA::UTF8_FILEHEAD));
 					if(m_str.size() != 0)
 					{
-						GAIA::SIZE newsize = GAIA::LOCALE::w2m(m_str, GNULL, 0, GAIA::CHARSET_TYPE_UTF8);
+						GAIA::SIZE newsize = GAIA::LOCALE::w2m(m_str, GNIL, 0, GAIA::CHARSET_TYPE_UTF8);
 						GAIA_AST(newsize > 0);
 						if(newsize > 1)
 						{
