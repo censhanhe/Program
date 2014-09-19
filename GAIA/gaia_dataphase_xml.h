@@ -231,6 +231,11 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL const _CharType* GetLineFlag() const{return m_lineflag;}
+			GINL const _CharType* NameFamily(const _CharType* pNF, const _CharType* pConditionName, const _CharType* pConditionValue) const
+			{
+				GPCHR_NULLSTRPTR_RET(pNF, GNULL);
+				return GNULL;
+			}
 		private:
 			class Node;
 			class Attr;
