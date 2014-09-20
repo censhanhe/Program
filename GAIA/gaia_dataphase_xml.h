@@ -15,11 +15,23 @@ namespace GAIA
 			typedef XML<_CharType, _SizeType, _SizeIncreaserType> __MyType;
 			typedef const _CharType* __ConstCharPtrType;
 			typedef GAIA::CTN::Accesser<_CharType, _SizeType, _SizeIncreaserType> __AccesserType;
+			typedef GAIA::CTN::Accesser<GAIA::U8, _SizeType, _SizeIncreaserType> __BinaryAccesserType;
 			typedef GAIA::CTN::BasicString<_CharType, _SizeType> __StringType;
 		public:
 			GINL XML(){this->init();}
 			GINL ~XML(){this->Destroy();}
 			GINL GAIA::BL Load(__AccesserType& acc)
+			{
+				__BinaryAccesserType tacc = acc;
+				CHUNK_TYPE cts;
+				if(tacc.read(&cts, sizeof(cts)) != sizeof(cts))
+					return GAIA::False;
+				if(cts == CHUNK_TYPE_XML)
+					return this->LoadBinary(acc);
+				else
+					return this->LoadText(acc);
+			}
+			GINL GAIA::BL LoadText(__AccesserType& acc)
 			{
 				this->Destroy();
 
@@ -41,7 +53,7 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GINL GAIA::BL Save(__AccesserType& acc, GAIA::CHARSET_TYPE cst)
+			GINL GAIA::BL SaveText(__AccesserType& acc, GAIA::CHARSET_TYPE cst)
 			{
 				if(m_root == GNIL)
 					return GAIA::False;
@@ -64,6 +76,18 @@ namespace GAIA
 				/* Save node. */
 				if(!this->SaveNode(0, m_root, acc))
 					return GAIA::False;
+				return GAIA::True;
+			}
+			GINL GAIA::BL LoadBinary(__AccesserType& acc)
+			{
+				__BinaryAccesserType tacc = acc;
+
+				return GAIA::True;
+			}
+			GINL GAIA::BL SaveBinary(__AccesserType& acc)
+			{
+				__BinaryAccesserType tacc = acc;
+
 				return GAIA::True;
 			}
 			GINL GAIA::GVOID Destroy()

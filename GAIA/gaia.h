@@ -142,8 +142,10 @@
 #include	"gaia_datamodel.h"
 #include	"gaia_linkmodel.h"
 
-#include	"gaia_file.h"
-#include	"gaia_directory.h"
+#include	"gaia_filesystem_file.h"
+#include	"gaia_filesystem_directory.h"
+#include	"gaia_filesystem_chunkdef.h"
+
 #include	"gaia_log.h"
 
 #include	"gaia_container_accesser.h"

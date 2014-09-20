@@ -92,7 +92,7 @@ namespace GAIA
 };
 
 #ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_file_indp.h"
+#	include "gaia_filesystem_file_indp.h"
 #endif
 
 #endif

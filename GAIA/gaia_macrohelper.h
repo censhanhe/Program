@@ -133,6 +133,26 @@
 			if(GAIA::ALGO::stremp(p))\
 				return ret;}while(0)
 
+#define GPCHR_TRUE(p) do{\
+			GAIA_AST(!(p));\
+			if(p)\
+				return;}while(0)
+
+#define GPCHR_TRUE_RET(p, ret) do{\
+			GAIA_AST(!(p));\
+			if(p)\
+				return ret;}while(0)
+
+#define GPCHR_FALSE(p) do{\
+			GAIA_AST(p);\
+			if(!p)\
+				return;}while(0)
+
+#define GPCHR_FALSE_RET(p, ret) do{\
+			GAIA_AST(p);\
+			if(!p)\
+				return ret;}while(0)
+
 #define GPCHR_ZERO(p) do{\
 			GAIA_AST((p) != 0);\
 			if((p) == 0)\
@@ -141,6 +161,46 @@
 #define GPCHR_ZERO_RET(p, ret) do{\
 			GAIA_AST((p) != 0);\
 			if((p) == 0)\
+				return ret;}while(0)
+
+#define GPCHR_BELOWZERO(p) do{\
+			GAIA_AST((p) >= 0);\
+			if((p) < 0)\
+				return;}while(0)
+
+#define GPCHR_BELOWZERO_RET(p, ret) do{\
+			GAIA_AST((p) >= 0);\
+			if((p) < 0)\
+				return ret;}while(0)
+
+#define GPCHR_BELOWEQUALZERO(p) do{\
+			GAIA_AST((p) > 0);\
+			if((p) <= 0)\
+				return;}while(0)
+
+#define GPCHR_BELOWEQUALZERO_RET(p, ret) do{\
+			GAIA_AST((p) > 0);\
+			if((p) <= 0)\
+				return ret;}while(0)
+
+#define GPCHR_ABOVEZERO(p) do{\
+			GAIA_AST((p) <= 0);\
+			if((p) > 0)\
+				return;}while(0)
+
+#define GPCHR_ABOVEZERO_RET(p, ret) do{\
+			GAIA_AST((p) <= 0);\
+			if((p) > 0)\
+				return ret;}while(0)
+
+#define GPCHR_ABOVEEQUALZERO(p) do{\
+			GAIA_AST((p) < 0);\
+			if((p) >= 0)\
+				return;}while(0)
+
+#define GPCHR_ABOVEEQUALZERO_RET(p, ret) do{\
+			GAIA_AST((p) < 0);\
+			if((p) >= 0)\
 				return ret;}while(0)
 
 #endif

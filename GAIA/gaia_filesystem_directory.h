@@ -29,7 +29,7 @@ namespace GAIA
 };
 
 #ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_directory_indp.h"
+#	include "gaia_filesystem_directory_indp.h"
 #endif
 
 #endif

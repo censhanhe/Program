@@ -377,6 +377,64 @@ namespace GAIA
 			GINL GAIA::BL operator > (const __MyType& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const __MyType& src) const{return !this->operator >= (src);}
 			GINL GAIA::BL operator ! () const{return this->empty();}
+			template<typename _ParamDataType, typename _ParamSizeType, typename _ParamSizeIncreaserType>
+				GAIA::BL convert_from(const GAIA::CTN::Accesser<_ParamDataType, _ParamSizeType, _ParamSizeIncreaserType>& src)
+			{
+				GAIA_AST(&src != this);
+				m_bindtype = src.m_bindtype;
+				m_atm = src.m_atm;
+				m_p = GRCAST(_DataType*)(src.m_p);
+				m_file = src.m_file;
+				m_size = src.m_size;
+				m_offset = src.m_offset;
+				m_stride = sizeof(_DataType);
+				m_index = 0;
+				m_expandable = src.m_expandable;
+				return GAIA::True;
+			}
+			GINL _SizeType write(const GAIA::GVOID* p, const _SizeType& size)
+			{
+				GPCHR_NULLSTRPTR_RET(p, GINVALID);
+				GPCHR_BELOWEQUALZERO_RET(size, GINVALID);
+				GPCHR_TRUE_RET(this->stride() != sizeof(_DataType), GINVALID);
+				GPCHR_FALSE_RET(size % this->stride() == 0, GINVALID);
+				switch(m_bindtype)
+				{
+				case BIND_TYPE_MEM:
+					{
+					}
+					break;
+				case BIND_TYPE_FILE:
+					{
+					}
+					break;
+				default:
+					return GINVALID;
+				}
+				return GINVALID;
+			}
+			GINL _SizeType read(GAIA::GVOID* p, const _SizeType& size)
+			{
+				GPCHR_NULLSTRPTR_RET(p, GINVALID);
+				GPCHR_BELOWEQUALZERO_RET(size, GINVALID);
+				GPCHR_TRUE_RET(this->stride() != sizeof(_DataType), GINVALID);
+				GPCHR_FALSE_RET(size % this->stride() == 0, GINVALID);
+				switch(m_bindtype)
+				{
+				case BIND_TYPE_MEM:
+					{
+					}
+					break;
+				case BIND_TYPE_FILE:
+					{
+						
+					}
+					break;
+				default:
+					return GINVALID;
+				}
+				return GINVALID;
+			}
 		private:
 			GINL GAIA::GVOID init()
 			{

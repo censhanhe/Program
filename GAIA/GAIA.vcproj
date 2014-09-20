@@ -465,15 +465,15 @@
 						Name="FILE"
 						>
 						<File
-							RelativePath=".\gaia_file.h"
+							RelativePath=".\gaia_filesystem_file.h"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_file_indp.cpp"
+							RelativePath=".\gaia_filesystem_file_indp.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_file_indp.h"
+							RelativePath=".\gaia_filesystem_file_indp.h"
 							>
 						</File>
 					</Filter>
@@ -481,15 +481,23 @@
 						Name="DIRECTORY"
 						>
 						<File
-							RelativePath=".\gaia_directory.h"
+							RelativePath=".\gaia_filesystem_directory.h"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_directory_indp.cpp"
+							RelativePath=".\gaia_filesystem_directory_indp.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_directory_indp.h"
+							RelativePath=".\gaia_filesystem_directory_indp.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="CHUNK"
+						>
+						<File
+							RelativePath=".\gaia_filesystem_chunkdef.h"
 							>
 						</File>
 					</Filter>
