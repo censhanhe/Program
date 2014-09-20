@@ -262,6 +262,18 @@ namespace GAIA
 				--m_index;
 				return *this;
 			}
+			GINL __MyType operator ++ (GAIA::N32)
+			{
+				__MyType ret = *this;
+				++(*this);
+				return ret;
+			}
+			GINL __MyType operator -- (GAIA::N32)
+			{
+				__MyType ret = *this;
+				--(*this);
+				return ret;
+			}
 			GINL __MyType& operator += (const _SizeType& size)
 			{
 				m_index += size;
@@ -493,19 +505,6 @@ namespace GAIA
 					return GAIA::False;
 				}
 				return GAIA::True;
-			}
-		private:
-			GINL __MyType& operator ++ (GAIA::N32)
-			{
-				GAIA_AST(GAIA::ALWAYSFALSE);
-				++(*this);
-				return *this;
-			}
-			GINL __MyType& operator -- (GAIA::N32)
-			{
-				GAIA_AST(GAIA::ALWAYSFALSE);
-				--(*this);
-				return *this;
 			}
 		private:
 			BIND_TYPE m_bindtype;

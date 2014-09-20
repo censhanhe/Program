@@ -190,6 +190,24 @@ namespace GAIATEST
 				GAIA_MFREE(acc.bindmem());
 				acc.destroy();
 			}
+
+			///* Expandable accesser bubble sort test. */
+			//{
+			//	typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+			//	__AccType acc;
+			//	acc.expandable(GAIA::True);
+			//	acc.bindmem(GNIL, 0, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+			//	for(GAIA::SIZE x = 0; x < 100; ++x)
+			//		acc[x] = GAIA::MATH::xrandom();
+			//	GAIA::ALGO::bsort(acc, acc + 99);
+			//	if(!GAIA::ALGO::issorted(acc, acc + 99))
+			//	{
+			//		GTLINE2("File accesser bubble sort test failed!");
+			//		++nRet;
+			//	}
+			//	GAIA_MFREE(acc.bindmem());
+			//	acc.destroy();
+			//}
 		}
 
 		/* File based accesser test. */
@@ -390,6 +408,22 @@ namespace GAIATEST
 				}
 				delete acc.bindfile();
 			}
+
+			///* Expandable accesser bubble sort test. */
+			//{
+			//	typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+			//	__AccType acc;
+			//	acc.expandable(GAIA::True);
+			//	acc.bindfile(GNIL, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+			//	for(GAIA::SIZE x = 0; x < 100; ++x)
+			//		acc[x] = GAIA::MATH::xrandom();
+			//	GAIA::ALGO::bsort(acc, acc + 99);
+			//	if(!GAIA::ALGO::issorted(acc, acc + 99))
+			//	{
+			//		GTLINE2("File accesser bubble sort test failed!");
+			//		++nRet;
+			//	}
+			//}
 		}
 
 		return nRet;
