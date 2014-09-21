@@ -225,7 +225,7 @@ namespace DWARFS_FSHA
 				return GAIA::False;
 
 			/* Construct serializer. */
-			GAIA::FILESYSTEM::File fileiofile;
+			GAIA::FSYS::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
@@ -317,7 +317,7 @@ namespace DWARFS_FSHA
 				return GAIA::False;
 
 			/* Construct serializer. */
-			GAIA::FILESYSTEM::File fileiofile;
+			GAIA::FSYS::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
@@ -368,8 +368,8 @@ namespace DWARFS_FSHA
 			if(GAIA::ALGO::stremp(pszPathName))
 				return 0;
 			m_crcbuilder.clear();
-			GAIA::FILESYSTEM::File file;
-			if(!file.Open(pszPathName, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+			GAIA::FSYS::File file;
+			if(!file.Open(pszPathName, GAIA::FSYS::File::OPEN_TYPE_READ))
 				return 0;
 			static const GAIA::U32 CRCFILEREADPATCHSIZE = 1024 * 1024;
 			GAIA::U8* pBuffer = new GAIA::U8[CRCFILEREADPATCHSIZE];
@@ -382,9 +382,9 @@ namespace DWARFS_FSHA
 		GAIA::BL Build(const GAIA::TCH* pszPathName, const GAIA::TCH* pszFilter)
 		{
 			FILE_LIST_LOG("Collision destination path files...");
-			GAIA::FILESYSTEM::Directory::__ResultTree restree;
+			GAIA::FSYS::Directory::__ResultTree restree;
 			{
-				GAIA::FILESYSTEM::Directory dir;
+				GAIA::FSYS::Directory dir;
 				if(!dir.CollectFile(pszPathName, pszFilter, GAIA::True, restree))
 					return GAIA::False;
 			}
@@ -399,7 +399,7 @@ namespace DWARFS_FSHA
 					m_namespool.release(GSCAST(__NameMapPool::_datatype*)(*it));
 				m_names.clear();
 				m_names.reserve(restree.catagory_count(restree.root()));
-				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
+				GAIA::FSYS::Directory::__ResultTree::it it = restree.front_it();
 				FNAMEPARTLISTTYPE::_sizetype nRootPart = listNamePart.size();
 				for(; !it.empty(); ++it)
 				{
@@ -420,11 +420,11 @@ namespace DWARFS_FSHA
 			FILE_LIST_LOG("Generate file trie tree...");
 			{
 				m_ftree.clear();
-				GAIA::FILESYSTEM::Directory::__ResultTree::it it = restree.front_it();
+				GAIA::FSYS::Directory::__ResultTree::it it = restree.front_it();
 				typedef GAIA::CTN::Vector<TrieNode> __TempInsertVector;
 				__TempInsertVector listInsert;
 				FILEID id = 0;
-				typedef GAIA::CTN::Vector<GAIA::FILESYSTEM::Directory::__ResultTree::_datatype*> __TempPartComineVector;
+				typedef GAIA::CTN::Vector<GAIA::FSYS::Directory::__ResultTree::_datatype*> __TempPartComineVector;
 				__TempPartComineVector listTemp;
 				for(; !it.empty(); ++it)
 				{
@@ -432,7 +432,7 @@ namespace DWARFS_FSHA
 					{
 						listInsert.clear();
 						listTemp.clear();
-						GAIA::FILESYSTEM::Directory::__ResultTree::it itt = it;
+						GAIA::FSYS::Directory::__ResultTree::it itt = it;
 						while(!itt.empty())
 						{
 							listTemp.push_back(&*itt);
@@ -902,7 +902,7 @@ namespace DWARFS_FSHA
 				return GAIA::False;
 
 			/* Construct serializer. */
-			GAIA::FILESYSTEM::File fileiofile;
+			GAIA::FSYS::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
@@ -976,7 +976,7 @@ namespace DWARFS_FSHA
 				return GAIA::False;
 
 			/* Construct serializer. */
-			GAIA::FILESYSTEM::File fileiofile;
+			GAIA::FSYS::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
@@ -1416,7 +1416,7 @@ namespace DWARFS_FSHA
 				return GAIA::False;
 
 			/* Construct serializer. */
-			GAIA::FILESYSTEM::File fileiofile;
+			GAIA::FSYS::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
@@ -1468,7 +1468,7 @@ namespace DWARFS_FSHA
 				return GAIA::False;
 
 			/* Construct serializer. */
-			GAIA::FILESYSTEM::File fileiofile;
+			GAIA::FSYS::File fileiofile;
 			GAIA::FRAMEWORK::Factory* pFactory = new GAIA::FRAMEWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FRAMEWORK::CLSID_SERIALIZER, GNIL));
@@ -1596,13 +1596,13 @@ namespace DWARFS_FSHA
 			virtual GAIA::BL Open(const GAIA::TCH* pszFileName, GAIA::BL bReadOnly)
 			{
 				if(bReadOnly)
-					return m_file.Open(pszFileName, GAIA::FILESYSTEM::File::OPEN_TYPE_READ);
+					return m_file.Open(pszFileName, GAIA::FSYS::File::OPEN_TYPE_READ);
 				else
 				{
-					if(m_file.Open(pszFileName, GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
+					if(m_file.Open(pszFileName, GAIA::FSYS::File::OPEN_TYPE_WRITE))
 						return GAIA::True;
 					else
-						return m_file.Open(pszFileName, GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS);
+						return m_file.Open(pszFileName, GAIA::FSYS::File::OPEN_TYPE_WRITE | GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS);
 				}
 			}
 			virtual GAIA::BL Close(){return m_file.Close();}
@@ -1615,7 +1615,7 @@ namespace DWARFS_FSHA
 			virtual GAIA::BL Resize(GAIA::N64 size){return m_file.Resize(size);}
 			virtual GAIA::BL Flush(){return m_file.Flush();}
 		private:
-			GAIA::FILESYSTEM::File m_file;
+			GAIA::FSYS::File m_file;
 		};
 		/* File access creator. */
 		class __DWARFS_FILESHARE_API FileAccessCreator
@@ -3085,7 +3085,7 @@ namespace DWARFS_FSHA
 			{
 				if(listPart.size() == 1)
 				{
-					GAIA::FILESYSTEM::Directory dir;
+					GAIA::FSYS::Directory dir;
 					dir.Remove(m_readroot, GAIA::True);
 					dir.Create(m_readroot, GAIA::True);
 				}
@@ -3096,7 +3096,7 @@ namespace DWARFS_FSHA
 			{
 				if(listPart.size() == 1)
 				{
-					GAIA::FILESYSTEM::Directory dir;
+					GAIA::FSYS::Directory dir;
 					dir.Remove(m_writeroot, GAIA::True);
 					dir.Create(m_writeroot, GAIA::True);
 				}
@@ -3107,7 +3107,7 @@ namespace DWARFS_FSHA
 			{
 				if(listPart.size() == 1)
 				{
-					GAIA::FILESYSTEM::Directory dir;
+					GAIA::FSYS::Directory dir;
 					dir.RemoveFile(FILE_USERGROUP);
 					dir.RemoveFile(FILE_FILELIST);
 					dir.RemoveFile(FILE_BANIP);
@@ -3838,7 +3838,7 @@ namespace DWARFS_FSHA
 					m_prt << "Min file size = ." << TESTFILEMINSIZE << "\n";
 					m_prt << "Max file size = ." << TESTFILEMAXSIZE << "\n";
 					m_prt << "File count = ." << TESTFILECOUNT << "\n";
-					GAIA::FILESYSTEM::Directory dir;
+					GAIA::FSYS::Directory dir;
 					if(!dir.Create(TESTREADROOT, GAIA::False))
 						m_prt << "Create root path failed!\n";
 					GAIA::U64 uTotalFileSize = 0;
@@ -3850,8 +3850,8 @@ namespace DWARFS_FSHA
 						GAIA::TCH szFullName[MAXPATHLEN];
 						GAIA::ALGO::strcpy(szFullName, TESTREADROOT);
 						GAIA::ALGO::strcat(szFullName, szFile);
-						GAIA::FILESYSTEM::File file;
-						if(!file.Open(szFullName, GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+						GAIA::FSYS::File file;
+						if(!file.Open(szFullName, GAIA::FSYS::File::OPEN_TYPE_WRITE | GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 						{
 							m_prt << "Create file " << szFullName << " failed!\n";
 							continue;
@@ -6169,7 +6169,7 @@ namespace DWARFS_FSHA
 						GAIA::TCH szPath[MAXPATHLEN];
 						GAIA::ALGO::strcpy(szPath, szFullName);
 						GAIA::ALGO::strdropr(szPath, _T("/\\"));
-						GAIA::FILESYSTEM::Directory dir;
+						GAIA::FSYS::Directory dir;
 						if(!dir.Exist(szPath))
 						{
 							if(!dir.Create(szPath, GAIA::True))

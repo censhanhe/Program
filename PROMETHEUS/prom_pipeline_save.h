@@ -52,9 +52,9 @@ namespace PROM
 				{
 					if(!plc_file->filelist[x].bNeedSave)
 						continue;
-					GAIA::FILESYSTEM::File file;
+					GAIA::FSYS::File file;
 					if(file.Open(plc_file->filelist[x].name,
-						GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
+						GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE))
 					{
 						if(plc_codeline->file_codelines_list[x].lines.save(file))
 						{

@@ -70,8 +70,8 @@ namespace PROM
 				tempfile.name = listFile[x];
 				pRet->filelist.push_back(tempfile);
 
-				GAIA::FILESYSTEM::File file;
-				if(!file.Open(tempfile.name, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+				GAIA::FSYS::File file;
+				if(!file.Open(tempfile.name, GAIA::FSYS::File::OPEN_TYPE_READ))
 					PROM_RAISE_FILEERROR(501, tempfile.name);
 			}
 			__FileName strExt;
@@ -81,21 +81,21 @@ namespace PROM
 					strExt += _T("|");
 				strExt += listExt[x];
 			}
-			GAIA::FILESYSTEM::Directory::__ResultTree restree;
+			GAIA::FSYS::Directory::__ResultTree restree;
 			__PathListType listTempPathPart;
 			PLC_File::File tempfile;
 			for(__PathListType::_sizetype x = 0; x < listPath.size(); ++x)
 			{
-				GAIA::FILESYSTEM::Directory dir;
+				GAIA::FSYS::Directory dir;
 				restree.clear();
 				if(dir.CollectFile(listPath[x], strExt, GAIA::True, restree))
 				{
-					GAIA::FILESYSTEM::Directory::__ResultTree::const_it it = restree.const_front_it();
+					GAIA::FSYS::Directory::__ResultTree::const_it it = restree.const_front_it();
 					for(; !it.empty(); ++it)
 					{
 						if(restree.leaf(it))
 						{
-							GAIA::FILESYSTEM::Directory::__ResultTree::const_it tempit = it;
+							GAIA::FSYS::Directory::__ResultTree::const_it tempit = it;
 							listTempPathPart.clear();
 							tempfile.name.clear();
 							for(; !tempit.empty(); tempit = restree.parent_it(tempit))

@@ -18,7 +18,7 @@ using namespace GAIA::PROCESS;
 using namespace GAIA::DATAMODEL;
 using namespace GAIA::LINKMODEL;
 using namespace GAIA::MVC;
-using namespace GAIA::FILESYSTEM;
+using namespace GAIA::FSYS;
 using namespace GAIA::DATAPHASE;
 using namespace GAIA::NETWORK;
 using namespace GAIA::FRAMEWORK;

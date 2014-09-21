@@ -5,7 +5,7 @@
 
 namespace GAIA
 {
-	namespace FILESYSTEM
+	namespace FSYS
 	{
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Open(const GAIA::TCH* filekey, const GAIA::UM& opentype)
 		{

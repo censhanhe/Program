@@ -3,7 +3,7 @@
 
 namespace GAIATEST
 {
-	GINL GAIA::N32 t_tree(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_tree(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 		static const GAIA::N32 ELEMENT_COUNT = 10;

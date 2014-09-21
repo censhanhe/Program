@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace FILESYSTEM
+	namespace FSYS
 	{
 		class Directory : public GAIA::Entity
 		{

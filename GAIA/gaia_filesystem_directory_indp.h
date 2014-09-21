@@ -16,7 +16,7 @@
 
 namespace GAIA
 {
-	namespace FILESYSTEM
+	namespace FSYS
 	{
 	#if GAIA_OS == GAIA_OS_WINDOWS
 		static const GAIA::U32 MAXPL = MAX_PATH;

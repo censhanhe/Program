@@ -3,7 +3,7 @@
 
 namespace GAIATEST
 {
-	GINL GAIA::N32 t_dataphase_xml(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_dataphase_xml(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -326,11 +326,11 @@ namespace GAIATEST
 			++nRet;
 		}
 
-		GAIA::FILESYSTEM::File xmlfile;
+		GAIA::FSYS::File xmlfile;
 		if(!xmlfile.Open(_T("../TESTRES/xmlfile.xml"), 
-			GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
-			GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
-			GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+			GAIA::FSYS::File::OPEN_TYPE_READ |
+			GAIA::FSYS::File::OPEN_TYPE_WRITE |
+			GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 		{
 			GTLINE2("Cannot open a file for save the xml.");
 			++nRet;
@@ -357,7 +357,7 @@ namespace GAIATEST
 		xmlfile.Close();
 
 		if(!xmlfile.Open(_T("../TESTRES/xmlfile.xml"),
-			GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+			GAIA::FSYS::File::OPEN_TYPE_READ))
 		{
 			GTLINE2("Cannot open a file for load the xml.");
 			++nRet;

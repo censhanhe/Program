@@ -13,7 +13,7 @@ namespace DWARFS_MISC
 		GINL TextFile(){this->init();}
 		GINL TextFile(const TextFile& src){this->init(); this->operator = (src);}
 		GINL ~TextFile(){}
-		GINL GAIA::BL load(GAIA::FILESYSTEM::FileBase& file)
+		GINL GAIA::BL load(GAIA::FSYS::FileBase& file)
 		{
 			this->clear();
 			__BufferType buf;
@@ -152,7 +152,7 @@ namespace DWARFS_MISC
 			}
 			return GAIA::True;
 		}
-		GINL GAIA::BL save(GAIA::FILESYSTEM::FileBase& file)
+		GINL GAIA::BL save(GAIA::FSYS::FileBase& file)
 		{
 			GAIA_AST(m_charset_type != GAIA::CHARSET_TYPE_INVALID);
 			if(m_charset_type == GAIA::CHARSET_TYPE_INVALID)

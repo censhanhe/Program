@@ -3,7 +3,7 @@
 
 namespace GAIATEST
 {
-	GINL GAIA::N32 t_math_cookies_aabr(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_math_cookies_aabr(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 

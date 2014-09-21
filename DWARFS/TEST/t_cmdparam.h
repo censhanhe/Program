@@ -3,7 +3,7 @@
 
 namespace DWARFSTEST
 {
-	GINL GAIA::N32 t_cmdparam(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_cmdparam(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 

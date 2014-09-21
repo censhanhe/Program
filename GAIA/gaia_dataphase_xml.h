@@ -88,12 +88,12 @@ namespace GAIA
 				__BinaryAccesserType tacc = acc;
 
 				/* Load chunk head. */
-				GAIA::FILESYSTEM::CHUNK_TYPE ct;
+				GAIA::FSYS::CHUNK_TYPE ct;
 				if(!tacc.read(ct))
 					return GAIA::False;
-				if(ct != GAIA::FILESYSTEM::CHUNK_TYPE_XML)
+				if(ct != GAIA::FSYS::CHUNK_TYPE_XML)
 					return GAIA::False;
-				GAIA::FILESYSTEM::CHUNK_SIZE cs;
+				GAIA::FSYS::CHUNK_SIZE cs;
 				if(!tacc.read(cs))
 					return GAIA::False;
 				GAIA_AST(cs != GINVALID);
@@ -136,9 +136,9 @@ namespace GAIA
 				__BinaryAccesserType tacc = acc;
 
 				/* Save chunk head. */
-				if(!tacc.write(GAIA::FILESYSTEM::CHUNK_TYPE_XML))
+				if(!tacc.write(GAIA::FSYS::CHUNK_TYPE_XML))
 					return GAIA::False;
-				GAIA::FILESYSTEM::CHUNK_SIZE chunk_size = GINVALID;
+				GAIA::FSYS::CHUNK_SIZE chunk_size = GINVALID;
 				_SizeType chunk_size_index = tacc.index();
 				if(!tacc.write(chunk_size))
 					return GAIA::False;
@@ -185,7 +185,7 @@ namespace GAIA
 				}
 
 				/* Write chunk size. */
-				chunk_size = GSCAST(GAIA::FILESYSTEM::CHUNK_SIZE)(tacc.index());
+				chunk_size = GSCAST(GAIA::FSYS::CHUNK_SIZE)(tacc.index());
 				tacc.index(chunk_size_index);
 				if(!tacc.write(chunk_size))
 					return GAIA::False;

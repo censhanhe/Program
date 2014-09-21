@@ -205,8 +205,8 @@ namespace PROM
 							{
 								if(GAIA::ALGO::strcmp(pszParam0, pPL->GetName()) == 0)
 								{
-									GAIA::FILESYSTEM::File ofile;
-									if(ofile.Open(pszParam1, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
+									GAIA::FSYS::File ofile;
+									if(ofile.Open(pszParam1, GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE))
 									{
 										if(pPL->Output(pPLC, &ofile, prt))
 											prt << "\t\tOutput " << pPL->GetName() << " successfully!\n";
@@ -288,7 +288,7 @@ namespace PROM
 			}
 			if(bMatch)
 			{
-				GAIA::TCH szPath[GAIA::FILESYSTEM::MAXPL];
+				GAIA::TCH szPath[GAIA::FSYS::MAXPL];
 				GAIA::ALGO::strcpy(szPath, pszExportPath);
 				GAIA::TCH* pszEnd = GAIA::ALGO::strend(szPath);
 				if(pszEnd != GNIL && *(pszEnd - 1) != '\\' && *(pszEnd - 1) != '/')
@@ -296,7 +296,7 @@ namespace PROM
 					*pszEnd = '/';
 					*(pszEnd + 1) = '\0';
 				}
-				GAIA::FILESYSTEM::Directory dir;
+				GAIA::FSYS::Directory dir;
 				if(dir.Exist(szPath) || dir.Create(szPath, GAIA::True))
 				{
 					for(GAIA::SIZE x = 0; x < plc_codelineprepare->file_codelines_list.size(); ++x)
@@ -315,11 +315,11 @@ namespace PROM
 						fname.replace(_T(":\\"), _T("_disk\\"));
 						fname.replace(_T(":/"), _T("_disk/"));
 
-						GAIA::TCH szFinal[GAIA::FILESYSTEM::MAXPL];
+						GAIA::TCH szFinal[GAIA::FSYS::MAXPL];
 						GAIA::ALGO::strcpy(szFinal, szPath);
 						GAIA::ALGO::strcat(szFinal, fname.front_ptr());
 
-						GAIA::TCH szFinalPath[GAIA::FILESYSTEM::MAXPL];
+						GAIA::TCH szFinalPath[GAIA::FSYS::MAXPL];
 						GAIA::ALGO::strcpy(szFinalPath, szFinal);
 						GAIA::ALGO::strpath(szFinalPath);
 
@@ -329,8 +329,8 @@ namespace PROM
 							break;
 						}
 
-						GAIA::FILESYSTEM::File file;
-						if(!file.Open(szFinal, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
+						GAIA::FSYS::File file;
+						if(!file.Open(szFinal, GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE))
 						{
 							PROM_RAISE_FILEERROR(503, szFinal);
 							break;

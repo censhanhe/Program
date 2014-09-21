@@ -3,7 +3,7 @@
 
 namespace GAIATEST
 {
-	GINL GAIA::N32 t_algorithm_set(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_algorithm_set(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 

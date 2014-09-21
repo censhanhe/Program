@@ -3,7 +3,7 @@
 
 namespace GAIATEST
 {
-	GINL GAIA::N32 t_avltree(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_avltree(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 

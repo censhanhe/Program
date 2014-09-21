@@ -3,15 +3,15 @@
 
 namespace DWARFSTEST
 {
-	GINL GAIA::N32 t_textfile(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_textfile(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 
-		GAIA::FILESYSTEM::File textfileori;
+		GAIA::FSYS::File textfileori;
 		DWARFS_MISC::TextFile textfile;
 
 		/* Ansi file test. */
-		if(!textfileori.Open(_T("../TESTRES/ansi.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+		if(!textfileori.Open(_T("../TESTRES/ansi.cpp"), GAIA::FSYS::File::OPEN_TYPE_READ))
 		{
 			GTLINE2("Open ansi.cpp failed!");
 			++nRet;
@@ -26,7 +26,7 @@ namespace DWARFSTEST
 			GTLINE2("File ansi charset error!");
 			++nRet;
 		}
-		if(!textfileori.Open(_T("../TESTRES/ansi.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+		if(!textfileori.Open(_T("../TESTRES/ansi.cpp"), GAIA::FSYS::File::OPEN_TYPE_WRITE | GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 		{
 			GTLINE2("Open ansi.cpp failed!");
 			++nRet;
@@ -39,7 +39,7 @@ namespace DWARFSTEST
 		textfile.clear();
 
 		/* Sys file test. */
-		if(!textfileori.Open(_T("../TESTRES/sys.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+		if(!textfileori.Open(_T("../TESTRES/sys.cpp"), GAIA::FSYS::File::OPEN_TYPE_READ))
 		{
 			GTLINE2("Open sys.cpp failed!");
 			++nRet;
@@ -54,7 +54,7 @@ namespace DWARFSTEST
 			GTLINE2("File sys charset error!");
 			++nRet;
 		}
-		if(!textfileori.Open(_T("../TESTRES/sys.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+		if(!textfileori.Open(_T("../TESTRES/sys.cpp"), GAIA::FSYS::File::OPEN_TYPE_WRITE | GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 		{
 			GTLINE2("Open sys.cpp failed!");
 			++nRet;
@@ -67,7 +67,7 @@ namespace DWARFSTEST
 		textfile.clear();
 
 		/* UTF8 file test. */
-		if(!textfileori.Open(_T("../TESTRES/utf8.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+		if(!textfileori.Open(_T("../TESTRES/utf8.cpp"), GAIA::FSYS::File::OPEN_TYPE_READ))
 		{
 			GTLINE2("Open utf8.cpp failed!");
 			++nRet;
@@ -82,7 +82,7 @@ namespace DWARFSTEST
 			GTLINE2("File utf8 charset error!");
 			++nRet;
 		}
-		if(!textfileori.Open(_T("../TESTRES/utf8.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+		if(!textfileori.Open(_T("../TESTRES/utf8.cpp"), GAIA::FSYS::File::OPEN_TYPE_WRITE | GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 		{
 			GTLINE2("Open utf8.cpp failed!");
 			++nRet;
@@ -95,7 +95,7 @@ namespace DWARFSTEST
 		textfile.clear();
 
 		/* utf16le file test. */
-		if(!textfileori.Open(_T("../TESTRES/utf16le.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+		if(!textfileori.Open(_T("../TESTRES/utf16le.cpp"), GAIA::FSYS::File::OPEN_TYPE_READ))
 		{
 			GTLINE2("Open utf16le.cpp failed!");
 			++nRet;
@@ -110,7 +110,7 @@ namespace DWARFSTEST
 			GTLINE2("File utf16le charset error!");
 			++nRet;
 		}
-		if(!textfileori.Open(_T("../TESTRES/utf16le.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+		if(!textfileori.Open(_T("../TESTRES/utf16le.cpp"), GAIA::FSYS::File::OPEN_TYPE_WRITE | GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 		{
 			GTLINE2("Open utf16le.cpp failed!");
 			++nRet;
@@ -123,7 +123,7 @@ namespace DWARFSTEST
 		textfile.clear();
 
 		/* utf16be file test. */
-		if(!textfileori.Open(_T("../TESTRES/utf16be.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+		if(!textfileori.Open(_T("../TESTRES/utf16be.cpp"), GAIA::FSYS::File::OPEN_TYPE_READ))
 		{
 			GTLINE2("Open utf16be.cpp failed!");
 			++nRet;
@@ -138,7 +138,7 @@ namespace DWARFSTEST
 			GTLINE2("File utf16be charset error!");
 			++nRet;
 		}
-		if(!textfileori.Open(_T("../TESTRES/utf16be.cpp"), GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+		if(!textfileori.Open(_T("../TESTRES/utf16be.cpp"), GAIA::FSYS::File::OPEN_TYPE_WRITE | GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 		{
 			GTLINE2("Open utf16be.cpp failed!");
 			++nRet;

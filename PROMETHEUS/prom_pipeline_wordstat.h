@@ -148,7 +148,7 @@ namespace PROM
 				plc_codeline->Release();
 			return pRet;
 		}
-		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 		{
 			/* Parameter check up. */
 			GAIA_AST(pPLC != GNIL);

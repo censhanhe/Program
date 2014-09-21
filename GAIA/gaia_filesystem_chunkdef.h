@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace FILESYSTEM
+	namespace FSYS
 	{
 		typedef GAIA::U32 CHUNK_TYPE;
 		typedef GAIA::U64 CHUNK_SIZE;

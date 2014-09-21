@@ -237,8 +237,8 @@ namespace DWARFS_MISC
 			for(GAIA::SIZE x = 0; x < m_attachs.size(); ++x)
 			{
 				const __FileNameStringType& strFile = m_attachs[x];
-				GAIA::FILESYSTEM::File file;
-				if(!file.Open(strFile, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+				GAIA::FSYS::File file;
+				if(!file.Open(strFile, GAIA::FSYS::File::OPEN_TYPE_READ))
 					continue;
 				GAIA::N64 nSize = file.Size();
 				if(nSize == 0 || nSize == GINVALID)
@@ -254,8 +254,8 @@ namespace DWARFS_MISC
 				attach += pFileName;
 				attach += "\"\r\n\r\n";
 			#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-				__CharType szFileName[GAIA::FILESYSTEM::MAXPL];
-				GAIA::LOCALE::w2m(pFileName, szFileName, GAIA::FILESYSTEM::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+				__CharType szFileName[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pFileName, szFileName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
 				__CharsType attach = "--INVT\r\nContent-Type: application/octet-stream;\r\n name=\"";
 				attach += szFileName;
 				attach += "\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n filename=\"";

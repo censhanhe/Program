@@ -3,7 +3,7 @@
 
 namespace GAIATEST
 {
-	GINL GAIA::N32 t_math_arithmatic_random(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_math_arithmatic_random(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		static const GAIA::SIZE SAMPLE_COUNT = 100;
 

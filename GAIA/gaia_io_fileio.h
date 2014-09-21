@@ -17,7 +17,7 @@ namespace GAIA
 					return GAIA::False;
 				if(pParameter == GNIL)
 					return GAIA::False;
-				m_file = GSCAST(GAIA::FILESYSTEM::FileBase*)(pParameter);
+				m_file = GSCAST(GAIA::FSYS::FileBase*)(pParameter);
 				m_bBegin = GAIA::True;
 				return GAIA::True;
 			}
@@ -39,14 +39,14 @@ namespace GAIA
 					return GAIA::False;
 				if(uTypeMask & GAIA::IO::IO::IO_TYPE_READ)
 				{
-					GAIA::BL bRet = m_file->Open(pszIOName, GAIA::FILESYSTEM::File::OPEN_TYPE_READ);
+					GAIA::BL bRet = m_file->Open(pszIOName, GAIA::FSYS::File::OPEN_TYPE_READ);
 					if(bRet)
 						m_uTypeMask = uTypeMask;
 					return bRet;
 				}
 				else if(uTypeMask & GAIA::IO::IO::IO_TYPE_WRITE)
 				{
-					GAIA::BL bRet = m_file->Open(pszIOName, GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE | GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS);
+					GAIA::BL bRet = m_file->Open(pszIOName, GAIA::FSYS::File::OPEN_TYPE_WRITE | GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS);
 					if(bRet)
 						m_uTypeMask = uTypeMask;
 					return bRet;
@@ -82,7 +82,7 @@ namespace GAIA
 		private:
 			GAIA::U8 m_bBegin : 1;
 			GAIA::UM m_uTypeMask;
-			GAIA::FILESYSTEM::FileBase* m_file;
+			GAIA::FSYS::FileBase* m_file;
 		};
 	};
 };

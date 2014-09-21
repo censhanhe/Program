@@ -154,19 +154,19 @@ namespace GAIA
 				m_atm = atm;
 				return GAIA::True;
 			}
-			GINL GAIA::BL bindfile(GAIA::FILESYSTEM::FileBase* pFile, GAIA::UM atm)
+			GINL GAIA::BL bindfile(GAIA::FSYS::FileBase* pFile, GAIA::UM atm)
 			{
 				if(pFile == GNIL)
 				{
 					GAIA_AST(atm | ACCESS_TYPE_WRITE);
 					this->expandable(GAIA::True);
-					pFile = new GAIA::FILESYSTEM::File;
+					pFile = new GAIA::FSYS::File;
 					GAIA::UM opentype = 0;
 					if(atm & ACCESS_TYPE_READ)
-						opentype |= GAIA::FILESYSTEM::File::OPEN_TYPE_READ;
+						opentype |= GAIA::FSYS::File::OPEN_TYPE_READ;
 					if(atm & ACCESS_TYPE_WRITE)
-						opentype |= GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE;
-					opentype |= GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS;
+						opentype |= GAIA::FSYS::File::OPEN_TYPE_WRITE;
+					opentype |= GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS;
 					GAIA::MATH::RID128 rid128;
 					rid128.uuid();
 					GAIA::TCH szTempFileName[37];
@@ -189,7 +189,7 @@ namespace GAIA
 			GINL GAIA::UM access_type_mask() const{return m_atm;}
 			GINL GAIA::BL isbinded() const{return m_bindtype != BIND_TYPE_INVALID;}
 			GINL _DataType* bindmem() const{return m_p;}
-			GINL GAIA::FILESYSTEM::FileBase* bindfile() const{return m_file;}
+			GINL GAIA::FSYS::FileBase* bindfile() const{return m_file;}
 			GINL GAIA::BL empty() const{if(this->expandable() && m_index >= 0) return GAIA::False; return !this->is_valid_index(m_index);}
 			GINL GAIA::GVOID destroy()
 			{
@@ -670,7 +670,7 @@ namespace GAIA
 			BIND_TYPE m_bindtype;
 			GAIA::UM m_atm; // atm means access type mask.
 			_DataType* m_p;
-			GAIA::FILESYSTEM::FileBase* m_file;
+			GAIA::FSYS::FileBase* m_file;
 			_SizeType m_size;
 			_SizeType m_offset;
 			_SizeType m_stride;

@@ -73,7 +73,7 @@ namespace PROM
 				plc_codelineprepare->Release();
 			return pRet;
 		}
-		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FILESYSTEM::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
 		{
 			/* Parameter check up. */
 			GAIA_AST(pPLC != GNIL);
@@ -132,7 +132,7 @@ namespace PROM
 		GINL GAIA::GVOID OutputParentRelation(
 			PLC_FileStructure* plc_filestructure,
 			PLC_FileStructure::Node& node,
-			GAIA::FILESYSTEM::FileBase* pFile,
+			GAIA::FSYS::FileBase* pFile,
 			GAIA::PRINT::PrintBase& prt,
 			GAIA::SIZE depth)
 		{
@@ -156,7 +156,7 @@ namespace PROM
 		GINL GAIA::GVOID OutputChildRelation(
 			PLC_FileStructure* plc_filestructure,
 			PLC_FileStructure::Node& node,
-			GAIA::FILESYSTEM::FileBase* pFile,
+			GAIA::FSYS::FileBase* pFile,
 			GAIA::PRINT::PrintBase& prt,
 			GAIA::SIZE depth)
 		{
@@ -177,7 +177,7 @@ namespace PROM
 					this->OutputChildRelation(plc_filestructure, *pChildNode, pFile, prt, depth + 1);
 			}
 		}
-		GINL GAIA::GVOID OutputDepth(GAIA::PRINT::PrintBase& prt, GAIA::FILESYSTEM::FileBase* pFile, GAIA::SIZE depth)
+		GINL GAIA::GVOID OutputDepth(GAIA::PRINT::PrintBase& prt, GAIA::FSYS::FileBase* pFile, GAIA::SIZE depth)
 		{
 			for(GAIA::SIZE x = 0; x < depth; ++x)
 			{

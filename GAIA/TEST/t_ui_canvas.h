@@ -85,7 +85,7 @@ namespace GAIATEST
 		GAIA::BL m_bResult;
 	};
 
-	GINL GAIA::N32 t_ui_canvas(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_ui_canvas(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 

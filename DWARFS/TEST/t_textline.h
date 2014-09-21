@@ -3,7 +3,7 @@
 
 namespace DWARFSTEST
 {
-	GINL GAIA::N32 t_textline(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_textline(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -17,8 +17,8 @@ int main(int argc, char* argv[])\r\n\
 }");
 		static const GAIA::TCH TESTFILENAME[] = _T("textline.txt");
 		static const GAIA::TCH TESTFILENAMEDST[] = _T("textline1.txt");
-		GAIA::FILESYSTEM::File tfile;
-		if(!tfile.Open(TESTFILENAME, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE))
+		GAIA::FSYS::File tfile;
+		if(!tfile.Open(TESTFILENAME, GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE))
 		{
 			GTLINE2("Create textline source file failed!");
 			++nRet;
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])\r\n\
 			GTLINE2("New textline's size not zero!");
 			++nRet;
 		}
-		if(!tfile.Open(TESTFILENAME, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+		if(!tfile.Open(TESTFILENAME, GAIA::FSYS::File::OPEN_TYPE_READ))
 		{
 			GTLINE2("Open textline source file failed!");
 			++nRet;
@@ -73,14 +73,14 @@ int main(int argc, char* argv[])\r\n\
 		const GAIA::TCH* szNew[] = {_T("// TEST COMPLETE!\r\n"), _T("// END.\r\n")};
 		tl.insert_lines(7, (const GAIA::TCH**)&szNew, 2);
 		tl.erase_lines(0, 1);
-		tfile.Open(TESTFILENAMEDST, GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS | GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE);
+		tfile.Open(TESTFILENAMEDST, GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE);
 		if(!tl.save(tfile))
 		{
 			GTLINE2("TextLine save failed!");
 			++nRet;
 		}
 		tfile.Close();
-		GAIA::FILESYSTEM::Directory dir;
+		GAIA::FSYS::Directory dir;
 		dir.RemoveFile(TESTFILENAME);
 		dir.RemoveFile(TESTFILENAMEDST);
 

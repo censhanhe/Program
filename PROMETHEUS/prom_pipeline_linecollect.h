@@ -26,8 +26,8 @@ namespace PROM
 			GAIA::SIZE uTotalLineCount = 0;
 			for(PLC_File::__FileList::_sizetype x = 0; x < plc_file->filelist.size(); ++x)
 			{
-				GAIA::FILESYSTEM::File file;
-				if(!file.Open(plc_file->filelist[x].name, GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+				GAIA::FSYS::File file;
+				if(!file.Open(plc_file->filelist[x].name, GAIA::FSYS::File::OPEN_TYPE_READ))
 				{
 					PROM_RAISE_FILEERROR(502, plc_file->filelist[x].name);
 					continue;

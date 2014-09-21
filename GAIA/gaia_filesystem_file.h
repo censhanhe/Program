@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace FILESYSTEM
+	namespace FSYS
 	{
 		class FileBase : public GAIA::Entity
 		{

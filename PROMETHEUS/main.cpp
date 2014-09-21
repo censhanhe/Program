@@ -35,7 +35,7 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 
 	prt << "Prometheus " << PROM::VERSION_STRING << "\n";
 
-	GAIA::FILESYSTEM::Directory dir;
+	GAIA::FSYS::Directory dir;
 	GAIA::CTN::TString strWorkPath;
 	dir.GetWorkingDirectory(strWorkPath);
 	prt << "\tWorkPath = " << strWorkPath.front_ptr() << "\n";

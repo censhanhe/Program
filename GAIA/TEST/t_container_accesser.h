@@ -3,7 +3,7 @@
 
 namespace GAIATEST
 {
-	GINL GAIA::N32 t_accesser(GAIA::FILESYSTEM::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_accesser(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -341,11 +341,11 @@ namespace GAIATEST
 				typedef GAIA::N16 __DataType;
 				typedef GAIA::CTN::Accesser<__DataType, GAIA::NM, GAIA::ALGO::TwiceSizeIncreaser<GAIA::NM> > __AccType;
 				__AccType acc;
-				GAIA::FILESYSTEM::File accfile;
+				GAIA::FSYS::File accfile;
 				if(!accfile.Open(_T("../TESTRES/accesser_file"),
-					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
-					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
-					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+					GAIA::FSYS::File::OPEN_TYPE_READ |
+					GAIA::FSYS::File::OPEN_TYPE_WRITE |
+					GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 				{
 					GTLINE2("Create accesser bind file failed!");
 					++nRet;
@@ -492,11 +492,11 @@ namespace GAIATEST
 
 			/* Make accesser work as a string pointer. */
 			{
-				GAIA::FILESYSTEM::File accfile;
+				GAIA::FSYS::File accfile;
 				if(!accfile.Open(_T("../TESTRES/accesser_file"),
-					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
-					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
-					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+					GAIA::FSYS::File::OPEN_TYPE_READ |
+					GAIA::FSYS::File::OPEN_TYPE_WRITE |
+					GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 				{
 					GTLINE2("Create accesser bind file failed!");
 					++nRet;
@@ -552,11 +552,11 @@ namespace GAIATEST
 
 			/* Accesser write test. */
 			{
-				GAIA::FILESYSTEM::File accfile;
+				GAIA::FSYS::File accfile;
 				if(!accfile.Open(_T("../TESTRES/accesser_file"),
-					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
-					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
-					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+					GAIA::FSYS::File::OPEN_TYPE_READ |
+					GAIA::FSYS::File::OPEN_TYPE_WRITE |
+					GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 				{
 					GTLINE2("Create accesser bind file failed!");
 					++nRet;
@@ -577,9 +577,9 @@ namespace GAIATEST
 
 			/* Accesser read test. */
 			{
-				GAIA::FILESYSTEM::File accfile;
+				GAIA::FSYS::File accfile;
 				if(!accfile.Open(_T("../TESTRES/accesser_file"),
-					GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+					GAIA::FSYS::File::OPEN_TYPE_READ))
 				{
 					GTLINE2("Create accesser bind file failed!");
 					++nRet;
@@ -608,11 +608,11 @@ namespace GAIATEST
 
 			/* Accesser write ovewflow test. */
 			{
-				GAIA::FILESYSTEM::File accfile;
+				GAIA::FSYS::File accfile;
 				if(!accfile.Open(_T("../TESTRES/accesser_file"),
-					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
-					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
-					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+					GAIA::FSYS::File::OPEN_TYPE_READ |
+					GAIA::FSYS::File::OPEN_TYPE_WRITE |
+					GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
 				{
 					GTLINE2("Create accesser bind file failed!");
 					++nRet;
@@ -633,9 +633,9 @@ namespace GAIATEST
 
 			/* Accesser read overflow test. */
 			{
-				GAIA::FILESYSTEM::File accfile;
+				GAIA::FSYS::File accfile;
 				if(!accfile.Open(_T("../TESTRES/accesser_file"),
-					GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+					GAIA::FSYS::File::OPEN_TYPE_READ))
 				{
 					GTLINE2("Create accesser bind file failed!");
 					++nRet;
