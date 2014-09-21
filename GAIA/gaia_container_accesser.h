@@ -523,6 +523,8 @@ namespace GAIA
 				}
 				return GINVALID;
 			}
+			template<typename _ParamDataType> GAIA::BL write(const _ParamDataType& ob){return this->write(&ob, sizeof(ob)) == sizeof(ob);}
+			template<typename _ParamDataType> GAIA::BL read(_ParamDataType& ob){return this->read(&ob, sizeof(ob)) == sizeof(ob);}
 		private:
 			GINL GAIA::GVOID init()
 			{

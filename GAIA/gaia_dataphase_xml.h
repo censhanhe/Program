@@ -33,6 +33,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL LoadText(__AccesserType& acc)
 			{
+				/* Destroy first. */
 				this->Destroy();
 
 				/* Load file header. */
@@ -49,7 +50,7 @@ namespace GAIA
 				acc =  newacc;
 
 				/* Load node. */
-				if(!this->LoadNode(acc))
+				if(!this->LoadNodeText(acc))
 					return GAIA::False;
 				return GAIA::True;
 			}
@@ -74,20 +75,120 @@ namespace GAIA
 				acc = GAIA::ALGO::stradd(acc, m_lineflag.front_ptr());
 
 				/* Save node. */
-				if(!this->SaveNode(0, m_root, acc))
+				if(!this->SaveNodeText(0, *m_root, acc))
 					return GAIA::False;
 				return GAIA::True;
 			}
 			GINL GAIA::BL LoadBinary(__AccesserType& acc)
 			{
+				/* Destroy first. */
+				this->Destroy();
+
+				/* Convert to binary acc. */
 				__BinaryAccesserType tacc = acc;
 
-				return GAIA::True;
+				/* Load chunk head. */
+				GAIA::FILESYSTEM::CHUNK_TYPE ct;
+				if(!tacc.read(ct))
+					return GAIA::False;
+				if(ct != GAIA::FILESYSTEM::CHUNK_TYPE_XML)
+					return GAIA::False;
+				GAIA::FILESYSTEM::CHUNK_SIZE cs;
+				if(!tacc.read(cs))
+					return GAIA::False;
+				GAIA_AST(cs != GINVALID);
+
+				/* Load static string pool. */
+				_SizeType stringsize;
+				if(!tacc.read(stringsize))
+					return GAIA::False;
+				for(_SizeType x = 0; x < stringsize; ++x)
+				{
+					GAIA::U16 uStringLen;
+					if(!tacc.read(uStringLen))
+						return GAIA::False;
+					if(uStringLen <= CACHE_VALUE_SIZE)
+					{
+						tacc.read(m_szTempValue, uStringLen);
+						m_szTempValue[uStringLen] = '\0';
+						m_ssp.alloc(m_szTempValue);
+					}
+					else
+					{
+						m_strTempValue.resize(uStringLen);
+						tacc.read(m_strTempValue.front_ptr(), uStringLen);
+						m_ssp.alloc(m_strTempValue.front_ptr());
+					}
+				}
+
+				/* Load node. */
+				GAIA::BL bExistRoot;
+				if(!tacc.read(bExistRoot))
+					return GAIA::False;
+				if(!bExistRoot)
+					return GAIA::False;
+				return this->LoadNodeBinary(tacc);
 			}
 			GINL GAIA::BL SaveBinary(__AccesserType& acc)
 			{
+				if(m_root == GNIL)
+					return GAIA::False;
 				__BinaryAccesserType tacc = acc;
 
+				/* Save chunk head. */
+				if(!tacc.write(GAIA::FILESYSTEM::CHUNK_TYPE_XML))
+					return GAIA::False;
+				GAIA::FILESYSTEM::CHUNK_SIZE chunk_size = GINVALID;
+				_SizeType chunk_size_index = tacc.index();
+				if(!tacc.write(chunk_size))
+					return GAIA::False;
+
+				/* Construct static string pool. */
+				__SSPType ssp;
+				__ConstCharPtrType pName, pValue;
+				while(this->Enum(pName, pValue))
+				{
+					ssp.alloc(pName);
+					if(pValue != GNIL)
+						ssp.alloc(pValue);
+				}
+
+				/* Save static string pool. */
+				_SizeType stringsize = ssp.string_size();
+				if(!tacc.write(stringsize))
+					return GAIA::False;
+				for(_SizeType x = 0; x < stringsize; ++x)
+				{
+					__ConstCharPtrType pString = ssp.get(x);
+					GAIA_AST(pString != GNIL);
+					GAIA::U16 uStringLen = GSCAST(GAIA::U16)(GAIA::ALGO::strlen(pString));
+					if(!tacc.write(uStringLen))
+						return GAIA::False;
+					if(tacc.write(pString, uStringLen * sizeof(_CharType)) != uStringLen * sizeof(_CharType))
+						return GAIA::False;
+				}
+
+				/* Save node. */
+				if(m_root != GNIL)
+				{
+					GAIA::BL bExistRoot = GAIA::True;
+					if(!tacc.write(bExistRoot))
+						return GAIA::False;
+					if(!this->SaveNodeBinary(ssp, *m_root, tacc))
+						return GAIA::False;
+				}
+				else
+				{
+					GAIA::BL bExistRoot = GAIA::False;
+					if(!tacc.write(bExistRoot))
+						return GAIA::False;
+				}
+
+				/* Write chunk size. */
+				chunk_size = GSCAST(GAIA::FILESYSTEM::CHUNK_SIZE)(tacc.index());
+				tacc.index(chunk_size_index);
+				if(!tacc.write(chunk_size))
+					return GAIA::False;
 				return GAIA::True;
 			}
 			GINL GAIA::GVOID Destroy()
@@ -187,7 +288,7 @@ namespace GAIA
 					pNode->name = m_ssp.alloc(pName);
 				else
 				{
-					if(this->IsAttrExist(pNode, pName))
+					if(this->IsAttrExist(*pNode, pName))
 						return GAIA::False;
 					if(m_attrcursor >= pNode->attrs.size())
 						return GAIA::False;
@@ -226,7 +327,7 @@ namespace GAIA
 				GPCHR_NULL_RET(pAttrName, GAIA::False);
 				if(m_callstack.empty())
 					return GAIA::False;
-				if(this->IsAttrExist(m_callstack.back().pNode, pAttrName))
+				if(this->IsAttrExist(*m_callstack.back().pNode, pAttrName))
 					return GAIA::False;
 				Attr a;
 				a.name = m_ssp.alloc(pAttrName);
@@ -295,19 +396,41 @@ namespace GAIA
 				m_root = GNIL;
 				m_lineflag = _T("\r\n");
 			}
-			GINL GAIA::BL IsAttrExist(const Node* pNode, const _CharType* pAttrName) const
+			GINL GAIA::BL IsAttrExist(const Node& node, const _CharType* pAttrName) const
 			{
-				GAIA_AST(pNode != GNIL);
 				GAIA_AST(pAttrName != GNIL);
-				for(__AttrListType::_sizetype x = 0; x < pNode->attrs.size(); ++x)
+				for(__AttrListType::_sizetype x = 0; x < node.attrs.size(); ++x)
 				{
-					const Attr& a = pNode->attrs[x];
+					const Attr& a = node.attrs[x];
 					if(GAIA::ALGO::strcmp(m_ssp.get(a.name), pAttrName) == 0)
 						return GAIA::True;
 				}
 				return GAIA::False;
 			}
-			GINL GAIA::BL LoadAttr(__AccesserType& acc)
+			GINL _SizeType GetAttrPracCount(const Node& node) const
+			{
+				_SizeType ret = 0;
+				for(_SizeType x = 0; x < node.attrs.size(); ++x)
+				{
+					const Attr& attr = node.attrs[x];
+					if(attr.name == GINVALID)
+						continue;
+					GAIA_AST(attr.value != GINVALID);
+					++ret;
+				}
+				return ret;
+			}
+			GINL _SizeType GetChildNodePracCount(const Node& node) const
+			{
+				_SizeType ret = 0;
+				for(_SizeType x = 0; x < node.nodes.size(); ++x)
+				{
+					if(node.nodes[x] != GNIL)
+						++ret;
+				}
+				return ret;
+			}
+			GINL GAIA::BL LoadAttrText(__AccesserType& acc)
 			{
 				for(;;)
 				{
@@ -328,17 +451,17 @@ namespace GAIA
 					if(newacc == GNIL)
 						return GAIA::False;
 					const _CharType* pAttrName = GNIL;
-					if(newacc - acc > CACHE_ATTRNAME_SIZE)
+					if(newacc - acc > CACHE_NAME_SIZE)
 					{
-						m_strTempAttrName.clear();
-						m_strTempAttrName.resize(newacc - acc);
-						GAIA::ALGO::strcpy(m_strTempAttrName.front_ptr(), acc, newacc - acc);
-						pAttrName = m_strTempAttrName;
+						m_strTempName.clear();
+						m_strTempName.resize(newacc - acc);
+						GAIA::ALGO::strcpy(m_strTempName.front_ptr(), acc, newacc - acc);
+						pAttrName = m_strTempName;
 					}
 					else
 					{
-						GAIA::ALGO::strcpy(m_szTempAttrName, acc, newacc - acc);
-						pAttrName = m_szTempAttrName;
+						GAIA::ALGO::strcpy(m_szTempName, acc, newacc - acc);
+						pAttrName = m_szTempName;
 					}
 					acc = newacc;
 
@@ -352,17 +475,17 @@ namespace GAIA
 					newacc = GAIA::ALGO::strdrop(acc, _T("\""));
 					if(newacc == GNIL)
 						return GAIA::False;
-					if(newacc - acc > CACHE_ATTRNAME_SIZE)
+					if(newacc - acc > CACHE_NAME_SIZE)
 					{
-						m_strTempAttrValue.clear();
-						m_strTempAttrValue.resize(newacc - acc);
-						GAIA::ALGO::strcpy(m_strTempAttrValue.front_ptr(), acc, newacc - acc);
-						pAttrValue = m_strTempAttrValue;
+						m_strTempValue.clear();
+						m_strTempValue.resize(newacc - acc);
+						GAIA::ALGO::strcpy(m_strTempValue.front_ptr(), acc, newacc - acc);
+						pAttrValue = m_strTempValue;
 					}
 					else
 					{
-						GAIA::ALGO::strcpy(m_szTempAttrValue, acc, newacc - acc);
-						pAttrValue = m_szTempAttrValue;
+						GAIA::ALGO::strcpy(m_szTempValue, acc, newacc - acc);
+						pAttrValue = m_szTempValue;
 					}
 					acc = newacc;
 					++acc;
@@ -372,7 +495,7 @@ namespace GAIA
 				}
 				return GAIA::True;
 			}
-			GINL GAIA::BL LoadNode(__AccesserType& acc)
+			GINL GAIA::BL LoadNodeText(__AccesserType& acc)
 			{
 				/* Load node name. */
 				__AccesserType newacc = GAIA::ALGO::strdrop(acc, _T("<"));
@@ -383,22 +506,22 @@ namespace GAIA
 				newacc = GAIA::ALGO::strdrop(acc, _T(" /"));
 				if(newacc == GNIL)
 					return GAIA::False;
-				if(newacc - acc > CACHE_NODENAME_SIZE)
+				if(newacc - acc > CACHE_NAME_SIZE)
 				{
-					m_strTempNodeName.clear();
-					m_strTempNodeName.resize(newacc - acc);
-					GAIA::ALGO::strcpy(m_strTempNodeName.front_ptr(), acc, newacc - acc);
-					this->WriteNode(m_strTempNodeName);
+					m_strTempName.clear();
+					m_strTempName.resize(newacc - acc);
+					GAIA::ALGO::strcpy(m_strTempName.front_ptr(), acc, newacc - acc);
+					this->WriteNode(m_strTempName);
 				}
 				else
 				{
-					GAIA::ALGO::strcpy(m_szTempNodeName, acc, newacc - acc);
-					this->WriteNode(m_szTempNodeName);
+					GAIA::ALGO::strcpy(m_szTempName, acc, newacc - acc);
+					this->WriteNode(m_szTempName);
 				}
 				acc = newacc;
 
 				/* Load attributes. */
-				if(!this->LoadAttr(acc))
+				if(!this->LoadAttrText(acc))
 					return GAIA::False;
 
 				/* Load child node. */
@@ -412,7 +535,7 @@ namespace GAIA
 						acc = newacc;
 						break;
 					}
-					if(!this->LoadNode(acc))
+					if(!this->LoadNodeText(acc))
 						return GAIA::False;
 				}
 
@@ -426,7 +549,7 @@ namespace GAIA
 				this->End();
 				return GAIA::True;
 			}
-			GINL GAIA::BL SaveNode(const GAIA::SIZE& sDepth, const Node* pNode, __AccesserType& acc) const
+			GINL GAIA::BL SaveNodeText(const GAIA::SIZE& sDepth, const Node& node, __AccesserType& acc) const
 			{
 				/* Write tabs by depth. */
 				for(GAIA::SIZE x = 0; x < sDepth; ++x)
@@ -437,15 +560,14 @@ namespace GAIA
 
 				/* Write node name. */
 				*acc = '<'; ++acc;
-				const _CharType* pNodeName = m_ssp.get(pNode->name);
-				GAIA_AST(pNode != GNIL);
+				const _CharType* pNodeName = m_ssp.get(node.name);
 				_SizeType sNodeLen = GAIA::ALGO::strlen(pNodeName);
 				acc = GAIA::ALGO::stradd(acc, pNodeName);
 
 				/* Write node attr.*/
-				for(_SizeType x = 0; x < pNode->attrs.size(); ++x)
+				for(_SizeType x = 0; x < node.attrs.size(); ++x)
 				{
-					const Attr& attr = pNode->attrs[x];
+					const Attr& attr = node.attrs[x];
 					if(attr.name == GINVALID)
 						continue;
 					*acc = ' '; ++acc;
@@ -465,9 +587,9 @@ namespace GAIA
 
 				/* Write child node. */
 				GAIA::BL bExistChildNode = GAIA::False;
-				for(_SizeType x = 0; x < pNode->nodes.size(); ++x)
+				for(_SizeType x = 0; x < node.nodes.size(); ++x)
 				{
-					Node* pChildNode = pNode->nodes[x];
+					Node* pChildNode = node.nodes[x];
 					if(pChildNode == GNIL)
 						continue;
 					if(!bExistChildNode)
@@ -476,7 +598,7 @@ namespace GAIA
 						acc = GAIA::ALGO::stradd(acc, m_lineflag.front_ptr());
 						bExistChildNode = GAIA::True;
 					}
-					if(!this->SaveNode(sDepth + 1, pChildNode, acc))
+					if(!this->SaveNodeText(sDepth + 1, *pChildNode, acc))
 						return GAIA::False;
 				}
 
@@ -502,6 +624,94 @@ namespace GAIA
 
 				return GAIA::True;
 			}
+			GINL GAIA::BL LoadNodeBinary(__BinaryAccesserType& acc)
+			{
+				/* Load node name. */
+				_SizeType nodenameindex;
+				if(!acc.read(nodenameindex))
+					return GAIA::False;
+				__ConstCharPtrType pNodeName = m_ssp.get(nodenameindex);
+				GAIA_AST(pNodeName != GNIL);
+				this->WriteNode(pNodeName);
+
+				/* Load node attr. */
+				_SizeType attrpraccount;
+				if(!acc.read(attrpraccount))
+					return GAIA::False;
+				for(_SizeType x = 0; x < attrpraccount; ++x)
+				{
+					_SizeType attrnameindex;
+					if(!acc.read(attrnameindex))
+						return GAIA::False;
+					_SizeType attrvalueindex;
+					if(!acc.read(attrvalueindex))
+						return GAIA::False;
+					__ConstCharPtrType pAttrName = m_ssp.get(attrnameindex);
+					__ConstCharPtrType pAttrValue = m_ssp.get(attrvalueindex);
+					GAIA_AST(pAttrName != GNIL);
+					GAIA_AST(pAttrValue != GNIL);
+					this->WriteAttr(pAttrName, pAttrValue);
+				}
+
+				/* Load child node. */
+				_SizeType childnodepraccount;
+				if(!acc.read(childnodepraccount))
+					return GAIA::False;
+				for(_SizeType x = 0; x < childnodepraccount; ++x)
+				{
+					if(!this->LoadNodeBinary(acc))
+						return GAIA::False;
+				}
+
+				this->End();
+				return GAIA::True;
+			}
+			GINL GAIA::BL SaveNodeBinary(__SSPType& ssp, const Node& node, __BinaryAccesserType& acc) const
+			{
+				/* Save node name. */
+				__ConstCharPtrType pNodeName = m_ssp.get(node.name);
+				GAIA_AST(!GAIA::ALGO::stremp(pNodeName));
+				_SizeType nodenameindex = ssp.alloc(pNodeName);
+				if(!acc.write(nodenameindex))
+					return GAIA::False;
+
+				/* Save node attr. */
+				_SizeType attrpraccount = this->GetAttrPracCount(node);
+				if(!acc.write(attrpraccount))
+					return GAIA::False;
+				for(_SizeType x = 0; x < node.attrs.size(); ++x)
+				{
+					const Attr& attr = node.attrs[x];
+					if(attr.name == GINVALID)
+						continue;
+					__ConstCharPtrType pAttrName = m_ssp.get(attr.name);
+					__ConstCharPtrType pAttrValue = m_ssp.get(attr.value);
+					GAIA_AST(!GAIA::ALGO::stremp(pAttrName));
+					GAIA_AST(pAttrValue != GNIL);
+					_SizeType attrnameindex = ssp.alloc(pAttrName);
+					_SizeType attrvalueindex = ssp.alloc(pAttrValue);
+					if(!acc.write(attrnameindex))
+						return GAIA::False;
+					if(!acc.write(attrvalueindex))
+						return GAIA::False;
+				}
+
+				/* Save child node. */
+				_SizeType childnodepraccount = this->GetChildNodePracCount(node);
+				if(!acc.write(childnodepraccount))
+					return GAIA::False;
+				for(_SizeType x = 0; x < node.nodes.size(); ++x)
+				{
+					const Node* pChild = node.nodes[x];
+					if(pChild == GNIL)
+						continue;
+					GAIA_AST(pChild->name != GINVALID);
+					if(!this->SaveNodeBinary(ssp, *pChild, acc))
+						return GAIA::False;
+				}
+
+				return GAIA::True;
+			}
 		private:
 			__NodePoolType m_npool;
 			Node* m_root;
@@ -511,15 +721,12 @@ namespace GAIA
 			GAIA::BL m_bEnd;
 			GAIA::CTN::BasicChars<_CharType, _SizeType, 2> m_lineflag;
 		private: // Temp member variables.
-			static const _SizeType CACHE_NODENAME_SIZE = 128;
-			static const _SizeType CACHE_ATTRNAME_SIZE = 128;
-			static const _SizeType CACHE_ATTRVALUE_SIZE = 1024;
-			_CharType m_szTempNodeName[CACHE_NODENAME_SIZE + 1];
-			_CharType m_szTempAttrName[CACHE_ATTRNAME_SIZE + 1];
-			_CharType m_szTempAttrValue[CACHE_ATTRVALUE_SIZE + 1];
-			__StringType m_strTempNodeName;
-			__StringType m_strTempAttrName;
-			__StringType m_strTempAttrValue;
+			static const _SizeType CACHE_NAME_SIZE = 128;
+			static const _SizeType CACHE_VALUE_SIZE = 1024;
+			_CharType m_szTempName[CACHE_NAME_SIZE + 1];
+			_CharType m_szTempValue[CACHE_VALUE_SIZE + 1];
+			__StringType m_strTempName;
+			__StringType m_strTempValue;
 		};
 	};
 };
