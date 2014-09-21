@@ -553,13 +553,10 @@ namespace GAIA
 			{
 				/* Write tabs by depth. */
 				for(GAIA::SIZE x = 0; x < sDepth; ++x)
-				{
-					*acc = '\t';
-					++acc;
-				}
+					*acc++ = '\t';
 
 				/* Write node name. */
-				*acc = '<'; ++acc;
+				*acc++ = '<';
 				const _CharType* pNodeName = m_ssp.get(node.name);
 				_SizeType sNodeLen = GAIA::ALGO::strlen(pNodeName);
 				acc = GAIA::ALGO::stradd(acc, pNodeName);
@@ -570,7 +567,7 @@ namespace GAIA
 					const Attr& attr = node.attrs[x];
 					if(attr.name == GINVALID)
 						continue;
-					*acc = ' '; ++acc;
+					*acc++ = ' ';
 					const _CharType* pAttrName = m_ssp.get(attr.name);
 					const _CharType* pAttrValue = m_ssp.get(attr.value);
 					GAIA_AST(pAttrName != GNIL);
@@ -578,11 +575,11 @@ namespace GAIA
 					_SizeType sAttrNameLen = GAIA::ALGO::strlen(pAttrName);
 					_SizeType sAttrValueLen = GAIA::ALGO::strlen(pAttrValue);
 					acc = GAIA::ALGO::stradd(acc, pAttrName);
-					*acc = '='; ++acc;
-					*acc = '\"'; ++acc;
+					*acc++ = '=';
+					*acc++ = '\"';
 					if(sAttrValueLen != 0)
 						acc = GAIA::ALGO::stradd(acc, pAttrValue);
-					*acc = '\"'; ++acc;
+					*acc++ = '\"';
 				}
 
 				/* Write child node. */
@@ -594,7 +591,7 @@ namespace GAIA
 						continue;
 					if(!bExistChildNode)
 					{
-						*acc = '>'; ++acc;
+						*acc++ = '>';
 						acc = GAIA::ALGO::stradd(acc, m_lineflag.front_ptr());
 						bExistChildNode = GAIA::True;
 					}
@@ -606,19 +603,16 @@ namespace GAIA
 				if(bExistChildNode)
 				{
 					for(GAIA::SIZE x = 0; x < sDepth; ++x)
-					{
-						*acc = '\t';
-						++acc;
-					}
-					*acc = '<'; ++acc;
-					*acc = '/'; ++acc;
+						*acc++ = '\t';
+					*acc++ = '<';
+					*acc++ = '/';
 					acc = GAIA::ALGO::stradd(acc, pNodeName);
-					*acc = '>'; ++acc;
+					*acc++ = '>';
 				}
 				else
 				{
-					*acc = '/'; ++acc;
-					*acc = '>'; ++acc;
+					*acc++ = '/';
+					*acc++ = '>';
 				}
 				acc = GAIA::ALGO::stradd(acc, m_lineflag.front_ptr());
 
