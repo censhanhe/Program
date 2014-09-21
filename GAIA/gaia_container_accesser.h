@@ -398,14 +398,70 @@ namespace GAIA
 				GPCHR_BELOWEQUALZERO_RET(size, GINVALID);
 				GPCHR_TRUE_RET(this->stride() != sizeof(_DataType), GINVALID);
 				GPCHR_FALSE_RET(size % this->stride() == 0, GINVALID);
+				_SizeType pracsize = size;
+				_SizeType pracoffset = this->practice_offset(m_index);
+				if(pracsize > this->size() - pracoffset)
+				{
+					pracsize = this->size() - pracoffset;
+					GAIA_AST(pracsize % this->stride() == 0);
+				}
+				GAIA_AST(pracsize <= size);
 				switch(m_bindtype)
 				{
 				case BIND_TYPE_MEM:
 					{
+						if(pracsize == size)
+						{
+							GAIA::ALGO::xmemcpy(GRCAST(GAIA::U8*)(m_p) + pracoffset, p, size);
+							m_index += size / this->stride();
+							return size;
+						}
+						else if(pracsize < size)
+						{
+							if(this->expandable())
+							{
+								_SizeIncreaserType increaser;
+								_SizeType newsize = increaser.Increase(this->size());
+								newsize = GAIA::ALGO::maximize(newsize, GSCAST(_SizeType)(pracoffset + size));
+								this->expandmem(newsize);
+								GAIA::ALGO::xmemcpy(GRCAST(GAIA::U8*)(m_p) + pracoffset, p, size);
+								m_index += size / this->stride();
+								return size;
+							}
+							else
+							{
+								if(pracsize == 0)
+									return 0;
+								GAIA::ALGO::xmemcpy(GRCAST(GAIA::U8*)(m_p) + pracoffset, p, pracsize);
+								m_index += pracsize / this->stride();
+								return pracsize;
+							}
+						}
 					}
 					break;
 				case BIND_TYPE_FILE:
 					{
+						if(pracsize == size)
+						{
+							m_index += size / this->stride();
+							return GRCAST(_SizeType)(m_file->Write(p, size));
+						}
+						else if(pracsize < size)
+						{
+							if(this->expandable())
+							{
+								this->expandmem(pracoffset + size);
+								m_index += size / this->stride();
+								return GRCAST(_SizeType)(m_file->Write(p, size));
+							}
+							else
+							{
+								if(pracsize == 0)
+									return 0;
+								m_index += pracsize / this->stride();
+								return GRCAST(_SizeType)(m_file->Write(p, pracsize));
+							}
+						}
 					}
 					break;
 				default:
@@ -419,15 +475,29 @@ namespace GAIA
 				GPCHR_BELOWEQUALZERO_RET(size, GINVALID);
 				GPCHR_TRUE_RET(this->stride() != sizeof(_DataType), GINVALID);
 				GPCHR_FALSE_RET(size % this->stride() == 0, GINVALID);
+				_SizeType pracsize = size;
+				_SizeType pracoffset = this->practice_offset(m_index);
+				if(pracsize > this->size() - pracoffset)
+				{
+					pracsize = this->size() - pracoffset;
+					GAIA_AST(pracsize % this->stride() == 0);
+				}
+				GAIA_AST(pracsize <= size);
+				if(pracsize == 0)
+					return 0;
 				switch(m_bindtype)
 				{
 				case BIND_TYPE_MEM:
 					{
+						GAIA::ALGO::xmemcpy(p, GRCAST(GAIA::U8*)(m_p) + pracoffset, pracsize);
+						m_index += pracsize / this->stride();
+						return pracsize;
 					}
 					break;
 				case BIND_TYPE_FILE:
 					{
-						
+						m_index += pracsize / this->stride();
+						return GRCAST(_SizeType)(m_file->Read(p, pracsize));
 					}
 					break;
 				default:
@@ -456,31 +526,20 @@ namespace GAIA
 				{
 					if(this->expandable())
 					{
-						_SizeType poffset = this->practice_offset(m_index + index);
+						_SizeType pracoffset = this->practice_offset(m_index + index);
 						switch(this->bindtype())
 						{
 						case BIND_TYPE_MEM:
 							{
 								_SizeIncreaserType increaser;
 								_SizeType newsize = increaser.Increase(this->size());
-								GAIA_AST(newsize > this->size());
-								newsize = GAIA::ALGO::maximize(newsize, GSCAST(_SizeType)(poffset + sizeof(_DataType)));
-								_DataType* pNew = GRCAST(_DataType*)(GAIA_MALLOC(GAIA::U8, newsize));
-								GAIA_AST(pNew != GNIL);
-								if(pNew == GNIL)
-									return GAIA::False;
-								if(m_p != GNIL)
-								{
-									GAIA::ALGO::xmemcpy(pNew, m_p, this->size());
-									GAIA_MFREE(m_p);
-								}
-								m_p = pNew;
-								m_size = newsize;
+								newsize = GAIA::ALGO::maximize(newsize, GSCAST(_SizeType)(pracoffset + sizeof(_DataType)));
+								this->expandmem(newsize);
 							}
 							break;
 						case BIND_TYPE_FILE:
 							{
-								m_size = poffset + sizeof(_DataType);
+								this->expandfile(pracoffset + sizeof(_DataType));
 							}
 							break;
 						default:
@@ -503,10 +562,10 @@ namespace GAIA
 					}
 				case BIND_TYPE_FILE:
 					{
-						_SizeType poffset = this->practice_offset(m_index + index);
-						if(m_file->Tell() != poffset)
+						_SizeType pracoffset = this->practice_offset(m_index + index);
+						if(m_file->Tell() != pracoffset)
 						{
-							if(!m_file->Seek(SEEK_TYPE_BEGIN, poffset))
+							if(!m_file->Seek(SEEK_TYPE_BEGIN, pracoffset))
 							{
 								GAIA_AST(GAIA::ALWAYSFALSE);
 								return GAIA::False;
@@ -542,10 +601,10 @@ namespace GAIA
 					}
 				case BIND_TYPE_FILE:
 					{
-						_SizeType poffset = this->practice_offset(m_index + index);
-						if(m_file->Tell() != poffset)
+						_SizeType pracoffset = this->practice_offset(m_index + index);
+						if(m_file->Tell() != pracoffset)
 						{
-							if(!m_file->Seek(SEEK_TYPE_BEGIN, poffset))
+							if(!m_file->Seek(SEEK_TYPE_BEGIN, pracoffset))
 							{
 								GAIA_AST(GAIA::ALWAYSFALSE);
 								return GAIA::False;
@@ -563,6 +622,26 @@ namespace GAIA
 					return GAIA::False;
 				}
 				return GAIA::True;
+			}
+			GINL GAIA::GVOID expandmem(const _SizeType& newsize)
+			{
+				GAIA_AST(newsize > this->size());
+				_DataType* pNew = GRCAST(_DataType*)(GAIA_MALLOC(GAIA::U8, newsize));
+				GAIA_AST(pNew != GNIL);
+				if(pNew == GNIL)
+					return;
+				if(m_p != GNIL)
+				{
+					GAIA::ALGO::xmemcpy(pNew, m_p, this->size());
+					GAIA_MFREE(m_p);
+				}
+				m_p = pNew;
+				m_size = newsize;
+			}
+			GINL GAIA::GVOID expandfile(const _SizeType& newsize)
+			{
+				GAIA_AST(newsize > this->size());
+				m_size = newsize;
 			}
 		private:
 			BIND_TYPE m_bindtype;
