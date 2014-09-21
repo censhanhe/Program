@@ -846,7 +846,9 @@ namespace GAIA
 					else
 						return GNIL;
 				}
+			#if GAIA_COMPILER != GAIA_COMPILER_CL // For CL C4702 Warning.
 				return GNIL;
+			#endif
 			}
 			GINL Node* front_node(Node* pNode)
 			{

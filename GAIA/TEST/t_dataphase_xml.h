@@ -380,6 +380,63 @@ namespace GAIATEST
 				}
 			}
 		}
+		xmlfile.Close();
+
+		GAIA::FSYS::File xmlbinaryfile;
+		if(!xmlbinaryfile.Open(_T("../TESTRES/xmlfile.xml"), 
+			GAIA::FSYS::File::OPEN_TYPE_READ |
+			GAIA::FSYS::File::OPEN_TYPE_WRITE |
+			GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS))
+		{
+			GTLINE2("Cannot open a file for save the xml.");
+			++nRet;
+		}
+		else
+		{
+			typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+			__AccType acc;
+			acc.expandable(GAIA::True);
+			if(!acc.bindfile(&xmlbinaryfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE))
+			{
+				GTLINE2("Bind accesser to the file failed!");
+				++nRet;
+			}
+			else
+			{
+				if(!xml.SaveBinary(acc))
+				{
+					GTLINE2("Save xml to file failed!");
+					++nRet;
+				}
+			}
+		}
+		xmlbinaryfile.Close();
+
+		if(!xmlbinaryfile.Open(_T("../TESTRES/xmlfile.xml"),
+			GAIA::FSYS::File::OPEN_TYPE_READ))
+		{
+			GTLINE2("Cannot open a file for load the xml.");
+			++nRet;
+		}
+		else
+		{
+			typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+			__AccType acc;
+			if(!acc.bindfile(&xmlbinaryfile, __AccType::ACCESS_TYPE_READ))
+			{
+				GTLINE2("Bind accesser to file failed!");
+				++nRet;
+			}
+			else
+			{
+				if(!xml.LoadBinary(acc))
+				{
+					GTLINE2("Load xml from file failed!");
+					++nRet;
+				}
+			}
+		}
+		xmlbinaryfile.Close();
 
 		static const GAIA::TCH* CONTENT_GROUP[] = 
 		{

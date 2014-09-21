@@ -85,7 +85,9 @@ namespace GAIA
 				this->Destroy();
 
 				/* Convert to binary acc. */
-				__BinaryAccesserType tacc = acc;
+				__BinaryAccesserType tacc;
+				if(!tacc.convert_from(acc))
+					return GAIA::False;
 
 				/* Load chunk head. */
 				GAIA::FSYS::CHUNK_TYPE ct;
@@ -133,12 +135,14 @@ namespace GAIA
 			{
 				if(m_root == GNIL)
 					return GAIA::False;
-				__BinaryAccesserType tacc = acc;
+				__BinaryAccesserType tacc;
+				if(!tacc.convert_from(acc))
+					return GAIA::False;
 
 				/* Save chunk head. */
 				if(!tacc.write(GAIA::FSYS::CHUNK_TYPE_XML))
 					return GAIA::False;
-				GAIA::FSYS::CHUNK_SIZE chunk_size = GINVALID;
+				GAIA::FSYS::CHUNK_SIZE chunk_size = GSCAST(GAIA::FSYS::CHUNK_SIZE)(GINVALID);
 				_SizeType chunk_size_index = tacc.index();
 				if(!tacc.write(chunk_size))
 					return GAIA::False;
@@ -146,6 +150,7 @@ namespace GAIA
 				/* Construct static string pool. */
 				__SSPType ssp;
 				__ConstCharPtrType pName, pValue;
+				this->ResetCursor();
 				while(this->Enum(pName, pValue))
 				{
 					ssp.alloc(pName);
@@ -164,7 +169,8 @@ namespace GAIA
 					GAIA::U16 uStringLen = GSCAST(GAIA::U16)(GAIA::ALGO::strlen(pString));
 					if(!tacc.write(uStringLen))
 						return GAIA::False;
-					if(tacc.write(pString, uStringLen * sizeof(_CharType)) != uStringLen * sizeof(_CharType))
+					if(tacc.write(pString, GSCAST(_SizeType)(uStringLen * sizeof(_CharType))) != 
+						GSCAST(_SizeType)(uStringLen * sizeof(_CharType)))
 						return GAIA::False;
 				}
 
@@ -275,7 +281,9 @@ namespace GAIA
 					if(!this->End())
 						return GAIA::False;
 				}
+			#if GAIA_COMPILER != GAIA_COMPILER_CL // For CL C4702 Warning.
 				return GAIA::False;
+			#endif
 			}
 			GINL GAIA::BL Change(const _CharType* pName, const _CharType* pValue) // If pValue is GNIL, it means change a node name.
 			{
@@ -340,8 +348,8 @@ namespace GAIA
 				GAIA_ASTDEBUG(!m_callstack.empty());
 				if(m_callstack.size() == 1)
 					m_bEnd = GAIA::True;
-				return m_callstack.pop_back();
 				m_attrcursor = 0;
+				return m_callstack.pop_back();
 			}
 			GINL GAIA::GVOID ResetCursor(){m_callstack.clear(); m_attrcursor = 0; m_bEnd = GAIA::False;}
 			GINL GAIA::BL IsResetCursor() const{return m_callstack.empty() && !m_bEnd;}
@@ -493,7 +501,9 @@ namespace GAIA
 					/* Write attr. */
 					this->WriteAttr(pAttrName, pAttrValue);
 				}
+			#if GAIA_COMPILER != GAIA_COMPILER_CL
 				return GAIA::True;
+			#endif
 			}
 			GINL GAIA::BL LoadNodeText(__AccesserType& acc)
 			{

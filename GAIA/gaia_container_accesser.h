@@ -7,6 +7,8 @@ namespace GAIA
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class Accesser : public GAIA::Entity
 		{
+		private:
+			friend class Accesser; // Seperate template parameter's private member variable access.
 		public:
 			GAIA_ENUM_BEGIN(BIND_TYPE)
 				BIND_TYPE_MEM,
@@ -380,8 +382,7 @@ namespace GAIA
 			template<typename _ParamDataType, typename _ParamSizeType, typename _ParamSizeIncreaserType>
 				GAIA::BL convert_from(const GAIA::CTN::Accesser<_ParamDataType, _ParamSizeType, _ParamSizeIncreaserType>& src)
 			{
-				GAIA_AST(&src != this);
-				m_bindtype = src.m_bindtype;
+				m_bindtype = GSCAST(__MyType::BIND_TYPE)(src.m_bindtype);
 				m_atm = src.m_atm;
 				m_p = GRCAST(_DataType*)(src.m_p);
 				m_file = src.m_file;
@@ -521,7 +522,9 @@ namespace GAIA
 				default:
 					return GINVALID;
 				}
+			#if GAIA_COMPILER != GAIA_COMPILER_CL // For CL C4702 Warning.
 				return GINVALID;
+			#endif
 			}
 			template<typename _ParamDataType> GAIA::BL write(const _ParamDataType& ob){return this->write(&ob, sizeof(ob)) == sizeof(ob);}
 			template<typename _ParamDataType> GAIA::BL read(_ParamDataType& ob){return this->read(&ob, sizeof(ob)) == sizeof(ob);}

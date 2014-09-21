@@ -55,7 +55,6 @@ namespace PROM
 				}
 			}
 
-		FUNCTION_END:
 			if(plc_commandparam != GNIL)
 				plc_commandparam->Release();
 			return pRet;

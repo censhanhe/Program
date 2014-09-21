@@ -174,7 +174,9 @@ namespace GAIA
 					++p2;
 				}
 			}
+		#if GAIA_COMPILER != GAIA_COMPILER_CL // For CL C4702 Warning.
 			return 0;
+		#endif
 		}
 		template<typename _DataType1, typename _DataType2> GAIA::N32 stricmp(_DataType1 p1, _DataType2 p2)
 		{
@@ -194,7 +196,9 @@ namespace GAIA
 					++p2;
 				}
 			}
+		#if GAIA_COMPILER != GAIA_COMPILER_CL // For CL C4702 Warning.
 			return 0;
+		#endif
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strstr(_DataType1 p1, _DataType2 p2)
 		{
