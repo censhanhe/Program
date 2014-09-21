@@ -7,7 +7,7 @@ namespace GAIATEST
 	{
 		GAIA::N32 nRet = 0;
 
-		static const GAIA::N32 ACCESS_ELEMENT_COUNT = 1024;
+		static const GAIA::N32 ACCESS_ELEMENT_COUNT = 100;
 
 		/* RAM based accesser test. */
 		{
@@ -158,10 +158,10 @@ namespace GAIATEST
 
 			/* Make accesser work as a string pointer. */
 			{
-				GAIA::TCH szTemp[1024];
+				GAIA::TCH szTemp[ACCESS_ELEMENT_COUNT];
 				typedef GAIA::CTN::Accesser<GAIA::TCH, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 				__AccType acc;
-				acc.bindmem(szTemp, 1024, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				acc.bindmem(szTemp, ACCESS_ELEMENT_COUNT, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
 				GAIA::ALGO::strcpy(acc, "HelloWorld");
 				if(GAIA::ALGO::strcmp(acc, "HelloWorld") != 0)
 				{
@@ -191,7 +191,7 @@ namespace GAIATEST
 				acc.destroy();
 			}
 
-			///* Expandable accesser bubble sort test. */
+			/* Expandable accesser bubble sort test. */
 			//{
 			//	typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 			//	__AccType acc;
@@ -208,6 +208,130 @@ namespace GAIATEST
 			//	GAIA_MFREE(acc.bindmem());
 			//	acc.destroy();
 			//}
+
+			/* Accesser write read test. */
+			{
+				GAIA::SIZE szTemp[ACCESS_ELEMENT_COUNT];
+				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+				__AccType acc;
+				acc.bindmem(szTemp, ACCESS_ELEMENT_COUNT * sizeof(GAIA::SIZE), __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT / sizeof(GAIA::SIZE); ++x)
+				{
+					if(acc.write(&x, sizeof(x)) != sizeof(x))
+					{
+						GTLINE2("Accesser write element failed!");
+						++nRet;
+					}
+				}
+				acc.index(0);
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT / sizeof(GAIA::SIZE); ++x)
+				{
+					GAIA::SIZE e;
+					if(acc.read(&e, sizeof(e)) != sizeof(e))
+					{
+						GTLINE2("Accesser read element failed!");
+						++nRet;
+						break;
+					}
+					if(e != x)
+					{
+						GTLINE2("Accesser read element failed!");
+						++nRet;
+						break;
+					}
+				}
+			}
+
+
+			/* Accesser write read ovewflow test. */
+			{
+				GAIA::SIZE szTemp[ACCESS_ELEMENT_COUNT];
+				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+				__AccType acc;
+				acc.bindmem(szTemp, ACCESS_ELEMENT_COUNT * sizeof(GAIA::SIZE), __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				GAIA::CTN::Vector<GAIA::SIZE> listEle;
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT * 2; ++x)
+					listEle.push_back(x);
+				if(acc.write(listEle.front_ptr(), listEle.size() * sizeof(GAIA::SIZE)) != ACCESS_ELEMENT_COUNT * sizeof(GAIA::SIZE))
+				{
+					GTLINE2("Accesser write overflow test failed!");
+					++nRet;
+				}
+				acc.index(0);
+				listEle.inverse();
+				if(acc.read(listEle.front_ptr(), listEle.size() * sizeof(GAIA::SIZE)) != ACCESS_ELEMENT_COUNT * sizeof(GAIA::SIZE))
+				{
+					GTLINE2("Accesser read overflow test failed!");
+					++nRet;
+				}
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT / sizeof(GAIA::SIZE); ++x)
+				{
+					if(listEle[x] != x)
+					{
+						GTLINE2("Access read overflow content error!");
+						++nRet;
+						break;
+					}
+				}
+			}
+
+			/* Expandable accesser read write test. */
+			{
+				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+				__AccType acc;
+				acc.bindmem(GNIL, 0, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT; ++x)
+				{
+					if(acc.write(&x, sizeof(x)) != sizeof(x))
+					{
+						GTLINE2("Accesser write failed!");
+						++nRet;
+						break;
+					}
+				}
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT / 10; ++x)
+				{
+					acc.index(x * 10 + 9);
+					GAIA::SIZE t = GINVALID;
+					if(acc.write(&t, sizeof(t)) != sizeof(t))
+					{
+						GTLINE2("Accesser write failed!");
+						++nRet;
+						break;
+					}
+				}
+				acc.index(0);
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT; ++x)
+				{
+					GAIA::SIZE t;
+					if(acc.read(&t, sizeof(t)) != sizeof(t))
+					{
+						GTLINE2("Accesser read failed!");
+						++nRet;
+						break;
+					}
+					if((x + 1) % 10 == 0)
+					{
+						if(t != GINVALID)
+						{
+							GTLINE2("Accesser read content error!");
+							++nRet;
+							break;
+						}
+					}
+					else
+					{
+						if(t != x)
+						{
+							GTLINE2("Accesser read content error!");
+							++nRet;
+							break;
+						}
+					}
+				}
+				GAIA_MFREE(acc.bindmem());
+				acc.destroy();
+			}
 		}
 
 		/* File based accesser test. */
@@ -369,7 +493,7 @@ namespace GAIATEST
 			/* Make accesser work as a string pointer. */
 			{
 				GAIA::FILESYSTEM::File accfile;
-				if(!accfile.Open(_T("../accesser_file"),
+				if(!accfile.Open(_T("../TESTRES/accesser_file"),
 					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
 					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
 					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
@@ -395,9 +519,9 @@ namespace GAIATEST
 				__AccType acc;
 				acc.expandable(GAIA::True);
 				acc.bindfile(GNIL, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
-				for(GAIA::SIZE x = 0; x < 100; ++x)
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT; ++x)
 					acc[x] = x;
-				for(GAIA::SIZE x = 0; x < 100; ++x)
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT; ++x)
 				{
 					if(acc[x] != x)
 					{
@@ -409,7 +533,7 @@ namespace GAIATEST
 				delete acc.bindfile();
 			}
 
-			///* Expandable accesser bubble sort test. */
+			/* Expandable accesser bubble sort test. */
 			//{
 			//	typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
 			//	__AccType acc;
@@ -423,7 +547,177 @@ namespace GAIATEST
 			//		GTLINE2("File accesser bubble sort test failed!");
 			//		++nRet;
 			//	}
+			//	delete acc.bindfile();
 			//}
+
+			/* Accesser write test. */
+			{
+				GAIA::FILESYSTEM::File accfile;
+				if(!accfile.Open(_T("../TESTRES/accesser_file"),
+					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
+					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
+					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+				{
+					GTLINE2("Create accesser bind file failed!");
+					++nRet;
+				}
+				accfile.Resize(ACCESS_ELEMENT_COUNT);
+				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+				__AccType acc;
+				acc.bindfile(&accfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT / sizeof(GAIA::SIZE); ++x)
+				{
+					if(acc.write(&x, sizeof(x)) != sizeof(x))
+					{
+						GTLINE2("Accesser write element failed!");
+						++nRet;
+					}
+				}
+			}
+
+			/* Accesser read test. */
+			{
+				GAIA::FILESYSTEM::File accfile;
+				if(!accfile.Open(_T("../TESTRES/accesser_file"),
+					GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+				{
+					GTLINE2("Create accesser bind file failed!");
+					++nRet;
+				}
+				accfile.Resize(ACCESS_ELEMENT_COUNT);
+				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+				__AccType acc;
+				acc.bindfile(&accfile, __AccType::ACCESS_TYPE_READ);
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT / sizeof(GAIA::SIZE); ++x)
+				{
+					GAIA::SIZE e;
+					if(acc.read(&e, sizeof(e)) != sizeof(e))
+					{
+						GTLINE2("Accesser read element failed!");
+						++nRet;
+						break;
+					}
+					if(e != x)
+					{
+						GTLINE2("Accesser read element failed!");
+						++nRet;
+						break;
+					}
+				}
+			}
+
+			/* Accesser write ovewflow test. */
+			{
+				GAIA::FILESYSTEM::File accfile;
+				if(!accfile.Open(_T("../TESTRES/accesser_file"),
+					GAIA::FILESYSTEM::File::OPEN_TYPE_READ |
+					GAIA::FILESYSTEM::File::OPEN_TYPE_WRITE |
+					GAIA::FILESYSTEM::File::OPEN_TYPE_CREATEALWAYS))
+				{
+					GTLINE2("Create accesser bind file failed!");
+					++nRet;
+				}
+				accfile.Resize(ACCESS_ELEMENT_COUNT);
+				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+				__AccType acc;
+				acc.bindfile(&accfile, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				GAIA::CTN::Vector<GAIA::SIZE> listEle;
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT * 2; ++x)
+					listEle.push_back(x);
+				if(acc.write(listEle.front_ptr(), listEle.size() * sizeof(GAIA::SIZE)) != ACCESS_ELEMENT_COUNT)
+				{
+					GTLINE2("Accesser write overflow test failed!");
+					++nRet;
+				}
+			}
+
+			/* Accesser read overflow test. */
+			{
+				GAIA::FILESYSTEM::File accfile;
+				if(!accfile.Open(_T("../TESTRES/accesser_file"),
+					GAIA::FILESYSTEM::File::OPEN_TYPE_READ))
+				{
+					GTLINE2("Create accesser bind file failed!");
+					++nRet;
+				}
+				accfile.Resize(ACCESS_ELEMENT_COUNT);
+				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+				__AccType acc;
+				acc.bindfile(&accfile, __AccType::ACCESS_TYPE_READ);
+				GAIA::CTN::Vector<GAIA::SIZE> listEle;
+				listEle.resize(ACCESS_ELEMENT_COUNT / sizeof(GAIA::SIZE) * 2);
+				if(acc.read(listEle.front_ptr(), listEle.size() * sizeof(GAIA::SIZE)) != ACCESS_ELEMENT_COUNT)
+				{
+					GTLINE2("Accesser read overflow test failed!");
+					++nRet;
+				}
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT / sizeof(GAIA::SIZE); ++x)
+				{
+					if(listEle[x] != x)
+					{
+						GTLINE2("Access read overflow content error!");
+						++nRet;
+						break;
+					}
+				}
+			}
+
+			/* Expandable accesser read write test. */
+			{
+				typedef GAIA::CTN::Accesser<GAIA::SIZE, GAIA::SIZE, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __AccType;
+				__AccType acc;
+				acc.bindfile(GNIL, __AccType::ACCESS_TYPE_READ | __AccType::ACCESS_TYPE_WRITE);
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT; ++x)
+				{
+					if(acc.write(&x, sizeof(x)) != sizeof(x))
+					{
+						GTLINE2("Accesser write failed!");
+						++nRet;
+						break;
+					}
+				}
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT / 10; ++x)
+				{
+					acc.index(x * 10 + 9);
+					GAIA::SIZE t = GINVALID;
+					if(acc.write(&t, sizeof(t)) != sizeof(t))
+					{
+						GTLINE2("Accesser write failed!");
+						++nRet;
+						break;
+					}
+				}
+				acc.index(0);
+				for(GAIA::SIZE x = 0; x < ACCESS_ELEMENT_COUNT; ++x)
+				{
+					GAIA::SIZE t;
+					if(acc.read(&t, sizeof(t)) != sizeof(t))
+					{
+						GTLINE2("Accesser read failed!");
+						++nRet;
+						break;
+					}
+					if((x + 1) % 10 == 0)
+					{
+						if(t != GINVALID)
+						{
+							GTLINE2("Accesser read content error!");
+							++nRet;
+							break;
+						}
+					}
+					else
+					{
+						if(t != x)
+						{
+							GTLINE2("Accesser read content error!");
+							++nRet;
+							break;
+						}
+					}
+				}
+				delete acc.bindfile();
+			}
 		}
 
 		return nRet;
