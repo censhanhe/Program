@@ -123,8 +123,8 @@ namespace GAIA
 
 			/* Shader. */
 			virtual __MyType::Shader* CreateShader() = 0;
-			virtual GAIA::GVOID SetShader() = 0;
-			virtual GAIA::GVOID GetShader() const = 0;
+			virtual GAIA::GVOID SetShader(__MyType::Shader* pShader) = 0;
+			virtual GAIA::GVOID GetShader(__MyType::Shader*& pShader) const = 0;
 			virtual GAIA::GVOID SetShaderConstant() = 0;
 			virtual GAIA::GVOID GetShaderConstant() const = 0;
 
