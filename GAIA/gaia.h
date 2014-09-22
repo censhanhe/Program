@@ -2,6 +2,7 @@
 #define		__GAIA_H__
 
 /* Include file header. */
+#include	"gaia_version.h"
 #include	"gaia_sysconfig.h"
 #include	"gaia_macrohelper.h"
 #include	"gaia_type.h"

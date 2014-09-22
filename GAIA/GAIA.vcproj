@@ -360,6 +360,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gaia_version.h"
+				>
+			</File>
+			<File
 				RelativePath=".\preheader.cpp"
 				>
 				<FileConfiguration
