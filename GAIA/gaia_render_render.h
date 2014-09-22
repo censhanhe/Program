@@ -8,6 +8,9 @@ namespace GAIA
 		class Render : public virtual GAIA::FRAMEWORK::Instance
 		{
 		public:
+			typedef GAIA::RENDER::Render __MyType;
+
+		public:
 			class RenderDesc : public GAIA::Base
 			{
 			public:

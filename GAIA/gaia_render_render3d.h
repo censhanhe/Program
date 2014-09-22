@@ -8,6 +8,9 @@ namespace GAIA
 		class Render3D : public virtual GAIA::RENDER::Render2D
 		{
 		public:
+			typedef GAIA::RENDER::Render3D __MyType;
+
+		public:
 			class Render3DDesc : public GAIA::RENDER::Render::RenderDesc
 			{
 			public:
@@ -105,19 +108,19 @@ namespace GAIA
 			virtual GAIA::GVOID GetSampleState(GAIA::N32 nSamplerIndex, SAMPLER_STATE& ss) const = 0;
 
 			/* Index buffer. */
-			virtual GAIA::RENDER::Render3D::IndexBuffer* CreateIndexBuffer() = 0;
-			virtual GAIA::GVOID SetIndexBuffer(const GAIA::RENDER::Render3D::IndexBuffer* pIB) = 0;
-			virtual GAIA::GVOID GetIndexBuffer(const GAIA::RENDER::Render3D::IndexBuffer*& pIB) const = 0;
+			virtual __MyType::IndexBuffer* CreateIndexBuffer() = 0;
+			virtual GAIA::GVOID SetIndexBuffer(const __MyType::IndexBuffer* pIB) = 0;
+			virtual GAIA::GVOID GetIndexBuffer(const __MyType::IndexBuffer*& pIB) const = 0;
 
 			/* Vertex buffer. */
-			virtual GAIA::RENDER::Render3D::VertexBuffer* CreateVertexBuffer() = 0;
-			virtual GAIA::GVOID SetVertexBuffer(GAIA::N32 nStream, const GAIA::RENDER::Render3D::VertexBuffer* pVB) = 0;
-			virtual GAIA::GVOID GetVertexBuffer(GAIA::N32 nStream, const GAIA::RENDER::Render3D::VertexBuffer*& pVB) const = 0;
+			virtual __MyType::VertexBuffer* CreateVertexBuffer() = 0;
+			virtual GAIA::GVOID SetVertexBuffer(GAIA::N32 nStream, const __MyType::VertexBuffer* pVB) = 0;
+			virtual GAIA::GVOID GetVertexBuffer(GAIA::N32 nStream, const __MyType::VertexBuffer*& pVB) const = 0;
 
 			/* Declaration. */
-			virtual GAIA::RENDER::Render3D::VertexDeclaration* CreateVertexDeclaration() = 0;
-			virtual GAIA::GVOID SetVertexDeclaration(GAIA::RENDER::Render3D::VertexDeclaration* pVDecl) = 0;
-			virtual GAIA::GVOID GetVertexDeclaration(GAIA::RENDER::Render3D::VertexDeclaration*& pVDecl) = 0;
+			virtual __MyType::VertexDeclaration* CreateVertexDeclaration() = 0;
+			virtual GAIA::GVOID SetVertexDeclaration(__MyType::VertexDeclaration* pVDecl) = 0;
+			virtual GAIA::GVOID GetVertexDeclaration(__MyType::VertexDeclaration*& pVDecl) = 0;
 
 			/* Draw. */
 			virtual GAIA::GVOID SetTriangleType(DRAW_TRIANGLE_TYPE dtt) = 0;
