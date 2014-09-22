@@ -29,12 +29,23 @@ namespace GAIA
 				GPCHR_NULLSTRPTR_RET(p, GNIL);
 				Node finder;
 				finder.pContainer = this;
-				finder.offset = m_datalist.size();
-				_SizeType len = GAIA::ALGO::strlen(p);
-				m_datalist.push_back(p, len + 1);
+				GAIA::BL bSelfData;
+				if(!m_datalist.empty() && p >= m_datalist.front_ptr() && p <= m_datalist.back_ptr())
+				{
+					finder.offset = p - m_datalist.front_ptr();
+					bSelfData = GAIA::True;
+				}
+				else
+				{
+					finder.offset = m_datalist.size();
+					_SizeType len = GAIA::ALGO::strlen(p);
+					m_datalist.push_back(p, len + 1);
+					bSelfData = GAIA::False;
+				}
 				Node* pFinded = m_nodeset.find(finder);
 				if(pFinded == GNIL)
 				{
+					GAIA_AST(!bSelfData);
 					finder.index = m_nodelist.size();
 					m_nodelist.push_back(finder);
 					m_nodeset.insert(finder);
@@ -42,7 +53,8 @@ namespace GAIA
 				}
 				else
 				{
-					m_datalist.resize(finder.offset);
+					if(!bSelfData)
+						m_datalist.resize(finder.offset);
 					return pFinded->index;
 				}
 			}

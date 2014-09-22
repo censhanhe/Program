@@ -111,14 +111,14 @@ namespace GAIA
 						return GAIA::False;
 					if(uStringLen <= CACHE_VALUE_SIZE)
 					{
-						tacc.read(m_szTempValue, uStringLen);
+						tacc.read(m_szTempValue, uStringLen * sizeof(_CharType));
 						m_szTempValue[uStringLen] = '\0';
 						m_ssp.alloc(m_szTempValue);
 					}
 					else
 					{
 						m_strTempValue.resize(uStringLen);
-						tacc.read(m_strTempValue.front_ptr(), uStringLen);
+						tacc.read(m_strTempValue.front_ptr(), uStringLen * sizeof(_CharType));
 						m_ssp.alloc(m_strTempValue.front_ptr());
 					}
 				}
