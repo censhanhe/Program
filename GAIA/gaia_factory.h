@@ -53,6 +53,8 @@ namespace GAIA
 					return GNIL;
 				Instance* pRet = GNIL;
 				if(GAIA::ALWAYSFALSE){}
+
+				/* Data traffic. */
 				else if(cid == GAIA::FRAMEWORK::CLSID_GATEWAY_MEM)
 					pRet = new GAIA::DATATRAFFIC::GatewayMem;
 				else if(cid == GAIA::FRAMEWORK::CLSID_GATEWAY_SHAREMEM)
@@ -65,16 +67,23 @@ namespace GAIA
 					pRet = new GAIA::DATATRAFFIC::RouteNet;
 				else if(cid == GAIA::FRAMEWORK::CLSID_TRANSMISSION_IDM)
 					pRet = new GAIA::DATATRAFFIC::TransmissionIDM;
+
+				/* IO. */
 				else if(cid == GAIA::FRAMEWORK::CLSID_FILEIO)
 					pRet = new GAIA::IO::FileIO;
 				else if(cid == GAIA::FRAMEWORK::CLSID_MEMIO)
 					pRet = new GAIA::IO::MemIO;
 				else if(cid == GAIA::FRAMEWORK::CLSID_SCREENIO)
 					pRet = new GAIA::IO::ScreenIO;
+
+				/* Serializer. */
 				else if(cid == GAIA::FRAMEWORK::CLSID_SERIALIZER)
 					pRet = new GAIA::SERIALIZER::Serializer;
+
+				/* UI. */
 				else if(cid == GAIA::FRAMEWORK::CLSID_CANVAS)
 					pRet = new GAIA::UI::Canvas;
+
 				if(pRet == GNIL)
 				{
 					for(LIST_CREATECALLBACK::_sizetype x = 0; x < m_listCreateCB.size(); ++x)
@@ -85,6 +94,7 @@ namespace GAIA
 							break;
 					}
 				}
+
 				if(pRet != GNIL)
 				{
 					if(!pRet->Begin(pParameter))
@@ -93,6 +103,7 @@ namespace GAIA
 						pRet = GNIL;
 					}
 				}
+
 				return pRet;
 			}
 			GINL virtual Instance* RequestInstance(const ClsID& cid, GAIA::GVOID* pParameter)

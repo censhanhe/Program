@@ -14,7 +14,7 @@ namespace GAIA
 			};
 
 		public:
-			GINL Render();
+			GINL Render(){}
 			GINL ~Render() = 0;
 
 			virtual GAIA::BL Initialize(const RenderDesc& desc) = 0;

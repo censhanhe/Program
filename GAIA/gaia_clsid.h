@@ -44,7 +44,7 @@ namespace GAIA
 				else
 					return GAIA::True;
 			}
-			GINL const GAIA::BL				operator <= (const ClsID& src) const
+			GINL const GAIA::BL operator <= (const ClsID& src) const
 			{
 				if(uMainType > src.uMainType)
 					return GAIA::False;
@@ -67,7 +67,7 @@ namespace GAIA
 				else
 					return GAIA::True;
 			}
-			GINL const GAIA::BL				operator > (const ClsID& src) const
+			GINL const GAIA::BL operator > (const ClsID& src) const
 			{
 				if(uMainType < src.uMainType)
 					return GAIA::False;
@@ -90,7 +90,7 @@ namespace GAIA
 				else
 					return GAIA::True;
 			}
-			GINL const GAIA::BL				operator < (const ClsID& src) const
+			GINL const GAIA::BL	operator < (const ClsID& src) const
 			{
 				if(uMainType > src.uMainType)
 					return GAIA::False;
@@ -120,6 +120,7 @@ namespace GAIA
 			GAIA::U16 uMinorVersion;
 			GAIA::U16 uFlag;
 		};
+
 		/* Data traffic. */
 		static const ClsID CLSID_GATEWAY_MEM		= ClsID(0x02, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID CLSID_GATEWAY_SHAREMEM	= ClsID(0x02, 0x02, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
@@ -127,21 +128,38 @@ namespace GAIA
 		static const ClsID CLSID_ROUTE_MEM			= ClsID(0x02, 0x04, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID CLSID_ROUTE_NET			= ClsID(0x02, 0x05, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID CLSID_TRANSMISSION_IDM	= ClsID(0x02, 0x06, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+
 		/* IO. */
 		static const ClsID CLSID_FILEIO				= ClsID(0x03, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID CLSID_MEMIO				= ClsID(0x03, 0x02, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID CLSID_SCREENIO			= ClsID(0x03, 0x03, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+
 		/* Serializer. */
 		static const ClsID CLSID_SERIALIZER			= ClsID(0x04, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+
 		/* Model. */
 
 		/* Controller. */
 
 		/* UI. */
 		static const ClsID CLSID_CANVAS				= ClsID(0x05, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+
 		/* Layout. */
 
 		/* Painter. */
+
+		/* Render. */
+		static const ClsID CLSID_RENDER_2D_DDRAW	= ClsID(0x08, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_2D_GDIPLUS	= ClsID(0x08, 0x02, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_3D_DX9		= ClsID(0x08, 0x03, 0x0009, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_3D_DX10		= ClsID(0x08, 0x03, 0x000A, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_3D_DX11		= ClsID(0x08, 0x03, 0x000B, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_3D_GL1		= ClsID(0x08, 0x04, 0x0001, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_3D_GL2		= ClsID(0x08, 0x04, 0x0002, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_3D_GL3		= ClsID(0x08, 0x04, 0x0003, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_3D_GLES1	= ClsID(0x08, 0x05, 0x0001, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_3D_GLES2	= ClsID(0x08, 0x05, 0x0002, 0x0000, ClsID::FLAG_SYSDEFINE);
+		static const ClsID CLSID_RENDER_3D_GLES3	= ClsID(0x08, 0x05, 0x0003, 0x0000, ClsID::FLAG_SYSDEFINE);
 	};
 };
 
