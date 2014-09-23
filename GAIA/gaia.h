@@ -188,6 +188,8 @@
 #include	"gaia_datatraffic_route_net.h"
 #include	"gaia_datatraffic_transmission_idm.h"
 
+#include	"gaia_render_material.h"
+#include	"gaia_render_imagework.h"
 #include	"gaia_render_resource.h"
 #include	"gaia_render_context.h"
 #include 	"gaia_render_render.h"
