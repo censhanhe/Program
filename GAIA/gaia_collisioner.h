@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace COLLISIONER
 	{
-		class Collisioner : public virtual GAIA::FRAMEWORK::Instance
+		class Collisioner : public virtual GAIA::FWORK::Instance
 		{
 		public:
 			GINL Collisioner(){}

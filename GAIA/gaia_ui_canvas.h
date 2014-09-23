@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class Canvas : public virtual GAIA::FRAMEWORK::Instance
+		class Canvas : public virtual GAIA::FWORK::Instance
 		{
 		public:
 			typedef GAIA::MATH::VEC2<GAIA::N32> __PosType;
@@ -63,7 +63,7 @@ namespace GAIA
 				CanvasStyle style;
 			};
 		public:
-			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_CANVAS;}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_CANVAS;}
 		public:
 			GAIA_DEBUG_CODEPURE_MEMFUNC Canvas();
 			GAIA_DEBUG_CODEPURE_MEMFUNC ~Canvas();

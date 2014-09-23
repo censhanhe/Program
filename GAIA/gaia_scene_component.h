@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace COMPONENT
 	{
-		class Component : public virtual GAIA::FRAMEWORK::Instance
+		class Component : public virtual GAIA::FWORK::Instance
 		{
 		public:
 			GINL Component();

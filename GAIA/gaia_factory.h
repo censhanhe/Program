@@ -3,14 +3,14 @@
 
 namespace GAIA
 {
-	namespace FRAMEWORK
+	namespace FWORK
 	{
 		class Factory;
 		class FactoryCreateCallBack : public GAIA::Entity
 		{
 		public:
 			GINL FactoryCreateCallBack(){}
-			virtual Instance* Create(GAIA::FRAMEWORK::Factory* pFactory, const ClsID& cid) = 0;
+			virtual Instance* Create(GAIA::FWORK::Factory* pFactory, const ClsID& cid) = 0;
 		};
 		class Factory : public Object
 		{
@@ -55,33 +55,33 @@ namespace GAIA
 				if(GAIA::ALWAYSFALSE){}
 
 				/* Data traffic. */
-				else if(cid == GAIA::FRAMEWORK::CLSID_GATEWAY_MEM)
+				else if(cid == GAIA::FWORK::CLSID_GATEWAY_MEM)
 					pRet = new GAIA::DATATRAFFIC::GatewayMem;
-				else if(cid == GAIA::FRAMEWORK::CLSID_GATEWAY_SHAREMEM)
+				else if(cid == GAIA::FWORK::CLSID_GATEWAY_SHAREMEM)
 					pRet = new GAIA::DATATRAFFIC::GatewayShareMem;
-				else if(cid == GAIA::FRAMEWORK::CLSID_GATEWAY_FILE)
+				else if(cid == GAIA::FWORK::CLSID_GATEWAY_FILE)
 					pRet = new GAIA::DATATRAFFIC::GatewayFile;
-				else if(cid == GAIA::FRAMEWORK::CLSID_ROUTE_MEM)
+				else if(cid == GAIA::FWORK::CLSID_ROUTE_MEM)
 					pRet = new GAIA::DATATRAFFIC::RouteMem;
-				else if(cid == GAIA::FRAMEWORK::CLSID_ROUTE_NET)
+				else if(cid == GAIA::FWORK::CLSID_ROUTE_NET)
 					pRet = new GAIA::DATATRAFFIC::RouteNet;
-				else if(cid == GAIA::FRAMEWORK::CLSID_TRANSMISSION_IDM)
+				else if(cid == GAIA::FWORK::CLSID_TRANSMISSION_IDM)
 					pRet = new GAIA::DATATRAFFIC::TransmissionIDM;
 
 				/* IO. */
-				else if(cid == GAIA::FRAMEWORK::CLSID_FILEIO)
+				else if(cid == GAIA::FWORK::CLSID_FILEIO)
 					pRet = new GAIA::IO::FileIO;
-				else if(cid == GAIA::FRAMEWORK::CLSID_MEMIO)
+				else if(cid == GAIA::FWORK::CLSID_MEMIO)
 					pRet = new GAIA::IO::MemIO;
-				else if(cid == GAIA::FRAMEWORK::CLSID_SCREENIO)
+				else if(cid == GAIA::FWORK::CLSID_SCREENIO)
 					pRet = new GAIA::IO::ScreenIO;
 
 				/* Serializer. */
-				else if(cid == GAIA::FRAMEWORK::CLSID_SERIALIZER)
+				else if(cid == GAIA::FWORK::CLSID_SERIALIZER)
 					pRet = new GAIA::SERIALIZER::Serializer;
 
 				/* UI. */
-				else if(cid == GAIA::FRAMEWORK::CLSID_CANVAS)
+				else if(cid == GAIA::FWORK::CLSID_CANVAS)
 					pRet = new GAIA::UI::Canvas;
 
 				if(pRet == GNIL)

@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace FRAMEWORK
+	namespace FWORK
 	{
 		class Instance : public RefObject
 		{
@@ -12,7 +12,7 @@ namespace GAIA
 		public:
 			GINL Instance(){this->init();}
 			GINL ~Instance(){}
-			virtual GAIA::FRAMEWORK::ClsID GetClassID() const = 0;
+			virtual GAIA::FWORK::ClsID GetClassID() const = 0;
 		protected:
 			virtual GAIA::GVOID Destruct(){if(this->IsBegin()) this->End();}
 		protected:

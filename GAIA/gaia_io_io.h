@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace IO
 	{
-		class IO : public virtual GAIA::FRAMEWORK::Instance
+		class IO : public virtual GAIA::FWORK::Instance
 		{
 		public:
 			GAIA_ENUM_BEGIN(IO_TYPE)

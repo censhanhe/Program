@@ -5,12 +5,12 @@ namespace GAIA
 {
 	namespace SERIALIZER
 	{
-		class Serializer : public virtual GAIA::FRAMEWORK::Instance
+		class Serializer : public virtual GAIA::FWORK::Instance
 		{
 		public:
 			GINL Serializer(){this->init();}
 			GINL ~Serializer(){}
-			virtual GAIA::FRAMEWORK::ClsID GetClassID() const{return GAIA::FRAMEWORK::CLSID_SCREENIO;}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_SCREENIO;}
 			virtual GAIA::BL Begin(GAIA::GVOID* pParameter)
 			{
 				if(this->IsBegin())

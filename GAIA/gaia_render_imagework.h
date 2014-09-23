@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace RENDER
 	{
-		class ImageWork : public virtual GAIA::FRAMEWORK::Instance
+		class ImageWork : public virtual GAIA::FWORK::Instance
 		{
 		public:
 		};

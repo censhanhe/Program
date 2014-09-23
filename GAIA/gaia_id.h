@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace FRAMEWORK
+	namespace FWORK
 	{
 		template<GAIA::U32 _ElementSize> class ID : public GAIA::Entity
 		{

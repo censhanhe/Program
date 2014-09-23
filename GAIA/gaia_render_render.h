@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace RENDER
 	{
-		class Render : public virtual GAIA::FRAMEWORK::Instance
+		class Render : public virtual GAIA::FWORK::Instance
 		{
 		public:
 			typedef GAIA::RENDER::Render __MyType;

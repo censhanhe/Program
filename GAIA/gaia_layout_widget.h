@@ -10,7 +10,7 @@ namespace GAIA
 			WIDGET_TYPE_3D,
 		GAIA_ENUM_END(WIDGET_TYPE)
 
-		class Widget : public virtual GAIA::FRAMEWORK::Instance
+		class Widget : public virtual GAIA::FWORK::Instance
 		{
 		public:
 			GINL Widget(){}

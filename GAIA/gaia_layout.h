@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace LAYOUT
 	{
-		class Layout : public virtual GAIA::FRAMEWORK::Instance
+		class Layout : public virtual GAIA::FWORK::Instance
 		{
 		private:
 			class WidgetNode

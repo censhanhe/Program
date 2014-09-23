@@ -6,7 +6,7 @@ namespace GAIA
 	namespace DATATRAFFIC
 	{
 		class Route;
-		class Gateway : public virtual GAIA::FRAMEWORK::Instance
+		class Gateway : public virtual GAIA::FWORK::Instance
 		{
 		private:
 			typedef GAIA::CTN::Orderless<Route*> OL_ROUTE;

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace RENDER
 	{
-		class Material : public virtual GAIA::FRAMEWORK::Instance
+		class Material : public virtual GAIA::FWORK::Instance
 		{
 		public:
 		};

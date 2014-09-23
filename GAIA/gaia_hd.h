@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace FRAMEWORK
+	namespace FWORK
 	{
 		class Instance;
 		class HD : public GAIA::Entity // Handle class.
@@ -24,7 +24,7 @@ namespace GAIA
 			GINL GAIA::BL Close() const;
 			GINL HD MakeShadow() const;
 			GINL GAIA::BL IsShadow() const;
-			GINL GAIA::FRAMEWORK::Instance* GetInstance() const;
+			GINL GAIA::FWORK::Instance* GetInstance() const;
 
 			GINL const HD& operator = (const HD& src); // Auto reference count increase.
 			GINL const BL operator == (const HD& src) const;
@@ -36,7 +36,7 @@ namespace GAIA
 		private:
 			HD* m_pPrevHD;
 			HD* m_pNextHD;
-			GAIA::FRAMEWORK::Instance* m_pInstance;
+			GAIA::FWORK::Instance* m_pInstance;
 		};
 	};
 };

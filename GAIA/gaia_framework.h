@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace FRAMEWORK
+	namespace FWORK
 	{
 		class Framework
 		{

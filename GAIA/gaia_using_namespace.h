@@ -21,7 +21,7 @@ using namespace GAIA::MVC;
 using namespace GAIA::FSYS;
 using namespace GAIA::DATAPHASE;
 using namespace GAIA::NETWORK;
-using namespace GAIA::FRAMEWORK;
+using namespace GAIA::FWORK;
 using namespace GAIA::IO;
 using namespace GAIA::SERIALIZER;
 using namespace GAIA::DATATRAFFIC;
