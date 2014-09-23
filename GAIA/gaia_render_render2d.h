@@ -15,6 +15,7 @@ namespace GAIA
 			{
 			public:
 			};
+
 			class FontFamily : public virtual GAIA::RENDER::Resource
 			{
 			public:
@@ -81,6 +82,34 @@ namespace GAIA
 			};
 
 		public:
+			GAIA_ENUM_BEGIN(RENDER2D_STATE)
+				RENDER2D_STATE_ALPHABLEND,
+				RENDER2D_STATE_ALPHATEST,
+				RENDER2D_STATE_CULLMODE,
+				RENDER2D_STATE_FILLMODE,
+			GAIA_ENUM_END(RENDER2D_STATE)
+
+			GAIA_ENUM_BEGIN(SAMPLER2D_STATE)
+				SAMPLER2D_STATE_ADDRESSU,
+				SAMPLER2D_STATE_ADDRESSV,
+				SAMPLER2D_STATE_MINFILTER,
+				SAMPLER2D_STATE_MAXFILTER,
+			GAIA_ENUM_END(SAMPLER2D_STATE)
+
+			GAIA_ENUM_BEGIN(ALPHA_BLEND_TYPE)
+				ALPHA_BLEND_TYPE_SRCALPHA,
+				ALPHA_BLEND_TYPE_DSTALPHA,
+				ALPHA_BLEND_TYPE_INVSRCALPHA,
+				ALPHA_BLEND_TYPE_INVDSTALPHA,
+			GAIA_ENUM_END(ALPHA_BLEND_TYPE)
+
+		public:
+
+			/* State. */
+			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs) = 0;
+			virtual GAIA::GVOID GetRender2DState(RENDER2D_STATE& rs) const = 0;
+			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) = 0;
+			virtual GAIA::GVOID GetSampler2DState(GAIA::N32 nSamplerIndex, SAMPLER2D_STATE& ss) const = 0;
 
 			/* Font. */
 			virtual __MyType::FontFamily* CreateFontFamily(
