@@ -2180,324 +2180,336 @@
 				>
 			</File>
 			<Filter
-				Name="FUNCTION_LAYER"
+				Name="PLATFORMTEST"
+				>
+			</Filter>
+			<Filter
+				Name="UNITTEST"
 				>
 				<Filter
-					Name="UI"
+					Name="FUNCTION_LAYER"
 					>
 					<Filter
-						Name="CANVAS"
+						Name="UI"
 						>
-						<File
-							RelativePath=".\TEST\t_ui_canvas.h"
+						<Filter
+							Name="CANVAS"
 							>
-						</File>
+							<File
+								RelativePath=".\TEST\t_ui_canvas.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="VIRTUAL-REALIZE-SYSTEM"
+						>
+						<Filter
+							Name="RENDER"
+							>
+							<Filter
+								Name="2D"
+								>
+								<File
+									RelativePath=".\TEST\t_render_ddraw.h"
+									>
+								</File>
+								<File
+									RelativePath=".\TEST\t_render_gdiplus.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="3D"
+								>
+								<File
+									RelativePath=".\TEST\t_render_dx10.h"
+									>
+								</File>
+								<File
+									RelativePath=".\TEST\t_render_dx11.h"
+									>
+								</File>
+								<File
+									RelativePath=".\TEST\t_render_dx9.h"
+									>
+								</File>
+								<File
+									RelativePath=".\TEST\t_render_gl1.h"
+									>
+								</File>
+								<File
+									RelativePath=".\TEST\t_render_gl2.h"
+									>
+								</File>
+								<File
+									RelativePath=".\TEST\t_render_gl3.h"
+									>
+								</File>
+								<File
+									RelativePath=".\TEST\t_render_gles1.h"
+									>
+								</File>
+								<File
+									RelativePath=".\TEST\t_render_gles2.h"
+									>
+								</File>
+								<File
+									RelativePath=".\TEST\t_render_gles3.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="IMAGEWORK"
+								>
+								<File
+									RelativePath=".\TEST\t_render_imagework.h"
+									>
+								</File>
+							</Filter>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
-					Name="VIRTUAL-REALIZE-SYSTEM"
+					Name="PLAYFORM_LAYER"
 					>
 					<Filter
-						Name="RENDER"
+						Name="NAMESPACE"
+						>
+						<File
+							RelativePath=".\TEST\t_namespace.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="CONTAINER"
+						>
+						<File
+							RelativePath=".\TEST\t_container_accesser.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_array.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_arrayvector.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_avltree.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_bitset.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_buffer.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_chars.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_cooperate.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_graph.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_list.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_map.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_multiavltree.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_multimap.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_multiset.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_orderless.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_pool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_ptr.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_queue.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_ref.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_set.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_stack.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_stackbitset.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_stackqueue.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_stackstack.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_staticstringpool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_storage.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_string.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_stringpool.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_tree.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_trietree.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_vector.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="ALGORITHM"
+						>
+						<File
+							RelativePath=".\TEST\t_algorithm_set.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="LOCALE"
+						>
+						<File
+							RelativePath=".\TEST\t_locale.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="MATH"
 						>
 						<Filter
-							Name="2D"
+							Name="ARITHMATIC"
 							>
 							<File
-								RelativePath=".\TEST\t_render_ddraw.h"
+								RelativePath=".\TEST\t_math_arithmatic_basic.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gdiplus.h"
+								RelativePath=".\TEST\t_math_arithmatic_lerp.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_math_arithmatic_random.h"
 								>
 							</File>
 						</Filter>
 						<Filter
-							Name="3D"
+							Name="COOKIES"
 							>
 							<File
-								RelativePath=".\TEST\t_render_dx10.h"
+								RelativePath=".\TEST\t_math_cookies_aabb.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_dx11.h"
+								RelativePath=".\TEST\t_math_cookies_aabr.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_dx9.h"
+								RelativePath=".\TEST\t_math_cookies_argb.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gl1.h"
+								RelativePath=".\TEST\t_math_cookies_mtx22.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gl2.h"
+								RelativePath=".\TEST\t_math_cookies_mtx33.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gl3.h"
+								RelativePath=".\TEST\t_math_cookies_mtx43.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gles1.h"
+								RelativePath=".\TEST\t_math_cookies_mtx44.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gles2.h"
+								RelativePath=".\TEST\t_math_cookies_nrgb.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gles3.h"
+								RelativePath=".\TEST\t_math_cookies_qua.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_math_cookies_vec2.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_math_cookies_vec3.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_math_cookies_vec4.h"
 								>
 							</File>
 						</Filter>
-						<Filter
-							Name="IMAGEWORK"
+					</Filter>
+					<Filter
+						Name="DATAPHASE"
+						>
+						<File
+							RelativePath=".\TEST\t_dataphase_xml.h"
 							>
-							<File
-								RelativePath=".\TEST\t_render_imagework.h"
-								>
-							</File>
-						</Filter>
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
-				Name="PLAYFORM_LAYER"
+				Name="PERFTEST"
 				>
-				<Filter
-					Name="NAMESPACE"
-					>
-					<File
-						RelativePath=".\TEST\t_namespace.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="CONTAINER"
-					>
-					<File
-						RelativePath=".\TEST\t_container_accesser.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_array.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_arrayvector.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_avltree.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_bitset.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_buffer.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_chars.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_cooperate.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_graph.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_list.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_map.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_multiavltree.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_multimap.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_multiset.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_orderless.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_pool.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_ptr.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_queue.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_ref.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_set.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_stack.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_stackbitset.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_stackqueue.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_stackstack.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_staticstringpool.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_storage.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_string.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_stringpool.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_tree.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_trietree.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TEST\t_container_vector.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="ALGORITHM"
-					>
-					<File
-						RelativePath=".\TEST\t_algorithm_set.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="LOCALE"
-					>
-					<File
-						RelativePath=".\TEST\t_locale.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="MATH"
-					>
-					<Filter
-						Name="ARITHMATIC"
-						>
-						<File
-							RelativePath=".\TEST\t_math_arithmatic_basic.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_arithmatic_lerp.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_arithmatic_random.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="COOKIES"
-						>
-						<File
-							RelativePath=".\TEST\t_math_cookies_aabb.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_aabr.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_argb.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_mtx22.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_mtx33.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_mtx43.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_mtx44.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_nrgb.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_qua.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_vec2.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_vec3.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TEST\t_math_cookies_vec4.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="DATAPHASE"
-					>
-					<File
-						RelativePath=".\TEST\t_dataphase_xml.h"
-						>
-					</File>
-				</Filter>
 			</Filter>
 		</Filter>
 	</Files>

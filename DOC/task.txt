@@ -2,6 +2,10 @@
 
 	FWORK STRUCTURE
 
+		Instance remember the factory.
+		
+		Factory remember the Instance.
+		
 
 	ALGORITHM
 
@@ -88,6 +92,15 @@
 		Timer implement.
 		
 		RealTimer implement.
+		
+		
+	PERFORMANCE OPTIMIZE
+
+		All object's size print to xml.
+
+	PLATFORM TEST
+	
+		Base type size.
 
 
 [PROMETHEUS TASK]
