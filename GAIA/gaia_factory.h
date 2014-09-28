@@ -84,6 +84,10 @@ namespace GAIA
 				else if(cid == GAIA::FWORK::CLSID_CANVAS)
 					pRet = new GAIA::UI::Canvas;
 
+				/* Render. */
+				else if(cid == GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS)
+					pRet = new GAIA::RENDER::RenderGDIPlus;
+
 				if(pRet == GNIL)
 				{
 					for(LIST_CREATECALLBACK::_sizetype x = 0; x < m_listCreateCB.size(); ++x)

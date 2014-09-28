@@ -112,18 +112,39 @@ namespace GAIA
 			virtual GAIA::GVOID GetSampler2DState(GAIA::N32 nSamplerIndex, SAMPLER2D_STATE& ss) const = 0;
 
 			/* Font. */
-			virtual __MyType::FontFamily* CreateFontFamily(
-				const __MyType::FontFamily::FontFamilyDesc& desc) = 0;
-			virtual __MyType::Font* CreateFont(
-				__MyType::FontFamily& ff,
-				const __MyType::Font::FontDesc& desc) = 0;
+			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(
+				const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc) = 0;
+			virtual GAIA::RENDER::Render2D::Font* CreateFontPainter(
+				GAIA::RENDER::Render2D::FontFamily& ff,
+				const GAIA::RENDER::Render2D::Font::FontDesc& desc) = 0;
 			virtual GAIA::GVOID DrawFont(
-				__MyType::Font* pFont,
+				GAIA::RENDER::Render2D::Font* pFont,
 				const GAIA::TCH* pszText,
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
 
-			/* Pen and brush. */
+			/* Texture. */
+			virtual GAIA::RENDER::Render2D::Texture* CreateTexture() = 0;
+			virtual GAIA::GVOID SetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture) = 0;
+			virtual GAIA::GVOID GetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const = 0;
+			virtual GAIA::GVOID DrawTexture(
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr, 
+				GAIA::RENDER::Render2D::Texture& tex, 
+				const GAIA::MATH::MTX22<GAIA::REAL>& mtxTM) = 0;
+
+			/* Target. */
+			virtual GAIA::RENDER::Render2D::Target* CreateTarget() = 0;
+			virtual GAIA::GVOID SetTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target* pTarget) = 0;
+			virtual GAIA::GVOID GetTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const = 0;
+
+			/* Shader. */
+			virtual GAIA::RENDER::Render2D::Shader* CreateShader() = 0;
+			virtual GAIA::GVOID SetShader(GAIA::RENDER::Render2D::Shader* pShader) = 0;
+			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render2D::Shader*& pShader) const = 0;
+			virtual GAIA::GVOID SetShaderConstant() = 0;
+			virtual GAIA::GVOID GetShaderConstant() const = 0;
+
+			/* Draw. */
 			virtual GAIA::GVOID DrawLine(
 				const GAIA::MATH::VEC2<GAIA::REAL>& s,
 				const GAIA::MATH::VEC2<GAIA::REAL>& e,
@@ -135,27 +156,6 @@ namespace GAIA
 			virtual GAIA::GVOID DrawTriangle(
 				const GAIA::MATH::VEC2<GAIA::REAL> pos[3],
 				const GAIA::MATH::AABR<GAIA::REAL> crs[3]) = 0;
-
-			/* Texture. */
-			virtual __MyType::Texture* CreateTexture() = 0;
-			virtual GAIA::GVOID SetTexture(GAIA::N32 nTextureIndex, __MyType::Texture* pTexture) = 0;
-			virtual GAIA::GVOID GetTexture(GAIA::N32 nTextureIndex, __MyType::Texture*& pTexture) const = 0;
-			virtual GAIA::GVOID DrawTexture(
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr, 
-				__MyType::Texture& tex, 
-				const GAIA::MATH::MTX22<GAIA::REAL>& mtxTM) = 0;
-
-			/* Target. */
-			virtual __MyType::Target* CreateTarget() = 0;
-			virtual GAIA::GVOID SetTarget(GAIA::N32 nTargetIndex, __MyType::Target* pTarget) = 0;
-			virtual GAIA::GVOID GetTarget(GAIA::N32 nTargetIndex, __MyType::Target*& pTarget) const = 0;
-
-			/* Shader. */
-			virtual __MyType::Shader* CreateShader() = 0;
-			virtual GAIA::GVOID SetShader(__MyType::Shader* pShader) = 0;
-			virtual GAIA::GVOID GetShader(__MyType::Shader*& pShader) const = 0;
-			virtual GAIA::GVOID SetShaderConstant() = 0;
-			virtual GAIA::GVOID GetShaderConstant() const = 0;
 
 		private:
 		};
