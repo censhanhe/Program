@@ -121,7 +121,7 @@ namespace GAIA
 			typedef GAIA::CTN::Vector<SendRec> __SendListType;
 		public:
 			static const GAIA::U32 MAX_NOSTABILITY_SENDSIZE = 840;
-			class ConnectDesc
+			class ConnectDesc : public GAIA::Base
 			{
 			public:
 				GINL ConnectDesc(){this->reset();}
@@ -187,7 +187,7 @@ namespace GAIA
 		class NetworkListener : public GAIA::THREAD::Thread
 		{
 		public:
-			class ListenDesc
+			class ListenDesc : public GAIA::Base
 			{
 			public:
 				GINL ListenDesc(){this->reset();}

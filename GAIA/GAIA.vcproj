@@ -2166,6 +2166,10 @@
 					RelativePath=".\gaia_instance.h"
 					>
 				</File>
+				<File
+					RelativePath=".\gaia_instancedesc.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

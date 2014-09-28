@@ -11,10 +11,8 @@ namespace GAIA
 			typedef GAIA::RENDER::Render __MyType;
 
 		public:
-			class RenderDesc : public virtual GAIA::Base
+			class RenderDesc : public virtual GAIA::FWORK::InstanceDesc
 			{
-			public:
-				GINL RenderDesc(){this->reset();}
 			public:
 				virtual GAIA::GVOID reset(){pCanvas = GNIL;}
 				virtual GAIA::BL check() const

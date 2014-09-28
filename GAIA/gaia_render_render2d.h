@@ -14,8 +14,6 @@ namespace GAIA
 			class RenderDesc : public virtual GAIA::RENDER::Render::RenderDesc
 			{
 			public:
-				GINL RenderDesc(){this->reset();}
-			public:
 				virtual GAIA::GVOID reset(){GAIA::RENDER::Render::RenderDesc::reset();}
 				virtual GAIA::BL check() const
 				{
@@ -29,9 +27,12 @@ namespace GAIA
 			class FontPainterFamily : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class FontPainterFamilyDesc : public virtual GAIA::Base
+				class FontPainterFamilyDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
+					GINL FontPainterFamilyDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const FontPainterFamilyDesc& GetDesc() const{return m_desc;}
@@ -42,9 +43,12 @@ namespace GAIA
 			class FontPainter : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class FontPainterDesc : public virtual GAIA::Base
+				class FontPainterDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
+					GINL FontPainterDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const FontPainterDesc& GetDesc() const{return m_desc;}
@@ -55,9 +59,12 @@ namespace GAIA
 			class Target : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class TargetDesc : public virtual GAIA::Base
+				class TargetDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
+					GINL TargetDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const TargetDesc& GetDesc() const{return m_desc;}
@@ -68,9 +75,12 @@ namespace GAIA
 			class Shader : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class ShaderDesc : public virtual GAIA::Base
+				class ShaderDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
+					GINL ShaderDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const ShaderDesc& GetDesc() const{return m_desc;}
@@ -81,9 +91,12 @@ namespace GAIA
 			class Texture : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class TextureDesc : public virtual GAIA::Base
+				class TextureDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
+					GINL TextureDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const TextureDesc& GetDesc() const{return m_desc;}

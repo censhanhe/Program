@@ -13,7 +13,7 @@ namespace GAIA
 			typedef GAIA::MATH::VEC3<GAIA::REAL> __RotateType;
 			typedef GAIA::MATH::ARGB<GAIA::U8> __ColorType;
 		public:
-			class Desc : public GAIA::Base
+			class Desc : public virtual GAIA::FWORK::InstanceDesc
 			{
 			public:
 				const GAIA::TCH* pszName;

@@ -17,7 +17,6 @@ namespace GAIA
 			class RenderDesc : public virtual GAIA::RENDER::Render2D::RenderDesc
 			{
 			public:
-				GINL RenderDesc(){this->reset();}
 				virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::RenderDesc::reset();}
 				virtual GAIA::BL check() const
 				{
@@ -34,6 +33,9 @@ namespace GAIA
 				class FontPainterFamilyDesc : public virtual GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc
 				{
 				public:
+					GINL FontPainterFamilyDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const FontPainterFamilyDesc& GetDesc() const{return m_desc;}
@@ -47,6 +49,9 @@ namespace GAIA
 				class FontPainterDesc : public virtual GAIA::RENDER::Render2D::FontPainter::FontPainterDesc
 				{
 				public:
+					GINL FontPainterDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const FontPainterDesc& GetDesc() const{return m_desc;}
@@ -60,6 +65,9 @@ namespace GAIA
 				class TargetDesc : public virtual GAIA::RENDER::Render2D::Target::TargetDesc
 				{
 				public:
+					GINL TargetDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const TargetDesc& GetDesc() const{return m_desc;}
@@ -73,6 +81,9 @@ namespace GAIA
 				class ShaderDesc : public virtual GAIA::RENDER::Render2D::Shader::ShaderDesc
 				{
 				public:
+					GINL ShaderDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const ShaderDesc& GetDesc() const{return m_desc;}
@@ -86,6 +97,9 @@ namespace GAIA
 				class TextureDesc : public virtual GAIA::RENDER::Render2D::Texture::TextureDesc
 				{
 				public:
+					GINL TextureDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const TextureDesc& GetDesc() const{return m_desc;}

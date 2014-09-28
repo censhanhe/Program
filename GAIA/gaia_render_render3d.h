@@ -14,7 +14,6 @@ namespace GAIA
 			class RenderDesc : public virtual GAIA::RENDER::Render2D::RenderDesc
 			{
 			public:
-				GINL RenderDesc(){this->reset();}
 				virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::RenderDesc::reset();}
 				virtual GAIA::BL check() const
 				{
@@ -28,9 +27,12 @@ namespace GAIA
 			class VertexDeclaration : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class VertexDeclarationDesc : public virtual GAIA::Base
+				class VertexDeclarationDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
+					GINL VertexDeclarationDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const VertexDeclarationDesc& GetDesc() const{return m_desc;}
@@ -41,9 +43,12 @@ namespace GAIA
 			class IndexBuffer : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class IndexBufferDesc : public virtual GAIA::Base
+				class IndexBufferDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
+					GINL IndexBufferDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const IndexBufferDesc& GetDesc() const{return m_desc;}
@@ -54,9 +59,12 @@ namespace GAIA
 			class VertexBuffer : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class VertexBufferDesc : public virtual GAIA::Base
+				class VertexBufferDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
+					GINL VertexBufferDesc(){this->reset();}
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
 				const VertexBufferDesc& GetDesc() const{return m_desc;}
