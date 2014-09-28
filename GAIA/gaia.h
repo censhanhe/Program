@@ -8,6 +8,7 @@
 #include	"gaia_type.h"
 #include	"gaia_type_convert.h"
 #include	"gaia_type_traits2.h"
+#include	"gaia_platform.h"
 #include	"gaia_internal.h"
 
 #include	"gaia_print_format.h"
@@ -261,10 +262,25 @@
 *
 *    [gaia_using_namespace.h]
 *        include this file will cause all gaia namespace been used.
-*		WARNING! gaia's namespace will protect gaia source code
+*        WARNING! gaia's namespace will protect gaia source code
 *        library's symbol been declaration as unique symbol. if you
 *        want to implement a high quality program, please NOT include
 *        this header file(RECOMMANDED).
+*
+*/
+
+/*
+*    HOW TO ACTIVE THE PLATFORM FEATURES ? 
+*
+*    The following macro will specified which feature will be actived.
+*
+*        1. GAIA_PLATFORM_NETWORK
+*        2. GAIA_PLATFORM_GDIPLUS
+*        3. GAIA_PLATFORM_COM
+*        4. 
+*
+*
+*
 *
 */
 
