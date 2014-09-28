@@ -5,10 +5,10 @@ namespace GAIA
 {
 	namespace RENDER
 	{
-		class RenderDDraw : public virtual GAIA::RENDER::Render2D
+		class Render2DDDraw : public virtual GAIA::RENDER::Render2D
 		{
 		public:
-			typedef RenderDDraw __MyType;
+			typedef Render2DDDraw __MyType;
 
 		public:
 			class RenderDesc : public virtual GAIA::RENDER::Render2D::RenderDesc
@@ -82,8 +82,8 @@ namespace GAIA
 			};
 
 		public:
-			GINL RenderDDraw(){this->init();}
-			GINL ~RenderDDraw(){}
+			GINL Render2DDDraw(){this->init();}
+			GINL ~Render2DDDraw(){}
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_DDRAW;}
 
