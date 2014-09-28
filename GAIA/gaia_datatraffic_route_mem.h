@@ -9,7 +9,7 @@ namespace GAIA
 		{
 		public:
 			RouteMem(){}
-			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_ROUTE_MEM;}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_DATATRAFFIC_ROUTEMEM;}
 			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::U32& size)
 			{
 				return GAIA::True;

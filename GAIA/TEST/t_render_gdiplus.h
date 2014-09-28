@@ -12,7 +12,7 @@ namespace GAIATEST
 		typedef GAIA::RENDER::Render2DGDIPlus __RenderType;
 
 		/* Create convas. */
-		GAIA::UI::Canvas* pCanvas = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_CANVAS, GNIL));
+		GAIA::UI::Canvas* pCanvas = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_UI_CANVAS, GNIL));
 		GAIA_AST(pCanvas != GNIL);
 
 		/* Create render. */

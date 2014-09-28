@@ -9,7 +9,7 @@ namespace GAIA
 		{
 		public:
 			GINL GatewayFile(){}
-			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_GATEWAY_FILE;}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_DATATRAFFIC_GATEWAYFILE;}
 			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::U32& size)
 			{
 				return GAIA::True;

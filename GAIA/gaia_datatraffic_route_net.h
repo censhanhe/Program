@@ -9,7 +9,7 @@ namespace GAIA
 		{
 		public:
 			RouteNet(){}
-			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_ROUTE_NET;}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_DATATRAFFIC_ROUTENET;}
 			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::U32& size)
 			{
 				return GAIA::True;

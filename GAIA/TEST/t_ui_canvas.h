@@ -96,14 +96,14 @@ namespace GAIATEST
 		while(GAIA::UI::UpdateMessage(GAIA::False)){}
 
 		/* Construct canvas instance. */
-		GAIA::UI::Canvas* pCanvas1 = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_CANVAS, GNIL));
+		GAIA::UI::Canvas* pCanvas1 = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_UI_CANVAS, GNIL));
 		if(pCanvas1 == GNIL)
 		{
 			GTLINE2("Create canvas1 failed!");
 			++nRet;
 			return nRet;
 		}
-		GAIA::UI::Canvas* pCanvas2 = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_CANVAS, GNIL));
+		GAIA::UI::Canvas* pCanvas2 = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_UI_CANVAS, GNIL));
 		if(pCanvas2 == GNIL)
 		{
 			GTLINE2("Create canvas2 failed!");

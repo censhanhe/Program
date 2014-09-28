@@ -229,7 +229,7 @@ namespace DWARFS_FSHA
 			GAIA::FWORK::Factory* pFactory = new GAIA::FWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_SERIALIZER, GNIL));
-			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_FILEIO, &fileiofile));
+			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_IO_FILEIO, &fileiofile));
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_READ))
 			{
 				pFileIO->Release();
@@ -321,7 +321,7 @@ namespace DWARFS_FSHA
 			GAIA::FWORK::Factory* pFactory = new GAIA::FWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_SERIALIZER, GNIL));
-			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_FILEIO, &fileiofile));
+			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_IO_FILEIO, &fileiofile));
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_WRITE))
 			{
 				pFileIO->Release();
@@ -906,7 +906,7 @@ namespace DWARFS_FSHA
 			GAIA::FWORK::Factory* pFactory = new GAIA::FWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_SERIALIZER, GNIL));
-			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_FILEIO, &fileiofile));
+			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_IO_FILEIO, &fileiofile));
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_READ))
 			{
 				pFileIO->Release();
@@ -980,7 +980,7 @@ namespace DWARFS_FSHA
 			GAIA::FWORK::Factory* pFactory = new GAIA::FWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_SERIALIZER, GNIL));
-			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_FILEIO, &fileiofile));
+			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_IO_FILEIO, &fileiofile));
 			if(!pFileIO->Open(pszFileName, GAIA::IO::IO::IO_TYPE_WRITE))
 			{
 				pFileIO->Release();
@@ -1420,7 +1420,7 @@ namespace DWARFS_FSHA
 			GAIA::FWORK::Factory* pFactory = new GAIA::FWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_SERIALIZER, GNIL));
-			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_FILEIO, &fileiofile));
+			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_IO_FILEIO, &fileiofile));
 			if(!pFileIO->Open(FILE_BANIP, GAIA::IO::IO::IO_TYPE_READ))
 			{
 				pFileIO->Release();
@@ -1472,7 +1472,7 @@ namespace DWARFS_FSHA
 			GAIA::FWORK::Factory* pFactory = new GAIA::FWORK::Factory;
 			GAIA::SERIALIZER::Serializer* pSerializer =
 				dynamic_cast<GAIA::SERIALIZER::Serializer*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_SERIALIZER, GNIL));
-			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_FILEIO, &fileiofile));
+			GAIA::IO::FileIO* pFileIO = dynamic_cast<GAIA::IO::FileIO*>(pFactory->CreateInstance(GAIA::FWORK::CLSID_IO_FILEIO, &fileiofile));
 			if(!pFileIO->Open(FILE_BANIP, GAIA::IO::IO::IO_TYPE_WRITE))
 			{
 				pFileIO->Release();

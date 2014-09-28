@@ -63,7 +63,7 @@ namespace GAIA
 				CanvasStyle style;
 			};
 		public:
-			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_CANVAS;}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_UI_CANVAS;}
 		public:
 			GAIA_DEBUG_CODEPURE_MEMFUNC Canvas();
 			GAIA_DEBUG_CODEPURE_MEMFUNC ~Canvas();

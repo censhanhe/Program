@@ -10,7 +10,7 @@ namespace GAIA
 		public:
 			GINL TransmissionIDM(){}
 			GINL ~TransmissionIDM(){}
-			GINL virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_TRANSMISSION_IDM;}
+			GINL virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_DATATRAFFIC_TRANSMISSIONIDM;}
 			virtual GAIA::GVOID WorkProcedure(){}
 		};
 	};

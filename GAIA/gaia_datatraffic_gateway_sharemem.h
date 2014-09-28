@@ -9,7 +9,7 @@ namespace GAIA
 		{
 		public:
 			GatewayShareMem(){}
-			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_GATEWAY_SHAREMEM;}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_DATATRAFFIC_GATEWAYSHAREMEM;}
 			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::U32& size)
 			{
 				return GAIA::True;

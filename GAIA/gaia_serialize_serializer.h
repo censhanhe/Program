@@ -10,7 +10,7 @@ namespace GAIA
 		public:
 			GINL Serializer(){this->init();}
 			GINL ~Serializer(){}
-			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_SCREENIO;}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_IO_SCREENIO;}
 			virtual GAIA::BL Begin(GAIA::GVOID* pParameter)
 			{
 				if(this->IsBegin())

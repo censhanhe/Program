@@ -35,7 +35,7 @@ namespace GAIATEST
 		}
 		{
 			Factory fac;
-			Canvas* pCanvas = dynamic_cast<Canvas*>(fac.CreateInstance(CLSID_CANVAS, GNIL));
+			Canvas* pCanvas = dynamic_cast<Canvas*>(fac.CreateInstance(CLSID_UI_CANVAS, GNIL));
 			if(pCanvas != GNIL)
 			{
 				Canvas::CanvasDesc desc;
