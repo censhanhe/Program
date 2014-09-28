@@ -16,33 +16,33 @@ namespace GAIA
 			public:
 			};
 
-			class FontFamily : public virtual GAIA::RENDER::Render2D::FontFamily
+			class FontPainterFamily : public virtual GAIA::RENDER::Render2D::FontPainterFamily
 			{
 			public:
-				class FontFamilyDesc : public GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc
+				class FontPainterFamilyDesc : public GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc
 				{
 				public:
 				};
 			public:
-				const FontFamilyDesc& GetDesc() const{return m_desc;}
+				const FontPainterFamilyDesc& GetDesc() const{return m_desc;}
 			private:
-				FontFamilyDesc m_desc;
+				FontPainterFamilyDesc m_desc;
 			};
 
-			class Font : public virtual GAIA::RENDER::Render2D::FontFamily
+			class FontPainter : public virtual GAIA::RENDER::Render2D::FontPainterFamily
 			{
 			public:
-				class FontDesc : public GAIA::RENDER::Render2D::Font::FontDesc
+				class FontPainterDesc : public GAIA::RENDER::Render2D::FontPainter::FontPainterDesc
 				{
 				public:
 				};
 			public:
-				const FontDesc& GetDesc() const{return m_desc;}
+				const FontPainterDesc& GetDesc() const{return m_desc;}
 			private:
-				FontDesc m_desc;
+				FontPainterDesc m_desc;
 			};
 
-			class Target : public virtual GAIA::RENDER::Render2D::FontFamily
+			class Target : public virtual GAIA::RENDER::Render2D::FontPainterFamily
 			{
 			public:
 				class TargetDesc : public GAIA::RENDER::Render2D::Target::TargetDesc
@@ -55,7 +55,7 @@ namespace GAIA
 				TargetDesc m_desc;
 			};
 
-			class Shader : public virtual GAIA::RENDER::Render2D::FontFamily
+			class Shader : public virtual GAIA::RENDER::Render2D::FontPainterFamily
 			{
 			public:
 				class ShaderDesc : public GAIA::RENDER::Render2D::Shader::ShaderDesc
@@ -68,7 +68,7 @@ namespace GAIA
 				ShaderDesc m_desc;
 			};
 
-			class Texture : public virtual GAIA::RENDER::Render2D::FontFamily
+			class Texture : public virtual GAIA::RENDER::Render2D::FontPainterFamily
 			{
 			public:
 				class TextureDesc : public GAIA::RENDER::Render2D::Texture::TextureDesc
@@ -120,14 +120,14 @@ namespace GAIA
 			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss){}
 			virtual GAIA::GVOID GetSampler2DState(GAIA::N32 nSamplerIndex, SAMPLER2D_STATE& ss) const{}
 
-			/* Font. */
-			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(
-				const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc){return GNIL;}
-			virtual GAIA::RENDER::Render2D::Font* CreateFontPainter(
-				GAIA::RENDER::Render2D::FontFamily& ff,
-				const GAIA::RENDER::Render2D::Font::FontDesc& desc){return GNIL;}
-			virtual GAIA::GVOID DrawFont(
-				GAIA::RENDER::Render2D::Font* pFont,
+			/* FontPainter. */
+			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(
+				const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc){return GNIL;}
+			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainterPainter(
+				GAIA::RENDER::Render2D::FontPainterFamily& ff,
+				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc){return GNIL;}
+			virtual GAIA::GVOID DrawFontPainter(
+				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
 				const GAIA::TCH* pszText,
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::ARGB<GAIA::REAL>& cr){}

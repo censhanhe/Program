@@ -21,7 +21,7 @@ namespace GAIA
 
 			/* Target. */
 
-			/* Font. */
+			/* FontPainter. */
 
 			/* Rect. */
 
