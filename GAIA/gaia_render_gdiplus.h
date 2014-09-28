@@ -123,6 +123,15 @@ namespace GAIA
 				desc.pCanvas->Reference();
 				m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::RenderDesc&)(desc);
 
+				GAIA::GVOID* pHandle = desc.pCanvas->GetHandle();
+				GAIA_AST(pHandle != GNIL);
+
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				HWND hWnd = GSCAST(HWND)(pHandle);
+				m_hDC = ::GetDC(hWnd);
+				m_pGraphics = new Gdiplus::Graphics(m_hDC);
+			#endif
+
 				m_bCreated = GAIA::True;
 				return GAIA::True;
 			}
@@ -130,6 +139,20 @@ namespace GAIA
 			{
 				if(!m_bCreated)
 					return GAIA::False;
+
+				GAIA::GVOID* pHandle = m_desc.pCanvas->GetHandle();
+				GAIA_AST(pHandle != GNIL);
+
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				if(m_hDC != GNIL)
+				{
+					HWND hWnd = GSCAST(HWND)(pHandle);
+					::ReleaseDC(hWnd, m_hDC);
+					m_hDC = GNIL;
+				}
+				GAIA_DELETE_SAFE(m_pGraphics);
+				GAIA_DELETE_SAFE(m_pSwapGraphics);
+			#endif
 
 				m_desc.pCanvas->Release();
 				m_desc.reset();
@@ -206,11 +229,23 @@ namespace GAIA
 			GINL GAIA::GVOID init()
 			{
 				m_bCreated = GAIA::False;
+
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				m_hDC = GNIL;
+				m_pGraphics = GNIL;
+				m_pSwapGraphics = GNIL;
+			#endif
 			}
 
 		private:
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
+
+		#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+			HDC m_hDC;
+			Gdiplus::Graphics* m_pGraphics;
+			Gdiplus::Graphics* m_pSwapGraphics;
+		#endif
 		};
 	};
 };

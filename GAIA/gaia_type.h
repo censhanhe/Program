@@ -411,7 +411,10 @@ namespace GAIA
 #else
 #	define GAIA_MALLOC(type, size) new type[size]
 #	define GAIA_MFREE(p) delete[] (p);
-#	define GAIA_MFREE_SAFE(p) if(p != GNIL){GAIA_MFREE(p); p = GNIL}
+#	define GAIA_MFREE_SAFE(p) if((p) != GNIL){GAIA_MFREE(p); (p) = GNIL;}
 #endif
+
+#define GAIA_DELETE_SAFE(p) if((p) != GNIL){delete (p); (p) = GNIL;}
+#define GAIA_DELETEARRAY_SAFE(p) if((p) != GNIL){delete[] (p); (p) = GNIL;}
 
 #endif
