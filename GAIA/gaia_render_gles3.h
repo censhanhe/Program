@@ -130,21 +130,21 @@ namespace GAIA
 
 			virtual GAIA::BL Create(const GAIA::RENDER::Render::RenderDesc& desc)
 			{
-				if(m_bInitialized)
+				if(m_bCreated)
 					return GAIA::False;
-				m_bInitialized = GAIA::True;
+				m_bCreated = GAIA::True;
 				return GAIA::True;
 			}
 			virtual GAIA::BL Destroy()
 			{
-				if(!m_bInitialized)
+				if(!m_bCreated)
 					return GAIA::False;
-				m_bInitialized = GAIA::False;
+				m_bCreated = GAIA::False;
 				return GAIA::True;
 			}
 			virtual GAIA::BL IsCreated() const
 			{
-				return m_bInitialized;
+				return m_bCreated;
 			}
 			virtual const GAIA::RENDER::Render::RenderDesc& GetDesc() const
 			{
@@ -243,11 +243,11 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID init()
 			{
-				m_bInitialized = GAIA::False;
+				m_bCreated = GAIA::False;
 			}
 
 		private:
-			GAIA::BL m_bInitialized;
+			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
 		};
 	};
