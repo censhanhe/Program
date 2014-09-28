@@ -2,6 +2,8 @@
 #define		__GAIA_UI_CANVASMSGDISP_INDP_H__
 
 #if GAIA_OS == GAIA_OS_WINDOWS
+#	include <winsock2.h>
+#	include <ws2tcpip.h>
 #	include <windows.h>
 #else
 #endif

@@ -7,7 +7,9 @@
 #		pragma comment(lib, "ws2_32.lib")
 #	endif
 #	ifdef GAIA_PLATFORM_GDIPLUS
-#		include <comdef.h>
+#		include <winsock2.h>
+#		include <ws2tcpip.h>
+#		include <windows.h>
 #		include <gdiplus.h>
 #		pragma comment(lib, "gdiplus.lib")
 #	endif
