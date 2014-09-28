@@ -91,22 +91,22 @@ namespace GAIA
 					pRet = new GAIA::RENDER::Render2DGDIPlus;
 				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX9)
 					pRet = new GAIA::RENDER::Render3DDX9;
-				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX10)
-				//	pRet = new GAIA::RENDER::Render3DDX10;
-				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX11)
-				//	pRet = new GAIA::RENDER::Render3DDX11;
-				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL1)
-				//	pRet = new GAIA::RENDER::Render3DGL1;
-				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL2)
-				//	pRet = new GAIA::RENDER::Render3DGL2;
-				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL3)
-				//	pRet = new GAIA::RENDER::Render3DGL3;
-				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES1)
-				//	pRet = new GAIA::RENDER::Render3DGLES1;
-				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES2)
-				//	pRet = new GAIA::RENDER::Render3DGLES2;
-				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES3)
-				//	pRet = new GAIA::RENDER::Render3DGLES3;
+				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX10)
+					pRet = new GAIA::RENDER::Render3DDX10;
+				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX11)
+					pRet = new GAIA::RENDER::Render3DDX11;
+				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL1)
+					pRet = new GAIA::RENDER::Render3DGL1;
+				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL2)
+					pRet = new GAIA::RENDER::Render3DGL2;
+				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL3)
+					pRet = new GAIA::RENDER::Render3DGL3;
+				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES1)
+					pRet = new GAIA::RENDER::Render3DGLES1;
+				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES2)
+					pRet = new GAIA::RENDER::Render3DGLES2;
+				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES3)
+					pRet = new GAIA::RENDER::Render3DGLES3;
 
 				if(pRet == GNIL)
 				{
