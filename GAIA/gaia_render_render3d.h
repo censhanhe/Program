@@ -16,6 +16,7 @@ namespace GAIA
 			public:
 			};
 
+		public:
 			class VertexDeclaration : public virtual GAIA::RENDER::Resource
 			{
 			public:
@@ -55,10 +56,12 @@ namespace GAIA
 				VertexBufferDesc m_desc;
 			};
 
+		public:
 			class VIEWPORT
 			{
 			public:
 			};
+
 		public:
 			GAIA_ENUM_BEGIN(DRAW_TRIANGLE_TYPE)
 				DRAW_TRIANGLE_TYPE_TRIANGLELIST,
@@ -81,6 +84,7 @@ namespace GAIA
 				INDEX_FORMAT_TYPE_32,
 			GAIA_ENUM_END(INDEX_FORMAT_TYPE)
 
+		public:
 			/* Viewport. */
 			virtual GAIA::GVOID SetViewport(const VIEWPORT& vp) = 0;
 			virtual GAIA::GVOID GetViewport(VIEWPORT& vp) const = 0;
@@ -111,6 +115,7 @@ namespace GAIA
 			virtual GAIA::GVOID GetTriangleType(DRAW_TRIANGLE_TYPE& dtt) const = 0;
 			virtual GAIA::GVOID DrawTriangle() = 0;
 			virtual GAIA::GVOID DrawIndexedTriangle() = 0;
+
 		private:
 		};
 	};

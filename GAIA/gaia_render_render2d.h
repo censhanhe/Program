@@ -16,6 +16,7 @@ namespace GAIA
 			public:
 			};
 
+		public:
 			class FontPainterFamily : public virtual GAIA::RENDER::Resource
 			{
 			public:

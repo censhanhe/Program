@@ -8,7 +8,7 @@ namespace GAIA
 		class Render2DGDIPlus : public virtual GAIA::RENDER::Render2D
 		{
 		public:
-			typedef Render2DGDIPlus __MyType;
+			typedef GAIA::RENDER::Render2DGDIPlus __MyType;
 
 		public:
 			class RenderDesc : public virtual GAIA::RENDER::Render2D::RenderDesc
@@ -16,6 +16,7 @@ namespace GAIA
 			public:
 			};
 
+		public:
 			class FontPainterFamily : public virtual GAIA::RENDER::Render2D::FontPainterFamily
 			{
 			public:
