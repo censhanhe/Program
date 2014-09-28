@@ -20,7 +20,7 @@ namespace GAIA
 			class FontPainterFamily : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class FontPainterFamilyDesc : public GAIA::Base
+				class FontPainterFamilyDesc : public virtual GAIA::Base
 				{
 				public:
 				};
@@ -33,7 +33,7 @@ namespace GAIA
 			class FontPainter : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class FontPainterDesc : public GAIA::Base
+				class FontPainterDesc : public virtual GAIA::Base
 				{
 				public:
 				};
@@ -46,7 +46,7 @@ namespace GAIA
 			class Target : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class TargetDesc : public GAIA::Base
+				class TargetDesc : public virtual GAIA::Base
 				{
 				public:
 				};
@@ -59,7 +59,7 @@ namespace GAIA
 			class Shader : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class ShaderDesc : public GAIA::Base
+				class ShaderDesc : public virtual GAIA::Base
 				{
 				public:
 				};
@@ -72,7 +72,7 @@ namespace GAIA
 			class Texture : public virtual GAIA::RENDER::Resource
 			{
 			public:
-				class TextureDesc : public GAIA::Base
+				class TextureDesc : public virtual GAIA::Base
 				{
 				public:
 				};
