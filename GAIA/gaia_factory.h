@@ -85,8 +85,28 @@ namespace GAIA
 					pRet = new GAIA::UI::Canvas;
 
 				/* Render. */
+				else if(cid == GAIA::FWORK::CLSID_RENDER_2D_DDRAW)
+					pRet = new GAIA::RENDER::RenderDDraw;
 				else if(cid == GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS)
 					pRet = new GAIA::RENDER::RenderGDIPlus;
+				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX9)
+				//	pRet = new GAIA::RENDER::RenderDX9;
+				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX10)
+				//	pRet = new GAIA::RENDER::RenderDX10;
+				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX11)
+				//	pRet = new GAIA::RENDER::RenderDX11;
+				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL1)
+				//	pRet = new GAIA::RENDER::RenderGL1;
+				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL2)
+				//	pRet = new GAIA::RENDER::RenderGL2;
+				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL3)
+				//	pRet = new GAIA::RENDER::RenderGL3;
+				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES1)
+				//	pRet = new GAIA::RENDER::RenderGLES1;
+				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES2)
+				//	pRet = new GAIA::RENDER::RenderGLES2;
+				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES3)
+				//	pRet = new GAIA::RENDER::RenderGLES3;
 
 				if(pRet == GNIL)
 				{
