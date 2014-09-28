@@ -14,6 +14,12 @@ namespace GAIA
 			class RenderDesc : public virtual GAIA::Base
 			{
 			public:
+				GINL RenderDesc(){this->reset();}
+			public:
+				virtual GAIA::GVOID reset(){pCanvas = GNIL;}
+				virtual GAIA::BL check(){return pCanvas != GNIL;}
+			public:
+				GAIA::UI::Canvas* pCanvas;
 			};
 
 		public:

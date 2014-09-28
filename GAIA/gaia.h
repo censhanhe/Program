@@ -188,6 +188,23 @@
 #include	"gaia_datatraffic_route_net.h"
 #include	"gaia_datatraffic_transmission_idm.h"
 
+#include	"gaia_ui_canvas.h"
+#include	"gaia_ui_canvasmsgdisp.h"
+
+#include	"gaia_mvc_viewlinker.h"
+#include	"gaia_mvc_model.h"
+#include	"gaia_mvc_controller.h"
+#include	"gaia_mvc_view.h"
+#include	"gaia_mvc_viewlinker_impl.h"
+
+#include	"gaia_collisioner_bounder.h"
+#include	"gaia_collisioner.h"
+#include	"gaia_collisioner_prime.h"
+#include	"gaia_collisioner_bsp.h"
+#include	"gaia_collisioner_tree4.h"
+#include	"gaia_collisioner_tree8.h"
+#include	"gaia_collisioner_boundarea.h"
+
 #include	"gaia_render_material.h"
 #include	"gaia_render_imagework.h"
 #include	"gaia_render_resource.h"
@@ -206,23 +223,6 @@
 #include 	"gaia_render_dx11.h"
 #include	"gaia_render_gdiplus.h"
 #include	"gaia_render_ddraw.h"
-
-#include	"gaia_mvc_viewlinker.h"
-#include	"gaia_mvc_model.h"
-#include	"gaia_mvc_controller.h"
-#include	"gaia_mvc_view.h"
-#include	"gaia_mvc_viewlinker_impl.h"
-
-#include	"gaia_collisioner_bounder.h"
-#include	"gaia_collisioner.h"
-#include	"gaia_collisioner_prime.h"
-#include	"gaia_collisioner_bsp.h"
-#include	"gaia_collisioner_tree4.h"
-#include	"gaia_collisioner_tree8.h"
-#include	"gaia_collisioner_boundarea.h"
-
-#include	"gaia_ui_canvas.h"
-#include	"gaia_ui_canvasmsgdisp.h"
 
 #include	"gaia_painter.h"
 
