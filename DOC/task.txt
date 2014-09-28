@@ -68,7 +68,7 @@
 
 	Render
 
-
+		Render2D support clear function.
 
 	Sounder
 
