@@ -24,8 +24,11 @@ namespace GAIATEST
 		GAIA_AST(pRender != GNIL);
 
 		/* Create render. */
+		__RenderType::RenderDesc descRender;
+		pRender->Create(descRender);
 
 		/* Destroy render. */
+		pRender->Destroy();
 
 		/* Release render instance. */
 		pRender->Release();
