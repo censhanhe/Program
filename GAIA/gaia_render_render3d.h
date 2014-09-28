@@ -14,6 +14,7 @@ namespace GAIA
 			class RenderDesc : public virtual GAIA::RENDER::Render2D::RenderDesc
 			{
 			public:
+				GINL RenderDesc(){this->reset();}
 				virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::RenderDesc::reset();}
 				virtual GAIA::BL check() const
 				{

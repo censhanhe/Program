@@ -14,6 +14,7 @@ namespace GAIA
 			class RenderDesc : public virtual GAIA::FWORK::InstanceDesc
 			{
 			public:
+				GINL RenderDesc(){this->reset();}
 				virtual GAIA::GVOID reset(){pCanvas = GNIL;}
 				virtual GAIA::BL check() const
 				{
