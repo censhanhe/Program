@@ -89,8 +89,8 @@ namespace GAIA
 					pRet = new GAIA::RENDER::Render2DDDraw;
 				else if(cid == GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS)
 					pRet = new GAIA::RENDER::Render2DGDIPlus;
-				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX9)
-				//	pRet = new GAIA::RENDER::Render3DDX9;
+				else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX9)
+					pRet = new GAIA::RENDER::Render3DDX9;
 				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX10)
 				//	pRet = new GAIA::RENDER::Render3DDX10;
 				//else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX11)
