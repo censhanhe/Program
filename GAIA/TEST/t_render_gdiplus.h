@@ -37,7 +37,7 @@ namespace GAIATEST
 		pRender = GNIL;
 
 		/* Release canvas instance. */
-		pCanvas->Destroy();
+		pCanvas->Release();
 		pCanvas = GNIL;
 
 		return nRet;

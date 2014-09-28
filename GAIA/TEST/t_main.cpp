@@ -1,6 +1,14 @@
-#define GAIA_PLATFORM_NETWORK
-#define GAIA_PLATFORM_GDIPLUS
-#define	GAIA_PLATFORM_COM
+#ifndef GAIA_PLATFORM_NETWORK
+#	define GAIA_PLATFORM_NETWORK
+#endif
+
+#ifndef GAIA_PLATFORM_GDIPLUS
+#	define	GAIA_PLATFORM_GDIPLUS
+#endif
+
+#ifndef	GAIA_PLATFORM_COM
+#	define GAIA_PLATFORM_COM
+#endif
 
 #include "preheader.h"
 #include "../gaia_sysconfig.h"

@@ -414,6 +414,13 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
+		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID* Canvas::GetHandle() const
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			return GSCAST(GAIA::GVOID*)(m_hWnd);
+		#else
+		#endif
+		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator == (const GAIA::UI::Canvas& src) const
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS

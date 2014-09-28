@@ -1,7 +1,11 @@
 #ifndef		__GAIA_RENDER_GDIPLUS_H__
 #define		__GAIA_RENDER_GDIPLUS_H__
 
-#if GAIA_OS == GAIA_OS_WINDOWS
+#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+#	include <winsock2.h>
+#	include <ws2tcpip.h>
+#	include <windows.h>
+#	include <gdiplus.h>
 #endif
 
 namespace GAIA
@@ -112,8 +116,13 @@ namespace GAIA
 			{
 				if(m_bCreated)
 					return GAIA::False;
+
 				if(!desc.check())
 					return GAIA::False;
+
+				desc.pCanvas->Reference();
+				m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::RenderDesc&)(desc);
+
 				m_bCreated = GAIA::True;
 				return GAIA::True;
 			}
@@ -121,6 +130,10 @@ namespace GAIA
 			{
 				if(!m_bCreated)
 					return GAIA::False;
+
+				m_desc.pCanvas->Release();
+				m_desc.reset();
+
 				m_bCreated = GAIA::False;
 				return GAIA::True;
 			}
