@@ -12,3 +12,6 @@ If you are the client:
 	1.Create a RouteNet and connect to server.
 	2.Create a Gateway and connect to the RouteNet.
 	3.Read and write data to Gateway.
+	
+Common function name unify.
+init/reset/check
