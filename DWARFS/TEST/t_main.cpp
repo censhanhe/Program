@@ -27,7 +27,7 @@
 #include "../MISC/portscanner.h"
 #include "t_header.h"
 
-#if GAIA_OS == GAIA_OS_WINDOWS
+#if GAIA_COMPILER == GAIA_COMPILER_CL
 #	pragma comment(lib, "ws2_32.lib")
 #endif
 

@@ -439,7 +439,17 @@ namespace GAIA
 			_DstDataType p = pDst;
 			if(src < (_SrcDataType)0)
 			{
+			#ifdef GAIA_DEBUG_WARNING
+			#	if GAIA_COMPILER == GAIA_COMPILER_CL
+			#		pragma warning(disable : 4146)
+			#	endif
+			#endif
 				tsrc = -tsrc;
+			#ifdef GAIA_DEBUG_WARNING
+			#	if GAIA_COMPILER == GAIA_COMPILER_CL
+			#		pragma warning(default : 4146)
+			#	endif
+			#endif
 				*p = '-';
 				++p;
 			}
