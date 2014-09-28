@@ -128,21 +128,21 @@ namespace GAIA
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GLES1;}
 
-			virtual GAIA::BL Initialize(const GAIA::RENDER::Render::RenderDesc& desc)
+			virtual GAIA::BL Create(const GAIA::RENDER::Render::RenderDesc& desc)
 			{
 				if(m_bInitialized)
 					return GAIA::False;
 				m_bInitialized = GAIA::True;
 				return GAIA::True;
 			}
-			virtual GAIA::BL Release()
+			virtual GAIA::BL Destroy()
 			{
 				if(!m_bInitialized)
 					return GAIA::False;
 				m_bInitialized = GAIA::False;
 				return GAIA::True;
 			}
-			virtual GAIA::BL IsInitialized() const
+			virtual GAIA::BL IsCreated() const
 			{
 				return m_bInitialized;
 			}

@@ -11,24 +11,28 @@ namespace GAIATEST
 		GAIA::FWORK::Factory fac;
 		typedef GAIA::RENDER::Render2DGDIPlus __RenderType;
 
-		/* Create convas. */
+		/* Create convas instance. */
 		GAIA::UI::Canvas* pCanvas = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_UI_CANVAS, GNIL));
 		GAIA_AST(pCanvas != GNIL);
+		GAIA::UI::Canvas::CanvasDesc descCanvas;
+		descCanvas.pszCaptionText = _T("Render test");
+		pCanvas->Create(descCanvas);
+		pCanvas->Show(GAIA::True);
+
+		/* Create render instance. */
+		__RenderType* pRender = dynamic_cast<__RenderType*>(fac.CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS, GNIL));
+		GAIA_AST(pRender != GNIL);
 
 		/* Create render. */
-		__RenderType* p = dynamic_cast<__RenderType*>(fac.CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS, GNIL));
-		GAIA_AST(p != GNIL);
 
-		/* Initialize render. */
+		/* Destroy render. */
 
-		/* Release render. */
+		/* Release render instance. */
+		pRender->Release();
+		pRender = GNIL;
 
-		/* Delete render. */
-		p->Release();
-		p = GNIL;
-
-		/* Delete canvas. */
-		pCanvas->Release();
+		/* Release canvas instance. */
+		pCanvas->Destroy();
 		pCanvas = GNIL;
 
 		return nRet;

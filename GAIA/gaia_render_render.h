@@ -17,9 +17,9 @@ namespace GAIA
 			};
 
 		public:
-			virtual GAIA::BL Initialize(const GAIA::RENDER::Render::RenderDesc& desc) = 0;
-			virtual GAIA::BL Release() = 0;
-			virtual GAIA::BL IsInitialized() const = 0;
+			virtual GAIA::BL Create(const GAIA::RENDER::Render::RenderDesc& desc) = 0;
+			virtual GAIA::BL Destroy() = 0;
+			virtual GAIA::BL IsCreated() const = 0;
 			virtual const GAIA::RENDER::Render::RenderDesc& GetDesc() const = 0;
 
 			virtual GAIA::GVOID Flush() = 0;
