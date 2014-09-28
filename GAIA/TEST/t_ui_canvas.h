@@ -112,6 +112,7 @@ namespace GAIATEST
 		}
 		/* Create and show canvas. */
 		GAIA::UI::Canvas::CanvasDesc desc;
+		desc.reset();
 		desc.pszCaptionText = _T("Test canvas 1");
 		pCanvas1->Create(desc);
 		pCanvas1->Show(GAIA::True);

@@ -124,7 +124,6 @@ namespace GAIA
 			class ConnectDesc : public GAIA::Base
 			{
 			public:
-				GINL ConnectDesc(){this->reset();}
 				GINL GAIA::GVOID reset()
 				{
 					addr.Invalid();
@@ -190,7 +189,6 @@ namespace GAIA
 			class ListenDesc : public GAIA::Base
 			{
 			public:
-				GINL ListenDesc(){this->reset();}
 				GINL GAIA::GVOID reset()
 				{
 					addr.Invalid();

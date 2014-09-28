@@ -452,6 +452,7 @@ namespace GAIA
 		}
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::init()
 		{
+			m_style.reset();
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			m_hWnd = GNIL;
 			m_pszClassName = GNIL;

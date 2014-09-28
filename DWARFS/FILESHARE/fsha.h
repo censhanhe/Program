@@ -855,8 +855,7 @@ namespace DWARFS_FSHA
 		class Right
 		{
 		public:
-			Right(){this->reset();}
-			GINL GAIA::GVOID reset()
+			Right()
 			{
 				m_bRead = GAIA::False;
 				m_bWrite = GAIA::False;
@@ -2868,6 +2867,8 @@ namespace DWARFS_FSHA
 			{
 				AL alprt(m_lr_prt);
 				GAIA::PRINT::PrintFormat pfold, pfnew;
+				pfold.reset();
+				pfnew.reset();
 				m_prt >> pfold >> pfnew;
 				pfnew.align(24);
 				pfnew.left(GAIA::True);

@@ -15,6 +15,7 @@ namespace GAIATEST
 		GAIA::UI::Canvas* pCanvas = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_UI_CANVAS, GNIL));
 		GAIA_AST(pCanvas != GNIL);
 		GAIA::UI::Canvas::CanvasDesc descCanvas;
+		descCanvas.reset();
 		descCanvas.pszCaptionText = _T("Render test");
 		pCanvas->Create(descCanvas);
 		pCanvas->Show(GAIA::True);

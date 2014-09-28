@@ -114,6 +114,7 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID init()
 			{
+				m_pf.reset();
 				m_bEnableWrite = GAIA::True;
 				m_bEnableRead = GAIA::True;
 			}

@@ -8,7 +8,7 @@ namespace GAIA
 		class PrintFormat : public GAIA::Entity
 		{
 		public:
-			GINL PrintFormat(){this->reset();}
+			GINL PrintFormat(){}
 			GINL GAIA::GVOID radix(GAIA::U8 uRadix){m_uRadix = uRadix;}
 			GINL GAIA::U8 radix() const{return m_uRadix;}
 			GINL GAIA::GVOID precision(GAIA::N8 nPrecision){m_nPrecision = nPrecision;}

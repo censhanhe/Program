@@ -39,6 +39,7 @@ namespace GAIATEST
 			if(pCanvas != GNIL)
 			{
 				Canvas::CanvasDesc desc;
+				desc.reset();
 				desc.pszCaptionText = _T("Hello World");
 				if(!pCanvas->Create(desc))
 				{

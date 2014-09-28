@@ -14,7 +14,6 @@ namespace GAIA
 			class CanvasStyle
 			{
 			public:
-				GINL CanvasStyle(){this->reset();}
 				GINL GAIA::GVOID reset()
 				{
 					bFrameStyle = GAIA::True;
@@ -35,7 +34,6 @@ namespace GAIA
 			class CanvasDesc
 			{
 			public:
-				GINL CanvasDesc(){this->reset();}
 				GINL GAIA::GVOID reset()
 				{
 					pszCaptionText = GNIL;

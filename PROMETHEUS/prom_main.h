@@ -99,6 +99,8 @@ namespace PROM
 		{
 			GAIA::PRINT::PrintFormat prtfmt;
 			GAIA::PRINT::PrintFormat prtfmt_old;
+			prtfmt.reset();
+			prtfmt_old.reset();
 			prt >> prtfmt_old;
 			prt << prtfmt;
 
