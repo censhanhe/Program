@@ -1,5 +1,10 @@
 [GAIA TASK]
 
+	PLATFORM
+	
+		Optimize import library count. The crt-console app will only have 6 imported library(dll) in windows,
+		But now, there are 20+ library(dll) be imported.
+
 	FWORK STRUCTURE
 
 		Instance remember the factory.
