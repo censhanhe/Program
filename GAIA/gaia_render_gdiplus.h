@@ -1,6 +1,9 @@
 #ifndef		__GAIA_RENDER_GDIPLUS_H__
 #define		__GAIA_RENDER_GDIPLUS_H__
 
+#if GAIA_OS == GAIA_OS_WINDOWS
+#endif
+
 namespace GAIA
 {
 	namespace RENDER
@@ -16,7 +19,7 @@ namespace GAIA
 			public:
 				GINL RenderDesc(){this->reset();}
 				virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::RenderDesc::reset();}
-				virtual GAIA::BL check()
+				virtual GAIA::BL check() const
 				{
 					if(!GAIA::RENDER::Render2D::RenderDesc::check())
 						return GAIA::False;
@@ -99,6 +102,8 @@ namespace GAIA
 			virtual GAIA::BL Create(const GAIA::RENDER::Render::RenderDesc& desc)
 			{
 				if(m_bCreated)
+					return GAIA::False;
+				if(!desc.check())
 					return GAIA::False;
 				m_bCreated = GAIA::True;
 				return GAIA::True;

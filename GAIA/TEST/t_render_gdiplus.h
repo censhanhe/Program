@@ -25,6 +25,7 @@ namespace GAIATEST
 
 		/* Create render. */
 		__RenderType::RenderDesc descRender;
+		descRender.pCanvas = pCanvas;
 		pRender->Create(descRender);
 
 		/* Destroy render. */

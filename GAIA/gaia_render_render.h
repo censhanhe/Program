@@ -17,7 +17,14 @@ namespace GAIA
 				GINL RenderDesc(){this->reset();}
 			public:
 				virtual GAIA::GVOID reset(){pCanvas = GNIL;}
-				virtual GAIA::BL check(){return pCanvas != GNIL;}
+				virtual GAIA::BL check() const
+				{
+					if(pCanvas == GNIL)
+						return GAIA::False;
+					if(!pCanvas->IsCreated())
+						return GAIA::False;
+					return GAIA::True;
+				}
 			public:
 				GAIA::UI::Canvas* pCanvas;
 			};
