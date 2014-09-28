@@ -35,7 +35,7 @@ namespace GAIA
 				GAIA_AST(gdi_startup_result == Gdiplus::Ok);
 		#	endif
 		#	ifdef GAIA_PLATFORM_COM
-				::CoInitializeEx(GNIL, COINIT_MULTITHREADED);
+				CoInitialize(GNIL);
 		#	endif
 		#else
 		#endif
@@ -50,7 +50,7 @@ namespace GAIA
 				Gdiplus::GdiplusShutdown(&m_GDIPlusToken);
 		#	endif
 		#	ifdef GAIA_PLATFORM_COM
-				::CoUninitialize();
+				CoUninitialize();
 		#	endif
 		#else
 		#endif
