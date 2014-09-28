@@ -28,14 +28,16 @@ namespace GAIA
 		#if GAIA_OS == GAIA_OS_WINDOWS
 		#	ifdef GAIA_PLATFORM_NETWORK
 				::WSAData wsadata;
-				::WSAStartup(MAKEWORD(2, 2), &wsadata);
+				if(::WSAStartup(MAKEWORD(2, 2), &wsadata) != 0)
+					throw 0;
 		#	endif
 		#	ifdef GAIA_PLATFORM_GDIPLUS
-				Gdiplus::Status gdi_startup_result = Gdiplus::GdiplusStartup(&m_GDIPlusToken, &GdiplusStartupInput, &m_GDIPlusOutput);
-				GAIA_AST(gdi_startup_result == Gdiplus::Ok);
+				if(Gdiplus::GdiplusStartup(&m_GDIPlusToken, &m_GDIPlusInput, &m_GDIPlusOutput) != Gdiplus::Ok)
+					throw 0;
 		#	endif
 		#	ifdef GAIA_PLATFORM_COM
-				CoInitialize(GNIL);
+				if(CoInitialize(GNIL) != S_OK)
+					throw 0;
 		#	endif
 		#else
 		#endif
@@ -44,10 +46,11 @@ namespace GAIA
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 		#	ifdef GAIA_PLATFORM_NETWORK
-				::WSACleanup();
+				if(::WSACleanup() != 0)
+					throw 0;
 		#	endif
 		#	ifdef GAIA_PLATFORM_GDIPLUS
-				Gdiplus::GdiplusShutdown(&m_GDIPlusToken);
+				Gdiplus::GdiplusShutdown(m_GDIPlusToken);
 		#	endif
 		#	ifdef GAIA_PLATFORM_COM
 				CoUninitialize();

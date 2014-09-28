@@ -2,7 +2,6 @@
 #define 	__GAIA_SYNC_BASE_INDP_H__
 
 #if GAIA_OS == GAIA_OS_WINDOWS
-#	define NOMINMAX
 #	include <winsock2.h>
 #	include <ws2tcpip.h>
 #	include <windows.h>
