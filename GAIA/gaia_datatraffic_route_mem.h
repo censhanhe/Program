@@ -8,7 +8,7 @@ namespace GAIA
 		class RouteMem : public virtual Route
 		{
 		public:
-			RouteMem(){m_bBegin = GAIA::False;}
+			RouteMem(){}
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_ROUTE_MEM;}
 			virtual GAIA::BL Send(const GAIA::GVOID* p, const GAIA::U32& size)
 			{
@@ -19,12 +19,6 @@ namespace GAIA
 			{
 				return GAIA::True;
 			}
-		protected:
-			virtual GAIA::BL Begin(GAIA::GVOID* pParameter){m_bBegin = GAIA::True; return GAIA::True;}
-			virtual GAIA::BL End(){m_bBegin = GAIA::False; return GAIA::True;}
-			virtual GAIA::BL IsBegin() const{return m_bBegin;}
-		private:
-			GAIA::BL m_bBegin;
 		};
 	};
 };

@@ -15,7 +15,8 @@ namespace GAIA
 			{
 				if(this->IsBegin())
 					return GAIA::False;
-				m_bBegin = GAIA::True;
+				if(!GAIA::FWORK::Instance::Begin(pParameter))
+					return GAIA::False;
 				return GAIA::True;
 			}
 			virtual GAIA::BL End()
@@ -27,10 +28,11 @@ namespace GAIA
 					m_pIO->Release();
 					m_pIO = GNIL;
 				}
-				m_bBegin = GAIA::False;
+				if(!GAIA::FWORK::Instance::End())
+					return GAIA::False;
 				return GAIA::True;
 			}
-			virtual GAIA::BL IsBegin() const{return m_bBegin;}
+			virtual GAIA::BL IsBegin() const{return GAIA::FWORK::Instance::IsBegin();}
 			GINL GAIA::BL BindIO(GAIA::IO::IO* pIO)
 			{
 				if(pIO == m_pIO)
@@ -67,9 +69,8 @@ namespace GAIA
 				return *this;
 			}
 		private:
-			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_pIO = GNIL;}
+			GINL GAIA::GVOID init(){m_pIO = GNIL;}
 		private:
-			GAIA::U8 m_bBegin : 1;
 			GAIA::IO::IO* m_pIO;
 		};
 	};

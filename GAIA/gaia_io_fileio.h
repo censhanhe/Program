@@ -17,8 +17,9 @@ namespace GAIA
 					return GAIA::False;
 				if(pParameter == GNIL)
 					return GAIA::False;
+				if(!GAIA::FWORK::Instance::Begin(pParameter))
+					return GAIA::False;
 				m_file = GSCAST(GAIA::FSYS::FileBase*)(pParameter);
-				m_bBegin = GAIA::True;
 				return GAIA::True;
 			}
 			virtual GAIA::BL End()
@@ -27,10 +28,11 @@ namespace GAIA
 					return GAIA::False;
 				if(this->IsOpen())
 					this->Close();
-				m_bBegin = GAIA::False;
+				if(!GAIA::FWORK::Instance::End())
+					return GAIA::False;
 				return GAIA::True;
 			}
-			virtual GAIA::BL IsBegin() const{return m_bBegin;}
+			virtual GAIA::BL IsBegin() const{return GAIA::FWORK::Instance::IsBegin();}
 			virtual GAIA::BL Open(const GAIA::TCH* pszIOName, GAIA::UM uTypeMask)
 			{
 				if(this->IsOpen())
@@ -78,9 +80,8 @@ namespace GAIA
 				return GAIA::False;
 			}
 		private:
-			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_uTypeMask = 0; m_file = GNIL;}
+			GINL GAIA::GVOID init(){m_uTypeMask = 0; m_file = GNIL;}
 		private:
-			GAIA::U8 m_bBegin : 1;
 			GAIA::UM m_uTypeMask;
 			GAIA::FSYS::FileBase* m_file;
 		};

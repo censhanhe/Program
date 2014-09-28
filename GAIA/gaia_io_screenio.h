@@ -15,7 +15,8 @@ namespace GAIA
 			{
 				if(this->IsBegin())
 					return GAIA::False;
-				m_bBegin = GAIA::True;
+				if(!GAIA::FWORK::Instance::Begin(pParameter))
+					return GAIA::False;
 				return GAIA::True;
 			}
 			virtual GAIA::BL End()
@@ -24,10 +25,11 @@ namespace GAIA
 					return GAIA::False;
 				if(this->IsOpen())
 					this->Close();
-				m_bBegin = GAIA::False;
+				if(!GAIA::FWORK::Instance::End())
+					return GAIA::False;
 				return GAIA::True;
 			}
-			virtual GAIA::BL IsBegin() const{return m_bBegin;}
+			virtual GAIA::BL IsBegin() const{return GAIA::FWORK::Instance::IsBegin();}
 			virtual GAIA::BL Open(const GAIA::TCH* pszIOName, GAIA::UM uTypeMask)
 			{
 				return GAIA::True;
@@ -53,9 +55,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 		private:
-			GINL GAIA::GVOID init(){m_bBegin = GAIA::False;}
-		private:
-			GAIA::U8 m_bBegin : 1;
+			GINL GAIA::GVOID init(){}
 		};
 	};
 };
