@@ -859,8 +859,8 @@ namespace DWARFS_FSHA
 		class Right
 		{
 		public:
-			Right(){this->Reset();}
-			GINL GAIA::GVOID Reset()
+			Right(){this->reset();}
+			GINL GAIA::GVOID reset()
 			{
 				m_bRead = GAIA::False;
 				m_bWrite = GAIA::False;

@@ -124,7 +124,7 @@ namespace GAIA
 			class ConnectDesc
 			{
 			public:
-				GINL GAIA::GVOID Reset()
+				GINL GAIA::GVOID reset()
 				{
 					addr.Invalid();
 					bStabilityLink = GAIA::True;
@@ -157,7 +157,7 @@ namespace GAIA
 			{
 				m_h = GINVALID;
 				m_addr_self.Invalid();
-				m_conndesc.Reset();
+				m_conndesc.reset();
 				m_pSender = GNIL;
 				m_pReceiver = GNIL;
 				m_nSendBufferSize = 1024;
@@ -189,7 +189,7 @@ namespace GAIA
 			class ListenDesc
 			{
 			public:
-				GINL GAIA::GVOID Reset()
+				GINL GAIA::GVOID reset()
 				{
 					addr.Invalid();
 					nListenSendBufSize = 1024;
@@ -224,7 +224,7 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID init()
 			{
-				m_desc.Reset();
+				m_desc.reset();
 				m_bBegin = GAIA::False;
 				m_bStopCmd = GAIA::False;
 				m_pAcceptCallBack = GNIL;
