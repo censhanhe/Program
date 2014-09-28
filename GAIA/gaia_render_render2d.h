@@ -11,7 +11,7 @@ namespace GAIA
 			typedef GAIA::RENDER::Render2D __MyType;
 
 		public:
-			class Render2DDesc : public GAIA::RENDER::Render::RenderDesc
+			class Render2DDesc : public virtual GAIA::RENDER::Render::RenderDesc
 			{
 			public:
 			};
