@@ -25,10 +25,6 @@
 
 #include 	"../../GAIA/gaia.h"
 
-#if GAIA_COMPILER == GAIA_COMPILER_CL
-#	pragma comment(lib, "ws2_32.lib")
-#endif
-
 #define FSHA_PERF ((GAIA::F64)GAIA::TIME::tick_time() * 0.001 * 0.001)
 
 /*
@@ -2419,10 +2415,6 @@ namespace DWARFS_FSHA
 		{
 			if(m_bInitialized)
 				return GAIA::False;
-		#if GAIA_OS == GAIA_OS_WINDOWS
-			WSAData wsadata;
-			WSAStartup(MAKEWORD(2, 2), &wsadata);
-		#endif
 			m_usergroup.Load(FILE_USERGROUP);
 			m_filelist.Load(FILE_FILELIST);
 			m_banip.Load(FILE_BANIP);
@@ -2449,9 +2441,6 @@ namespace DWARFS_FSHA
 		{
 			if(!m_bInitialized)
 				return GAIA::False;
-		#if GAIA_OS == GAIA_OS_WINDOWS
-			WSACleanup();
-		#endif
 			delete m_pMWThread;
 			delete m_pHeartTickThread;
 			m_pNH->Release(); m_pNH = GNIL;

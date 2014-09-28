@@ -21,10 +21,6 @@
 #include "../GAIA/gaia_global_impl.h"
 #include "prom.h"
 
-#if GAIA_COMPILER == GAIA_COMPILER_CL
-# pragma comment(lib, "ws2_32.lib")
-#endif
-
 GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 {
 #if GAIA_OS == GAIA_OS_WINDOWS

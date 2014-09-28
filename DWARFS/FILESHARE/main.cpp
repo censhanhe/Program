@@ -2,6 +2,7 @@
 #include	<string>
 using namespace std;
 
+#define		GAIA_PLATFORM_NETWORK
 #include	"fsha.h"
 #include	"../../GAIA/gaia_global_impl.h"
 
@@ -17,11 +18,6 @@ using namespace std;
 
 int main()
 {
-#if GAIA_OS == GAIA_OS_WINDOWS
-	WSAData wsadata;
-	WSAStartup(MAKEWORD(2, 2), &wsadata);
-#endif
-
 	tcout << _T("Welcome FileShare(v") << DWARFS_FSHA::VERSION_STRING << _T(")") << endl << endl;
 	DWARFS_FSHA::FileShare fsha;
 	DWARFS_FSHA::FileShare::FileShareDesc desc;
@@ -106,8 +102,6 @@ INPUT_IP:
 FUNCTION_END:
 	fsha.Shutdown();
 	fsha.Release();
-#if GAIA_OS == GAIA_OS_WINDOWS
-	WSACleanup();
-#endif
+
 	return 0;
 }

@@ -21,10 +21,6 @@
 #include "../gaia_global_impl.h"
 #include "t_header.h"
 
-#if GAIA_OS == GAIA_OS_WINDOWS
-#	pragma comment(lib, "ws2_32.lib")
-#endif
-
 int main()
 {
 #if GAIA_OS == GAIA_OS_WINDOWS
