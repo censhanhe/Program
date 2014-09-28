@@ -130,6 +130,8 @@ namespace GAIA
 				HWND hWnd = GSCAST(HWND)(pHandle);
 				m_hDC = ::GetDC(hWnd);
 				m_pGraphics = new Gdiplus::Graphics(m_hDC);
+				m_pSwapBitmap = new Gdiplus::Bitmap(desc.pCanvas->Size().x, desc.pCanvas->Size().y, PixelFormat32bppARGB);
+				m_pSwapGraphics = new Gdiplus::Graphics(m_pSwapBitmap);
 			#endif
 
 				m_bCreated = GAIA::True;
@@ -152,6 +154,7 @@ namespace GAIA
 				}
 				GAIA_DELETE_SAFE(m_pGraphics);
 				GAIA_DELETE_SAFE(m_pSwapGraphics);
+				GAIA_DELETE_SAFE(m_pSwapBitmap);
 			#endif
 
 				m_desc.pCanvas->Release();
@@ -171,6 +174,18 @@ namespace GAIA
 
 			virtual GAIA::GVOID Flush()
 			{
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				if(m_pGraphics == GNIL)
+					return;
+				if(m_pSwapGraphics == GNIL)
+					return;
+				if(m_pSwapBitmap == GNIL)
+					return;
+				m_pGraphics->DrawImage(
+					m_pSwapBitmap, 0, 0, 
+					m_pSwapBitmap->GetWidth(), 
+					m_pSwapBitmap->GetHeight());
+			#endif
 			}
 
 			/* State. */
@@ -234,6 +249,7 @@ namespace GAIA
 				m_hDC = GNIL;
 				m_pGraphics = GNIL;
 				m_pSwapGraphics = GNIL;
+				m_pSwapBitmap = GNIL;
 			#endif
 			}
 
@@ -245,6 +261,7 @@ namespace GAIA
 			HDC m_hDC;
 			Gdiplus::Graphics* m_pGraphics;
 			Gdiplus::Graphics* m_pSwapGraphics;
+			Gdiplus::Bitmap* m_pSwapBitmap;
 		#endif
 		};
 	};

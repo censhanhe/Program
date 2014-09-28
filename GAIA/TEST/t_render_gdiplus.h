@@ -29,6 +29,9 @@ namespace GAIATEST
 		descRender.pCanvas = pCanvas;
 		pRender->Create(descRender);
 
+		/* Clear screen. */
+		pRender->Flush();
+
 		/* Destroy render. */
 		pRender->Destroy();
 
