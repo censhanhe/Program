@@ -14,6 +14,14 @@ namespace GAIA
 			class RenderDesc : public virtual GAIA::RENDER::Render3D::RenderDesc
 			{
 			public:
+				GINL RenderDesc(){this->reset();}
+				virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::RenderDesc::reset();}
+				virtual GAIA::BL check()
+				{
+					if(!GAIA::RENDER::Render3D::RenderDesc::check())
+						return GAIA::False;
+					return GAIA::True;
+				}
 			};
 
 		public:
