@@ -410,6 +410,10 @@
 					RelativePath=".\gaia_macrohelper.h"
 					>
 				</File>
+				<File
+					RelativePath=".\gaia_platform.h"
+					>
+				</File>
 				<Filter
 					Name="ALLOCATOR"
 					>

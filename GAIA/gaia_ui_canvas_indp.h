@@ -7,8 +7,8 @@
 #endif
 
 #if GAIA_OS == GAIA_OS_WINDOWS
-extern GAIA::SYNC::Lock g_windowlistlock;
-extern GAIA::CTN::Set<GAIA::CTN::Ref<GAIA::UI::Canvas> > g_windowlist;
+extern GAIA::SYNC::Lock g_gaia_windowlistlock;
+extern GAIA::CTN::Set<GAIA::CTN::Ref<GAIA::UI::Canvas> > g_gaia_windowlist;
 #else
 #endif
 
@@ -246,9 +246,9 @@ namespace GAIA
 					return GNIL;
 				GAIA::UI::Canvas finder;
 				finder.m_hWnd = hParent;
-				GAIA::SYNC::AutoLock al(g_windowlistlock);
+				GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);
 				GAIA::CTN::Ref<GAIA::UI::Canvas> finderref(&finder);
-				GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finderref);
+				GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_gaia_windowlist.find(finderref);
 				GAIA_AST(pFinded != GNIL);
 				finder.m_hWnd = GNIL;
 				return *pFinded;
@@ -459,12 +459,12 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::RegistToGlobalList()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			GAIA::SYNC::AutoLock al(g_windowlistlock);
+			GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);
 			GAIA::CTN::Ref<GAIA::UI::Canvas> finder(this);
-			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
+			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_gaia_windowlist.find(finder);
 			if(pFinded != GNIL)
 				return GAIA::False;
-			return g_windowlist.insert(finder);
+			return g_gaia_windowlist.insert(finder);
 		#else
 			return GAIA::False;
 		#endif
@@ -472,12 +472,12 @@ namespace GAIA
 		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::UnregistToGlobalList()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			GAIA::SYNC::AutoLock al(g_windowlistlock);
+			GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);
 			GAIA::CTN::Ref<GAIA::UI::Canvas> finder(this);
-			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_windowlist.find(finder);
+			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_gaia_windowlist.find(finder);
 			if(pFinded == GNIL)
 				return GAIA::False;
-			return g_windowlist.erase(finder);
+			return g_gaia_windowlist.erase(finder);
 		#else
 			return GAIA::False;
 		#endif

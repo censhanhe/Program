@@ -404,9 +404,9 @@ namespace GAIA
 
 #ifndef GAIA_DEBUG_MEMORYLEAK
 	namespace GAIA{namespace ALLOCATOR{class AllocatorESG;};};
-	extern GAIA::ALLOCATOR::AllocatorESG g_global_allocator;
-#	define GAIA_MALLOC(type, size) (type*)g_global_allocator.memory_alloc(sizeof(type) * (size))
-#	define GAIA_MFREE(p) g_global_allocator.memory_release(p)
+	extern GAIA::ALLOCATOR::AllocatorESG g_gaia_globalallocator;
+#	define GAIA_MALLOC(type, size) (type*)g_gaia_globalallocator.memory_alloc(sizeof(type) * (size))
+#	define GAIA_MFREE(p) g_gaia_globalallocator.memory_release(p)
 #	define GAIA_MFREE_SAFE(p) if(p != GNIL){GAIA_MFREE(p); p = GNIL}
 #else
 #	define GAIA_MALLOC(type, size) new type[size]

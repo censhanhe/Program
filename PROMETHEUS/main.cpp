@@ -132,7 +132,7 @@ REPEAT:
 
 	/* Dump system status. */
 #ifndef GAIA_DEBUG_MEMORYLEAK
-	prt << "Allocate Times = " << g_global_allocator.alloc_times() << "\n";
+	prt << "Allocate Times = " << g_gaia_globalallocator.alloc_times() << "\n";
 #endif
 
 	if(nargs == 1)
