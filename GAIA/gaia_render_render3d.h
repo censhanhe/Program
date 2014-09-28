@@ -11,9 +11,17 @@ namespace GAIA
 			typedef GAIA::RENDER::Render3D __MyType;
 
 		public:
-			class Render3DDesc : public virtual GAIA::RENDER::Render::RenderDesc
+			class RenderDesc : public virtual GAIA::RENDER::Render2D::RenderDesc
 			{
 			public:
+				GINL RenderDesc(){this->reset();}
+				virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::RenderDesc::reset();}
+				virtual GAIA::BL check()
+				{
+					if(!GAIA::RENDER::Render2D::RenderDesc::check())
+						return GAIA::False;
+					return GAIA::True;
+				}
 			};
 
 		public:
