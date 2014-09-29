@@ -122,6 +122,8 @@ namespace GAIA
 			GAIA_ENUM_END(ALPHA_BLEND_TYPE)
 
 		public:
+			/* Clear. */
+			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
 
 			/* State. */
 			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs) = 0;

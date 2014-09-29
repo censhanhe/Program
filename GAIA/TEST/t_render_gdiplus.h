@@ -30,6 +30,10 @@ namespace GAIA_TEST
 		pRender->Create(descRender);
 
 		/* Clear screen. */
+		GAIA::MATH::ARGB<GAIA::REAL> crClear;
+		crClear.r = crClear.g = crClear.b = 0.0F;
+		crClear.a = 1.0F;
+		pRender->ClearColor(crClear);
 		pRender->Flush();
 
 		/* Destroy render. */

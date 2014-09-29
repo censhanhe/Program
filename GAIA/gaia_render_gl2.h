@@ -179,6 +179,9 @@ namespace GAIA
 			}
 
 		public:
+			/* Clear. */
+			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr){}
+
 			/* State. */
 			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs){}
 			virtual GAIA::GVOID GetRender2DState(RENDER2D_STATE& rs) const{}

@@ -188,6 +188,16 @@ namespace GAIA
 			#endif
 			}
 
+		public:
+			/* Clear. */
+			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
+			{
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::Color crTemp(cr.a * 255.0F, cr.r * 255.0F, cr.g * 255.0F, cr.b * 255.0F);
+				m_pSwapGraphics->Clear(crTemp);
+			#endif
+			}
+
 			/* State. */
 			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs){}
 			virtual GAIA::GVOID GetRender2DState(RENDER2D_STATE& rs) const{}
