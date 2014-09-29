@@ -15,7 +15,7 @@ namespace GAIA
 			class Node
 			{
 			private:
-				friend class Storage;
+				friend class GAIA::CTN::Storage;
 				friend class NodeSize;
 			public:
 				GINL Node(){}
@@ -34,7 +34,7 @@ namespace GAIA
 			class NodeSize
 			{
 			private:
-				friend class Storage;
+				friend class GAIA::CTN::Storage;
 			public:
 				GINL NodeSize(){this->init();}
 				GINL NodeSize(const NodeSize& src){this->operator = (src);}

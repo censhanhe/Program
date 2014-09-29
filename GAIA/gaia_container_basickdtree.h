@@ -17,7 +17,7 @@ namespace GAIA
 			class Split
 			{
 			private:
-				friend class BasicKDTree;
+				friend class GAIA::CTN::BasicKDTree;
 			public:
 				GINL Split(){}
 				GINL ~Split(){}
@@ -29,7 +29,7 @@ namespace GAIA
 			class Node
 			{
 			private:
-				friend class BasicKDTree;
+				friend class GAIA::CTN::BasicKDTree;
 			public:
 				typedef BasicAVLTree<_DataType*, _SizeType, _HeightType, _SizeIncreaserType> __AVLTreeType;
 			public:

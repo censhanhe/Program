@@ -14,7 +14,7 @@ namespace GAIA
 			class Node
 			{
 			private:
-				friend class BasicMultiAVLTree;
+				friend class GAIA::CTN::BasicMultiAVLTree;
 				friend class it;
 				friend class const_it;
 			public:
@@ -43,7 +43,7 @@ namespace GAIA
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
-				friend class BasicMultiAVLTree;
+				friend class GAIA::CTN::BasicMultiAVLTree;
 			public:
 				GINL it(){}
 				GINL virtual ~it(){}
@@ -163,7 +163,7 @@ namespace GAIA
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			private:
-				friend class BasicMultiAVLTree;
+				friend class GAIA::CTN::BasicMultiAVLTree;
 			public:
 				GINL const_it(){}
 				GINL virtual ~const_it(){}

@@ -21,7 +21,7 @@ namespace GAIA
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
-				friend class BasicChars;
+				friend class GAIA::CTN::BasicChars;
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
@@ -83,7 +83,7 @@ namespace GAIA
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			private:
-				friend class BasicChars;
+				friend class GAIA::CTN::BasicChars;
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}

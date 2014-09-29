@@ -8,7 +8,7 @@ namespace GAIA
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class Accesser : public GAIA::Entity
 		{
 		private:
-			friend class Accesser; // Seperate template parameter's private member variable access.
+			friend class GAIA::CTN::Accesser; // Seperate template parameter's private member variable access.
 		public:
 			GAIA_ENUM_BEGIN(BIND_TYPE)
 				BIND_TYPE_MEM,
@@ -28,7 +28,7 @@ namespace GAIA
 			class Node : public GAIA::Entity
 			{
 			private:
-				friend class Accesser;
+				friend class GAIA::CTN::Accesser;
 			public:
 				GINL Node& operator = (const Node& src)
 				{
@@ -80,7 +80,7 @@ namespace GAIA
 			class ConstNode : public GAIA::Entity
 			{
 			private:
-				friend class Accesser;
+				friend class GAIA::CTN::Accesser;
 			public:
 				GINL ConstNode& operator = (const ConstNode& src)
 				{

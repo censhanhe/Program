@@ -13,9 +13,9 @@ namespace GAIA
 			class Node
 			{
 			private:
+				friend class GAIA::CTN::BasicTree;
 				friend class it;
 				friend class const_it;
-				friend class BasicTree;
 			public:
 			#ifdef GAIA_DEBUG_INTERNALROUTINE
 				Node(){m_pParent = GNIL;}
@@ -39,7 +39,7 @@ namespace GAIA
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
-				friend class BasicTree;
+				friend class GAIA::CTN::BasicTree;
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
@@ -220,7 +220,7 @@ namespace GAIA
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			private:
-				friend class BasicTree;
+				friend class GAIA::CTN::BasicTree;
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}

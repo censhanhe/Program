@@ -11,7 +11,7 @@ namespace GAIA
 			class Node
 			{
 			private:
-				friend class BasicGraph;
+				friend class GAIA::CTN::BasicGraph;
 			public:
 			#ifdef GAIA_DEBUG_INTERNALROUTINE
 				Node(){m_traveling = GAIA::False;}

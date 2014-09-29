@@ -15,9 +15,9 @@ namespace GAIA
 			class Node
 			{
 			private:
+				friend class GAIA::CTN::BasicTrieTree;
 				friend class it;
 				friend class const_it;
-				friend class BasicTrieTree;
 			public:
 				GINL _DataType& operator * (){return m_t;}
 				GINL const _DataType& operator * () const{return m_t;}
@@ -63,7 +63,7 @@ namespace GAIA
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
-				friend class BasicTrieTree;
+				friend class GAIA::CTN::BasicTrieTree;
 			public:
 				GINL it(){this->init();}
 				GINL virtual ~it(){}
@@ -221,7 +221,7 @@ namespace GAIA
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			private:
-				friend class BasicTrieTree;
+				friend class GAIA::CTN::BasicTrieTree;
 			public:
 				GINL const_it(){this->init();}
 				GINL virtual ~const_it(){}
