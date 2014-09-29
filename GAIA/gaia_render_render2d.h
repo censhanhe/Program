@@ -100,6 +100,10 @@ namespace GAIA
 			};
 
 		public:
+			GAIA_ENUM_BEGIN(QUALITY_STATE)
+				QUALITY_STATE_ANTIALIAS,
+			GAIA_ENUM_END(QUALITY_STATE)
+
 			GAIA_ENUM_BEGIN(RENDER2D_STATE)
 				RENDER2D_STATE_ALPHABLEND,
 				RENDER2D_STATE_ALPHATEST,
@@ -114,22 +118,17 @@ namespace GAIA
 				SAMPLER2D_STATE_MAXFILTER,
 			GAIA_ENUM_END(SAMPLER2D_STATE)
 
-			GAIA_ENUM_BEGIN(ALPHA_BLEND_TYPE)
-				ALPHA_BLEND_TYPE_SRCALPHA,
-				ALPHA_BLEND_TYPE_DSTALPHA,
-				ALPHA_BLEND_TYPE_INVSRCALPHA,
-				ALPHA_BLEND_TYPE_INVDSTALPHA,
-			GAIA_ENUM_END(ALPHA_BLEND_TYPE)
-
 		public:
 			/* Clear. */
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
 
 			/* State. */
-			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs) = 0;
-			virtual GAIA::GVOID GetRender2DState(RENDER2D_STATE& rs) const = 0;
-			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) = 0;
-			virtual GAIA::GVOID GetSampler2DState(GAIA::N32 nSamplerIndex, SAMPLER2D_STATE& ss) const = 0;
+			virtual GAIA::GVOID SetQualityState(const QUALITY_STATE& qs, const GAIA::CH* pszState) = 0;
+			virtual const GAIA::CH* GetQualityState(const QUALITY_STATE& qs) = 0;
+			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs, const GAIA::CH* pszState) = 0;
+			virtual const GAIA::CH* GetRender2DState(const RENDER2D_STATE& rs) const = 0;
+			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState) = 0;
+			virtual const GAIA::CH* GetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const = 0;
 
 			/* FontPainter. */
 			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(

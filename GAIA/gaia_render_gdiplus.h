@@ -199,10 +199,12 @@ namespace GAIA
 			}
 
 			/* State. */
-			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs){}
-			virtual GAIA::GVOID GetRender2DState(RENDER2D_STATE& rs) const{}
-			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss){}
-			virtual GAIA::GVOID GetSampler2DState(GAIA::N32 nSamplerIndex, SAMPLER2D_STATE& ss) const{}
+			virtual GAIA::GVOID SetQualityState(const QUALITY_STATE& qs, const GAIA::CH* pszState){}
+			virtual const GAIA::CH* GetQualityState(const QUALITY_STATE& qs){return GNIL;}
+			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs, const GAIA::CH* pszState){}
+			virtual const GAIA::CH* GetRender2DState(const RENDER2D_STATE& rs) const{return GNIL;}
+			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState){}
+			virtual const GAIA::CH* GetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const{return GNIL;}
 
 			/* FontPainter. */
 			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(
