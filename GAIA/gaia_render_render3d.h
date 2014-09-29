@@ -76,11 +76,9 @@ namespace GAIA
 			};
 
 		public:
-			GAIA_ENUM_BEGIN(DRAW_TRIANGLE_TYPE)
-				DRAW_TRIANGLE_TYPE_TRIANGLELIST,
-				DRAW_TRIANGLE_TYPE_TRIANGLESTRIP,
-				DRAW_TRIANGLE_TYPE_TRIANGLEFAN,
-			GAIA_ENUM_END(DRAW_TRIANGLE_TYPE)
+			GAIA_ENUM_BEGIN(QUALITY3D_STATE)
+				QUALITY3D_STATE_ANTIALIAS,
+			GAIA_ENUM_END(QUALITY3D_STATE)
 
 			GAIA_ENUM_BEGIN(RENDER3D_STATE)
 				RENDER3D_STATE_ENABLEZTEST,
@@ -91,6 +89,12 @@ namespace GAIA
 				SAMPLER3D_STATE_ADDRESSW,
 				SAMPLER3D_STATE_MIPFILTER,
 			GAIA_ENUM_END(SAMPLER3D_STATE)
+
+			GAIA_ENUM_BEGIN(DRAW_TRIANGLE_TYPE)
+				DRAW_TRIANGLE_TYPE_TRIANGLELIST,
+				DRAW_TRIANGLE_TYPE_TRIANGLESTRIP,
+				DRAW_TRIANGLE_TYPE_TRIANGLEFAN,
+			GAIA_ENUM_END(DRAW_TRIANGLE_TYPE)
 
 			GAIA_ENUM_BEGIN(INDEX_FORMAT_TYPE)
 				INDEX_FORMAT_TYPE_16,
@@ -103,10 +107,12 @@ namespace GAIA
 			virtual GAIA::GVOID GetViewport(VIEWPORT& vp) const = 0;
 
 			/* State. */
-			virtual GAIA::GVOID SetRender3DState(const RENDER3D_STATE& rs) = 0;
-			virtual GAIA::GVOID GetRender3DState(RENDER3D_STATE& rs) const = 0;
-			virtual GAIA::GVOID SetSampler3DState(GAIA::N32 nSamplerIndex, const SAMPLER3D_STATE& ss) = 0;
-			virtual GAIA::GVOID GetSampler3DState(GAIA::N32 nSamplerIndex, SAMPLER3D_STATE& ss) const = 0;
+			virtual GAIA::GVOID SetQuality3DState(const QUALITY3D_STATE& qs, const GAIA::CH* pszState) = 0;
+			virtual const GAIA::CH* GetQuality3DState(const QUALITY3D_STATE& qs) = 0;
+			virtual GAIA::GVOID SetRender3DState(const RENDER3D_STATE& rs, const GAIA::CH* pszState) = 0;
+			virtual const GAIA::CH* GetRender3DState(const RENDER3D_STATE& rs) const = 0;
+			virtual GAIA::GVOID SetSampler3DState(GAIA::N32 nSamplerIndex, const SAMPLER3D_STATE& ss, const GAIA::CH* pszState) = 0;
+			virtual const GAIA::CH* GetSampler3DState(GAIA::N32 nSamplerIndex, const SAMPLER3D_STATE& ss) const = 0;
 
 			/* Index buffer. */
 			virtual GAIA::RENDER::Render3D::IndexBuffer* CreateIndexBuffer() = 0;
