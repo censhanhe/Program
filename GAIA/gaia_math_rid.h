@@ -91,8 +91,6 @@ namespace GAIA
 	};
 };
 
-#ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_math_rid_indp.h"
-#endif
+#include "gaia_math_rid_indp.h"
 
 #endif

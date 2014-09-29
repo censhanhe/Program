@@ -127,8 +127,6 @@ namespace GAIA
 	};
 };
 
-#ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_print_indp.h"
-#endif
+#include "gaia_print_indp.h"
 
 #endif

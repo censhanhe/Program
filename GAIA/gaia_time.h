@@ -94,8 +94,6 @@ namespace GAIA
 	};
 };
 
-#ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_time_indp.h"
-#endif
+#include "gaia_time_indp.h"
 
 #endif

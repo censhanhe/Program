@@ -106,8 +106,6 @@ namespace GAIA
 	};
 };
 
-#ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_math_basic_indp.h"
-#endif
+#include "gaia_math_basic_indp.h"
 
 #endif

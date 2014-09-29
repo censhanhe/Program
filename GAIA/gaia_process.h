@@ -13,8 +13,6 @@ namespace GAIA
 	};
 };
 
-#ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_process_indp.h"
-#endif
+#include "gaia_process_indp.h"
 
 #endif

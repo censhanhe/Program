@@ -398,9 +398,7 @@ namespace GAIA
 	GAIA_ENUM_END(INTERSECT_TYPE)
 };
 
-#ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_type_indp.h"
-#endif
+#include "gaia_type_indp.h"
 
 #ifndef GAIA_DEBUG_MEMORYLEAK
 	namespace GAIA{namespace ALLOCATOR{class AllocatorESG;};};

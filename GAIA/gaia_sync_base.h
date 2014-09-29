@@ -10,8 +10,6 @@ namespace GAIA
 	};
 };
 
-#ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_sync_base_indp.h"
-#endif
+#include "gaia_sync_base_indp.h"
 
 #endif

@@ -351,8 +351,6 @@ namespace GAIA
 	};
 };
 
-#ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_network_indp.h"
-#endif
+#include "gaia_network_indp.h"
 
 #endif

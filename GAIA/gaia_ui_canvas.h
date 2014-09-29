@@ -101,8 +101,6 @@ namespace GAIA
 	};
 };
 
-#ifndef GAIA_DEBUG_CODEPURE
-#	include "gaia_ui_canvas_indp.h"
-#endif
+#include "gaia_ui_canvas_indp.h"
 
 #endif
