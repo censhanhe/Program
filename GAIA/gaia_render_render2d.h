@@ -39,6 +39,36 @@ namespace GAIA
 			};
 
 		public:
+			class Pen : public virtual GAIA::RENDER::Resource
+			{
+			public:
+				class PenDesc : public virtual GAIA::FWORK::InstanceDesc
+				{
+				public:
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
+				};
+			public:
+				const PenDesc& GetDesc() const{return m_desc;}
+			private:
+				PenDesc m_desc;
+			};
+
+			class Brush : public virtual GAIA::RENDER::Resource
+			{
+			public:
+				class BrushDesc : public virtual GAIA::FWORK::InstanceDesc
+				{
+				public:
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
+				};
+			public:
+				const BrushDesc& GetDesc() const{return m_desc;}
+			private:
+				BrushDesc m_desc;
+			};
+
 			class FontPainterFamily : public virtual GAIA::RENDER::Resource
 			{
 			public:
