@@ -348,49 +348,90 @@ namespace GAIA
 
 			/* FontPainter. */
 			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(
-				const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc){return GNIL;}
+				const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc)
+			{
+				return GNIL;
+			}
 			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainterPainter(
 				GAIA::RENDER::Render2D::FontPainterFamily& ff,
-				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc){return GNIL;}
+				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
+			{
+				return GNIL;
+			}
 			virtual GAIA::GVOID DrawFontPainter(
 				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
 				const GAIA::TCH* pszText,
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				const GAIA::MATH::ARGB<GAIA::REAL>& cr){}
+				const GAIA::MATH::ARGB<GAIA::REAL>& cr)
+			{
+			}
 
 			/* Texture. */
-			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(){return GNIL;}
-			virtual GAIA::GVOID SetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture){}
-			virtual GAIA::GVOID GetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const{}
+			virtual GAIA::RENDER::Render2D::Texture* CreateTexture()
+			{
+				return GNIL;
+			}
+			virtual GAIA::GVOID SetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture)
+			{
+			}
+			virtual GAIA::GVOID GetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const
+			{
+			}
 			virtual GAIA::GVOID DrawTexture(
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr, 
 				GAIA::RENDER::Render2D::Texture& tex, 
-				const GAIA::MATH::MTX22<GAIA::REAL>& mtxTM){}
+				const GAIA::MATH::MTX22<GAIA::REAL>& mtxTM)
+			{
+			}
 
 			/* Target. */
-			virtual GAIA::RENDER::Render2D::Target* CreateTarget(){return GNIL;}
-			virtual GAIA::GVOID SetTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target* pTarget){}
-			virtual GAIA::GVOID GetTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const{}
+			virtual GAIA::RENDER::Render2D::Target* CreateTarget()
+			{
+				return GNIL;
+			}
+			virtual GAIA::GVOID SetTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target* pTarget)
+			{
+			}
+			virtual GAIA::GVOID GetTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const
+			{
+			}
 
 			/* Shader. */
-			virtual GAIA::RENDER::Render2D::Shader* CreateShader(){return GNIL;}
-			virtual GAIA::GVOID SetShader(GAIA::RENDER::Render2D::Shader* pShader){}
-			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render2D::Shader*& pShader) const{}
-			virtual GAIA::GVOID SetShaderConstant(){}
-			virtual GAIA::GVOID GetShaderConstant() const{}
+			virtual GAIA::RENDER::Render2D::Shader* CreateShader()
+			{
+				return GNIL;
+			}
+			virtual GAIA::GVOID SetShader(GAIA::RENDER::Render2D::Shader* pShader)
+			{
+			}
+			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render2D::Shader*& pShader) const
+			{
+			}
+			virtual GAIA::GVOID SetShaderConstant()
+			{
+			}
+			virtual GAIA::GVOID GetShaderConstant() const
+			{
+			}
 
 			/* Draw. */
 			virtual GAIA::GVOID DrawLine(
 				const GAIA::MATH::VEC2<GAIA::REAL>& s,
 				const GAIA::MATH::VEC2<GAIA::REAL>& e,
 				const GAIA::MATH::ARGB<GAIA::REAL>& crs,
-				const GAIA::MATH::ARGB<GAIA::REAL>& cre, const GAIA::REAL& rWidth){}
+				const GAIA::MATH::ARGB<GAIA::REAL>& cre, const GAIA::REAL& rWidth)
+			{
+			}
 			virtual GAIA::GVOID DrawRect(
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				const GAIA::MATH::ARGB<GAIA::REAL> crs[4]){}
+				const GAIA::MATH::ARGB<GAIA::REAL> crs[4])
+			{
+			}
 			virtual GAIA::GVOID DrawTriangle(
 				const GAIA::MATH::VEC2<GAIA::REAL> pos[3],
-				const GAIA::MATH::AABR<GAIA::REAL> crs[3]){}
+				const GAIA::MATH::AABR<GAIA::REAL> crs[3])
+			{
+			}
 
 		private:
 			GINL GAIA::GVOID init()
