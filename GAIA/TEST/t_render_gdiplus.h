@@ -31,10 +31,23 @@ namespace GAIA_TEST
 
 		/* Clear screen. */
 		GAIA::MATH::ARGB<GAIA::REAL> crClear;
-		crClear.r = crClear.g = crClear.b = 0.0F;
+		crClear.r = crClear.g = crClear.b = 0.5F;
 		crClear.a = 1.0F;
 		pRender->ClearColor(crClear);
 		pRender->Flush();
+
+		/* Set anti-alias state. */
+		pRender->SetQuality2DState(
+			__RenderType::QUALITY2D_STATE_ANTIALIAS, 
+			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
+
+		/* Draw text. */
+
+		/* Draw line. */
+
+		/* Draw rect. */
+
+		/* Draw texture. */
 
 		/* Destroy render. */
 		pRender->Destroy();
