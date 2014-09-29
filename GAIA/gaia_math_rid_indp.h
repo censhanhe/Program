@@ -13,7 +13,7 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID RID128::uuid()
+		GINL GAIA::GVOID RID128::uuid()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::CoCreateGuid(GRCAST(GUID*)(u));
@@ -21,7 +21,7 @@ namespace GAIA
 			uuid_generate(*GRCAST(uuid_t*)(u));
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID RID64::uuid()
+		GINL GAIA::GVOID RID64::uuid()
 		{
 			GAIA::U8 ut[16];
 		#if GAIA_OS == GAIA_OS_WINDOWS
@@ -31,7 +31,7 @@ namespace GAIA
 		#endif
 			u64_0 = *(GAIA::U64*)ut;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID RID32::uuid()
+		GINL GAIA::GVOID RID32::uuid()
 		{
 			GAIA::U8 ut[16];
 		#if GAIA_OS == GAIA_OS_WINDOWS

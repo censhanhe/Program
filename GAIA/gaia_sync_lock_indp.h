@@ -13,7 +13,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC Lock::Lock()
+		GINL Lock::Lock()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::InitializeCriticalSection((CRITICAL_SECTION*)m_head);
@@ -25,7 +25,7 @@ namespace GAIA
 			pthread_mutexattr_destroy(&attr);
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Lock::~Lock()
+		GINL Lock::~Lock()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::DeleteCriticalSection((CRITICAL_SECTION*)m_head);
@@ -33,7 +33,7 @@ namespace GAIA
 			pthread_mutex_destroy((pthread_mutex_t*)m_head);
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Lock::Enter()
+		GINL GAIA::GVOID Lock::Enter()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::EnterCriticalSection((CRITICAL_SECTION*)m_head);
@@ -41,7 +41,7 @@ namespace GAIA
 			pthread_mutex_lock((pthread_mutex_t*)m_head);
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Lock::Leave()
+		GINL GAIA::GVOID Lock::Leave()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::LeaveCriticalSection((CRITICAL_SECTION*)m_head);

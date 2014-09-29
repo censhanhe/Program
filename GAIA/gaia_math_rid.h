@@ -11,7 +11,7 @@ namespace GAIA
 		public:
 			GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
 			GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID uuid();
+			GINL GAIA::GVOID uuid();
 			template<typename _ParamDataType> GAIA::GVOID fromstring(const _ParamDataType* psz){GAIA::ALGO::str2hex(psz, sizeofarray(u), u);}
 			template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz){GAIA::ALGO::hex2str(u, sizeofarray(u), psz);}
 			GINL RID128& operator = (const RID128& src){GAIA_AST(&src != this); u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
@@ -43,7 +43,7 @@ namespace GAIA
 		public:
 			GINL GAIA::BL empty() const{return u64_0 == 0;}
 			GINL GAIA::GVOID clear(){u64_0 = 0;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID uuid();
+			GINL GAIA::GVOID uuid();
 			template<typename _ParamDataType> GAIA::GVOID fromstring(const _ParamDataType* psz){GAIA::ALGO::str2hex(psz, sizeofarray(u), u);}
 			template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz){GAIA::ALGO::hex2str(u, sizeofarray(u), psz);}
 			GINL RID64& operator = (const RID64& src){GAIA_AST(&src != this); u64_0 = src.u64_0; return *this;}
@@ -72,7 +72,7 @@ namespace GAIA
 		public:
 			GINL GAIA::BL empty() const{return u0 == 0;}
 			GINL GAIA::GVOID clear(){u0 = 0;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID uuid();
+			GINL GAIA::GVOID uuid();
 			template<typename _ParamDataType> GAIA::GVOID fromstring(const _ParamDataType* psz){GAIA::ALGO::str2hex(psz, sizeofarray(u), u);}
 			template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz){GAIA::ALGO::hex2str(u, sizeofarray(u), psz);}
 			GINL RID32& operator = (const RID32& src){GAIA_AST(&src != this); u0 = src.u0; return *this;}

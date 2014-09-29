@@ -64,7 +64,7 @@ namespace GAIA
 			{
 				return *this;
 			}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID systime();
+			GINL GAIA::GVOID systime();
 			GINL operator GAIA::U64() const
 			{
 				GAIA::U64 ret;
@@ -89,8 +89,8 @@ namespace GAIA
 			GAIA::N16 msec; // MilliSecond.
 			GAIA::N16 usec; // MicroSecond.
 		};
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 clock_time(); // return value is micro second from 1970.1.1.
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 tick_time(); // return value is micro second from process startuped.
+		GINL GAIA::U64 clock_time(); // return value is micro second from 1970.1.1.
+		GINL GAIA::U64 tick_time(); // return value is micro second from process startuped.
 	};
 };
 

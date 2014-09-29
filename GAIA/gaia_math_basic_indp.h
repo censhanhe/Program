@@ -21,7 +21,7 @@ namespace GAIA
 		template<typename _DataType> _DataType xsqrt(const _DataType& v){return GSCAST(_DataType)(sqrt(GSCAST(GAIA::REAL)(v)));}
 		template<typename _DataType> _DataType xlog(const _DataType& v){return GSCAST(_DataType)(log(GSCAST(GAIA::REAL)(v)));}
 		template<typename _DataType> _DataType xlog10(const _DataType& v){return GSCAST(_DataType)(log10(GSCAST(GAIA::REAL)(v)));}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL xfinite(const GAIA::F32& v)
+		GINL GAIA::BL xfinite(const GAIA::F32& v)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return _finite(v) != 0;
@@ -29,7 +29,7 @@ namespace GAIA
 			return isfinite(v) != 0;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL xfinite(const GAIA::F64& v)
+		GINL GAIA::BL xfinite(const GAIA::F64& v)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return _finite(v) != 0;

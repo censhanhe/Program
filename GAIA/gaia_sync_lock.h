@@ -8,10 +8,10 @@ namespace GAIA
 		class Lock : public GAIA::Entity
 		{
 		public:
-			GAIA_DEBUG_CODEPURE_MEMFUNC Lock();
-			GAIA_DEBUG_CODEPURE_MEMFUNC ~Lock();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Enter();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Leave();
+			GINL Lock();
+			GINL ~Lock();
+			GINL GAIA::GVOID Enter();
+			GINL GAIA::GVOID Leave();
 		private:
 			GINL Lock(const Lock& src){}
 		private:

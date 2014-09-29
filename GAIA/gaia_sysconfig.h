@@ -103,11 +103,6 @@
 #	define GAIA_DEBUG_CONST const
 #endif
 
-#define GAIA_DEBUG_CODEPURE_FUNC GINL
-#define GAIA_DEBUG_CODEPURE_MEMFUNC GINL
-#define GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL virtual GINL
-#define GAIA_DEBUG_CODEPURE_VIRTUALFUNCIMPL GINL
-
 /* Enum helper. */
 #define GAIA_ENUM_BEGIN(enumname) enum enumname{enumname##_INVALID = 0,
 #define GAIA_ENUM_END(enumname) enumname##_COUNT,enumname##_FORCEUNSIGNEDINTEGER=GAIA_MAX_UNSIGNED_INTEGER,};

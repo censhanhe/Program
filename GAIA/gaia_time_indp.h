@@ -11,7 +11,7 @@ namespace GAIA
 {
 	namespace TIME
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Time::systime()
+		GINL GAIA::GVOID Time::systime()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			SYSTEMTIME st;
@@ -40,7 +40,7 @@ namespace GAIA
 			usec = GSCAST(GAIA::U16)(tv.tv_usec % 1000);
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 clock_time()
+		GINL GAIA::U64 clock_time()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			__time64_t time;
@@ -52,7 +52,7 @@ namespace GAIA
 			return (GAIA::U64)now.tv_sec * 1000 * 1000 + (GAIA::U64)now.tv_usec;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 tick_time()
+		GINL GAIA::U64 tick_time()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return (GAIA::U64)clock() * 1000;

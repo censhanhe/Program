@@ -5,8 +5,8 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::N32 xrandom();
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID xrandom_seed(GAIA::N32 seed);
+		GINL GAIA::N32 xrandom();
+		GINL GAIA::GVOID xrandom_seed(GAIA::N32 seed);
 	};
 };
 

@@ -7,7 +7,7 @@ namespace GAIA
 {
 	namespace SYSTEM
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL command_line(const GAIA::CH* pszCmd)
+		GINL GAIA::BL command_line(const GAIA::CH* pszCmd)
 		{
 			if(GAIA::ALWAYSFALSE){}
 			else if(GAIA_INTERNAL_NAMESPACE::strcmp(pszCmd, "clear") == 0)

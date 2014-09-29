@@ -7,7 +7,7 @@ namespace GAIA
 {
 	namespace ALLOCATOR
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID* AllocatorCRT::memory_alloc(const GAIA::UM& uSize)
+		GINL GAIA::GVOID* AllocatorCRT::memory_alloc(const GAIA::UM& uSize)
 		{
 			GAIA_AST(uSize > 0);
 			GAIA::GVOID* pRet = new GAIA::U8[uSize + sizeof(GAIA::UM)];
@@ -18,7 +18,7 @@ namespace GAIA
 			m_alloctimes.Increase();
 			return (GSCAST(GAIA::UM*)(pRet)) + 1;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID AllocatorCRT::memory_release(GAIA::GVOID* p)
+		GINL GAIA::GVOID AllocatorCRT::memory_release(GAIA::GVOID* p)
 		{
 			GAIA_AST(!!p);
 			m_capacity.Add(-(GAIA::N64)this->memory_size(p) - (GAIA::N64)sizeof(GAIA::UM));
@@ -26,28 +26,28 @@ namespace GAIA
 			m_piecesize.Decrease();
 			delete[] GRCAST(GAIA::U8*)(GSCAST(GAIA::UM*)(p) - 1);
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorCRT::memory_size(GAIA::GVOID* p)
+		GINL GAIA::UM AllocatorCRT::memory_size(GAIA::GVOID* p)
 		{
 			GAIA_AST(!!p);
 			return *(GSCAST(GAIA::UM*)(p) - 1);
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorCRT::capacity()
+		GINL GAIA::UM AllocatorCRT::capacity()
 		{
 			return m_capacity;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorCRT::size()
+		GINL GAIA::UM AllocatorCRT::size()
 		{
 			return m_capacity;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorCRT::use_size()
+		GINL GAIA::UM AllocatorCRT::use_size()
 		{
 			return m_usesize;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UM AllocatorCRT::piece_size()
+		GINL GAIA::UM AllocatorCRT::piece_size()
 		{
 			return m_piecesize;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::U64 AllocatorCRT::alloc_times()
+		GINL GAIA::U64 AllocatorCRT::alloc_times()
 		{
 			return m_alloctimes;
 		}

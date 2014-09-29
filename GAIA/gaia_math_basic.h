@@ -101,8 +101,8 @@ namespace GAIA
 		template<typename _DataType> _DataType xsqrt(const _DataType& v);
 		template<typename _DataType> _DataType xlog(const _DataType& v);
 		template<typename _DataType> _DataType xlog10(const _DataType& v);
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL xfinite(const GAIA::F32& v);
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL xfinite(const GAIA::F64& v);
+		GINL GAIA::BL xfinite(const GAIA::F32& v);
+		GINL GAIA::BL xfinite(const GAIA::F64& v);
 	};
 };
 

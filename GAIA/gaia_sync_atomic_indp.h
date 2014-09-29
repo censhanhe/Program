@@ -17,7 +17,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Atomic::Increase()
+		GINL GAIA::N64 Atomic::Increase()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			#if GAIA_MACHINE == GAIA_MACHINE64
@@ -35,7 +35,7 @@ namespace GAIA
 		#	endif
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Atomic::Decrease()
+		GINL GAIA::N64 Atomic::Decrease()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			#if GAIA_MACHINE == GAIA_MACHINE64
@@ -53,7 +53,7 @@ namespace GAIA
 		#	endif
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Atomic::Add(const GAIA::N64& src)
+		GINL GAIA::N64 Atomic::Add(const GAIA::N64& src)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			#if GAIA_MACHINE == GAIA_MACHINE64

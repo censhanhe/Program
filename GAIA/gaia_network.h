@@ -99,8 +99,8 @@ namespace GAIA
 			IP ip;
 			GAIA::U16 uPort;
 		};
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size);
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult);
+		GINL GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size);
+		GINL GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult);
 		class NetworkHandle : public RefObject
 		{
 		private:
@@ -131,24 +131,24 @@ namespace GAIA
 				GAIA::U8 bStabilityLink : 1;
 			};
 		public:
-			GAIA_DEBUG_CODEPURE_MEMFUNC NetworkHandle(){this->init();}
-			GAIA_DEBUG_CODEPURE_MEMFUNC ~NetworkHandle(){if(this->IsConnected()) this->Disconnect(); this->init();}
+			GINL NetworkHandle(){this->init();}
+			GINL ~NetworkHandle(){if(this->IsConnected()) this->Disconnect(); this->init();}
 			GINL GAIA::BL SetSendBufSize(GAIA::N32 nSize){if(this->IsConnected()) return GAIA::False; m_nSendBufferSize = nSize; return GAIA::True;}
 			GINL GAIA::N32 GetSendBufSize() const{return m_nSendBufferSize;}
 			GINL GAIA::BL SetRecvBufSize(GAIA::N32 nSize){if(this->IsConnected()) return GAIA::False; m_nRecvBufferSize = nSize; return GAIA::True;}
 			GINL GAIA::N32 GetRecvBufSize() const{return m_nRecvBufferSize;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Connect(const ConnectDesc& desc);
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Disconnect();
+			GINL GAIA::BL Connect(const ConnectDesc& desc);
+			GINL GAIA::BL Disconnect();
 			GINL GAIA::BL IsConnected() const{return m_h != GINVALID;}
 			GINL GAIA::GVOID SetSelfAddress(const NetworkAddress& addr){m_addr_self = addr;}
 			GINL const NetworkAddress& GetSelfNetAddress() const{return m_addr_self;}
 			GINL const NetworkAddress& GetRemoteAddress() const{return m_conndesc.addr;}
 			GINL GAIA::BL IsStabilityLink() const{return m_conndesc.bStabilityLink;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetSender(NetworkSender* pSender);
+			GINL GAIA::GVOID SetSender(NetworkSender* pSender);
 			GINL NetworkSender* GetSender() const{return m_pSender;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetReceiver(NetworkReceiver* pReceiver);
+			GINL GAIA::GVOID SetReceiver(NetworkReceiver* pReceiver);
 			GINL NetworkReceiver* GetReceiver() const{return m_pReceiver;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC BL Send(const GAIA::U8* p, GAIA::U32 uSize);
+			GINL BL Send(const GAIA::U8* p, GAIA::U32 uSize);
 			GAIA_CLASS_OPERATOR_COMPARE(m_h, m_h, NetworkHandle);
 		private:
 			GINL GAIA::GVOID init()
@@ -168,7 +168,7 @@ namespace GAIA
 				}
 			}
 			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse){}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL FlushSendQueue();
+			GINL GAIA::BL FlushSendQueue();
 		private:
 			GAIA::N32 m_h;
 			NetworkAddress m_addr_self;
@@ -213,8 +213,8 @@ namespace GAIA
 			GINL const ListenDesc& GetDesc() const{return m_desc;}
 			GINL GAIA::GVOID SetAcceptCallBack(AcceptCallBack* pAcceptCallBack){m_pAcceptCallBack = pAcceptCallBack;}
 			GINL AcceptCallBack* GetAcceptCallBack() const{return m_pAcceptCallBack;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Begin();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
+			GINL GAIA::BL Begin();
+			GINL GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		protected: // Interface for derived class callback.
 			virtual GAIA::BL Accept(NetworkHandle& h){return GAIA::False;}
@@ -243,8 +243,8 @@ namespace GAIA
 		public:
 			GINL NetworkSender(){this->init();}
 			GINL ~NetworkSender(){if(this->IsBegin()) this->End(); this->RemoveAll();}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Begin();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
+			GINL GAIA::BL Begin();
+			GINL GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		private:
 			GINL GAIA::BL Add(NetworkHandle& h)
@@ -300,8 +300,8 @@ namespace GAIA
 		public:
 			GINL NetworkReceiver(){this->init();}
 			GINL ~NetworkReceiver(){if(this->IsBegin()) this->End(); this->RemoveAll();}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Begin();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL End();
+			GINL GAIA::BL Begin();
+			GINL GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		private:
 			GINL GAIA::BL Add(NetworkHandle& h)

@@ -31,16 +31,16 @@ namespace GAIA
 	#else
 	#endif
 
-		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::Canvas()
+		GINL Canvas::Canvas()
 		{
 			this->init();
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::~Canvas()
+		GINL Canvas::~Canvas()
 		{
 			if(this->IsCreated())
 				this->Destroy();
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Create(const CanvasDesc& desc)
+		GINL GAIA::BL Canvas::Create(const CanvasDesc& desc)
 		{
 			if(this->IsCreated())
 				return GAIA::False;
@@ -145,7 +145,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Destroy()
+		GINL GAIA::BL Canvas::Destroy()
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -172,7 +172,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::IsCreated() const
+		GINL GAIA::BL Canvas::IsCreated() const
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			if(m_hWnd != GNIL)
@@ -182,7 +182,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Quit()
+		GINL GAIA::BL Canvas::Quit()
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -192,7 +192,7 @@ namespace GAIA
 		#endif
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::SetParent(GAIA::UI::Canvas* pParent)
+		GINL GAIA::BL Canvas::SetParent(GAIA::UI::Canvas* pParent)
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -230,7 +230,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::UI::Canvas* Canvas::GetParent() const
+		GINL GAIA::UI::Canvas* Canvas::GetParent() const
 		{
 			if(!this->IsCreated())
 				return GNIL;
@@ -260,7 +260,7 @@ namespace GAIA
 			return GNIL;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Show(GAIA::BL bShow)
+		GINL GAIA::BL Canvas::Show(GAIA::BL bShow)
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -283,7 +283,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::IsShow() const
+		GINL GAIA::BL Canvas::IsShow() const
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -295,7 +295,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Position(const Canvas::__PosType& pos)
+		GINL GAIA::BL Canvas::Position(const Canvas::__PosType& pos)
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -307,7 +307,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::__PosType Canvas::Position() const
+		GINL Canvas::__PosType Canvas::Position() const
 		{
 			if(!this->IsCreated())
 			{
@@ -336,7 +336,7 @@ namespace GAIA
 			return ret;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::Size(const Canvas::__SizeType& size)
+		GINL GAIA::BL Canvas::Size(const Canvas::__SizeType& size)
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -348,7 +348,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Canvas::__SizeType Canvas::Size() const
+		GINL Canvas::__SizeType Canvas::Size() const
 		{
 			if(!this->IsCreated())
 			{
@@ -377,7 +377,7 @@ namespace GAIA
 			return ret;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::SetCaptionText(const GAIA::TCH* pszCaptionText)
+		GINL GAIA::BL Canvas::SetCaptionText(const GAIA::TCH* pszCaptionText)
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -395,7 +395,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::GetCaptionText(GAIA::TCH* pszResult, GAIA::SIZE sResultMaxCharCount, GAIA::SIZE& sResultCount) const
+		GINL GAIA::BL Canvas::GetCaptionText(GAIA::TCH* pszResult, GAIA::SIZE sResultMaxCharCount, GAIA::SIZE& sResultCount) const
 		{
 			if(!this->IsCreated())
 				return GAIA::False;
@@ -414,14 +414,14 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID* Canvas::GetHandle() const
+		GINL GAIA::GVOID* Canvas::GetHandle() const
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return GSCAST(GAIA::GVOID*)(m_hWnd);
 		#else
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator == (const GAIA::UI::Canvas& src) const
+		GINL GAIA::BL Canvas::operator == (const GAIA::UI::Canvas& src) const
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return m_hWnd == src.m_hWnd;
@@ -429,11 +429,11 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator != (const GAIA::UI::Canvas& src) const
+		GINL GAIA::BL Canvas::operator != (const GAIA::UI::Canvas& src) const
 		{
 			return !(this->operator == (src));
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator >= (const GAIA::UI::Canvas& src) const
+		GINL GAIA::BL Canvas::operator >= (const GAIA::UI::Canvas& src) const
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return m_hWnd >= src.m_hWnd;
@@ -441,7 +441,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator <= (const GAIA::UI::Canvas& src) const
+		GINL GAIA::BL Canvas::operator <= (const GAIA::UI::Canvas& src) const
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return m_hWnd <= src.m_hWnd;
@@ -449,15 +449,15 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator > (const GAIA::UI::Canvas& src) const
+		GINL GAIA::BL Canvas::operator > (const GAIA::UI::Canvas& src) const
 		{
 			return !(this->operator <= (src));
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::operator < (const GAIA::UI::Canvas& src) const
+		GINL GAIA::BL Canvas::operator < (const GAIA::UI::Canvas& src) const
 		{
 			return !(this->operator >= (src));
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Canvas::init()
+		GINL GAIA::GVOID Canvas::init()
 		{
 			m_style.reset();
 		#if GAIA_OS == GAIA_OS_WINDOWS
@@ -466,7 +466,7 @@ namespace GAIA
 		#else
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::RegistToGlobalList()
+		GINL GAIA::BL Canvas::RegistToGlobalList()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);
@@ -479,7 +479,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Canvas::UnregistToGlobalList()
+		GINL GAIA::BL Canvas::UnregistToGlobalList()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);

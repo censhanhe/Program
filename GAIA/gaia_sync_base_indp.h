@@ -14,7 +14,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U32 xsleep(const GAIA::U32& uMilliSecond)
+		GINL GAIA::U32 xsleep(const GAIA::U32& uMilliSecond)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::Sleep((GAIA::U32)uMilliSecond);
@@ -24,7 +24,7 @@ namespace GAIA
 			return uMilliSecond;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::U64 xusleep(const GAIA::U64& uMicroSecond)
+		GINL GAIA::U64 xusleep(const GAIA::U64& uMicroSecond)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::Sleep((GAIA::U32)uMicroSecond / 1000);

@@ -10,14 +10,14 @@ namespace GAIA
 		public:
 			GINL AllocatorCRT(){this->init();}
 			GINL ~AllocatorCRT(){}
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::GVOID* memory_alloc(const GAIA::UM& uSize);
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::GVOID memory_release(GAIA::GVOID* p);
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM memory_size(GAIA::GVOID* p);
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM capacity();
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM size();
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM use_size();
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::UM piece_size();
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual GAIA::U64 alloc_times();
+			GINL virtual GAIA::GVOID* memory_alloc(const GAIA::UM& uSize);
+			GINL virtual GAIA::GVOID memory_release(GAIA::GVOID* p);
+			GINL virtual GAIA::UM memory_size(GAIA::GVOID* p);
+			GINL virtual GAIA::UM capacity();
+			GINL virtual GAIA::UM size();
+			GINL virtual GAIA::UM use_size();
+			GINL virtual GAIA::UM piece_size();
+			GINL virtual GAIA::U64 alloc_times();
 		private:
 			GINL GAIA::GVOID init()
 			{

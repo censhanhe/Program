@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage);
+		GINL GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage);
 	};
 };
 

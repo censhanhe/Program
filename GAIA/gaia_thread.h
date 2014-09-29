@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace THREAD
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::UM threadid();
+		GINL GAIA::UM threadid();
 		class Thread : public GAIA::Entity
 		{
 		public:
@@ -13,13 +13,13 @@ namespace GAIA
 				THREAD_STATE_RUNING,
 			GAIA_ENUM_END(THREAD_STATE)
 		public:
-			GAIA_DEBUG_CODEPURE_MEMFUNC Thread();
-			GAIA_DEBUG_CODEPURE_MEMFUNC virtual ~Thread();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID SetStackSize(const GAIA::U32& size){m_stacksize = size;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC const GAIA::U32& GetStackSize() const{return m_stacksize;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC THREAD_STATE GetState() const{return m_state;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Run();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Wait() const;
+			GINL Thread();
+			GINL virtual ~Thread();
+			GINL GAIA::GVOID SetStackSize(const GAIA::U32& size){m_stacksize = size;}
+			GINL const GAIA::U32& GetStackSize() const{return m_stacksize;}
+			GINL THREAD_STATE GetState() const{return m_state;}
+			GINL GAIA::BL Run();
+			GINL GAIA::BL Wait() const;
 			virtual GAIA::GVOID WorkProcedure() = 0;
 		private:
 			GAIA::U32 m_stacksize;

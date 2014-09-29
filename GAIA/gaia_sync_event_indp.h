@@ -14,7 +14,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC Event::Event()
+		GINL Event::Event()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			*(HANDLE*)m_head = ::CreateEvent(GNIL, FALSE, FALSE, GNIL);
@@ -23,7 +23,7 @@ namespace GAIA
 			pthread_cond_init((pthread_cond_t*)m_head, GNIL);
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Event::~Event()
+		GINL Event::~Event()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::CloseHandle(*(HANDLE*)m_head);
@@ -32,7 +32,7 @@ namespace GAIA
 			pthread_cond_destroy((pthread_cond_t*)m_head);
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Event::Fire()
+		GINL GAIA::GVOID Event::Fire()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::SetEvent(*(HANDLE*)m_head);
@@ -46,7 +46,7 @@ namespace GAIA
 			pthread_mutex_unlock((pthread_mutex_t*)m_headmutex);
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Event::Wait(GAIA::U32 uMilliSecond)
+		GINL GAIA::BL Event::Wait(GAIA::U32 uMilliSecond)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			if(::WaitForSingleObject(*(HANDLE*)m_head, uMilliSecond) == WAIT_OBJECT_0)

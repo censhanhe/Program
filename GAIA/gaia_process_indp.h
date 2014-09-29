@@ -13,7 +13,7 @@ namespace GAIA
 {
 	namespace PROCESS
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::UM processid()
+		GINL GAIA::UM processid()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return (GAIA::UM)::GetCurrentProcessId();

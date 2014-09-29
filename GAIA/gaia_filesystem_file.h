@@ -32,11 +32,11 @@ namespace GAIA
 		public:
 			GINL File(){m_fileopentype = OPEN_TYPE_INVALID; m_size = m_offset = 0; m_pFile = GNIL;}
 			GINL virtual ~File(){if(this->IsOpen()) this->Close();}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Open(const GAIA::TCH* filekey, const GAIA::UM& opentype);
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Close();
+			GINL GAIA::BL Open(const GAIA::TCH* filekey, const GAIA::UM& opentype);
+			GINL GAIA::BL Close();
 			GINL GAIA::BL IsOpen() const{return m_pFile != GNIL;}
 			GINL GAIA::N64 Size() const{return m_size;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Resize(const GAIA::N64& size);
+			GINL GAIA::BL Resize(const GAIA::N64& size);
 			template<typename _ObjType> GAIA::BL Read(_ObjType& obj)
 			{
 				GAIA_AST(!!m_pFile);
@@ -46,7 +46,7 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Read(GAIA::GVOID* pDst, const GAIA::N64& size);
+			GINL GAIA::N64 Read(GAIA::GVOID* pDst, const GAIA::N64& size);
 			template<typename _ObjType> GAIA::BL Write(const _ObjType& obj)
 			{
 				GAIA_AST(!!m_pFile);
@@ -56,11 +56,11 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size);
+			GINL GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size);
 			template<typename _ParamType> GAIA::N64 WriteText(const _ParamType* pszText){return this->Write(pszText, GAIA::ALGO::strlen(pszText) * sizeof(_ParamType));}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::N64& offset);
+			GINL GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::N64& offset);
 			GINL const GAIA::N64& Tell() const{return m_offset;}
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Flush();
+			GINL GAIA::BL Flush();
 			template<typename _ObjType> File& operator >> (_ObjType& t){this->Read(t); return *this;}
 			template<typename _ObjType> File& operator << (const _ObjType& t){this->Write(t); return *this;}
 	#ifdef GAIA_DEBUG_MACHINELENGTH

@@ -68,48 +68,48 @@ namespace GAIA
 			virtual GAIA::GVOID enable_read(GAIA::BL bEnable){m_bEnableRead = bEnable;}
 			virtual GAIA::BL enable_read() const{return m_bEnableRead;}
 
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL GAIA::GVOID clear_screen();
+			virtual GINL GAIA::GVOID clear_screen();
 
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::BL t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::NM t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::UM t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::N8 t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::N16 t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::N32 t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::N64& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::U8 t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::U16 t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::U32 t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::U64& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (GAIA::F32 t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::F64& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::WCH& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::CH* p);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::WCH* p);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const GAIA::X128& t);
+			virtual GINL Print& operator << (GAIA::BL t);
+			virtual GINL Print& operator << (GAIA::NM t);
+			virtual GINL Print& operator << (GAIA::UM t);
+			virtual GINL Print& operator << (GAIA::N8 t);
+			virtual GINL Print& operator << (GAIA::N16 t);
+			virtual GINL Print& operator << (GAIA::N32 t);
+			virtual GINL Print& operator << (const GAIA::N64& t);
+			virtual GINL Print& operator << (GAIA::U8 t);
+			virtual GINL Print& operator << (GAIA::U16 t);
+			virtual GINL Print& operator << (GAIA::U32 t);
+			virtual GINL Print& operator << (const GAIA::U64& t);
+			virtual GINL Print& operator << (GAIA::F32 t);
+			virtual GINL Print& operator << (const GAIA::F64& t);
+			virtual GINL Print& operator << (const GAIA::WCH& t);
+			virtual GINL Print& operator << (const GAIA::CH* p);
+			virtual GINL Print& operator << (const GAIA::WCH* p);
+			virtual GINL Print& operator << (const GAIA::X128& t);
 
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::BL& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::NM& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::UM& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::N8& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::N16& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::N32& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::N64& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::U8& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::U16& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::U32& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::U64& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::F32& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::F64& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::WCH& t);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::CH* p);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::WCH* p);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (GAIA::X128& t);
+			virtual GINL Print& operator >> (GAIA::BL& t);
+			virtual GINL Print& operator >> (GAIA::NM& t);
+			virtual GINL Print& operator >> (GAIA::UM& t);
+			virtual GINL Print& operator >> (GAIA::N8& t);
+			virtual GINL Print& operator >> (GAIA::N16& t);
+			virtual GINL Print& operator >> (GAIA::N32& t);
+			virtual GINL Print& operator >> (GAIA::N64& t);
+			virtual GINL Print& operator >> (GAIA::U8& t);
+			virtual GINL Print& operator >> (GAIA::U16& t);
+			virtual GINL Print& operator >> (GAIA::U32& t);
+			virtual GINL Print& operator >> (GAIA::U64& t);
+			virtual GINL Print& operator >> (GAIA::F32& t);
+			virtual GINL Print& operator >> (GAIA::F64& t);
+			virtual GINL Print& operator >> (GAIA::WCH& t);
+			virtual GINL Print& operator >> (GAIA::CH* p);
+			virtual GINL Print& operator >> (GAIA::WCH* p);
+			virtual GINL Print& operator >> (GAIA::X128& t);
 
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator >> (PrintFormat& pf);
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL Print& operator << (const PrintFormat& pf);
+			virtual GINL Print& operator >> (PrintFormat& pf);
+			virtual GINL Print& operator << (const PrintFormat& pf);
 
-			GAIA_DEBUG_CODEPURE_VIRTUALFUNCDECL GAIA::GVOID flush();
+			virtual GINL GAIA::GVOID flush();
 
 		private:
 			GINL GAIA::GVOID init()

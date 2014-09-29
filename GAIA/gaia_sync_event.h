@@ -8,10 +8,10 @@ namespace GAIA
 		class Event : public GAIA::Entity
 		{
 		public:
-			GAIA_DEBUG_CODEPURE_MEMFUNC Event();
-			GAIA_DEBUG_CODEPURE_MEMFUNC ~Event();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID Fire();
-			GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Wait(GAIA::U32 uMilliSecond);
+			GINL Event();
+			GINL ~Event();
+			GINL GAIA::GVOID Fire();
+			GINL GAIA::BL Wait(GAIA::U32 uMilliSecond);
 		private:
 			GINL Event(const Event& src){}
 		private:

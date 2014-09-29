@@ -13,7 +13,7 @@ namespace GAIA
 {
 	namespace THREAD
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::UM threadid()
+		GINL GAIA::UM threadid()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return GSCAST(GAIA::UM)(::GetCurrentThreadId());
@@ -26,8 +26,8 @@ namespace GAIA
 	#else
 		static GAIA::GVOID* thread_procedure(GAIA::GVOID* p){Thread* pThread = static_cast<Thread*>(p); pThread->WorkProcedure(); pthread_exit(0);}
 	#endif
-		GAIA_DEBUG_CODEPURE_MEMFUNC Thread::Thread(){m_stacksize = 1024 * 1024; m_state = THREAD_STATE_INVALID; m_pThread = GNIL;}
-		GAIA_DEBUG_CODEPURE_MEMFUNC Thread::~Thread()
+		GINL Thread::Thread(){m_stacksize = 1024 * 1024; m_state = THREAD_STATE_INVALID; m_pThread = GNIL;}
+		GINL Thread::~Thread()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			if(m_pThread != GNIL)
@@ -43,7 +43,7 @@ namespace GAIA
 			}
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Thread::Run()
+		GINL GAIA::BL Thread::Run()
 		{
 			if(m_pThread != GNIL)
 				return GAIA::False;
@@ -67,7 +67,7 @@ namespace GAIA
 			return GAIA::True;
 		#endif
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL Thread::Wait() const
+		GINL GAIA::BL Thread::Wait() const
 		{
 			if(m_pThread != GNIL)
 			{

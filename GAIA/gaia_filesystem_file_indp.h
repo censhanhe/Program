@@ -7,7 +7,7 @@ namespace GAIA
 {
 	namespace FSYS
 	{
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Open(const GAIA::TCH* filekey, const GAIA::UM& opentype)
+		GINL GAIA::BL File::Open(const GAIA::TCH* filekey, const GAIA::UM& opentype)
 		{
 			if(this->IsOpen())
 				this->Close();
@@ -78,7 +78,7 @@ namespace GAIA
 			m_fileopentype = opentype;
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Close()
+		GINL GAIA::BL File::Close()
 		{
 			if(m_pFile != GNIL)
 			{
@@ -90,7 +90,7 @@ namespace GAIA
 			}
 			return GAIA::False;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Resize(const GAIA::N64& size)
+		GINL GAIA::BL File::Resize(const GAIA::N64& size)
 		{
 			if(m_pFile != GNIL)
 			{
@@ -118,7 +118,7 @@ namespace GAIA
 			}
 			return GAIA::False;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 File::Read(GAIA::GVOID* pDst, const GAIA::N64& size)
+		GINL GAIA::N64 File::Read(GAIA::GVOID* pDst, const GAIA::N64& size)
 		{
 			GAIA_AST(!!pDst);
 			GAIA_AST(size > 0);
@@ -138,7 +138,7 @@ namespace GAIA
 			}
 			return 0;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::N64 File::Write(const GAIA::GVOID* pSrc, const GAIA::N64& size)
+		GINL GAIA::N64 File::Write(const GAIA::GVOID* pSrc, const GAIA::N64& size)
 		{
 			GAIA_AST(!!pSrc);
 			GAIA_AST(size > 0);
@@ -160,7 +160,7 @@ namespace GAIA
 			}
 			return 0;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Seek(SEEK_TYPE seektype, const GAIA::N64& offset)
+		GINL GAIA::BL File::Seek(SEEK_TYPE seektype, const GAIA::N64& offset)
 		{
 			if(m_pFile == GNIL)
 				return GAIA::False;
@@ -182,7 +182,7 @@ namespace GAIA
 			}
 			return GAIA::False;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL File::Flush()
+		GINL GAIA::BL File::Flush()
 		{
 			if(m_pFile == GNIL)
 				return GAIA::False;

@@ -19,7 +19,7 @@ namespace GAIA
 	namespace NETWORK
 	{
 		/* NetworkHandle's implement. */
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkHandle::Connect(const ConnectDesc& desc)
+		GINL GAIA::BL NetworkHandle::Connect(const ConnectDesc& desc)
 		{
 			if(this->IsConnected())
 				this->Disconnect();
@@ -109,7 +109,7 @@ namespace GAIA
 
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkHandle::Disconnect()
+		GINL GAIA::BL NetworkHandle::Disconnect()
 		{
 			if(!this->IsConnected())
 				return GAIA::False;
@@ -123,7 +123,7 @@ namespace GAIA
 			this->init();
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID NetworkHandle::SetSender(NetworkSender* pSender)
+		GINL GAIA::GVOID NetworkHandle::SetSender(NetworkSender* pSender)
 		{
 			if(pSender == m_pSender)
 				return;
@@ -133,7 +133,7 @@ namespace GAIA
 				pSender->Add(*this);
 			m_pSender = pSender;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::GVOID NetworkHandle::SetReceiver(NetworkReceiver* pReceiver)
+		GINL GAIA::GVOID NetworkHandle::SetReceiver(NetworkReceiver* pReceiver)
 		{
 			if(pReceiver == m_pReceiver)
 				return;
@@ -143,7 +143,7 @@ namespace GAIA
 				pReceiver->Add(*this);
 			m_pReceiver = pReceiver;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC BL NetworkHandle::Send(const GAIA::U8* p, GAIA::U32 uSize)
+		GINL BL NetworkHandle::Send(const GAIA::U8* p, GAIA::U32 uSize)
 		{
 			GAIA_AST(!!p);
 			GAIA_AST(uSize > 0);
@@ -171,7 +171,7 @@ namespace GAIA
 			m_sendque.push_back(r);
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkHandle::FlushSendQueue()
+		GINL GAIA::BL NetworkHandle::FlushSendQueue()
 		{
 			GAIA_AST(m_h != GINVALID);
 
@@ -315,8 +315,8 @@ namespace GAIA
 			}
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size){return gethostname(pszResult, size) != GINVALID;}
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult)
+		GINL GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size){return gethostname(pszResult, size) != GINVALID;}
+		GINL GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult)
 		{
 			hostent* pHostEnt = gethostbyname(pszHostName);
 			if(pHostEnt != GNIL)
@@ -343,7 +343,7 @@ namespace GAIA
 			}
 		}
 		/* NetworkListener's implement. */
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkListener::Begin()
+		GINL GAIA::BL NetworkListener::Begin()
 		{
 			if(this->IsBegin())
 				return GAIA::False;
@@ -351,7 +351,7 @@ namespace GAIA
 			this->Run();
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkListener::End()
+		GINL GAIA::BL NetworkListener::End()
 		{
 			if(!this->IsBegin())
 				return GAIA::False;
@@ -513,7 +513,7 @@ namespace GAIA
 		#endif
 		}
 		/* NetworkSender's implement. */
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkSender::Begin()
+		GINL GAIA::BL NetworkSender::Begin()
 		{
 			if(this->IsBegin())
 				return GAIA::False;
@@ -521,7 +521,7 @@ namespace GAIA
 			this->Run();
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkSender::End()
+		GINL GAIA::BL NetworkSender::End()
 		{
 			if(!this->IsBegin())
 				return GAIA::False;
@@ -574,7 +574,7 @@ namespace GAIA
 			}
 		}
 		/* NetworkReceiver's implement. */
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkReceiver::Begin()
+		GINL GAIA::BL NetworkReceiver::Begin()
 		{
 			if(this->IsBegin())
 				return GAIA::False;
@@ -582,7 +582,7 @@ namespace GAIA
 			this->Run();
 			return GAIA::True;
 		}
-		GAIA_DEBUG_CODEPURE_MEMFUNC GAIA::BL NetworkReceiver::End()
+		GINL GAIA::BL NetworkReceiver::End()
 		{
 			if(!this->IsBegin())
 				return GAIA::False;

@@ -12,7 +12,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage)
+		GINL GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			MSG msg;
