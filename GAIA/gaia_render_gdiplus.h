@@ -350,12 +350,18 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(
 				const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc)
 			{
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+
+			#endif
 				return GNIL;
 			}
 			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainterPainter(
 				GAIA::RENDER::Render2D::FontPainterFamily& ff,
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
 			{
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+
+			#endif
 				return GNIL;
 			}
 			virtual GAIA::GVOID DrawFontPainter(
@@ -364,6 +370,9 @@ namespace GAIA
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 			{
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+
+			#endif
 			}
 
 			/* Texture. */
