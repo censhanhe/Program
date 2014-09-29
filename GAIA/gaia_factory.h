@@ -120,6 +120,7 @@ namespace GAIA
 
 				if(pRet != GNIL)
 				{
+					pRet->SetFactory(this);
 					if(!pRet->Begin(pParameter))
 					{
 						pRet->Release();

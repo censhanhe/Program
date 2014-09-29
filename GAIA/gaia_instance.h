@@ -8,14 +8,14 @@ namespace GAIA
 		class Instance : public RefObject
 		{
 		private:
-			friend class Factory;
+			friend class GAIA::FWORK::Factory;
 		public:
 			GINL Instance(){this->init();}
 			GINL ~Instance(){}
 			virtual GAIA::FWORK::ClsID GetClassID() const = 0;
+			GINL GAIA::FWORK::Factory* GetFactory() const{return m_pFactory;}
 		protected:
 			virtual GAIA::GVOID Destruct(){if(this->IsBegin()) this->End();}
-		protected:
 			virtual GAIA::BL Begin(GAIA::GVOID* pParameter)
 			{
 				if(m_bBegin)
@@ -32,8 +32,10 @@ namespace GAIA
 			}
 			virtual GAIA::BL IsBegin() const{return m_bBegin;}
 		private:
-			GINL GAIA::GVOID init(){m_bBegin = GAIA::False;}
+			GINL GAIA::GVOID init(){m_pFactory = GNIL; m_bBegin = GAIA::False;}
+			GINL GAIA::GVOID SetFactory(GAIA::FWORK::Factory* pFactory){m_pFactory = pFactory;}
 		private:
+			GAIA::FWORK::Factory* m_pFactory;
 			GAIA::U8 m_bBegin : 1;
 		};
 	};
