@@ -5,6 +5,19 @@ namespace GAIA
 {
 	namespace RENDER
 	{
+		static const GAIA::CH* RENDER3D_QUALITYSTATE_DEFAULT[] = 
+		{
+			"invalid",	// QUALITY3D_STATE_INVALID
+		};
+		static const GAIA::CH* RENDER3D_RENDERSTATE_DEFAULT[] = 
+		{
+			"invalid",	// RENDER3D_STATE_INVALID
+		};
+		static const GAIA::CH* RENDER3D_SAMPLERSTATE_DEFAULT[] = 
+		{
+			"invalid",	// SAMPLER3D_STATE_INVALID
+		};
+
 		class Render3D : public virtual GAIA::RENDER::Render2D
 		{
 		public:
