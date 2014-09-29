@@ -1,7 +1,7 @@
 #ifndef		__T_CONTAINER_ACCESSER_H__
 #define		__T_CONTAINER_ACCESSER_H__
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	GINL GAIA::N32 t_accesser(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{

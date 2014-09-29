@@ -72,7 +72,7 @@
 #include "t_render_gles2.h"
 #include "t_render_gles3.h"
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	GINL GAIA::N32 t_all(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{

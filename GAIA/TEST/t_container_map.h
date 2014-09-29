@@ -1,7 +1,7 @@
 #ifndef		__T_CONTAINER_MAP_H__
 #define		__T_CONTAINER_MAP_H__
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	GINL GAIA::N32 t_map(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{

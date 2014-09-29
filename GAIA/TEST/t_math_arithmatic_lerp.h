@@ -1,7 +1,7 @@
 #ifndef		__T_MATH_ARITHMATIC_LERP_H__
 #define		__T_MATH_ARITHMATIC_LERP_H__
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	GINL GAIA::N32 t_math_arithmatic_lerp(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{

@@ -1,7 +1,7 @@
 #ifndef		__T_LOCALE_H__
 #define		__T_LOCALE_H__
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	GINL GAIA::N32 t_locale(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{

@@ -33,6 +33,6 @@ int main()
 	GAIA::FSYS::File file;
 	file.Open(_T("../gaia_test.txt"), GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE);
 	GAIA::PRINT::Print prt;
-	GAIATEST::t_all(file, prt);
+	GAIA_TEST::t_all(file, prt);
 	return 0;
 }

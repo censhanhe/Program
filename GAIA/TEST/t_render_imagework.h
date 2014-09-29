@@ -1,7 +1,7 @@
 #ifndef		__T_RENDER_IMAGEWORK_H__
 #define		__T_RENDER_IMAGEWORK_H__
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	GINL GAIA::N32 t_render_imagework(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{

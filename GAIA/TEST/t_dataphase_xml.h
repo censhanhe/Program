@@ -1,7 +1,7 @@
 #ifndef		__T_DATAPHASE_XML_H__
 #define		__T_DATAPHASE_XML_H__
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	GINL GAIA::N32 t_dataphase_xml(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{

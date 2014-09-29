@@ -1,7 +1,7 @@
 #ifndef		__T_MATH_COOKIES_NRGB_H__
 #define		__T_MATH_COOKIES_NRGB_H__
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	GINL GAIA::N32 t_math_cookies_nrgb(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{

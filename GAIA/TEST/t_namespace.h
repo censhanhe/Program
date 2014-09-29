@@ -3,7 +3,7 @@
 
 #include "../gaia_using_namespace.h"
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	GINL GAIA::N32 t_namespace(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{

@@ -1,7 +1,7 @@
 #ifndef		__T_UI_CANVAS_H__
 #define		__T_UI_CANVAS_H__
 
-namespace GAIATEST
+namespace GAIA_TEST
 {
 	class CanvasTestThread : public GAIA::THREAD::Thread
 	{
