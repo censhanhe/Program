@@ -144,25 +144,6 @@ namespace GAIA
 	#define GNIL 0
 	#define GINVALID (~0)
 
-	/* Undefine origin type. */
-	#define GAIA_INVALID_ORIGINTYPE 1
-	#ifdef GAIA_DEBUG_CODEPURE
-	#	ifndef GAIA_NOCANCEL_ORIGINTYPE
-	#		define bool GAIA_INVALID_ORIGINTYPE
-	#		define true GAIA_INVALID_ORIGINTYPE
-	#		define false GAIA_INVALID_ORIGINTYPE
-	#		define char GAIA_INVALID_ORIGINTYPE
-	#		define short GAIA_INVALID_ORIGINTYPE
-	#		define int GAIA_INVALID_ORIGINTYPE
-	#		define long GAIA_INVALID_ORIGINTYPE
-	#		define float GAIA_INVALID_ORIGINTYPE
-	#		define double GAIA_INVALID_ORIGINTYPE
-	#		define wchar_t GAIA_INVALID_ORIGINTYPE
-	#		define __wchar_t GAIA_INVALID_ORIGINTYPE
-	#		define unsigned GAIA_INVALID_ORIGINTYPE
-	#	endif
-	#endif
-
 	/* Common operation. */
 	#define sizeofarray(arr) (sizeof(arr) / sizeof((arr)[0]))
 	#define sizeofarray2(arr) (sizeof(arr) / sizeof((arr)[0][0]))

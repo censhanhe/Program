@@ -101,13 +101,7 @@ namespace GAIA
 
 			// Setup socket mode.
 		#if GAIA_OS == GAIA_OS_WINDOWS
-		#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
-		#		undef long
-		#	endif
 			GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
-		#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
-		#		define long GAIA_INVALID_ORIGINTYPE
-		#	endif
 		#else
 			GAIA::N32 flags = fcntl(m_h, F_GETFL, 0);
 			fcntl(m_h, F_SETFL, flags | O_NONBLOCK);
@@ -482,13 +476,7 @@ namespace GAIA
 						break;
 					}
 				#if GAIA_OS == GAIA_OS_WINDOWS
-				#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
-				#		undef long
-				#	endif
 					GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(newsock, FIONBIO, &bNotBlockModeEnable);
-				#	if defined(GAIA_DEBUG_CODEPURE) && !defined(GAIA_NOCANCEL_ORIGINTYPE)
-				#		define long GAIA_INVALID_ORIGINTYPE
-				#	endif
 				#else
 					GAIA::N32 flags = fcntl(newsock, F_GETFL, 0);
 					fcntl(newsock, F_SETFL, flags | O_NONBLOCK);
