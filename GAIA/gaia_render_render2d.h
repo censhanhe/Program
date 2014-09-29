@@ -176,6 +176,12 @@ namespace GAIA
 			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState) = 0;
 			virtual const GAIA::CH* GetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const = 0;
 
+			/* Pen. */
+			virtual GAIA::RENDER::Render2D::Pen* CreatePen(const GAIA::RENDER::Render2D::Pen::PenDesc& desc) = 0;
+
+			/* Brush. */
+			virtual GAIA::RENDER::Render2D::Brush* CreateBrush(const GAIA::RENDER::Render2D::Brush::BrushDesc& desc) = 0;
+
 			/* FontPainter. */
 			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(
 				const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc) = 0;
