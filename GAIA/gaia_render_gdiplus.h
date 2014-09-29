@@ -199,12 +199,111 @@ namespace GAIA
 			}
 
 			/* State. */
-			virtual GAIA::GVOID SetQuality2DState(const QUALITY2D_STATE& qs, const GAIA::CH* pszState){}
-			virtual const GAIA::CH* GetQuality2DState(const QUALITY2D_STATE& qs){return GNIL;}
-			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs, const GAIA::CH* pszState){}
-			virtual const GAIA::CH* GetRender2DState(const RENDER2D_STATE& rs) const{return GNIL;}
-			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState){}
-			virtual const GAIA::CH* GetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const{return GNIL;}
+			virtual GAIA::GVOID SetQuality2DState(const QUALITY2D_STATE& qs, const GAIA::CH* pszState)
+			{
+				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
+					return;
+				if(GAIA::ALGO::stremp(pszState))
+					this->SetQuality2DState(qs, RENDER2D_QUALITYSTATE_DEFAULT[qs]);
+				switch(qs)
+				{
+				case QUALITY2D_STATE_ANTIALIAS:
+					{
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::False);
+					break;
+				}
+			}
+			virtual const GAIA::CH* GetQuality2DState(const QUALITY2D_STATE& qs)
+			{
+				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
+					return GNIL;
+				switch(qs)
+				{
+				case QUALITY2D_STATE_ANTIALIAS:
+					{
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::False);
+					break;
+				}
+				return GNIL;
+			}
+			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs, const GAIA::CH* pszState)
+			{
+				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
+					return;
+				if(GAIA::ALGO::stremp(pszState))
+					this->SetRender2DState(rs, RENDER2D_RENDERSTATE_DEFAULT[rs]);
+				switch(rs)
+				{
+				case RENDER2D_STATE_ALPHABLEND:
+					{
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::False);
+					break;
+				}
+			}
+			virtual const GAIA::CH* GetRender2DState(const RENDER2D_STATE& rs) const
+			{
+				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
+					return GNIL;
+				switch(rs)
+				{
+				case RENDER2D_STATE_ALPHABLEND:
+					{
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::False);
+					break;
+				}
+				return GNIL;
+			}
+			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState)
+			{
+				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
+					return;
+				if(GAIA::ALGO::stremp(pszState))
+					this->SetSampler2DState(nSamplerIndex, ss, RENDER2D_SAMPLERSTATE_DEFAULT[ss]);
+				switch(ss)
+				{
+				case SAMPLER2D_STATE_ADDRESSU:
+					{
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::False);
+					break;
+				}
+			}
+			virtual const GAIA::CH* GetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const
+			{
+				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
+					return GNIL;
+				switch(ss)
+				{
+				case SAMPLER2D_STATE_ADDRESSU:
+					{
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::False);
+					break;
+				}
+				return GNIL;
+			}
 
 			/* FontPainter. */
 			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(

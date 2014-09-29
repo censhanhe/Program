@@ -117,8 +117,9 @@
 #endif
 
 /* Enum helper. */
-#define GAIA_ENUM_BEGIN(name) enum name{name##_INVALID = 0,
-#define GAIA_ENUM_END(name) name##_COUNT,name##_FORCEUNSIGNEDINTEGER=GAIA_MAX_UNSIGNED_INTEGER,};
+#define GAIA_ENUM_BEGIN(enumname) enum enumname{enumname##_INVALID = 0,
+#define GAIA_ENUM_END(enumname) enumname##_COUNT,enumname##_FORCEUNSIGNEDINTEGER=GAIA_MAX_UNSIGNED_INTEGER,};
+#define GAIA_ENUM_VALID(enumname, name) (((name) > enumname##_INVALID) && ((name) < enumname##_FORCEUNSIGNEDINTEGER))
 
 /* Module setting. */
 #define GAIA_MODULE_BASEDATATYPEONLY	// If define this macro, the macro's user will alloc object by GAIA_MALLOC but not new(c++ operator).

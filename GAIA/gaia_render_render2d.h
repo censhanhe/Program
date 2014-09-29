@@ -5,6 +5,21 @@ namespace GAIA
 {
 	namespace RENDER
 	{
+		static const GAIA::CH* RENDER2D_QUALITYSTATE_DEFAULT[] = 
+		{
+			"invalid",	// QUALITY2D_STATE_INVALID
+			"none",		// QUALITY2D_STATE_ANTIALIAS
+			"none",		// QUALITY2D_STATE_FONTANTIALIAS
+		};
+		static const GAIA::CH* RENDER2D_RENDERSTATE_DEFAULT[] = 
+		{
+			"invalid",	// RENDER2D_STATE_INVALID
+		};
+		static const GAIA::CH* RENDER2D_SAMPLERSTATE_DEFAULT[] = 
+		{
+			"invalid",	// SAMPLER2D_STATE_INVALID
+		};
+
 		class Render2D : public virtual GAIA::RENDER::Render
 		{
 		public:
@@ -101,8 +116,8 @@ namespace GAIA
 
 		public:
 			GAIA_ENUM_BEGIN(QUALITY2D_STATE)
-				QUALITY2D_STATE_ANTIALIAS,
-				QUALITY2D_STATE_FONTANTIALIAS,
+				QUALITY2D_STATE_ANTIALIAS,		// Support "none", "low", "mid", "high". Default is "none".
+				QUALITY2D_STATE_FONTANTIALIAS,	// Support "none", "low", "mid", "high". Default is "none".
 			GAIA_ENUM_END(QUALITY2D_STATE)
 
 			GAIA_ENUM_BEGIN(RENDER2D_STATE)
