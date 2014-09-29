@@ -209,6 +209,30 @@ namespace GAIA
 				{
 				case QUALITY2D_STATE_ANTIALIAS:
 					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						if(GAIA::ALGO::strcmp(pszState, RENDER_STATEWORD_STRING[RENDER_STATEWORD_NONE]) == 0)
+						{
+							if(m_pSwapGraphics->SetSmoothingMode(Gdiplus::SmoothingModeDefault) != Gdiplus::Ok)
+								return;
+						}
+						else if(GAIA::ALGO::strcmp(pszState, RENDER_STATEWORD_STRING[RENDER_STATEWORD_LOW]) == 0)
+						{
+							if(m_pSwapGraphics->SetSmoothingMode(Gdiplus::SmoothingModeHighSpeed) != Gdiplus::Ok)
+								return;
+						}
+						else if(GAIA::ALGO::strcmp(pszState, RENDER_STATEWORD_STRING[RENDER_STATEWORD_MID]) == 0)
+						{
+							if(m_pSwapGraphics->SetSmoothingMode(Gdiplus::SmoothingModeHighQuality) != Gdiplus::Ok)
+								return;
+						}
+						else if(GAIA::ALGO::strcmp(pszState, RENDER_STATEWORD_STRING[RENDER_STATEWORD_HIGH]) == 0)
+						{
+							if(m_pSwapGraphics->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias) != Gdiplus::Ok)
+								return;
+						}
+						else
+							GAIA_AST(GAIA::False);
+					#endif
 					}
 					break;
 
@@ -225,6 +249,23 @@ namespace GAIA
 				{
 				case QUALITY2D_STATE_ANTIALIAS:
 					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						Gdiplus::SmoothingMode sm = m_pSwapGraphics->GetSmoothingMode();
+						switch(sm)
+						{
+						case Gdiplus::SmoothingModeDefault:
+							return RENDER_STATEWORD_STRING[RENDER_STATEWORD_NONE];
+						case Gdiplus::SmoothingModeHighSpeed:
+							return RENDER_STATEWORD_STRING[RENDER_STATEWORD_LOW];
+						case Gdiplus::SmoothingModeHighQuality:
+							return RENDER_STATEWORD_STRING[RENDER_STATEWORD_MID];
+						case Gdiplus::SmoothingModeAntiAlias:
+							return RENDER_STATEWORD_STRING[RENDER_STATEWORD_HIGH];
+						default:
+							GAIA_AST(GAIA::False);
+							break;
+						}
+					#endif
 					}
 					break;
 
