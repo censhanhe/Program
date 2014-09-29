@@ -352,6 +352,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gaia_predecl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gaia_sysconfig.h"
 				>
 			</File>

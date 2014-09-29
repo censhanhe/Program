@@ -5,7 +5,6 @@ namespace GAIA
 {
 	namespace FWORK
 	{
-		class Factory;
 		class FactoryCreateCallBack : public GAIA::Entity
 		{
 		public:

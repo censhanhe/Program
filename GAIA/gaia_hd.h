@@ -5,7 +5,6 @@ namespace GAIA
 {
 	namespace FWORK
 	{
-		class Instance;
 		class HD : public GAIA::Entity // Handle class.
 		{
 		public:

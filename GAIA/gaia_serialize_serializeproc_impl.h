@@ -5,8 +5,6 @@ namespace GAIA
 {
 	namespace SERIALIZER
 	{
-		class Serializer;
-
 		/* Base type serialize. */
 		template<typename _ParamType> GAIA::BL SerializerProc::write(Serializer* p, const _ParamType& t)
 		{

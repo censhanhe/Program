@@ -5,7 +5,6 @@ namespace GAIA
 {
 	namespace DATATRAFFIC
 	{
-		class Route;
 		class Gateway : public virtual GAIA::FWORK::Instance
 		{
 		private:

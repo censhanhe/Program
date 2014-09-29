@@ -5,7 +5,6 @@ namespace GAIA
 {
 	namespace SERIALIZER
 	{
-		class Serializer;
 		class SerializerProc
 		{
 		public:

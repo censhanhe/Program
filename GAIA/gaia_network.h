@@ -101,8 +101,6 @@ namespace GAIA
 		};
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size);
 		GAIA_DEBUG_CODEPURE_FUNC GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult);
-		class NetworkSender;
-		class NetworkReceiver;
 		class NetworkHandle : public RefObject
 		{
 		private:

@@ -5,6 +5,7 @@
 #include	"gaia_version.h"
 #include	"gaia_sysconfig.h"
 #include	"gaia_macrohelper.h"
+#include	"gaia_predecl.h"
 #include	"gaia_type.h"
 #include	"gaia_type_convert.h"
 #include	"gaia_type_traits2.h"
