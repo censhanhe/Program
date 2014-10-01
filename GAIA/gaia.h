@@ -32,7 +32,6 @@
 #include	"gaia_math_basic.h"
 #include 	"gaia_math_random.h"
 #include 	"gaia_math_lerp.h"
-#include	"gaia_math_cal.h"
 
 #include	"gaia_allocator.h"
 #include	"gaia_allocator_crt.h"
@@ -52,6 +51,8 @@
 #include 	"gaia_algorithm_unique.h"
 #include	"gaia_algorithm_replace.h"
 #include	"gaia_algorithm_set.h"
+
+#include	"gaia_math_cal.h"
 
 #include	"gaia_container.h"
 #include 	"gaia_container_datarecord.h"

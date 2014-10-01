@@ -23,10 +23,10 @@ namespace GAIA
 			GINL GAIA::BL Load(__AccesserType& acc)
 			{
 				__BinaryAccesserType tacc = acc;
-				CHUNK_TYPE cts;
+				GAIA::FSYS::CHUNK_TYPE cts;
 				if(tacc.read(&cts, sizeof(cts)) != sizeof(cts))
 					return GAIA::False;
-				if(cts == CHUNK_TYPE_XML)
+				if(cts == GAIA::FSYS::CHUNK_TYPE_XML)
 					return this->LoadBinary(acc);
 				else
 					return this->LoadText(acc);
@@ -407,7 +407,7 @@ namespace GAIA
 			GINL GAIA::BL IsAttrExist(const Node& node, const _CharType* pAttrName) const
 			{
 				GAIA_AST(pAttrName != GNIL);
-				for(__AttrListType::_sizetype x = 0; x < node.attrs.size(); ++x)
+				for(typename __AttrListType::_sizetype x = 0; x < node.attrs.size(); ++x)
 				{
 					const Attr& a = node.attrs[x];
 					if(GAIA::ALGO::strcmp(m_ssp.get(a.name), pAttrName) == 0)

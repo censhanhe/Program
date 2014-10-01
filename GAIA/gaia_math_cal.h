@@ -102,7 +102,7 @@ namespace GAIA
 			GINL CalUnitCmn(){}
 			GINL ~CalUnitCmn(){}
 
-			GINL CalUnitCmn(const __MyType& src){this->operator = (v);}
+			GINL CalUnitCmn(const __MyType& src){this->operator = (src);}
 			GINL CalUnitCmn(const GAIA::BL& v){this->operator = (v);}
 			GINL CalUnitCmn(const GAIA::NM& v){this->operator = (v);}
 			GINL CalUnitCmn(const GAIA::UM& v){this->operator = (v);}
@@ -163,16 +163,16 @@ namespace GAIA
 			GINL __MyType& operator /= (const GAIA::BL& v){m_v /= (_DataType)(v ? 1 : 0); return *this;}
 			template<typename _ParamDataType> __MyType& operator /= (const _ParamDataType& v){m_v /= (_DataType)v; return *this;}
 
-			GINL __MyType operator + (const __MyType& src) const{__MyType ret = *this; ret += v; return ret;}
+			GINL __MyType operator + (const __MyType& src) const{__MyType ret = *this; ret += src; return ret;}
 			GINL __MyType operator + (const GAIA::BL& v) const{__MyType ret = *this; ret += v; return ret;}
 			GINL __MyType operator + (const GAIA::NM& v) const{__MyType ret = *this; ret += v; return ret;}
-			GINL __MyType operator - (const __MyType& src) const{__MyType ret = *this; ret -= v; return ret;}
+			GINL __MyType operator - (const __MyType& src) const{__MyType ret = *this; ret -= src; return ret;}
 			GINL __MyType operator - (const GAIA::BL& v) const{__MyType ret = *this; ret -= v; return ret;}
 			GINL __MyType operator - (const GAIA::NM& v) const{__MyType ret = *this; ret -= v; return ret;}
-			GINL __MyType operator * (const __MyType& src) const{__MyType ret = *this; ret *= v; return ret;}
+			GINL __MyType operator * (const __MyType& src) const{__MyType ret = *this; ret *= src; return ret;}
 			GINL __MyType operator * (const GAIA::BL& v) const{__MyType ret = *this; ret *= v; return ret;}
 			GINL __MyType operator * (const GAIA::NM& v) const{__MyType ret = *this; ret *= v; return ret;}
-			GINL __MyType operator / (const __MyType& src) const{__MyType ret = *this; ret /= v; return ret;}
+			GINL __MyType operator / (const __MyType& src) const{__MyType ret = *this; ret /= src; return ret;}
 			GINL __MyType operator / (const GAIA::BL& v) const{__MyType ret = *this; ret /= v; return ret;}
 			GINL __MyType operator / (const GAIA::NM& v) const{__MyType ret = *this; ret /= v; return ret;}
 
