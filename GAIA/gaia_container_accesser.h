@@ -7,8 +7,6 @@ namespace GAIA
 	{
 		template<typename _DataType, typename _SizeType, typename _SizeIncreaserType> class Accesser : public GAIA::Entity
 		{
-		private:
-			friend class Accesser; // Seperate template parameter's private member variable access.
 		public:
 			GAIA_ENUM_BEGIN(BIND_TYPE)
 				BIND_TYPE_MEM,
@@ -382,15 +380,15 @@ namespace GAIA
 			template<typename _ParamDataType, typename _ParamSizeType, typename _ParamSizeIncreaserType>
 				GAIA::BL convert_from(const GAIA::CTN::Accesser<_ParamDataType, _ParamSizeType, _ParamSizeIncreaserType>& src)
 			{
-				m_bindtype = GSCAST(__MyType::BIND_TYPE)(src.m_bindtype);
-				m_atm = src.m_atm;
-				m_p = GRCAST(_DataType*)(src.m_p);
-				m_file = src.m_file;
-				m_size = src.m_size;
-				m_offset = src.m_offset;
+				m_bindtype = GSCAST(__MyType::BIND_TYPE)(src.bindtype());
+				m_atm = src.access_type_mask();
+				m_p = GRCAST(_DataType*)(src.bindmem());
+				m_file = src.bindfile();
+				m_size = src.size();
+				m_offset = src.offset();
 				m_stride = sizeof(_DataType);
 				m_index = 0;
-				m_expandable = src.m_expandable;
+				m_expandable = src.expandable();
 				return GAIA::True;
 			}
 			GINL _SizeType write(const GAIA::GVOID* p, const _SizeType& size)

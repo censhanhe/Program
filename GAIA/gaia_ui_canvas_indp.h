@@ -419,6 +419,7 @@ namespace GAIA
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			return GSCAST(GAIA::GVOID*)(m_hWnd);
 		#else
+			return GNIL;
 		#endif
 		}
 		GINL GAIA::BL Canvas::operator == (const GAIA::UI::Canvas& src) const
