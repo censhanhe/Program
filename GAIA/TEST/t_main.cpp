@@ -2,7 +2,10 @@
 ////#define GAIA_PLATFORM_GDIPLUS
 ////#define GAIA_PLATFORM_COM
 
-#include "preheader.h"
+#ifdef _MSC_VER
+#	include "preheader.h"
+#endif
+
 #include "../gaia_sysconfig.h"
 #if GAIA_COMPILER == GAIA_COMPILER_CL && GAIA_PROFILE == GAIA_PROFILE_DEBUG
 #	define	_CRTDBG_MAP_ALLOC
