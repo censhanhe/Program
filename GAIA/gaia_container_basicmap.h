@@ -11,7 +11,7 @@ namespace GAIA
 			class Node
 			{
 			private:
-				friend class GAIA::CTN::BasicMap;
+				friend class BasicMap;
 			public:
 				GINL Node(){}
 				GINL Node(const Node& src){this->operator = (src);}
@@ -39,7 +39,7 @@ namespace GAIA
 			class it : public GAIA::ITERATOR::Iterator<_DataType>
 			{
 			private:
-				friend class GAIA::CTN::BasicMap;
+				friend class BasicMap;
 			public:
 				GINL it(){}
 				GINL virtual ~it(){}
@@ -67,7 +67,7 @@ namespace GAIA
 			class const_it : public GAIA::ITERATOR::ConstIterator<_DataType>
 			{
 			private:
-				friend class GAIA::CTN::BasicMap;
+				friend class BasicMap;
 			public:
 				GINL const_it(){}
 				GINL virtual ~const_it(){}
