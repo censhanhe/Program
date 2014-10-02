@@ -9,7 +9,7 @@ namespace GAIA
 		{
 		public:
 			GINL Resource(){this->init();}
-			GINL ~Resource(){}
+			GINL ~Resource(){this->SetRender(GNIL);}
 
 			GINL GAIA::GVOID SetRender(GAIA::RENDER::Render* pRender);
 			GINL GAIA::RENDER::Render* GetRender() const;

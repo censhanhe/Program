@@ -395,5 +395,6 @@ namespace GAIA
 
 #define GAIA_DELETE_SAFE(p) if((p) != GNIL){delete (p); (p) = GNIL;}
 #define GAIA_DELETEARRAY_SAFE(p) if((p) != GNIL){delete[] (p); (p) = GNIL;}
+#define GAIA_RELEASE_SAFE(p) if((p) != GNIL){(p)->Release(); p = GNIL;}
 
 #endif

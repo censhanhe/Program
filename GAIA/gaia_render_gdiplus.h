@@ -41,9 +41,21 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL Pen(){this->init();}
 				const PenDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_PEN;}
+			private:
+				GINL GAIA::GVOID init()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					m_pGDIPPen = GNIL;
+				#endif
+				}
 			private:
 				PenDesc m_desc;
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::Pen* m_pGDIPPen;
+			#endif
 			};
 
 			class Brush : public virtual GAIA::RENDER::Render2D::Brush
@@ -56,9 +68,21 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL Brush(){this->init();}
 				const BrushDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_BRUSH;}
+			private:
+				GINL GAIA::GVOID init()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					m_pGDIPBrush = GNIL;
+				#endif
+				}
 			private:
 				BrushDesc m_desc;
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::Brush* m_pGDIPBrush;
+			#endif
 			};
 
 			class FontPainterFamily : public virtual GAIA::RENDER::Render2D::FontPainterFamily
@@ -72,6 +96,7 @@ namespace GAIA
 				};
 			public:
 				const FontPainterFamilyDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFAMILY;}
 			private:
 				FontPainterFamilyDesc m_desc;
 			};
@@ -87,6 +112,7 @@ namespace GAIA
 				};
 			public:
 				const FontPainterDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTPAINTER;}
 			private:
 				FontPainterDesc m_desc;
 			};
@@ -102,6 +128,7 @@ namespace GAIA
 				};
 			public:
 				const FontFormatDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFORMAT;}
 			private:
 				FontFormatDesc m_desc;
 			};
@@ -117,6 +144,7 @@ namespace GAIA
 				};
 			public:
 				const TargetDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TARGET;}
 			private:
 				TargetDesc m_desc;
 			};
@@ -132,6 +160,7 @@ namespace GAIA
 				};
 			public:
 				const ShaderDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_SHADER;}
 			private:
 				ShaderDesc m_desc;
 			};
@@ -147,6 +176,7 @@ namespace GAIA
 				};
 			public:
 				const TextureDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTURE;}
 			private:
 				TextureDesc m_desc;
 			};
@@ -392,19 +422,41 @@ namespace GAIA
 			}
 
 			/* Pen. */
-			virtual GAIA::RENDER::Render2D::Pen* CreatePen(const GAIA::RENDER::Render2D::Pen::PenDesc& desc){return GNIL;}
+			virtual GAIA::RENDER::Render2D::Pen* CreatePen(const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
+			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Pen* pPen = new Pen;
+				pPen->SetRender(this);
+				return pPen;
+			#else
+				return GNIL;
+			#endif
+				
+			}
 
 			/* Brush. */
-			virtual GAIA::RENDER::Render2D::Brush* CreateBrush(const GAIA::RENDER::Render2D::Brush::BrushDesc& desc){return GNIL;}
+			virtual GAIA::RENDER::Render2D::Brush* CreateBrush(const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
+			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Brush* pBrush = new Brush;
+				pBrush->SetRender(this);
+				return pBrush;
+			#else
+				return GNIL;
+			#endif
+			}
 
 			/* FontPainter. */
 			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(
 				const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-
-			#endif
 				return GNIL;
+			#else
+				return GNIL;
+			#endif
 			}
 			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainterPainter(
 				GAIA::RENDER::Render2D::FontPainterFamily& ff,

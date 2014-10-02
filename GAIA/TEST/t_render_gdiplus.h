@@ -10,6 +10,7 @@ namespace GAIA_TEST
 		/* Create factory. */
 		GAIA::FWORK::Factory fac;
 		typedef GAIA::RENDER::Render2DGDIPlus __RenderType;
+		typedef GAIA::RENDER::Render2D __BaseRenderType;
 
 		/* Create convas instance. */
 		GAIA::UI::Canvas* pCanvas = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_UI_CANVAS, GNIL));
@@ -41,6 +42,25 @@ namespace GAIA_TEST
 			__RenderType::QUALITY2D_STATE_ANTIALIAS, 
 			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
 
+		/* Create resource. */
+		__RenderType::Pen::PenDesc descPen;
+		descPen.reset();
+		__BaseRenderType::Pen* pPen = pRender->CreatePen(descPen);
+		if(pPen == GNIL)
+		{
+			GTLINE2("Render create pen failed!");
+			++nRet;
+		}
+
+		__RenderType::Brush::BrushDesc descBrush;
+		descBrush.reset();
+		__BaseRenderType::Brush* pBrush = pRender->CreateBrush(descBrush);
+		if(pBrush == GNIL)
+		{
+			GTLINE2("Render create brush failed!");
+			++nRet;
+		}
+
 		/* Draw text. */
 
 		/* Draw line. */
@@ -48,6 +68,10 @@ namespace GAIA_TEST
 		/* Draw rect. */
 
 		/* Draw texture. */
+
+		/* Release resource. */
+		GAIA_RELEASE_SAFE(pPen);
+		GAIA_RELEASE_SAFE(pBrush);
 
 		/* Destroy render. */
 		pRender->Destroy();
