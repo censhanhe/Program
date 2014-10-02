@@ -233,10 +233,10 @@ namespace GAIA
 				GAIA::RENDER::Render2D::FontPainterFamily& ff,
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc){return GNIL;}
 			virtual GAIA::GVOID DrawFontPainter(
-				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
 				const GAIA::TCH* pszText,
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				const GAIA::MATH::ARGB<GAIA::REAL>& cr){}
+				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
+				GAIA::RENDER::Render2D::Brush* pBrush,
+				GAIA::RENDER::Render2D::FontFormat* pFontFormat){}
 
 			/* Texture. */
 			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(){return GNIL;}

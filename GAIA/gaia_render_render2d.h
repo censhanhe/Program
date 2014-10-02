@@ -99,6 +99,21 @@ namespace GAIA
 				FontPainterDesc m_desc;
 			};
 
+			class FontFormat : public virtual GAIA::RENDER::Resource
+			{
+			public:
+				class FontFormatDesc : public virtual GAIA::FWORK::InstanceDesc
+				{
+				public:
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
+				};
+			public:
+				const FontFormatDesc& GetDesc() const{return m_desc;}
+			private:
+				FontFormatDesc m_desc;
+			};
+
 			class Target : public virtual GAIA::RENDER::Resource
 			{
 			public:
@@ -189,10 +204,10 @@ namespace GAIA
 				GAIA::RENDER::Render2D::FontPainterFamily& ff,
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc) = 0;
 			virtual GAIA::GVOID DrawFontPainter(
-				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
 				const GAIA::TCH* pszText,
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
+				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
+				GAIA::RENDER::Render2D::Brush* pBrush,
+				GAIA::RENDER::Render2D::FontFormat* pFontFormat) = 0;
 
 			/* Texture. */
 			virtual GAIA::RENDER::Render2D::Texture* CreateTexture() = 0;

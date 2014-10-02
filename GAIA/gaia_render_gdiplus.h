@@ -401,10 +401,10 @@ namespace GAIA
 				return GNIL;
 			}
 			virtual GAIA::GVOID DrawFontPainter(
-				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
 				const GAIA::TCH* pszText,
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				const GAIA::MATH::ARGB<GAIA::REAL>& cr)
+				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
+				GAIA::RENDER::Render2D::Brush* pBrush,
+				GAIA::RENDER::Render2D::FontFormat* pFontFormat)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 
