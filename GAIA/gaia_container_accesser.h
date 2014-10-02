@@ -572,7 +572,7 @@ namespace GAIA
 					}
 					else
 					{
-						GAIA_AST(GAIA::False);
+						GAIA_AST(GAIA::ALWAYSFALSE);
 						return GAIA::False;
 					}
 				}

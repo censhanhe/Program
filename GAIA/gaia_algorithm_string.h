@@ -732,7 +732,7 @@ namespace GAIA
 					convert_func(m_pWCH, ret);\
 				else\
 				{\
-					GAIA_AST(GAIA::False);\
+					GAIA_AST(GAIA::ALWAYSFALSE);\
 					ret = 0;\
 				}\
 				return ret;\
@@ -785,7 +785,7 @@ namespace GAIA
 					return string_cast<type>(m_pWCH);\
 				else\
 				{\
-					GAIA_AST(GAIA::False);\
+					GAIA_AST(GAIA::ALWAYSFALSE);\
 					ret = 0;\
 				}\
 				return ret;\

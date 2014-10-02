@@ -352,13 +352,13 @@ namespace GAIA
 								return;
 						}
 						else
-							GAIA_AST(GAIA::False);
+							GAIA_AST(GAIA::ALWAYSFALSE);
 					#endif
 					}
 					break;
 
 				default:
-					GAIA_AST(GAIA::False);
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
 				}
 			}
@@ -383,7 +383,7 @@ namespace GAIA
 						case Gdiplus::SmoothingModeAntiAlias:
 							return RENDER_STATEWORD_STRING[RENDER_STATEWORD_HIGH];
 						default:
-							GAIA_AST(GAIA::False);
+							GAIA_AST(GAIA::ALWAYSFALSE);
 							break;
 						}
 					#endif
@@ -391,7 +391,7 @@ namespace GAIA
 					break;
 
 				default:
-					GAIA_AST(GAIA::False);
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
 				}
 				return GNIL;
@@ -410,7 +410,7 @@ namespace GAIA
 					break;
 
 				default:
-					GAIA_AST(GAIA::False);
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
 				}
 			}
@@ -426,7 +426,7 @@ namespace GAIA
 					break;
 
 				default:
-					GAIA_AST(GAIA::False);
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
 				}
 				return GNIL;
@@ -445,7 +445,7 @@ namespace GAIA
 					break;
 
 				default:
-					GAIA_AST(GAIA::False);
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
 				}
 			}
@@ -461,7 +461,7 @@ namespace GAIA
 					break;
 
 				default:
-					GAIA_AST(GAIA::False);
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
 				}
 				return GNIL;

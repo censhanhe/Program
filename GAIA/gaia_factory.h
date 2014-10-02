@@ -86,7 +86,7 @@ namespace GAIA
 				{
 					if(!m_PrepareRegClsIDSet.insert(node))
 					{
-						GAIA_AST(GAIA::False);
+						GAIA_AST(GAIA::ALWAYSFALSE);
 						return GAIA::False;
 					}
 				}
@@ -99,7 +99,7 @@ namespace GAIA
 					{
 						if(!m_RegClsIDList.insert(node, it - m_RegClsIDList.front_it()))
 						{
-							GAIA_AST(GAIA::False);
+							GAIA_AST(GAIA::ALWAYSFALSE);
 							return GAIA::False;
 						}
 					}
@@ -119,7 +119,7 @@ namespace GAIA
 				{
 					if(!m_PrepareRegClsIDSet.erase(node))
 					{
-						GAIA_AST(GAIA::False);
+						GAIA_AST(GAIA::ALWAYSFALSE);
 						return GAIA::False;
 					}
 				}
@@ -129,7 +129,7 @@ namespace GAIA
 					GAIA_AST(index != GINVALID);
 					if(!m_RegClsIDList.erase(index))
 					{
-						GAIA_AST(GAIA::False);
+						GAIA_AST(GAIA::ALWAYSFALSE);
 						return GAIA::False;
 					}
 				}
@@ -182,7 +182,7 @@ namespace GAIA
 					for(GAIA::SIZE x = 0; x < sizeofarray(GAIA::FWORK::CLSID_LIST); ++x)
 					{
 						if(!this->RegistClsID(GAIA::FWORK::CLSID_LIST[x]))
-							GAIA_AST(GAIA::False);
+							GAIA_AST(GAIA::ALWAYSFALSE);
 					}
 				}
 				this->EndRegistClsID();
