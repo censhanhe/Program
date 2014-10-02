@@ -2095,6 +2095,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\gaia_instancecreator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\gaia_instancecreator_impl.h"
+					>
+				</File>
+				<File
 					RelativePath=".\gaia_instancedesc.h"
 					>
 				</File>

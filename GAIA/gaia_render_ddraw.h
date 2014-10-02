@@ -81,7 +81,7 @@ namespace GAIA
 				FontPainterFamilyDesc m_desc;
 			};
 
-			class FontPainter : public virtual GAIA::RENDER::Render2D::FontPainterFamily
+			class FontPainter : public virtual GAIA::RENDER::Render2D::FontPainter
 			{
 			public:
 				class FontPainterDesc : public virtual GAIA::RENDER::Render2D::FontPainter::FontPainterDesc
@@ -119,7 +119,7 @@ namespace GAIA
 				FontFormatDesc m_desc;
 			};
 
-			class Target : public virtual GAIA::RENDER::Render2D::FontPainterFamily
+			class Target : public virtual GAIA::RENDER::Render2D::Target
 			{
 			public:
 				class TargetDesc : public virtual GAIA::RENDER::Render2D::Target::TargetDesc
@@ -138,7 +138,7 @@ namespace GAIA
 				TargetDesc m_desc;
 			};
 
-			class Shader : public virtual GAIA::RENDER::Render2D::FontPainterFamily
+			class Shader : public virtual GAIA::RENDER::Render2D::Shader
 			{
 			public:
 				class ShaderDesc : public virtual GAIA::RENDER::Render2D::Shader::ShaderDesc
@@ -157,7 +157,7 @@ namespace GAIA
 				ShaderDesc m_desc;
 			};
 
-			class Texture : public virtual GAIA::RENDER::Render2D::FontPainterFamily
+			class Texture : public virtual GAIA::RENDER::Render2D::Texture
 			{
 			public:
 				class TextureDesc : public virtual GAIA::RENDER::Render2D::Texture::TextureDesc

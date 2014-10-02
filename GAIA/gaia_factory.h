@@ -170,7 +170,20 @@ namespace GAIA
 			GINL GAIA::GVOID init()
 			{
 				m_bBeginRegClsID = GAIA::False;
+
+				this->BeginRegistClsID();
+				{
+					for(GAIA::SIZE x = 0; x < sizeofarray(GAIA::FWORK::CLSID_LIST); ++x)
+					{
+						if(!this->RegistClsID(GAIA::FWORK::CLSID_LIST[x]))
+							GAIA_AST(GAIA::False);
+					}
+				}
+				this->EndRegistClsID();
+
+				this->GenerateCreator();
 			}
+			GINL GAIA::GVOID GenerateCreator();
 			GINL virtual GAIA::GVOID CacheInstance(Instance* pInstance)
 			{
 				GAIA_AST(pInstance != GNIL);

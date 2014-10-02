@@ -93,6 +93,10 @@ namespace GAIA
 		{
 			return GNIL;
 		}
+		GINL GAIA::GVOID GAIA::FWORK::Factory::GenerateCreator()
+		{
+
+		}
 	};
 };
 
