@@ -9,62 +9,34 @@ namespace GAIA
 		{
 			if(cid.IsInvalid())
 				return GNIL;
+
 			Instance* pRet = GNIL;
-			if(GAIA::ALWAYSFALSE){}
-
-			/* Data traffic. */
-			else if(cid == GAIA::FWORK::CLSID_DATATRAFFIC_GATEWAYMEM)
-				pRet = new GAIA::DATATRAFFIC::GatewayMem;
-			else if(cid == GAIA::FWORK::CLSID_DATATRAFFIC_GATEWAYSHAREMEM)
-				pRet = new GAIA::DATATRAFFIC::GatewayShareMem;
-			else if(cid == GAIA::FWORK::CLSID_DATATRAFFIC_GATEWAYFILE)
-				pRet = new GAIA::DATATRAFFIC::GatewayFile;
-			else if(cid == GAIA::FWORK::CLSID_DATATRAFFIC_ROUTEMEM)
-				pRet = new GAIA::DATATRAFFIC::RouteMem;
-			else if(cid == GAIA::FWORK::CLSID_DATATRAFFIC_ROUTENET)
-				pRet = new GAIA::DATATRAFFIC::RouteNet;
-			else if(cid == GAIA::FWORK::CLSID_DATATRAFFIC_TRANSMISSIONIDM)
-				pRet = new GAIA::DATATRAFFIC::TransmissionIDM;
-
-			/* IO. */
-			else if(cid == GAIA::FWORK::CLSID_IO_FILEIO)
-				pRet = new GAIA::IO::FileIO;
-			else if(cid == GAIA::FWORK::CLSID_IO_MEMIO)
-				pRet = new GAIA::IO::MemIO;
-			else if(cid == GAIA::FWORK::CLSID_IO_SCREENIO)
-				pRet = new GAIA::IO::ScreenIO;
-
-			/* Serializer. */
-			else if(cid == GAIA::FWORK::CLSID_SERIALIZER)
-				pRet = new GAIA::SERIALIZER::Serializer;
-
-			/* UI. */
-			else if(cid == GAIA::FWORK::CLSID_UI_CANVAS)
-				pRet = new GAIA::UI::Canvas;
-
-			/* Render. */
-			else if(cid == GAIA::FWORK::CLSID_RENDER_2D_DDRAW)
-				pRet = new GAIA::RENDER::Render2DDDraw;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS)
-				pRet = new GAIA::RENDER::Render2DGDIPlus;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX9)
-				pRet = new GAIA::RENDER::Render3DDX9;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX10)
-				pRet = new GAIA::RENDER::Render3DDX10;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_3D_DX11)
-				pRet = new GAIA::RENDER::Render3DDX11;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL1)
-				pRet = new GAIA::RENDER::Render3DGL1;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL2)
-				pRet = new GAIA::RENDER::Render3DGL2;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GL3)
-				pRet = new GAIA::RENDER::Render3DGL3;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES1)
-				pRet = new GAIA::RENDER::Render3DGLES1;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES2)
-				pRet = new GAIA::RENDER::Render3DGLES2;
-			else if(cid == GAIA::FWORK::CLSID_RENDER_3D_GLES3)
-				pRet = new GAIA::RENDER::Render3DGLES3;
+			CLSIDNODE finder;
+			finder.cid = cid;
+			CLSIDNODE* pFinded = GNIL;
+			if(this->IsBeginRegistClsID())
+				pFinded = m_PrepareRegClsIDSet.find(finder);
+			else
+			{
+				__ClsIDListType::_sizetype index = m_RegClsIDList.search(finder);
+				if(index != GINVALID)
+					pFinded = &m_RegClsIDList[index];
+			}
+			if(pFinded != GNIL)
+			{
+				pRet = pFinded->proc();
+			#ifdef GAIA_DEBUG_CODING
+				if(pRet != GNIL)
+				{
+					GAIA_AST(pRet->GetClassID() == cid);
+					if(pRet->GetClassID() != cid)
+					{
+						pRet->Release();
+						return GNIL;
+					}
+				}
+			#endif
+			}
 
 			if(pRet == GNIL)
 			{
