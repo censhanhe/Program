@@ -1,0 +1,3 @@
+Render
+
+	所有资源类都添加GetClassID重载。

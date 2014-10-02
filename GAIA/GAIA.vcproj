@@ -2075,6 +2075,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\gaia_factory_impl.h"
+					>
+				</File>
+				<File
 					RelativePath=".\gaia_framework.h"
 					>
 				</File>

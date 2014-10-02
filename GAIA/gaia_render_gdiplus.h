@@ -426,7 +426,10 @@ namespace GAIA
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				Pen* pPen = new Pen;
+				Pen* pPen = GDCAST(Pen*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_PEN, GNIL));
+				GAIA_AST(pPen != GNIL);
+				if(pPen == GNIL)
+					return GNIL;
 				pPen->SetRender(this);
 				return pPen;
 			#else

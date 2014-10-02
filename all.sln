@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{E11624AF-30B
 		DOC\prometheus_reference.txt = DOC\prometheus_reference.txt
 		DOC\regular_expression.txt = DOC\regular_expression.txt
 		DOC\task.txt = DOC\task.txt
+		DOC\temp.txt = DOC\temp.txt
 	EndProjectSection
 EndProject
 Global

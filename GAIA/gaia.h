@@ -169,6 +169,7 @@
 #include	"gaia_clsid.h"
 #include	"gaia_instancedesc.h"
 #include	"gaia_instance.h"
+#include	"gaia_factory.h"
 
 #include 	"gaia_io_io.h"
 #include 	"gaia_io_fileio.h"
@@ -247,7 +248,7 @@
 #include	"gaia_ui_document.h"
 #include	"gaia_ui_progressbar.h"
 
-#include	"gaia_factory.h"
+#include	"gaia_factory_impl.h"
 
 #endif
 
