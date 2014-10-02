@@ -34,6 +34,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const PenDesc& GetDesc() const{return m_desc;}
 			private:
 				PenDesc m_desc;
@@ -49,6 +51,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const BrushDesc& GetDesc() const{return m_desc;}
 			private:
 				BrushDesc m_desc;
@@ -64,6 +68,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const FontPainterFamilyDesc& GetDesc() const{return m_desc;}
 			private:
 				FontPainterFamilyDesc m_desc;
@@ -79,6 +85,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const FontPainterDesc& GetDesc() const{return m_desc;}
 			private:
 				FontPainterDesc m_desc;
@@ -94,6 +102,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const FontFormatDesc& GetDesc() const{return m_desc;}
 			private:
 				FontFormatDesc m_desc;
@@ -109,6 +119,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Target::TargetDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const TargetDesc& GetDesc() const{return m_desc;}
 			private:
 				TargetDesc m_desc;
@@ -124,6 +136,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const ShaderDesc& GetDesc() const{return m_desc;}
 			private:
 				ShaderDesc m_desc;
@@ -139,6 +153,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Texture::TextureDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const TextureDesc& GetDesc() const{return m_desc;}
 			private:
 				TextureDesc m_desc;
@@ -155,6 +171,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const VertexDeclarationDesc& GetDesc() const{return m_desc;}
 			private:
 				VertexDeclarationDesc m_desc;
@@ -170,6 +188,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const IndexBufferDesc& GetDesc() const{return m_desc;}
 			private:
 				IndexBufferDesc m_desc;
@@ -185,6 +205,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const VertexBufferDesc& GetDesc() const{return m_desc;}
 			private:
 				VertexBufferDesc m_desc;

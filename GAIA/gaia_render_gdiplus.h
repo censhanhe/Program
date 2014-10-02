@@ -82,6 +82,17 @@ namespace GAIA
 				};
 			public:
 				GINL Brush(){this->init();}
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				#endif
+					return GAIA::True;
+				}
+				virtual GAIA::GVOID Destroy()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				#endif
+				}
 				const BrushDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_BRUSH;}
 			private:
@@ -108,6 +119,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const FontPainterFamilyDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFAMILY;}
 			private:
@@ -124,6 +137,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const FontPainterDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTPAINTER;}
 			private:
@@ -140,6 +155,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const FontFormatDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFORMAT;}
 			private:
@@ -156,6 +173,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Target::TargetDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const TargetDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TARGET;}
 			private:
@@ -172,6 +191,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const ShaderDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_SHADER;}
 			private:
@@ -188,6 +209,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Texture::TextureDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){}
 				const TextureDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTURE;}
 			private:
