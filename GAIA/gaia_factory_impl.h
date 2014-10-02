@@ -10,34 +10,42 @@ namespace GAIA
 			if(cid.IsInvalid())
 				return GNIL;
 
+			/* Check the cid is registed. */
+			if(!this->IsRegistedClsID(cid))
+				return GNIL;
+
+			/* Find create instance proc and allocate instance. */
 			Instance* pRet = GNIL;
-			CLSIDNODE finder;
-			finder.cid = cid;
-			CLSIDNODE* pFinded = GNIL;
-			if(this->IsBeginRegistClsID())
-				pFinded = m_PrepareRegClsIDSet.find(finder);
-			else
 			{
-				__ClsIDListType::_sizetype index = m_RegClsIDList.search(finder);
-				if(index != GINVALID)
-					pFinded = &m_RegClsIDList[index];
-			}
-			if(pFinded != GNIL)
-			{
-				pRet = pFinded->proc();
-			#ifdef GAIA_DEBUG_CODING
-				if(pRet != GNIL)
+				CLSIDNODE finder;
+				finder.cid = cid;
+				CLSIDNODE* pFinded = GNIL;
+				if(this->IsBeginRegistClsID())
+					pFinded = m_PrepareRegClsIDSet.find(finder);
+				else
 				{
-					GAIA_AST(pRet->GetClassID() == cid);
-					if(pRet->GetClassID() != cid)
-					{
-						pRet->Release();
-						return GNIL;
-					}
+					__ClsIDListType::_sizetype index = m_RegClsIDList.search(finder);
+					if(index != GINVALID)
+						pFinded = &m_RegClsIDList[index];
 				}
-			#endif
+				if(pFinded != GNIL)
+				{
+					pRet = pFinded->proc();
+				#ifdef GAIA_DEBUG_CODING
+					if(pRet != GNIL)
+					{
+						GAIA_AST(pRet->GetClassID() == cid);
+						if(pRet->GetClassID() != cid)
+						{
+							pRet->Release();
+							return GNIL;
+						}
+					}
+				#endif
+				}
 			}
 
+			/* If cannot create instance by internal proc, create it by user. */
 			if(pRet == GNIL)
 			{
 				for(LIST_CREATECALLBACK::_sizetype x = 0; x < m_listCreateCB.size(); ++x)
@@ -49,6 +57,7 @@ namespace GAIA
 				}
 			}
 
+			/* Instance initialize. */
 			if(pRet != GNIL)
 			{
 				pRet->SetFactory(this);
