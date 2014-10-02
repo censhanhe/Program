@@ -51,6 +51,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL ~Brush(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const BrushDesc& GetDesc() const{return m_desc;}
@@ -68,6 +69,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL ~FontPainterFamily(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const FontPainterFamilyDesc& GetDesc() const{return m_desc;}
@@ -85,6 +87,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL ~FontPainter(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const FontPainterDesc& GetDesc() const{return m_desc;}
@@ -102,6 +105,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL ~FontFormat(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const FontFormatDesc& GetDesc() const{return m_desc;}
@@ -119,6 +123,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL ~Target(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Target::TargetDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const TargetDesc& GetDesc() const{return m_desc;}
@@ -136,6 +141,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL ~Shader(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const ShaderDesc& GetDesc() const{return m_desc;}
@@ -153,6 +159,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL ~Texture(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Texture::TextureDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const TextureDesc& GetDesc() const{return m_desc;}
