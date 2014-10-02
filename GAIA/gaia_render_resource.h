@@ -5,11 +5,11 @@ namespace GAIA
 {
 	namespace RENDER
 	{
-		class Resource : public virtual GAIA::FWORK::Instance
+		class RenderResource : public virtual GAIA::FWORK::Instance
 		{
 		public:
-			GINL Resource(){this->init();}
-			GINL ~Resource(){this->SetRender(GNIL);}
+			GINL RenderResource(){this->init();}
+			GINL ~RenderResource(){this->SetRender(GNIL);}
 
 			GINL GAIA::GVOID SetRender(GAIA::RENDER::Render* pRender);
 			GINL GAIA::RENDER::Render* GetRender() const;

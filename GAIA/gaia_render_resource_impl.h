@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace RENDER
 	{
-		GINL GAIA::GVOID Resource::SetRender(GAIA::RENDER::Render* pRender)
+		GINL GAIA::GVOID RenderResource::SetRender(GAIA::RENDER::Render* pRender)
 		{
 			if(m_pRender != GNIL)
 				m_pRender->Release();
@@ -13,7 +13,7 @@ namespace GAIA
 			if(m_pRender != GNIL)
 				m_pRender->Reference();
 		}
-		GINL GAIA::RENDER::Render* Resource::GetRender() const
+		GINL GAIA::RENDER::Render* RenderResource::GetRender() const
 		{
 			if(m_pRender != GNIL)
 				m_pRender->Reference();

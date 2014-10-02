@@ -39,7 +39,7 @@ namespace GAIA
 			};
 
 		public:
-			class Pen : public virtual GAIA::RENDER::Resource
+			class Pen : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class PenDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -54,7 +54,7 @@ namespace GAIA
 				PenDesc m_desc;
 			};
 
-			class Brush : public virtual GAIA::RENDER::Resource
+			class Brush : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class BrushDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -69,7 +69,7 @@ namespace GAIA
 				BrushDesc m_desc;
 			};
 
-			class FontPainterFamily : public virtual GAIA::RENDER::Resource
+			class FontPainterFamily : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class FontPainterFamilyDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -84,7 +84,7 @@ namespace GAIA
 				FontPainterFamilyDesc m_desc;
 			};
 
-			class FontPainter : public virtual GAIA::RENDER::Resource
+			class FontPainter : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class FontPainterDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -99,7 +99,7 @@ namespace GAIA
 				FontPainterDesc m_desc;
 			};
 
-			class FontFormat : public virtual GAIA::RENDER::Resource
+			class FontFormat : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class FontFormatDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -114,7 +114,7 @@ namespace GAIA
 				FontFormatDesc m_desc;
 			};
 
-			class Target : public virtual GAIA::RENDER::Resource
+			class Target : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class TargetDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -129,7 +129,7 @@ namespace GAIA
 				TargetDesc m_desc;
 			};
 
-			class Shader : public virtual GAIA::RENDER::Resource
+			class Shader : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class ShaderDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -144,7 +144,7 @@ namespace GAIA
 				ShaderDesc m_desc;
 			};
 
-			class Texture : public virtual GAIA::RENDER::Resource
+			class Texture : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class TextureDesc : public virtual GAIA::FWORK::InstanceDesc

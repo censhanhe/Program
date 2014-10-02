@@ -37,7 +37,7 @@ namespace GAIA
 			};
 
 		public:
-			class VertexDeclaration : public virtual GAIA::RENDER::Resource
+			class VertexDeclaration : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class VertexDeclarationDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -52,7 +52,7 @@ namespace GAIA
 				VertexDeclarationDesc m_desc;
 			};
 
-			class IndexBuffer : public virtual GAIA::RENDER::Resource
+			class IndexBuffer : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class IndexBufferDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -67,7 +67,7 @@ namespace GAIA
 				IndexBufferDesc m_desc;
 			};
 
-			class VertexBuffer : public virtual GAIA::RENDER::Resource
+			class VertexBuffer : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
 				class VertexBufferDesc : public virtual GAIA::FWORK::InstanceDesc
