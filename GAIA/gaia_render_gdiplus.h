@@ -91,6 +91,21 @@ namespace GAIA
 				FontPainterDesc m_desc;
 			};
 
+			class FontFormat : public virtual GAIA::RENDER::Render2D::FontFormat
+			{
+			public:
+				class FontFormatDesc : public virtual GAIA::RENDER::Render2D::FontFormat::FontFormatDesc
+				{
+				public:
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
+				};
+			public:
+				const FontFormatDesc& GetDesc() const{return m_desc;}
+			private:
+				FontFormatDesc m_desc;
+			};
+
 			class Target : public virtual GAIA::RENDER::Render2D::FontPainterFamily
 			{
 			public:
