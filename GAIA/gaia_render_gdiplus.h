@@ -46,7 +46,7 @@ namespace GAIA
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					m_pGDIPPen = new Gdiplus::Pen(0xFF000000, 1.0F);
+					m_pGDIPPen = new Gdiplus::Pen((Gdiplus::Color)0xFF000000, 1.0F);
 				#endif
 					return GAIA::True;
 				}
@@ -87,12 +87,14 @@ namespace GAIA
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					m_pGDIPBrush = new Gdiplus::SolidBrush((Gdiplus::Color)0xFF000000);
 				#endif
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					GAIA_DELETE_SAFE(m_pGDIPBrush);
 				#endif
 				}
 				const BrushDesc& GetDesc() const{return m_desc;}
@@ -107,7 +109,7 @@ namespace GAIA
 			private:
 				BrushDesc m_desc;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				Gdiplus::Brush* m_pGDIPBrush;
+				Gdiplus::SolidBrush* m_pGDIPBrush;
 			#endif
 			};
 
