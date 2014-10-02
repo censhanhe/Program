@@ -1671,6 +1671,10 @@
 								RelativePath=".\gaia_render_resource.h"
 								>
 							</File>
+							<File
+								RelativePath=".\gaia_render_resource_impl.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="RENDER"

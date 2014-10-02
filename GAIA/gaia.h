@@ -228,6 +228,8 @@
 #include	"gaia_render_gdiplus.h"
 #include	"gaia_render_ddraw.h"
 
+#include	"gaia_render_resource_impl.h"
+
 #include	"gaia_painter.h"
 
 #include	"gaia_layout_widget.h"

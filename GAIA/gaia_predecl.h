@@ -29,6 +29,11 @@ namespace GAIA
 	{
 		class Serializer;
 	};
+
+	namespace RENDER
+	{
+		class Render;
+	};
 };
 
 #endif

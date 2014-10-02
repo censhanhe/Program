@@ -8,6 +8,17 @@ namespace GAIA
 		class Resource : public virtual GAIA::FWORK::Instance
 		{
 		public:
+			GINL Resource(){this->init();}
+			GINL ~Resource(){}
+
+			GINL GAIA::GVOID SetRender(GAIA::RENDER::Render* pRender);
+			GINL GAIA::RENDER::Render* GetRender() const;
+
+		private:
+			GINL GAIA::GVOID init(){m_pRender = GNIL;}
+
+		private:
+			GAIA::RENDER::Render* m_pRender;
 		};
 	};
 };
