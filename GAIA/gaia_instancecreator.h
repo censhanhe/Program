@@ -7,11 +7,7 @@ namespace GAIA
 	{
 		namespace INSTCREATOR
 		{
-			class InstanceCreator : public GAIA::Base
-			{
-			public:
-				virtual GAIA::FWORK::Instance* Create() = 0;
-			};
+			typedef GAIA::FWORK::Instance* (*CREATE_INSTANCE_PROC)();
 		};
 	};
 };

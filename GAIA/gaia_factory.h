@@ -158,13 +158,19 @@ namespace GAIA
 			class CLSIDNODE
 			{
 			public:
+				GINL CLSIDNODE(){this->init();}
 				GINL CLSIDNODE& operator = (const CLSIDNODE& src)
 				{
 					cid = src.cid;
+					proc = src.proc;
 					return *this;
 				}
 				GAIA_CLASS_OPERATOR_COMPARE(cid, cid, CLSIDNODE);
+			private:
+				GINL GAIA::GVOID init(){cid.Invalid(); proc = GNIL;}
+			public:
 				GAIA::FWORK::ClsID cid;
+				GAIA::FWORK::INSTCREATOR::CREATE_INSTANCE_PROC proc;
 			};
 		private:
 			GINL GAIA::GVOID init()
