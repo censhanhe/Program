@@ -217,14 +217,13 @@ namespace GAIA
 			virtual GAIA::GVOID DrawLine(
 				const GAIA::MATH::VEC2<GAIA::REAL>& s,
 				const GAIA::MATH::VEC2<GAIA::REAL>& e,
-				const GAIA::MATH::ARGB<GAIA::REAL>& crs,
-				const GAIA::MATH::ARGB<GAIA::REAL>& cre, const GAIA::REAL& rWidth){}
+				GAIA::RENDER::Render2D::Pen* pPen){}
 			virtual GAIA::GVOID DrawRect(
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				const GAIA::MATH::ARGB<GAIA::REAL> crs[4]){}
+				GAIA::RENDER::Render2D::Brush* pBrush){}
 			virtual GAIA::GVOID DrawTriangle(
 				const GAIA::MATH::VEC2<GAIA::REAL> pos[3],
-				const GAIA::MATH::AABR<GAIA::REAL> crs[3]){}
+				GAIA::RENDER::Render2D::Brush* pBrush){}
 
 		private:
 			GINL GAIA::GVOID init()
