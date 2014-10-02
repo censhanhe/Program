@@ -190,6 +190,7 @@ namespace GAIA
 				virtual GAIA::BL Create(GAIA::RENDER::Render3D& render, const GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const VertexDeclarationDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX10_VERTEXDECLARATION;}
 			private:
 				VertexDeclarationDesc m_desc;
 			};
@@ -208,6 +209,7 @@ namespace GAIA
 				virtual GAIA::BL Create(GAIA::RENDER::Render3D& render, const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const IndexBufferDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX10_INDEXBUFFER;}
 			private:
 				IndexBufferDesc m_desc;
 			};
@@ -226,6 +228,7 @@ namespace GAIA
 				virtual GAIA::BL Create(GAIA::RENDER::Render3D& render, const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const VertexBufferDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX10_VERTEXBUFFER;}
 			private:
 				VertexBufferDesc m_desc;
 			};
