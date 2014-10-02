@@ -49,6 +49,8 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc){return GAIA::False;}
+				virtual GAIA::GVOID Destroy(){}
 				const PenDesc& GetDesc() const{return m_desc;}
 			private:
 				PenDesc m_desc;

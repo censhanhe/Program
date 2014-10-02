@@ -42,6 +42,19 @@ namespace GAIA
 				};
 			public:
 				GINL Pen(){this->init();}
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					m_pGDIPPen = new Gdiplus::Pen(0xFF000000, 1.0F);
+				#endif
+					return GAIA::True;
+				}
+				virtual GAIA::GVOID Destroy()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					GAIA_DELETE_SAFE(m_pGDIPPen);
+				#endif
+				}
 				const PenDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_PEN;}
 			private:
@@ -431,6 +444,11 @@ namespace GAIA
 				if(pPen == GNIL)
 					return GNIL;
 				pPen->SetRender(this);
+				if(!pPen->Create(*this, GDCAST(const GAIA::RENDER::Render2D::Pen::PenDesc&)(desc)))
+				{
+					pPen->Release();
+					return GNIL;
+				}
 				return pPen;
 			#else
 				return GNIL;
