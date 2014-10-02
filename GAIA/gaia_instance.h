@@ -15,22 +15,22 @@ namespace GAIA
 			virtual GAIA::FWORK::ClsID GetClassID() const = 0;
 			GINL GAIA::FWORK::Factory* GetFactory() const{return m_pFactory;}
 		protected:
-			virtual GAIA::GVOID Destruct(){if(this->IsBegin()) this->End();}
-			virtual GAIA::BL Begin(GAIA::GVOID* pParameter)
+			virtual GAIA::GVOID RefObjectDestruct(){if(this->IsInstanceBegin()) this->InstanceEnd();}
+			virtual GAIA::BL InstanceBegin(GAIA::GVOID* pParameter)
 			{
 				if(m_bBegin)
 					return GAIA::False;
 				m_bBegin = GAIA::True;
 				return GAIA::True;
 			}
-			virtual GAIA::BL End()
+			virtual GAIA::BL InstanceEnd()
 			{
 				if(!m_bBegin)
 					return GAIA::False;
 				m_bBegin = GAIA::False;
 				return GAIA::True;
 			}
-			virtual GAIA::BL IsBegin() const{return m_bBegin;}
+			virtual GAIA::BL IsInstanceBegin() const{return m_bBegin;}
 		private:
 			GINL GAIA::GVOID init(){m_pFactory = GNIL; m_bBegin = GAIA::False;}
 			GINL GAIA::GVOID SetFactory(GAIA::FWORK::Factory* pFactory){m_pFactory = pFactory;}

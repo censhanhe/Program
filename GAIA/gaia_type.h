@@ -208,7 +208,7 @@ namespace GAIA
 		GINL GAIA::NM Release();
 		GINL GAIA::NM GetRef() const{return m_nRef;}
 	protected:
-		virtual GAIA::GVOID Destruct(){}
+		virtual GAIA::GVOID RefObjectDestruct(){}
 	private:
 		GINL RefObject& operator = (const RefObject& src){return *this;}
 	private:

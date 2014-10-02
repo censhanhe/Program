@@ -170,7 +170,7 @@ namespace PROM
 			}
 		}
 	protected:
-		virtual GAIA::GVOID Destruct()
+		virtual GAIA::GVOID RefObjectDestruct()
 		{
 		}
 	private:

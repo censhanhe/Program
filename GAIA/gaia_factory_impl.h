@@ -80,7 +80,7 @@ namespace GAIA
 			if(pRet != GNIL)
 			{
 				pRet->SetFactory(this);
-				if(!pRet->Begin(pParameter))
+				if(!pRet->InstanceBegin(pParameter))
 				{
 					pRet->Release();
 					pRet = GNIL;

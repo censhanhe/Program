@@ -179,7 +179,7 @@ namespace PROM
 			return GAIA::False;
 		}
 	protected:
-		virtual GAIA::GVOID Destruct()
+		virtual GAIA::GVOID RefObjectDestruct()
 		{
 			this->UnbindNextAll();
 			this->UnbindPrevAll();

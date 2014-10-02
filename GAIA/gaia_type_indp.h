@@ -61,7 +61,7 @@ namespace GAIA
 		if(nNew == 0 && !m_bDestructing)
 		{
 			m_bDestructing = true;
-			this->Destruct();
+			this->RefObjectDestruct();
 			delete this;
 		}
 		return nNew;

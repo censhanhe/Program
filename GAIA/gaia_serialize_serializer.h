@@ -11,28 +11,28 @@ namespace GAIA
 			GINL Serializer(){this->init();}
 			GINL ~Serializer(){}
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_IO_SCREENIO;}
-			virtual GAIA::BL Begin(GAIA::GVOID* pParameter)
+			virtual GAIA::BL InstanceBegin(GAIA::GVOID* pParameter)
 			{
-				if(this->IsBegin())
+				if(this->IsInstanceBegin())
 					return GAIA::False;
-				if(!GAIA::FWORK::Instance::Begin(pParameter))
+				if(!GAIA::FWORK::Instance::InstanceBegin(pParameter))
 					return GAIA::False;
 				return GAIA::True;
 			}
-			virtual GAIA::BL End()
+			virtual GAIA::BL InstanceEnd()
 			{
-				if(!this->IsBegin())
+				if(!this->IsInstanceBegin())
 					return GAIA::False;
 				if(m_pIO != GNIL)
 				{
 					m_pIO->Release();
 					m_pIO = GNIL;
 				}
-				if(!GAIA::FWORK::Instance::End())
+				if(!GAIA::FWORK::Instance::InstanceEnd())
 					return GAIA::False;
 				return GAIA::True;
 			}
-			virtual GAIA::BL IsBegin() const{return GAIA::FWORK::Instance::IsBegin();}
+			virtual GAIA::BL IsInstanceBegin() const{return GAIA::FWORK::Instance::IsInstanceBegin();}
 			GINL GAIA::BL BindIO(GAIA::IO::IO* pIO)
 			{
 				if(pIO == m_pIO)
