@@ -18,6 +18,16 @@ namespace GAIA
 			GINL ClsID(GAIA::U8 uMainType, GAIA::U8 uSubType, GAIA::U16 uMajorVersion, GAIA::U16 uMinorVersion, GAIA::U16 uFlag){this->uMainType = uMainType; this->uSubType = uSubType; this->uMajorVersion = uMajorVersion; this->uMinorVersion = uMinorVersion; this->uFlag = uFlag;}
 			GINL GAIA::GVOID Invalid(){uMainType = uSubType = 0; uMajorVersion = uMinorVersion = 0; uFlag = FLAG_INVALID;}
 			GINL GAIA::BL IsInvalid() const{return uMainType == 0 && uSubType == 0 && uMajorVersion == 0 && uMinorVersion == 0 && uFlag == FLAG_INVALID;}
+			GAIA::GVOID MainType(GAIA::U8 uMainType){this->uMainType = uMainType;}
+			GAIA::U8 MainType() const{return uMainType;}
+			GAIA::GVOID SubType(GAIA::U8 uSubType){this->uSubType = uSubType;}
+			GAIA::U8 SubType() const{return uSubType;}
+			GAIA::GVOID MajorVersion(GAIA::U16 uMajorVersion){this->uMajorVersion = uMajorVersion;}
+			GAIA::U16 MajorVersion() const{return uMajorVersion;}
+			GAIA::GVOID MinorVersion(GAIA::U16 uMinorVersion){this->uMinorVersion = uMinorVersion;}
+			GAIA::U16 MinorVersion() const{return uMinorVersion;}
+			GAIA::GVOID Flag(GAIA::U16 uFlag){this->uFlag = uFlag;}
+			GAIA::U16 Flag() const{return uFlag;}
 			GINL const ClsID& operator = (const ClsID& src){GAIA_AST(&src != this); uMainType = src.uMainType; uSubType = src.uSubType; uMajorVersion = src.uMajorVersion; uMinorVersion = src.uMinorVersion; uFlag = src.uFlag; return *this;}
 			GINL const GAIA::BL operator == (const ClsID& src) const{return uMainType == src.uMainType && uSubType == src.uSubType && uMajorVersion == src.uMajorVersion && uMinorVersion == src.uMinorVersion && uFlag == src.uFlag;}
 			GINL const GAIA::BL operator != (const ClsID& src) const{return uMainType != src.uMainType || uSubType != src.uSubType || uMajorVersion != src.uMajorVersion || uMinorVersion != src.uMinorVersion || uFlag != src.uFlag;}

@@ -496,6 +496,11 @@ namespace GAIA
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Brush* pBrush = new Brush;
 				pBrush->SetRender(this);
+				if(!pBrush->Create(*this, GDCAST(const GAIA::RENDER::Render2D::Brush::BrushDesc&)(desc)))
+				{
+					pBrush->Release();
+					return GNIL;
+				}
 				return pBrush;
 			#else
 				return GNIL;
