@@ -31,7 +31,7 @@ namespace GAIA
 				if(pFinded != GNIL)
 				{
 					pRet = pFinded->proc();
-				#ifdef GAIA_DEBUG_CODING
+				#ifdef GAIA_DEBUG_SELFCHECKROUTINE
 					if(pRet != GNIL)
 					{
 						GAIA_AST(pRet->GetClassID() == cid);
