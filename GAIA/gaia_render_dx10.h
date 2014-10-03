@@ -30,10 +30,11 @@ namespace GAIA
 				class PenDesc : public virtual GAIA::RENDER::Render2D::Pen::PenDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Pen::PenDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Pen::PenDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
+				GINL ~Pen(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){}
 				const PenDesc& GetDesc() const{return m_desc;}
@@ -48,8 +49,8 @@ namespace GAIA
 				class BrushDesc : public virtual GAIA::RENDER::Render2D::Brush::BrushDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Brush::BrushDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Brush::BrushDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~Brush(){this->Destroy();}
@@ -67,8 +68,8 @@ namespace GAIA
 				class FontFamilyDesc : public virtual GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~FontFamily(){this->Destroy();}
@@ -86,8 +87,8 @@ namespace GAIA
 				class FontPainterDesc : public virtual GAIA::RENDER::Render2D::FontPainter::FontPainterDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::FontPainter::FontPainterDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::FontPainter::FontPainterDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~FontPainter(){this->Destroy();}
@@ -105,8 +106,8 @@ namespace GAIA
 				class FontFormatDesc : public virtual GAIA::RENDER::Render2D::FontFormat::FontFormatDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::FontFormat::FontFormatDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::FontFormat::FontFormatDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~FontFormat(){this->Destroy();}
@@ -124,8 +125,8 @@ namespace GAIA
 				class TargetDesc : public virtual GAIA::RENDER::Render2D::Target::TargetDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Target::TargetDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Target::TargetDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~Target(){this->Destroy();}
@@ -143,8 +144,8 @@ namespace GAIA
 				class ShaderDesc : public virtual GAIA::RENDER::Render2D::Shader::ShaderDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Shader::ShaderDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Shader::ShaderDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~Shader(){this->Destroy();}
@@ -162,8 +163,8 @@ namespace GAIA
 				class TextureDesc : public virtual GAIA::RENDER::Render2D::Texture::TextureDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Texture::TextureDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Texture::TextureDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~Texture(){this->Destroy();}
@@ -182,8 +183,8 @@ namespace GAIA
 				class VertexDeclarationDesc : public virtual GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~VertexDeclaration(){this->Destroy();}
@@ -201,8 +202,8 @@ namespace GAIA
 				class IndexBufferDesc : public virtual GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~IndexBuffer(){this->Destroy();}
@@ -220,8 +221,8 @@ namespace GAIA
 				class VertexBufferDesc : public virtual GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
 				GINL ~VertexBuffer(){this->Destroy();}
