@@ -895,7 +895,8 @@ namespace GAIA
 			}
 
 			/* Texture. */
-			virtual GAIA::RENDER::Render2D::Texture* CreateTexture()
+			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(
+				const GAIA::RENDER::Render2D::Texture::TextureDesc& desc)
 			{
 				return GNIL;
 			}
@@ -913,7 +914,8 @@ namespace GAIA
 			}
 
 			/* Target. */
-			virtual GAIA::RENDER::Render2D::Target* CreateTarget()
+			virtual GAIA::RENDER::Render2D::Target* CreateTarget(
+				const GAIA::RENDER::Render2D::Target::TargetDesc& desc)
 			{
 				return GNIL;
 			}
@@ -925,7 +927,8 @@ namespace GAIA
 			}
 
 			/* Shader. */
-			virtual GAIA::RENDER::Render2D::Shader* CreateShader()
+			virtual GAIA::RENDER::Render2D::Shader* CreateShader(
+				const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc)
 			{
 				return GNIL;
 			}
