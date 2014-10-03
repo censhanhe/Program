@@ -82,6 +82,11 @@ namespace GAIA_TEST
 		}
 
 		/* Draw text. */
+		GAIA::MATH::ARGB<GAIA::REAL> cr;
+		cr.r = cr.g = 0.0F;
+		cr.b = 1.0F;
+		cr.a = 0.4F;
+		pBrush->SetColor(cr);
 		GAIA::MATH::AABR<GAIA::REAL> aabr;
 		aabr.pmin = 100.0F;
 		aabr.pmax = 400.0F;
@@ -90,7 +95,6 @@ namespace GAIA_TEST
 
 		/* Draw line. */
 		pPen->SetWidth(4.0F);
-		GAIA::MATH::ARGB<GAIA::REAL> cr;
 		cr.r = 1.0F;
 		cr.g = 0.5F;
 		cr.b = 0.2F;

@@ -71,6 +71,8 @@ namespace GAIA
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const BrushDesc& GetDesc() const = 0;
+				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
+				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const = 0;
 			};
 
 			class FontFamily : public virtual GAIA::RENDER::RenderResource

@@ -155,6 +155,32 @@ namespace GAIA
 				}
 				virtual const BrushDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_BRUSH;}
+				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(m_pBrush == GNIL)
+						return GAIA::False;
+					Gdiplus::Color crTemp(cr.a * 255.0F, cr.r * 255.0F, cr.g * 255.0F, cr.b * 255.0F);
+					if(m_pBrush->SetColor(crTemp) != Gdiplus::Ok)
+						return GAIA::False;
+				#endif
+					return GAIA::True;
+				}
+				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(m_pBrush == GNIL)
+						return GAIA::False;
+					Gdiplus::Color crTemp;
+					if(m_pBrush->GetColor(&crTemp) != Gdiplus::Ok)
+						return GAIA::False;
+					cr.a = (FLOAT)crTemp.GetA() / 255.0F;
+					cr.r = (FLOAT)crTemp.GetR() / 255.0F;
+					cr.g = (FLOAT)crTemp.GetG() / 255.0F;
+					cr.b = (FLOAT)crTemp.GetB() / 255.0F;
+				#endif
+					return GAIA::True;
+				}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Gdiplus::SolidBrush* GetInternalBrush() const{return m_pBrush;}
 			#endif
