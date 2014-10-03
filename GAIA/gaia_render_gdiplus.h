@@ -511,8 +511,19 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(
 				const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				return GNIL;
+				FontPainterFamily* pFontFamily = GDCAST(FontPainterFamily*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFAMILY, GNIL));
+				GAIA_AST(pFontFamily != GNIL);
+				if(pFontFamily == GNIL)
+					return GNIL;
+				pFontFamily->SetRender(this);
+				if(!pFontFamily->Create(*this, GDCAST(const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc&)(desc)))
+				{
+					pFontFamily->Release();
+					return GNIL;
+				}
+				return pFontFamily;
 			#else
 				return GNIL;
 			#endif
@@ -522,9 +533,20 @@ namespace GAIA
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-
-			#endif
+				FontPainter* pFontPainter = GDCAST(FontPainter*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTPAINTER, GNIL));
+				GAIA_AST(pFontPainter != GNIL);
+				if(pFontPainter == GNIL)
+					return GNIL;
+				pFontPainter->SetRender(this);
+				if(!pFontPainter->Create(*this, GDCAST(const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc&)(desc)))
+				{
+					pFontPainter->Release();
+					return GNIL;
+				}
+				return pFontPainter;
+			#else
 				return GNIL;
+			#endif
 			}
 			virtual GAIA::GVOID DrawFontPainter(
 				const GAIA::TCH* pszText,
