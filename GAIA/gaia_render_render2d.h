@@ -250,6 +250,7 @@ namespace GAIA
 				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc) = 0;
 			virtual GAIA::GVOID DrawFontPainter(
 				const GAIA::TCH* pszText,
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
 				GAIA::RENDER::Render2D::Brush* pBrush,
 				GAIA::RENDER::Render2D::FontFormat* pFontFormat) = 0;

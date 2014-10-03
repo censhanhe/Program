@@ -105,6 +105,9 @@ namespace GAIA
 				}
 				const BrushDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_BRUSH;}
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::SolidBrush* GetInternalBrush() const{return m_pGDIPBrush;}
+			#endif
 			private:
 				GINL GAIA::GVOID init()
 				{
@@ -207,6 +210,9 @@ namespace GAIA
 				}
 				const FontPainterDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTPAINTER;}
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::Font* GetInternalFontPainter() const{return m_pFont;}
+			#endif
 			private:
 				GINL GAIA::GVOID init()
 				{
@@ -390,8 +396,6 @@ namespace GAIA
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pGraphics == GNIL)
 					return;
-				if(m_pSwapGraphics == GNIL)
-					return;
 				if(m_pSwapBitmap == GNIL)
 					return;
 				m_pGraphics->DrawImage(
@@ -406,6 +410,8 @@ namespace GAIA
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				if(m_pSwapGraphics == GNIL)
+					return;
 				Gdiplus::Color crTemp(cr.a * 255.0F, cr.r * 255.0F, cr.g * 255.0F, cr.b * 255.0F);
 				m_pSwapGraphics->Clear(crTemp);
 			#endif
@@ -660,12 +666,44 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID DrawFontPainter(
 				const GAIA::TCH* pszText,
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
 				GAIA::RENDER::Render2D::Brush* pBrush,
 				GAIA::RENDER::Render2D::FontFormat* pFontFormat)
 			{
+				GPCHR_NULLSTRPTR(pszText);
+				GPCHR_NULL(pFontPainter);
+				GPCHR_NULL(pBrush);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				
+				GAIA::RENDER::Render2DGDIPlus::FontPainter* pPracFontPainter = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontPainter*)(pFontPainter);
+				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
+				GPCHR_NULL(pPracFontPainter);
+				GPCHR_NULL(pPracBrush);
+				Gdiplus::RectF rc;
+				rc.X = aabr.pmin.x;
+				rc.Y = aabr.pmin.y;
+				rc.Width = aabr.width();
+				rc.Height = aabr.height();
+				if(pFontFormat == GNIL)
+				{
+					Gdiplus::StringFormat sf;
+					m_pSwapGraphics->DrawString(
+						pszText, GAIA::ALGO::strlen(pszText),
+						pPracFontPainter->GetInternalFontPainter(), 
+						rc, &sf, 
+						pPracBrush->GetInternalBrush());
+				}
+				else
+				{
+					GAIA::RENDER::Render2DGDIPlus::FontFormat* pPracFontFormat = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontFormat*)(pFontFormat);
+					GPCHR_NULL(pPracFontFormat);
+					Gdiplus::StringFormat sf;
+					m_pSwapGraphics->DrawString(
+						pszText, GAIA::ALGO::strlen(pszText),
+						pPracFontPainter->GetInternalFontPainter(), 
+						rc, &sf, 
+						pPracBrush->GetInternalBrush());
+				}
 			#endif
 			}
 

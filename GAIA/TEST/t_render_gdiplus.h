@@ -82,6 +82,11 @@ namespace GAIA_TEST
 		}
 
 		/* Draw text. */
+		GAIA::MATH::AABR<GAIA::REAL> aabr;
+		aabr.pmin = 100.0F;
+		aabr.pmax = 400.0F;
+		pRender->DrawFontPainter(_T("Hello World"), aabr, pFontPainter, pBrush, GNIL);
+		pRender->Flush();
 
 		/* Draw line. */
 
