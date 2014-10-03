@@ -89,10 +89,18 @@ namespace GAIA_TEST
 		pRender->Flush();
 
 		/* Draw line. */
+		GAIA::MATH::VEC2<GAIA::REAL> s, e;
+		s = 100.0F;
+		e = 200.0F;
+		e.x += 100.0F;
+		pRender->DrawLine(s, e, pPen);
+		pRender->Flush();
 
 		/* Draw rect. */
+		pRender->Flush();
 
 		/* Draw texture. */
+		pRender->Flush();
 
 		/* Release resource. */
 		GAIA_RELEASE_SAFE(pPen);

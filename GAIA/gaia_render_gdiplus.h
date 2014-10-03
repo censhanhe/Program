@@ -48,7 +48,7 @@ namespace GAIA
 					if(!desc.check())
 						return GAIA::False;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					m_pGDIPPen = new Gdiplus::Pen((Gdiplus::Color)0xFF000000, 1.0F);
+					m_pPen = new Gdiplus::Pen((Gdiplus::Color)0xFF000000, 1.0F);
 				#endif
 					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::Pen::PenDesc&)(desc);
 					return GAIA::True;
@@ -56,22 +56,25 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy()
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					GAIA_DELETE_SAFE(m_pGDIPPen);
+					GAIA_DELETE_SAFE(m_pPen);
 				#endif
 				}
 				const PenDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_PEN;}
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::Pen* GetInternalPen() const{return m_pPen;}
+			#endif
 			private:
 				GINL GAIA::GVOID init()
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					m_pGDIPPen = GNIL;
+					m_pPen = GNIL;
 				#endif
 				}
 			private:
 				PenDesc m_desc;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				Gdiplus::Pen* m_pGDIPPen;
+				Gdiplus::Pen* m_pPen;
 			#endif
 			};
 
@@ -92,7 +95,7 @@ namespace GAIA
 					if(!desc.check())
 						return GAIA::False;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					m_pGDIPBrush = new Gdiplus::SolidBrush((Gdiplus::Color)0xFF000000);
+					m_pBrush = new Gdiplus::SolidBrush((Gdiplus::Color)0xFF000000);
 				#endif
 					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::Brush::BrushDesc&)(desc);
 					return GAIA::True;
@@ -100,25 +103,25 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy()
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					GAIA_DELETE_SAFE(m_pGDIPBrush);
+					GAIA_DELETE_SAFE(m_pBrush);
 				#endif
 				}
 				const BrushDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_BRUSH;}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				Gdiplus::SolidBrush* GetInternalBrush() const{return m_pGDIPBrush;}
+				Gdiplus::SolidBrush* GetInternalBrush() const{return m_pBrush;}
 			#endif
 			private:
 				GINL GAIA::GVOID init()
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					m_pGDIPBrush = GNIL;
+					m_pBrush = GNIL;
 				#endif
 				}
 			private:
 				BrushDesc m_desc;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				Gdiplus::SolidBrush* m_pGDIPBrush;
+				Gdiplus::SolidBrush* m_pBrush;
 			#endif
 			};
 
@@ -675,6 +678,8 @@ namespace GAIA
 				GPCHR_NULL(pFontPainter);
 				GPCHR_NULL(pBrush);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				if(m_pSwapGraphics == GNIL)
+					return;
 				GAIA::RENDER::Render2DGDIPlus::FontPainter* pPracFontPainter = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontPainter*)(pFontPainter);
 				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
 				GPCHR_NULL(pPracFontPainter);
@@ -761,23 +766,40 @@ namespace GAIA
 				const GAIA::MATH::VEC2<GAIA::REAL>& e,
 				GAIA::RENDER::Render2D::Pen* pPen)
 			{
+				GPCHR_NULL(pPen);
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				if(m_pSwapGraphics == GNIL)
+					return;
+				GAIA::RENDER::Render2DGDIPlus::Pen* pPracPen = GDCAST(GAIA::RENDER::Render2DGDIPlus::Pen*)(pPen);
+				GPCHR_NULL(pPracPen);
+				m_pSwapGraphics->DrawLine(pPracPen->GetInternalPen(), s.x, s.y, e.x, e.y);
+			#endif
 			}
 			virtual GAIA::GVOID DrawRect(
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				GAIA::RENDER::Render2D::Brush* pBrush)
 			{
+				GPCHR_NULL(pBrush);
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				if(m_pSwapGraphics == GNIL)
+					return;
+			#endif
 			}
 			virtual GAIA::GVOID DrawTriangle(
 				const GAIA::MATH::VEC2<GAIA::REAL> pos[3],
 				GAIA::RENDER::Render2D::Brush* pBrush)
 			{
+				GPCHR_NULL(pBrush);
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				if(m_pSwapGraphics == GNIL)
+					return;
+			#endif
 			}
 
 		private:
 			GINL GAIA::GVOID init()
 			{
 				m_bCreated = GAIA::False;
-
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				m_hDC = GNIL;
 				m_pGraphics = GNIL;
