@@ -344,7 +344,9 @@ namespace GAIA
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				GAIA::RENDER::Render2D::Brush* pBrush){}
 			virtual GAIA::GVOID DrawTriangle(
-				const GAIA::MATH::VEC2<GAIA::REAL> pos[3],
+				const GAIA::MATH::VEC2<GAIA::REAL>& pos1,
+				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
+				const GAIA::MATH::VEC2<GAIA::REAL>& pos3,
 				GAIA::RENDER::Render2D::Brush* pBrush){}
 
 		public:

@@ -124,6 +124,17 @@ namespace GAIA_TEST
 		pRender->DrawRect(aabr, pBrush);
 		pRender->Flush();
 
+		/* Draw triangle. */
+		GAIA::MATH::VEC2<GAIA::REAL> tri[3];
+		tri[0].x = 240.0F;
+		tri[0].y = 120.0F;
+		tri[1].x = 240.0F - 64.0F;
+		tri[2].x = 240.0F + 64.0F;
+		tri[1].y = 120.0F + 64.0F;
+		tri[2].y = 120.0F + 64.0F;
+		pRender->DrawTriangle(tri[0], tri[1], tri[2], pBrush);
+		pRender->Flush();
+
 		/* Draw texture. */
 		pRender->Flush();
 

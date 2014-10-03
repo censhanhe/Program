@@ -1,3 +1,10 @@
 Render
 
+	Gdiplus的Target功能实现。
+	Gdiplus的Texture功能实现。
+	Gdiplus的AlphaBlend与AlphaBlendEnhance功能实现。
 	
+	Shader系统设计。
+	
+Timer
+	计时器功能实现。

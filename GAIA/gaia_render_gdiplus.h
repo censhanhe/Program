@@ -974,13 +974,25 @@ namespace GAIA
 			#endif
 			}
 			virtual GAIA::GVOID DrawTriangle(
-				const GAIA::MATH::VEC2<GAIA::REAL> pos[3],
+				const GAIA::MATH::VEC2<GAIA::REAL>& pos1,
+				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
+				const GAIA::MATH::VEC2<GAIA::REAL>& pos3,
 				GAIA::RENDER::Render2D::Brush* pBrush)
 			{
 				GPCHR_NULL(pBrush);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
+				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
+				GPCHR_NULL(pPracBrush);
+				Gdiplus::PointF posTemp[3];
+				posTemp[0].X = pos1.x;
+				posTemp[0].Y = pos1.y;
+				posTemp[1].X = pos2.x;
+				posTemp[1].Y = pos2.y;
+				posTemp[2].X = pos3.x;
+				posTemp[2].Y = pos3.y;
+				m_pSwapGraphics->FillPolygon(pPracBrush->GetInternalBrush(), posTemp, 3, Gdiplus::FillModeAlternate);
 			#endif
 			}
 
