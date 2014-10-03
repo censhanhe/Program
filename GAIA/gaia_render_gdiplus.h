@@ -62,6 +62,22 @@ namespace GAIA
 				}
 				const PenDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_PEN;}
+				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
+				{
+					return GAIA::False;
+				}
+				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const
+				{
+					return GAIA::False;
+				}
+				virtual GAIA::BL SetWidth(GAIA::REAL rWidth)
+				{
+					return GAIA::False;
+				}
+				virtual GAIA::REAL GetWidth() const
+				{
+					return 0.0F;
+				}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Gdiplus::Pen* GetInternalPen() const{return m_pPen;}
 			#endif

@@ -39,6 +39,10 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				const PenDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX10_PEN;}
+				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr){return GAIA::False;}
+				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const{return GAIA::False;}
+				virtual GAIA::BL SetWidth(GAIA::REAL rWidth){return GAIA::False;}
+				virtual GAIA::REAL GetWidth() const{return 0.0F;}
 			private:
 				PenDesc m_desc;
 			};

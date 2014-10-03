@@ -52,6 +52,10 @@ namespace GAIA
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				const PenDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
+				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const = 0;
+				virtual GAIA::BL SetWidth(GAIA::REAL rWidth) = 0;
+				virtual GAIA::REAL GetWidth() const = 0;
 			private:
 				PenDesc m_desc;
 			};
