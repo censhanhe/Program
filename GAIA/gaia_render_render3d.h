@@ -130,17 +130,20 @@ namespace GAIA
 			virtual const GAIA::CH* GetSampler3DState(GAIA::N32 nSamplerIndex, const SAMPLER3D_STATE& ss) const = 0;
 
 			/* Declaration. */
-			virtual GAIA::RENDER::Render3D::VertexDeclaration* CreateVertexDeclaration() = 0;
+			virtual GAIA::RENDER::Render3D::VertexDeclaration* CreateVertexDeclaration(
+				const GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc& desc) = 0;
 			virtual GAIA::GVOID SetVertexDeclaration(GAIA::RENDER::Render3D::VertexDeclaration* pVDecl) = 0;
 			virtual GAIA::GVOID GetVertexDeclaration(GAIA::RENDER::Render3D::VertexDeclaration*& pVDecl) = 0;
 
 			/* Index buffer. */
-			virtual GAIA::RENDER::Render3D::IndexBuffer* CreateIndexBuffer() = 0;
+			virtual GAIA::RENDER::Render3D::IndexBuffer* CreateIndexBuffer(
+				const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc) = 0;
 			virtual GAIA::GVOID SetIndexBuffer(const GAIA::RENDER::Render3D::IndexBuffer* pIB) = 0;
 			virtual GAIA::GVOID GetIndexBuffer(const GAIA::RENDER::Render3D::IndexBuffer*& pIB) const = 0;
 
 			/* Vertex buffer. */
-			virtual GAIA::RENDER::Render3D::VertexBuffer* CreateVertexBuffer() = 0;
+			virtual GAIA::RENDER::Render3D::VertexBuffer* CreateVertexBuffer(
+				const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc) = 0;
 			virtual GAIA::GVOID SetVertexBuffer(GAIA::N32 nStream, const GAIA::RENDER::Render3D::VertexBuffer* pVB) = 0;
 			virtual GAIA::GVOID GetVertexBuffer(GAIA::N32 nStream, const GAIA::RENDER::Render3D::VertexBuffer*& pVB) const = 0;
 
