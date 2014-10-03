@@ -58,6 +58,7 @@ namespace GAIA
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					GAIA_DELETE_SAFE(m_pPen);
 				#endif
+					m_desc.reset();
 				}
 				const PenDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_PEN;}
@@ -105,6 +106,7 @@ namespace GAIA
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					GAIA_DELETE_SAFE(m_pBrush);
 				#endif
+					m_desc.reset();
 				}
 				const BrushDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_BRUSH;}
@@ -152,6 +154,7 @@ namespace GAIA
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					GAIA_DELETE_SAFE(m_pFontFamily);
 				#endif
+					m_desc.reset();
 				}
 				const FontFamilyDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFAMILY;}
@@ -200,7 +203,8 @@ namespace GAIA
 						nStyle |= Gdiplus::FontStyleItalic;
 					if(desc.bUnderline)
 						nStyle |= Gdiplus::FontStyleUnderline;
-					m_pFont = new Gdiplus::Font(pFontFamily->GetInternalFontFamily(), desc.rSize, nStyle, Gdiplus::UnitPixel), 
+					m_pFont = new Gdiplus::Font(pFontFamily->GetInternalFontFamily(), desc.rSize, nStyle, Gdiplus::UnitPixel);
+					desc.pFontFamily->Reference();
 				#endif
 					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::FontPainter::FontPainterDesc&)(desc);
 					return GAIA::True;
@@ -208,8 +212,10 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy()
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					m_desc.pFontFamily->Release();
 					GAIA_DELETE_SAFE(m_pFont);
 				#endif
+					m_desc.reset();
 				}
 				const FontPainterDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTPAINTER;}
@@ -255,6 +261,7 @@ namespace GAIA
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				#endif
+					m_desc.reset();
 				}
 				const FontFormatDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFORMAT;}
@@ -283,7 +290,7 @@ namespace GAIA
 			public:
 				GINL ~Target(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Target::TargetDesc& desc){return GAIA::True;}
-				virtual GAIA::GVOID Destroy(){}
+				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				const TargetDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TARGET;}
 			private:
@@ -302,7 +309,7 @@ namespace GAIA
 			public:
 				GINL ~Shader(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc){return GAIA::True;}
-				virtual GAIA::GVOID Destroy(){}
+				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				const ShaderDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_SHADER;}
 			private:
@@ -321,7 +328,7 @@ namespace GAIA
 			public:
 				GINL ~Texture(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Texture::TextureDesc& desc){return GAIA::True;}
-				virtual GAIA::GVOID Destroy(){}
+				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				const TextureDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTURE;}
 			private:

@@ -63,7 +63,7 @@ namespace GAIA_TEST
 
 		__RenderType::FontFamily::FontFamilyDesc descFontFamily;
 		descFontFamily.reset();
-		descFontFamily.strFontName = _T("TimesNewRoman");
+		descFontFamily.strFontName = _T("Times New Roman");
 		__BaseRenderType::FontFamily* pFontFamily = pRender->CreateFontFamily(descFontFamily);
 		if(pFontFamily == GNIL)
 		{
@@ -74,6 +74,7 @@ namespace GAIA_TEST
 		__RenderType::FontPainter::FontPainterDesc descFontPainter;
 		descFontPainter.reset();
 		descFontPainter.pFontFamily = pFontFamily;
+		descFontPainter.rSize = 32.0F;
 		__BaseRenderType::FontPainter* pFontPainter = pRender->CreateFontPainter(descFontPainter);
 		if(pFontPainter == GNIL)
 		{
@@ -110,6 +111,8 @@ namespace GAIA_TEST
 		/* Release resource. */
 		GAIA_RELEASE_SAFE(pPen);
 		GAIA_RELEASE_SAFE(pBrush);
+		GAIA_RELEASE_SAFE(pFontPainter);
+		GAIA_RELEASE_SAFE(pFontFamily);
 
 		/* Destroy render. */
 		pRender->Destroy();
