@@ -77,7 +77,16 @@ namespace GAIA_TEST
 		__BaseRenderType::FontPainter* pFontPainter = pRender->CreateFontPainter(descFontPainter);
 		if(pFontPainter == GNIL)
 		{
-			GTLINE2("Render create fontpainer failed!");
+			GTLINE2("Render create fontpainter failed!");
+			++nRet;
+		}
+
+		__RenderType::FontFormat::FontFormatDesc descFontFormat;
+		descFontFormat.reset();
+		__BaseRenderType::FontFormat* pFontFormat = pRender->CreateFontFormat(descFontFormat);
+		if(pFontFormat == GNIL)
+		{
+			GTLINE2("Render create fontformat failed!");
 			++nRet;
 		}
 
@@ -90,7 +99,7 @@ namespace GAIA_TEST
 		GAIA::MATH::AABR<GAIA::REAL> aabr;
 		aabr.pmin = 100.0F;
 		aabr.pmax = 400.0F;
-		pRender->DrawFontPainter(_T("Hello World"), aabr, pFontPainter, pBrush, GNIL);
+		pRender->DrawFontPainter(_T("Hello World"), aabr, pFontPainter, pBrush, pFontFormat);
 		pRender->Flush();
 
 		/* Draw line. */
@@ -123,6 +132,7 @@ namespace GAIA_TEST
 		GAIA_RELEASE_SAFE(pBrush);
 		GAIA_RELEASE_SAFE(pFontPainter);
 		GAIA_RELEASE_SAFE(pFontFamily);
+		GAIA_RELEASE_SAFE(pFontFormat);
 
 		/* Destroy render. */
 		pRender->Destroy();

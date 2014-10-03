@@ -342,6 +342,9 @@ namespace GAIA
 				}
 				virtual const FontFormatDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFORMAT;}
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				const Gdiplus::StringFormat& GetInternalStringFormat() const{return m_StringFmt;}
+			#endif
 			private:
 				GINL GAIA::GVOID init()
 				{
@@ -788,11 +791,10 @@ namespace GAIA
 				{
 					GAIA::RENDER::Render2DGDIPlus::FontFormat* pPracFontFormat = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontFormat*)(pFontFormat);
 					GPCHR_NULL(pPracFontFormat);
-					Gdiplus::StringFormat sf;
 					m_pSwapGraphics->DrawString(
 						pszText, GAIA::ALGO::strlen(pszText),
 						pPracFontPainter->GetInternalFontPainter(), 
-						rc, &sf, 
+						rc, &pPracFontFormat->GetInternalStringFormat(), 
 						pPracBrush->GetInternalBrush());
 				}
 			#endif
