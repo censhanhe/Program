@@ -45,6 +45,8 @@ namespace GAIA
 				GINL ~Pen(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pGDIPPen = new Gdiplus::Pen((Gdiplus::Color)0xFF000000, 1.0F);
 				#endif
@@ -87,6 +89,8 @@ namespace GAIA
 				GINL ~Brush(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pGDIPBrush = new Gdiplus::SolidBrush((Gdiplus::Color)0xFF000000);
 				#endif
@@ -129,6 +133,8 @@ namespace GAIA
 				GINL ~FontFamily(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pFontFamily = new Gdiplus::FontFamily(desc.strFontName, GNIL);
 				#endif
@@ -143,6 +149,9 @@ namespace GAIA
 				}
 				const FontFamilyDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFAMILY;}
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::FontFamily* GetInternalFontFamily() const{return m_pFontFamily;}
+			#endif
 			private:
 				GINL GAIA::GVOID init()
 				{
@@ -171,7 +180,21 @@ namespace GAIA
 				GINL ~FontPainter(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					GAIA::RENDER::Render2DGDIPlus::FontFamily* pFontFamily = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontFamily*)(desc.pFontFamily);
+					GAIA_AST(pFontFamily != GNIL);
+					if(pFontFamily == GNIL)
+						return GAIA::False;
+					GAIA::N32 nStyle = 0;
+					if(desc.bBold)
+						nStyle |= Gdiplus::FontStyleBold;
+					if(desc.bItalic)
+						nStyle |= Gdiplus::FontStyleItalic;
+					if(desc.bUnderline)
+						nStyle |= Gdiplus::FontStyleUnderline;
+					m_pFont = new Gdiplus::Font(pFontFamily->GetInternalFontFamily(), desc.rSize, nStyle, Gdiplus::UnitPixel), 
 				#endif
 					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::FontPainter::FontPainterDesc&)(desc);
 					return GAIA::True;
@@ -212,6 +235,8 @@ namespace GAIA
 				GINL ~FontFormat(){this->Destroy();}
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				#endif
 					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::FontFormat::FontFormatDesc&)(desc);
@@ -596,7 +621,6 @@ namespace GAIA
 			#endif
 			}
 			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainter(
-				GAIA::RENDER::Render2D::FontFamily& ff,
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)

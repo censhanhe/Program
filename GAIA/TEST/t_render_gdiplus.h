@@ -61,6 +61,26 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
+		__RenderType::FontFamily::FontFamilyDesc descFontFamily;
+		descFontFamily.reset();
+		descFontFamily.strFontName = _T("TimesNewRoman");
+		__BaseRenderType::FontFamily* pFontFamily = pRender->CreateFontFamily(descFontFamily);
+		if(pFontFamily == GNIL)
+		{
+			GTLINE2("Render create fontfamily failed!");
+			++nRet;
+		}
+
+		__RenderType::FontPainter::FontPainterDesc descFontPainter;
+		descFontPainter.reset();
+		descFontPainter.pFontFamily = pFontFamily;
+		__BaseRenderType::FontPainter* pFontPainter = pRender->CreateFontPainter(descFontPainter);
+		if(pFontPainter == GNIL)
+		{
+			GTLINE2("Render create fontpainer failed!");
+			++nRet;
+		}
+
 		/* Draw text. */
 
 		/* Draw line. */

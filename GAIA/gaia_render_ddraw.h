@@ -231,7 +231,6 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(
 				const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc){return GNIL;}
 			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainter(
-				GAIA::RENDER::Render2D::FontFamily& ff,
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc){return GNIL;}
 			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(
 				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc){return GNIL;}

@@ -105,8 +105,27 @@ namespace GAIA
 				class FontPainterDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset()
+					{
+						pFontFamily = GNIL;
+						rSize = 10.0F;
+						bBold = GAIA::False;
+						bItalic = GAIA::False;
+						bUnderline = GAIA::False;
+					}
+					virtual GAIA::BL check() const
+					{
+						if(pFontFamily == GNIL)
+							return GAIA::False;
+						if(rSize <= 0.0F)
+							return GAIA::False;
+						return GAIA::True;
+					}
+					GAIA::RENDER::Render2D::FontFamily* pFontFamily;
+					GAIA::REAL rSize;
+					GAIA::U8 bBold : 1;
+					GAIA::U8 bItalic : 1;
+					GAIA::U8 bUnderline : 1;
 				};
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc) = 0;
@@ -226,7 +245,6 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(
 				const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc) = 0;
 			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainter(
-				GAIA::RENDER::Render2D::FontFamily& ff,
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc) = 0;
 			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(
 				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc) = 0;
