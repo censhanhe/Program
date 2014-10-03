@@ -88,7 +88,7 @@ namespace GAIA
 				#endif
 					return GAIA::True;
 				}
-				virtual GAIA::BL SetWidth(GAIA::REAL rWidth)
+				virtual GAIA::BL SetWidth(const GAIA::REAL& rWidth)
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					if(m_pPen == GNIL)
@@ -98,15 +98,14 @@ namespace GAIA
 				#endif
 					return GAIA::True;
 				}
-				virtual GAIA::REAL GetWidth() const
+				virtual GAIA::BL GetWidth(GAIA::REAL& rWidth) const
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					if(m_pPen == GNIL)
-						return 0.0F;
-					return m_pPen->GetWidth();
-				#else
-					return 0.0F;
+						return GAIA::False;
+					rWidth = m_pPen->GetWidth();
 				#endif
+					return GAIA::True;
 				}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Gdiplus::Pen* GetInternalPen() const{return m_pPen;}

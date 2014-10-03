@@ -54,8 +54,8 @@ namespace GAIA
 				virtual const PenDesc& GetDesc() const = 0;
 				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
 				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const = 0;
-				virtual GAIA::BL SetWidth(GAIA::REAL rWidth) = 0;
-				virtual GAIA::REAL GetWidth() const = 0;
+				virtual GAIA::BL SetWidth(const GAIA::REAL& rWidth) = 0;
+				virtual GAIA::BL GetWidth(GAIA::REAL& rWidth) const = 0;
 			};
 
 			class Brush : public virtual GAIA::RENDER::RenderResource

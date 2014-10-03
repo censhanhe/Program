@@ -41,8 +41,8 @@ namespace GAIA
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL3_PEN;}
 				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr){return GAIA::False;}
 				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const{return GAIA::False;}
-				virtual GAIA::BL SetWidth(GAIA::REAL rWidth){return GAIA::False;}
-				virtual GAIA::REAL GetWidth() const{return 0.0F;}
+				virtual GAIA::BL SetWidth(const GAIA::REAL& rWidth){return GAIA::False;}
+				virtual GAIA::BL GetWidth(GAIA::REAL& rWidth) const{return GAIA::False;}
 			private:
 				PenDesc m_desc;
 			};
