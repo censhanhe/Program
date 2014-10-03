@@ -68,7 +68,7 @@ namespace GAIA
 					if(m_pPen == GNIL)
 						return GAIA::False;
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = cr;
-					crNew.tobyte();
+					crNew.tobytemode();
 					Gdiplus::Color crTemp(crNew.a, crNew.r, crNew.g, crNew.b);
 					if(m_pPen->SetColor(crTemp) != Gdiplus::Ok)
 						return GAIA::False;
@@ -87,7 +87,7 @@ namespace GAIA
 					cr.r = (GAIA::REAL)crTemp.GetR();
 					cr.g = (GAIA::REAL)crTemp.GetG();
 					cr.b = (GAIA::REAL)crTemp.GetB();
-					cr.toreal();
+					cr.torealmode();
 				#endif
 					return GAIA::True;
 				}
@@ -164,7 +164,7 @@ namespace GAIA
 					if(m_pBrush == GNIL)
 						return GAIA::False;
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = cr;
-					crNew.tobyte();
+					crNew.tobytemode();
 					Gdiplus::Color crTemp(crNew.a, crNew.r, crNew.g, crNew.b);
 					if(m_pBrush->SetColor(crTemp) != Gdiplus::Ok)
 						return GAIA::False;
@@ -183,7 +183,7 @@ namespace GAIA
 					cr.r = (GAIA::REAL)crTemp.GetR();
 					cr.g = (GAIA::REAL)crTemp.GetG();
 					cr.b = (GAIA::REAL)crTemp.GetB();
-					cr.toreal();
+					cr.torealmode();
 				#endif
 					return GAIA::True;
 				}
@@ -500,7 +500,7 @@ namespace GAIA
 				if(m_pSwapGraphics == GNIL)
 					return;
 				GAIA::MATH::ARGB<GAIA::REAL> crNew = cr;
-				crNew.tobyte();
+				crNew.tobytemode();
 				Gdiplus::Color crTemp(crNew.a, crNew.r, crNew.g, crNew.b);
 				m_pSwapGraphics->Clear(crTemp);
 			#endif

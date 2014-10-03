@@ -46,8 +46,25 @@ namespace GAIA
 			GINL _DataType min_rgb() const{return GAIA::ALGO::minimize3(r, g, b);}
 			GINL _DataType min_argb() const{return GAIA::ALGO::minimize(GAIA::ALGO::minimize(a, r), GAIA::ALGO::minimize(g, b));}
 
-			GINL GAIA::GVOID toreal(){(*this) /= 255;}
-			GINL GAIA::GVOID tobyte(){(*this) *= 255;}
+			GINL GAIA::GVOID torealmode(){(*this) /= 255;}
+			GINL GAIA::GVOID tobytemode(){(*this) *= 255;}
+
+			GINL GAIA::U32 tou32() const
+			{
+				GAIA::U32 ret;
+				GRCAST(GAIA::U8*)(&ret)[3] = GSCAST(GAIA::U8)(a);
+				GRCAST(GAIA::U8*)(&ret)[2] = GSCAST(GAIA::U8)(r);
+				GRCAST(GAIA::U8*)(&ret)[1] = GSCAST(GAIA::U8)(g);
+				GRCAST(GAIA::U8*)(&ret)[0] = GSCAST(GAIA::U8)(b);
+				return ret;
+			}
+			GINL GAIA::GVOID fromu32(GAIA::U32 u)
+			{
+				a = GSCAST(_DataType)(GRCAST(GAIA::U8*)(&u)[3]);
+				r = GSCAST(_DataType)(GRCAST(GAIA::U8*)(&u)[2]);
+				g = GSCAST(_DataType)(GRCAST(GAIA::U8*)(&u)[1]);
+				b = GSCAST(_DataType)(GRCAST(GAIA::U8*)(&u)[0]);
+			}
 
 			template<typename _ParamEndDataType, typename _ParamFactorDataType> GAIA::GVOID lerp(GAIA::MATH::ARGB<_ParamEndDataType>& end, const _ParamFactorDataType& factor)
 			{
