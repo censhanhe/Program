@@ -74,7 +74,6 @@ namespace GAIA_TEST
 		__RenderType::FontPainter::FontPainterDesc descFontPainter;
 		descFontPainter.reset();
 		descFontPainter.pFontFamily = pFontFamily;
-		descFontPainter.rSize = 32.0F;
 		__BaseRenderType::FontPainter* pFontPainter = pRender->CreateFontPainter(descFontPainter);
 		if(pFontPainter == GNIL)
 		{

@@ -108,7 +108,7 @@ namespace GAIA
 					virtual GAIA::GVOID reset()
 					{
 						pFontFamily = GNIL;
-						rSize = 10.0F;
+						rSize = 16.0F;
 						bBold = GAIA::False;
 						bItalic = GAIA::False;
 						bUnderline = GAIA::False;
