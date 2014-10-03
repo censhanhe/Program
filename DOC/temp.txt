@@ -1,3 +1,3 @@
 Render
 
-	
+	3d render 的各种组件的描述的reset/check函数应调用基类接口。
