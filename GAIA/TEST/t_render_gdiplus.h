@@ -97,6 +97,11 @@ namespace GAIA_TEST
 		pRender->Flush();
 
 		/* Draw rect. */
+		aabr.pmin = 200.0F;
+		aabr.pmax = 300.0F;
+		aabr.pmin.x += 200.0F;
+		aabr.pmax.x += 400.0F;
+		pRender->DrawRect(aabr, pBrush);
 		pRender->Flush();
 
 		/* Draw texture. */

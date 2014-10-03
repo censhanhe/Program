@@ -783,6 +783,9 @@ namespace GAIA
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
+				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
+				GPCHR_NULL(pPracBrush);
+				m_pSwapGraphics->FillRectangle(pPracBrush->GetInternalBrush(), aabr.pmin.x, aabr.pmin.y, aabr.width(), aabr.height());
 			#endif
 			}
 			virtual GAIA::GVOID DrawTriangle(
