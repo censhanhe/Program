@@ -73,21 +73,21 @@ namespace GAIA
 				BrushDesc m_desc;
 			};
 
-			class FontPainterFamily : public virtual GAIA::RENDER::RenderResource
+			class FontFamily : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
-				class FontPainterFamilyDesc : public virtual GAIA::FWORK::InstanceDesc
+				class FontFamilyDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
 					virtual GAIA::GVOID reset(){}
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc) = 0;
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const FontPainterFamilyDesc& GetDesc() const{return m_desc;}
+				const FontFamilyDesc& GetDesc() const{return m_desc;}
 			private:
-				FontPainterFamilyDesc m_desc;
+				FontFamilyDesc m_desc;
 			};
 
 			class FontPainter : public virtual GAIA::RENDER::RenderResource
@@ -214,10 +214,10 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::Brush* CreateBrush(const GAIA::RENDER::Render2D::Brush::BrushDesc& desc) = 0;
 
 			/* FontPainter. */
-			virtual GAIA::RENDER::Render2D::FontPainterFamily* CreateFontPainterFamily(
-				const GAIA::RENDER::Render2D::FontPainterFamily::FontPainterFamilyDesc& desc) = 0;
-			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainterPainter(
-				GAIA::RENDER::Render2D::FontPainterFamily& ff,
+			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(
+				const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc) = 0;
+			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainter(
+				GAIA::RENDER::Render2D::FontFamily& ff,
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc) = 0;
 			virtual GAIA::GVOID DrawFontPainter(
 				const GAIA::TCH* pszText,
