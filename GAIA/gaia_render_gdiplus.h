@@ -67,7 +67,9 @@ namespace GAIA
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					if(m_pPen == GNIL)
 						return GAIA::False;
-					Gdiplus::Color crTemp(cr.a * 255.0F, cr.r * 255.0F, cr.g * 255.0F, cr.b * 255.0F);
+					GAIA::MATH::ARGB<GAIA::REAL> crNew = cr;
+					crNew.tobyte();
+					Gdiplus::Color crTemp(crNew.a, crNew.r, crNew.g, crNew.b);
 					if(m_pPen->SetColor(crTemp) != Gdiplus::Ok)
 						return GAIA::False;
 				#endif
@@ -81,10 +83,11 @@ namespace GAIA
 					Gdiplus::Color crTemp;
 					if(m_pPen->GetColor(&crTemp) != Gdiplus::Ok)
 						return GAIA::False;
-					cr.a = (FLOAT)crTemp.GetA() / 255.0F;
-					cr.r = (FLOAT)crTemp.GetR() / 255.0F;
-					cr.g = (FLOAT)crTemp.GetG() / 255.0F;
-					cr.b = (FLOAT)crTemp.GetB() / 255.0F;
+					cr.a = (GAIA::REAL)crTemp.GetA();
+					cr.r = (GAIA::REAL)crTemp.GetR();
+					cr.g = (GAIA::REAL)crTemp.GetG();
+					cr.b = (GAIA::REAL)crTemp.GetB();
+					cr.toreal();
 				#endif
 					return GAIA::True;
 				}
@@ -160,7 +163,9 @@ namespace GAIA
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					if(m_pBrush == GNIL)
 						return GAIA::False;
-					Gdiplus::Color crTemp(cr.a * 255.0F, cr.r * 255.0F, cr.g * 255.0F, cr.b * 255.0F);
+					GAIA::MATH::ARGB<GAIA::REAL> crNew = cr;
+					crNew.tobyte();
+					Gdiplus::Color crTemp(crNew.a, crNew.r, crNew.g, crNew.b);
 					if(m_pBrush->SetColor(crTemp) != Gdiplus::Ok)
 						return GAIA::False;
 				#endif
@@ -174,10 +179,11 @@ namespace GAIA
 					Gdiplus::Color crTemp;
 					if(m_pBrush->GetColor(&crTemp) != Gdiplus::Ok)
 						return GAIA::False;
-					cr.a = (FLOAT)crTemp.GetA() / 255.0F;
-					cr.r = (FLOAT)crTemp.GetR() / 255.0F;
-					cr.g = (FLOAT)crTemp.GetG() / 255.0F;
-					cr.b = (FLOAT)crTemp.GetB() / 255.0F;
+					cr.a = (GAIA::REAL)crTemp.GetA();
+					cr.r = (GAIA::REAL)crTemp.GetR();
+					cr.g = (GAIA::REAL)crTemp.GetG();
+					cr.b = (GAIA::REAL)crTemp.GetB();
+					cr.toreal();
 				#endif
 					return GAIA::True;
 				}
@@ -493,7 +499,9 @@ namespace GAIA
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
-				Gdiplus::Color crTemp(cr.a * 255.0F, cr.r * 255.0F, cr.g * 255.0F, cr.b * 255.0F);
+				GAIA::MATH::ARGB<GAIA::REAL> crNew = cr;
+				crNew.tobyte();
+				Gdiplus::Color crTemp(crNew.a, crNew.r, crNew.g, crNew.b);
 				m_pSwapGraphics->Clear(crTemp);
 			#endif
 			}

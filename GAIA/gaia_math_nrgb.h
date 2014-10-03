@@ -40,6 +40,9 @@ namespace GAIA
 			GINL _DataType max_rgb() const{return GAIA::ALGO::maximize3(r, g, b);}
 			GINL _DataType min_rgb() const{return GAIA::ALGO::minimize3(r, g, b);}
 
+			GINL GAIA::GVOID toreal(){(*this) /= 255;}
+			GINL GAIA::GVOID tobyte(){(*this) *= 255;}
+
 			template<typename _ParamEndDataType, typename _ParamFactorDataType> GAIA::GVOID lerp(GAIA::MATH::NRGB<_ParamEndDataType>& end, const _ParamFactorDataType& factor)
 			{
 				r = GAIA::MATH::lerp(r, end.r, factor);
