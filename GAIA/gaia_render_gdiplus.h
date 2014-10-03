@@ -342,6 +342,100 @@ namespace GAIA
 				}
 				virtual const FontFormatDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFORMAT;}
+				virtual GAIA::BL SetAlignDirectionH(GAIA::N8 nDirection)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(nDirection < 0)
+					{
+						if(m_StringFmt.SetAlignment(Gdiplus::StringAlignmentNear) != Gdiplus::Ok)
+							return GAIA::False;
+					}
+					else if(nDirection > 0)
+					{
+						if(m_StringFmt.SetAlignment(Gdiplus::StringAlignmentFar) != Gdiplus::Ok)
+							return GAIA::False;
+					}
+					else
+					{
+						if(m_StringFmt.SetAlignment(Gdiplus::StringAlignmentCenter) != Gdiplus::Ok)
+							return GAIA::False;
+					}
+				#endif
+					return GAIA::True;
+				}
+				virtual GAIA::BL GetAlignDirectionH(GAIA::N8& nDirection)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(m_StringFmt.GetAlignment() == Gdiplus::StringAlignmentNear)
+						nDirection = -1;
+					else if(m_StringFmt.GetAlignment() == Gdiplus::StringAlignmentFar)
+						nDirection = +1;
+					else if(m_StringFmt.GetAlignment() == Gdiplus::StringAlignmentCenter)
+						nDirection = 0;
+					else
+						return GAIA::False;
+				#endif
+					return GAIA::True;
+				}
+				virtual GAIA::BL SetAlignDirectionV(GAIA::N8 nDirection)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(nDirection < 0)
+					{
+						if(m_StringFmt.SetLineAlignment(Gdiplus::StringAlignmentNear) != Gdiplus::Ok)
+							return GAIA::False;
+					}
+					else if(nDirection > 0)
+					{
+						if(m_StringFmt.SetLineAlignment(Gdiplus::StringAlignmentFar) != Gdiplus::Ok)
+							return GAIA::False;
+					}
+					else
+					{
+						if(m_StringFmt.SetLineAlignment(Gdiplus::StringAlignmentCenter) != Gdiplus::Ok)
+							return GAIA::False;
+					}
+				#endif
+					return GAIA::False;
+				}
+				virtual GAIA::BL GetAlignDirectionV(GAIA::N8& nDirection)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(m_StringFmt.GetLineAlignment() == Gdiplus::StringAlignmentNear)
+						nDirection = -1;
+					else if(m_StringFmt.GetLineAlignment() == Gdiplus::StringAlignmentFar)
+						nDirection = +1;
+					else if(m_StringFmt.GetLineAlignment() == Gdiplus::StringAlignmentCenter)
+						nDirection = 0;
+					else
+						return GAIA::False;
+				#endif
+					return GAIA::True;
+				}
+				virtual GAIA::BL EnableWrap(GAIA::BL bEnable)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					GAIA::N32 nFlagMask = m_StringFmt.GetFormatFlags();
+					if(bEnable)
+						nFlagMask |= Gdiplus::StringFormatFlagsNoWrap;
+					else
+						nFlagMask &= (~((GAIA::N32)Gdiplus::StringFormatFlagsNoWrap));
+					if(m_StringFmt.SetFormatFlags(nFlagMask) != Gdiplus::Ok)
+						return GAIA::False;
+				#endif
+					return GAIA::True;
+				}
+				virtual GAIA::BL IsEnableWrap(GAIA::BL& bEnable)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					GAIA::N32 nFlagMask = m_StringFmt.GetFormatFlags();
+					if(nFlagMask & Gdiplus::StringFormatFlagsNoWrap)
+						bEnable = GAIA::False;
+					else
+						bEnable = GAIA::True;
+				#endif
+					return GAIA::True;
+				}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				const Gdiplus::StringFormat& GetInternalStringFormat() const{return m_StringFmt;}
 			#endif

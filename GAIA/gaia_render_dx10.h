@@ -121,6 +121,12 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const FontFormatDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX10_FONTFORMAT;}
+				virtual GAIA::BL SetAlignDirectionH(GAIA::N8 nDirection){return GAIA::False;}
+				virtual GAIA::BL GetAlignDirectionH(GAIA::N8& nDirection){return GAIA::False;}
+				virtual GAIA::BL SetAlignDirectionV(GAIA::N8 nDirection){return GAIA::False;}
+				virtual GAIA::BL GetAlignDirectionV(GAIA::N8& nDirection){return GAIA::False;}
+				virtual GAIA::BL EnableWrap(GAIA::BL bEnable){return GAIA::False;}
+				virtual GAIA::BL IsEnableWrap(GAIA::BL& bEnable){return GAIA::False;}
 			private:
 				FontFormatDesc m_desc;
 			};

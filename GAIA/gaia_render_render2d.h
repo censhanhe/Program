@@ -146,6 +146,12 @@ namespace GAIA
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const FontFormatDesc& GetDesc() const = 0;
+				virtual GAIA::BL SetAlignDirectionH(GAIA::N8 nDirection) = 0;
+				virtual GAIA::BL GetAlignDirectionH(GAIA::N8& nDirection) = 0;
+				virtual GAIA::BL SetAlignDirectionV(GAIA::N8 nDirection) = 0;
+				virtual GAIA::BL GetAlignDirectionV(GAIA::N8& nDirection) = 0;
+				virtual GAIA::BL EnableWrap(GAIA::BL bEnable) = 0;
+				virtual GAIA::BL IsEnableWrap(GAIA::BL& bEnable) = 0;
 			};
 
 			class Target : public virtual GAIA::RENDER::RenderResource
