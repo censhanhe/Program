@@ -51,13 +51,11 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const PenDesc& GetDesc() const{return m_desc;}
+				virtual const PenDesc& GetDesc() const = 0;
 				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
 				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const = 0;
 				virtual GAIA::BL SetWidth(GAIA::REAL rWidth) = 0;
 				virtual GAIA::REAL GetWidth() const = 0;
-			private:
-				PenDesc m_desc;
 			};
 
 			class Brush : public virtual GAIA::RENDER::RenderResource
@@ -72,9 +70,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const BrushDesc& GetDesc() const{return m_desc;}
-			private:
-				BrushDesc m_desc;
+				virtual const BrushDesc& GetDesc() const = 0;
 			};
 
 			class FontFamily : public virtual GAIA::RENDER::RenderResource
@@ -98,9 +94,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const FontFamilyDesc& GetDesc() const{return m_desc;}
-			private:
-				FontFamilyDesc m_desc;
+				virtual const FontFamilyDesc& GetDesc() const = 0;
 			};
 
 			class FontPainter : public virtual GAIA::RENDER::RenderResource
@@ -134,9 +128,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const FontPainterDesc& GetDesc() const{return m_desc;}
-			private:
-				FontPainterDesc m_desc;
+				virtual const FontPainterDesc& GetDesc() const = 0;
 			};
 
 			class FontFormat : public virtual GAIA::RENDER::RenderResource
@@ -151,9 +143,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const FontFormatDesc& GetDesc() const{return m_desc;}
-			private:
-				FontFormatDesc m_desc;
+				virtual const FontFormatDesc& GetDesc() const = 0;
 			};
 
 			class Target : public virtual GAIA::RENDER::RenderResource
@@ -168,9 +158,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Target::TargetDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const TargetDesc& GetDesc() const{return m_desc;}
-			private:
-				TargetDesc m_desc;
+				virtual const TargetDesc& GetDesc() const = 0;
 			};
 
 			class Shader : public virtual GAIA::RENDER::RenderResource
@@ -185,9 +173,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const ShaderDesc& GetDesc() const{return m_desc;}
-			private:
-				ShaderDesc m_desc;
+				virtual const ShaderDesc& GetDesc() const = 0;
 			};
 
 			class Texture : public virtual GAIA::RENDER::RenderResource
@@ -202,9 +188,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Texture::TextureDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const TextureDesc& GetDesc() const{return m_desc;}
-			private:
-				TextureDesc m_desc;
+				virtual const TextureDesc& GetDesc() const = 0;
 			};
 
 		public:

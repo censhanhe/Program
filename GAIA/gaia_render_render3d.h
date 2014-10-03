@@ -49,9 +49,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render3D& render, const GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const VertexDeclarationDesc& GetDesc() const{return m_desc;}
-			private:
-				VertexDeclarationDesc m_desc;
+				virtual const VertexDeclarationDesc& GetDesc() const = 0;
 			};
 
 			class IndexBuffer : public virtual GAIA::RENDER::RenderResource
@@ -66,9 +64,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render3D& render, const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const IndexBufferDesc& GetDesc() const{return m_desc;}
-			private:
-				IndexBufferDesc m_desc;
+				virtual const IndexBufferDesc& GetDesc() const = 0;
 			};
 
 			class VertexBuffer : public virtual GAIA::RENDER::RenderResource
@@ -83,9 +79,7 @@ namespace GAIA
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render3D& render, const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
-				const VertexBufferDesc& GetDesc() const{return m_desc;}
-			private:
-				VertexBufferDesc m_desc;
+				virtual const VertexBufferDesc& GetDesc() const = 0;
 			};
 
 		public:
