@@ -64,19 +64,49 @@ namespace GAIA
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_PEN;}
 				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 				{
-					return GAIA::False;
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(m_pPen == GNIL)
+						return GAIA::False;
+					Gdiplus::Color crTemp(cr.a * 255.0F, cr.r * 255.0F, cr.g * 255.0F, cr.b * 255.0F);
+					if(m_pPen->SetColor(crTemp) != Gdiplus::Ok)
+						return GAIA::False;
+				#endif
+					return GAIA::True;
 				}
 				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const
 				{
-					return GAIA::False;
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(m_pPen == GNIL)
+						return GAIA::False;
+					Gdiplus::Color crTemp;
+					if(m_pPen->GetColor(&crTemp) != Gdiplus::Ok)
+						return GAIA::False;
+					cr.a = (FLOAT)crTemp.GetA() / 255.0F;
+					cr.r = (FLOAT)crTemp.GetR() / 255.0F;
+					cr.g = (FLOAT)crTemp.GetG() / 255.0F;
+					cr.b = (FLOAT)crTemp.GetB() / 255.0F;
+				#endif
+					return GAIA::True;
 				}
 				virtual GAIA::BL SetWidth(GAIA::REAL rWidth)
 				{
-					return GAIA::False;
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(m_pPen == GNIL)
+						return GAIA::False;
+					if(m_pPen->SetWidth(rWidth) != Gdiplus::Ok)
+						return GAIA::False;
+				#endif
+					return GAIA::True;
 				}
 				virtual GAIA::REAL GetWidth() const
 				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(m_pPen == GNIL)
+						return 0.0F;
+					return m_pPen->GetWidth();
+				#else
 					return 0.0F;
+				#endif
 				}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Gdiplus::Pen* GetInternalPen() const{return m_pPen;}

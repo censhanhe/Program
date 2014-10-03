@@ -89,6 +89,13 @@ namespace GAIA_TEST
 		pRender->Flush();
 
 		/* Draw line. */
+		pPen->SetWidth(4.0F);
+		GAIA::MATH::ARGB<GAIA::REAL> cr;
+		cr.r = 1.0F;
+		cr.g = 0.5F;
+		cr.b = 0.2F;
+		cr.a = 0.5F;
+		pPen->SetColor(cr);
 		GAIA::MATH::VEC2<GAIA::REAL> s, e;
 		s = 100.0F;
 		e = 200.0F;
