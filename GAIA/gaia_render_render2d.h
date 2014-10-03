@@ -79,8 +79,17 @@ namespace GAIA
 				class FontFamilyDesc : public virtual GAIA::FWORK::InstanceDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset()
+					{
+						strFontName.clear();
+					}
+					virtual GAIA::BL check() const
+					{
+						if(strFontName.empty())
+							return GAIA::False;
+						return GAIA::True;
+					}
+					GAIA::CTN::TString strFontName;
 				};
 			public:
 				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc) = 0;
@@ -219,6 +228,8 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainter(
 				GAIA::RENDER::Render2D::FontFamily& ff,
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc) = 0;
+			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(
+				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc) = 0;
 			virtual GAIA::GVOID DrawFontPainter(
 				const GAIA::TCH* pszText,
 				GAIA::RENDER::Render2D::FontPainter* pFontPainter,

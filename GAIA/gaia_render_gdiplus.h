@@ -48,6 +48,7 @@ namespace GAIA
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pGDIPPen = new Gdiplus::Pen((Gdiplus::Color)0xFF000000, 1.0F);
 				#endif
+					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::Pen::PenDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -89,6 +90,7 @@ namespace GAIA
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pGDIPBrush = new Gdiplus::SolidBrush((Gdiplus::Color)0xFF000000);
 				#endif
+					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::Brush::BrushDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -123,13 +125,36 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL FontFamily(){this->init();}
 				GINL ~FontFamily(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc){return GAIA::True;}
-				virtual GAIA::GVOID Destroy(){}
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					m_pFontFamily = new Gdiplus::FontFamily(desc.strFontName, GNIL);
+				#endif
+					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::FontFamily::FontFamilyDesc&)(desc);
+					return GAIA::True;
+				}
+				virtual GAIA::GVOID Destroy()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					GAIA_DELETE_SAFE(m_pFontFamily);
+				#endif
+				}
 				const FontFamilyDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFAMILY;}
 			private:
+				GINL GAIA::GVOID init()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					m_pFontFamily = GNIL;
+				#endif
+				}
+			private:
 				FontFamilyDesc m_desc;
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::FontFamily* m_pFontFamily;
+			#endif
 			};
 
 			class FontPainter : public virtual GAIA::RENDER::Render2D::FontPainter
@@ -142,13 +167,35 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL FontPainter(){this->init();}
 				GINL ~FontPainter(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc){return GAIA::True;}
-				virtual GAIA::GVOID Destroy(){}
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				#endif
+					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::FontPainter::FontPainterDesc&)(desc);
+					return GAIA::True;
+				}
+				virtual GAIA::GVOID Destroy()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					GAIA_DELETE_SAFE(m_pFont);
+				#endif
+				}
 				const FontPainterDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTPAINTER;}
 			private:
+				GINL GAIA::GVOID init()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					m_pFont = GNIL;
+				#endif
+				}
+			private:
 				FontPainterDesc m_desc;
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::Font* m_pFont;
+			#endif
 			};
 
 			class FontFormat : public virtual GAIA::RENDER::Render2D::FontFormat
@@ -161,13 +208,33 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
+				GINL FontFormat(){this->init();}
 				GINL ~FontFormat(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc){return GAIA::True;}
-				virtual GAIA::GVOID Destroy(){}
+				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc)
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				#endif
+					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::FontFormat::FontFormatDesc&)(desc);
+					return GAIA::True;
+				}
+				virtual GAIA::GVOID Destroy()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				#endif
+				}
 				const FontFormatDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFORMAT;}
 			private:
+				GINL GAIA::GVOID init()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				#endif
+				}
+			private:
 				FontFormatDesc m_desc;
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::StringFormat m_StringFmt;
+			#endif
 			};
 
 			class Target : public virtual GAIA::RENDER::Render2D::Target
@@ -548,6 +615,25 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
+			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(
+				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc)
+			{
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				FontFormat* pFontFormat = GDCAST(FontFormat*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFORMAT, GNIL));
+				GAIA_AST(pFontFormat != GNIL);
+				if(pFontFormat == GNIL)
+					return GNIL;
+				pFontFormat->SetRender(this);
+				if(!pFontFormat->Create(*this, GSCAST(const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc&)(desc)))
+				{
+					pFontFormat->Release();
+					return GNIL;
+				}
+				return pFontFormat;
+			#else
+				return GNIL;
+			#endif
+			}
 			virtual GAIA::GVOID DrawFontPainter(
 				const GAIA::TCH* pszText,
 				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
@@ -555,7 +641,7 @@ namespace GAIA
 				GAIA::RENDER::Render2D::FontFormat* pFontFormat)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-
+				
 			#endif
 			}
 
