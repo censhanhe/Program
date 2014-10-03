@@ -68,22 +68,6 @@
 
 	Render
 
-		ImageWork add ImageLayer component. ImageLayer support child-parent link.
-		There are some ImageLayers in different types.
-			BitmapLayer.
-			ParametricLayer
-		ImageLayer support mix method. There are some types follow.
-			AlphaBlend.
-			AlphaBlendEnhance.
-			Add/Sub/Mul/Div.
-			Mask.
-		ImageLayer support global alpha.
-		ImageLayer support ImageFilter. There are some filter follow.
-			BlueFilter.
-			GrayFilter.
-			InnerShadowFilter.
-			OutterShadowFilter.
-			AntiAliasFilter.
 		ImageLayer write operations will change the modify-mask, and the modify-mask can
 		Understand which pixel has been changed.
 
