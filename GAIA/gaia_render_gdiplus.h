@@ -612,25 +612,25 @@ namespace GAIA
 					this->SetQuality2DState(qs, RENDER2D_QUALITYSTATE_DEFAULT[qs]);
 				switch(qs)
 				{
-				case QUALITY2D_STATE_ANTIALIAS:
+				case GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS:
 					{
 					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-						if(GAIA::ALGO::strcmp(pszState, RENDER_STATEWORD_STRING[RENDER_STATEWORD_NONE]) == 0)
+						if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_NONE]) == 0)
 						{
 							if(m_pSwapGraphics->SetSmoothingMode(Gdiplus::SmoothingModeDefault) != Gdiplus::Ok)
 								return;
 						}
-						else if(GAIA::ALGO::strcmp(pszState, RENDER_STATEWORD_STRING[RENDER_STATEWORD_LOW]) == 0)
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_LOW]) == 0)
 						{
 							if(m_pSwapGraphics->SetSmoothingMode(Gdiplus::SmoothingModeHighSpeed) != Gdiplus::Ok)
 								return;
 						}
-						else if(GAIA::ALGO::strcmp(pszState, RENDER_STATEWORD_STRING[RENDER_STATEWORD_MID]) == 0)
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_MID]) == 0)
 						{
 							if(m_pSwapGraphics->SetSmoothingMode(Gdiplus::SmoothingModeHighQuality) != Gdiplus::Ok)
 								return;
 						}
-						else if(GAIA::ALGO::strcmp(pszState, RENDER_STATEWORD_STRING[RENDER_STATEWORD_HIGH]) == 0)
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]) == 0)
 						{
 							if(m_pSwapGraphics->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias) != Gdiplus::Ok)
 								return;
@@ -640,7 +640,34 @@ namespace GAIA
 					#endif
 					}
 					break;
-
+				case GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS:
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_NONE]) == 0)
+						{
+							if(m_pSwapGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHintSingleBitPerPixel) != Gdiplus::Ok)
+								return;
+						}
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_LOW]) == 0)
+						{
+							if(m_pSwapGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHintSingleBitPerPixelGridFit) != Gdiplus::Ok)
+								return;
+						}
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_MID]) == 0)
+						{
+							if(m_pSwapGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias) != Gdiplus::Ok)
+								return;
+						}
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]) == 0)
+						{
+							if(m_pSwapGraphics->SetTextRenderingHint(Gdiplus::TextRenderingHintClearTypeGridFit) != Gdiplus::Ok)
+								return;
+						}
+						else
+							GAIA_AST(GAIA::ALWAYSFALSE);
+					#endif
+					}
+					break;
 				default:
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
@@ -652,20 +679,20 @@ namespace GAIA
 					return GNILSTR;
 				switch(qs)
 				{
-				case QUALITY2D_STATE_ANTIALIAS:
+				case GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS:
 					{
 					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 						Gdiplus::SmoothingMode sm = m_pSwapGraphics->GetSmoothingMode();
 						switch(sm)
 						{
 						case Gdiplus::SmoothingModeDefault:
-							return RENDER_STATEWORD_STRING[RENDER_STATEWORD_NONE];
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_NONE];
 						case Gdiplus::SmoothingModeHighSpeed:
-							return RENDER_STATEWORD_STRING[RENDER_STATEWORD_LOW];
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_LOW];
 						case Gdiplus::SmoothingModeHighQuality:
-							return RENDER_STATEWORD_STRING[RENDER_STATEWORD_MID];
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_MID];
 						case Gdiplus::SmoothingModeAntiAlias:
-							return RENDER_STATEWORD_STRING[RENDER_STATEWORD_HIGH];
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH];
 						default:
 							GAIA_AST(GAIA::ALWAYSFALSE);
 							break;
@@ -673,7 +700,27 @@ namespace GAIA
 					#endif
 					}
 					break;
-
+				case GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS:
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						Gdiplus::TextRenderingHint trh = m_pSwapGraphics->GetTextRenderingHint();
+						switch(trh)
+						{
+						case Gdiplus::TextRenderingHintSingleBitPerPixel:
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_NONE];
+						case Gdiplus::TextRenderingHintSingleBitPerPixelGridFit:
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_LOW];
+						case Gdiplus::TextRenderingHintAntiAlias:
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_MID];
+						case Gdiplus::TextRenderingHintClearTypeGridFit:
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH];
+						default:
+							GAIA_AST(GAIA::ALWAYSFALSE);
+							break;
+						}
+					#endif
+					}
+					break;
 				default:
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
@@ -688,7 +735,7 @@ namespace GAIA
 					this->SetRender2DState(rs, RENDER2D_RENDERSTATE_DEFAULT[rs]);
 				switch(rs)
 				{
-				case RENDER2D_STATE_ALPHABLEND:
+				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND:
 					{
 						if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
 							m_bEnableAlphaBlend = GAIA::True;
@@ -697,7 +744,7 @@ namespace GAIA
 					}
 					break;
 
-				case RENDER2D_STATE_ALPHATEST:
+				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHATEST:
 					{
 						if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
 							m_bEnableAlphaTest = GAIA::True;
@@ -717,7 +764,7 @@ namespace GAIA
 					return GNILSTR;
 				switch(rs)
 				{
-				case RENDER2D_STATE_ALPHABLEND:
+				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND:
 					{
 						if(m_bEnableAlphaBlend)
 							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON];
@@ -726,7 +773,7 @@ namespace GAIA
 					}
 					break;
 
-				case RENDER2D_STATE_ALPHATEST:
+				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHATEST:
 					{
 						if(m_bEnableAlphaTest)
 							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON];
@@ -749,7 +796,7 @@ namespace GAIA
 					this->SetSampler2DState(nSamplerIndex, ss, RENDER2D_SAMPLERSTATE_DEFAULT[ss]);
 				switch(ss)
 				{
-				case SAMPLER2D_STATE_ADDRESSU:
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_ADDRESSU:
 					{
 					}
 					break;
@@ -765,7 +812,7 @@ namespace GAIA
 					return GNILSTR;
 				switch(ss)
 				{
-				case SAMPLER2D_STATE_ADDRESSU:
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_ADDRESSU:
 					{
 					}
 					break;
