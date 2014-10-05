@@ -32,6 +32,14 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::Context::ContextDesc::reset();}
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render3D::Context::ContextDesc::check()) return GAIA::False; return GAIA::True;}
 				};
+			public:
+				GINL ~Context(){this->Destroy();}
+				virtual GAIA::BL Create(const GAIA::RENDER::Render::Context::ContextDesc& desc){return GAIA::True;}
+				virtual GAIA::GVOID Destroy(){m_desc.reset();}
+				virtual const ContextDesc& GetDesc() const{return m_desc;}
+				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL1_CONTEXT;}
+			private:
+				ContextDesc m_desc;
 			};
 
 		public:
