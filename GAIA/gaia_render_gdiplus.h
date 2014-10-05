@@ -846,6 +846,9 @@ namespace GAIA
 			{
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
 					return;
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 				if(GAIA::ALGO::stremp(pszState))
 					this->SetQuality2DState(ctx, qs, RENDER2D_QUALITYSTATE_DEFAULT[qs]);
 				switch(qs)
@@ -915,6 +918,9 @@ namespace GAIA
 			{
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
 					return GNILSTR;
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNILSTR;
 				switch(qs)
 				{
 				case GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS:
@@ -969,6 +975,9 @@ namespace GAIA
 			{
 				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
 					return;
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 				if(GAIA::ALGO::stremp(pszState))
 					this->SetRender2DState(ctx, rs, RENDER2D_RENDERSTATE_DEFAULT[rs]);
 				switch(rs)
@@ -1000,6 +1009,9 @@ namespace GAIA
 			{
 				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
 					return GNILSTR;
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNILSTR;
 				switch(rs)
 				{
 				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND:
@@ -1030,6 +1042,9 @@ namespace GAIA
 			{
 				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
 					return;
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 				if(GAIA::ALGO::stremp(pszState))
 					this->SetSampler2DState(ctx, nSamplerIndex, ss, RENDER2D_SAMPLERSTATE_DEFAULT[ss]);
 				switch(ss)
@@ -1047,6 +1062,9 @@ namespace GAIA
 			virtual const GAIA::CH* GetSampler2DState(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const
 			{
 				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
+					return GNILSTR;
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
 					return GNILSTR;
 				switch(ss)
 				{
@@ -1066,6 +1084,9 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::Pen* CreatePen(GAIA::RENDER::Render::Context& ctx, const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Pen* pPen = GDCAST(Pen*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_PEN, GNIL));
 				GAIA_AST(pPen != GNIL);
@@ -1082,13 +1103,26 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::GVOID SetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen* pPen){}
-			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen*& pPen){}
+			virtual GAIA::GVOID SetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen* pPen)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
+			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen*& pPen)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
 
 			/* Brush. */
 			virtual GAIA::RENDER::Render2D::Brush* CreateBrush(GAIA::RENDER::Render::Context& ctx, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Brush* pBrush = GDCAST(Brush*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_BRUSH, GNIL));
 				pBrush->SetRender(this);
@@ -1102,14 +1136,27 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::GVOID SetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush* pBrush){}
-			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush*& pBrush){}
+			virtual GAIA::GVOID SetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush* pBrush)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
+			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush*& pBrush)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
 
 			/* FontPainter. */
 			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				FontFamily* pFontFamily = GDCAST(FontFamily*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFAMILY, GNIL));
 				GAIA_AST(pFontFamily != GNIL);
@@ -1129,6 +1176,10 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainter(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				FontPainter* pFontPainter = GDCAST(FontPainter*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTPAINTER, GNIL));
 				GAIA_AST(pFontPainter != GNIL);
@@ -1148,6 +1199,10 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				FontFormat* pFontFormat = GDCAST(FontFormat*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_FONTFORMAT, GNIL));
 				GAIA_AST(pFontFormat != GNIL);
@@ -1164,18 +1219,51 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::GVOID SetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily* pFontFamily){}
-			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily*& pFontFamily){}
-			virtual GAIA::GVOID SetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter* pFontPainter){}
-			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter*& pFontPainter){}
-			virtual GAIA::GVOID SetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat* pFontFormat){}
-			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat*& pFontFormat){}
+			virtual GAIA::GVOID SetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily* pFontFamily)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
+			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily*& pFontFamily)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
+			virtual GAIA::GVOID SetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter* pFontPainter)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
+			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter*& pFontPainter)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
+			virtual GAIA::GVOID SetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat* pFontFormat)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
+			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat*& pFontFormat)
+			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
+			}
 
 			/* Texture. */
 			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::Texture::TextureDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Texture* pTex = GDCAST(Texture*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTURE, GNIL));
 				GAIA_AST(pTex != GNIL);
@@ -1194,41 +1282,75 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetTexture(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture)
 			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 			virtual GAIA::GVOID GetTexture(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const
 			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 
 			/* Target. */
 			virtual GAIA::RENDER::Render2D::Target* CreateTarget(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::Target::TargetDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
+
 				return GNIL;
 			}
 			virtual GAIA::GVOID SetTarget(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target* pTarget)
 			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 			virtual GAIA::GVOID GetTarget(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const
 			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 
 			/* Shader. */
 			virtual GAIA::RENDER::Render2D::Shader* CreateShader(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
+
 				return GNIL;
 			}
 			virtual GAIA::GVOID SetShader(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Shader* pShader)
 			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Shader*& pShader) const
 			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 			virtual GAIA::GVOID SetShaderConstant(GAIA::RENDER::Render::Context& ctx, const GAIA::SIZE& sStartIndex, const GAIA::REAL* p, const GAIA::SIZE& sSize)
 			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 			virtual GAIA::GVOID GetShaderConstant(GAIA::RENDER::Render::Context& ctx, const GAIA::SIZE& sStartIndex, GAIA::REAL* p, const GAIA::SIZE& sSize, GAIA::SIZE& sResultSize) const
 			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 
 			/* Draw. */
@@ -1238,6 +1360,9 @@ namespace GAIA
 				GAIA::RENDER::Render2D::Pen* pPen)
 			{
 				GPCHR_NULL(pPen);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
@@ -1272,6 +1397,9 @@ namespace GAIA
 				GAIA::RENDER::Render2D::Brush* pBrush)
 			{
 				GPCHR_NULL(pBrush);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
@@ -1308,6 +1436,9 @@ namespace GAIA
 				GAIA::RENDER::Render2D::Brush* pBrush)
 			{
 				GPCHR_NULL(pBrush);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
@@ -1354,6 +1485,9 @@ namespace GAIA
 				GPCHR_NULLSTRPTR(pszText);
 				GPCHR_NULL(pFontPainter);
 				GPCHR_NULL(pBrush);
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
@@ -1412,6 +1546,9 @@ namespace GAIA
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::MTX33<GAIA::REAL>& mtxTM)
 			{
+				GAIA::RENDER::Render2DGDIPlus* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 		private:
 			GINL GAIA::GVOID init()
