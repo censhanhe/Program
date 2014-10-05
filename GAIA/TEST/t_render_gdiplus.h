@@ -49,17 +49,17 @@ namespace GAIA_TEST
 		}
 
 		/* Set anti-alias state. */
-		pRender->SetQuality2DState(pContext, 
+		pRender->SetQuality2DState(*pContext, 
 			GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, 
 			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
-		pRender->SetQuality2DState(pContext, 
+		pRender->SetQuality2DState(*pContext, 
 			GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS,
 			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
 
 		/* Create resource. */
 		__RenderType::Pen::PenDesc descPen;
 		descPen.reset();
-		__BaseRenderType::Pen* pPen = pRender->CreatePen(pContext, descPen);
+		__BaseRenderType::Pen* pPen = pRender->CreatePen(*pContext, descPen);
 		if(pPen == GNIL)
 		{
 			GTLINE2("Render create pen failed!");
@@ -68,7 +68,7 @@ namespace GAIA_TEST
 
 		__RenderType::Brush::BrushDesc descBrush;
 		descBrush.reset();
-		__BaseRenderType::Brush* pBrush = pRender->CreateBrush(pContext, descBrush);
+		__BaseRenderType::Brush* pBrush = pRender->CreateBrush(*pContext, descBrush);
 		if(pBrush == GNIL)
 		{
 			GTLINE2("Render create brush failed!");
@@ -78,7 +78,7 @@ namespace GAIA_TEST
 		__RenderType::FontFamily::FontFamilyDesc descFontFamily;
 		descFontFamily.reset();
 		descFontFamily.strFontName = _T("Arial");
-		__BaseRenderType::FontFamily* pFontFamily = pRender->CreateFontFamily(pContext, descFontFamily);
+		__BaseRenderType::FontFamily* pFontFamily = pRender->CreateFontFamily(*pContext, descFontFamily);
 		if(pFontFamily == GNIL)
 		{
 			GTLINE2("Render create fontfamily failed!");
@@ -88,7 +88,7 @@ namespace GAIA_TEST
 		__RenderType::FontPainter::FontPainterDesc descFontPainter;
 		descFontPainter.reset();
 		descFontPainter.pFontFamily = pFontFamily;
-		__BaseRenderType::FontPainter* pFontPainter = pRender->CreateFontPainter(pContext, descFontPainter);
+		__BaseRenderType::FontPainter* pFontPainter = pRender->CreateFontPainter(*pContext, descFontPainter);
 		if(pFontPainter == GNIL)
 		{
 			GTLINE2("Render create fontpainter failed!");
@@ -97,7 +97,7 @@ namespace GAIA_TEST
 
 		__RenderType::FontFormat::FontFormatDesc descFontFormat;
 		descFontFormat.reset();
-		__BaseRenderType::FontFormat* pFontFormat = pRender->CreateFontFormat(pContext, descFontFormat);
+		__BaseRenderType::FontFormat* pFontFormat = pRender->CreateFontFormat(*pContext, descFontFormat);
 		if(pFontFormat == GNIL)
 		{
 			GTLINE2("Render create fontformat failed!");
@@ -108,7 +108,7 @@ namespace GAIA_TEST
 		descTexture.reset();
 		descTexture.uWidth = 128;
 		descTexture.uHeight = 128;
-		__BaseRenderType::Texture* pTexture = pRender->CreateTexture(pContext, descTexture);
+		__BaseRenderType::Texture* pTexture = pRender->CreateTexture(*pContext, descTexture);
 		if(pTexture == GNIL)
 		{
 			GTLINE2("Render create texture failed!");
@@ -117,7 +117,7 @@ namespace GAIA_TEST
 
 		descTexture.reset();
 		descTexture.pszFileName = _T("../TESTRES/car.jpg");
-		__BaseRenderType::Texture* pFileTexture = pRender->CreateTexture(pContext, descTexture);
+		__BaseRenderType::Texture* pFileTexture = pRender->CreateTexture(*pContext, descTexture);
 		if(pFileTexture == GNIL)
 		{
 			GTLINE2("Render create texture from file failed!");
@@ -125,7 +125,7 @@ namespace GAIA_TEST
 		}
 
 		/* Set render2d state. */
-		pRender->SetRender2DState(pContext, 
+		pRender->SetRender2DState(*pContext, 
 			GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, 
 			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]);
 
@@ -138,7 +138,7 @@ namespace GAIA_TEST
 		GAIA::MATH::AABR<GAIA::REAL> aabr;
 		aabr.pmin = 100.0F;
 		aabr.pmax = 400.0F;
-		pRender->DrawFontPainter(pContext, _T("Hello World!"), aabr, pFontPainter, pBrush, pFontFormat);
+		pRender->DrawFontPainter(*pContext, _T("Hello World!"), aabr, pFontPainter, pBrush, pFontFormat);
 		pRender->Flush();
 
 		/* Draw line. */
@@ -152,7 +152,7 @@ namespace GAIA_TEST
 		s = 100.0F;
 		e = 200.0F;
 		e.x += 100.0F;
-		pRender->DrawLine(pContext, s, e, pPen);
+		pRender->DrawLine(*pContext, s, e, pPen);
 		pRender->Flush();
 
 		/* Draw rect. */
@@ -160,7 +160,7 @@ namespace GAIA_TEST
 		aabr.pmax = 300.0F;
 		aabr.pmin.x += 200.0F;
 		aabr.pmax.x += 400.0F;
-		pRender->DrawRect(pContext, aabr, pBrush);
+		pRender->DrawRect(*pContext, aabr, pBrush);
 		pRender->Flush();
 
 		/* Draw triangle. */
@@ -171,7 +171,7 @@ namespace GAIA_TEST
 		tri[2].x = 240.0F + 64.0F;
 		tri[1].y = 120.0F + 64.0F;
 		tri[2].y = 120.0F + 64.0F;
-		pRender->DrawTriangle(pContext, tri[0], tri[1], tri[2], pBrush);
+		pRender->DrawTriangle(*pContext, tri[0], tri[1], tri[2], pBrush);
 		pRender->Flush();
 
 		/* Draw texture. */
