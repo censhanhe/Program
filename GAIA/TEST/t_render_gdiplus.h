@@ -138,7 +138,10 @@ namespace GAIA_TEST
 		GAIA::MATH::AABR<GAIA::REAL> aabr;
 		aabr.pmin = 100.0F;
 		aabr.pmax = 400.0F;
-		pRender->DrawFontPainter(*pContext, _T("Hello World!"), aabr, pFontPainter, pBrush, pFontFormat);
+		pRender->SetBrush(*pContext, pBrush);
+		pRender->SetFontPainter(*pContext, pFontPainter);
+		pRender->SetFontFormat(*pContext, pFontFormat);
+		pRender->DrawFontPainter(*pContext, _T("Hello World!"), aabr);
 		pRender->Flush();
 
 		/* Draw line. */
@@ -148,11 +151,12 @@ namespace GAIA_TEST
 		cr.b = 0.2F;
 		cr.a = 0.5F;
 		pPen->SetColor(cr);
+		pRender->SetPen(*pContext, pPen);
 		GAIA::MATH::VEC2<GAIA::REAL> s, e;
 		s = 100.0F;
 		e = 200.0F;
 		e.x += 100.0F;
-		pRender->DrawLine(*pContext, s, e, pPen);
+		pRender->DrawLine(*pContext, s, e);
 		pRender->Flush();
 
 		/* Draw rect. */
@@ -160,7 +164,7 @@ namespace GAIA_TEST
 		aabr.pmax = 300.0F;
 		aabr.pmin.x += 200.0F;
 		aabr.pmax.x += 400.0F;
-		pRender->DrawRect(*pContext, aabr, pBrush);
+		pRender->DrawRect(*pContext, aabr);
 		pRender->Flush();
 
 		/* Draw triangle. */
@@ -171,7 +175,7 @@ namespace GAIA_TEST
 		tri[2].x = 240.0F + 64.0F;
 		tri[1].y = 120.0F + 64.0F;
 		tri[2].y = 120.0F + 64.0F;
-		pRender->DrawTriangle(*pContext, tri[0], tri[1], tri[2], pBrush);
+		pRender->DrawTriangle(*pContext, tri[0], tri[1], tri[2]);
 		pRender->Flush();
 
 		/* Draw texture. */

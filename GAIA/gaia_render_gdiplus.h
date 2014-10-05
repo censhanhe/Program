@@ -1382,13 +1382,12 @@ namespace GAIA
 			/* Draw. */
 			virtual GAIA::GVOID DrawLine(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::VEC2<GAIA::REAL>& s,
-				const GAIA::MATH::VEC2<GAIA::REAL>& e,
-				GAIA::RENDER::Render2D::Pen* pPen)
+				const GAIA::MATH::VEC2<GAIA::REAL>& e)
 			{
-				GPCHR_NULL(pPen);
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				GPCHR_NULL(pContext->pCurrentPen);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
@@ -1402,30 +1401,30 @@ namespace GAIA
 				else
 				{
 					bCurrentAlphaBlend = GAIA::False;
-					pPen->GetColor(crOld);
+					pContext->pCurrentPen->GetColor(crOld);
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
 					crNew.a = 1.0F;
-					pPen->SetColor(crNew);
+					pContext->pCurrentPen->SetColor(crNew);
 				}
 
 				/* Render. */
-				GAIA::RENDER::Render2DGDIPlus::Pen* pPracPen = GDCAST(GAIA::RENDER::Render2DGDIPlus::Pen*)(pPen);
+				GAIA::RENDER::Render2DGDIPlus::Pen* pPracPen = GDCAST(GAIA::RENDER::Render2DGDIPlus::Pen*)(pContext->pCurrentPen);
 				GPCHR_NULL(pPracPen);
 				m_pSwapGraphics->DrawLine(pPracPen->GetInternalPen(), s.x, s.y, e.x, e.y);
 
 				/* Restore alpha for pipeline. */
 				if(!bCurrentAlphaBlend)
-					pPen->SetColor(crOld);
+					pContext->pCurrentPen->SetColor(crOld);
 			#endif
 			}
 			virtual GAIA::GVOID DrawRect(GAIA::RENDER::Render::Context& ctx, 
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				GAIA::RENDER::Render2D::Brush* pBrush)
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr)
 			{
-				GPCHR_NULL(pBrush);
+				
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				GPCHR_NULL(pContext->pCurrentBrush);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
@@ -1439,32 +1438,31 @@ namespace GAIA
 				else
 				{
 					bCurrentAlphaBlend = GAIA::False;
-					pBrush->GetColor(crOld);
+					pContext->pCurrentBrush->GetColor(crOld);
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
 					crNew.a = 1.0F;
-					pBrush->SetColor(crNew);
+					pContext->pCurrentBrush->SetColor(crNew);
 				}
 
 				/* Render. */
-				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
+				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pContext->pCurrentBrush);
 				GPCHR_NULL(pPracBrush);
 				m_pSwapGraphics->FillRectangle(pPracBrush->GetInternalBrush(), aabr.pmin.x, aabr.pmin.y, aabr.width(), aabr.height());
 
 				/* Restore alpha for pipeline. */
 				if(!bCurrentAlphaBlend)
-					pBrush->SetColor(crOld);
+					pContext->pCurrentBrush->SetColor(crOld);
 			#endif
 			}
 			virtual GAIA::GVOID DrawTriangle(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos1,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
-				const GAIA::MATH::VEC2<GAIA::REAL>& pos3,
-				GAIA::RENDER::Render2D::Brush* pBrush)
+				const GAIA::MATH::VEC2<GAIA::REAL>& pos3)
 			{
-				GPCHR_NULL(pBrush);
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				GPCHR_NULL(pContext->pCurrentBrush);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
@@ -1478,14 +1476,14 @@ namespace GAIA
 				else
 				{
 					bCurrentAlphaBlend = GAIA::False;
-					pBrush->GetColor(crOld);
+					pContext->pCurrentBrush->GetColor(crOld);
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
 					crNew.a = 1.0F;
-					pBrush->SetColor(crNew);
+					pContext->pCurrentBrush->SetColor(crNew);
 				}
 
 				/* Render. */
-				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
+				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pContext->pCurrentBrush);
 				GPCHR_NULL(pPracBrush);
 				Gdiplus::PointF posTemp[3];
 				posTemp[0].X = pos1.x;
@@ -1498,22 +1496,19 @@ namespace GAIA
 
 				/* Restore alpha for pipeline. */
 				if(!bCurrentAlphaBlend)
-					pBrush->SetColor(crOld);
+					pContext->pCurrentBrush->SetColor(crOld);
 			#endif
 			}
 			virtual GAIA::GVOID DrawFontPainter(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::TCH* pszText,
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
-				GAIA::RENDER::Render2D::Brush* pBrush,
-				GAIA::RENDER::Render2D::FontFormat* pFontFormat)
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr)
 			{
 				GPCHR_NULLSTRPTR(pszText);
-				GPCHR_NULL(pFontPainter);
-				GPCHR_NULL(pBrush);
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				GPCHR_NULL(pContext->pCurrentFontPainter);
+				GPCHR_NULL(pContext->pCurrentBrush);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
@@ -1527,15 +1522,15 @@ namespace GAIA
 				else
 				{
 					bCurrentAlphaBlend = GAIA::False;
-					pBrush->GetColor(crOld);
+					pContext->pCurrentBrush->GetColor(crOld);
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
 					crNew.a = 1.0F;
-					pBrush->SetColor(crNew);
+					pContext->pCurrentBrush->SetColor(crNew);
 				}
 
 				/* Render. */
-				GAIA::RENDER::Render2DGDIPlus::FontPainter* pPracFontPainter = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontPainter*)(pFontPainter);
-				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
+				GAIA::RENDER::Render2DGDIPlus::FontPainter* pPracFontPainter = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontPainter*)(pContext->pCurrentFontPainter);
+				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pContext->pCurrentBrush);
 				GPCHR_NULL(pPracFontPainter);
 				GPCHR_NULL(pPracBrush);
 				Gdiplus::RectF rc;
@@ -1543,7 +1538,7 @@ namespace GAIA
 				rc.Y = aabr.pmin.y;
 				rc.Width = aabr.width();
 				rc.Height = aabr.height();
-				if(pFontFormat == GNIL)
+				if(pContext->pCurrentFontFormat == GNIL)
 				{
 					Gdiplus::StringFormat sf;
 					m_pSwapGraphics->DrawString(
@@ -1554,7 +1549,7 @@ namespace GAIA
 				}
 				else
 				{
-					GAIA::RENDER::Render2DGDIPlus::FontFormat* pPracFontFormat = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontFormat*)(pFontFormat);
+					GAIA::RENDER::Render2DGDIPlus::FontFormat* pPracFontFormat = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontFormat*)(pContext->pCurrentFontFormat);
 					GPCHR_NULL(pPracFontFormat);
 					m_pSwapGraphics->DrawString(
 						pszText, GAIA::ALGO::strlen(pszText),
@@ -1565,7 +1560,7 @@ namespace GAIA
 
 				/* Restore alpha for pipeline. */
 				if(!bCurrentAlphaBlend)
-					pBrush->SetColor(crOld);
+					pContext->pCurrentBrush->SetColor(crOld);
 			#endif
 			}
 			virtual GAIA::GVOID DrawTexture(GAIA::RENDER::Render::Context& ctx, 

@@ -301,22 +301,16 @@ namespace GAIA
 			/* Draw. */
 			virtual GAIA::GVOID DrawLine(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::VEC2<GAIA::REAL>& s,
-				const GAIA::MATH::VEC2<GAIA::REAL>& e,
-				GAIA::RENDER::Render2D::Pen* pPen){}
+				const GAIA::MATH::VEC2<GAIA::REAL>& e){}
 			virtual GAIA::GVOID DrawRect(GAIA::RENDER::Render::Context& ctx, 
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				GAIA::RENDER::Render2D::Brush* pBrush){}
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr){}
 			virtual GAIA::GVOID DrawTriangle(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos1,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
-				const GAIA::MATH::VEC2<GAIA::REAL>& pos3,
-				GAIA::RENDER::Render2D::Brush* pBrush){}
+				const GAIA::MATH::VEC2<GAIA::REAL>& pos3){}
 			virtual GAIA::GVOID DrawFontPainter(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::TCH* pszText,
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
-				GAIA::RENDER::Render2D::Brush* pBrush,
-				GAIA::RENDER::Render2D::FontFormat* pFontFormat){}
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr){}
 			virtual GAIA::GVOID DrawTexture(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::MTX33<GAIA::REAL>& mtxTM){}
