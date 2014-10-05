@@ -200,6 +200,30 @@ namespace GAIA
 			return 0;
 		#endif
 		}
+		template<typename _DataType1, typename _DataType2> GAIA::N32 strcmpnil(_DataType1 p1, _DataType2 p2)
+		{
+			if(p1 == GNIL && p2 == GNIL)
+				return 0;
+			else if(p1 != GNIL && p2 == GNIL)
+				return +1;
+			else if(p1 == GNIL && p1 != GNIL)
+				return -1;
+			else
+				return GAIA::ALGO::strcmp(p1, p2);
+		}
+		template<typename _DataType1, typename _DataType2> GAIA::N32 stricmpnil(_DataType1 p1, _DataType2 p2)
+		{
+			if(p1 == GNIL && p2 == GNIL)
+				return 0;
+			if(p1 == GNIL && p2 == GNIL)
+				return 0;
+			else if(p1 != GNIL && p2 == GNIL)
+				return +1;
+			else if(p1 == GNIL && p1 != GNIL)
+				return -1;
+			else
+				return GAIA::ALGO::stricmp(p1, p2);
+		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strstr(_DataType1 p1, _DataType2 p2)
 		{
 			GAIA_AST(!!p1);

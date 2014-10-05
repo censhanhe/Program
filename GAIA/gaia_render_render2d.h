@@ -222,12 +222,12 @@ namespace GAIA
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
 
 			/* State. */
-			virtual GAIA::GVOID SetQuality2DState(const QUALITY2D_STATE& qs, const GAIA::CH* pszState) = 0;
-			virtual const GAIA::CH* GetQuality2DState(const QUALITY2D_STATE& qs) = 0;
-			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs, const GAIA::CH* pszState) = 0;
-			virtual const GAIA::CH* GetRender2DState(const RENDER2D_STATE& rs) const = 0;
-			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState) = 0;
-			virtual const GAIA::CH* GetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const = 0;
+			virtual GAIA::GVOID SetQuality2DState(const QUALITY2D_STATE& qs, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
+			virtual const GAIA::CH* GetQuality2DState(const QUALITY2D_STATE& qs) = 0; // This function will never return GNIL, it will return "" instead.
+			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
+			virtual const GAIA::CH* GetRender2DState(const RENDER2D_STATE& rs) const = 0; // This function will never return GNIL, it will return "" instead.
+			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
+			virtual const GAIA::CH* GetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const = 0; // This function will never return GNIL, it will return "" instead.
 
 			/* Pen. */
 			virtual GAIA::RENDER::Render2D::Pen* CreatePen(const GAIA::RENDER::Render2D::Pen::PenDesc& desc) = 0;

@@ -63,7 +63,7 @@ namespace GAIA_TEST
 
 		__RenderType::FontFamily::FontFamilyDesc descFontFamily;
 		descFontFamily.reset();
-		descFontFamily.strFontName = _T("Times New Roman");
+		descFontFamily.strFontName = _T("Arial");
 		__BaseRenderType::FontFamily* pFontFamily = pRender->CreateFontFamily(descFontFamily);
 		if(pFontFamily == GNIL)
 		{
@@ -89,6 +89,11 @@ namespace GAIA_TEST
 			GTLINE2("Render create fontformat failed!");
 			++nRet;
 		}
+
+		/* Set render2d state. */
+		pRender->SetRender2DState(
+			GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, 
+			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]);
 
 		/* Draw text. */
 		GAIA::MATH::ARGB<GAIA::REAL> cr;

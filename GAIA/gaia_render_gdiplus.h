@@ -649,7 +649,7 @@ namespace GAIA
 			virtual const GAIA::CH* GetQuality2DState(const QUALITY2D_STATE& qs)
 			{
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
-					return GNIL;
+					return GNILSTR;
 				switch(qs)
 				{
 				case QUALITY2D_STATE_ANTIALIAS:
@@ -678,7 +678,7 @@ namespace GAIA
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
 				}
-				return GNIL;
+				return GNILSTR;
 			}
 			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs, const GAIA::CH* pszState)
 			{
@@ -690,6 +690,19 @@ namespace GAIA
 				{
 				case RENDER2D_STATE_ALPHABLEND:
 					{
+						if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
+							m_bEnableAlphaBlend = GAIA::True;
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF]) == 0)
+							m_bEnableAlphaBlend = GAIA::False;
+					}
+					break;
+
+				case RENDER2D_STATE_ALPHATEST:
+					{
+						if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
+							m_bEnableAlphaTest = GAIA::True;
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF]) == 0)
+							m_bEnableAlphaTest = GAIA::False;
 					}
 					break;
 
@@ -701,11 +714,24 @@ namespace GAIA
 			virtual const GAIA::CH* GetRender2DState(const RENDER2D_STATE& rs) const
 			{
 				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
-					return GNIL;
+					return GNILSTR;
 				switch(rs)
 				{
 				case RENDER2D_STATE_ALPHABLEND:
 					{
+						if(m_bEnableAlphaBlend)
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON];
+						else
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF];
+					}
+					break;
+
+				case RENDER2D_STATE_ALPHATEST:
+					{
+						if(m_bEnableAlphaTest)
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON];
+						else
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF];
 					}
 					break;
 
@@ -713,7 +739,7 @@ namespace GAIA
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
 				}
-				return GNIL;
+				return GNILSTR;
 			}
 			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState)
 			{
@@ -736,7 +762,7 @@ namespace GAIA
 			virtual const GAIA::CH* GetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const
 			{
 				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
-					return GNIL;
+					return GNILSTR;
 				switch(ss)
 				{
 				case SAMPLER2D_STATE_ADDRESSU:
@@ -748,7 +774,7 @@ namespace GAIA
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
 				}
-				return GNIL;
+				return GNILSTR;
 			}
 
 			/* Pen. */
@@ -863,6 +889,23 @@ namespace GAIA
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
+
+				/* Change alpha for pipeline. */
+				GAIA::BL bCurrentAlphaBlend;
+				GAIA::MATH::ARGB<GAIA::REAL> crOld;
+				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
+					bCurrentAlphaBlend = GAIA::True;
+				else
+				{
+					bCurrentAlphaBlend = GAIA::False;
+					pBrush->GetColor(crOld);
+					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
+					crNew.a = 1.0F;
+					pBrush->SetColor(crNew);
+				}
+
+				/* Render. */
 				GAIA::RENDER::Render2DGDIPlus::FontPainter* pPracFontPainter = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontPainter*)(pFontPainter);
 				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
 				GPCHR_NULL(pPracFontPainter);
@@ -891,6 +934,10 @@ namespace GAIA
 						rc, &pPracFontFormat->GetInternalStringFormat(), 
 						pPracBrush->GetInternalBrush());
 				}
+
+				/* Restore alpha for pipeline. */
+				if(!bCurrentAlphaBlend)
+					pBrush->SetColor(crOld);
 			#endif
 			}
 
@@ -955,9 +1002,30 @@ namespace GAIA
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
+
+				/* Change alpha for pipeline. */
+				GAIA::BL bCurrentAlphaBlend;
+				GAIA::MATH::ARGB<GAIA::REAL> crOld;
+				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
+					bCurrentAlphaBlend = GAIA::True;
+				else
+				{
+					bCurrentAlphaBlend = GAIA::False;
+					pPen->GetColor(crOld);
+					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
+					crNew.a = 1.0F;
+					pPen->SetColor(crNew);
+				}
+
+				/* Render. */
 				GAIA::RENDER::Render2DGDIPlus::Pen* pPracPen = GDCAST(GAIA::RENDER::Render2DGDIPlus::Pen*)(pPen);
 				GPCHR_NULL(pPracPen);
 				m_pSwapGraphics->DrawLine(pPracPen->GetInternalPen(), s.x, s.y, e.x, e.y);
+
+				/* Restore alpha for pipeline. */
+				if(!bCurrentAlphaBlend)
+					pPen->SetColor(crOld);
 			#endif
 			}
 			virtual GAIA::GVOID DrawRect(
@@ -968,9 +1036,30 @@ namespace GAIA
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
+
+				/* Change alpha for pipeline. */
+				GAIA::BL bCurrentAlphaBlend;
+				GAIA::MATH::ARGB<GAIA::REAL> crOld;
+				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
+					bCurrentAlphaBlend = GAIA::True;
+				else
+				{
+					bCurrentAlphaBlend = GAIA::False;
+					pBrush->GetColor(crOld);
+					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
+					crNew.a = 1.0F;
+					pBrush->SetColor(crNew);
+				}
+
+				/* Render. */
 				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
 				GPCHR_NULL(pPracBrush);
 				m_pSwapGraphics->FillRectangle(pPracBrush->GetInternalBrush(), aabr.pmin.x, aabr.pmin.y, aabr.width(), aabr.height());
+
+				/* Restore alpha for pipeline. */
+				if(!bCurrentAlphaBlend)
+					pBrush->SetColor(crOld);
 			#endif
 			}
 			virtual GAIA::GVOID DrawTriangle(
@@ -983,6 +1072,23 @@ namespace GAIA
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				if(m_pSwapGraphics == GNIL)
 					return;
+
+				/* Change alpha for pipeline. */
+				GAIA::BL bCurrentAlphaBlend;
+				GAIA::MATH::ARGB<GAIA::REAL> crOld;
+				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
+					bCurrentAlphaBlend = GAIA::True;
+				else
+				{
+					bCurrentAlphaBlend = GAIA::False;
+					pBrush->GetColor(crOld);
+					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
+					crNew.a = 1.0F;
+					pBrush->SetColor(crNew);
+				}
+
+				/* Render. */
 				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
 				GPCHR_NULL(pPracBrush);
 				Gdiplus::PointF posTemp[3];
@@ -993,6 +1099,10 @@ namespace GAIA
 				posTemp[2].X = pos3.x;
 				posTemp[2].Y = pos3.y;
 				m_pSwapGraphics->FillPolygon(pPracBrush->GetInternalBrush(), posTemp, 3, Gdiplus::FillModeAlternate);
+
+				/* Restore alpha for pipeline. */
+				if(!bCurrentAlphaBlend)
+					pBrush->SetColor(crOld);
 			#endif
 			}
 
@@ -1006,6 +1116,8 @@ namespace GAIA
 				m_pSwapGraphics = GNIL;
 				m_pSwapBitmap = GNIL;
 			#endif
+				m_bEnableAlphaBlend = GAIA::False;
+				m_bEnableAlphaTest = GAIA::False;
 			}
 
 		private:
@@ -1018,6 +1130,9 @@ namespace GAIA
 			Gdiplus::Graphics* m_pSwapGraphics;
 			Gdiplus::Bitmap* m_pSwapBitmap;
 		#endif
+
+			GAIA::U8 m_bEnableAlphaBlend : 1;
+			GAIA::U8 m_bEnableAlphaTest : 1;
 		};
 	};
 };

@@ -122,12 +122,12 @@ namespace GAIA
 			virtual GAIA::GVOID GetViewport(VIEWPORT& vp) const = 0;
 
 			/* State. */
-			virtual GAIA::GVOID SetQuality3DState(const QUALITY3D_STATE& qs, const GAIA::CH* pszState) = 0;
-			virtual const GAIA::CH* GetQuality3DState(const QUALITY3D_STATE& qs) = 0;
-			virtual GAIA::GVOID SetRender3DState(const RENDER3D_STATE& rs, const GAIA::CH* pszState) = 0;
-			virtual const GAIA::CH* GetRender3DState(const RENDER3D_STATE& rs) const = 0;
-			virtual GAIA::GVOID SetSampler3DState(GAIA::N32 nSamplerIndex, const SAMPLER3D_STATE& ss, const GAIA::CH* pszState) = 0;
-			virtual const GAIA::CH* GetSampler3DState(GAIA::N32 nSamplerIndex, const SAMPLER3D_STATE& ss) const = 0;
+			virtual GAIA::GVOID SetQuality3DState(const QUALITY3D_STATE& qs, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
+			virtual const GAIA::CH* GetQuality3DState(const QUALITY3D_STATE& qs) = 0; // This function will never return GNIL, it will return "" instead.
+			virtual GAIA::GVOID SetRender3DState(const RENDER3D_STATE& rs, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
+			virtual const GAIA::CH* GetRender3DState(const RENDER3D_STATE& rs) const = 0; // This function will never return GNIL, it will return "" instead.
+			virtual GAIA::GVOID SetSampler3DState(GAIA::N32 nSamplerIndex, const SAMPLER3D_STATE& ss, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
+			virtual const GAIA::CH* GetSampler3DState(GAIA::N32 nSamplerIndex, const SAMPLER3D_STATE& ss) const = 0; // This function will never return GNIL, it will return "" instead.
 
 			/* Declaration. */
 			virtual GAIA::RENDER::Render3D::VertexDeclaration* CreateVertexDeclaration(
