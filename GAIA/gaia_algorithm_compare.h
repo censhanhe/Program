@@ -298,6 +298,16 @@ namespace GAIA
 				--sizet;
 			}
 		}
+		template<typename _DataType, typename _SizeType> GAIA::GVOID nil(_DataType dst, const _SizeType& size)
+		{
+			_SizeType sizet = size;
+			while(sizet > 0)
+			{
+				*dst = GNIL;
+				++dst;
+				--sizet;
+			}
+		}
 		template<typename _DataType, typename _KeyType, typename _SizeType> GAIA::GVOID set(_DataType dst, const _KeyType& t, const _SizeType& size)
 		{
 			_SizeType sizet = size;

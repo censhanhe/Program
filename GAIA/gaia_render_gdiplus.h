@@ -18,6 +18,10 @@ namespace GAIA
 			typedef GAIA::RENDER::Render2DGDIPlus __MyType;
 
 		public:
+			static const GAIA::SIZE MAX_TEXTURE_COUNT = 1;
+			static const GAIA::SIZE MAX_TARGET_COUNT = 1;
+
+		public:
 			class RenderDesc : public virtual GAIA::RENDER::Render2D::RenderDesc
 			{
 			public:
@@ -1380,6 +1384,14 @@ namespace GAIA
 				m_pSwapGraphics = GNIL;
 				m_pSwapBitmap = GNIL;
 			#endif
+				m_pCurrentPen = GNIL;
+				m_pCurrentBrush = GNIL;
+				m_pCurrentFontFamily = GNIL;
+				m_pCurrentFontPainter = GNIL;
+				m_pCurrentFontFormat = GNIL;
+				GAIA::ALGO::nil(m_pCurrentTexture, MAX_TEXTURE_COUNT);
+				GAIA::ALGO::nil(m_pCurrentTarget, MAX_TARGET_COUNT);
+				m_pCurrentShader = GNIL;
 				m_bEnableAlphaBlend = GAIA::False;
 				m_bEnableAlphaTest = GAIA::False;
 			}
@@ -1395,6 +1407,14 @@ namespace GAIA
 			Gdiplus::Bitmap* m_pSwapBitmap;
 		#endif
 
+			GAIA::RENDER::Render2D::Pen* m_pCurrentPen;
+			GAIA::RENDER::Render2D::Brush* m_pCurrentBrush;
+			GAIA::RENDER::Render2D::FontFamily* m_pCurrentFontFamily;
+			GAIA::RENDER::Render2D::FontPainter* m_pCurrentFontPainter;
+			GAIA::RENDER::Render2D::FontFormat* m_pCurrentFontFormat;
+			GAIA::RENDER::Render2D::Texture* m_pCurrentTexture[MAX_TEXTURE_COUNT];
+			GAIA::RENDER::Render2D::Target* m_pCurrentTarget[MAX_TARGET_COUNT];
+			GAIA::RENDER::Render2D::Shader* m_pCurrentShader;
 			GAIA::U8 m_bEnableAlphaBlend : 1;
 			GAIA::U8 m_bEnableAlphaTest : 1;
 		};
