@@ -47,7 +47,20 @@ namespace GAIA
 				GINL Context(){this->init();}
 				GINL ~Context(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render::Context::ContextDesc& desc){return GAIA::True;}
-				virtual GAIA::GVOID Destroy(){m_desc.reset();}
+				virtual GAIA::GVOID Destroy()
+				{
+					GAIA_RELEASE_SAFE(pCurrentPen);
+					GAIA_RELEASE_SAFE(pCurrentBrush);
+					GAIA_RELEASE_SAFE(pCurrentFontFamily);
+					GAIA_RELEASE_SAFE(pCurrentFontPainter);
+					GAIA_RELEASE_SAFE(pCurrentFontFormat);
+					for(GAIA::SIZE x = 0; x < MAX_TEXTURE_COUNT; ++x)
+						GAIA_RELEASE_SAFE(pCurrentTexture[x]);
+					for(GAIA::SIZE x = 0; x < MAX_TARGET_COUNT; ++x)
+						GAIA_RELEASE_SAFE(pCurrentTarget[x]);
+					GAIA_RELEASE_SAFE(pCurrentShader);
+					m_desc.reset();
+				}
 				virtual const ContextDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_CONTEXT;}
 			public:
@@ -1134,6 +1147,11 @@ namespace GAIA
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pPen != GNIL)
+					pPen->Reference();
+				if(pContext->pCurrentPen != GNIL)
+					pContext->pCurrentPen->Release();
+				pContext->pCurrentPen = pPen;
 			}
 			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen*& pPen)
 			{

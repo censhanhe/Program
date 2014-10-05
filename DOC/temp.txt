@@ -1,4 +1,13 @@
+Common
+
+	解决ANSI/Unicode模式下的编译警告和错误。
+	解决开关内存泄露检测时的编译警告和错误。
+	解决32/64位的编译警告和错误。
+
+
 Render
+
+	Pen构造的时候，应该将desc也reset一下。
 
 	Gdiplus的Target功能实现。
 	Gdiplus的Texture功能实现。
@@ -8,3 +17,5 @@ Render
 	
 Timer
 	计时器功能实现。
+	
+	

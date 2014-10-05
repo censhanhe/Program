@@ -402,11 +402,11 @@ namespace GAIA
 #else
 #	define GAIA_MALLOC(type, size) new type[size]
 #	define GAIA_MFREE(p) delete[] (p);
-#	define GAIA_MFREE_SAFE(p) if((p) != GNIL){GAIA_MFREE(p); (p) = GNIL;}
+#	define GAIA_MFREE_SAFE(p) do{if((p) != GNIL){GAIA_MFREE(p); (p) = GNIL;}}while(0)
 #endif
 
-#define GAIA_DELETE_SAFE(p) if((p) != GNIL){delete (p); (p) = GNIL;}
-#define GAIA_DELETEARRAY_SAFE(p) if((p) != GNIL){delete[] (p); (p) = GNIL;}
-#define GAIA_RELEASE_SAFE(p) if((p) != GNIL){(p)->Release(); p = GNIL;}
+#define GAIA_DELETE_SAFE(p) do{if((p) != GNIL){delete (p); (p) = GNIL;}}while(0)
+#define GAIA_DELETEARRAY_SAFE(p) do{if((p) != GNIL){delete[] (p); (p) = GNIL;}}while(0)
+#define GAIA_RELEASE_SAFE(p) do{if((p) != GNIL){(p)->Release(); p = GNIL;}}while(0)
 
 #endif
