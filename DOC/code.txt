@@ -1,0 +1,71 @@
+/* Behaviour model. */
+
+class FetchDataBase : public virtual GAIA::RENDER::RenderResource
+{
+public:
+	class FetchDataDesc : public virtual GAIA::FWORK::InstanceDesc
+	{
+	public:
+		GAIA::U8 bDiscard : 1;
+	};
+public:
+	virtual const FetchDataDesc& GetDesc() const = 0;
+private:
+	FetchDataDesc m_desc;
+};
+
+class FetchData1 : public virtual FetchDataBase
+{
+public:
+	class FetchDataDesc : public virtual FetchDataBase::FetchDataDesc
+	{
+	public:
+	};
+public:
+	virtual const FetchDataDesc& GetDesc() const{return m_desc;}
+private:
+	FetchDataDesc m_desc;
+};
+
+class FetchData2 : public virtual FetchDataBase
+{
+public:
+	class FetchDataDesc : public virtual FetchDataBase::FetchDataDesc
+	{
+	public:
+	};
+public:
+	virtual const FetchDataDesc& GetDesc() const{return m_desc;}
+private:
+	FetchDataDesc m_desc;
+};
+
+class FetchData3 : public virtual FetchDataBase
+{
+public:
+	class FetchDataDesc : public virtual FetchDataBase::FetchDataDesc
+	{
+	public:
+	};
+public:
+	virtual const FetchDataDesc& GetDesc() const{return m_desc;}
+private:
+	FetchDataDesc m_desc;
+};
+
+GINL FetchData* CreateFetchData(const FetchDataDesc& desc);
+
+
+
+////////////////////////////////////////////////////////////////
+
+
+
+class InstanceId
+{
+public:
+	GINL InstanceId(){m_rid.uuid();}
+	GINL const GAIA::MATH::RID128& GetInstanceID() const{return m_rid;}
+private:
+	GAIA::MATH::RID128 m_rid;
+};
