@@ -793,9 +793,24 @@ namespace GAIA
 				return m_desc;
 			}
 
-			virtual GAIA::RENDER::Render::Context* CreateContent(const GAIA::RENDER::Render::Context::ContextDesc& desc)
+			virtual GAIA::RENDER::Render::Context* CreateContext(const GAIA::RENDER::Render::Context::ContextDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Context* pContext = GDCAST(Context*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_CONTEXT, GNIL));
+				GAIA_AST(pContext != GNIL);
+				if(pContext == GNIL)
+					return GNIL;
+				pContext->SetRender(this);
+				if(!pContext->Create(desc))
+				{
+					pContext->Release();
+					return GNIL;
+				}
+				return pContext;
+			#else
 				return GNIL;
+			#endif 
 			}
 
 			virtual GAIA::GVOID Flush()

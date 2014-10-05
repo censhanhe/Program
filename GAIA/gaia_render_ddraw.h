@@ -236,7 +236,7 @@ namespace GAIA
 				return m_desc;
 			}
 
-			virtual GAIA::RENDER::Render::Context* CreateContent(const GAIA::RENDER::Render::Context::ContextDesc& desc){return GNIL;}
+			virtual GAIA::RENDER::Render::Context* CreateContext(const GAIA::RENDER::Render::Context::ContextDesc& desc){return GNIL;}
 
 			virtual GAIA::GVOID Flush()
 			{

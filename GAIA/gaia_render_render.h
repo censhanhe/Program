@@ -129,7 +129,7 @@ namespace GAIA
 			virtual GAIA::BL IsCreated() const = 0;
 			virtual const GAIA::RENDER::Render::RenderDesc& GetDesc() const = 0;
 
-			virtual GAIA::RENDER::Render::Context* CreateContent(const GAIA::RENDER::Render::Context::ContextDesc& desc) = 0;
+			virtual GAIA::RENDER::Render::Context* CreateContext(const GAIA::RENDER::Render::Context::ContextDesc& desc) = 0;
 
 			virtual GAIA::GVOID Flush() = 0;
 		};
