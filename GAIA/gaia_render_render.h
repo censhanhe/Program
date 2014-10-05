@@ -54,6 +54,21 @@ namespace GAIA
 				GAIA::UI::Canvas* pCanvas;
 			};
 
+			class Context : public virtual GAIA::RENDER::RenderResource
+			{
+			public:
+				class ContextDesc : public virtual GAIA::FWORK::InstanceDesc
+				{
+				public:
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
+				};
+			public:
+				virtual GAIA::BL Create(const GAIA::RENDER::Render::Context::ContextDesc& desc) = 0;
+				virtual GAIA::GVOID Destroy() = 0;
+				virtual const ContextDesc& GetDesc() const = 0;
+			};
+
 			class ImageFormatDesc : public virtual GAIA::FWORK::InstanceDesc
 			{
 			public:
@@ -106,17 +121,6 @@ namespace GAIA
 				COMPRESS_TYPE compresstype;
 				GAIA::U8 uBPC[4]; // Bit count per channel. 0 is alpha 1 is red, 2 is green, 3 is blue.
 				GAIA::U8 uChannelCount;
-			};
-
-			class Context : public virtual GAIA::RENDER::RenderResource
-			{
-			public:
-				class ContextDesc : public virtual GAIA::FWORK::InstanceDesc
-				{
-				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
-				};
 			};
 
 		public:
