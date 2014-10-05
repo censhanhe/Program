@@ -108,11 +108,24 @@ namespace GAIA
 				GAIA::U8 uChannelCount;
 			};
 
+			class Context : public virtual GAIA::RENDER::RenderResource
+			{
+			public:
+				class ContextDesc : public virtual GAIA::FWORK::InstanceDesc
+				{
+				public:
+					virtual GAIA::GVOID reset(){}
+					virtual GAIA::BL check() const{return GAIA::True;}
+				};
+			};
+
 		public:
 			virtual GAIA::BL Create(const GAIA::RENDER::Render::RenderDesc& desc) = 0;
 			virtual GAIA::BL Destroy() = 0;
 			virtual GAIA::BL IsCreated() const = 0;
 			virtual const GAIA::RENDER::Render::RenderDesc& GetDesc() const = 0;
+
+			virtual GAIA::RENDER::Render::Context* CreateContent(const GAIA::RENDER::Render::Context::ContextDesc& desc) = 0;
 
 			virtual GAIA::GVOID Flush() = 0;
 		};

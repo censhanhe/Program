@@ -38,6 +38,17 @@ namespace GAIA
 				}
 			};
 
+			class Context : public virtual GAIA::RENDER::Render::Context
+			{
+			public:
+				class ContextDesc : public virtual GAIA::RENDER::Render::Context::ContextDesc
+				{
+				public:
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render::Context::ContextDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render::Context::ContextDesc::check()) return GAIA::False; return GAIA::True;}
+				};
+			};
+
 		public:
 			class Pen : public virtual GAIA::RENDER::RenderResource
 			{

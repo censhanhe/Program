@@ -23,6 +23,17 @@ namespace GAIA
 				}
 			};
 
+			class Context : public virtual GAIA::RENDER::Render3D::Context
+			{
+			public:
+				class ContextDesc : public virtual GAIA::RENDER::Render3D::Context::ContextDesc
+				{
+				public:
+					virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::Context::ContextDesc::reset();}
+					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render3D::Context::ContextDesc::check()) return GAIA::False; return GAIA::True;}
+				};
+			};
+
 		public:
 			class Pen : public virtual GAIA::RENDER::Render2D::Pen
 			{
