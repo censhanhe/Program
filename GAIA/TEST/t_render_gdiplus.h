@@ -98,6 +98,20 @@ namespace GAIA_TEST
 		descTexture.uWidth = 128;
 		descTexture.uHeight = 128;
 		__BaseRenderType::Texture* pTexture = pRender->CreateTexture(descTexture);
+		if(pTexture == GNIL)
+		{
+			GTLINE2("Render create texture failed!");
+			++nRet;
+		}
+
+		descTexture.reset();
+		descTexture.pszFileName = _T("../TESTRES/car.jpg");
+		__BaseRenderType::Texture* pFileTexture = pRender->CreateTexture(descTexture);
+		if(pFileTexture == GNIL)
+		{
+			GTLINE2("Render create texture from file failed!");
+			++nRet;
+		}
 
 		/* Set render2d state. */
 		pRender->SetRender2DState(
@@ -152,6 +166,9 @@ namespace GAIA_TEST
 		/* Draw texture. */
 		pRender->Flush();
 
+		/* Draw texture file. */
+		pRender->Flush();
+
 		/* Release resource. */
 		GAIA_RELEASE_SAFE(pPen);
 		GAIA_RELEASE_SAFE(pBrush);
@@ -159,6 +176,7 @@ namespace GAIA_TEST
 		GAIA_RELEASE_SAFE(pFontFamily);
 		GAIA_RELEASE_SAFE(pFontFormat);
 		GAIA_RELEASE_SAFE(pTexture);
+		GAIA_RELEASE_SAFE(pFileTexture);
 
 		/* Destroy render. */
 		pRender->Destroy();
