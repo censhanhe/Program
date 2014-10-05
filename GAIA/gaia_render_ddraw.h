@@ -235,9 +235,13 @@ namespace GAIA
 
 			/* Pen. */
 			virtual GAIA::RENDER::Render2D::Pen* CreatePen(const GAIA::RENDER::Render2D::Pen::PenDesc& desc){return GNIL;}
+			virtual GAIA::GVOID SetPen(GAIA::RENDER::Render2D::Pen* pPen){}
+			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render2D::Pen*& pPen){}
 
 			/* Brush. */
 			virtual GAIA::RENDER::Render2D::Brush* CreateBrush(const GAIA::RENDER::Render2D::Brush::BrushDesc& desc){return GNIL;}
+			virtual GAIA::GVOID SetBrush(GAIA::RENDER::Render2D::Brush* pBrush){}
+			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render2D::Brush*& pBrush){}
 
 			/* FontPainter. */
 			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(
@@ -246,6 +250,12 @@ namespace GAIA
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc){return GNIL;}
 			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(
 				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc){return GNIL;}
+			virtual GAIA::GVOID SetFontFamily(GAIA::RENDER::Render2D::FontFamily* pFontFamily){}
+			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render2D::FontFamily*& pFontFamily){}
+			virtual GAIA::GVOID SetFontPainter(GAIA::RENDER::Render2D::FontPainter* pFontPainter){}
+			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render2D::FontPainter*& pFontPainter){}
+			virtual GAIA::GVOID SetFontFormat(GAIA::RENDER::Render2D::FontFormat* pFontFormat){}
+			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render2D::FontFormat*& pFontFormat){}
 
 			/* Texture. */
 			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(
