@@ -1117,70 +1117,6 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::GVOID DrawFontPainter(
-				const GAIA::TCH* pszText,
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
-				GAIA::RENDER::Render2D::Brush* pBrush,
-				GAIA::RENDER::Render2D::FontFormat* pFontFormat)
-			{
-				GPCHR_NULLSTRPTR(pszText);
-				GPCHR_NULL(pFontPainter);
-				GPCHR_NULL(pBrush);
-			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				if(m_pSwapGraphics == GNIL)
-					return;
-
-				/* Change alpha for pipeline. */
-				GAIA::BL bCurrentAlphaBlend;
-				GAIA::MATH::ARGB<GAIA::REAL> crOld;
-				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
-				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
-					bCurrentAlphaBlend = GAIA::True;
-				else
-				{
-					bCurrentAlphaBlend = GAIA::False;
-					pBrush->GetColor(crOld);
-					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
-					crNew.a = 1.0F;
-					pBrush->SetColor(crNew);
-				}
-
-				/* Render. */
-				GAIA::RENDER::Render2DGDIPlus::FontPainter* pPracFontPainter = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontPainter*)(pFontPainter);
-				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
-				GPCHR_NULL(pPracFontPainter);
-				GPCHR_NULL(pPracBrush);
-				Gdiplus::RectF rc;
-				rc.X = aabr.pmin.x;
-				rc.Y = aabr.pmin.y;
-				rc.Width = aabr.width();
-				rc.Height = aabr.height();
-				if(pFontFormat == GNIL)
-				{
-					Gdiplus::StringFormat sf;
-					m_pSwapGraphics->DrawString(
-						pszText, GAIA::ALGO::strlen(pszText),
-						pPracFontPainter->GetInternalFontPainter(), 
-						rc, &sf, 
-						pPracBrush->GetInternalBrush());
-				}
-				else
-				{
-					GAIA::RENDER::Render2DGDIPlus::FontFormat* pPracFontFormat = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontFormat*)(pFontFormat);
-					GPCHR_NULL(pPracFontFormat);
-					m_pSwapGraphics->DrawString(
-						pszText, GAIA::ALGO::strlen(pszText),
-						pPracFontPainter->GetInternalFontPainter(), 
-						rc, &pPracFontFormat->GetInternalFontFormat(), 
-						pPracBrush->GetInternalBrush());
-				}
-
-				/* Restore alpha for pipeline. */
-				if(!bCurrentAlphaBlend)
-					pBrush->SetColor(crOld);
-			#endif
-			}
 
 			/* Texture. */
 			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(
@@ -1355,7 +1291,70 @@ namespace GAIA
 					pBrush->SetColor(crOld);
 			#endif
 			}
+			virtual GAIA::GVOID DrawFontPainter(
+				const GAIA::TCH* pszText,
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
+				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
+				GAIA::RENDER::Render2D::Brush* pBrush,
+				GAIA::RENDER::Render2D::FontFormat* pFontFormat)
+			{
+				GPCHR_NULLSTRPTR(pszText);
+				GPCHR_NULL(pFontPainter);
+				GPCHR_NULL(pBrush);
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				if(m_pSwapGraphics == GNIL)
+					return;
 
+				/* Change alpha for pipeline. */
+				GAIA::BL bCurrentAlphaBlend;
+				GAIA::MATH::ARGB<GAIA::REAL> crOld;
+				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
+					bCurrentAlphaBlend = GAIA::True;
+				else
+				{
+					bCurrentAlphaBlend = GAIA::False;
+					pBrush->GetColor(crOld);
+					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
+					crNew.a = 1.0F;
+					pBrush->SetColor(crNew);
+				}
+
+				/* Render. */
+				GAIA::RENDER::Render2DGDIPlus::FontPainter* pPracFontPainter = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontPainter*)(pFontPainter);
+				GAIA::RENDER::Render2DGDIPlus::Brush* pPracBrush = GDCAST(GAIA::RENDER::Render2DGDIPlus::Brush*)(pBrush);
+				GPCHR_NULL(pPracFontPainter);
+				GPCHR_NULL(pPracBrush);
+				Gdiplus::RectF rc;
+				rc.X = aabr.pmin.x;
+				rc.Y = aabr.pmin.y;
+				rc.Width = aabr.width();
+				rc.Height = aabr.height();
+				if(pFontFormat == GNIL)
+				{
+					Gdiplus::StringFormat sf;
+					m_pSwapGraphics->DrawString(
+						pszText, GAIA::ALGO::strlen(pszText),
+						pPracFontPainter->GetInternalFontPainter(), 
+						rc, &sf, 
+						pPracBrush->GetInternalBrush());
+				}
+				else
+				{
+					GAIA::RENDER::Render2DGDIPlus::FontFormat* pPracFontFormat = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontFormat*)(pFontFormat);
+					GPCHR_NULL(pPracFontFormat);
+					m_pSwapGraphics->DrawString(
+						pszText, GAIA::ALGO::strlen(pszText),
+						pPracFontPainter->GetInternalFontPainter(), 
+						rc, &pPracFontFormat->GetInternalFontFormat(), 
+						pPracBrush->GetInternalBrush());
+				}
+
+				/* Restore alpha for pipeline. */
+				if(!bCurrentAlphaBlend)
+					pBrush->SetColor(crOld);
+			#endif
+			}
 			virtual GAIA::GVOID DrawTexture(
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::MTX33<GAIA::REAL>& mtxTM)

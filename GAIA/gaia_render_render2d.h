@@ -274,12 +274,6 @@ namespace GAIA
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc) = 0;
 			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(
 				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc) = 0;
-			virtual GAIA::GVOID DrawFontPainter(
-				const GAIA::TCH* pszText,
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
-				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
-				GAIA::RENDER::Render2D::Brush* pBrush,
-				GAIA::RENDER::Render2D::FontFormat* pFontFormat) = 0;
 
 			/* Texture. */
 			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(
@@ -314,6 +308,12 @@ namespace GAIA
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos3,
 				GAIA::RENDER::Render2D::Brush* pBrush) = 0;
+			virtual GAIA::GVOID DrawFontPainter(
+				const GAIA::TCH* pszText,
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
+				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
+				GAIA::RENDER::Render2D::Brush* pBrush,
+				GAIA::RENDER::Render2D::FontFormat* pFontFormat) = 0;
 			virtual GAIA::GVOID DrawTexture(
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::MTX33<GAIA::REAL>& mtxTM) = 0;
