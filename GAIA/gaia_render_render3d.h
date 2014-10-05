@@ -97,6 +97,12 @@ namespace GAIA
 			class VIEWPORT
 			{
 			public:
+				GAIA::REAL x;
+				GAIA::REAL y;
+				GAIA::REAL width;
+				GAIA::REAL height;
+				GAIA::REAL near;
+				GAIA::REAL far;
 			};
 
 		public:
