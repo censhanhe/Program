@@ -316,10 +316,6 @@ namespace GAIA
 				const GAIA::RENDER::Render2D::Texture::TextureDesc& desc){return GNIL;}
 			virtual GAIA::GVOID SetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture){}
 			virtual GAIA::GVOID GetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const{}
-			virtual GAIA::GVOID DrawTexture(
-				const GAIA::MATH::AABR<GAIA::REAL>& aabr, 
-				GAIA::RENDER::Render2D::Texture& tex, 
-				const GAIA::MATH::MTX22<GAIA::REAL>& mtxTM){}
 
 			/* Target. */
 			virtual GAIA::RENDER::Render2D::Target* CreateTarget(
@@ -348,6 +344,9 @@ namespace GAIA
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos3,
 				GAIA::RENDER::Render2D::Brush* pBrush){}
+			virtual GAIA::GVOID DrawTexture(
+				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
+				const GAIA::MATH::MTX33<GAIA::REAL>& mtxTM){}
 
 		public:
 			/* Viewport. */
