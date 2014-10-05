@@ -8,6 +8,7 @@ Common
 Render
 
 	Pen构造的时候，应该将desc也reset一下。
+	Render3D接口的Context参数传递也需要弄好。
 
 	Gdiplus的Target功能实现。
 	Gdiplus的Texture功能实现。

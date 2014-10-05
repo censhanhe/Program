@@ -1158,6 +1158,9 @@ namespace GAIA
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pContext->pCurrentPen != GNIL)
+					pContext->pCurrentPen->Reference();
+				pPen = pContext->pCurrentPen;
 			}
 
 			/* Brush. */
@@ -1185,12 +1188,20 @@ namespace GAIA
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pBrush != GNIL)
+					pBrush->Reference();
+				if(pContext->pCurrentBrush != GNIL)
+					pContext->pCurrentBrush->Release();
+				pContext->pCurrentBrush = pBrush;
 			}
 			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush*& pBrush)
 			{
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pContext->pCurrentBrush != GNIL)
+					pContext->pCurrentBrush->Reference();
+				pBrush = pContext->pCurrentBrush;
 			}
 
 			/* FontPainter. */
@@ -1268,36 +1279,60 @@ namespace GAIA
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pFontFamily != GNIL)
+					pFontFamily->Reference();
+				if(pContext->pCurrentFontFamily != GNIL)
+					pContext->pCurrentFontFamily->Release();
+				pContext->pCurrentFontFamily = pFontFamily;
 			}
 			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily*& pFontFamily)
 			{
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pContext->pCurrentFontFamily != GNIL)
+					pContext->pCurrentFontFamily->Reference();
+				pFontFamily = pContext->pCurrentFontFamily;
 			}
 			virtual GAIA::GVOID SetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter* pFontPainter)
 			{
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pFontPainter != GNIL)
+					pFontPainter->Reference();
+				if(pContext->pCurrentFontPainter != GNIL)
+					pContext->pCurrentFontPainter->Release();
+				pContext->pCurrentFontPainter = pFontPainter;
 			}
 			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter*& pFontPainter)
 			{
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pContext->pCurrentFontPainter != GNIL)
+					pContext->pCurrentFontPainter->Reference();
+				pFontPainter = pContext->pCurrentFontPainter;
 			}
 			virtual GAIA::GVOID SetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat* pFontFormat)
 			{
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pFontFormat != GNIL)
+					pFontFormat->Reference();
+				if(pContext->pCurrentFontFormat != GNIL)
+					pContext->pCurrentFontFormat->Release();
+				pContext->pCurrentFontFormat = pFontFormat;
 			}
 			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat*& pFontFormat)
 			{
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pContext->pCurrentFontFormat != GNIL)
+					pContext->pCurrentFontFormat->Reference();
+				pFontFormat = pContext->pCurrentFontFormat;
 			}
 
 			/* Texture. */
@@ -1329,12 +1364,32 @@ namespace GAIA
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				GAIA_AST(nTextureIndex >= 0);
+				if(nTextureIndex < 0)
+					return;
+				GAIA_AST(nTextureIndex < MAX_TEXTURE_COUNT);
+				if(nTextureIndex >= MAX_TEXTURE_COUNT)
+					return;
+				if(pTexture != GNIL)
+					pTexture->Reference();
+				if(pContext->pCurrentTexture[nTextureIndex] != GNIL)
+					pContext->pCurrentTexture[nTextureIndex]->Release();
+				pContext->pCurrentTexture[nTextureIndex] = pTexture;
 			}
 			virtual GAIA::GVOID GetTexture(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const
 			{
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				GAIA_AST(nTextureIndex >= 0);
+				if(nTextureIndex < 0)
+					return;
+				GAIA_AST(nTextureIndex < MAX_TEXTURE_COUNT);
+				if(nTextureIndex >= MAX_TEXTURE_COUNT)
+					return;
+				if(pContext->pCurrentTexture[nTextureIndex] != GNIL)
+					pContext->pCurrentTexture[nTextureIndex]->Reference();
+				pTexture = pContext->pCurrentTexture[nTextureIndex];
 			}
 
 			/* Target. */
@@ -1353,12 +1408,32 @@ namespace GAIA
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				GAIA_AST(nTargetIndex >= 0);
+				if(nTargetIndex < 0)
+					return;
+				GAIA_AST(nTargetIndex < MAX_TARGET_COUNT);
+				if(nTargetIndex >= MAX_TARGET_COUNT)
+					return;
+				if(pTarget != GNIL)
+					pTarget->Reference();
+				if(pContext->pCurrentTarget[nTargetIndex] != GNIL)
+					pContext->pCurrentTarget[nTargetIndex]->Release();
+				pContext->pCurrentTarget[nTargetIndex] = pTarget;
 			}
 			virtual GAIA::GVOID GetTarget(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const
 			{
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				GAIA_AST(nTargetIndex >= 0);
+				if(nTargetIndex < 0)
+					return;
+				GAIA_AST(nTargetIndex < MAX_TARGET_COUNT);
+				if(nTargetIndex >= MAX_TARGET_COUNT)
+					return;
+				if(pContext->pCurrentTarget[nTargetIndex] != GNIL)
+					pContext->pCurrentTarget[nTargetIndex]->Reference();
+				pTarget = pContext->pCurrentTarget[nTargetIndex];
 			}
 
 			/* Shader. */
@@ -1377,12 +1452,20 @@ namespace GAIA
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pShader != GNIL)
+					pShader->Reference();
+				if(pContext->pCurrentShader != GNIL)
+					pContext->pCurrentShader->Release();
+				pContext->pCurrentShader = pShader;
 			}
 			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Shader*& pShader) const
 			{
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				if(pContext->pCurrentShader != GNIL)
+					pContext->pCurrentShader->Reference();
+				pShader = pContext->pCurrentShader;
 			}
 			virtual GAIA::GVOID SetShaderConstant(GAIA::RENDER::Render::Context& ctx, const GAIA::SIZE& sStartIndex, const GAIA::REAL* p, const GAIA::SIZE& sSize)
 			{
