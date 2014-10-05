@@ -842,12 +842,12 @@ namespace GAIA
 			}
 
 			/* State. */
-			virtual GAIA::GVOID SetQuality2DState(const QUALITY2D_STATE& qs, const GAIA::CH* pszState)
+			virtual GAIA::GVOID SetQuality2DState(GAIA::RENDER::Render::Context* pContext, const QUALITY2D_STATE& qs, const GAIA::CH* pszState)
 			{
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
 					return;
 				if(GAIA::ALGO::stremp(pszState))
-					this->SetQuality2DState(qs, RENDER2D_QUALITYSTATE_DEFAULT[qs]);
+					this->SetQuality2DState(pContext, qs, RENDER2D_QUALITYSTATE_DEFAULT[qs]);
 				switch(qs)
 				{
 				case GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS:
@@ -911,7 +911,7 @@ namespace GAIA
 					break;
 				}
 			}
-			virtual const GAIA::CH* GetQuality2DState(const QUALITY2D_STATE& qs)
+			virtual const GAIA::CH* GetQuality2DState(GAIA::RENDER::Render::Context* pContext, const QUALITY2D_STATE& qs)
 			{
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
 					return GNILSTR;
@@ -965,12 +965,12 @@ namespace GAIA
 				}
 				return GNILSTR;
 			}
-			virtual GAIA::GVOID SetRender2DState(const RENDER2D_STATE& rs, const GAIA::CH* pszState)
+			virtual GAIA::GVOID SetRender2DState(GAIA::RENDER::Render::Context* pContext, const RENDER2D_STATE& rs, const GAIA::CH* pszState)
 			{
 				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
 					return;
 				if(GAIA::ALGO::stremp(pszState))
-					this->SetRender2DState(rs, RENDER2D_RENDERSTATE_DEFAULT[rs]);
+					this->SetRender2DState(pContext, rs, RENDER2D_RENDERSTATE_DEFAULT[rs]);
 				switch(rs)
 				{
 				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND:
@@ -996,7 +996,7 @@ namespace GAIA
 					break;
 				}
 			}
-			virtual const GAIA::CH* GetRender2DState(const RENDER2D_STATE& rs) const
+			virtual const GAIA::CH* GetRender2DState(GAIA::RENDER::Render::Context* pContext, const RENDER2D_STATE& rs) const
 			{
 				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
 					return GNILSTR;
@@ -1026,12 +1026,12 @@ namespace GAIA
 				}
 				return GNILSTR;
 			}
-			virtual GAIA::GVOID SetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState)
+			virtual GAIA::GVOID SetSampler2DState(GAIA::RENDER::Render::Context* pContext, GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState)
 			{
 				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
 					return;
 				if(GAIA::ALGO::stremp(pszState))
-					this->SetSampler2DState(nSamplerIndex, ss, RENDER2D_SAMPLERSTATE_DEFAULT[ss]);
+					this->SetSampler2DState(pContext, nSamplerIndex, ss, RENDER2D_SAMPLERSTATE_DEFAULT[ss]);
 				switch(ss)
 				{
 				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_ADDRESSU:
@@ -1044,7 +1044,7 @@ namespace GAIA
 					break;
 				}
 			}
-			virtual const GAIA::CH* GetSampler2DState(GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const
+			virtual const GAIA::CH* GetSampler2DState(GAIA::RENDER::Render::Context* pContext, GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const
 			{
 				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
 					return GNILSTR;
@@ -1063,7 +1063,7 @@ namespace GAIA
 			}
 
 			/* Pen. */
-			virtual GAIA::RENDER::Render2D::Pen* CreatePen(const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
+			virtual GAIA::RENDER::Render2D::Pen* CreatePen(GAIA::RENDER::Render::Context* pContext, const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
@@ -1082,11 +1082,11 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::GVOID SetPen(GAIA::RENDER::Render2D::Pen* pPen){}
-			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render2D::Pen*& pPen){}
+			virtual GAIA::GVOID SetPen(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::Pen* pPen){}
+			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::Pen*& pPen){}
 
 			/* Brush. */
-			virtual GAIA::RENDER::Render2D::Brush* CreateBrush(const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
+			virtual GAIA::RENDER::Render2D::Brush* CreateBrush(GAIA::RENDER::Render::Context* pContext, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
@@ -1102,11 +1102,11 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::GVOID SetBrush(GAIA::RENDER::Render2D::Brush* pBrush){}
-			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render2D::Brush*& pBrush){}
+			virtual GAIA::GVOID SetBrush(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::Brush* pBrush){}
+			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::Brush*& pBrush){}
 
 			/* FontPainter. */
-			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(
+			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
@@ -1126,7 +1126,7 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainter(
+			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainter(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
@@ -1145,7 +1145,7 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(
+			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc)
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
@@ -1164,15 +1164,15 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::GVOID SetFontFamily(GAIA::RENDER::Render2D::FontFamily* pFontFamily){}
-			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render2D::FontFamily*& pFontFamily){}
-			virtual GAIA::GVOID SetFontPainter(GAIA::RENDER::Render2D::FontPainter* pFontPainter){}
-			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render2D::FontPainter*& pFontPainter){}
-			virtual GAIA::GVOID SetFontFormat(GAIA::RENDER::Render2D::FontFormat* pFontFormat){}
-			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render2D::FontFormat*& pFontFormat){}
+			virtual GAIA::GVOID SetFontFamily(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::FontFamily* pFontFamily){}
+			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::FontFamily*& pFontFamily){}
+			virtual GAIA::GVOID SetFontPainter(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::FontPainter* pFontPainter){}
+			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::FontPainter*& pFontPainter){}
+			virtual GAIA::GVOID SetFontFormat(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::FontFormat* pFontFormat){}
+			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::FontFormat*& pFontFormat){}
 
 			/* Texture. */
-			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(
+			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::RENDER::Render2D::Texture::TextureDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
@@ -1192,47 +1192,47 @@ namespace GAIA
 				return GNIL;
 			#endif
 			}
-			virtual GAIA::GVOID SetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture)
+			virtual GAIA::GVOID SetTexture(GAIA::RENDER::Render::Context* pContext, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture)
 			{
 			}
-			virtual GAIA::GVOID GetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const
+			virtual GAIA::GVOID GetTexture(GAIA::RENDER::Render::Context* pContext, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const
 			{
 			}
 
 			/* Target. */
-			virtual GAIA::RENDER::Render2D::Target* CreateTarget(
+			virtual GAIA::RENDER::Render2D::Target* CreateTarget(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::RENDER::Render2D::Target::TargetDesc& desc)
 			{
 				return GNIL;
 			}
-			virtual GAIA::GVOID SetTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target* pTarget)
+			virtual GAIA::GVOID SetTarget(GAIA::RENDER::Render::Context* pContext, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target* pTarget)
 			{
 			}
-			virtual GAIA::GVOID GetTarget(GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const
+			virtual GAIA::GVOID GetTarget(GAIA::RENDER::Render::Context* pContext, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const
 			{
 			}
 
 			/* Shader. */
-			virtual GAIA::RENDER::Render2D::Shader* CreateShader(
+			virtual GAIA::RENDER::Render2D::Shader* CreateShader(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc)
 			{
 				return GNIL;
 			}
-			virtual GAIA::GVOID SetShader(GAIA::RENDER::Render2D::Shader* pShader)
+			virtual GAIA::GVOID SetShader(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::Shader* pShader)
 			{
 			}
-			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render2D::Shader*& pShader) const
+			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render::Context* pContext, GAIA::RENDER::Render2D::Shader*& pShader) const
 			{
 			}
-			virtual GAIA::GVOID SetShaderConstant()
+			virtual GAIA::GVOID SetShaderConstant(GAIA::RENDER::Render::Context* pContext, const GAIA::SIZE& sStartIndex, const GAIA::REAL* p, const GAIA::SIZE& sSize)
 			{
 			}
-			virtual GAIA::GVOID GetShaderConstant() const
+			virtual GAIA::GVOID GetShaderConstant(GAIA::RENDER::Render::Context* pContext, const GAIA::SIZE& sStartIndex, GAIA::REAL* p, const GAIA::SIZE& sSize, GAIA::SIZE& sResultSize) const
 			{
 			}
 
 			/* Draw. */
-			virtual GAIA::GVOID DrawLine(
+			virtual GAIA::GVOID DrawLine(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::MATH::VEC2<GAIA::REAL>& s,
 				const GAIA::MATH::VEC2<GAIA::REAL>& e,
 				GAIA::RENDER::Render2D::Pen* pPen)
@@ -1245,7 +1245,7 @@ namespace GAIA
 				/* Change alpha for pipeline. */
 				GAIA::BL bCurrentAlphaBlend;
 				GAIA::MATH::ARGB<GAIA::REAL> crOld;
-				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(pContext, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
 				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
 					bCurrentAlphaBlend = GAIA::True;
 				else
@@ -1267,7 +1267,7 @@ namespace GAIA
 					pPen->SetColor(crOld);
 			#endif
 			}
-			virtual GAIA::GVOID DrawRect(
+			virtual GAIA::GVOID DrawRect(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				GAIA::RENDER::Render2D::Brush* pBrush)
 			{
@@ -1279,7 +1279,7 @@ namespace GAIA
 				/* Change alpha for pipeline. */
 				GAIA::BL bCurrentAlphaBlend;
 				GAIA::MATH::ARGB<GAIA::REAL> crOld;
-				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(pContext, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
 				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
 					bCurrentAlphaBlend = GAIA::True;
 				else
@@ -1301,7 +1301,7 @@ namespace GAIA
 					pBrush->SetColor(crOld);
 			#endif
 			}
-			virtual GAIA::GVOID DrawTriangle(
+			virtual GAIA::GVOID DrawTriangle(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos1,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos3,
@@ -1315,7 +1315,7 @@ namespace GAIA
 				/* Change alpha for pipeline. */
 				GAIA::BL bCurrentAlphaBlend;
 				GAIA::MATH::ARGB<GAIA::REAL> crOld;
-				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(pContext, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
 				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
 					bCurrentAlphaBlend = GAIA::True;
 				else
@@ -1344,7 +1344,7 @@ namespace GAIA
 					pBrush->SetColor(crOld);
 			#endif
 			}
-			virtual GAIA::GVOID DrawFontPainter(
+			virtual GAIA::GVOID DrawFontPainter(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::TCH* pszText,
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				GAIA::RENDER::Render2D::FontPainter* pFontPainter,
@@ -1361,7 +1361,7 @@ namespace GAIA
 				/* Change alpha for pipeline. */
 				GAIA::BL bCurrentAlphaBlend;
 				GAIA::MATH::ARGB<GAIA::REAL> crOld;
-				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				const GAIA::CH* pszAlphaBlendState = this->GetRender2DState(pContext, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
 				if(GAIA::ALGO::strcmp(pszAlphaBlendState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
 					bCurrentAlphaBlend = GAIA::True;
 				else
@@ -1408,7 +1408,7 @@ namespace GAIA
 					pBrush->SetColor(crOld);
 			#endif
 			}
-			virtual GAIA::GVOID DrawTexture(
+			virtual GAIA::GVOID DrawTexture(GAIA::RENDER::Render::Context* pContext, 
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::MTX33<GAIA::REAL>& mtxTM)
 			{
