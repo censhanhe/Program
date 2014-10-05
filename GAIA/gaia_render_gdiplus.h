@@ -785,6 +785,11 @@ namespace GAIA
 				return m_desc;
 			}
 
+			virtual GAIA::RENDER::Render::Context* CreateContent(const GAIA::RENDER::Render::Context::ContextDesc& desc)
+			{
+				return GNIL;
+			}
+
 			virtual GAIA::GVOID Flush()
 			{
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
