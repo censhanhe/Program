@@ -43,7 +43,7 @@ namespace GAIA
 			public:
 				GINL Pen(){this->init();}
 				GINL ~Pen(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
 				{
 					if(!desc.check())
 						return GAIA::False;
@@ -139,7 +139,7 @@ namespace GAIA
 			public:
 				GINL Brush(){this->init();}
 				GINL ~Brush(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
 				{
 					if(!desc.check())
 						return GAIA::False;
@@ -216,7 +216,7 @@ namespace GAIA
 			public:
 				GINL FontFamily(){this->init();}
 				GINL ~FontFamily(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc)
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc)
 				{
 					if(!desc.check())
 						return GAIA::False;
@@ -264,7 +264,7 @@ namespace GAIA
 			public:
 				GINL FontPainter(){this->init();}
 				GINL ~FontPainter(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
 				{
 					if(!desc.check())
 						return GAIA::False;
@@ -325,7 +325,7 @@ namespace GAIA
 			public:
 				GINL FontFormat(){this->init();}
 				GINL ~FontFormat(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc)
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc)
 				{
 					if(!desc.check())
 						return GAIA::False;
@@ -437,7 +437,7 @@ namespace GAIA
 					return GAIA::True;
 				}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				const Gdiplus::StringFormat& GetInternalStringFormat() const{return m_StringFmt;}
+				const Gdiplus::StringFormat& GetInternalFontFormat() const{return m_StringFmt;}
 			#endif
 			private:
 				GINL GAIA::GVOID init()
@@ -463,7 +463,7 @@ namespace GAIA
 				};
 			public:
 				GINL ~Target(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Target::TargetDesc& desc){return GAIA::True;}
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Target::TargetDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const TargetDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TARGET;}
@@ -482,7 +482,7 @@ namespace GAIA
 				};
 			public:
 				GINL ~Shader(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc){return GAIA::True;}
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const ShaderDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_SHADER;}
@@ -500,13 +500,208 @@ namespace GAIA
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Texture::TextureDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
+				GINL Texture(){this->init();}
 				GINL ~Texture(){this->Destroy();}
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Texture::TextureDesc& desc){return GAIA::True;}
-				virtual GAIA::GVOID Destroy(){m_desc.reset();}
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Texture::TextureDesc& desc)
+				{
+					if(!desc.check())
+						return GAIA::False;
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(GAIA::ALGO::stremp(desc.pszFileName))
+					{
+						Gdiplus::PixelFormat pf = PixelFormatUndefined;
+						if(desc.channelfunction == GAIA::RENDER::Render::ImageFormatDesc::CHANNEL_FUNCTION_COLOR)
+						{
+							if(desc.channeldatatype == GAIA::RENDER::Render::ImageFormatDesc::CHANNEL_DATATYPE_INTEGER)
+							{
+								if(desc.compresstype == GAIA::RENDER::Render::ImageFormatDesc::COMPRESS_TYPE_NONE)
+								{
+									if(desc.uBPC[0] == 8 && desc.uBPC[1] == 8 && desc.uBPC[2] == 8 && desc.uBPC[3] == 8 && desc.uChannelCount == 4)
+										pf = PixelFormat32bppARGB;
+									else if(desc.uBPC[0] == 0 && desc.uBPC[1] == 8 && desc.uBPC[2] == 8 && desc.uBPC[3] == 8 && desc.uChannelCount == 3)
+										pf = PixelFormat24bppRGB;
+									else if(desc.uBPC[0] == 0 && desc.uBPC[1] == 8 && desc.uBPC[2] == 8 && desc.uBPC[3] == 8 && desc.uChannelCount == 4)
+										pf = PixelFormat32bppRGB;
+								}
+							}
+						}
+						if(pf == PixelFormatUndefined)
+							return GAIA::False;
+						m_pImage = new Gdiplus::Bitmap(desc.uWidth, desc.uHeight, pf);
+					}
+					else
+					{
+						m_pImage = new Gdiplus::Bitmap(desc.pszFileName, GAIA::False);
+						if(m_pImage == GNIL)
+							return GAIA::False;
+					}
+				#endif
+					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::Texture::TextureDesc&)(desc);
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					if(!GAIA::ALGO::stremp(desc.pszFileName))
+					{
+						m_desc.channeldatatype = GAIA::RENDER::Render2D::ImageFormatDesc::CHANNEL_DATATYPE_INTEGER;
+						m_desc.channelfunction = GAIA::RENDER::Render2D::ImageFormatDesc::CHANNEL_FUNCTION_COLOR;
+						Gdiplus::PixelFormat pf = m_pImage->GetPixelFormat();
+						switch(pf)
+						{
+						case PixelFormat1bppIndexed:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_INDEXED;
+								m_desc.uBPC[0] = 0;
+								m_desc.uBPC[1] = 1;
+								m_desc.uBPC[2] = 0;
+								m_desc.uBPC[3] = 0;
+							}
+							break;
+						case PixelFormat4bppIndexed:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_INDEXED;
+								m_desc.uBPC[0] = 0;
+								m_desc.uBPC[1] = 4;
+								m_desc.uBPC[2] = 0;
+								m_desc.uBPC[3] = 0;
+							}
+							break;
+						case PixelFormat8bppIndexed:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_INDEXED;
+								m_desc.uBPC[0] = 0;
+								m_desc.uBPC[1] = 8;
+								m_desc.uBPC[2] = 0;
+								m_desc.uBPC[3] = 0;
+							}
+							break;
+						case PixelFormat16bppGrayScale:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 0;
+								m_desc.uBPC[1] = 16;
+								m_desc.uBPC[2] = 0;
+								m_desc.uBPC[3] = 0;
+							}
+							break;
+						case PixelFormat16bppRGB555:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 0;
+								m_desc.uBPC[1] = 5;
+								m_desc.uBPC[2] = 5;
+								m_desc.uBPC[3] = 5;
+							}
+							break;
+						case PixelFormat16bppRGB565:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 0;
+								m_desc.uBPC[1] = 5;
+								m_desc.uBPC[2] = 6;
+								m_desc.uBPC[3] = 5;
+							}
+							break;
+						case PixelFormat16bppARGB1555:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 1;
+								m_desc.uBPC[1] = 5;
+								m_desc.uBPC[2] = 5;
+								m_desc.uBPC[3] = 5;
+							}
+							break;
+						case PixelFormat24bppRGB:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+							}
+							m_desc.uBPC[0] = 0;
+							m_desc.uBPC[1] = 8;
+							m_desc.uBPC[2] = 8;
+							m_desc.uBPC[3] = 8;
+							break;
+						case PixelFormat32bppRGB:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 8;
+								m_desc.uBPC[1] = 8;
+								m_desc.uBPC[2] = 8;
+								m_desc.uBPC[3] = 8;
+							}
+							break;
+						case PixelFormat32bppARGB:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 8;
+								m_desc.uBPC[1] = 8;
+								m_desc.uBPC[2] = 8;
+								m_desc.uBPC[3] = 8;
+							}
+							break;
+						case PixelFormat32bppPARGB:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 8;
+								m_desc.uBPC[1] = 8;
+								m_desc.uBPC[2] = 8;
+								m_desc.uBPC[3] = 8;
+							}
+							break;
+						case PixelFormat48bppRGB:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 0;
+								m_desc.uBPC[1] = 16;
+								m_desc.uBPC[2] = 16;
+								m_desc.uBPC[3] = 16;
+							}
+							break;
+						case PixelFormat64bppARGB:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 16;
+								m_desc.uBPC[1] = 16;
+								m_desc.uBPC[2] = 16;
+								m_desc.uBPC[3] = 16;
+							}
+							break;
+						case PixelFormat64bppPARGB:
+							{
+								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 16;
+								m_desc.uBPC[1] = 16;
+								m_desc.uBPC[2] = 16;
+								m_desc.uBPC[3] = 16;
+							}
+							break;
+						default:
+							return GAIA::False;
+						}
+					}
+				#endif
+					return GAIA::True;
+				}
+				virtual GAIA::GVOID Destroy()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					GAIA_DELETE_SAFE(m_pImage);
+				#endif
+					m_desc.reset();
+				}
 				virtual const TextureDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTURE;}
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::Image* GetInternalTexture() const{return m_pImage;}
+			#endif
+			private:
+				GINL GAIA::GVOID init()
+				{
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					m_pImage = GNIL;
+				#endif
+				}
 			private:
 				TextureDesc m_desc;
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Gdiplus::Image* m_pImage;
+			#endif
 			};
 
 		public:
@@ -834,7 +1029,7 @@ namespace GAIA
 				if(pPen == GNIL)
 					return GNIL;
 				pPen->SetRender(this);
-				if(!pPen->Create(*this, GSCAST(const GAIA::RENDER::Render2D::Pen::PenDesc&)(desc)))
+				if(!pPen->Create(desc))
 				{
 					pPen->Release();
 					return GNIL;
@@ -843,7 +1038,6 @@ namespace GAIA
 			#else
 				return GNIL;
 			#endif
-				
 			}
 
 			/* Brush. */
@@ -853,7 +1047,7 @@ namespace GAIA
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Brush* pBrush = GDCAST(Brush*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_BRUSH, GNIL));
 				pBrush->SetRender(this);
-				if(!pBrush->Create(*this, GSCAST(const GAIA::RENDER::Render2D::Brush::BrushDesc&)(desc)))
+				if(!pBrush->Create(desc))
 				{
 					pBrush->Release();
 					return GNIL;
@@ -875,7 +1069,7 @@ namespace GAIA
 				if(pFontFamily == GNIL)
 					return GNIL;
 				pFontFamily->SetRender(this);
-				if(!pFontFamily->Create(*this, GSCAST(const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc&)(desc)))
+				if(!pFontFamily->Create(desc))
 				{
 					pFontFamily->Release();
 					return GNIL;
@@ -894,7 +1088,7 @@ namespace GAIA
 				if(pFontPainter == GNIL)
 					return GNIL;
 				pFontPainter->SetRender(this);
-				if(!pFontPainter->Create(*this, GSCAST(const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc&)(desc)))
+				if(!pFontPainter->Create(desc))
 				{
 					pFontPainter->Release();
 					return GNIL;
@@ -913,7 +1107,7 @@ namespace GAIA
 				if(pFontFormat == GNIL)
 					return GNIL;
 				pFontFormat->SetRender(this);
-				if(!pFontFormat->Create(*this, GSCAST(const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc&)(desc)))
+				if(!pFontFormat->Create(desc))
 				{
 					pFontFormat->Release();
 					return GNIL;
@@ -978,7 +1172,7 @@ namespace GAIA
 					m_pSwapGraphics->DrawString(
 						pszText, GAIA::ALGO::strlen(pszText),
 						pPracFontPainter->GetInternalFontPainter(), 
-						rc, &pPracFontFormat->GetInternalStringFormat(), 
+						rc, &pPracFontFormat->GetInternalFontFormat(), 
 						pPracBrush->GetInternalBrush());
 				}
 
@@ -992,7 +1186,22 @@ namespace GAIA
 			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(
 				const GAIA::RENDER::Render2D::Texture::TextureDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				Texture* pTex = GDCAST(Texture*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTURE, GNIL));
+				GAIA_AST(pTex != GNIL);
+				if(pTex == GNIL)
+					return GNIL;
+				pTex->SetRender(this);
+				if(!pTex->Create(desc))
+				{
+					pTex->Release();
+					return GNIL;
+				}
+				return pTex;
+			#else
 				return GNIL;
+			#endif
 			}
 			virtual GAIA::GVOID SetTexture(GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture)
 			{

@@ -47,7 +47,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render3D& render, const GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const VertexDeclarationDesc& GetDesc() const = 0;
 			};
@@ -62,7 +62,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render3D& render, const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const IndexBufferDesc& GetDesc() const = 0;
 			};
@@ -77,7 +77,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render3D& render, const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const VertexBufferDesc& GetDesc() const = 0;
 			};

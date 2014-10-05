@@ -93,6 +93,12 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
+		__RenderType::Texture::TextureDesc descTexture;
+		descTexture.reset();
+		descTexture.uWidth = 128;
+		descTexture.uHeight = 128;
+		__BaseRenderType::Texture* pTexture = pRender->CreateTexture(descTexture);
+
 		/* Set render2d state. */
 		pRender->SetRender2DState(
 			GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, 
@@ -152,6 +158,7 @@ namespace GAIA_TEST
 		GAIA_RELEASE_SAFE(pFontPainter);
 		GAIA_RELEASE_SAFE(pFontFamily);
 		GAIA_RELEASE_SAFE(pFontFormat);
+		GAIA_RELEASE_SAFE(pTexture);
 
 		/* Destroy render. */
 		pRender->Destroy();

@@ -49,7 +49,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Pen::PenDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Pen::PenDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const PenDesc& GetDesc() const = 0;
 				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
@@ -68,7 +68,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Brush::BrushDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const BrushDesc& GetDesc() const = 0;
 				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
@@ -94,7 +94,7 @@ namespace GAIA
 					GAIA::CTN::TString strFontName;
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const FontFamilyDesc& GetDesc() const = 0;
 			};
@@ -128,7 +128,7 @@ namespace GAIA
 					GAIA::U8 bUnderline : 1;
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const FontPainterDesc& GetDesc() const = 0;
 			};
@@ -143,7 +143,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const FontFormatDesc& GetDesc() const = 0;
 				virtual GAIA::BL SetAlignDirectionH(GAIA::N8 nDirection) = 0;
@@ -157,14 +157,22 @@ namespace GAIA
 			class Target : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
-				class TargetDesc : public virtual GAIA::FWORK::InstanceDesc
+				class TargetDesc : public virtual GAIA::RENDER::Render::ImageFormatDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset()
+					{
+						GAIA::RENDER::Render::ImageFormatDesc::reset();
+					}
+					virtual GAIA::BL check() const
+					{
+						if(!GAIA::RENDER::Render::ImageFormatDesc::check())
+							return GAIA::False;
+						return GAIA::True;
+					}
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Target::TargetDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Target::TargetDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const TargetDesc& GetDesc() const = 0;
 			};
@@ -179,7 +187,7 @@ namespace GAIA
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const ShaderDesc& GetDesc() const = 0;
 			};
@@ -187,14 +195,38 @@ namespace GAIA
 			class Texture : public virtual GAIA::RENDER::RenderResource
 			{
 			public:
-				class TextureDesc : public virtual GAIA::FWORK::InstanceDesc
+				class TextureDesc : public virtual GAIA::RENDER::Render::ImageFormatDesc
 				{
 				public:
-					virtual GAIA::GVOID reset(){}
-					virtual GAIA::BL check() const{return GAIA::True;}
+					virtual GAIA::GVOID reset()
+					{
+						GAIA::RENDER::Render::ImageFormatDesc::reset();
+						pszFileName = GNIL;
+						uWidth = 0;
+						uHeight = 0;
+					}
+					virtual GAIA::BL check() const
+					{
+						if(!GAIA::RENDER::Render::ImageFormatDesc::check())
+							return GAIA::False;
+						if(pszFileName == GNIL)
+						{
+							if(uWidth == 0 && uHeight == 0)
+								return GAIA::False;
+						}
+						else
+						{
+							if(uWidth != 0 || uHeight != 0)
+								return GAIA::False;
+						}
+						return GAIA::True;
+					}
+					GAIA::TCH* pszFileName;
+					GAIA::U32 uWidth;
+					GAIA::U32 uHeight;
 				};
 			public:
-				virtual GAIA::BL Create(GAIA::RENDER::Render2D& render, const GAIA::RENDER::Render2D::Texture::TextureDesc& desc) = 0;
+				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Texture::TextureDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const TextureDesc& GetDesc() const = 0;
 			};
