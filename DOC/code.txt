@@ -59,6 +59,19 @@ GINL FetchData* CreateFetchData(const FetchDataDesc& desc);
 
 ////////////////////////////////////////////////////////////////
 
+m_desc = desc;
+if(m_desc.pszFileName != GNIL)
+	m_desc.pszFileName = GAIA::ALGO::strdup(m_desc.pszFileName);
+GAIA::BL Texture::Destory()
+{
+	if(m_desc.pszFileName != GNIL)
+		GAIA_MFREE(m_desc.pszFileName);
+	...
+}
+
+
+
+////////////////////////////////////////////////////////////////
 
 
 class InstanceId
