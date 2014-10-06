@@ -162,7 +162,7 @@ namespace GAIA
 				class FetchData : public virtual GAIA::FAVO::FetchData2
 				{
 				public:
-					class FetchDataDesc : public virtual FetchData2::FetchDataDesc
+					class FetchDataDesc : public virtual GAIA::FAVO::FetchData2::FetchDataDesc
 					{
 					public:
 						virtual GAIA::GVOID reset(){}
@@ -248,7 +248,7 @@ namespace GAIA
 				class FetchData : public virtual GAIA::FAVO::FetchData2
 				{
 				public:
-					class FetchDataDesc : public virtual FetchData2::FetchDataDesc
+					class FetchDataDesc : public virtual GAIA::FAVO::FetchData2::FetchDataDesc
 					{
 					public:
 						virtual GAIA::GVOID reset(){}
