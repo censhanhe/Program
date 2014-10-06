@@ -163,13 +163,13 @@
 
 #include	"gaia_network.h"
 
-#include	"gaia_hd.h"
-#include	"gaia_clsid.h"
-#include	"gaia_instanceid.h"
-#include	"gaia_instancedesc.h"
-#include	"gaia_instance.h"
-#include	"gaia_instancecreator.h"
-#include	"gaia_factory.h"
+#include	"gaia_framework_instancehd.h"
+#include	"gaia_framework_clsid.h"
+#include	"gaia_framework_instanceid.h"
+#include	"gaia_framework_instancedesc.h"
+#include	"gaia_framework_instance.h"
+#include	"gaia_framework_instancecreator.h"
+#include	"gaia_framework_factory.h"
 
 #include 	"gaia_io_io.h"
 #include 	"gaia_io_fileio.h"
@@ -248,8 +248,8 @@
 #include	"gaia_ui_document.h"
 #include	"gaia_ui_progressbar.h"
 
-#include	"gaia_instancecreator_impl.h"
-#include	"gaia_factory_impl.h"
+#include	"gaia_framework_instancecreator_impl.h"
+#include	"gaia_framework_factory_impl.h"
 
 #endif
 

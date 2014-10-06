@@ -2067,39 +2067,39 @@
 				Name="FRAMEWORK_LAYER"
 				>
 				<File
-					RelativePath=".\gaia_clsid.h"
+					RelativePath=".\gaia_framework_clsid.h"
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_factory.h"
+					RelativePath=".\gaia_framework_factory.h"
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_factory_impl.h"
+					RelativePath=".\gaia_framework_factory_impl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_hd.h"
+					RelativePath=".\gaia_framework_instance.h"
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_instance.h"
+					RelativePath=".\gaia_framework_instancecreator.h"
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_instancecreator.h"
+					RelativePath=".\gaia_framework_instancecreator_impl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_instancecreator_impl.h"
+					RelativePath=".\gaia_framework_instancedesc.h"
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_instancedesc.h"
+					RelativePath=".\gaia_framework_instancehd.h"
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_instanceid.h"
+					RelativePath=".\gaia_framework_instanceid.h"
 					>
 				</File>
 			</Filter>
