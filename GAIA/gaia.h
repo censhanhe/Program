@@ -171,6 +171,8 @@
 #include	"gaia_framework_instancecreator.h"
 #include	"gaia_framework_factory.h"
 
+#include	"gaia_favo_fetchdata.h"
+
 #include 	"gaia_io_io.h"
 #include 	"gaia_io_fileio.h"
 #include 	"gaia_io_memio.h"

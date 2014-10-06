@@ -1422,6 +1422,58 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="FRAMEWORK"
+					>
+					<File
+						RelativePath=".\gaia_framework_clsid.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_factory.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_factory_impl.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instancecreator.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instancecreator_impl.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instancedesc.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instancehd.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instanceid.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="FAVO"
+					>
+					<Filter
+						Name="FETCHDATA"
+						>
+						<File
+							RelativePath=".\gaia_favo_fetchdata.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="FUNCTON_LAYER"
@@ -2062,46 +2114,6 @@
 						</File>
 					</Filter>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="FRAMEWORK_LAYER"
-				>
-				<File
-					RelativePath=".\gaia_framework_clsid.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_framework_factory.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_framework_factory_impl.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_framework_instance.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_framework_instancecreator.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_framework_instancecreator_impl.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_framework_instancedesc.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_framework_instancehd.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_framework_instanceid.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
