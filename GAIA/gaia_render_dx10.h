@@ -332,10 +332,10 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc::reset();}
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc::check()) return GAIA::False; return GAIA::True;}
 				};
-				class FetchData : public virtual GAIA::FAVO::FetchData1
+				class FetchData : public virtual GAIA::RENDER::Render3D::IndexBuffer::FetchData
 				{
 				public:
-					class FetchDataDesc : public virtual GAIA::FAVO::FetchData1::FetchDataDesc
+					class FetchDataDesc : public virtual GAIA::RENDER::Render3D::IndexBuffer::FetchData::FetchDataDesc
 					{
 					public:
 						virtual GAIA::GVOID reset(){}
@@ -399,10 +399,10 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc::reset();}
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc::check()) return GAIA::False; return GAIA::True;}
 				};
-				class FetchData : public virtual GAIA::FAVO::FetchData1
+				class FetchData : public virtual GAIA::RENDER::Render3D::VertexBuffer::FetchData
 				{
 				public:
-					class FetchDataDesc : public virtual GAIA::FAVO::FetchData1::FetchDataDesc
+					class FetchDataDesc : public virtual GAIA::RENDER::Render3D::VertexBuffer::FetchData::FetchDataDesc
 					{
 					public:
 						virtual GAIA::GVOID reset(){}
