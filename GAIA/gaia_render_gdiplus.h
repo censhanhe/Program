@@ -572,6 +572,52 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Texture::TextureDesc::reset();}
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Texture::TextureDesc::check()) return GAIA::False; return GAIA::True;}
 				};
+				class FetchData : public virtual GAIA::FAVO::FetchData2
+				{
+				public:
+					class FetchDataDesc : public virtual FetchData1::FetchDataDesc
+					{
+					public:
+						virtual GAIA::GVOID reset(){}
+						virtual GAIA::BL check() const{}
+					};
+				public:
+					GINL FetchData(){this->init();}
+					GINL ~FetchData(){this->Destroy();}
+					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::GVOID Destroy()
+					{
+						m_desc.reset();
+					}
+					virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const{return m_desc;}
+					virtual GAIA::SIZE GetSize() const
+					{
+						return GNIL;
+					}
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::SIZE GetSequenceSize() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					{
+						return GNIL;
+					}
+				private:
+					GINL GAIA::GVOID init(){m_desc.reset();}
+				private:
+					FetchDataDesc m_desc;
+				};
 			public:
 				GINL Texture(){this->init();}
 				GINL ~Texture(){this->Destroy();}
@@ -783,7 +829,13 @@ namespace GAIA
 				}
 				virtual const TextureDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTURE;}
-				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+				{
+					GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				#endif
+					return GNIL;
+				}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Gdiplus::Image* GetInternalTexture() const{return m_pImage;}
 			#endif

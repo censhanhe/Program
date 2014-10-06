@@ -1,19 +1,22 @@
 Common
 
-	解决ANSI/Unicode模式下的编译警告和错误。
-	解决开关内存泄露检测时的编译警告和错误。
-	解决32/64位的编译警告和错误。
+	Solve ANSI/Unicode model compile warning and error.
+	Solve GAIA_DEBUG_MEMORYLEAK's compile warning and error.
+	Solve 32/64 bit compile warning and error.
 
 
 Render
 
-	Gdiplus的Target功能实现。
-	Gdiplus的Texture功能实现。
-	Gdiplus的AlphaBlend与AlphaBlendEnhance功能实现。
+	Gdiplus support target function.
+	Gdiplus support texture function.
+	Gdiplus support alpha blend enhance function.
 	
-	Shader系统设计。
+	Shader system designment.
 	
 Timer
-	计时器功能实现。
+	Timer implement.
+	
+Math
+	MTX33, MTX22, MTX43 implement.
 	
 	

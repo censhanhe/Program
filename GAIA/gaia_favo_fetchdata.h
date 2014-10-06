@@ -26,7 +26,9 @@ namespace GAIA
 				GAIA::U8 bWrite : 1;
 			};
 		public:
-			virtual const FetchDataDesc& GetDesc() const = 0;
+			virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
+			virtual GAIA::GVOID Destroy() = 0;
+			virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const = 0;
 			virtual GAIA::SIZE GetSize() const = 0;
 			virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize);
 			virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize);
