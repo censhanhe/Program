@@ -70,6 +70,8 @@
 
 		ImageLayer write operations will change the modify-mask, and the modify-mask can
 		Understand which pixel has been changed.
+		
+		Exception Handle.
 
 	Sounder
 

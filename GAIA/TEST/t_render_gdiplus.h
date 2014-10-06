@@ -179,9 +179,20 @@ namespace GAIA_TEST
 		pRender->Flush();
 
 		/* Draw texture. */
+		aabr.pmin.x = 10.0F;
+		aabr.pmin.y = 10.0F;
+		aabr.pmax = aabr.pmin;
+		aabr.pmax += 128.0F;
+		GAIA::MATH::MTX33<GAIA::REAL> mtx;
+		pRender->SetTexture(*pContext, 0, pTexture);
+		pRender->DrawTexture(*pContext, aabr, mtx);
 		pRender->Flush();
 
 		/* Draw texture file. */
+		aabr.pmin += 200.0F;
+		aabr.pmax = aabr.pmin + GAIA::MATH::VEC2<GAIA::REAL>(pFileTexture->GetDesc().uWidth, pFileTexture->GetDesc().uHeight);
+		pRender->SetTexture(*pContext, 0, pFileTexture);
+		pRender->DrawTexture(*pContext, aabr, mtx);
 		pRender->Flush();
 
 		/* Release resource. */

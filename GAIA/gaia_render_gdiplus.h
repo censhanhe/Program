@@ -611,7 +611,13 @@ namespace GAIA
 				#endif
 					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::Texture::TextureDesc&)(desc);
 					if(m_desc.pszFileName != GNIL)
+					{
 						m_desc.pszFileName = GAIA::ALGO::strnew(m_desc.pszFileName);
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						m_desc.uWidth = m_pImage->GetWidth();
+						m_desc.uHeight = m_pImage->GetHeight();
+					#endif
+					}
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					if(!GAIA::ALGO::stremp(desc.pszFileName))
 					{
@@ -627,6 +633,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 1;
 								m_desc.uBPC[2] = 0;
 								m_desc.uBPC[3] = 0;
+								m_desc.uChannelCount = 1;
 							}
 							break;
 						case PixelFormat4bppIndexed:
@@ -636,6 +643,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 4;
 								m_desc.uBPC[2] = 0;
 								m_desc.uBPC[3] = 0;
+								m_desc.uChannelCount = 1;
 							}
 							break;
 						case PixelFormat8bppIndexed:
@@ -645,6 +653,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 8;
 								m_desc.uBPC[2] = 0;
 								m_desc.uBPC[3] = 0;
+								m_desc.uChannelCount = 1;
 							}
 							break;
 						case PixelFormat16bppGrayScale:
@@ -654,6 +663,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 16;
 								m_desc.uBPC[2] = 0;
 								m_desc.uBPC[3] = 0;
+								m_desc.uChannelCount = 1;
 							}
 							break;
 						case PixelFormat16bppRGB555:
@@ -663,6 +673,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 5;
 								m_desc.uBPC[2] = 5;
 								m_desc.uBPC[3] = 5;
+								m_desc.uChannelCount = 3;
 							}
 							break;
 						case PixelFormat16bppRGB565:
@@ -672,6 +683,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 5;
 								m_desc.uBPC[2] = 6;
 								m_desc.uBPC[3] = 5;
+								m_desc.uChannelCount = 3;
 							}
 							break;
 						case PixelFormat16bppARGB1555:
@@ -681,16 +693,18 @@ namespace GAIA
 								m_desc.uBPC[1] = 5;
 								m_desc.uBPC[2] = 5;
 								m_desc.uBPC[3] = 5;
+								m_desc.uChannelCount = 4;
 							}
 							break;
 						case PixelFormat24bppRGB:
 							{
 								m_desc.compresstype = GAIA::RENDER::Render2D::ImageFormatDesc::COMPRESS_TYPE_NONE;
+								m_desc.uBPC[0] = 0;
+								m_desc.uBPC[1] = 8;
+								m_desc.uBPC[2] = 8;
+								m_desc.uBPC[3] = 8;
+								m_desc.uChannelCount = 3;
 							}
-							m_desc.uBPC[0] = 0;
-							m_desc.uBPC[1] = 8;
-							m_desc.uBPC[2] = 8;
-							m_desc.uBPC[3] = 8;
 							break;
 						case PixelFormat32bppRGB:
 							{
@@ -699,6 +713,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 8;
 								m_desc.uBPC[2] = 8;
 								m_desc.uBPC[3] = 8;
+								m_desc.uChannelCount = 3;
 							}
 							break;
 						case PixelFormat32bppARGB:
@@ -708,6 +723,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 8;
 								m_desc.uBPC[2] = 8;
 								m_desc.uBPC[3] = 8;
+								m_desc.uChannelCount = 4;
 							}
 							break;
 						case PixelFormat32bppPARGB:
@@ -717,6 +733,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 8;
 								m_desc.uBPC[2] = 8;
 								m_desc.uBPC[3] = 8;
+								m_desc.uChannelCount = 4;
 							}
 							break;
 						case PixelFormat48bppRGB:
@@ -726,6 +743,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 16;
 								m_desc.uBPC[2] = 16;
 								m_desc.uBPC[3] = 16;
+								m_desc.uChannelCount = 3;
 							}
 							break;
 						case PixelFormat64bppARGB:
@@ -735,6 +753,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 16;
 								m_desc.uBPC[2] = 16;
 								m_desc.uBPC[3] = 16;
+								m_desc.uChannelCount = 4;
 							}
 							break;
 						case PixelFormat64bppPARGB:
@@ -744,6 +763,7 @@ namespace GAIA
 								m_desc.uBPC[1] = 16;
 								m_desc.uBPC[2] = 16;
 								m_desc.uBPC[3] = 16;
+								m_desc.uChannelCount = 4;
 							}
 							break;
 						default:
@@ -1686,6 +1706,26 @@ namespace GAIA
 				GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
+				GPCHR_NULL(pContext->pCurrentTexture[0]);
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+				if(m_pSwapGraphics == GNIL)
+					return;
+				GAIA::RENDER::Render2DGDIPlus::Texture* pPracTexture = GDCAST(GAIA::RENDER::Render2DGDIPlus::Texture*)(pContext->pCurrentTexture[0]);
+				if(pPracTexture == GNIL)
+					return;
+				Gdiplus::PointF pt[3];
+				pt[0].X = aabr.pmin.x; pt[0].Y = aabr.pmin.y;
+				pt[1].X = aabr.pmax.x; pt[1].Y = aabr.pmin.y;
+				pt[2].X = aabr.pmin.x; pt[2].Y = aabr.pmax.y;
+				if(m_pSwapGraphics->DrawImage(
+					pPracTexture->GetInternalTexture(), 
+					pt, 3, 
+					0.0F, 0.0F, 
+					(GAIA::REAL)pPracTexture->GetDesc().uWidth, 
+					(GAIA::REAL)pPracTexture->GetDesc().uHeight, 
+					Gdiplus::UnitPixel, GNIL, GNIL, GNIL) != Gdiplus::Ok)
+					return;
+			#endif
 			}
 		private:
 			GINL GAIA::GVOID init()
