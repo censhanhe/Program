@@ -163,8 +163,6 @@
 
 #include	"gaia_network.h"
 
-#include	"gaia_framework.h"
-#include	"gaia_id.h"
 #include	"gaia_hd.h"
 #include	"gaia_clsid.h"
 #include	"gaia_instanceid.h"

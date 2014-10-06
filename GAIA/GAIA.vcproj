@@ -2079,15 +2079,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\gaia_framework.h"
-					>
-				</File>
-				<File
 					RelativePath=".\gaia_hd.h"
-					>
-				</File>
-				<File
-					RelativePath=".\gaia_id.h"
 					>
 				</File>
 				<File
