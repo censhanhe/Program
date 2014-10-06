@@ -38,7 +38,7 @@ namespace GAIA
 				}
 			};
 
-			class Context : public virtual GAIA::RENDER::Render::Context
+			class Context : public virtual GAIA::RENDER::Render::Context, public virtual GAIA::FWORK::InstanceId
 			{
 			public:
 				class ContextDesc : public virtual GAIA::RENDER::Render::Context::ContextDesc
