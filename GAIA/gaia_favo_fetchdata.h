@@ -36,10 +36,10 @@ namespace GAIA
 			virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const = 0;
 		};
 
-		class FetchData1 : public virtual FetchData
+		class FetchData1 : public virtual GAIA::FAVO::FetchData
 		{
 		public:
-			class FetchDataDesc : public virtual FetchData::FetchDataDesc
+			class FetchDataDesc : public virtual GAIA::FAVO::FetchData::FetchDataDesc
 			{
 			public:
 				virtual GAIA::GVOID reset()
@@ -64,7 +64,7 @@ namespace GAIA
 		public:
 		};
 
-		class FetchData2 : public virtual FetchData1
+		class FetchData2 : public virtual GAIA::FAVO::FetchData1
 		{
 		public:
 			class FetchDataDesc : public virtual GAIA::FAVO::FetchData1::FetchDataDesc
@@ -92,7 +92,7 @@ namespace GAIA
 		public:
 		};
 
-		class FetchData3 : public virtual FetchData2
+		class FetchData3 : public virtual GAIA::FAVO::FetchData2
 		{
 		public:
 			class FetchDataDesc : public virtual GAIA::FAVO::FetchData2::FetchDataDesc
