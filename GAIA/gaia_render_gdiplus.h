@@ -178,6 +178,7 @@ namespace GAIA
 			private:
 				GINL GAIA::GVOID init()
 				{
+					m_desc.reset();
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pPen = GNIL;
 				#endif
@@ -255,6 +256,7 @@ namespace GAIA
 			private:
 				GINL GAIA::GVOID init()
 				{
+					m_desc.reset();
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pBrush = GNIL;
 				#endif
@@ -303,6 +305,7 @@ namespace GAIA
 			private:
 				GINL GAIA::GVOID init()
 				{
+					m_desc.reset();
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pFontFamily = GNIL;
 				#endif
@@ -364,6 +367,7 @@ namespace GAIA
 			private:
 				GINL GAIA::GVOID init()
 				{
+					m_desc.reset();
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pFont = GNIL;
 				#endif
@@ -504,6 +508,7 @@ namespace GAIA
 			private:
 				GINL GAIA::GVOID init()
 				{
+					m_desc.reset();
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				#endif
 				}
@@ -524,11 +529,14 @@ namespace GAIA
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Target::TargetDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
+				GINL Target(){this->init();}
 				GINL ~Target(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Target::TargetDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const TargetDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TARGET;}
+			private:
+				GINL GAIA::GVOID init(){m_desc.reset();}
 			private:
 				TargetDesc m_desc;
 			};
@@ -543,11 +551,14 @@ namespace GAIA
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Shader::ShaderDesc::check()) return GAIA::False; return GAIA::True;}
 				};
 			public:
+				GINL Shader(){this->init();}
 				GINL ~Shader(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc){return GAIA::True;}
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const ShaderDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_SHADER;}
+			private:
+				GINL GAIA::GVOID init(){m_desc.reset();}
 			private:
 				ShaderDesc m_desc;
 			};
@@ -755,6 +766,7 @@ namespace GAIA
 			private:
 				GINL GAIA::GVOID init()
 				{
+					m_desc.reset();
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					m_pImage = GNIL;
 				#endif
@@ -1676,6 +1688,7 @@ namespace GAIA
 			GINL GAIA::GVOID init()
 			{
 				m_bCreated = GAIA::False;
+				m_desc.reset();
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				m_hDC = GNIL;
 				m_pGraphics = GNIL;

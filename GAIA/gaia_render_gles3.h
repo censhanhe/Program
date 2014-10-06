@@ -414,6 +414,7 @@ namespace GAIA
 			GINL GAIA::GVOID init()
 			{
 				m_bCreated = GAIA::False;
+				m_desc.reset();
 			}
 
 		private:
