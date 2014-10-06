@@ -182,6 +182,14 @@ namespace GAIA
 						return GAIA::True;
 					}
 				};
+				class FetchData : public virtual GAIA::FAVO::FetchData2
+				{
+				public:
+					class FetchDataDesc : public virtual GAIA::FAVO::FetchData2::FetchDataDesc
+					{
+					public:
+					};
+				};
 			public:
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Target::TargetDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
@@ -236,6 +244,14 @@ namespace GAIA
 					GAIA::TCH* pszFileName;
 					GAIA::U32 uWidth;
 					GAIA::U32 uHeight;
+				};
+				class FetchData : public virtual GAIA::FAVO::FetchData2
+				{
+				public:
+					class FetchDataDesc : public virtual GAIA::FAVO::FetchData2::FetchDataDesc
+					{
+					public:
+					};
 				};
 			public:
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Texture::TextureDesc& desc) = 0;

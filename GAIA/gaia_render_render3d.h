@@ -72,6 +72,14 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){}
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
+				class FetchData : public virtual GAIA::FAVO::FetchData1
+				{
+				public:
+					class FetchDataDesc : public virtual GAIA::FAVO::FetchData1::FetchDataDesc
+					{
+					public:
+					};
+				};
 			public:
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
@@ -87,6 +95,14 @@ namespace GAIA
 				public:
 					virtual GAIA::GVOID reset(){}
 					virtual GAIA::BL check() const{return GAIA::True;}
+				};
+				class FetchData : public virtual GAIA::FAVO::FetchData1
+				{
+				public:
+					class FetchDataDesc : public virtual GAIA::FAVO::FetchData1::FetchDataDesc
+					{
+					public:
+					};
 				};
 			public:
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc) = 0;
