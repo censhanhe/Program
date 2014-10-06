@@ -165,10 +165,10 @@ namespace GAIA
 			virtual GAIA::GVOID GetVertexBuffer(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nStream, const GAIA::RENDER::Render3D::VertexBuffer*& pVB) const = 0;
 
 			/* Draw. */
-			virtual GAIA::GVOID SetTriangleType(DRAW_TRIANGLE_TYPE dtt) = 0;
-			virtual GAIA::GVOID GetTriangleType(DRAW_TRIANGLE_TYPE& dtt) const = 0;
+			virtual GAIA::GVOID SetTriangleType(GAIA::RENDER::Render::Context& ctx, DRAW_TRIANGLE_TYPE dtt) = 0;
+			virtual GAIA::GVOID GetTriangleType(GAIA::RENDER::Render::Context& ctx, DRAW_TRIANGLE_TYPE& dtt) const = 0;
 			virtual GAIA::GVOID DrawTriangle(GAIA::RENDER::Render::Context& ctx) = 0;
-			virtual GAIA::GVOID DrawIndexedTriangle() = 0;
+			virtual GAIA::GVOID DrawIndexedTriangle(GAIA::RENDER::Render::Context& ctx) = 0;
 
 		private:
 		};
