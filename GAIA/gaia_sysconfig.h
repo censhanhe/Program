@@ -62,7 +62,7 @@
 /* Language code flag. */
 #define GAIA_CHARSET_ANSI 1
 #define GAIA_CHARSET_UNICODE 2
-#define GAIA_CHARSET GAIA_CHARSET_ANSI
+#define GAIA_CHARSET GAIA_CHARSET_UNICODE
 
 /* Machine bit count flag. */
 #define GAIA_MACHINE32 32

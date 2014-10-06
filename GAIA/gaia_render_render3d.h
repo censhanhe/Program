@@ -101,8 +101,8 @@ namespace GAIA
 				GAIA::REAL y;
 				GAIA::REAL width;
 				GAIA::REAL height;
-				GAIA::REAL near;
-				GAIA::REAL far;
+				GAIA::REAL znear;
+				GAIA::REAL zfar;
 			};
 
 		public:

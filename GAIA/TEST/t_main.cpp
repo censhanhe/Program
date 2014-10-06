@@ -2,7 +2,7 @@
 ////#define GAIA_PLATFORM_GDIPLUS
 ////#define GAIA_PLATFORM_COM
 
-#include "../preheader.h"
+#include "preheader.h"
 
 #include "../gaia_sysconfig.h"
 #if GAIA_COMPILER == GAIA_COMPILER_CL && GAIA_PROFILE == GAIA_PROFILE_DEBUG
