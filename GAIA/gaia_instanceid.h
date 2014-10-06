@@ -1,5 +1,5 @@
-#ifndef		__GAIA_INSTANCE_ID_H__
-#define		__GAIA_INSTANCE_ID_H__
+#ifndef		__GAIA_FRAMEWORK_INSTANCE_ID_H__
+#define		__GAIA_FRAMEWORK_INSTANCE_ID_H__
 
 namespace GAIA
 {

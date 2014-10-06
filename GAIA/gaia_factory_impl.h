@@ -1,5 +1,5 @@
-#ifndef		__GAIA_FACTORY_IMPL_H__
-#define		__GAIA_FACTORY_IMPL_H__
+#ifndef		__GAIA_FRAMEWORK_FACTORY_IMPL_H__
+#define		__GAIA_FRAMEWORK_FACTORY_IMPL_H__
 
 namespace GAIA
 {
