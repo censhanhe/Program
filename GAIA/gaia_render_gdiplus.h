@@ -579,7 +579,7 @@ namespace GAIA
 					{
 					public:
 						virtual GAIA::GVOID reset(){}
-						virtual GAIA::BL check() const{}
+						virtual GAIA::BL check() const{return GAIA::True;}
 					};
 				public:
 					GINL FetchData(){this->init();}
@@ -593,6 +593,7 @@ namespace GAIA
 						m_desc.reset();
 					}
 					virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const{return m_desc;}
+					virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTUREFETCHDATA;}
 					virtual GAIA::SIZE GetSize() const
 					{
 						return GNIL;

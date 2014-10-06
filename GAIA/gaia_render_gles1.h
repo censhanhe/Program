@@ -197,6 +197,53 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Texture::TextureDesc::reset();}
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Texture::TextureDesc::check()) return GAIA::False; return GAIA::True;}
 				};
+				class FetchData : public virtual GAIA::FAVO::FetchData2
+				{
+				public:
+					class FetchDataDesc : public virtual FetchData1::FetchDataDesc
+					{
+					public:
+						virtual GAIA::GVOID reset(){}
+						virtual GAIA::BL check() const{return GAIA::True;}
+					};
+				public:
+					GINL FetchData(){this->init();}
+					GINL ~FetchData(){this->Destroy();}
+					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::GVOID Destroy()
+					{
+						m_desc.reset();
+					}
+					virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const{return m_desc;}
+					virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GLES1_TEXTUREFETCHDATA;}
+					virtual GAIA::SIZE GetSize() const
+					{
+						return GNIL;
+					}
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::SIZE GetSequenceSize() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					{
+						return GNIL;
+					}
+				private:
+					GINL GAIA::GVOID init(){m_desc.reset();}
+				private:
+					FetchDataDesc m_desc;
+				};
 			public:
 				GINL ~Texture(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Texture::TextureDesc& desc){return GAIA::True;}

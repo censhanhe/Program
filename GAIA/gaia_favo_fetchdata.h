@@ -30,8 +30,8 @@ namespace GAIA
 			virtual GAIA::GVOID Destroy() = 0;
 			virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const = 0;
 			virtual GAIA::SIZE GetSize() const = 0;
-			virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize);
-			virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize);
+			virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize) = 0;
+			virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize) = 0;
 			virtual GAIA::SIZE GetSequenceSize() const = 0;
 			virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const = 0;
 		};
