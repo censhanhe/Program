@@ -159,6 +159,53 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Target::TargetDesc::reset();}
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Target::TargetDesc::check()) return GAIA::False; return GAIA::True;}
 				};
+				class FetchData : public virtual GAIA::FAVO::FetchData2
+				{
+				public:
+					class FetchDataDesc : public virtual FetchData1::FetchDataDesc
+					{
+					public:
+						virtual GAIA::GVOID reset(){}
+						virtual GAIA::BL check() const{return GAIA::True;}
+					};
+				public:
+					GINL FetchData(){this->init();}
+					GINL ~FetchData(){this->Destroy();}
+					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::GVOID Destroy()
+					{
+						m_desc.reset();
+					}
+					virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const{return m_desc;}
+					virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX11_TARGETFETCHDATA;}
+					virtual GAIA::SIZE GetSize() const
+					{
+						return GNIL;
+					}
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::SIZE GetSequenceSize() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					{
+						return GNIL;
+					}
+				private:
+					GINL GAIA::GVOID init(){m_desc.reset();}
+				private:
+					FetchDataDesc m_desc;
+				};
 			public:
 				GINL ~Target(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Target::TargetDesc& desc){return GAIA::True;}
@@ -285,6 +332,53 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc::reset();}
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc::check()) return GAIA::False; return GAIA::True;}
 				};
+				class FetchData : public virtual GAIA::FAVO::FetchData1
+				{
+				public:
+					class FetchDataDesc : public virtual FetchData1::FetchDataDesc
+					{
+					public:
+						virtual GAIA::GVOID reset(){}
+						virtual GAIA::BL check() const{return GAIA::True;}
+					};
+				public:
+					GINL FetchData(){this->init();}
+					GINL ~FetchData(){this->Destroy();}
+					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::GVOID Destroy()
+					{
+						m_desc.reset();
+					}
+					virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const{return m_desc;}
+					virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX11_INDEXBUFFERFETCHDATA;}
+					virtual GAIA::SIZE GetSize() const
+					{
+						return GNIL;
+					}
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::SIZE GetSequenceSize() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					{
+						return GNIL;
+					}
+				private:
+					GINL GAIA::GVOID init(){m_desc.reset();}
+				private:
+					FetchDataDesc m_desc;
+				};
 			public:
 				GINL ~IndexBuffer(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc){return GAIA::True;}
@@ -304,6 +398,53 @@ namespace GAIA
 				public:
 					virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc::reset();}
 					virtual GAIA::BL check() const{if(!GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc::check()) return GAIA::False; return GAIA::True;}
+				};
+				class FetchData : public virtual GAIA::FAVO::FetchData1
+				{
+				public:
+					class FetchDataDesc : public virtual FetchData1::FetchDataDesc
+					{
+					public:
+						virtual GAIA::GVOID reset(){}
+						virtual GAIA::BL check() const{return GAIA::True;}
+					};
+				public:
+					GINL FetchData(){this->init();}
+					GINL ~FetchData(){this->Destroy();}
+					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::GVOID Destroy()
+					{
+						m_desc.reset();
+					}
+					virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const{return m_desc;}
+					virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX11_VERTEXBUFFERFETCHDATA;}
+					virtual GAIA::SIZE GetSize() const
+					{
+						return GNIL;
+					}
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					{
+						return GAIA::True;
+					}
+					virtual GAIA::SIZE GetSequenceSize() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					{
+						return GNIL;
+					}
+				private:
+					GINL GAIA::GVOID init(){m_desc.reset();}
+				private:
+					FetchDataDesc m_desc;
 				};
 			public:
 				GINL ~VertexBuffer(){this->Destroy();}
