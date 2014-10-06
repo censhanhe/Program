@@ -167,6 +167,7 @@
 #include	"gaia_id.h"
 #include	"gaia_hd.h"
 #include	"gaia_clsid.h"
+#include	"gaia_instanceid.h"
 #include	"gaia_instancedesc.h"
 #include	"gaia_instance.h"
 #include	"gaia_instancecreator.h"

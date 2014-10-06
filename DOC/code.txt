@@ -59,11 +59,3 @@ GINL FetchData* CreateFetchData(const FetchDataDesc& desc);
 ////////////////////////////////////////////////////////////////
 
 
-class InstanceId
-{
-public:
-	GINL InstanceId(){m_rid.uuid();}
-	GINL const GAIA::MATH::RID128& GetInstanceID() const{return m_rid;}
-private:
-	GAIA::MATH::RID128 m_rid;
-};
