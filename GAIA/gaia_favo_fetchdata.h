@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace FAVO
 	{
-		class FetchDataBase : public virtual GAIA::FWORK::Instance
+		class FetchData : public virtual GAIA::FWORK::Instance
 		{
 		public:
 			class FetchDataDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -13,13 +13,17 @@ namespace GAIA
 			public:
 				virtual GAIA::GVOID reset()
 				{
-					bDiscard = GAIA::True;
+					bRead = GAIA::False;
+					bWrite = GAIA::True;
 				}
 				virtual GAIA::BL check() const
 				{
+					if(!bRead && !bWrite)
+						return GAIA::False;
 					return GAIA::True;
 				}
-				GAIA::U8 bDiscard : 1;
+				GAIA::U8 bRead : 1;
+				GAIA::U8 bWrite : 1;
 			};
 		public:
 			virtual const FetchDataDesc& GetDesc() const = 0;
@@ -30,21 +34,21 @@ namespace GAIA
 			virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const = 0;
 		};
 
-		class FetchData1 : public virtual FetchDataBase
+		class FetchData1 : public virtual FetchData
 		{
 		public:
-			class FetchDataDesc : public virtual FetchDataBase::FetchDataDesc
+			class FetchDataDesc : public virtual FetchData::FetchDataDesc
 			{
 			public:
 				virtual GAIA::GVOID reset()
 				{
-					FetchDataBase::FetchDataDesc::reset();
+					FetchData::FetchDataDesc::reset();
 					sOffsetX = 0;
 					sSizeX = 0;
 				}
 				virtual GAIA::BL check() const
 				{
-					if(!FetchDataBase::FetchDataDesc::check())
+					if(!FetchData::FetchDataDesc::check())
 						return GAIA::False;
 					if(sOffsetX < 0)
 						return GAIA::False;

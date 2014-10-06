@@ -240,6 +240,7 @@ namespace GAIA
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Texture::TextureDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const TextureDesc& GetDesc() const = 0;
+				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
 			};
 
 		public:
