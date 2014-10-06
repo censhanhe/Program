@@ -76,6 +76,7 @@ namespace GAIA
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const IndexBufferDesc& GetDesc() const = 0;
+				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
 			};
 
 			class VertexBuffer : public virtual GAIA::RENDER::RenderResource
@@ -91,6 +92,7 @@ namespace GAIA
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const VertexBufferDesc& GetDesc() const = 0;
+				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
 			};
 
 		public:

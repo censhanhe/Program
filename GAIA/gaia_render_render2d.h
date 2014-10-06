@@ -186,6 +186,7 @@ namespace GAIA
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Target::TargetDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const TargetDesc& GetDesc() const = 0;
+				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
 			};
 
 			class Shader : public virtual GAIA::RENDER::RenderResource

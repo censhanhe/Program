@@ -535,6 +535,7 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const TargetDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TARGET;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
 			private:
 				GINL GAIA::GVOID init(){m_desc.reset();}
 			private:

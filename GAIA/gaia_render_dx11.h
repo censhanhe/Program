@@ -165,6 +165,7 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const TargetDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX11_TARGET;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
 			private:
 				TargetDesc m_desc;
 			};
@@ -290,6 +291,7 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const IndexBufferDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX11_INDEXBUFFER;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
 			private:
 				IndexBufferDesc m_desc;
 			};
@@ -309,6 +311,7 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const VertexBufferDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX11_VERTEXBUFFER;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
 			private:
 				VertexBufferDesc m_desc;
 			};
