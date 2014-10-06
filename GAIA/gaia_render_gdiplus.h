@@ -610,6 +610,8 @@ namespace GAIA
 					}
 				#endif
 					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::Texture::TextureDesc&)(desc);
+					if(m_desc.pszFileName != GNIL)
+						m_desc.pszFileName = GAIA::ALGO::strnew(m_desc.pszFileName);
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					if(!GAIA::ALGO::stremp(desc.pszFileName))
 					{
@@ -756,6 +758,7 @@ namespace GAIA
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 					GAIA_DELETE_SAFE(m_pImage);
 				#endif
+					GAIA_MFREE_SAFE(m_desc.pszFileName);
 					m_desc.reset();
 				}
 				virtual const TextureDesc& GetDesc() const{return m_desc;}
