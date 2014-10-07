@@ -535,7 +535,7 @@ namespace GAIA
 					{
 					public:
 						virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Target::FetchData::FetchDataDesc::reset();}
-						virtual GAIA::BL check() const{if(GAIA::RENDER::Render2D::Target::FetchData::FetchDataDesc::check()) return GAIA::False; return GAIA::True;}
+						virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Target::FetchData::FetchDataDesc::check()) return GAIA::False; return GAIA::True;}
 					};
 				public:
 					GINL FetchData(){this->init();}
@@ -627,7 +627,7 @@ namespace GAIA
 					{
 					public:
 						virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Texture::FetchData::FetchDataDesc::reset();}
-						virtual GAIA::BL check() const{if(GAIA::RENDER::Render2D::Texture::FetchData::FetchDataDesc::check()) return GAIA::False; return GAIA::True;}
+						virtual GAIA::BL check() const{if(!GAIA::RENDER::Render2D::Texture::FetchData::FetchDataDesc::check()) return GAIA::False; return GAIA::True;}
 					};
 				public:
 					GINL FetchData(){this->init();}
