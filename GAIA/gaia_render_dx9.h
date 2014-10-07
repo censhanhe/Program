@@ -251,8 +251,8 @@ namespace GAIA
 					class FetchDataDesc : public virtual GAIA::RENDER::Render2D::Texture::FetchData::FetchDataDesc
 					{
 					public:
-						virtual GAIA::GVOID reset(){}
-						virtual GAIA::BL check() const{return GAIA::True;}
+						virtual GAIA::GVOID reset(){GAIA::RENDER::Render2D::Texture::FetchData::FetchDataDesc::reset();}
+						virtual GAIA::BL check() const{if(GAIA::RENDER::Render2D::Texture::FetchData::FetchDataDesc::check()) return GAIA::False; return GAIA::True;}
 					};
 				public:
 					GINL FetchData(){this->init();}
@@ -338,8 +338,8 @@ namespace GAIA
 					class FetchDataDesc : public virtual GAIA::RENDER::Render3D::IndexBuffer::FetchData::FetchDataDesc
 					{
 					public:
-						virtual GAIA::GVOID reset(){}
-						virtual GAIA::BL check() const{return GAIA::True;}
+						virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::IndexBuffer::FetchData::FetchDataDesc::reset();}
+						virtual GAIA::BL check() const{if(GAIA::RENDER::Render3D::IndexBuffer::FetchData::FetchDataDesc::check()) return GAIA::False; return GAIA::True;}
 					};
 				public:
 					GINL FetchData(){this->init();}
@@ -405,8 +405,8 @@ namespace GAIA
 					class FetchDataDesc : public virtual GAIA::RENDER::Render3D::VertexBuffer::FetchData::FetchDataDesc
 					{
 					public:
-						virtual GAIA::GVOID reset(){}
-						virtual GAIA::BL check() const{return GAIA::True;}
+						virtual GAIA::GVOID reset(){GAIA::RENDER::Render3D::VertexBuffer::FetchData::FetchDataDesc::reset();}
+						virtual GAIA::BL check() const{if(GAIA::RENDER::Render3D::VertexBuffer::FetchData::FetchDataDesc::check()) return GAIA::False; return GAIA::True;}
 					};
 				public:
 					GINL FetchData(){this->init();}
