@@ -84,7 +84,7 @@ namespace GAIA
 						}
 						virtual GAIA::BL check() const
 						{
-							if(!GAIA::FAVO::FetchData1::FetchDataDesc.check())
+							if(!GAIA::FAVO::FetchData1::FetchDataDesc::check())
 								return GAIA::False;
 							return GAIA::True;
 						}
@@ -118,7 +118,7 @@ namespace GAIA
 						}
 						virtual GAIA::BL check() const
 						{
-							if(!GAIA::FAVO::FetchData1::FetchDataDesc.check())
+							if(!GAIA::FAVO::FetchData1::FetchDataDesc::check())
 								return GAIA::False;
 							return GAIA::True;
 						}
