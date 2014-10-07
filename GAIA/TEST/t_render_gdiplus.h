@@ -127,6 +127,11 @@ namespace GAIA_TEST
 		/* Generate texture. */
 		GAIA::RENDER::Render2DGDIPlus::Texture::FetchData::FetchDataDesc descFetchData;
 		descFetchData.reset();
+		descFetchData.pTexture = pTexture;
+		descFetchData.sOffsetX = 0;
+		descFetchData.sOffsetY = 0;
+		descFetchData.sSizeX = pTexture->GetDesc().uWidth;
+		descFetchData.sSizeY = pTexture->GetDesc().uHeight;
 		GAIA::FAVO::FetchData* pFetchData = pTexture->CreateFetchData(*pContext, descFetchData);
 		GAIA::FAVO::FetchData2* pFetchData2 = GDCAST(GAIA::FAVO::FetchData2*)(pFetchData);
 		if(pFetchData2 == GNIL)

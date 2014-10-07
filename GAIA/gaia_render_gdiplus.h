@@ -659,7 +659,9 @@ namespace GAIA
 							uFlag |= Gdiplus::ImageLockModeRead;
 						if(pPracDesc->bWrite)
 							uFlag |= Gdiplus::ImageLockModeWrite;
-						if(pTexture->GetInternalTexture()->LockBits(&rc, uFlag, pTexture->GetInternalTexture()->GetPixelFormat(), &m_bitmapdata) != Gdiplus::Ok)
+						if(pTexture->GetInternalTexture()->LockBits(
+							&rc, uFlag, pTexture->GetInternalTexture()->GetPixelFormat(), 
+							&m_bitmapdata) != Gdiplus::Ok)
 						{
 							pTexture->Release();
 							return GAIA::False;
