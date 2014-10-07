@@ -124,6 +124,20 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
+		/* Generate texture. */
+		GAIA::RENDER::Render2DGDIPlus::Texture::FetchData::FetchDataDesc descFetchData;
+		descFetchData.reset();
+		GAIA::FAVO::FetchData* pFetchData = pTexture->CreateFetchData(descFetchData);
+		GAIA::FAVO::FetchData2* pFetchData2 = GDCAST(GAIA::FAVO::FetchData2*)(pFetchData);
+		if(pFetchData2 == GNIL)
+		{
+			GTLINE2("Render create fetch data failed!");
+			++nRet;
+		}
+		pFetchData->Release();
+		pFetchData = GNIL;
+		pFetchData2 = GNIL;
+
 		/* Set render2d state. */
 		pRender->SetRender2DState(*pContext, 
 			GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, 
