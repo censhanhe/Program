@@ -72,19 +72,29 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){}
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
-				class FetchData : public virtual GAIA::FAVO::FetchData1
+				class FetchData : public virtual GAIA::FAVO::FetchData1, public virtual GAIA::RENDER::RenderResource
 				{
 				public:
 					class FetchDataDesc : public virtual GAIA::FAVO::FetchData1::FetchDataDesc
 					{
 					public:
+						virtual GAIA::GVOID reset()
+						{
+							GAIA::FAVO::FetchData1::FetchDataDesc::reset();
+						}
+						virtual GAIA::BL check() const
+						{
+							if(!GAIA::FAVO::FetchData1::FetchDataDesc.check())
+								return GAIA::False;
+							return GAIA::True;
+						}
 					};
 				};
 			public:
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const IndexBufferDesc& GetDesc() const = 0;
-				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
 			};
 
 			class VertexBuffer : public virtual GAIA::RENDER::RenderResource
@@ -96,19 +106,29 @@ namespace GAIA
 					virtual GAIA::GVOID reset(){}
 					virtual GAIA::BL check() const{return GAIA::True;}
 				};
-				class FetchData : public virtual GAIA::FAVO::FetchData1
+				class FetchData : public virtual GAIA::FAVO::FetchData1, public virtual GAIA::RENDER::RenderResource
 				{
 				public:
 					class FetchDataDesc : public virtual GAIA::FAVO::FetchData1::FetchDataDesc
 					{
 					public:
+						virtual GAIA::GVOID reset()
+						{
+							GAIA::FAVO::FetchData1::FetchDataDesc::reset();
+						}
+						virtual GAIA::BL check() const
+						{
+							if(!GAIA::FAVO::FetchData1::FetchDataDesc.check())
+								return GAIA::False;
+							return GAIA::True;
+						}
 					};
 				};
 			public:
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const VertexBufferDesc& GetDesc() const = 0;
-				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
 			};
 
 		public:

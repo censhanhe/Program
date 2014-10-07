@@ -182,19 +182,29 @@ namespace GAIA
 						return GAIA::True;
 					}
 				};
-				class FetchData : public virtual GAIA::FAVO::FetchData2
+				class FetchData : public virtual GAIA::FAVO::FetchData2, public virtual GAIA::RENDER::RenderResource
 				{
 				public:
 					class FetchDataDesc : public virtual GAIA::FAVO::FetchData2::FetchDataDesc
 					{
 					public:
+						virtual GAIA::GVOID reset()
+						{
+							GAIA::FAVO::FetchData2::FetchDataDesc::reset();
+						}
+						virtual GAIA::BL check() const
+						{
+							if(!GAIA::FAVO::FetchData2::FetchDataDesc.check())
+								return GAIA::False;
+							return GAIA::True;
+						}
 					};
 				};
 			public:
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Target::TargetDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const TargetDesc& GetDesc() const = 0;
-				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
 			};
 
 			class Shader : public virtual GAIA::RENDER::RenderResource
@@ -245,19 +255,29 @@ namespace GAIA
 					GAIA::U32 uWidth;
 					GAIA::U32 uHeight;
 				};
-				class FetchData : public virtual GAIA::FAVO::FetchData2
+				class FetchData : public virtual GAIA::FAVO::FetchData2, public virtual GAIA::RENDER::RenderResource
 				{
 				public:
 					class FetchDataDesc : public virtual GAIA::FAVO::FetchData2::FetchDataDesc
 					{
 					public:
+						virtual GAIA::GVOID reset()
+						{
+							GAIA::FAVO::FetchData2::FetchDataDesc::reset();
+						}
+						virtual GAIA::BL check() const
+						{
+							if(!GAIA::FAVO::FetchData2::FetchDataDesc.check())
+								return GAIA::False;
+							return GAIA::True;
+						}
 					};
 				};
 			public:
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Texture::TextureDesc& desc) = 0;
 				virtual GAIA::GVOID Destroy() = 0;
 				virtual const TextureDesc& GetDesc() const = 0;
-				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
 			};
 
 		public:

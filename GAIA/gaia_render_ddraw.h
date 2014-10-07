@@ -212,7 +212,7 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const TargetDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_DDRAW_TARGET;}
-				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
 			private:
 				TargetDesc m_desc;
 			};
@@ -298,7 +298,7 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const TextureDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_DDRAW_TEXTURE;}
-				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
 			private:
 				TextureDesc m_desc;
 			};

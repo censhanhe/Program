@@ -127,7 +127,7 @@ namespace GAIA_TEST
 		/* Generate texture. */
 		GAIA::RENDER::Render2DGDIPlus::Texture::FetchData::FetchDataDesc descFetchData;
 		descFetchData.reset();
-		GAIA::FAVO::FetchData* pFetchData = pTexture->CreateFetchData(descFetchData);
+		GAIA::FAVO::FetchData* pFetchData = pTexture->CreateFetchData(*pContext, descFetchData);
 		GAIA::FAVO::FetchData2* pFetchData2 = GDCAST(GAIA::FAVO::FetchData2*)(pFetchData);
 		if(pFetchData2 == GNIL)
 		{

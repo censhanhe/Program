@@ -582,7 +582,7 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy(){m_desc.reset();}
 				virtual const TargetDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TARGET;}
-				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
 			private:
 				GINL GAIA::GVOID init(){m_desc.reset();}
 			private:
@@ -878,12 +878,31 @@ namespace GAIA
 				}
 				virtual const TextureDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTURE;}
-				virtual GAIA::FAVO::FetchData* CreateFetchData(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc)
 				{
 					GPCHR_NULL_RET(this->GetFactory(), GNIL);
+					GAIA::RENDER::Render2DGDIPlus::Context* pContext = GDCAST(GAIA::RENDER::Render2DGDIPlus::Context*)(&ctx);
+					if(pContext == GNIL)
+						return GNIL;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				#endif
+					GAIA::RENDER::Render2DGDIPlus::Texture::FetchData* pFetchData = GDCAST(GAIA::RENDER::Render2DGDIPlus::Texture::FetchData*)(
+						this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTUREFETCHDATA, GNIL));
+					GAIA_AST(pFetchData != GNIL);
+					if(pFetchData == GNIL)
+						return GNIL;
+					GAIA::RENDER::Render* pRender = this->GetRender();
+					pFetchData->SetRender(pRender);
+					pRender->Release();
+					pRender = GNIL;
+					if(!pFetchData->Create(desc))
+					{
+						pFetchData->Release();
+						return GNIL;
+					}
+					return pFetchData;
+				#else
 					return GNIL;
+				#endif
 				}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 				Gdiplus::Image* GetInternalTexture() const{return m_pImage;}
