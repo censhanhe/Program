@@ -7,6 +7,8 @@ namespace GAIA_TEST
 	{
 		GAIA::N32 nRet = 0;
 
+	#define DEBUG_FLUSH pRender->EndStatePipeline(); pRender->Flush(); pRender->BeginStatePipeline();
+
 		/* Create factory. */
 		GAIA::FWORK::Factory fac;
 		typedef GAIA::RENDER::Render2DGDIPlus __RenderType;
@@ -31,13 +33,6 @@ namespace GAIA_TEST
 		descRender.pCanvas = pCanvas;
 		pRender->Create(descRender);
 
-		/* Clear screen. */
-		GAIA::MATH::ARGB<GAIA::REAL> crClear;
-		crClear.r = crClear.g = crClear.b = 0.5F;
-		crClear.a = 1.0F;
-		pRender->ClearColor(crClear);
-		pRender->Flush();
-
 		/* Create context. */
 		__RenderType::Context::ContextDesc descContext;
 		descContext.reset();
@@ -47,14 +42,6 @@ namespace GAIA_TEST
 			GTLINE2("Render create context failed!");
 			++nRet;
 		}
-
-		/* Set anti-alias state. */
-		pRender->SetQuality2DState(*pContext, 
-			GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, 
-			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
-		pRender->SetQuality2DState(*pContext, 
-			GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS,
-			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
 
 		/* Create resource. */
 		__RenderType::Pen::PenDesc descPen;
@@ -143,6 +130,24 @@ namespace GAIA_TEST
 		pFetchData = GNIL;
 		pFetchData2 = GNIL;
 
+		/* Begin state pipeline. */
+		pRender->BeginStatePipeline();
+
+		/* Clear screen. */
+		GAIA::MATH::ARGB<GAIA::REAL> crClear;
+		crClear.r = crClear.g = crClear.b = 0.5F;
+		crClear.a = 1.0F;
+		pRender->ClearColor(crClear);
+		DEBUG_FLUSH;
+
+		/* Set anti-alias state. */
+		pRender->SetQuality2DState(*pContext, 
+			GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, 
+			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
+		pRender->SetQuality2DState(*pContext, 
+			GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS,
+			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
+
 		/* Set render2d state. */
 		pRender->SetRender2DState(*pContext, 
 			GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, 
@@ -161,7 +166,7 @@ namespace GAIA_TEST
 		pRender->SetFontPainter(*pContext, pFontPainter);
 		pRender->SetFontFormat(*pContext, pFontFormat);
 		pRender->DrawFontPainter(*pContext, _T("Hello World!"), aabr);
-		pRender->Flush();
+		DEBUG_FLUSH;
 
 		/* Draw line. */
 		pPen->SetWidth(4.0F);
@@ -176,7 +181,7 @@ namespace GAIA_TEST
 		e = 200.0F;
 		e.x += 100.0F;
 		pRender->DrawLine(*pContext, s, e);
-		pRender->Flush();
+		DEBUG_FLUSH;
 
 		/* Draw rect. */
 		aabr.pmin = 200.0F;
@@ -184,7 +189,7 @@ namespace GAIA_TEST
 		aabr.pmin.x += 200.0F;
 		aabr.pmax.x += 400.0F;
 		pRender->DrawRect(*pContext, aabr);
-		pRender->Flush();
+		DEBUG_FLUSH;
 
 		/* Draw triangle. */
 		GAIA::MATH::VEC2<GAIA::REAL> tri[3];
@@ -195,7 +200,7 @@ namespace GAIA_TEST
 		tri[1].y = 120.0F + 64.0F;
 		tri[2].y = 120.0F + 64.0F;
 		pRender->DrawTriangle(*pContext, tri[0], tri[1], tri[2]);
-		pRender->Flush();
+		DEBUG_FLUSH;
 
 		/* Draw texture. */
 		aabr.pmin.x = 10.0F;
@@ -205,13 +210,17 @@ namespace GAIA_TEST
 		GAIA::MATH::MTX33<GAIA::REAL> mtx;
 		pRender->SetTexture(*pContext, 0, pTexture);
 		pRender->DrawTexture(*pContext, aabr, mtx);
-		pRender->Flush();
+		DEBUG_FLUSH;
 
 		/* Draw texture file. */
 		aabr.pmin += 200.0F;
 		aabr.pmax = aabr.pmin + GAIA::MATH::VEC2<GAIA::REAL>(pFileTexture->GetDesc().uWidth, pFileTexture->GetDesc().uHeight);
 		pRender->SetTexture(*pContext, 0, pFileTexture);
 		pRender->DrawTexture(*pContext, aabr, mtx);
+		DEBUG_FLUSH;
+
+		/* Flush. */
+		pRender->EndStatePipeline();
 		pRender->Flush();
 
 		/* Release resource. */
