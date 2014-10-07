@@ -634,10 +634,57 @@ namespace GAIA
 					GINL ~FetchData(){this->Destroy();}
 					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
 					{
+						if(!desc.check())
+							return GAIA::False;
+						const GAIA::RENDER::Render2DGDIPlus::Texture::FetchData::FetchDataDesc* pPracDesc = GDCAST(
+							const GAIA::RENDER::Render2DGDIPlus::Texture::FetchData::FetchDataDesc*)(&desc);
+						if(pPracDesc == GNIL)
+							return GAIA::False;						
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						GAIA::RENDER::Render2DGDIPlus::Texture* pTexture = 
+							GDCAST(GAIA::RENDER::Render2DGDIPlus::Texture*)(pPracDesc->pTexture);
+						if(pTexture == GNIL)
+							return GAIA::False;
+						GAIA_AST(pTexture->GetInternalTexture() != GNIL);
+						if(pTexture->GetInternalTexture() == GNIL)
+							return GAIA::False;
+						pTexture->Reference();
+						Gdiplus::Rect rc;
+						rc.X = pPracDesc->sOffsetX;
+						rc.Y = pPracDesc->sOffsetY;
+						rc.Width = pPracDesc->sSizeX;
+						rc.Height = pPracDesc->sSizeY;
+						GAIA::U32 uFlag = 0;
+						if(pPracDesc->bRead)
+							uFlag |= Gdiplus::ImageLockModeRead;
+						if(pPracDesc->bWrite)
+							uFlag |= Gdiplus::ImageLockModeWrite;
+						if(pTexture->GetInternalTexture()->LockBits(&rc, uFlag, pTexture->GetInternalTexture()->GetPixelFormat(), &m_bitmapdata) != Gdiplus::Ok)
+						{
+							pTexture->Release();
+							return GAIA::False;
+						}
+					#endif
+						m_desc = *pPracDesc;
 						return GAIA::True;
 					}
 					virtual GAIA::GVOID Destroy()
 					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						if(m_desc.pTexture != GNIL)
+						{
+							GAIA::RENDER::Render2DGDIPlus::Texture* pTexture = 
+								GDCAST(GAIA::RENDER::Render2DGDIPlus::Texture*)(m_desc.pTexture);
+							GAIA_AST(pTexture != GNIL);
+							GAIA_AST(pTexture->GetInternalTexture() != GNIL);
+							if(pTexture->GetInternalTexture()->UnlockBits(&m_bitmapdata) != Gdiplus::Ok)
+							{
+								GAIA_AST(GAIA::False);
+								return;
+							}
+						}
+					#endif
+						GAIA_RELEASE_SAFE(m_desc.pTexture);
 						m_desc.reset();
 					}
 					virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const{return m_desc;}
@@ -666,6 +713,9 @@ namespace GAIA
 					GINL GAIA::GVOID init(){m_desc.reset();}
 				private:
 					FetchDataDesc m_desc;
+				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+					Gdiplus::BitmapData m_bitmapdata;
+				#endif
 				};
 			public:
 				GINL Texture(){this->init();}
@@ -695,12 +745,12 @@ namespace GAIA
 						}
 						if(pf == PixelFormatUndefined)
 							return GAIA::False;
-						m_pImage = new Gdiplus::Bitmap(desc.uWidth, desc.uHeight, pf);
+						m_pBitmap = new Gdiplus::Bitmap(desc.uWidth, desc.uHeight, pf);
 					}
 					else
 					{
-						m_pImage = new Gdiplus::Bitmap(desc.pszFileName, GAIA::False);
-						if(m_pImage == GNIL)
+						m_pBitmap = new Gdiplus::Bitmap(desc.pszFileName, GAIA::False);
+						if(m_pBitmap == GNIL)
 							return GAIA::False;
 					}
 				#endif
@@ -709,8 +759,8 @@ namespace GAIA
 					{
 						m_desc.pszFileName = GAIA::ALGO::strnew(m_desc.pszFileName);
 					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-						m_desc.uWidth = m_pImage->GetWidth();
-						m_desc.uHeight = m_pImage->GetHeight();
+						m_desc.uWidth = m_pBitmap->GetWidth();
+						m_desc.uHeight = m_pBitmap->GetHeight();
 					#endif
 					}
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
@@ -718,7 +768,7 @@ namespace GAIA
 					{
 						m_desc.channeldatatype = GAIA::RENDER::Render2D::ImageFormatDesc::CHANNEL_DATATYPE_INTEGER;
 						m_desc.channelfunction = GAIA::RENDER::Render2D::ImageFormatDesc::CHANNEL_FUNCTION_COLOR;
-						Gdiplus::PixelFormat pf = m_pImage->GetPixelFormat();
+						Gdiplus::PixelFormat pf = m_pBitmap->GetPixelFormat();
 						switch(pf)
 						{
 						case PixelFormat1bppIndexed:
@@ -871,7 +921,7 @@ namespace GAIA
 				virtual GAIA::GVOID Destroy()
 				{
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					GAIA_DELETE_SAFE(m_pImage);
+					GAIA_DELETE_SAFE(m_pBitmap);
 				#endif
 					GAIA_MFREE_SAFE(m_desc.pszFileName);
 					m_desc.reset();
@@ -905,20 +955,20 @@ namespace GAIA
 				#endif
 				}
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				Gdiplus::Image* GetInternalTexture() const{return m_pImage;}
+				Gdiplus::Bitmap* GetInternalTexture() const{return m_pBitmap;}
 			#endif
 			private:
 				GINL GAIA::GVOID init()
 				{
 					m_desc.reset();
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					m_pImage = GNIL;
+					m_pBitmap = GNIL;
 				#endif
 				}
 			private:
 				TextureDesc m_desc;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-				Gdiplus::Image* m_pImage;
+				Gdiplus::Bitmap* m_pBitmap;
 			#endif
 			};
 

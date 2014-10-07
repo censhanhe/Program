@@ -264,13 +264,17 @@ namespace GAIA
 						virtual GAIA::GVOID reset()
 						{
 							GAIA::FAVO::FetchData2::FetchDataDesc::reset();
+							pTexture = GNIL;
 						}
 						virtual GAIA::BL check() const
 						{
 							if(!GAIA::FAVO::FetchData2::FetchDataDesc::check())
 								return GAIA::False;
+							if(pTexture == GNIL)
+								return GAIA::False;
 							return GAIA::True;
 						}
+						GAIA::RENDER::Render2D::Texture* pTexture;
 					};
 				};
 			public:
