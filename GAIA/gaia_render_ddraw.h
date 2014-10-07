@@ -334,6 +334,27 @@ namespace GAIA
 
 			virtual GAIA::RENDER::Render::Context* CreateContext(const GAIA::RENDER::Render::Context::ContextDesc& desc){return GNIL;}
 
+			virtual GAIA::BL BeginStatePipeline()
+			{
+				GAIA_AST(!this->IsBeginStatePipeline());
+				if(m_bBeginStatePipeline)
+					return GAIA::False;
+				m_bBeginStatePipeline = GAIA::True;
+				return GAIA::True;
+			}
+			virtual GAIA::BL EndStatePipeline()
+			{
+				GAIA_AST(this->IsBeginStatePipeline());
+				if(!m_bBeginStatePipeline)
+					return GAIA::False;
+				m_bBeginStatePipeline = GAIA::False;
+				return GAIA::True;
+			}
+			virtual GAIA::BL IsBeginStatePipeline() const
+			{
+				return m_bBeginStatePipeline;
+			}
+
 			virtual GAIA::GVOID Flush()
 			{
 			}
@@ -416,11 +437,13 @@ namespace GAIA
 			{
 				m_bCreated = GAIA::False;
 				m_desc.reset();
+				m_bBeginStatePipeline = GAIA::False;
 			}
 
 		private:
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
+			GAIA::BL m_bBeginStatePipeline;
 		};
 	};
 };

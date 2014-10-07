@@ -131,6 +131,10 @@ namespace GAIA
 
 			virtual GAIA::RENDER::Render::Context* CreateContext(const GAIA::RENDER::Render::Context::ContextDesc& desc) = 0;
 
+			virtual GAIA::BL BeginStatePipeline() = 0;
+			virtual GAIA::BL EndStatePipeline() = 0;
+			virtual GAIA::BL IsBeginStatePipeline() const = 0;
+
 			virtual GAIA::GVOID Flush() = 0;
 		};
 	};
