@@ -49,6 +49,27 @@ namespace GAIA
 			GINL _DataType height() const{return pmax.y - pmin.y;}
 			GINL GAIA::BL iszero() const{return pmin.iszero() && pmax.iszero();}
 			GINL GAIA::BL isfinited() const{return pmin.isfinited() && pmax.isfinited();}
+			GINL _vectype point(const GAIA::SIZE& sIndex) const
+			{
+				switch(sIndex)
+				{
+				case 0:
+					return this->ss();
+				case 1:
+					return this->bs();
+				case 2:
+					return this->bb();
+				case 3:
+					return this->sb();
+				default:
+					GAIA_AST(GAIA::False);
+					return (_vectype)0;
+				}
+			}
+			GINL _vectype ss() const{return _vectype(pmin.x, pmin.y);}
+			GINL _vectype bs() const{return _vectype(pmax.x, pmin.y);}
+			GINL _vectype bb() const{return _vectype(pmax.x, pmax.y);}
+			GINL _vectype sb() const{return _vectype(pmin.x, pmax.y);}
 			template<typename _ParamDataType> GAIA::GVOID expand(const GAIA::MATH::AABR<_ParamDataType>& t){pmin.minimize(t.pmin); pmax.maximize(t.pmax);}
 			template<typename _ParamDataType> GAIA::GVOID expand(const GAIA::MATH::VEC2<_ParamDataType>& t){pmin.minimize(t); pmax.maximize(t);}
 			template<typename _ParamDataType> __MyType operator + (const GAIA::MATH::VEC2<_ParamDataType>& v){__MyType ret; ret.pmin = pmin + v; ret.pmax = pmax + v; return ret;}
