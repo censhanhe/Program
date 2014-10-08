@@ -11,7 +11,7 @@ namespace GAIA
 			GINL Task();
 			GINL ~Task();
 
-			virtual GAIA::BL Execute();
+			virtual GAIA::BL Update();
 		};
 	};
 };

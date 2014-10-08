@@ -2118,7 +2118,7 @@
 					Name="STATE"
 					>
 					<File
-						RelativePath=".\gaia_state_state.h"
+						RelativePath=".\gaia_state_driver.h"
 						>
 					</File>
 				</Filter>
