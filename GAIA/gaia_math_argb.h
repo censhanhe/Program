@@ -117,7 +117,7 @@ namespace GAIA
 			GINL operator const _DataType*() const{return &a;}
 
 		public:
-			_DataType a, r, g, b;
+			_DataType b, g, r, a;
 		};
 	};
 };

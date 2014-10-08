@@ -29,11 +29,9 @@ namespace GAIA
 			virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc) = 0;
 			virtual GAIA::GVOID Destroy() = 0;
 			virtual const GAIA::FAVO::FetchData::FetchDataDesc& GetDesc() const = 0;
-			virtual GAIA::SIZE GetSize() const = 0;
-			virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize) = 0;
-			virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize) = 0;
-			virtual GAIA::SIZE GetSequenceSize() const = 0;
-			virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const = 0;
+			virtual GAIA::SIZE GetSize() const = 0; // Return the totel size of fetched data.
+			virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex) = 0; // sSize and sStride's unit is byte.
+			virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex) = 0; // sSize and sStride's unit is byte.
 		};
 
 		class FetchData1 : public virtual GAIA::FAVO::FetchData
@@ -62,6 +60,9 @@ namespace GAIA
 				GAIA::SIZE sSizeX;
 			};
 		public:
+			virtual GAIA::SIZE GetStrideInBits() const = 0; // Return the element's size in bits.
+			virtual GAIA::SIZE GetCount() const = 0; // Return the element's count.
+			virtual GAIA::GVOID* GetHead(const GAIA::SIZE& sIndex) const = 0; // Return the element's head.
 		};
 
 		class FetchData2 : public virtual GAIA::FAVO::FetchData1
@@ -90,6 +91,9 @@ namespace GAIA
 				GAIA::SIZE sSizeY;
 			};
 		public:
+			virtual GAIA::SIZE GetLineStride() const = 0; // Return the full line's size in bytes.
+			virtual GAIA::SIZE GetLineCount() const = 0; // Return the line's count.
+			virtual GAIA::GVOID* GetLineHead(const GAIA::SIZE& sLineIndex) const = 0; // Return the line's head.
 		};
 
 		class FetchData3 : public virtual GAIA::FAVO::FetchData2
@@ -118,6 +122,9 @@ namespace GAIA
 				GAIA::SIZE sSizeZ;
 			};
 		public:
+			virtual GAIA::SIZE GetRectStride() const = 0; // Return the full rect's size in bytes.
+			virtual GAIA::SIZE GetRectCount() const = 0; // Return the rect's count.
+			virtual GAIA::GVOID* GetRectHead(const GAIA::SIZE& sLineIndex) const = 0; // Return the rect's head.
 		};
 	};
 };

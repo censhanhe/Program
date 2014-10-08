@@ -554,19 +554,35 @@ namespace GAIA
 					{
 						return GNIL;
 					}
-					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::SIZE GetSequenceSize() const
+					virtual GAIA::SIZE GetStrideInBits() const
 					{
 						return 0;
 					}
-					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					virtual GAIA::SIZE GetCount() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetHead(const GAIA::SIZE& sIndex) const
+					{
+						return GNIL;
+					}
+					virtual GAIA::SIZE GetLineStride() const
+					{
+						return 0;
+					}
+					virtual GAIA::SIZE GetLineCount() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetLineHead(const GAIA::SIZE& sLineIndex) const
 					{
 						return GNIL;
 					}
@@ -693,23 +709,201 @@ namespace GAIA
 					virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_TEXTUREFETCHDATA;}
 					virtual GAIA::SIZE GetSize() const
 					{
-						return GNIL;
-					}
-					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
-					{
-						return GAIA::True;
-					}
-					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
-					{
-						return GAIA::True;
-					}
-					virtual GAIA::SIZE GetSequenceSize() const
-					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						return m_bitmapdata.Stride * m_bitmapdata.Height;
+					#else
 						return 0;
+					#endif
 					}
-					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
+						if(sStrideInBits != 1 && sStrideInBits != 2 && sStrideInBits != 4 && sStrideInBits != 8 && sStrideInBits % 8 != 0)
+							return GAIA::False;
+						GAIA::SIZE sSrcCount = sSize * 8 / sStrideInBits;
+						if(sSrcCount <= 0)
+							return GAIA::False;
+						if(sDstOffsetIndex < 0)
+							return GAIA::False;
+						if(sDstOffsetIndex + sSrcCount > this->GetCount())
+							return GAIA::False;
+						GAIA::SIZE sDstStrideInBits = this->GetStrideInBits();
+						if(sStrideInBits < sDstStrideInBits)
+							return GAIA::False;
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						if(sDstStrideInBits < 8)
+						{
+							GAIA::U8 k;
+							if(sDstStrideInBits == 1)
+								k = 1;
+							else if(sDstStrideInBits == 2)
+								k = 3;
+							else
+								k = 15;
+							GAIA::U8 k1 = 8 / sDstStrideInBits;
+							for(GAIA::SIZE x = 0; x < sSrcCount; ++x)
+							{
+								GAIA::SIZE x1 = sDstOffsetIndex + x;
+								const GAIA::U8* pSrc = GSCAST(const GAIA::U8*)(p) + x * sStrideInBits / 8;
+								GAIA::U8* pDst = GSCAST(GAIA::U8*)(m_bitmapdata.Scan0) + 
+									x1 / m_bitmapdata.Width * m_bitmapdata.Stride + 
+									x1 % m_bitmapdata.Width * sDstStrideInBits / 8;
+								GAIA::U8 srclevel = (x % k1) * sDstStrideInBits;
+								GAIA::U8 dstlevel = (x1 % k1) * sDstStrideInBits;
+								GAIA::U8 src = ((*pSrc) & (k << srclevel)) >> srclevel;
+								*pDst |= (src << dstlevel);
+							}
+						}
+						else
+						{
+							for(GAIA::SIZE x = 0; x < sSrcCount; ++x)
+							{
+								const GAIA::U8* pSrc = GSCAST(const GAIA::U8*)(p) + x * sStrideInBits / 8;
+								GAIA::U8* pDst = GSCAST(GAIA::U8*)(m_bitmapdata.Scan0) + 
+									(sDstOffsetIndex + x) / m_bitmapdata.Width * m_bitmapdata.Stride + 
+									(sDstOffsetIndex + x) % m_bitmapdata.Width * sDstStrideInBits / 8;
+								GAIA::ALGO::xmemcpy(pDst, pSrc, sDstStrideInBits / 8);
+							}
+						}
+						return GAIA::True;
+					#else
+						return GAIA::False;
+					#endif
+					}
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
+					{
+						if(sStrideInBits != 1 && sStrideInBits != 2 && sStrideInBits != 4 && sStrideInBits != 8 && sStrideInBits % 8 != 0)
+							return GAIA::False;
+						GAIA::SIZE sSrcCount = sSize * 8 / sStrideInBits;
+						if(sSrcCount <= 0)
+							return GAIA::False;
+						if(sDstOffsetIndex < 0)
+							return GAIA::False;
+						if(sDstOffsetIndex + sSrcCount > this->GetCount())
+							return GAIA::False;
+						GAIA::SIZE sDstStrideInBits = this->GetStrideInBits();
+						if(sStrideInBits < sDstStrideInBits)
+							return GAIA::False;
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						if(sDstStrideInBits < 8)
+						{
+							GAIA::U8 k;
+							if(sDstStrideInBits == 1)
+								k = 1;
+							else if(sDstStrideInBits == 2)
+								k = 3;
+							else
+								k = 15;
+							GAIA::U8 k1 = 8 / sDstStrideInBits;
+							for(GAIA::SIZE x = 0; x < sSrcCount; ++x)
+							{
+								GAIA::SIZE x1 = sDstOffsetIndex + x;
+								const GAIA::U8* pSrc = GSCAST(const GAIA::U8*)(m_bitmapdata.Scan0) + 
+									x1 / m_bitmapdata.Width * m_bitmapdata.Stride + 
+									x1 % m_bitmapdata.Width * sDstStrideInBits / 8;
+								GAIA::U8* pDst = GSCAST(GAIA::U8*)(p) + x * sStrideInBits / 8;
+								GAIA::U8 srclevel = (x1 % k1) * sDstStrideInBits;
+								GAIA::U8 dstlevel = (x % k1) * sDstStrideInBits;
+								GAIA::U8 src = ((*pSrc) & (k << srclevel)) >> srclevel;
+								*pDst |= (src << dstlevel);
+							}
+						}
+						else
+						{
+							for(GAIA::SIZE x = 0; x < sSrcCount; ++x)
+							{
+								const GAIA::U8* pSrc = GSCAST(const GAIA::U8*)(m_bitmapdata.Scan0) + 
+									(sDstOffsetIndex + x) / m_bitmapdata.Width * m_bitmapdata.Stride + 
+									(sDstOffsetIndex + x) % m_bitmapdata.Width * sDstStrideInBits / 8;
+								GAIA::U8* pDst = GSCAST(GAIA::U8*)(p) + x * sStrideInBits / 8;
+								GAIA::ALGO::xmemcpy(pDst, pSrc, sDstStrideInBits / 8);
+							}
+						}
+						return GAIA::True;
+					#else
+						return GAIA::False;
+					#endif
+					}
+					virtual GAIA::SIZE GetStrideInBits() const
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						switch(m_bitmapdata.PixelFormat)
+						{
+						case PixelFormat1bppIndexed:
+							return 1;
+						case PixelFormat4bppIndexed:
+							return 4;
+						case PixelFormat8bppIndexed:
+							return 8;
+						case PixelFormat16bppGrayScale:
+							return 16;
+						case PixelFormat16bppRGB555:
+							return 16;
+						case PixelFormat16bppRGB565:
+							return 16;
+						case PixelFormat16bppARGB1555:
+							return 16;
+						case PixelFormat24bppRGB:
+							return 24;
+						case PixelFormat32bppRGB:
+							return 32;
+						case PixelFormat32bppARGB:
+							return 32;
+						case PixelFormat32bppPARGB:
+							return 32;
+						case PixelFormat48bppRGB:
+							return 48;
+						case PixelFormat64bppARGB:
+							return 64;
+						case PixelFormat64bppPARGB:
+							return 64;
+						default:
+							GAIA_AST(GAIA::ALWAYSFALSE);
+							return 0;
+						}
+					#else
+						return 0;
+					#endif
+					}
+					virtual GAIA::SIZE GetCount() const
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						return m_bitmapdata.Width * m_bitmapdata.Height;
+					#else
+						return 0;
+					#endif
+					}
+					virtual GAIA::GVOID* GetHead(const GAIA::SIZE& sIndex) const
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						return GSCAST(GAIA::U8*)(this->GetLineHead(sIndex / m_bitmapdata.Width)) + 
+							sIndex % m_bitmapdata.Width * this->GetStrideInBits() / 8;
+					#else
 						return GNIL;
+					#endif
+					}
+					virtual GAIA::SIZE GetLineStride() const
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						return m_bitmapdata.Stride;
+					#else
+						return 0;
+					#endif
+					}
+					virtual GAIA::SIZE GetLineCount() const
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						return m_bitmapdata.Height;
+					#else
+						return 0;
+					#endif
+					}
+					virtual GAIA::GVOID* GetLineHead(const GAIA::SIZE& sLineIndex) const
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
+						return GSCAST(GAIA::U8*)(m_bitmapdata.Scan0) + this->GetLineStride() * sLineIndex;
+					#else
+						return GNIL;
+					#endif
 					}
 				private:
 					GINL GAIA::GVOID init(){m_desc.reset();}
@@ -1951,6 +2145,7 @@ namespace GAIA
 					return;
 			#endif
 			}
+
 		private:
 			GINL GAIA::GVOID init()
 			{

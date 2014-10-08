@@ -204,6 +204,8 @@
 #include	"gaia_mvc_view.h"
 #include	"gaia_mvc_viewlinker_impl.h"
 
+#include	"gaia_state_state.h"
+
 #include	"gaia_collisioner_bounder.h"
 #include	"gaia_collisioner.h"
 #include	"gaia_collisioner_prime.h"

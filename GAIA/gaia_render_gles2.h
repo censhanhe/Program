@@ -185,19 +185,35 @@ namespace GAIA
 					{
 						return GNIL;
 					}
-					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::SIZE GetSequenceSize() const
+					virtual GAIA::SIZE GetStrideInBits() const
 					{
 						return 0;
 					}
-					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					virtual GAIA::SIZE GetCount() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetHead(const GAIA::SIZE& sIndex) const
+					{
+						return GNIL;
+					}
+					virtual GAIA::SIZE GetLineStride() const
+					{
+						return 0;
+					}
+					virtual GAIA::SIZE GetLineCount() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetLineHead(const GAIA::SIZE& sLineIndex) const
 					{
 						return GNIL;
 					}
@@ -271,19 +287,35 @@ namespace GAIA
 					{
 						return GNIL;
 					}
-					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::SIZE GetSequenceSize() const
+					virtual GAIA::SIZE GetStrideInBits() const
 					{
 						return 0;
 					}
-					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					virtual GAIA::SIZE GetCount() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetHead(const GAIA::SIZE& sIndex) const
+					{
+						return GNIL;
+					}
+					virtual GAIA::SIZE GetLineStride() const
+					{
+						return 0;
+					}
+					virtual GAIA::SIZE GetLineCount() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetLineHead(const GAIA::SIZE& sLineIndex) const
 					{
 						return GNIL;
 					}
@@ -358,19 +390,23 @@ namespace GAIA
 					{
 						return GNIL;
 					}
-					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::SIZE GetSequenceSize() const
+					virtual GAIA::SIZE GetStrideInBits() const
 					{
 						return 0;
 					}
-					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					virtual GAIA::SIZE GetCount() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetHead(const GAIA::SIZE& sIndex) const
 					{
 						return GNIL;
 					}
@@ -425,19 +461,23 @@ namespace GAIA
 					{
 						return GNIL;
 					}
-					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Set(const GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sOffset, const GAIA::SIZE& sSize)
+					virtual GAIA::BL Get(GAIA::GVOID* p, const GAIA::SIZE& sSize, const GAIA::SIZE& sStrideInBits, const GAIA::SIZE& sDstOffsetIndex)
 					{
 						return GAIA::True;
 					}
-					virtual GAIA::SIZE GetSequenceSize() const
+					virtual GAIA::SIZE GetStrideInBits() const
 					{
 						return 0;
 					}
-					virtual GAIA::GVOID* GetSequenceHead(const GAIA::SIZE& sOffset) const
+					virtual GAIA::SIZE GetCount() const
+					{
+						return 0;
+					}
+					virtual GAIA::GVOID* GetHead(const GAIA::SIZE& sIndex) const
 					{
 						return GNIL;
 					}
