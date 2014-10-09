@@ -37,7 +37,7 @@ namespace GAIA
 			GINL State(){this->init();}
 			GINL ~State(){}
 
-			virtual GAIA::FWORK::ClsID GetClassID() const{}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_STATE_STATE;}
 
 			GINL GAIA::BL Create(const GAIA::STATE::State::StateDesc& desc)
 			{
@@ -134,7 +134,7 @@ namespace GAIA
 			GINL StateCtn(){this->init();}
 			GINL ~StateCtn(){}
 
-			virtual GAIA::FWORK::ClsID GetClassID() const{}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_STATE_STATECTN;}
 
 			GINL GAIA::BL Create(const GAIA::STATE::StateCtn::StateCtnDesc& desc)
 			{
@@ -209,7 +209,7 @@ namespace GAIA
 			GINL StateMgr(){this->init();}
 			GINL ~StateMgr(){}
 
-			virtual GAIA::FWORK::ClsID GetClassID() const{}
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_STATE_STATEMGR;}
 
 			GINL GAIA::BL Create(const GAIA::STATE::StateMgr::StateMgrDesc& desc)
 			{
