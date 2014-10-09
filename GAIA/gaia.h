@@ -204,7 +204,7 @@
 #include	"gaia_mvc_view.h"
 #include	"gaia_mvc_viewlinker_impl.h"
 
-#include	"gaia_state_driver.h"
+#include	"gaia_state_statemgr.h"
 #include	"gaia_timer_timer.h"
 #include	"gaia_timer_realtimer.h"
 

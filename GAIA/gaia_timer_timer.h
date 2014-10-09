@@ -49,7 +49,7 @@ namespace GAIA
 			GINL GAIA::GVOID Destroy();
 			GINL const GAIA::TIMER::Timer::TimerDesc& GetDesc() const{return m_desc;}
 
-			GINL TimerMgr* GetTimerMgr() const;
+			GINL GAIA::TIMER::TimerMgr* GetTimerMgr() const;
 
 			GINL GAIA::BL Pause();
 			GINL GAIA::BL Resume();
@@ -66,10 +66,10 @@ namespace GAIA
 			__FireTimesType m_nFireTimes;
 		};
 
-		class TimerMgr : public GAIA::FWORK::Instance
+		class TimerMgr : public virtual GAIA::FWORK::Instance
 		{
 		public:
-			class TimerMgrDesc : public GAIA::FWORK::InstanceDesc
+			class TimerMgrDesc : public virtual GAIA::FWORK::InstanceDesc
 			{
 			public:
 				virtual GAIA::GVOID reset()
@@ -89,9 +89,9 @@ namespace GAIA
 			GINL GAIA::GVOID Destroy();
 			GINL const GAIA::TIMER::TimerMgr::TimerMgrDesc& GetDesc() const;
 
-			GINL GAIA::BL Regist(Timer* pTimer);
-			GINL GAIA::BL Unregist(Timer* pTimer);
-			GINL GAIA::BL IsRegisted(Timer* pTimer) const;
+			GINL GAIA::BL Regist(GAIA::TIMER::Timer* pTimer);
+			GINL GAIA::BL Unregist(GAIA::TIMER::Timer* pTimer);
+			GINL GAIA::BL IsRegisted(GAIA::TIMER::Timer* pTimer) const;
 
 			GINL GAIA::BL Update(const GAIA::N64& nEscapeInMicroSec);
 

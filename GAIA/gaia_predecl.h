@@ -30,6 +30,11 @@ namespace GAIA
 		class Serializer;
 	};
 
+	namespace STATE
+	{
+		class StateMgr;
+	};
+
 	namespace TIMER
 	{
 		class TimerMgr;
