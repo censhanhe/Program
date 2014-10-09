@@ -1589,6 +1589,14 @@
 							</Filter>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="PAINTER"
+						>
+						<File
+							RelativePath=".\gaia_ui_painter.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="DATATRAFFIC"

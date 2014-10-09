@@ -252,6 +252,8 @@
 #include	"gaia_ui_document.h"
 #include	"gaia_ui_progressbar.h"
 
+#include	"gaia_ui_painter.h"
+
 #include	"gaia_framework_instancecreator_impl.h"
 #include	"gaia_framework_factory_impl.h"
 
