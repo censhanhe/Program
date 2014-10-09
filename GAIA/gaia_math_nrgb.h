@@ -66,7 +66,7 @@ namespace GAIA
 			}
 
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::NRGB<_ParamDataType>& src){r = src.r; g = src.g; b = src.b; return *this;}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){r = p[0]; g = p[1]; b = p[2]; return *this;}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){r = p[2]; g = p[1]; b = p[0]; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){r = g = b = t; return *this;}
 
@@ -102,10 +102,10 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& src) const{return !(this->operator <= (src));}
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& src) const{return !(this->operator >= (src));}
 
-			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index < 3); return (&r)[index];}
-			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index < 3); return (&r)[index];}
-			GINL operator _DataType*(){return &r;}
-			GINL operator const _DataType*() const{return &r;}
+			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index < 3); return (&b)[index];}
+			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index < 3); return (&b)[index];}
+			GINL operator _DataType*(){return &b;}
+			GINL operator const _DataType*() const{return &b;}
 
 		public:
 			_DataType b, g, r;

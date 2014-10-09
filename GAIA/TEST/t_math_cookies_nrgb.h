@@ -118,7 +118,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 		nrgb = __NRGBType(2, 3, 4);
-		if(nrgb[0] != (__NRGBType::_datatype)2)
+		if(nrgb[2] != (__NRGBType::_datatype)2)
 		{
 			GTLINE2("NRGB operator [] error!");
 			++nRet;
@@ -128,7 +128,7 @@ namespace GAIA_TEST
 			GTLINE2("NRGB operator [] error!");
 			++nRet;
 		}
-		if(nrgb[2] != (__NRGBType::_datatype)4)
+		if(nrgb[0] != (__NRGBType::_datatype)4)
 		{
 			GTLINE2("NRGB operator [] error!");
 			++nRet;

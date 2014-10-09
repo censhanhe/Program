@@ -134,22 +134,22 @@ namespace GAIA_TEST
 			++nRet;
 		}
 		argb = __ARGBType(1, 2, 3, 4);
-		if(argb[0] != (__ARGBType::_datatype)1)
+		if(argb[3] != (__ARGBType::_datatype)1)
 		{
 			GTLINE2("ARGB operator [] error!");
 			++nRet;
 		}
-		if(argb[1] != (__ARGBType::_datatype)2)
+		if(argb[2] != (__ARGBType::_datatype)2)
 		{
 			GTLINE2("ARGB operator [] error!");
 			++nRet;
 		}
-		if(argb[2] != (__ARGBType::_datatype)3)
+		if(argb[1] != (__ARGBType::_datatype)3)
 		{
 			GTLINE2("ARGB operator [] error!");
 			++nRet;
 		}
-		if(argb[3] != (__ARGBType::_datatype)4)
+		if(argb[0] != (__ARGBType::_datatype)4)
 		{
 			GTLINE2("ARGB operator [] error!");
 			++nRet;
