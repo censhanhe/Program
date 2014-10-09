@@ -20,3 +20,5 @@ Math
 	MTX33, MTX22, MTX43 implement.
 	
 	
+FRAMEWORK
+	All Instance derived class's destructor or RefObjectDestruct will destroy itself completely.
