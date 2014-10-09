@@ -142,10 +142,6 @@ namespace GAIA
 				}
 				m_controllers.destroy();
 			}
-		public:
-			virtual GINL GAIA::BL Create() = 0;
-			virtual GINL GAIA::BL Destroy() = 0;
-			virtual GINL GAIA::BL IsCreated() const = 0;
 		private:
 			GINL GAIA::GVOID init(){}
 			GINL ModelNode* GetModelByName(const GAIA::TCH* pszName)

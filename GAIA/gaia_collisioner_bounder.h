@@ -10,8 +10,6 @@ namespace GAIA
 		public:
 			GINL Bounder(){}
 			GINL ~Bounder(){}
-			virtual const GAIA::MATH::MTX44<GAIA::REAL>& GetLocalMatrix() const = 0;
-			virtual const GAIA::MATH::AABB<GAIA::REAL>& GetLocalAABB() const = 0;
 		};
 	};
 };

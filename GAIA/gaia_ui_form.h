@@ -135,6 +135,12 @@ namespace GAIA
 			GINL GAIA::BL IsEnableScissor() const{return m_bScissor;}
 			
 		public:
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_UI_FORM;}
+			virtual GAIA::MATH::AABR<GAIA::REAL> GetWidgetAABR() const
+			{
+				GAIA::MATH::AABR<GAIA::REAL> ret;
+				return ret;
+			}
 			virtual GAIA::BL Create(const __MyType::Desc& desc)
 			{
 				if(!desc.check())
