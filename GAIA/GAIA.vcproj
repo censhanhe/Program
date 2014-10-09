@@ -1361,14 +1361,6 @@
 						RelativePath=".\gaia_time_indp.h"
 						>
 					</File>
-					<File
-						RelativePath=".\gaia_time_realtimer.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_time_timer.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="NETWORK"
@@ -2119,6 +2111,18 @@
 					>
 					<File
 						RelativePath=".\gaia_state_driver.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="TIMER"
+					>
+					<File
+						RelativePath=".\gaia_timer_realtimer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_timer_timer.h"
 						>
 					</File>
 				</Filter>

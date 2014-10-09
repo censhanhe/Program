@@ -30,6 +30,11 @@ namespace GAIA
 		class Serializer;
 	};
 
+	namespace TIMER
+	{
+		class TimerMgr;
+	};
+
 	namespace RENDER
 	{
 		class Render;

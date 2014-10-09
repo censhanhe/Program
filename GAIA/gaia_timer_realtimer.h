@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace TIME
+	namespace TIMER
 	{
 	};
 };

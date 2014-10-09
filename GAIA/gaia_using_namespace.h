@@ -25,6 +25,8 @@ using namespace GAIA::FWORK;
 using namespace GAIA::IO;
 using namespace GAIA::SERIALIZER;
 using namespace GAIA::DATATRAFFIC;
+using namespace GAIA::TIMER;
+using namespace GAIA::STATE;
 using namespace GAIA::RENDER;
 using namespace GAIA::PAINTER;
 using namespace GAIA::LAYOUT;

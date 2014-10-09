@@ -205,6 +205,8 @@
 #include	"gaia_mvc_viewlinker_impl.h"
 
 #include	"gaia_state_driver.h"
+#include	"gaia_timer_timer.h"
+#include	"gaia_timer_realtimer.h"
 
 #include	"gaia_collisioner_bounder.h"
 #include	"gaia_collisioner.h"
