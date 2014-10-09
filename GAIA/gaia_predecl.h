@@ -32,6 +32,7 @@ namespace GAIA
 
 	namespace STATE
 	{
+		class StateCtn;
 		class StateMgr;
 	};
 
