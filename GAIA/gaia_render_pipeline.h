@@ -22,7 +22,7 @@ namespace GAIA
 			GINL GAIA::GVOID EnableStage();
 			GINL GAIA::GVOID IsEnableStage() const;
 
-			GINL GAIA::GVOID Execute();
+			GINL GAIA::GVOID Update();
 
 			GINL GAIA::GVOID SetCamera(GAIA::SCENE::Camera* pCamera);
 			GINL GAIA::SCENE::Camera* GetCamera() const;
