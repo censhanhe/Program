@@ -156,8 +156,6 @@ namespace GAIA
 
 		/* Layout. */
 
-		/* Painter. */
-
 		/* State. */
 		static const ClsID CLSID_STATE_STATE							= ClsID(0x06, 0x01, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);
 		static const ClsID CLSID_STATE_STATECTN							= ClsID(0x06, 0x02, 0x0000, 0x0000, ClsID::FLAG_SYSDEFINE);

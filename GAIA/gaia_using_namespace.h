@@ -28,7 +28,6 @@ using namespace GAIA::DATATRAFFIC;
 using namespace GAIA::TIMER;
 using namespace GAIA::STATE;
 using namespace GAIA::RENDER;
-using namespace GAIA::PAINTER;
 using namespace GAIA::LAYOUT;
 using namespace GAIA::MVC;
 using namespace GAIA::UI;

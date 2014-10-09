@@ -1735,14 +1735,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="PAINTER"
-					>
-					<File
-						RelativePath=".\gaia_painter.h"
-						>
-					</File>
-				</Filter>
-				<Filter
 					Name="LAYOUT"
 					>
 					<File
