@@ -25,6 +25,8 @@ namespace GAIA
 			GINL Painter(){this->init();}
 			GINL ~Painter(){}
 
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_UI_PAINTER;}
+
 			GINL GAIA::BL Create(const GAIA::UI::Painter::PainterDesc& desc)
 			{
 				if(!desc.check())

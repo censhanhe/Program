@@ -7,6 +7,8 @@ namespace GAIA
 	{
 		class ProgressBar : public virtual GAIA::UI::Form
 		{
+		public:
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_UI_PROGRESSBAR;}
 		};
 	};
 };
