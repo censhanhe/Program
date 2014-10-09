@@ -36,6 +36,11 @@ namespace GAIA
 			}
 			GINL const GAIA::UI::Painter::PainterDesc& GetDesc() const{return m_desc;}
 
+			GINL GAIA::BL Draw(GAIA::UI::Form* pForm)
+			{
+				return GAIA::True;
+			}
+
 		private:
 			GINL GAIA::GVOID init(){}
 
