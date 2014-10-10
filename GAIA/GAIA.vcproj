@@ -2166,71 +2166,67 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="VIRTUAL-REALIZE-SYSTEM"
+						Name="RENDER"
 						>
 						<Filter
-							Name="RENDER"
+							Name="2D"
 							>
-							<Filter
-								Name="2D"
+							<File
+								RelativePath=".\TEST\t_render_ddraw.h"
 								>
-								<File
-									RelativePath=".\TEST\t_render_ddraw.h"
-									>
-								</File>
-								<File
-									RelativePath=".\TEST\t_render_gdiplus.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="3D"
+							</File>
+							<File
+								RelativePath=".\TEST\t_render_gdiplus.h"
 								>
-								<File
-									RelativePath=".\TEST\t_render_dx10.h"
-									>
-								</File>
-								<File
-									RelativePath=".\TEST\t_render_dx11.h"
-									>
-								</File>
-								<File
-									RelativePath=".\TEST\t_render_dx9.h"
-									>
-								</File>
-								<File
-									RelativePath=".\TEST\t_render_gl1.h"
-									>
-								</File>
-								<File
-									RelativePath=".\TEST\t_render_gl2.h"
-									>
-								</File>
-								<File
-									RelativePath=".\TEST\t_render_gl3.h"
-									>
-								</File>
-								<File
-									RelativePath=".\TEST\t_render_gles1.h"
-									>
-								</File>
-								<File
-									RelativePath=".\TEST\t_render_gles2.h"
-									>
-								</File>
-								<File
-									RelativePath=".\TEST\t_render_gles3.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="IMAGEWORK"
+							</File>
+						</Filter>
+						<Filter
+							Name="3D"
+							>
+							<File
+								RelativePath=".\TEST\t_render_dx10.h"
 								>
-								<File
-									RelativePath=".\TEST\t_render_imagework.h"
-									>
-								</File>
-							</Filter>
+							</File>
+							<File
+								RelativePath=".\TEST\t_render_dx11.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_render_dx9.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_render_gl1.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_render_gl2.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_render_gl3.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_render_gles1.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_render_gles2.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_render_gles3.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name="IMAGEWORK"
+							>
+							<File
+								RelativePath=".\TEST\t_render_imagework.h"
+								>
+							</File>
 						</Filter>
 					</Filter>
 				</Filter>
