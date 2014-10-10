@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	GINL GAIA::N32 t_stackstack(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_container_stackstack(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 		typedef GAIA::CTN::BasicStackStack<GAIA::N32, GAIA::N32, 100> __StackStackType;

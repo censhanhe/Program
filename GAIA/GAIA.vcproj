@@ -2469,6 +2469,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="FILESYSTEM"
+						>
+						<File
+							RelativePath=".\TEST\t_filesystem_directory.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_filesystem_file.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

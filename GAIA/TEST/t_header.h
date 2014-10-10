@@ -53,6 +53,9 @@
 #include "t_container_staticstringpool.h"
 #include "t_container_cooperate.h"
 
+#include "t_filesystem_file.h"
+#include "t_filesystem_directory.h"
+
 #include "t_dataphase_xml.h"
 
 #include "t_locale.h"
@@ -103,37 +106,40 @@ namespace GAIA_TEST
 
 			GTLINE1("Algorithm: Set test begin!"); nRet += t_algorithm_set(file, prt); GTLINE1("End"); GTLINE("\t");
 
-			GTLINE1("Container: Buffer test begin!"); nRet += t_buffer(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Ptr test begin!"); nRet += t_ptr(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Ref test begin!"); nRet += t_ref(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Array test begin!"); nRet += t_array(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Vector test begin!"); nRet += t_vector(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: ArrayVector test begin!"); nRet += t_arrayvector(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: StackStack test begin!"); nRet += t_stackstack(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Stack test begin!"); nRet += t_stack(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: StackQueue test begin!"); nRet += t_stackqueue(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Queue test begin!"); nRet += t_queue(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: List test begin!"); nRet += t_list(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Chars test begin!"); nRet += t_chars(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: String test begin!"); nRet += t_string(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: StackBitset test begin!"); nRet += t_stackbitset(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Bitset test begin!"); nRet += t_bitset(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: TrieTree test begin!"); nRet += t_trietree(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: AVLTree test begin!"); nRet += t_avltree(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Set test begin!"); nRet += t_set(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Map test begin!"); nRet += t_map(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: MultiAVLTree test begin!"); nRet += t_multiavltree(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: MultiSet test begin!"); nRet += t_multiset(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: MultiMap test begin!"); nRet += t_multimap(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Tree test begin!"); nRet += t_tree(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Orderless test begin!"); nRet += t_orderless(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Pool test begin!"); nRet += t_pool(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Graph test begin!"); nRet += t_graph(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Storage test begin!"); nRet += t_storage(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Accesser test begin!"); nRet += t_accesser(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: StringPool test begin!"); nRet += t_stringpool(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: StaticStringPool test begin!"); nRet += t_staticstringpool(file, prt); GTLINE1("End"); GTLINE("\t");	
-			GTLINE1("Container: Cooperate test begin!"); nRet += t_cooperate(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Buffer test begin!"); nRet += t_container_buffer(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Ptr test begin!"); nRet += t_container_ptr(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Ref test begin!"); nRet += t_container_ref(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Array test begin!"); nRet += t_container_array(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Vector test begin!"); nRet += t_container_vector(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: ArrayVector test begin!"); nRet += t_container_arrayvector(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: StackStack test begin!"); nRet += t_container_stackstack(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Stack test begin!"); nRet += t_container_stack(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: StackQueue test begin!"); nRet += t_container_stackqueue(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Queue test begin!"); nRet += t_container_queue(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: List test begin!"); nRet += t_container_list(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Chars test begin!"); nRet += t_container_chars(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: String test begin!"); nRet += t_container_string(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: StackBitset test begin!"); nRet += t_container_stackbitset(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Bitset test begin!"); nRet += t_container_bitset(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: TrieTree test begin!"); nRet += t_container_trietree(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: AVLTree test begin!"); nRet += t_container_avltree(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Set test begin!"); nRet += t_container_set(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Map test begin!"); nRet += t_container_map(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: MultiAVLTree test begin!"); nRet += t_container_multiavltree(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: MultiSet test begin!"); nRet += t_container_multiset(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: MultiMap test begin!"); nRet += t_container_multimap(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Tree test begin!"); nRet += t_container_tree(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Orderless test begin!"); nRet += t_container_orderless(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Pool test begin!"); nRet += t_container_pool(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Graph test begin!"); nRet += t_container_graph(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Storage test begin!"); nRet += t_container_storage(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Accesser test begin!"); nRet += t_container_accesser(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: StringPool test begin!"); nRet += t_container_stringpool(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: StaticStringPool test begin!"); nRet += t_container_staticstringpool(file, prt); GTLINE1("End"); GTLINE("\t");	
+			GTLINE1("Container: Cooperate test begin!"); nRet += t_container_cooperate(file, prt); GTLINE1("End"); GTLINE("\t");
+
+			GTLINE1("File: File test begin!"); nRet += t_filesystem_file(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("File: Directory test begin!"); nRet += t_filesystem_directory(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("DataPhase: XML test begin!"); nRet += t_dataphase_xml(file, prt); GTLINE1("End"); GTLINE("\t");
 

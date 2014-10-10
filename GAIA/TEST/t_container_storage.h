@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	GINL GAIA::N32 t_storage(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_container_storage(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 		typedef GAIA::CTN::Storage<GAIA::NM, GAIA::ALGO::TwiceSizeIncreaser<GAIA::NM>, 32> __StorageType;

@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	GINL GAIA::N32 t_chars(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_container_chars(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 
