@@ -21,6 +21,7 @@ namespace GAIA
 			GINL GAIA::BL RemoveFile(const GAIA::TCH* pszName);
 			GINL GAIA::BL CopyFile(const GAIA::TCH* pszSrc, const GAIA::TCH* pszDst);
 			GINL GAIA::BL MoveFile(const GAIA::TCH* pszSrc, const GAIA::TCH* pszDst);
+			GINL GAIA::BL ExistFile(const GAIA::TCH* pszName);
 			GINL GAIA::BL CollectFile(const GAIA::TCH* pszName, const GAIA::TCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult);
 		private:
 			GINL Directory& operator = (const Directory& src){GAIA_AST(&src != this); return *this;}

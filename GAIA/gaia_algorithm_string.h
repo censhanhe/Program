@@ -190,7 +190,7 @@ namespace GAIA
 					return +1;
 				else
 				{
-					if(GAIA::ALGO::tolower(*p1) == '\0')
+					if(*p1 == '\0')
 						return 0;
 					++p1;
 					++p2;
@@ -199,6 +199,42 @@ namespace GAIA
 		#if GAIA_COMPILER != GAIA_COMPILER_CL // For CL C4702 Warning.
 			return 0;
 		#endif
+		}
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::N32 strcmpl(_DataType1 p1, _DataType2 p2, _SizeType size)
+		{
+			for(; size != 0; --size)
+			{
+				if(*p1 < *p2)
+					return -1;
+				else if(*p1 > *p2)
+					return +1;
+				else
+				{
+					if(*p1 == '\0')
+						return 0;
+					++p1;
+					++p2;
+				}
+			}
+			return 0;
+		}
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::N32 stricmpl(_DataType1 p1, _DataType2 p2, _SizeType size)
+		{
+			for(; size != 0; --size)
+			{
+				if(GAIA::ALGO::tolower(*p1) < GAIA::ALGO::tolower(*p2))
+					return -1;
+				else if(GAIA::ALGO::tolower(*p1) > GAIA::ALGO::tolower(*p2))
+					return +1;
+				else
+				{
+					if(*p1 == '\0')
+						return 0;
+					++p1;
+					++p2;
+				}
+			}
+			return 0;
 		}
 		template<typename _DataType1, typename _DataType2> GAIA::N32 strcmpnil(_DataType1 p1, _DataType2 p2)
 		{

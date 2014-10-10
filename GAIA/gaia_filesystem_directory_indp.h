@@ -346,6 +346,32 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
+		GINL GAIA::BL Directory::ExistFile(const GAIA::TCH* pszName)
+		{
+			if(GAIA::ALGO::stremp(pszName))
+				return GAIA::False;
+		#if GAIA_OS == GAIA_OS_WINDOWS
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				GAIA::UM uFlag = ::GetFileAttributes(pszName);
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				GAIA::UM uFlag = ::GetFileAttributes(pszName);
+		#	endif
+			if(uFlag == GINVALID)
+				return GAIA::False;
+			else if(uFlag & FILE_ATTRIBUTE_DIRECTORY)
+				return GAIA::False;
+			return GAIA::True;
+		#else
+			struct stat s;
+			if(lstat(pszName, &s) >= 0)
+			{
+				if(S_ISDIR(s.st_mode))
+					return GAIA::False;
+				return GAIA::True;
+			}
+			return GAIA::False;
+		#endif
+		}
 		GINL GAIA::BL Directory::CollectFile(const GAIA::TCH* pszName, const GAIA::TCH* pszFilter, GAIA::BL bOverlapped, __ResultTree& treeResult)
 		{
 			GAIA_AST(!GAIA::ALGO::stremp(pszName));
