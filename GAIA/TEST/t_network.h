@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	class NSender : public GAIA::NETWORK::NetworkSender
+	class NSender : public GAIA::NETWORK::Sender
 	{
 	public:
 		GINL NSender(){this->init();}
@@ -14,11 +14,11 @@ namespace GAIA_TEST
 	private:
 	};
 
-	class NReceiver : public GAIA::NETWORK::NetworkReceiver
+	class NReceiver : public GAIA::NETWORK::Receiver
 	{
 	public:
 		GINL NReceiver(){this->init();}
-		virtual GAIA::BL Receive(GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
+		virtual GAIA::BL Receive(GAIA::NETWORK::Handle& s, const GAIA::U8* p, GAIA::U32 size)
 		{
 			return GAIA::False;
 		}
@@ -33,22 +33,22 @@ namespace GAIA_TEST
 		GAIA::SIZE m_sRecvCount;
 	};
 
-	class NHandle : public GAIA::NETWORK::NetworkHandle
+	class NHandle : public GAIA::NETWORK::Handle
 	{
 	public:
-		GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse)
+		GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::Addr& na, GAIA::BL bRecvTrueSendFalse)
 		{
 		}
 	};
 
-	class NListener : public GAIA::NETWORK::NetworkListener
+	class NListener : public GAIA::NETWORK::Listener
 	{
 	public:
 		GINL NListener(){this->init();}
-		virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h)
+		virtual GAIA::BL Accept(GAIA::NETWORK::Handle& h)
 		{
-			const GAIA::NETWORK::NetworkAddress& na = h.GetRemoteAddress();
-			GAIA::NETWORK::NetworkAddress curna;
+			const GAIA::NETWORK::Addr& na = h.GetRemoteAddress();
+			GAIA::NETWORK::Addr curna;
 			curna.ip.FromString("127.0.0.1");
 			curna.uPort = 0;
 			if(curna.ip != na.ip)
@@ -108,6 +108,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
+		GAIA::SYNC::xsleep(100);
 		if(pListener->GetConnectCount() != 1)
 		{
 			GTLINE2("Network sender connect failed!");

@@ -1636,19 +1636,19 @@ namespace DWARFS_FSHA
 				pFAC = src.pFAC;
 				return *this;
 			}
-			GAIA::NETWORK::NetworkAddress selfaddr;
+			GAIA::NETWORK::Addr selfaddr;
 			FileAccessCreator* pFAC;
 		private:
 			FileAccessCreator default_fileacccreator;
 		};
 		/* Network handle. */
-		class __DWARFS_FILESHARE_API NHandle : public GAIA::NETWORK::NetworkHandle
+		class __DWARFS_FILESHARE_API NHandle : public GAIA::NETWORK::Handle
 		{
 		public:
 			GINL NHandle(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
-			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse)
+			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::Addr& na, GAIA::BL bRecvTrueSendFalse)
 			{
 				m_pFS->OnLostConnection(na, bRecvTrueSendFalse);
 			}
@@ -1656,24 +1656,24 @@ namespace DWARFS_FSHA
 			FileShare* m_pFS;
 		};
 		/* Network listen accept callback. */
-		class __DWARFS_FILESHARE_API NAcceptCallBack : public GAIA::NETWORK::NetworkListener::AcceptCallBack
+		class __DWARFS_FILESHARE_API NAcceptCallBack : public GAIA::NETWORK::Listener::AcceptCallBack
 		{
 		public:
 			GINL NAcceptCallBack(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
-			virtual GAIA::NETWORK::NetworkHandle* CreateNetworkHandle(){return new NHandle;}
+			virtual GAIA::NETWORK::Handle* CreateNetworkHandle(){return new NHandle;}
 		private:
 			FileShare* m_pFS;
 		};
 		/* Network listener. */
-		class __DWARFS_FILESHARE_API NListener : public GAIA::NETWORK::NetworkListener
+		class __DWARFS_FILESHARE_API NListener : public GAIA::NETWORK::Listener
 		{
 		public:
 			GINL NListener(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
-			virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h)
+			virtual GAIA::BL Accept(GAIA::NETWORK::Handle& h)
 			{
 				NHandle* pNHandle = (NHandle*)&h;
 				pNHandle->SetFileShare(this->GetFileShare());
@@ -1683,13 +1683,13 @@ namespace DWARFS_FSHA
 			FileShare* m_pFS;
 		};
 		/* Network receiver. */
-		class __DWARFS_FILESHARE_API NReceiver : public GAIA::NETWORK::NetworkReceiver
+		class __DWARFS_FILESHARE_API NReceiver : public GAIA::NETWORK::Receiver
 		{
 		public:
 			GINL NReceiver(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
-			virtual GAIA::BL Receive(GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
+			virtual GAIA::BL Receive(GAIA::NETWORK::Handle& s, const GAIA::U8* p, GAIA::U32 size)
 			{
 				return m_pFS->OnReceive(*(NHandle*)&s, p, size);
 			}
@@ -1697,7 +1697,7 @@ namespace DWARFS_FSHA
 			FileShare* m_pFS;
 		};
 		/* Network sender. */
-		class __DWARFS_FILESHARE_API NSender : public GAIA::NETWORK::NetworkSender
+		class __DWARFS_FILESHARE_API NSender : public GAIA::NETWORK::Sender
 		{
 		public:
 			GINL NSender(){m_pFS = GNIL;}
@@ -1805,7 +1805,7 @@ namespace DWARFS_FSHA
 				return *this;
 			}
 		public:
-			GAIA::NETWORK::NetworkAddress na;
+			GAIA::NETWORK::Addr na;
 			STATE state;
 			FILEID uCmplFileCnt;
 			GAIA::CTN::Set<FileIDSection>* pCmplFiles;
@@ -1939,7 +1939,7 @@ namespace DWARFS_FSHA
 				return *this;
 			}
 		public:
-			GAIA::NETWORK::NetworkAddress na;
+			GAIA::NETWORK::Addr na;
 			FILEID fid;
 			CHUNKINDEX ci;
 			SUBCHUNKINDEX sci;
@@ -1961,7 +1961,7 @@ namespace DWARFS_FSHA
 				return *this;
 			}
 		public:
-			GAIA::NETWORK::NetworkAddress na;
+			GAIA::NETWORK::Addr na;
 			FILEID fid;
 			CHUNKINDEX ci;
 			SUBCHUNKINDEX sci;
@@ -1988,7 +1988,7 @@ namespace DWARFS_FSHA
 				return *this;
 			}
 		public:
-			GAIA::NETWORK::NetworkAddress na;
+			GAIA::NETWORK::Addr na;
 			FILEID fid;
 			CHUNKINDEX ci;
 			SUBCHUNKINDEX sci;
@@ -2009,7 +2009,7 @@ namespace DWARFS_FSHA
 			}
 			GAIA_CLASS_OPERATOR_COMPARE2(na, na, fid, fid, FileHeadSendTask);
 		public:
-			GAIA::NETWORK::NetworkAddress na;
+			GAIA::NETWORK::Addr na;
 			FILEID fid;
 		};
 		/* File request record. */
@@ -2081,7 +2081,7 @@ namespace DWARFS_FSHA
 				return *this;
 			}
 			GAIA_CLASS_OPERATOR_COMPARE(na, na, JumpReq);
-			GAIA::NETWORK::NetworkAddress na;
+			GAIA::NETWORK::Addr na;
 			FIDLIST listFID;
 		};
 		/* Statistics */
@@ -2353,7 +2353,7 @@ namespace DWARFS_FSHA
 		#define MSG_N_CMPLFILESECTION	((MSGIDTYPE)51)
 		// startindex(FILEID) + endindex(FILEID).
 		#define MSG_A_CNN				((MSGIDTYPE)80)
-		// NetworkAddress + filecount(REQFILECOUNTTYPE) * (fileid(FILEID) + chunkindex(CHUNKINDEX)).
+		// Addr + filecount(REQFILECOUNTTYPE) * (fileid(FILEID) + chunkindex(CHUNKINDEX)).
 		#define MSG_A_LOGINOK			((MSGIDTYPE)200)
 		// nothing.
 		#define MSG_A_LOGOUTOK			((MSGIDTYPE)201)
@@ -2462,7 +2462,7 @@ namespace DWARFS_FSHA
 			if(m_bStartuped)
 				return GAIA::False;
 			m_pNH->SetSelfAddress(m_desc.selfaddr);
-			GAIA::NETWORK::NetworkHandle::ConnectDesc cnndesc;
+			GAIA::NETWORK::Handle::ConnectDesc cnndesc;
 			cnndesc.addr = m_desc.selfaddr;
 			cnndesc.bStabilityLink = GAIA::False;
 			for(GAIA::U16 uPort = 0; uPort < 10; ++uPort)
@@ -2476,7 +2476,7 @@ namespace DWARFS_FSHA
 			}
 			if(!m_pNH->IsConnected())
 			{
-				m_prt << "NetworkHandle connect self failed!\n";
+				m_prt << "Handle connect self failed!\n";
 				return GAIA::False;
 			}
 			m_pNH->SetReceiver(m_pNReceiver);
@@ -2605,9 +2605,9 @@ namespace DWARFS_FSHA
 			if(m_filestate.size() > 0)
 				GAIA::ALGO::xmemset(m_filestate.front_ptr(), bCmpl ? 0xFF : 0x00, m_filestate.size());
 		}
-		GINL GAIA::GVOID SetMainNAddr(const GAIA::NETWORK::NetworkAddress& na){m_mainna = na;}
-		GINL const GAIA::NETWORK::NetworkAddress& GetMainNAddr() const{return m_mainna;}
-		GINL GAIA::BL Request(const GAIA::NETWORK::NetworkAddress& na, const FIDLIST& listID)
+		GINL GAIA::GVOID SetMainNAddr(const GAIA::NETWORK::Addr& na){m_mainna = na;}
+		GINL const GAIA::NETWORK::Addr& GetMainNAddr() const{return m_mainna;}
+		GINL GAIA::BL Request(const GAIA::NETWORK::Addr& na, const FIDLIST& listID)
 		{
 			GAIA_AST(!listID.empty());
 			AL al(m_lr_RequestMsgTemp);
@@ -2620,12 +2620,12 @@ namespace DWARFS_FSHA
 					m_RequestMsgTemp << MSG_R_FILE;
 					m_RequestMsgTemp << (REQFILECOUNTTYPE)0;
 				}
-				GAIA_AST(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - m_RequestMsgTemp.write_size() >= sizeof(FILEID) + sizeof(CHUNKINDEX));
+				GAIA_AST(GAIA::NETWORK::Handle::MAX_NOSTABILITY_SENDSIZE - m_RequestMsgTemp.write_size() >= sizeof(FILEID) + sizeof(CHUNKINDEX));
 				m_RequestMsgTemp << *it;
 				m_RequestMsgTemp << (CHUNKINDEX)0;
 				FIDLIST::const_it itnext = it;
 				++itnext;
-				if(GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE - m_RequestMsgTemp.write_size() <= sizeof(FILEID) + sizeof(CHUNKINDEX) || itnext.empty())
+				if(GAIA::NETWORK::Handle::MAX_NOSTABILITY_SENDSIZE - m_RequestMsgTemp.write_size() <= sizeof(FILEID) + sizeof(CHUNKINDEX) || itnext.empty())
 				{
 					GAIA::N32 nCount = m_RequestMsgTemp.write_size() - sizeof(na) - sizeof(MSG_R_FILE) - sizeof(REQFILECOUNTTYPE);
 					nCount /= sizeof(FILEID) + sizeof(CHUNKINDEX);
@@ -3581,7 +3581,7 @@ namespace DWARFS_FSHA
 			{
 				if(listPart.size() == 5)
 				{
-					GAIA::NETWORK::NetworkAddress na;
+					GAIA::NETWORK::Addr na;
 					na.ip.FromString(listPart[3].front_ptr());
 					na.uPort = listPart[4];
 					if(!this->NLogin(na, listPart[1], listPart[2]))
@@ -3594,7 +3594,7 @@ namespace DWARFS_FSHA
 			{
 				if(listPart.size() == 4)
 				{
-					GAIA::NETWORK::NetworkAddress na;
+					GAIA::NETWORK::Addr na;
 					na.ip.FromString(listPart[2].front_ptr());
 					na.uPort = listPart[3];
 					if(!this->NLogout(na, listPart[1].front_ptr()))
@@ -4037,7 +4037,7 @@ namespace DWARFS_FSHA
 						listFile.reserve(m_listFileReqTemp.size());
 						for(__FileReqListType::it it = m_listFileReqTemp.front_it(); !it.empty(); ++it)
 							listFile.push_back((*it).fid);
-						GAIA::NETWORK::NetworkAddress selectna;
+						GAIA::NETWORK::Addr selectna;
 						this->SelectRequestNetworkAddress(selectna);
 						this->Request(selectna, listFile);
 						for(__FileReqListType::it it = m_listFileReqTemp.front_it(); !it.empty(); ++it)
@@ -4505,7 +4505,7 @@ namespace DWARFS_FSHA
 						{
 							FIDLIST listRequest;
 							listRequest.push_back((*it).fid);
-							GAIA::NETWORK::NetworkAddress selectna;
+							GAIA::NETWORK::Addr selectna;
 							this->SelectRequestNetworkAddress(selectna);
 							this->Request(selectna, listRequest);
 						}
@@ -4766,7 +4766,7 @@ namespace DWARFS_FSHA
 										AL al(m_lr_prt);
 										m_prt << "[TEST] Request section for time out, ChunkIndex = " << fcs.e << ".\n";
 									}
-									GAIA::NETWORK::NetworkAddress selectna;
+									GAIA::NETWORK::Addr selectna;
 									this->SelectRequestNetworkAddress(selectna);
 									m_TimeoutSectionRequestMsgTemp.clear();
 									m_TimeoutSectionRequestMsgTemp << selectna;
@@ -4788,7 +4788,7 @@ namespace DWARFS_FSHA
 								AL al(m_lr_prt);
 								m_prt << "[TEST] Request full file for time out, the pFCSL is GNIL.\n";
 							}
-							GAIA::NETWORK::NetworkAddress selectna;
+							GAIA::NETWORK::Addr selectna;
 							this->SelectRequestNetworkAddress(selectna);
 							m_TimeoutSectionRequestMsgTemp.clear();
 							m_TimeoutSectionRequestMsgTemp << selectna;
@@ -4809,7 +4809,7 @@ namespace DWARFS_FSHA
 							AL al(m_lr_prt);
 							m_prt << "[TEST] Request full file for time out, the pFRC is GNIL.\n";
 						}
-						GAIA::NETWORK::NetworkAddress selectna;
+						GAIA::NETWORK::Addr selectna;
 						this->SelectRequestNetworkAddress(selectna);
 						m_TimeoutSectionRequestMsgTemp.clear();
 						m_TimeoutSectionRequestMsgTemp << selectna;
@@ -4883,7 +4883,7 @@ namespace DWARFS_FSHA
 												CHUNKINDEX uTotalChunkCount = pFRC->fsize / CHUNKSIZE + ((pFRC->fsize % CHUNKSIZE == 0) ? 0 : 1);
 												for(CHUNKINDEX x = fcs.e; x < uTotalChunkCount; ++x)
 												{
-													GAIA::NETWORK::NetworkAddress selectna;
+													GAIA::NETWORK::Addr selectna;
 													this->SelectRequestNetworkAddress(selectna);
 													m_TimeoutChunkRequestMsgTemp.clear();
 													m_TimeoutChunkRequestMsgTemp << selectna;
@@ -4916,7 +4916,7 @@ namespace DWARFS_FSHA
 										{
 											for(CHUNKINDEX x = fcs.e; x <= fcs_next.s; ++x)
 											{
-												GAIA::NETWORK::NetworkAddress selectna;
+												GAIA::NETWORK::Addr selectna;
 												this->SelectRequestNetworkAddress(selectna);
 												m_TimeoutChunkRequestMsgTemp.clear();
 												m_TimeoutChunkRequestMsgTemp << selectna;
@@ -5016,7 +5016,7 @@ namespace DWARFS_FSHA
 					{
 						m_listReRequestTemp.clear();
 						m_listReRequestTemp.push_back(fr.fid);
-						GAIA::NETWORK::NetworkAddress selectna;
+						GAIA::NETWORK::Addr selectna;
 						this->SelectRequestNetworkAddress(selectna);
 						this->Request(selectna, m_listReRequestTemp);
 						m_statistics.uTimeoutReRequestCount++;
@@ -5139,17 +5139,17 @@ namespace DWARFS_FSHA
 		{
 			GAIA::F64 fPerf = FSHA_PERF;
 			m_statistics.uNRecvCount++;
-			m_statistics.uNRecvBytes += size - sizeof(GAIA::NETWORK::NetworkAddress);
+			m_statistics.uNRecvBytes += size - sizeof(GAIA::NETWORK::Addr);
 			m_OnReceiveMsgTemp.clear();
 			m_OnReceiveMsgTemp.write(p, size);
 			/* Basic message size checkup. */
-			if(size < sizeof(GAIA::NETWORK::NetworkAddress) + sizeof(MSGIDTYPE))
+			if(size < sizeof(GAIA::NETWORK::Addr) + sizeof(MSGIDTYPE))
 			{
 				m_perf.fOnRecv += FSHA_PERF - fPerf;
 				return GAIA::False;
 			}
 			/* Ban IP checkup. */
-			GAIA::NETWORK::NetworkAddress na;
+			GAIA::NETWORK::Addr na;
 			MSGIDTYPE msgid;
 			m_OnReceiveMsgTemp >> na;
 			m_OnReceiveMsgTemp >> msgid;
@@ -5732,7 +5732,7 @@ namespace DWARFS_FSHA
 			case MSG_A_CNN:
 				{
 					GAIA::F64 fPerfCnnA = FSHA_PERF;
-					GAIA::NETWORK::NetworkAddress jumpna;
+					GAIA::NETWORK::Addr jumpna;
 					m_OnReceiveMsgTemp >> jumpna;
 					if(jumpna != na && jumpna != m_pNH->GetRemoteAddress())
 					{
@@ -5939,10 +5939,10 @@ namespace DWARFS_FSHA
 			m_perf.fOnRecv += FSHA_PERF - fPerf;
 			return GAIA::True;
 		}
-		GINL GAIA::GVOID OnLostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse)
+		GINL GAIA::GVOID OnLostConnection(const GAIA::NETWORK::Addr& na, GAIA::BL bRecvTrueSendFalse)
 		{
 		}
-		GINL GAIA::BL NLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::TCH* pszUserName, const GAIA::TCH* pszPassword)
+		GINL GAIA::BL NLogin(const GAIA::NETWORK::Addr& na, const GAIA::TCH* pszUserName, const GAIA::TCH* pszPassword)
 		{
 			__MsgType msg;
 			msg.reserve(1024);
@@ -5985,7 +5985,7 @@ namespace DWARFS_FSHA
 
 			return this->Send(msg.front_ptr(), msg.write_size());
 		}
-		GINL ERRNO BeLogin(const GAIA::NETWORK::NetworkAddress& na, const GAIA::TCH* pszUserName, const GAIA::TCH* pszPassword)
+		GINL ERRNO BeLogin(const GAIA::NETWORK::Addr& na, const GAIA::TCH* pszUserName, const GAIA::TCH* pszPassword)
 		{
 			GAIA_AST(!GAIA::ALGO::stremp(pszUserName));
 			if(GAIA::ALGO::stremp(pszUserName))
@@ -6069,7 +6069,7 @@ namespace DWARFS_FSHA
 			}
 			return ERRNO_NOERROR;
 		}
-		GINL GAIA::BL NLogout(const GAIA::NETWORK::NetworkAddress& na, const GAIA::TCH* pszUserName)
+		GINL GAIA::BL NLogout(const GAIA::NETWORK::Addr& na, const GAIA::TCH* pszUserName)
 		{
 			// Release a exist link.
 			{
@@ -6095,7 +6095,7 @@ namespace DWARFS_FSHA
 			msg << pszUserName;
 			return this->Send(msg.front_ptr(), msg.write_size());
 		}
-		GINL ERRNO BeLogout(const GAIA::NETWORK::NetworkAddress& na, const GAIA::TCH* pszUserName)
+		GINL ERRNO BeLogout(const GAIA::NETWORK::Addr& na, const GAIA::TCH* pszUserName)
 		{
 			GAIA_AST(!GAIA::ALGO::stremp(pszUserName));
 			if(GAIA::ALGO::stremp(pszUserName))
@@ -6253,7 +6253,7 @@ namespace DWARFS_FSHA
 			if(m_pNH == GNIL)
 				return GAIA::False;
 			/* message statistics. */
-			MSGIDTYPE msgid = *GSCAST(const MSGIDTYPE*)((GSCAST(const GAIA::U8*)(p) + sizeof(GAIA::NETWORK::NetworkAddress)));
+			MSGIDTYPE msgid = *GSCAST(const MSGIDTYPE*)((GSCAST(const GAIA::U8*)(p) + sizeof(GAIA::NETWORK::Addr)));
 			switch(msgid)
 			{
 			case MSG_R_LOGIN:
@@ -6310,7 +6310,7 @@ namespace DWARFS_FSHA
 			/* Send. */
 			AL al(m_lr_send);
 			m_statistics.uNSendCount++;
-			m_statistics.uNSendBytes += size - sizeof(GAIA::NETWORK::NetworkAddress);
+			m_statistics.uNSendBytes += size - sizeof(GAIA::NETWORK::Addr);
 			return m_pNH->Send(GSCAST(const GAIA::U8*)(p), size);
 		}
 		GINL GAIA::BL SendToAll(GAIA::GVOID* p, const GAIA::U32& size)
@@ -6429,7 +6429,7 @@ namespace DWARFS_FSHA
 			else
 				return 0;
 		}
-		GINL GAIA::BL Jump(const GAIA::NETWORK::NetworkAddress& na, const GAIA::U8* p, GAIA::N32 nSize)
+		GINL GAIA::BL Jump(const GAIA::NETWORK::Addr& na, const GAIA::U8* p, GAIA::N32 nSize)
 		{
 			GAIA_AST(!!p);
 			GAIA_AST(nSize > 0);
@@ -6443,7 +6443,7 @@ namespace DWARFS_FSHA
 				if(GAIA::MATH::xrandom() % 100 > SUBJUMPODDS)
 					return GAIA::False;
 			}
-			GAIA::NETWORK::NetworkAddress jumpna;
+			GAIA::NETWORK::Addr jumpna;
 			{
 				AL al1(m_lr_links);
 				NLink nl;
@@ -6483,7 +6483,7 @@ namespace DWARFS_FSHA
 			const REQFILECOUNTTYPE& fcnt = *GSCAST(const REQFILECOUNTTYPE*)(p);
 			__MsgType msg;
 			msg.reserve(1024);
-			if(sizeof(na) + sizeof(MSGIDTYPE) + sizeof(jumpna) + nSize > GAIA::NETWORK::NetworkHandle::MAX_NOSTABILITY_SENDSIZE)
+			if(sizeof(na) + sizeof(MSGIDTYPE) + sizeof(jumpna) + nSize > GAIA::NETWORK::Handle::MAX_NOSTABILITY_SENDSIZE)
 			{
 				GAIA_AST(fcnt / 2 > 0);
 				GAIA::N32 first = fcnt / 2;
@@ -6520,7 +6520,7 @@ namespace DWARFS_FSHA
 			}
 			return GAIA::True;
 		}
-		GINL GAIA::BL SelectRequestNetworkAddress(GAIA::NETWORK::NetworkAddress& na) const
+		GINL GAIA::BL SelectRequestNetworkAddress(GAIA::NETWORK::Addr& na) const
 		{
 			NLinkPri nlp;
 			nlp.nlink.uCmplFileCnt = m_uCmplFileCount + JUMPOFFSETFILESCOUNT;
@@ -6551,7 +6551,7 @@ namespace DWARFS_FSHA
 		}
 	private:
 		FileShareDesc m_desc;
-		GAIA::NETWORK::NetworkAddress m_mainna;
+		GAIA::NETWORK::Addr m_mainna;
 		GAIA::BL m_bInitialized;
 		GAIA::BL m_bStartuped;
 		GAIA::U64 m_uUSpeed;
@@ -6623,7 +6623,7 @@ namespace DWARFS_FSHA
 
 		GAIA::BL m_test_enablewatch;
 		FILEID m_test_watchfid;
-		GAIA::NETWORK::NetworkAddress m_test_watchna;
+		GAIA::NETWORK::Addr m_test_watchna;
 	};
 };
 

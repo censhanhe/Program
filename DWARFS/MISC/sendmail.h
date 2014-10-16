@@ -6,11 +6,11 @@ namespace DWARFS_MISC
 	class SendMail
 	{
 	private:
-		class SendMailNReceiver : public GAIA::NETWORK::NetworkReceiver
+		class SendMailNReceiver : public GAIA::NETWORK::Receiver
 		{
 		public:
 			GINL SendMailNReceiver(SendMail* pSendMail){m_pSendMail = pSendMail;}
-			virtual GAIA::BL Receive(GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
+			virtual GAIA::BL Receive(GAIA::NETWORK::Handle& s, const GAIA::U8* p, GAIA::U32 size)
 			{
 				GPCHR_NULL_RET(m_pSendMail, GAIA::False);
 				return m_pSendMail->OnReceive(s, p, size);
@@ -91,7 +91,7 @@ namespace DWARFS_MISC
 			}
 			return GINVALID;
 		}
-		GINL GAIA::BL send(GAIA::NETWORK::NetworkSender* pNetworkSender, GAIA::NETWORK::NetworkReceiver* pNetworkReceiver)
+		GINL GAIA::BL send(GAIA::NETWORK::Sender* pNetworkSender, GAIA::NETWORK::Receiver* pNetworkReceiver)
 		{
 			/* Parameter checkup. */
 			if(m_username.empty())
@@ -112,8 +112,8 @@ namespace DWARFS_MISC
 				return GAIA::False;
 
 			/* Connect. */
-			GAIA::NETWORK::NetworkHandle h;
-			GAIA::NETWORK::NetworkHandle::ConnectDesc cnndesc;
+			GAIA::NETWORK::Handle h;
+			GAIA::NETWORK::Handle::ConnectDesc cnndesc;
 			GAIA::CTN::Vector<GAIA::NETWORK::IP> listIPResult;
 			GAIA::NETWORK::GetHostIPList(m_smtp_address, listIPResult);
 			if(listIPResult.size() == 0)
@@ -124,7 +124,7 @@ namespace DWARFS_MISC
 			if(!h.Connect(cnndesc))
 				return GAIA::False;
 
-			GAIA::NETWORK::NetworkSender sender;
+			GAIA::NETWORK::Sender sender;
 			GAIA::BL bSenderChange = GAIA::False;
 			if(pNetworkSender == GNIL)
 			{
@@ -307,7 +307,7 @@ namespace DWARFS_MISC
 			return GAIA::True;
 		}
 
-		GINL GAIA::BL OnReceive(GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size)
+		GINL GAIA::BL OnReceive(GAIA::NETWORK::Handle& s, const GAIA::U8* p, GAIA::U32 size)
 		{
 			if(size > 0)
 			{

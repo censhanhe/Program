@@ -5,8 +5,8 @@ namespace GAIA
 {
 	namespace NETWORK
 	{
-		class NetworkSender;
-		class NetworkReceiver;
+		class Sender;
+		class Receiver;
 	};
 
 	namespace FWORK

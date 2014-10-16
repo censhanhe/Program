@@ -3,7 +3,7 @@ What is data-traffic ?
 
 How to use the data-traffic for network communication?
 If you are the server:
-	1.Create a NetworkListener first, listen the ip and port.
+	1.Create a Listener first, listen the ip and port.
 	2.Construct RouteNet when accept a network link.
 	3.Create a Gateway and connect to the RouteNet.
 	4.Read and write data to Gateway.

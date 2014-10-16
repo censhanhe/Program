@@ -64,13 +64,13 @@ namespace GAIA
 				GAIA::U32 uIPv4;
 			};
 		};
-		class NetworkAddress
+		class Addr
 		{
 		public:
-			GINL NetworkAddress(){}
-			GINL NetworkAddress(const NetworkAddress& src){this->operator = (src);}
-			GINL NetworkAddress(const IP& ip, GAIA::U16 uPort){this->ip = ip; this->uPort = uPort;}
-			GINL ~NetworkAddress(){}
+			GINL Addr(){}
+			GINL Addr(const Addr& src){this->operator = (src);}
+			GINL Addr(const IP& ip, GAIA::U16 uPort){this->ip = ip; this->uPort = uPort;}
+			GINL ~Addr(){}
 			GINL GAIA::GVOID Invalid(){ip.Invalid(); uPort = 0;}
 			GINL GAIA::BL IsInvalid() const{return ip.IsInvalid() || uPort == 0;}
 			template<typename _ParamDataType> GAIA::BL FromString(const _ParamDataType* psz)
@@ -93,20 +93,20 @@ namespace GAIA
 				p = GAIA::ALGO::int2str((GAIA::N32)uPort, p);
 				*(p - 1) = 0;
 			}
-			GINL NetworkAddress& operator = (const NetworkAddress& src){GAIA_AST(&src != this); ip = src.ip; uPort = src.uPort; return *this;}
-			GAIA_CLASS_OPERATOR_COMPARE2(ip, ip, uPort, uPort, NetworkAddress);
+			GINL Addr& operator = (const Addr& src){GAIA_AST(&src != this); ip = src.ip; uPort = src.uPort; return *this;}
+			GAIA_CLASS_OPERATOR_COMPARE2(ip, ip, uPort, uPort, Addr);
 		public:
 			IP ip;
 			GAIA::U16 uPort;
 		};
 		GINL GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size);
 		GINL GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult);
-		class NetworkHandle : public RefObject
+		class Handle : public RefObject
 		{
 		private:
-			friend class NetworkListener;
-			friend class NetworkSender;
-			friend class NetworkReceiver;
+			friend class Listener;
+			friend class Sender;
+			friend class Receiver;
 		private:
 			class SendRec
 			{
@@ -127,12 +127,12 @@ namespace GAIA
 					addr.Invalid();
 					bStabilityLink = GAIA::True;
 				}
-				NetworkAddress addr;
+				Addr addr;
 				GAIA::U8 bStabilityLink : 1;
 			};
 		public:
-			GINL NetworkHandle(){this->init();}
-			GINL ~NetworkHandle(){if(this->IsConnected()) this->Disconnect(); this->init();}
+			GINL Handle(){this->init();}
+			GINL ~Handle(){if(this->IsConnected()) this->Disconnect(); this->init();}
 			GINL GAIA::BL SetSendBufSize(GAIA::N32 nSize){if(this->IsConnected()) return GAIA::False; m_nSendBufferSize = nSize; return GAIA::True;}
 			GINL GAIA::N32 GetSendBufSize() const{return m_nSendBufferSize;}
 			GINL GAIA::BL SetRecvBufSize(GAIA::N32 nSize){if(this->IsConnected()) return GAIA::False; m_nRecvBufferSize = nSize; return GAIA::True;}
@@ -140,16 +140,16 @@ namespace GAIA
 			GINL GAIA::BL Connect(const ConnectDesc& desc);
 			GINL GAIA::BL Disconnect();
 			GINL GAIA::BL IsConnected() const{return m_h != GINVALID;}
-			GINL GAIA::GVOID SetSelfAddress(const NetworkAddress& addr){m_addr_self = addr;}
-			GINL const NetworkAddress& GetSelfNetAddress() const{return m_addr_self;}
-			GINL const NetworkAddress& GetRemoteAddress() const{return m_conndesc.addr;}
+			GINL GAIA::GVOID SetSelfAddress(const Addr& addr){m_addr_self = addr;}
+			GINL const Addr& GetSelfNetAddress() const{return m_addr_self;}
+			GINL const Addr& GetRemoteAddress() const{return m_conndesc.addr;}
 			GINL GAIA::BL IsStabilityLink() const{return m_conndesc.bStabilityLink;}
-			GINL GAIA::GVOID SetSender(NetworkSender* pSender);
-			GINL NetworkSender* GetSender() const{return m_pSender;}
-			GINL GAIA::GVOID SetReceiver(NetworkReceiver* pReceiver);
-			GINL NetworkReceiver* GetReceiver() const{return m_pReceiver;}
+			GINL GAIA::GVOID SetSender(Sender* pSender);
+			GINL Sender* GetSender() const{return m_pSender;}
+			GINL GAIA::GVOID SetReceiver(Receiver* pReceiver);
+			GINL Receiver* GetReceiver() const{return m_pReceiver;}
 			GINL BL Send(const GAIA::U8* p, GAIA::U32 uSize);
-			GAIA_CLASS_OPERATOR_COMPARE(m_h, m_h, NetworkHandle);
+			GAIA_CLASS_OPERATOR_COMPARE(m_h, m_h, Handle);
 		private:
 			GINL GAIA::GVOID init()
 			{
@@ -167,21 +167,21 @@ namespace GAIA
 					m_sendque.pop_front();
 				}
 			}
-			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::NetworkAddress& na, GAIA::BL bRecvTrueSendFalse){}
+			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::Addr& na, GAIA::BL bRecvTrueSendFalse){}
 			GINL GAIA::BL FlushSendQueue();
 		private:
 			GAIA::N32 m_h;
-			NetworkAddress m_addr_self;
+			Addr m_addr_self;
 			ConnectDesc m_conndesc;
-			NetworkSender* m_pSender;
-			NetworkReceiver* m_pReceiver;
+			Sender* m_pSender;
+			Receiver* m_pReceiver;
 			GAIA::SYNC::Lock m_lock;
 			__SendQueueType m_sendque;
 			__SendListType m_tempsendlist;
 			GAIA::N32 m_nSendBufferSize;
 			GAIA::N32 m_nRecvBufferSize;
 		};
-		class NetworkListener : public GAIA::THREAD::Thread
+		class Listener : public GAIA::THREAD::Thread
 		{
 		public:
 			class ListenDesc : public GAIA::Base
@@ -195,7 +195,7 @@ namespace GAIA
 					nAcceptSendBufSize = 1024;
 					nAcceptRecvBufSize = 1024;
 				}
-				NetworkAddress addr;
+				Addr addr;
 				GAIA::N32 nListenSendBufSize;
 				GAIA::N32 nListenRecvBufSize;
 				GAIA::N32 nAcceptSendBufSize;
@@ -204,11 +204,11 @@ namespace GAIA
 			class AcceptCallBack
 			{
 			public:
-				virtual NetworkHandle* CreateNetworkHandle() = 0;
+				virtual GAIA::NETWORK::Handle* CreateNetworkHandle() = 0;
 			};
 		public:
-			GINL NetworkListener(){this->init();}
-			GINL ~NetworkListener(){if(this->IsBegin()) this->End();}
+			GINL Listener(){this->init();}
+			GINL ~Listener(){if(this->IsBegin()) this->End();}
 			GINL GAIA::GVOID SetDesc(const ListenDesc& desc){m_desc = desc;}
 			GINL const ListenDesc& GetDesc() const{return m_desc;}
 			GINL GAIA::GVOID SetAcceptCallBack(AcceptCallBack* pAcceptCallBack){m_pAcceptCallBack = pAcceptCallBack;}
@@ -217,7 +217,7 @@ namespace GAIA
 			GINL GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h){return GAIA::False;}
+			virtual GAIA::BL Accept(GAIA::NETWORK::Handle& h){return GAIA::False;}
 			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
 			GINL GAIA::GVOID init()
@@ -233,21 +233,21 @@ namespace GAIA
 			GAIA::U8 m_bStopCmd : 1;
 			AcceptCallBack* m_pAcceptCallBack;
 		};
-		class NetworkSender : public GAIA::THREAD::Thread
+		class Sender : public GAIA::THREAD::Thread
 		{
 		private:
-			friend class NetworkHandle;
+			friend class Handle;
 		private:
-			typedef GAIA::CTN::Set<GAIA::CTN::Ref<NetworkHandle> > __HandleSetType;
-			typedef GAIA::CTN::Vector<NetworkHandle*> __HandleListType;
+			typedef GAIA::CTN::Set<GAIA::CTN::Ref<Handle> > __HandleSetType;
+			typedef GAIA::CTN::Vector<Handle*> __HandleListType;
 		public:
-			GINL NetworkSender(){this->init();}
-			GINL ~NetworkSender(){if(this->IsBegin()) this->End(); this->RemoveAll();}
+			GINL Sender(){this->init();}
+			GINL ~Sender(){if(this->IsBegin()) this->End(); this->RemoveAll();}
 			GINL GAIA::BL Begin();
 			GINL GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		private:
-			GINL GAIA::BL Add(NetworkHandle& h)
+			GINL GAIA::BL Add(Handle& h)
 			{
 				__HandleSetType::_datatype finder = &h;
 				GAIA::SYNC::AutoLock al(m_lock);
@@ -257,7 +257,7 @@ namespace GAIA
 				m_hs.insert(&h);
 				return GAIA::True;
 			}
-			GINL GAIA::BL Remove(NetworkHandle& h)
+			GINL GAIA::BL Remove(Handle& h)
 			{
 				__HandleSetType::_datatype finder = &h;
 				GAIA::SYNC::AutoLock al(m_lock);
@@ -272,7 +272,7 @@ namespace GAIA
 				__HandleSetType::it iter = m_hs.front_it();
 				for(; !iter.empty(); ++iter)
 				{
-					NetworkHandle* pHandle = *iter;
+					Handle* pHandle = *iter;
 					GAIA_AST(!!pHandle);
 					pHandle->Release();
 				}
@@ -289,22 +289,22 @@ namespace GAIA
 			GAIA::U8 m_bStopCmd : 1;
 			__HandleListType m_hl;
 		};
-		class NetworkReceiver : public GAIA::THREAD::Thread
+		class Receiver : public GAIA::THREAD::Thread
 		{
 		private:
-			friend class NetworkHandle;
+			friend class Handle;
 		private:
-			typedef GAIA::CTN::Set<GAIA::CTN::Ref<NetworkHandle> > __HandleSetType;
-			typedef GAIA::CTN::Vector<NetworkHandle*> __HandleListType;
+			typedef GAIA::CTN::Set<GAIA::CTN::Ref<Handle> > __HandleSetType;
+			typedef GAIA::CTN::Vector<Handle*> __HandleListType;
 			typedef GAIA::CTN::Buffer __BufferType;
 		public:
-			GINL NetworkReceiver(){this->init();}
-			GINL ~NetworkReceiver(){if(this->IsBegin()) this->End(); this->RemoveAll();}
+			GINL Receiver(){this->init();}
+			GINL ~Receiver(){if(this->IsBegin()) this->End(); this->RemoveAll();}
 			GINL GAIA::BL Begin();
 			GINL GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		private:
-			GINL GAIA::BL Add(NetworkHandle& h)
+			GINL GAIA::BL Add(Handle& h)
 			{
 				__HandleSetType::_datatype finder = &h;
 				GAIA::SYNC::AutoLock al(m_lock);
@@ -314,7 +314,7 @@ namespace GAIA
 				m_hs.insert(&h);
 				return GAIA::True;
 			}
-			GINL GAIA::BL Remove(NetworkHandle& h)
+			GINL GAIA::BL Remove(Handle& h)
 			{
 				__HandleSetType::_datatype finder = &h;
 				GAIA::SYNC::AutoLock al(m_lock);
@@ -329,14 +329,14 @@ namespace GAIA
 				__HandleSetType::it iter = m_hs.front_it();
 				for(; !iter.empty(); ++iter)
 				{
-					NetworkHandle* pHandle = *iter;
+					Handle* pHandle = *iter;
 					GAIA_AST(!!pHandle);
 					pHandle->Release();
 				}
 				m_hs.destroy();
 			}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Receive(GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size){return GAIA::False;}
+			virtual GAIA::BL Receive(GAIA::NETWORK::Handle& s, const GAIA::U8* p, GAIA::U32 size){return GAIA::False;}
 			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
 			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_bStopCmd = GAIA::False; m_buf.resize(4096);}
