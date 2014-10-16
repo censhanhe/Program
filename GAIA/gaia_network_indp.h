@@ -551,8 +551,11 @@ namespace GAIA
 					{
 						Handle* pHandle = *iter;
 						GAIA_AST(!!pHandle);
-						pHandle->Reference();
-						m_hl.push_back(pHandle);
+						if(pHandle->m_h != GINVALID)
+						{
+							pHandle->Reference();
+							m_hl.push_back(pHandle);
+						}
 					}
 				}
 
@@ -614,8 +617,11 @@ namespace GAIA
 					{
 						Handle* pHandle = *iter;
 						GAIA_AST(!!pHandle);
-						pHandle->Reference();
-						m_hl.push_back(pHandle);
+						if(pHandle->m_h != GINVALID)
+						{
+							pHandle->Reference();
+							m_hl.push_back(pHandle);
+						}
 					}
 				}
 

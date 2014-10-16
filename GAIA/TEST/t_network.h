@@ -18,33 +18,71 @@ namespace GAIA_TEST
 	{
 	public:
 		GINL NReceiver(){this->init();}
-		virtual GAIA::BL Receive(GAIA::NETWORK::Handle& s, const GAIA::U8* p, GAIA::U32 size)
+		virtual GAIA::BL Receive(GAIA::NETWORK::Handle& h, const GAIA::U8* p, GAIA::U32 size)
 		{
-			return GAIA::False;
+			const GAIA::NETWORK::Addr& na = h.GetRemoteAddress();
+			GAIA::NETWORK::Addr curna;
+			curna.ip.FromString("127.0.0.1");
+			curna.uPort = 0;
+			if(curna.ip != na.ip)
+				return GAIA::False;
+			if(size <= 0)
+				return GAIA::False;
+			m_recv.push_back(p, size);
+			return GAIA::True;
 		}
 	public:
-		GINL GAIA::SIZE GetReceiveCount() const{}
+		GINL GAIA::SIZE GetReceiveCount() const
+		{
+			GAIA::SIZE sLen = GAIA::ALGO::strlen("HelloWorld");
+			if(m_recv.size() % sLen != 0)
+				return m_recv.size() / sLen;
+			GAIA::SIZE ret = 0;
+			for(GAIA::SIZE x = 0; x < m_recv.size(); x += sLen)
+			{
+				if(GAIA::ALGO::strcmpl(m_recv.front_ptr() + x, "HelloWorld", sLen) != 0)
+					return ret;
+				++ret;
+			}
+			return ret;
+		}
 	private:
 		GINL GAIA::GVOID init()
 		{
-			m_sRecvCount = 0;
 		}
 	private:
-		GAIA::SIZE m_sRecvCount;
+		GAIA::CTN::Vector<GAIA::U8> m_recv;
 	};
 
 	class NHandle : public GAIA::NETWORK::Handle
 	{
 	public:
+		GINL NHandle(){this->init();}
 		GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::Addr& na, GAIA::BL bRecvTrueSendFalse)
 		{
+			m_bIsLostConnection = GAIA::True;
 		}
+		GINL GAIA::BL IsLostConnection() const{return m_bIsLostConnection;}
+	private:
+		GINL GAIA::GVOID init()
+		{
+			m_bIsLostConnection = GAIA::False;
+		}
+	private:
+		GAIA::BL m_bIsLostConnection;
 	};
 
 	class NListener : public GAIA::NETWORK::Listener
 	{
 	public:
-		GINL NListener(){this->init();}
+		GINL NListener(NSender* pSender, NReceiver* pReceiver)
+		{
+			GAIA_AST(pSender != GNIL);
+			GAIA_AST(pReceiver != GNIL);
+			this->init();
+			m_pSender = pSender;
+			m_pReceiver = pReceiver;
+		}
 		virtual GAIA::BL Accept(GAIA::NETWORK::Handle& h)
 		{
 			const GAIA::NETWORK::Addr& na = h.GetRemoteAddress();
@@ -54,6 +92,8 @@ namespace GAIA_TEST
 			if(curna.ip != na.ip)
 				return GAIA::False;
 			++m_sConnectCount;
+			h.SetSender(m_pSender);
+			h.SetReceiver(m_pReceiver);
 			return GAIA::True;
 		}
 	public:
@@ -62,9 +102,13 @@ namespace GAIA_TEST
 		GINL GAIA::GVOID init()
 		{
 			m_sConnectCount = 0;
+			m_pSender = GNIL;
+			m_pReceiver = GNIL;
 		}
 	private:
 		GAIA::SIZE m_sConnectCount;
+		NSender* m_pSender;
+		NReceiver* m_pReceiver;
 	};
 
 	GINL GAIA::N32 t_network(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
@@ -75,7 +119,7 @@ namespace GAIA_TEST
 
 		NSender* pSender = new NSender;
 		NReceiver* pReceiver = new NReceiver;
-		NListener* pListener = new NListener;
+		NListener* pListener = new NListener(pSender, pReceiver);
 		NHandle* pHandle = new NHandle;
 
 		NListener::ListenDesc descListen;
@@ -99,20 +143,53 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		NHandle::ConnectDesc descConn;
-		descConn.reset();
-		descConn.addr.FromString(IPADDRESS_STRING);
-		if(!pHandle->Connect(descConn))
+		GAIA::SYNC::xsleep(100);
+
+		/* Stability link test. */
 		{
-			GTLINE2("Network sender connect failed!");
-			++nRet;
+			pHandle->SetSender(pSender);
+			pHandle->SetReceiver(pReceiver);
+
+			NHandle::ConnectDesc descConn;
+			descConn.reset();
+			descConn.addr.FromString(IPADDRESS_STRING);
+			descConn.bStabilityLink = GAIA::True;
+			if(!pHandle->Connect(descConn))
+			{
+				GTLINE2("Network sender connect failed!");
+				++nRet;
+			}
+
+			for(GAIA::SIZE x = 0; x < 1000; ++x)
+			{
+				if(!pHandle->Send(GRCAST(const GAIA::U8*)("HelloWorld"), GAIA::ALGO::strlen("HelloWorld")))
+				{
+					GTLINE2("Network handle send failed!");
+					++nRet;
+					break;
+				}
+			}
+
+			GAIA::SYNC::xsleep(2000);
+			if(pListener->GetConnectCount() != 1)
+			{
+				GTLINE2("Network sender connect failed!");
+				++nRet;
+			}
+			if(pReceiver->GetReceiveCount() != 1000)
+			{
+				GTLINE2("Network receive failed!");
+				++nRet;
+			}
+			if(pHandle->IsLostConnection())
+			{
+				GTLINE2("Network lost connection!");
+				++nRet;
+			}
 		}
 
-		GAIA::SYNC::xsleep(100);
-		if(pListener->GetConnectCount() != 1)
+		/* No-Stability link test. */
 		{
-			GTLINE2("Network sender connect failed!");
-			++nRet;
 		}
 
 		if(!pSender->End())

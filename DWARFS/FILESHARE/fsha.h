@@ -1689,9 +1689,9 @@ namespace DWARFS_FSHA
 			GINL NReceiver(){m_pFS = GNIL;}
 			GINL GAIA::GVOID SetFileShare(FileShare* pFS){m_pFS = pFS;}
 			GINL FileShare* GetFileShare() const{return m_pFS;}
-			virtual GAIA::BL Receive(GAIA::NETWORK::Handle& s, const GAIA::U8* p, GAIA::U32 size)
+			virtual GAIA::BL Receive(GAIA::NETWORK::Handle& h, const GAIA::U8* p, GAIA::U32 size)
 			{
-				return m_pFS->OnReceive(*(NHandle*)&s, p, size);
+				return m_pFS->OnReceive(*(NHandle*)&h, p, size);
 			}
 		private:
 			FileShare* m_pFS;

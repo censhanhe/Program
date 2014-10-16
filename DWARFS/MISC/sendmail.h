@@ -10,10 +10,10 @@ namespace DWARFS_MISC
 		{
 		public:
 			GINL SendMailNReceiver(SendMail* pSendMail){m_pSendMail = pSendMail;}
-			virtual GAIA::BL Receive(GAIA::NETWORK::Handle& s, const GAIA::U8* p, GAIA::U32 size)
+			virtual GAIA::BL Receive(GAIA::NETWORK::Handle& h, const GAIA::U8* p, GAIA::U32 size)
 			{
 				GPCHR_NULL_RET(m_pSendMail, GAIA::False);
-				return m_pSendMail->OnReceive(s, p, size);
+				return m_pSendMail->OnReceive(h, p, size);
 			}
 		private:
 			SendMail* m_pSendMail;
