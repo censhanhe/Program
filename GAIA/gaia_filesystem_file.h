@@ -8,6 +8,8 @@ namespace GAIA
 		class FileBase : public GAIA::Entity
 		{
 		public:
+			typedef GAIA::N64 __FileSizeType;
+		public:
 			GAIA_ENUM_BEGIN(OPEN_TYPE)
 				OPEN_TYPE_READ	= 1 << 0,
 				OPEN_TYPE_WRITE = 1 << 1,
@@ -17,12 +19,12 @@ namespace GAIA
 			virtual GAIA::BL Open(const GAIA::TCH* filekey, const GAIA::UM& opentype) = 0;
 			virtual GAIA::BL Close() = 0;
 			virtual GAIA::BL IsOpen() const = 0;
-			virtual GAIA::N64 Size() const = 0;
-			virtual GAIA::BL Resize(const GAIA::N64& size) = 0;
-			virtual GAIA::N64 Read(GAIA::GVOID* pDst, const GAIA::N64& size) = 0;
-			virtual GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size) = 0;
-			virtual GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::N64& offset) = 0;
-			virtual const GAIA::N64& Tell() const = 0;
+			virtual GAIA::FSYS::FileBase::__FileSizeType Size() const = 0;
+			virtual GAIA::BL Resize(const GAIA::FSYS::FileBase::__FileSizeType& size) = 0;
+			virtual GAIA::FSYS::FileBase::__FileSizeType Read(GAIA::GVOID* pDst, const GAIA::FSYS::FileBase::__FileSizeType& size) = 0;
+			virtual GAIA::FSYS::FileBase::__FileSizeType Write(const GAIA::GVOID* pSrc, const GAIA::FSYS::FileBase::__FileSizeType& size) = 0;
+			virtual GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::FSYS::FileBase::__FileSizeType& offset) = 0;
+			virtual const GAIA::FSYS::FileBase::__FileSizeType& Tell() const = 0;
 			virtual GAIA::BL Flush() = 0;
 		private:
 		};
@@ -35,8 +37,8 @@ namespace GAIA
 			GINL GAIA::BL Open(const GAIA::TCH* filekey, const GAIA::UM& opentype);
 			GINL GAIA::BL Close();
 			GINL GAIA::BL IsOpen() const{return m_pFile != GNIL;}
-			GINL GAIA::N64 Size() const{return m_size;}
-			GINL GAIA::BL Resize(const GAIA::N64& size);
+			GINL GAIA::FSYS::FileBase::__FileSizeType Size() const{return m_size;}
+			GINL GAIA::BL Resize(const GAIA::FSYS::FileBase::__FileSizeType& size);
 			template<typename _ObjType> GAIA::BL Read(_ObjType& obj)
 			{
 				GAIA_AST(!!m_pFile);
@@ -46,7 +48,7 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GINL GAIA::N64 Read(GAIA::GVOID* pDst, const GAIA::N64& size);
+			GINL GAIA::FSYS::FileBase::__FileSizeType Read(GAIA::GVOID* pDst, const GAIA::FSYS::FileBase::__FileSizeType& size);
 			template<typename _ObjType> GAIA::BL Write(const _ObjType& obj)
 			{
 				GAIA_AST(!!m_pFile);
@@ -56,10 +58,10 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GINL GAIA::N64 Write(const GAIA::GVOID* pSrc, const GAIA::N64& size);
-			template<typename _ParamType> GAIA::N64 WriteText(const _ParamType* pszText){return this->Write(pszText, GAIA::ALGO::strlen(pszText) * sizeof(_ParamType));}
-			GINL GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::N64& offset);
-			GINL const GAIA::N64& Tell() const{return m_offset;}
+			GINL GAIA::FSYS::FileBase::__FileSizeType Write(const GAIA::GVOID* pSrc, const GAIA::FSYS::FileBase::__FileSizeType& size);
+			template<typename _ParamType> GAIA::FSYS::FileBase::__FileSizeType WriteText(const _ParamType* pszText){return this->Write(pszText, GAIA::ALGO::strlen(pszText) * sizeof(_ParamType));}
+			GINL GAIA::BL Seek(SEEK_TYPE seektype, const GAIA::FSYS::FileBase::__FileSizeType& offset);
+			GINL const GAIA::FSYS::FileBase::__FileSizeType& Tell() const{return m_offset;}
 			GINL GAIA::BL Flush();
 			template<typename _ObjType> File& operator >> (_ObjType& t){this->Read(t); return *this;}
 			template<typename _ObjType> File& operator << (const _ObjType& t){this->Write(t); return *this;}
@@ -77,15 +79,15 @@ namespace GAIA
 			GINL File& operator << (const GAIA::UM& t){return *this;}
 			GINL File& operator >> (GAIA::WCH& t){return *this;}
 			GINL File& operator << (const GAIA::WCH& t){return *this;}
-			GINL GAIA::N64 Read(GAIA::NM* pDst, const GAIA::N64& size){return GAIA::False;}
-			GINL GAIA::N64 Write(const GAIA::NM* pDst, const GAIA::N64& size){return GAIA::False;} GINL GAIA::N64 Write(GAIA::NM* pDst, const GAIA::N64& size){return GAIA::False;}
-			GINL GAIA::N64 Read(GAIA::UM* pDst, const GAIA::N64& size){return GAIA::False;}
-			GINL GAIA::N64 Write(const GAIA::UM* pDst, const GAIA::N64& size){return GAIA::False;} GINL GAIA::N64 Write(GAIA::UM* pDst, const GAIA::N64& size){return GAIA::False;}
+			GINL GAIA::FSYS::FileBase::__FileSizeType Read(GAIA::NM* pDst, const GAIA::FSYS::FileBase::__FileSizeType& size){return GAIA::False;}
+			GINL GAIA::FSYS::FileBase::__FileSizeType Write(const GAIA::NM* pDst, const GAIA::FSYS::FileBase::__FileSizeType& size){return GAIA::False;} GINL GAIA::FSYS::FileBase::__FileSizeType Write(GAIA::NM* pDst, const GAIA::FSYS::FileBase::__FileSizeType& size){return GAIA::False;}
+			GINL GAIA::FSYS::FileBase::__FileSizeType Read(GAIA::UM* pDst, const GAIA::FSYS::FileBase::__FileSizeType& size){return GAIA::False;}
+			GINL GAIA::FSYS::FileBase::__FileSizeType Write(const GAIA::UM* pDst, const GAIA::FSYS::FileBase::__FileSizeType& size){return GAIA::False;} GINL GAIA::FSYS::FileBase::__FileSizeType Write(GAIA::UM* pDst, const GAIA::FSYS::FileBase::__FileSizeType& size){return GAIA::False;}
 	#endif
 		private:
 			GAIA::UM m_fileopentype;
-			GAIA::N64 m_size;
-			GAIA::N64 m_offset;
+			GAIA::FSYS::FileBase::__FileSizeType m_size;
+			GAIA::FSYS::FileBase::__FileSizeType m_offset;
 			GAIA::GVOID* m_pFile;
 		};
 	};

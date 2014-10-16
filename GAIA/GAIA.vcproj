@@ -2477,6 +2477,14 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="NETWORK"
+						>
+						<File
+							RelativePath=".\TEST\t_network.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

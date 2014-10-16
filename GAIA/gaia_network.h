@@ -217,7 +217,7 @@ namespace GAIA
 			GINL GAIA::BL End();
 			GINL GAIA::BL IsBegin() const{return m_bBegin;}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Accept(NetworkHandle& h){return GAIA::False;}
+			virtual GAIA::BL Accept(GAIA::NETWORK::NetworkHandle& h){return GAIA::False;}
 			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
 			GINL GAIA::GVOID init()
@@ -336,7 +336,7 @@ namespace GAIA
 				m_hs.destroy();
 			}
 		protected: // Interface for derived class callback.
-			virtual GAIA::BL Receive(NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size){return GAIA::False;}
+			virtual GAIA::BL Receive(GAIA::NETWORK::NetworkHandle& s, const GAIA::U8* p, GAIA::U32 size){return GAIA::False;}
 			GINL virtual GAIA::GVOID WorkProcedure();
 		private:
 			GINL GAIA::GVOID init(){m_bBegin = GAIA::False; m_bStopCmd = GAIA::False; m_buf.resize(4096);}

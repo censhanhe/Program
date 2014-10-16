@@ -56,6 +56,8 @@
 #include "t_filesystem_file.h"
 #include "t_filesystem_directory.h"
 
+#include "t_network.h"
+
 #include "t_dataphase_xml.h"
 
 #include "t_locale.h"
@@ -140,6 +142,8 @@ namespace GAIA_TEST
 
 			GTLINE1("File: File test begin!"); nRet += t_filesystem_file(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("File: Directory test begin!"); nRet += t_filesystem_directory(file, prt); GTLINE1("End"); GTLINE("\t");
+
+			GTLINE1("File: Network test begin!"); nRet += t_network(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("DataPhase: XML test begin!"); nRet += t_dataphase_xml(file, prt); GTLINE1("End"); GTLINE("\t");
 

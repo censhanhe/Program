@@ -100,7 +100,7 @@ namespace GAIA_TEST
 			GTLINE2("Write file failed!");
 			++nRet;
 		}
-		if(tfile.Size() != GAIA::ALGO::strlen("Hello World") + sizeof(uData))
+		if(tfile.Size() != (GAIA::FSYS::File::__FileSizeType)(GAIA::ALGO::strlen("Hello World") + sizeof(uData)))
 		{
 			GTLINE2("File size error!");
 			++nRet;
@@ -110,7 +110,7 @@ namespace GAIA_TEST
 			GTLINE2("Write file failed!");
 			++nRet;
 		}
-		if(tfile.Size() != GAIA::ALGO::strlen("Hello World") + sizeof(uData) + GAIA::ALGO::strlen("Hello Kitty"))
+		if(tfile.Size() != (GAIA::FSYS::File::__FileSizeType)(GAIA::ALGO::strlen("Hello World") + sizeof(uData) + GAIA::ALGO::strlen("Hello Kitty")))
 		{
 			GTLINE2("File size error!");
 			++nRet;
@@ -130,7 +130,7 @@ namespace GAIA_TEST
 			GTLINE2("IsOpen error!");
 			++nRet;
 		}
-		if(tfile.Size() != GAIA::ALGO::strlen("Hello World") + sizeof(uData) + GAIA::ALGO::strlen("Hello Kitty"))
+		if(tfile.Size() != (GAIA::FSYS::File::__FileSizeType)(GAIA::ALGO::strlen("Hello World") + sizeof(uData) + GAIA::ALGO::strlen("Hello Kitty")))
 		{
 			GTLINE2("File size error!");
 			++nRet;
