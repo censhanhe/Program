@@ -28,3 +28,10 @@ FRAMEWORK
 
 NETWORK
 	Remove network test case's xsleep function.
+	
+LOG
+	Add global log system.
+	
+
+EXCEPTION
+	Add exception system.
