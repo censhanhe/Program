@@ -81,15 +81,16 @@ namespace GAIA
 			{
 				if(m_nodes.empty())
 					return;
+				GAIA::SYNC::AutoLock al(m_lock);
 				if(m_pCallBack != GNIL)
 				{
-					GAIA::SYNC::AutoLock al(m_lock);
 					for(__NodeList::_sizetype x = 0; x < m_nodes.size(); ++x)
 					{
-
+						Node& n = m_nodes[x];
+						m_pCallBack->LogWrite(n.logtime, n.type, n.filter, n.strLog);
 					}
-					m_nodes.clear();
 				}
+				m_nodes.clear();
 			}
 		private:
 			GINL GAIA::GVOID init()

@@ -8,6 +8,7 @@
 	GAIA::Platform g_gaia_platform;
 	GAIA::SYNC::Lock g_gaia_localelock;
 	GAIA::CHARSET_TYPE g_gaia_charsettype = GAIA::CHARSET_TYPE_SYS;
+	GAIA::LOG::Log g_gaia_log;
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 	GAIA::SYNC::Lock g_gaia_windowlistlock;
