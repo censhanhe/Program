@@ -1255,10 +1255,10 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="ERROR"
+					Name="EXCEPTION"
 					>
 					<File
-						RelativePath=".\gaia_error.h"
+						RelativePath=".\gaia_exception.h"
 						>
 					</File>
 				</Filter>

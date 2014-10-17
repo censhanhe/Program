@@ -3,7 +3,7 @@
 
 namespace GAIA
 {
-	namespace DEBUG_MANAGEMENT
+	namespace DEBUG
 	{
 		class AstException
 		{
@@ -23,7 +23,7 @@ namespace GAIA
 								GAIA::CH ch;\
 								prt >> ch;\
 								if(ch == '1')\
-									throw GAIA::DEBUG_MANAGEMENT::AstException(__FILE__, __LINE__);\
+									throw GAIA::DEBUG::AstException(__FILE__, __LINE__);\
 							}\
 						}while(0)
 #else
@@ -40,7 +40,7 @@ namespace GAIA
 										GAIA::CH ch;\
 										prt >> ch;\
 										if(ch == '1')\
-											throw GAIA::DEBUG_MANAGEMENT::AstException(__FILE__, __LINE__);\
+											throw GAIA::DEBUG::AstException(__FILE__, __LINE__);\
 									}\
 								}while(0)
 #else

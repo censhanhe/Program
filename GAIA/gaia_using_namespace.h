@@ -3,8 +3,8 @@
 
 using namespace GAIA;
 using namespace GAIA::PRINT;
-using namespace GAIA::DEBUG_MANAGEMENT;
-using namespace GAIA::ERROR_MANAGEMENT;
+using namespace GAIA::DEBUG;
+using namespace GAIA::EXCEPTION;
 using namespace GAIA::SYSTEM;
 using namespace GAIA::SYNC;
 using namespace GAIA::MATH;

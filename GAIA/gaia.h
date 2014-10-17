@@ -15,7 +15,7 @@
 #include	"gaia_print_format.h"
 #include	"gaia_print.h"
 #include	"gaia_assert.h"
-#include	"gaia_error.h"
+#include	"gaia_exception.h"
 
 #include	"gaia_system.h"
 
