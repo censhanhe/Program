@@ -42,14 +42,14 @@ namespace GAIA
 		{
 			if(!this->enable_write())
 				return *this;
-			std::cout << t;
+			std::cout << (GAIA::N32)t;
 			return *this;
 		}
 		GINL Print& Print::operator << (GAIA::N16 t)
 		{
 			if(!this->enable_write())
 				return *this;
-			std::cout << t;
+			std::cout << (GAIA::N32)t;
 			return *this;
 		}
 		GINL Print& Print::operator << (GAIA::N32 t)
@@ -70,14 +70,14 @@ namespace GAIA
 		{
 			if(!this->enable_write())
 				return *this;
-			std::cout << t;
+			std::cout << (GAIA::U32)t;
 			return *this;
 		}
 		GINL Print& Print::operator << (GAIA::U16 t)
 		{
 			if(!this->enable_write())
 				return *this;
-			std::cout << t;
+			std::cout << (GAIA::U32)t;
 			return *this;
 		}
 		GINL Print& Print::operator << (GAIA::U32 t)
@@ -164,14 +164,18 @@ namespace GAIA
 		{
 			if(!this->enable_read())
 				return *this;
-			std::cin >> t;
+			GAIA::N32 temp;
+			std::cin >> temp;
+			t = GSCAST(GAIA::N8)(temp);
 			return *this;
 		}
 		GINL Print& Print::operator >> (GAIA::N16& t)
 		{
 			if(!this->enable_read())
 				return *this;
-			std::cin >> t;
+			GAIA::N32 temp;
+			std::cin >> temp;
+			t = GSCAST(GAIA::N16)(temp);
 			return *this;
 		}
 		GINL Print& Print::operator >> (GAIA::N32& t)
@@ -192,14 +196,18 @@ namespace GAIA
 		{
 			if(!this->enable_read())
 				return *this;
-			std::cin >> t;
+			GAIA::U32 temp;
+			std::cin >> temp;
+			t = GSCAST(GAIA::U8)(temp);
 			return *this;
 		}
 		GINL Print& Print::operator >> (GAIA::U16& t)
 		{
 			if(!this->enable_read())
 				return *this;
-			std::cin >> t;
+			GAIA::U32 temp;
+			std::cin >> temp;
+			t = GSCAST(GAIA::U16)(temp);
 			return *this;
 		}
 		GINL Print& Print::operator >> (GAIA::U32& t)
