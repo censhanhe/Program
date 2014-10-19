@@ -925,6 +925,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="BOOK"
+						>
+						<File
+							RelativePath=".\gaia_container_basicbook.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_container_book.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ALGORITHM"
@@ -2270,6 +2282,10 @@
 						</File>
 						<File
 							RelativePath=".\TEST\t_container_bitset.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_book.h"
 							>
 						</File>
 						<File

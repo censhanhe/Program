@@ -32,9 +32,9 @@ namespace GAIA
 				_SizeType useindex;
 			};
 		private:
-			typedef GAIA::CONTAINER::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __ListType;
-			typedef GAIA::CONTAINER::BasicVector<_SizeType, _SizeType, _SizeIncreaserType> __UseListType;
-			typedef GAIA::CONTAINER::BasicStack<_SizeType, _SizeType, _SizeIncreaserType> __FreeStackType;
+			typedef GAIA::CTN::BasicVector<_DataType, _SizeType, _SizeIncreaserType> __ListType;
+			typedef GAIA::CTN::BasicVector<_SizeType, _SizeType, _SizeIncreaserType> __UseListType;
+			typedef GAIA::CTN::BasicStack<_SizeType, _SizeType, _SizeIncreaserType> __FreeStackType;
 		private:
 			__ListType m_list;
 			__UseListType m_uselist;
