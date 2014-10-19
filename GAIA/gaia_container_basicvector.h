@@ -255,6 +255,8 @@ namespace GAIA
 			GINL GAIA::BL erase(const _SizeType& index)
 			{
 				GAIA_AST(index >= 0 && index < this->size());
+				if(index < 0)
+					return GAIA::False;
 				if(index >= this->size())
 					return GAIA::False;
 				if(index != this->size() - 1)
