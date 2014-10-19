@@ -73,7 +73,7 @@ namespace GAIA
 				}
 				virtual GAIA::BL check() const
 				{
-					if(!deseFire.check())
+					if(!descFire.check())
 						return GAIA::False;
 					if(!descDir.check())
 						return GAIA::False;
@@ -99,23 +99,13 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GINL GAIA::GVOID Destroy()
-			{
-				if(m_pTimerMgr != GNIL)
-					m_pTimerMgr->Unregist(*this);
-				GAIA_RELEASE_SAFE(m_pTimerMgr);
-			}
+			GINL GAIA::GVOID Destroy();
 			GINL const GAIA::TIMER::Timer::TimerDesc& GetDesc() const{return m_desc;}
 
 			GINL const GAIA::TIMER::Timer::TimerFireDesc& GetFireDesc() const{return m_desc.descFire;}
-			GINL GAIA::BL SetFireDesc(const GAIA::TIMER::Timer::TimerFireDesc& descFire){m_desc.descFire = descFire; reture GAIA::True;}
+			GINL GAIA::BL SetFireDesc(const GAIA::TIMER::Timer::TimerFireDesc& descFire){m_desc.descFire = descFire; return GAIA::True;}
 
-			GINL GAIA::TIMER::TimerMgr* GetTimerMgr() const
-			{
-				if(m_pTimerMgr != GNIL)
-					m_pTimerMgr->Reference();
-				return m_pTimerMgr;
-			}
+			GINL GAIA::TIMER::TimerMgr* GetTimerMgr() const;
 			GINL GAIA::BL IsRegisted() const{return m_pTimerMgr != GNIL;}
 
 			GINL GAIA::BL Pause()
@@ -138,15 +128,7 @@ namespace GAIA
 				m_nFireTimes = 0;
 				m_pTimerMgr = GNIL;
 			}
-			GINL GAIA::GVOID SetTimerMgr(GAIA::TIMER::TimerMgr* pTimerMgr)
-			{
-				GAIA_RELEASE_SAFE(m_pTimerMgr);
-				if(pTimerMgr != GNIL)
-				{
-					m_pTimerMgr = pTimerMgr;
-					m_pTimerMgr->Reference();
-				}
-			}
+			GINL GAIA::GVOID SetTimerMgr(GAIA::TIMER::TimerMgr* pTimerMgr);
 
 		private:
 			TimerDesc m_desc;
@@ -183,6 +165,7 @@ namespace GAIA
 			{
 				if(!desc.check())
 					return GAIA::False;
+				this->init_groups();
 				return GAIA::True;
 			}
 			GINL GAIA::GVOID Destroy()
@@ -199,7 +182,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL Unregist(GAIA::TIMER::Timer& timer)
 			{
-				if(!this->IsRegist(timer))
+				if(!this->IsRegisted(timer))
 					return GAIA::False;
 
 				return GAIA::True;
@@ -215,7 +198,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 
-			GINL GAIA::BL Update(const __MicroSecType& nEscape)
+			GINL GAIA::BL Update(const GAIA::TIMER::Timer::__MicroSecType& nEscape)
 			{
 				return GAIA::True;
 			}
@@ -224,9 +207,9 @@ namespace GAIA
 			class Group : public GAIA::Base
 			{
 			public:
-				__MicroSecType nEscape;
-				__MicroSecType nLastUpdate;
-				__TimerList timers;
+				GAIA::TIMER::Timer::__MicroSecType nEscape;
+				GAIA::TIMER::Timer::__MicroSecType nLastUpdate;
+				GAIA::TIMER::Timer::__TimerList timers;
 			};
 
 		private:
@@ -238,7 +221,7 @@ namespace GAIA
 			GINL GAIA::GVOID init_groups()
 			{
 				GAIA_AST(m_groups.empty());
-				m_groups.resize(x);
+				m_groups.resize(m_desc.sGroupCount);
 				for(GAIA::SIZE x = 0; x < m_desc.sGroupCount; ++x)
 				{
 					Group& g = m_groups[x];
@@ -253,7 +236,7 @@ namespace GAIA
 		private:
 			TimerMgrDesc m_desc;
 			__GroupList m_groups;
-			__MicroSecType m_nLastUpdateTime;
+			GAIA::TIMER::Timer::__MicroSecType m_nLastUpdateTime;
 		};
 	};
 };

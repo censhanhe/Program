@@ -2129,6 +2129,10 @@
 						RelativePath=".\gaia_timer_timer.h"
 						>
 					</File>
+					<File
+						RelativePath=".\gaia_timer_timer_impl.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
