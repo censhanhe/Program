@@ -140,8 +140,8 @@ namespace GAIA
 		public:
 			GINL BasicBook(){this->init();}
 			GINL ~BasicBook(){}
-			GINL GAIA::BL empty() const{return m_uselist.empty();}
-			GINL _SizeType size() const{return m_uselist.size();}
+			GINL GAIA::BL empty() const{return m_usedlist.empty();}
+			GINL _SizeType size() const{return m_usedlist.size();}
 			GINL _SizeType capacity() const{return m_fixedlist.capacity();}
 			GINL GAIA::GVOID reserve(const _SizeType& size)
 			{
@@ -149,19 +149,19 @@ namespace GAIA
 					return;
 				m_fixedlist.reserve(size);
 				m_freestack.reserve(size);
-				m_uselist.reserve(size);
+				m_usedlist.reserve(size);
 			}
 			GINL GAIA::GVOID clear()
 			{
 				m_fixedlist.clear();
 				m_freestack.clear();
-				m_uselist.clear();
+				m_usedlist.clear();
 			}
 			GINL GAIA::GVOID destroy()
 			{
 				m_fixedlist.destroy();
 				m_freestack.destroy();
-				m_uselist.destroy();
+				m_usedlist.destroy();
 			}
 			GINL _SizeType set(const _DataType& t)
 			{
@@ -173,23 +173,24 @@ namespace GAIA
 				}
 				else
 				{
-					n.fixedindex = m_freestack.back()
+					n.fixedindex = m_freestack.back();
 					m_freestack.pop_back();
 				}
 				Node& nref = m_fixedlist[n.fixedindex];
 				nref.t = t;
-				m_uselist.push_back(nref.fixedindex);
-				nref.useindex = m_uselist.size() - 1;
-				return nref.useindex;
+				nref.fixedindex = n.fixedindex;
+				m_usedlist.push_back(nref.fixedindex);
+				nref.usedindex = m_usedlist.size() - 1;
+				return nref.usedindex;
 			}
-			GINL GAIA::BL erase(const _SizeType& useindex)
+			GINL GAIA::BL erase(const _SizeType& usedindex)
 			{
-				GAIA_AST(useindex >= 0 && useindex < m_uselist.size());
-				if(useindex < 0)
+				GAIA_AST(usedindex >= 0 && usedindex < m_usedlist.size());
+				if(usedindex < 0)
 					return GAIA::False;
-				if(useindex >= m_uselist.size())
+				if(usedindex >= m_usedlist.size())
 					return GAIA::False;
-				_SizeType fixedindex = m_uselist[useindex];
+				_SizeType fixedindex = m_usedlist[usedindex];
 				GAIA_AST(fixedindex >= 0 && fixedindex < m_fixedlist.size());
 				if(fixedindex < 0)
 					return GAIA::False;
@@ -197,26 +198,32 @@ namespace GAIA
 					return GAIA::False;
 				Node& nref = m_fixedlist[fixedindex];
 				GAIA_AST(nref.fixedindex != GINVALID);
-				GAIA_AST(nref.useindex != GINVALID);
+				GAIA_AST(nref.usedindex != GINVALID);
 				nref.fixedindex = GINVALID;
-				nref.useindex = GINVALID;
+				nref.usedindex = GINVALID;
 				m_freestack.push_back(fixedindex);
-				if(useindex + 1 != m_uselist.size())
-					m_uselist[useindex] = m_uselist.back();
-				m_uselist.resize(m_uselist.size() - 1);
+				if(usedindex + 1 != m_usedlist.size())
+					m_usedlist[usedindex] = m_usedlist.back();
+				m_usedlist.resize(m_usedlist.size() - 1);
 				return GAIA::True;
 			}
-			GINL _SizeType useindex(const _SizeType& fixedindex) const{return m_fixedlist[fixedindex].useindex;}
-			GINL _SizeType fixedindex(const _SizeType& useindex) const{return m_uselist[useindex];}
-			GINL const _DataType& operator[](const _SizeType& useindex) const{return m_fixedlist[m_uselist[useindex]].t;}
+			GINL _SizeType usedindex(const _SizeType& fixedindex) const
+			{
+				_SizeType ret = m_fixedlist[fixedindex].usedindex;
+				if(ret >= m_usedlist.size())
+					return GINVALID;
+				return ret;
+			}
+			GINL _SizeType fixedindex(const _SizeType& usedindex) const{return m_usedlist[usedindex];}
+			GINL const _DataType& operator[](const _SizeType& usedindex) const{return m_fixedlist[m_usedlist[usedindex]].t;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				m_fixedlist = src.m_fixedlist;
 				m_freestack = src.m_freestack;
-				m_uselist = src.m_uselist;
+				m_usedlist = src.m_usedlist;
 				return *this;
 			}
-			GINL GAIA::BL operator == (const __MyType& src)
+			GINL GAIA::BL operator == (const __MyType& src) const
 			{
 				if(this->size() == src.size())
 				{
@@ -263,9 +270,9 @@ namespace GAIA
 			}
 			GINL GAIA::BL operator <= (const __MyType& src) const
 			{
-				if(this->size() > src.size())
+				if(this->size() < src.size())
 					return GAIA::True;
-				else if(this->size() < src.size())
+				else if(this->size() > src.size())
 					return GAIA::False;
 				else
 				{
@@ -353,7 +360,7 @@ namespace GAIA
 			public:
 				_DataType t;
 				_SizeType fixedindex;
-				_SizeType useindex;
+				_SizeType usedindex;
 			};
 		private:
 			typedef GAIA::CTN::BasicVector<Node, _SizeType, _SizeIncreaserType> __ListType;
@@ -364,7 +371,7 @@ namespace GAIA
 		private:
 			__ListType m_fixedlist;
 			__FreeStackType m_freestack;
-			__UseListType m_uselist;
+			__UseListType m_usedlist;
 		};
 	};
 };
