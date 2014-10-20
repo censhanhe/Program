@@ -321,9 +321,9 @@ namespace GAIA
 			}
 			GINL GAIA::BL operator <= (const __MyType& src) const
 			{
-				if(this->size() > src.size())
+				if(this->size() < src.size())
 					return GAIA::True;
-				else if(this->size() < src.size())
+				else if(this->size() > src.size())
 					return GAIA::False;
 				else
 				{
