@@ -252,6 +252,8 @@ namespace GAIA
 				this->frommsecond(usecond / 1000);
 				usec = usecond % 1000;
 			}
+			GINL GAIA::GVOID dayinc(){}
+			GINL GAIA::GVOID daydec(){}
 		public:
 			GAIA::N16 y; 	// Year.
 			GAIA::N8 mo; 	// Month.
