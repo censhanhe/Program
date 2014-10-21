@@ -160,6 +160,14 @@ namespace GAIA
 			template<typename _ParamSizeType, _ParamSizeType _Size> BasicString(const GAIA::CTN::BasicChars<_DataType, _ParamSizeType, _Size>& src){this->operator = (src);}
 			GINL ~BasicString(){this->destroy();}
 			GAIA_CONTAINER_PROXY
+			GINL GAIA::GVOID proxy(const _DataType* p)
+			{
+				m_pFront = GCCAST(const _DataType*)(p);
+				if(m_pFront != GNIL)
+					m_capacity = m_size = GAIA::ALGO::strlen(m_pFront);
+				else
+					m_capacity = m_size = 0;
+			}
 			GINL GAIA::BL empty() const{if(this->size() == 0) return GAIA::True; return this->front_ptr()[0] == 0;}
 			GINL _SizeType size() const{if(m_size == 0) return 0; return m_size - 1;}
 			GINL _SizeType capacity() const{if(m_capacity == 0) return 0; return m_capacity - 1;}
