@@ -21,6 +21,11 @@ Render
 Timer
 	Timer implement.
 	
+
+Time
+	toyear change to year.
+	
+	
 	
 Math
 	MTX33, MTX22, MTX43 implement.
@@ -39,3 +44,8 @@ LOG
 
 EXCEPTION
 	Add exception system.
+	
+
+DataResearch
+	Pair operation end's special operations.
+	Change U64 to N64.

@@ -145,20 +145,30 @@ namespace GAIA
 			GINL GAIA::BL operator < (const Time& src) const{return !this->operator >= (src);}
 			GINL Time operator + (const Time& src) const
 			{
-				Time ret;
+				Time ret = *this;
+				ret += src;
 				return ret;
 			}
 			GINL Time operator - (const Time& src) const
 			{
-				Time ret;
+				Time ret = *this;
+				ret -= src;
 				return ret;
 			}
-			GINL const Time& operator += (const Time& src)
+			GINL Time& operator += (const Time& src)
 			{
+				GAIA::U64 uself = this->tousecond();
+				GAIA::U64 u = src.tousecond();
+				uself += u;
+				this->fromsecond(uself);
 				return *this;
 			}
-			GINL const Time& operator -= (const Time& src)
+			GINL Time& operator -= (const Time& src)
 			{
+				GAIA::U64 uself = this->tousecond();
+				GAIA::U64 u = src.tousecond();
+				uself -= u;
+				this->fromsecond(uself);
 				return *this;
 			}
 			GINL GAIA::GVOID systime();
@@ -252,8 +262,18 @@ namespace GAIA
 				this->frommsecond(usecond / 1000);
 				usec = usecond % 1000;
 			}
-			GINL GAIA::GVOID dayinc(){}
-			GINL GAIA::GVOID daydec(){}
+			GINL GAIA::GVOID dayinc()
+			{
+			}
+			GINL GAIA::GVOID daydec()
+			{
+			}
+			GINL GAIA::GVOID string(const GAIA::TCH* psz)
+			{
+			}
+			GINL GAIA::GVOID string(GAIA::TCH* psz) const
+			{
+			}
 		public:
 			GAIA::N16 y; 	// Year.
 			GAIA::N8 mo; 	// Month.
