@@ -165,6 +165,25 @@ namespace GAIA
 			GAIA::N16 msec; // MilliSecond.
 			GAIA::N16 usec; // MicroSecond.
 		};
+		GINL GAIA::N32 yeardays(GAIA::N16 year)
+		{
+			if(year % 4 == 0 || year % 100 == 0 || year % 400 == 0)
+				return 366;
+			return 365;
+		}
+		GINL GAIA::N32 monthdays(GAIA::N32 year, GAIA::N32 month)
+		{
+			static const GAIA::N32 DAYS[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+			if(month == 2)
+			{
+				if(year % 4 == 0 || year % 100 == 0 || year % 400 == 0)
+					return 29;
+				else
+					return 28;
+			}
+			else
+				return DAYS[month];
+		}
 		GINL GAIA::U64 clock_time(); // return value is micro second from 1970.1.1.
 		GINL GAIA::U64 tick_time(); // return value is micro second from process startuped.
 	};
