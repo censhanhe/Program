@@ -42,8 +42,76 @@ namespace GAIA
 			}
 			GINL GAIA::BL operator == (const Time& src) const{return y == src.y && mo == src.mo && d == src.d && h == src.h && mi == src.mi && sec == src.sec && msec == src.msec && usec == src.usec;}
 			GINL GAIA::BL operator != (const Time& src) const{return !this->operator == (src);}
-			GINL GAIA::BL operator >= (const Time& src) const{return GAIA::ALGO::xmemcmp(this, &src, sizeof(src)) >= 0;}
-			GINL GAIA::BL operator <= (const Time& src) const{return GAIA::ALGO::xmemcmp(this, &src, sizeof(src)) <= 0;}
+			GINL GAIA::BL operator >= (const Time& src) const
+			{
+				if(y > src.y)
+					return GAIA::True;
+				else if(y < src.y)
+					return GAIA::False;
+				if(mo > src.mo)
+					return GAIA::True;
+				else if(mo < src.mo)
+					return GAIA::False;
+				if(d > src.d)
+					return GAIA::True;
+				else if(d < src.d)
+					return GAIA::False;
+				if(h > src.h)
+					return GAIA::True;
+				else if(h < src.h)
+					return GAIA::False;
+				if(mi > src.mi)
+					return GAIA::True;
+				else if(mi < src.mi)
+					return GAIA::False;
+				if(sec > src.sec)
+					return GAIA::True;
+				else if(sec < src.sec)
+					return GAIA::False;
+				if(msec > src.msec)
+					return GAIA::True;
+				else if(msec < src.msec)
+					return GAIA::False;
+				if(usec >= src.usec)
+					return GAIA::True;
+				else
+					return GAIA::False;
+			}
+			GINL GAIA::BL operator <= (const Time& src) const
+			{
+				if(y < src.y)
+					return GAIA::True;
+				else if(y > src.y)
+					return GAIA::False;
+				if(mo < src.mo)
+					return GAIA::True;
+				else if(mo > src.mo)
+					return GAIA::False;
+				if(d < src.d)
+					return GAIA::True;
+				else if(d > src.d)
+					return GAIA::False;
+				if(h < src.h)
+					return GAIA::True;
+				else if(h > src.h)
+					return GAIA::False;
+				if(mi < src.mi)
+					return GAIA::True;
+				else if(mi > src.mi)
+					return GAIA::False;
+				if(sec < src.sec)
+					return GAIA::True;
+				else if(sec > src.sec)
+					return GAIA::False;
+				if(msec < src.msec)
+					return GAIA::True;
+				else if(msec > src.msec)
+					return GAIA::False;
+				if(usec <= src.usec)
+					return GAIA::True;
+				else
+					return GAIA::False;
+			}
 			GINL GAIA::BL operator > (const Time& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const Time& src) const{return !this->operator >= (src);}
 			GINL Time operator + (const Time& src) const
