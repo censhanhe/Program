@@ -5,7 +5,36 @@ namespace GAIA
 {
 	namespace TIME
 	{
+		GINL GAIA::N32 leapyear(GAIA::N32 year){return year % 4 == 0;}
+		GINL GAIA::N32 yeardays(GAIA::N32 year)
+		{
+			if(GAIA::TIME::leapyear(year))
+				return 366;
+			return 365;
+		}
+		GINL GAIA::N32 monthdays(GAIA::N32 year, GAIA::N32 month)
+		{
+			static const GAIA::N32 DAYS[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+			if(month == 2)
+			{
+				if(GAIA::TIME::leapyear(year))
+					return DAYS[month] + 1;
+			}
+			return DAYS[month];
+		}
+		GINL GAIA::N32 monthdaysall(GAIA::N32 year, GAIA::N32 month)
+		{
+			static const GAIA::N32 DAYSALL[] = {0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
+			if(month > 2)
+			{
+				if(GAIA::TIME::leapyear(year))
+					return DAYSALL[month] + 1;
+			}
+			return DAYSALL[month];
 
+		}
+		GINL GAIA::U64 clock_time(); // return value is micro second from 1970.1.1.
+		GINL GAIA::U64 tick_time(); // return value is micro second from process startuped.
 		/*
 		 *	64-bit time compressed object as follow:
 		 *
@@ -149,12 +178,80 @@ namespace GAIA
 			}
 			GINL GAIA::U64 toyear() const{return y;}
 			GINL GAIA::U64 tomonth() const{return this->toyear() * 12 + mo;}
-			GINL GAIA::U64 today() const{return this->tomonth() * 30 + d;}
+			GINL GAIA::U64 today() const{return y * 365 + y / 4 + GAIA::TIME::monthdaysall(y, mo) + d;}
 			GINL GAIA::U64 tohour() const{return this->today() * 24 + h;}
 			GINL GAIA::U64 tominute() const{return this->tohour() * 60 + mi;}
 			GINL GAIA::U64 tosecond() const{return this->tominute() * 60 + sec;}
 			GINL GAIA::U64 tomsecond() const{return this->tosecond() * 1000 + msec;}
 			GINL GAIA::U64 tousecond() const{return this->tomsecond() * 1000 + usec;}
+			GINL GAIA::GVOID fromyear(GAIA::U64 year){y = year; mo = d = 1; h = mi = sec = msec = usec = 0;}
+			GINL GAIA::GVOID frommonth(GAIA::U64 month){y = month / 12; mo = month % 12 + 1; d = 1; h = mi = sec = msec = usec = 0;}
+			GINL GAIA::GVOID fromday(GAIA::U64 day)
+			{
+				static const GAIA::U64 DAYS4YEAR = (4 * 365 + 1) * 4;
+				static const GAIA::U64 ONEYEARDAYS = 366;
+				static const GAIA::U64 TWOYEARDAYS = ONEYEARDAYS + 365;
+				static const GAIA::U64 THREEYEARDAYS = TWOYEARDAYS + 365;
+				static const GAIA::U64 FOURYEARDAYS = THREEYEARDAYS + 365;
+				y = day / DAYS4YEAR * 4;
+				day %= DAYS4YEAR;
+				if(day < ONEYEARDAYS){}
+				else if(day < TWOYEARDAYS)
+				{
+					day -= ONEYEARDAYS;
+					y += 1;
+				}
+				else if(day < THREEYEARDAYS)
+				{
+					day -= TWOYEARDAYS;
+					y += 2;
+				}
+				else
+				{
+					day -= THREEYEARDAYS;
+					y += 3;
+				}
+				for(GAIA::SIZE x = 1; x <= 12; ++x)
+				{
+					if(day < GAIA::TIME::monthdaysall(y, x + 1))
+					{
+						day -= GAIA::TIME::monthdaysall(y, x);
+						mo = x;
+						break;
+					}
+					GAIA_AST(x != 12);
+				}
+				h = mi = sec = msec = usec = 0;
+			}
+			GINL GAIA::GVOID fromhour(GAIA::U64 hour)
+			{
+				this->fromday(hour / 24);
+				h = hour % 24;
+				mi = sec = msec = usec = 0;
+			}
+			GINL GAIA::GVOID fromminute(GAIA::U64 minute)
+			{
+				this->fromhour(minute / 60);
+				mi = minute % 60;
+				sec = msec = usec = 0;
+			}
+			GINL GAIA::GVOID fromsecond(GAIA::U64 second)
+			{
+				this->fromminute(second / 60);
+				sec = second % 60;
+				msec = usec = 0;
+			}
+			GINL GAIA::GVOID frommsecond(GAIA::U64 msecond)
+			{
+				this->fromsecond(msecond / 1000);
+				msec = msecond % 1000;
+				usec = 0;
+			}
+			GINL GAIA::GVOID fromusecond(GAIA::U64 usecond)
+			{
+				this->frommsecond(usecond / 1000);
+				usec = usecond % 1000;
+			}
 		public:
 			GAIA::N16 y; 	// Year.
 			GAIA::N8 mo; 	// Month.
@@ -165,27 +262,6 @@ namespace GAIA
 			GAIA::N16 msec; // MilliSecond.
 			GAIA::N16 usec; // MicroSecond.
 		};
-		GINL GAIA::N32 yeardays(GAIA::N16 year)
-		{
-			if(year % 4 == 0 || year % 100 == 0 || year % 400 == 0)
-				return 366;
-			return 365;
-		}
-		GINL GAIA::N32 monthdays(GAIA::N32 year, GAIA::N32 month)
-		{
-			static const GAIA::N32 DAYS[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-			if(month == 2)
-			{
-				if(year % 4 == 0 || year % 100 == 0 || year % 400 == 0)
-					return 29;
-				else
-					return 28;
-			}
-			else
-				return DAYS[month];
-		}
-		GINL GAIA::U64 clock_time(); // return value is micro second from 1970.1.1.
-		GINL GAIA::U64 tick_time(); // return value is micro second from process startuped.
 	};
 };
 
