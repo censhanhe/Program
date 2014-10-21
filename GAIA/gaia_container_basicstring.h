@@ -162,7 +162,7 @@ namespace GAIA
 			GAIA_CONTAINER_PROXY
 			GINL GAIA::GVOID proxy(const _DataType* p)
 			{
-				m_pFront = GCCAST(const _DataType*)(p);
+				m_pFront = GCCAST(_DataType*)(p);
 				if(m_pFront != GNIL)
 					m_capacity = m_size = GAIA::ALGO::strlen(m_pFront);
 				else
