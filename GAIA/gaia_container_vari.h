@@ -8,21 +8,21 @@ namespace GAIA
 		class Vari : public GAIA::Entity
 		{
 		public:
-			GAIA_ENUM_BEGIN(VARI_TYPE)
-				VARI_TYPE_BL,
-				VARI_TYPE_N8,
-				VARI_TYPE_N16,
-				VARI_TYPE_N32,
-				VARI_TYPE_N64,
-				VARI_TYPE_U8,
-				VARI_TYPE_U16,
-				VARI_TYPE_U32,
-				VARI_TYPE_U64,
-				VARY_TYPE_X128,
-				VARI_TYPE_F32,
-				VARI_TYPE_F64,
-				VARI_TYPE_REAL,
-			GAIA_ENUM_END(VARI_TYPE)
+			GAIA_ENUM_BEGIN(TYPE)
+				TYPE_BL,
+				TYPE_N8,
+				TYPE_N16,
+				TYPE_N32,
+				TYPE_N64,
+				TYPE_U8,
+				TYPE_U16,
+				TYPE_U32,
+				TYPE_U64,
+				TYPE_X128,
+				TYPE_F32,
+				TYPE_F64,
+				TYPE_REAL,
+			GAIA_ENUM_END(TYPE)
 
 		public:
 			GINL Vari();

@@ -267,8 +267,8 @@ namespace DWARFS_MISC
 			GAIA_AST(charset_type != GAIA::CHARSET_TYPE_INVALID);
 			if(charset_type == GAIA::CHARSET_TYPE_INVALID)
 				return GAIA::False;
-			GAIA_AST(charset_type < GAIA::CHARSET_TYPE_COUNT);
-			if(charset_type >= GAIA::CHARSET_TYPE_COUNT)
+			GAIA_AST(charset_type < GAIA::CHARSET_TYPE_MAXENUMCOUNT);
+			if(charset_type >= GAIA::CHARSET_TYPE_MAXENUMCOUNT)
 				return GAIA::False;
 		#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 			if(charset_type != GAIA::CHARSET_TYPE_ANSI &&
