@@ -147,6 +147,14 @@ namespace GAIA
 				p[1] |= (GSCAST(GAIA::U32)(usec)) & 0x000003FF;
 				return ret;
 			}
+			GINL GAIA::U64 toyear() const{return y;}
+			GINL GAIA::U64 tomonth() const{return this->toyear() * 12 + mo;}
+			GINL GAIA::U64 today() const{return this->tomonth() * 30 + d;}
+			GINL GAIA::U64 tohour() const{return this->today() * 24 + h;}
+			GINL GAIA::U64 tominute() const{return this->tohour() * 60 + mi;}
+			GINL GAIA::U64 tosecond() const{return this->tominute() * 60 + sec;}
+			GINL GAIA::U64 tomsecond() const{return this->tosecond() * 1000 + msec;}
+			GINL GAIA::U64 tousecond() const{return this->tomsecond() * 1000 + usec;}
 		public:
 			GAIA::N16 y; 	// Year.
 			GAIA::N8 mo; 	// Month.
