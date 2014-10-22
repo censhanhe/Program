@@ -112,6 +112,22 @@ namespace GAIA
 			*pDst = '\0';
 			return ret;
 		}
+		template<typename _DataType1, typename _DataType2, typename _SizeType> _DataType1 strcpy(_DataType1 pDst, _DataType2 pSrc, _SizeType size)
+		{
+			GAIA_AST(!!pDst);
+			GAIA_AST(!!pSrc);
+			GAIA_AST(size != 0);
+			_DataType1 ret = pDst;
+			while(size != 0)
+			{
+				*pDst = *pSrc;
+				++pDst;
+				++pSrc;
+				--size;
+			}
+			*pDst = '\0';
+			return ret;
+		}
 		template<typename _DataType1, typename _DataType2> _DataType1 stradd(_DataType1 pDst, _DataType2 pSrc)
 		{
 			GAIA_AST(!!pDst);
@@ -129,22 +145,6 @@ namespace GAIA
 		{
 			_DataType* ret = (_DataType*)GAIA_MALLOC(GAIA::U8, GAIA::ALGO::strlen(p) * sizeof(p[0]) + sizeof(p[0]));
 			GAIA::ALGO::strcpy(ret, p);
-			return ret;
-		}
-		template<typename _DataType1, typename _DataType2, typename _SizeType> _DataType1 strcpy(_DataType1 pDst, _DataType2 pSrc, _SizeType size)
-		{
-			GAIA_AST(!!pDst);
-			GAIA_AST(!!pSrc);
-			GAIA_AST(size != 0);
-			_DataType1 ret = pDst;
-			while(size != 0)
-			{
-				*pDst = *pSrc;
-				++pDst;
-				++pSrc;
-				--size;
-			}
-			*pDst = '\0';
 			return ret;
 		}
 		template<typename _DataType1, typename _DataType2> _DataType1 strcat(_DataType1 pDst, _DataType2 pSrc)

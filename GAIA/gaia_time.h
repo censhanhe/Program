@@ -276,21 +276,42 @@ namespace GAIA
 				t.d = 1;
 				(*this) -= t;
 			}
-			GINL GAIA::GVOID string(const GAIA::TCH* psz)
+			template<typename _ParamDataType> GAIA::GVOID fromstring(const _ParamDataType* psz)
 			{
+				GPCHR_NULLSTRPTR(psz);
+				GAIA::SIZE sLen = GAIA::ALGO::strlen(psz);
+				if(sLen != 8 && sLen != 14 && sLen != 17 && sLen != 20)
+				{
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return;
+				}
+				this->reset();
+				_ParamDataType temp[5];
+				if(sLen >= 8)
+				{
+				}
+				if(sLen >= 14)
+				{
+				}
+				if(sLen >= 17)
+				{
+				}
+				if(sLen >= 20)
+				{
+				}
 			}
-			GINL GAIA::GVOID string(GAIA::TCH* psz) const
+			template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz) const
 			{
 			}
 		public:
-			GAIA::N16 y; 	// Year.
-			GAIA::N8 mo; 	// Month.
-			GAIA::N8 d; 	// Day.
-			GAIA::N8 h; 	// Hour.
-			GAIA::N8 mi; 	// Minute.
-			GAIA::N8 sec; 	// Second.
-			GAIA::N16 msec; // MilliSecond.
-			GAIA::N16 usec; // MicroSecond.
+			GAIA::N16 y; 	// Year.4
+			GAIA::N8 mo; 	// Month.2
+			GAIA::N8 d; 	// Day.2
+			GAIA::N8 h; 	// Hour.2
+			GAIA::N8 mi; 	// Minute.2
+			GAIA::N8 sec; 	// Second.2
+			GAIA::N16 msec; // MilliSecond.3
+			GAIA::N16 usec; // MicroSecond.3
 		};
 	};
 };
