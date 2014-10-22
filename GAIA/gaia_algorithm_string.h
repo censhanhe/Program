@@ -405,7 +405,7 @@ namespace GAIA
 			_DataType1 p = p1;
 			while(GAIA::ALGO::tolower(*p) != '\0' && GAIA::ALGO::tolower(*p2) != '\0')
 			{
-				if(*p2 != *p)
+				if(GAIA::ALGO::tolower(*p2) != GAIA::ALGO::tolower(*p))
 					return GNIL;
 				++p;
 				++p2;
