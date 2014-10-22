@@ -83,31 +83,105 @@ namespace GAIA_TEST
 			}
 			if(t != STRTIMELIST[x])
 			{
-				GTLINE2("Time operator = from string and compare == failed!");
+				GTLINE2("Time operator = from string and compare != failed!");
 				++nRet;
 				break;
 			}
 			if(!(t >= STRTIMELIST[x]))
 			{
-				GTLINE2("Time operator = from string and compare == failed!");
+				GTLINE2("Time operator = from string and compare >= failed!");
 				++nRet;
 				break;
 			}
 			if(!(t <= STRTIMELIST[x]))
 			{
-				GTLINE2("Time operator = from string and compare == failed!");
+				GTLINE2("Time operator = from string and compare <= failed!");
 				++nRet;
 				break;
 			}
 			if(t > STRTIMELIST[x])
 			{
-				GTLINE2("Time operator = from string and compare == failed!");
+				GTLINE2("Time operator = from string and compare > failed!");
 				++nRet;
 				break;
 			}
 			if(t < STRTIMELIST[x])
 			{
+				GTLINE2("Time operator = from string and compare < failed!");
+				++nRet;
+				break;
+			}
+			GAIA::U64 uTime = t;
+			if(!(t == uTime))
+			{
 				GTLINE2("Time operator = from string and compare == failed!");
+				++nRet;
+				break;
+			}
+			if(t != uTime)
+			{
+				GTLINE2("Time operator = from string and compare != failed!");
+				++nRet;
+				break;
+			}
+			if(!(t >= uTime))
+			{
+				GTLINE2("Time operator = from string and compare >= failed!");
+				++nRet;
+				break;
+			}
+			if(!(t <= uTime))
+			{
+				GTLINE2("Time operator = from string and compare <= failed!");
+				++nRet;
+				break;
+			}
+			if(t > uTime)
+			{
+				GTLINE2("Time operator = from string and compare > failed!");
+				++nRet;
+				break;
+			}
+			if(t < uTime)
+			{
+				GTLINE2("Time operator = from string and compare < failed!");
+				++nRet;
+				break;
+			}
+			t = uTime;
+			if(!(t == STRTIMELIST[x]))
+			{
+				GTLINE2("Time operator = from string and compare == failed!");
+				++nRet;
+				break;
+			}
+			if(t != STRTIMELIST[x])
+			{
+				GTLINE2("Time operator = from string and compare != failed!");
+				++nRet;
+				break;
+			}
+			if(!(t >= STRTIMELIST[x]))
+			{
+				GTLINE2("Time operator = from string and compare >= failed!");
+				++nRet;
+				break;
+			}
+			if(!(t <= STRTIMELIST[x]))
+			{
+				GTLINE2("Time operator = from string and compare <= failed!");
+				++nRet;
+				break;
+			}
+			if(t > STRTIMELIST[x])
+			{
+				GTLINE2("Time operator = from string and compare > failed!");
+				++nRet;
+				break;
+			}
+			if(t < STRTIMELIST[x])
+			{
+				GTLINE2("Time operator = from string and compare < failed!");
 				++nRet;
 				break;
 			}
