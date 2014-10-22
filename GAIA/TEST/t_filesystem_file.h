@@ -141,7 +141,7 @@ namespace GAIA_TEST
 			GTLINE2("Read file content failed!");
 			++nRet;
 		}
-		if(GAIA::ALGO::strcmpl(szText, "Hello World", GAIA::ALGO::strlen("Hello World")) != 0)
+		if(GAIA::ALGO::strcmp(szText, "Hello World", GAIA::ALGO::strlen("Hello World")) != 0)
 		{
 			GTLINE2("Read file content failed!");
 			++nRet;			
@@ -162,7 +162,7 @@ namespace GAIA_TEST
 			GTLINE2("Read file content failed!");
 			++nRet;
 		}
-		if(GAIA::ALGO::strcmpl(szText, "Hello Kitty", GAIA::ALGO::strlen("Hello Kitty")) != 0)
+		if(GAIA::ALGO::strcmp(szText, "Hello Kitty", GAIA::ALGO::strlen("Hello Kitty")) != 0)
 		{
 			GTLINE2("Read file content failed!");
 			++nRet;			

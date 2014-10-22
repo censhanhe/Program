@@ -40,7 +40,7 @@ namespace GAIA_TEST
 			GAIA::SIZE ret = 0;
 			for(GAIA::SIZE x = 0; x < m_recv.size(); x += sLen)
 			{
-				if(GAIA::ALGO::strcmpl(m_recv.front_ptr() + x, "HelloWorld", sLen) != 0)
+				if(GAIA::ALGO::strcmp(m_recv.front_ptr() + x, "HelloWorld", sLen) != 0)
 					return ret;
 				++ret;
 			}

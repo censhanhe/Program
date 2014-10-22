@@ -200,7 +200,7 @@ namespace GAIA
 			return 0;
 		#endif
 		}
-		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::N32 strcmpl(_DataType1 p1, _DataType2 p2, _SizeType size)
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::N32 strcmp(_DataType1 p1, _DataType2 p2, _SizeType size)
 		{
 			for(; size != 0; --size)
 			{
@@ -218,7 +218,7 @@ namespace GAIA
 			}
 			return 0;
 		}
-		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::N32 stricmpl(_DataType1 p1, _DataType2 p2, _SizeType size)
+		template<typename _DataType1, typename _DataType2, typename _SizeType> GAIA::N32 stricmp(_DataType1 p1, _DataType2 p2, _SizeType size)
 		{
 			for(; size != 0; --size)
 			{
