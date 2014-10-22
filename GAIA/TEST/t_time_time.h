@@ -75,6 +75,12 @@ namespace GAIA_TEST
 		for(GAIA::SIZE x = 0; x < sizeofarray(STRTIMELIST); ++x)
 		{
 			t = STRTIMELIST[x];
+			if(!t.isvalid())
+			{
+				GTLINE2("Time operator = from string failed!");
+				++nRet;
+				break;
+			}
 			if(!(t == STRTIMELIST[x]))
 			{
 				GTLINE2("Time operator = from string and compare == failed!");
@@ -149,6 +155,12 @@ namespace GAIA_TEST
 				break;
 			}
 			t = uTime;
+			if(!t.isvalid())
+			{
+				GTLINE2("Time operator = from U64 failed!");
+				++nRet;
+				break;
+			}
 			if(!(t == STRTIMELIST[x]))
 			{
 				GTLINE2("Time operator = from string and compare == failed!");

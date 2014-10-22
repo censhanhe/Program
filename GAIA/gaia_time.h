@@ -187,6 +187,42 @@ namespace GAIA
 			GINL Time(const GAIA::U64& src){this->operator = (src);}
 			GINL GAIA::BL check() const{return !(y == 0 && mo == 0 && d == 0 && h == 0 && mi == 0 && sec == 0 && msec == 0 && usec == 0);}
 			GINL GAIA::GVOID reset(){y = mo = d = h = mi = sec = msec = usec = 0;}
+			GINL GAIA::BL isvalid() const
+			{
+				if(y < 0)
+					return GAIA::False;
+				if(mo < 1 || mo > 12)
+					return GAIA::False;
+				if(GAIA::TIME::leapyear(y))
+				{
+					if(mo == 2)
+					{
+						if(d < 1 || d > 29)
+							return GAIA::False;
+					}
+					else
+					{
+						if(d < 1 || d > 28)
+							return GAIA::False;
+					}
+				}
+				else
+				{
+					if(d < 1 || d > 28)
+						return GAIA::False;
+				}
+				if(h < 0 || h > 23)
+					return GAIA::False;
+				if(mi < 0 || mi > 59)
+					return GAIA::False;
+				if(sec < 0 || sec > 59)
+					return GAIA::False;
+				if(msec < 0 || msec > 999)
+					return GAIA::False;
+				if(usec < 0 || usec > 999)
+					return GAIA::False;
+				return GAIA::True;
+			}
 			GINL Time& operator = (const Time& src){GAIA_AST(&src != this); y = src.y; mo = src.mo; d = src.d; h = src.h; mi = src.mi; sec = src.sec; msec = src.msec; usec = src.usec; return *this;}
 			GINL Time& operator = (const GAIA::U64& src)
 			{
