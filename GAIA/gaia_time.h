@@ -47,6 +47,138 @@ namespace GAIA
 		 *	million second	: 10 bit.
 		 *	micro second	: 10 bit.
 		 */
+		template<typename _DataType1, typename _DataType2> GAIA::BL timemkaux(const _DataType1* pSrc, _DataType2* pDst)
+		{
+			/*
+			*  convert "00010203" to "0001-02-03";
+			*  convert "000102030405" to "0001-02-03_04:05";
+			*  convert "00010203040506" to "0001-02-03_04:05:06";
+			*  convert "00010203040506007" to "0001-02-03_04:05:06_007";
+			*  convert "00010203040506007008" to "0001-02-03_04:05:06_007:008";
+			*/
+			GPCHR_NULLSTRPTR_RET(pSrc, GAIA::False);
+			GPCHR_NULL_RET(pDst, GAIA::False);
+			GAIA::SIZE sLen = GAIA::ALGO::strlen(pSrc);
+			if(sLen != 8 && sLen != 12 && sLen != 14 && sLen != 17 && sLen != 20 && sLen < 20)
+			{
+				GAIA_AST(GAIA::ALWAYSFALSE);
+				return GAIA::False;
+			}
+			if(sLen >= 8)
+			{
+				GAIA::ALGO::strcpy(pDst, pSrc, 4);
+				pDst += 4;
+				pSrc += 4;
+				*pDst++ = '-';
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+				*pDst++ = '-';
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+			}
+			if(sLen >= 12)
+			{
+				*pDst++ = '_';
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+				*pDst++ = ':';
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+			}
+			if(sLen >= 14)
+			{
+				*pDst++ = ':';
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+			}
+			if(sLen >= 17)
+			{
+				*pDst++ = '_';
+				GAIA::ALGO::strcpy(pDst, pSrc, 3);
+				pDst += 3;
+				pSrc += 3;
+			}
+			if(sLen >= 20)
+			{
+				*pDst++ = '_';
+				GAIA::ALGO::strcpy(pDst, pSrc, 3);
+				pDst += 3;
+				pSrc += 3;
+			}
+			*pDst = '\0';
+			return GAIA::True;
+		}
+		template<typename _DataType1, typename _DataType2> GAIA::BL timermaux(const _DataType1* pSrc, _DataType2* pDst)
+		{
+			/*
+			*  convert "00010203" from "0001-02-03";
+			*  convert "000102030405" from "0001-02-03_04:05";
+			*  convert "00010203040506" from "0001-02-03_04:05:06";
+			*  convert "00010203040506007" from "0001-02-03_04:05:06_007";
+			*  convert "00010203040506007008" from "0001-02-03_04:05:06_007:008";
+			*/
+			GPCHR_NULLSTRPTR_RET(pSrc, GAIA::False);
+			GPCHR_NULL_RET(pDst, GAIA::False);
+			GAIA::SIZE sLen = GAIA::ALGO::strlen(pSrc);
+			if(sLen != 10 && sLen != 16 && sLen != 19 && sLen != 23 && sLen != 27 && sLen < 27)
+			{
+				GAIA_AST(GAIA::ALWAYSFALSE);
+				return GAIA::False;
+			}
+			if(sLen >= 10)
+			{
+				GAIA::ALGO::strcpy(pDst, pSrc, 4);
+				pDst += 4;
+				pSrc += 4;
+				++pSrc;
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+				++pSrc;
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+			}
+			if(sLen >= 16)
+			{
+				++pSrc;
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+				++pSrc;
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+			}
+			if(sLen >= 19)
+			{
+				++pSrc;
+				GAIA::ALGO::strcpy(pDst, pSrc, 2);
+				pDst += 2;
+				pSrc += 2;
+			}
+			if(sLen >= 23)
+			{
+				++pSrc;
+				GAIA::ALGO::strcpy(pDst, pSrc, 3);
+				pDst += 3;
+				pSrc += 3;
+			}
+			if(sLen >= 27)
+			{
+				++pSrc;
+				GAIA::ALGO::strcpy(pDst, pSrc, 3);
+				pDst += 3;
+				pSrc += 3;
+			}
+			*pDst = '\0';
+			return GAIA::True;
+		}
 		class Time : public GAIA::Entity
 		{
 		public:
@@ -69,6 +201,7 @@ namespace GAIA
 				usec = p[1] & 0x000003FF;
 				return *this;
 			}
+			template<typename _ParamDataType> Time& operator = (const _ParamDataType* psz){this->fromstring(psz); return *this;}
 			GINL GAIA::BL operator == (const Time& src) const{return y == src.y && mo == src.mo && d == src.d && h == src.h && mi == src.mi && sec == src.sec && msec == src.msec && usec == src.usec;}
 			GINL GAIA::BL operator != (const Time& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const Time& src) const
@@ -143,6 +276,18 @@ namespace GAIA
 			}
 			GINL GAIA::BL operator > (const Time& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const Time& src) const{return !this->operator >= (src);}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) == t;}
+			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) != t;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) >= t;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) <= t;}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) > t;}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) < t;}
+			GINL GAIA::BL operator == (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) == t;}
+			GINL GAIA::BL operator != (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) != t;}
+			GINL GAIA::BL operator >= (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) >= t;}
+			GINL GAIA::BL operator <= (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) <= t;}
+			GINL GAIA::BL operator > (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) > t;}
+			GINL GAIA::BL operator < (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) < t;}
 			GINL Time operator + (const Time& src) const
 			{
 				Time ret = *this;
@@ -280,7 +425,7 @@ namespace GAIA
 			{
 				GPCHR_NULLSTRPTR(psz);
 				GAIA::SIZE sLen = GAIA::ALGO::strlen(psz);
-				if(sLen != 8 && sLen != 14 && sLen != 17 && sLen != 20)
+				if(sLen != 8 && sLen != 12 && sLen != 14 && sLen != 17 && sLen != 20 && sLen < 20)
 				{
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return;
@@ -289,19 +434,39 @@ namespace GAIA
 				_ParamDataType temp[5];
 				if(sLen >= 8)
 				{
+					GAIA::ALGO::strcpy(temp, psz + 0, 4);
+					y = GAIA::ALGO::string_autocast(temp);
+					GAIA::ALGO::strcpy(temp, psz + 4, 2);
+					mo = GAIA::ALGO::string_autocast(temp);
+					GAIA::ALGO::strcpy(temp, psz + 6, 2);
+					d = GAIA::ALGO::string_autocast(temp);
+				}
+				if(sLen >= 12)
+				{
+					GAIA::ALGO::strcpy(temp, psz + 8, 2);
+					h = GAIA::ALGO::string_autocast(temp);
+					GAIA::ALGO::strcpy(temp, psz + 10, 2);
+					mi = GAIA::ALGO::string_autocast(temp);
 				}
 				if(sLen >= 14)
 				{
+					GAIA::ALGO::strcpy(temp, psz + 12, 2);
+					sec = GAIA::ALGO::string_autocast(temp);
 				}
 				if(sLen >= 17)
 				{
+					GAIA::ALGO::strcpy(temp, psz + 14, 3);
+					msec = GAIA::ALGO::string_autocast(temp);
 				}
 				if(sLen >= 20)
 				{
+					GAIA::ALGO::strcpy(temp, psz + 17, 3);
+					usec = GAIA::ALGO::string_autocast(temp);
 				}
 			}
 			template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz) const
 			{
+				*psz = '\0';
 			}
 		public:
 			GAIA::N16 y; 	// Year.4
