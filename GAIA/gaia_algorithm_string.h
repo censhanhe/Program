@@ -452,6 +452,32 @@ namespace GAIA
 			}
 			return GNIL;
 		}
+		template<typename _DataType1, typename _DataType2, typename _SizeType> _SizeType strleftfill(_DataType1 p, _DataType2 fill, const _SizeType& size)
+		{
+			GPCHR_NULL_RET(p, 0);
+			GPCHR_BELOWEQUALZERO_RET(size, 0);
+			_SizeType l = GSCAST(_SizeType)(GAIA::ALGO::strlen(p));
+			if(l >= size)
+				return 0;
+			GAIA::ALGO::move_next(p + size, p + l, l + 1);
+			_SizeType fsize = size - l;
+			for(_SizeType x = 0; x < fsize; ++x)
+				p[x] = fill;
+			GAIA::ALGO::strlen(p);
+			return fsize;
+		}
+		template<typename _DataType1, typename _DataType2, typename _SizeType> _SizeType strrightfill(_DataType1 p, _DataType2 fill, const _SizeType& size)
+		{
+			GPCHR_NULL_RET(p, 0);
+			GPCHR_BELOWEQUALZERO_RET(size, 0);
+			_SizeType l = GSCAST(_SizeType)(GAIA::ALGO::strlen(p));
+			if(l >= size)
+				return 0;
+			for(_SizeType x = l; x < size; ++x)
+				p[x] = fill;
+			p[size] = '\0';
+			return size - l;
+		}
 		template<typename _DataType> _DataType strext(_DataType p)
 		{
 			_DataType pEnd = GAIA::ALGO::strend(p);
