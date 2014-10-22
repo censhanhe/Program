@@ -53,8 +53,8 @@ namespace GAIA
 			GINL Time(){}
 			GINL Time(const Time& src){this->operator = (src);}
 			GINL Time(const GAIA::U64& src){this->operator = (src);}
-			GINL GAIA::BL empty() const{return y == 0 && mo == 0 && d == 0 && h == 0 && mi == 0 && sec == 0 && msec == 0 && usec == 0;}
-			GINL GAIA::GVOID clear(){y = mo = d = h = mi = sec = msec = usec = 0;}
+			GINL GAIA::BL check() const{return y == 0 && mo == 0 && d == 0 && h == 0 && mi == 0 && sec == 0 && msec == 0 && usec == 0;}
+			GINL GAIA::GVOID reset(){y = mo = d = h = mi = sec = msec = usec = 0;}
 			GINL Time& operator = (const Time& src){GAIA_AST(&src != this); y = src.y; mo = src.mo; d = src.d; h = src.h; mi = src.mi; sec = src.sec; msec = src.msec; usec = src.usec; return *this;}
 			GINL Time& operator = (const GAIA::U64& src)
 			{
@@ -265,14 +265,14 @@ namespace GAIA
 			GINL GAIA::GVOID dayinc()
 			{
 				GAIA::TIME::Time t;
-				t.clear();
+				t.reset();
 				t.d = 1;
 				(*this) += t;
 			}
 			GINL GAIA::GVOID daydec()
 			{
 				GAIA::TIME::Time t;
-				t.clear();
+				t.reset();
 				t.d = 1;
 				(*this) -= t;
 			}

@@ -7,7 +7,19 @@ namespace GAIA_TEST
 	{
 		GAIA::N32 nRet = 0;
 
-
+		GAIA::TIME::Time t, t1;
+		t.reset();
+		if(t.check())
+		{
+			GTLINE2("Time check failed!");
+			++nRet;
+		}
+		t1 = t;
+		if(t1.check())
+		{
+			GTLINE2("Time check failed!");
+			++nRet;
+		}
 
 		return nRet;
 	}
