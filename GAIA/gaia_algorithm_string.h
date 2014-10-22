@@ -76,6 +76,36 @@ namespace GAIA
 			}
 			return GNIL;
 		}
+		template<typename _DataType1, typename _DataType2> _DataType1 strchs(_DataType1 p, _DataType2 key)
+		{
+			while(*p != '\0')
+			{
+				_DataType2 pTemp = key;
+				while(*pTemp != '\0')
+				{
+					if(*p == *pTemp)
+						return p;
+					++pTemp;
+				}
+				++p;
+			}
+			return GNIL;
+		}
+		template<typename _DataType1, typename _DataType2> _DataType1 strichs(_DataType1 p, _DataType2 key)
+		{
+			while(*p != '\0')
+			{
+				_DataType2 pTemp = key;
+				while(*pTemp != '\0')
+				{
+					if(GAIA::ALGO::tolower(*p) == GAIA::ALGO::tolower(*pTemp))
+						return p;
+					++pTemp;
+				}
+				++p;
+			}
+			return GNIL;
+		}
 		template<typename _DataType> GAIA::SIZE strlen(_DataType p){GAIA_AST(!!p); GAIA::SIZE ret = 0; while(p[ret] != '\0') ret++; return ret;}
 		template<typename _DataType1, typename _DataType2> GAIA::SIZE strcnt(_DataType1 p, const _DataType2& key)
 		{
@@ -93,7 +123,7 @@ namespace GAIA
 			GAIA::SIZE ret = 0;
 			while(*keys != '\0')
 			{
-				ret += strcnt(p, *keys);
+				ret += GAIA::ALGO::strcnt(p, *keys);
 				++keys;
 			}
 			return ret;
@@ -813,9 +843,9 @@ namespace GAIA
 			{\
 				type ret;\
 				if(m_pCH != GNIL)\
-					convert_func(m_pCH, ret);\
+					GAIA::ALGO::convert_func(m_pCH, ret);\
 				else if(m_pWCH != GNIL)\
-					convert_func(m_pWCH, ret);\
+					GAIA::ALGO::convert_func(m_pWCH, ret);\
 				else\
 				{\
 					GAIA_AST(GAIA::ALWAYSFALSE);\
