@@ -88,6 +88,15 @@ namespace GAIA_TEST
 				++nRet;
 				break;
 			}
+			GAIA::N64 usec = t.usecond();
+			GAIA::TIME::Time tt;
+			tt.usecond(usec);
+			if(tt != t)
+			{
+				GTLINE2("Time usecond convert failed!");
+				++nRet;
+				break;
+			}
 			if(!(t == STRTIMELIST[x]))
 			{
 				GTLINE2("Time operator = from string and compare == failed!");

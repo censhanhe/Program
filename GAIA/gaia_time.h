@@ -341,7 +341,7 @@ namespace GAIA
 				GAIA::U64 uself = this->usecond();
 				GAIA::U64 u = src.usecond();
 				uself += u;
-				this->second(uself);
+				this->usecond(uself);
 				return *this;
 			}
 			GINL Time& operator -= (const Time& src)
@@ -349,7 +349,7 @@ namespace GAIA
 				GAIA::U64 uself = this->usecond();
 				GAIA::U64 u = src.usecond();
 				uself -= u;
-				this->second(uself);
+				this->usecond(uself);
 				return *this;
 			}
 			GINL GAIA::GVOID systime();
@@ -379,7 +379,7 @@ namespace GAIA
 			GINL GAIA::GVOID month(GAIA::N64 month){y = month / 12; mo = month % 12 + 1; d = 1; h = mi = sec = msec = usec = 0;}
 			GINL GAIA::GVOID day(GAIA::N64 day)
 			{
-				static const GAIA::N64 DAYS4YEAR = (4 * 365 + 1) * 4;
+				static const GAIA::N64 DAYS4YEAR = 4 * 365 + 1;
 				static const GAIA::N64 ONEYEARDAYS = 366;
 				static const GAIA::N64 TWOYEARDAYS = ONEYEARDAYS + 365;
 				static const GAIA::N64 THREEYEARDAYS = TWOYEARDAYS + 365;
@@ -412,6 +412,7 @@ namespace GAIA
 					}
 					GAIA_AST(x != 12);
 				}
+				d = day + 1;
 				h = mi = sec = msec = usec = 0;
 			}
 			GINL GAIA::GVOID hour(GAIA::N64 hour)
