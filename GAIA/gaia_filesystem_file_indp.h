@@ -58,19 +58,31 @@ namespace GAIA
 			if(m_pFile == GNIL)
 				return GAIA::False;
 			m_offset = 0;
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			if(_fseeki64((FILE*)m_pFile, 0, SEEK_END) != 0)
+		#else
 			if(fseek((FILE*)m_pFile, 0, SEEK_END) != 0)
+		#endif
 			{
 				this->Close();
 				return GAIA::False;
 			}
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			m_size = _ftelli64((FILE*)m_pFile);
+		#else
 			m_size = ftell((FILE*)m_pFile);
+		#endif
 			GAIA_AST(m_size != -1);
 			if(m_size == -1)
 			{
 				this->Close();
 				return GAIA::False;
 			}
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			if(_fseeki64((FILE*)m_pFile, 0, SEEK_SET) != 0)
+		#else
 			if(fseek((FILE*)m_pFile, 0, SEEK_SET) != 0)
+		#endif
 			{
 				this->Close();
 				return GAIA::False;
@@ -96,21 +108,33 @@ namespace GAIA
 			{
 				if(size <= m_size)
 					return GAIA::False;
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				GAIA::N64 cur = _ftelli64((FILE*)m_pFile);
+			#else
 				GAIA::N64 cur = ftell((FILE*)m_pFile);
+			#endif
 				GAIA_AST(cur != -1);
 				if(cur == -1)
 					return GAIA::False;
 				if(m_fileopentype & OPEN_TYPE_CREATEALWAYS ||
 					m_fileopentype & OPEN_TYPE_WRITE)
 				{
+				#if GAIA_OS == GAIA_OS_WINDOWS
+					if(_fseeki64((FILE*)m_pFile, size - 1, SEEK_SET) != 0)
+				#else
 					if(fseek((FILE*)m_pFile, size - 1, SEEK_SET) != 0)
+				#endif
 						return GAIA::False;
 					GAIA::U8 uEnd = 0;
 					if(!this->Write(&uEnd, sizeof(uEnd)))
 						return GAIA::False;
 					if(!this->Flush())
 						return GAIA::False;
+				#if GAIA_OS == GAIA_OS_WINDOWS
+					if(_fseeki64((FILE*)m_pFile, cur, SEEK_SET) != 0)
+				#else
 					if(fseek((FILE*)m_pFile, cur, SEEK_SET) != 0)
+				#endif
 						return GAIA::False;
 					m_size = size;
 					return GAIA::True;
@@ -175,7 +199,11 @@ namespace GAIA
 				toffset = GAIA::MATH::xclamp(m_offset - offset, 0, m_size);
 			if(toffset == m_offset)
 				return GAIA::True;
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			if(_fseeki64((FILE*)m_pFile, toffset, SEEK_SET) == 0)
+		#else
 			if(fseek((FILE*)m_pFile, toffset, SEEK_SET) == 0)
+		#endif
 			{
 				m_offset = toffset;
 				return GAIA::True;
