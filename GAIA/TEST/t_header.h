@@ -54,6 +54,8 @@
 #include "t_container_staticstringpool.h"
 #include "t_container_cooperate.h"
 
+#include "t_time_time.h"
+
 #include "t_filesystem_file.h"
 #include "t_filesystem_directory.h"
 
@@ -141,6 +143,8 @@ namespace GAIA_TEST
 			GTLINE1("Container: StringPool test begin!"); nRet += t_container_stringpool(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: StaticStringPool test begin!"); nRet += t_container_staticstringpool(file, prt); GTLINE1("End"); GTLINE("\t");	
 			GTLINE1("Container: Cooperate test begin!"); nRet += t_container_cooperate(file, prt); GTLINE1("End"); GTLINE("\t");
+
+			GTLINE1("Time: Time test begin!"); nRet += t_time_time(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("File: File test begin!"); nRet += t_filesystem_file(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("File: Directory test begin!"); nRet += t_filesystem_directory(file, prt); GTLINE1("End"); GTLINE("\t");

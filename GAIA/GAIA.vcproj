@@ -2509,6 +2509,14 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="TIME"
+						>
+						<File
+							RelativePath=".\TEST\t_time_time.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
