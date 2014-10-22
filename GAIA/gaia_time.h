@@ -502,6 +502,48 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz) const
 			{
+				_ParamDataType temp[32];
+
+				GAIA::ALGO::value_cast(y, temp, 32);
+				GAIA::ALGO::strleftfill(temp, '0', 4);
+				GAIA::ALGO::strcpy(psz, temp);
+				psz += 4;
+
+				GAIA::ALGO::value_cast(mo, temp, 32);
+				GAIA::ALGO::strleftfill(temp, '0', 2);
+				GAIA::ALGO::strcpy(psz, temp);
+				psz += 2;
+
+				GAIA::ALGO::value_cast(d, temp, 32);
+				GAIA::ALGO::strleftfill(temp, '0', 2);
+				GAIA::ALGO::strcpy(psz, temp);
+				psz += 2;
+
+				GAIA::ALGO::value_cast(h, temp, 32);
+				GAIA::ALGO::strleftfill(temp, '0', 2);
+				GAIA::ALGO::strcpy(psz, temp);
+				psz += 2;
+
+				GAIA::ALGO::value_cast(mi, temp, 32);
+				GAIA::ALGO::strleftfill(temp, '0', 2);
+				GAIA::ALGO::strcpy(psz, temp);
+				psz += 2;
+
+				GAIA::ALGO::value_cast(sec, temp, 32);
+				GAIA::ALGO::strleftfill(temp, '0', 2);
+				GAIA::ALGO::strcpy(psz, temp);
+				psz += 2;
+
+				GAIA::ALGO::value_cast(msec, temp, 32);
+				GAIA::ALGO::strleftfill(temp, '0', 3);
+				GAIA::ALGO::strcpy(psz, temp);
+				psz += 3;
+
+				GAIA::ALGO::value_cast(usec, temp, 32);
+				GAIA::ALGO::strleftfill(temp, '0', 3);
+				GAIA::ALGO::strcpy(psz, temp);
+				psz += 3;
+
 				*psz = '\0';
 			}
 		public:

@@ -75,6 +75,13 @@ namespace GAIA_TEST
 		for(GAIA::SIZE x = 0; x < sizeofarray(STRTIMELIST); ++x)
 		{
 			t = STRTIMELIST[x];
+			t.tostring(szTemp);
+			if(GAIA::ALGO::strcmp(szTemp, STRTIMELIST[x], GAIA::ALGO::strlen(STRTIMELIST[x])) != 0)
+			{
+				GTLINE2("Time to string error!");
+				++nRet;
+				break;
+			}
 			if(!t.isvalid())
 			{
 				GTLINE2("Time operator = from string failed!");

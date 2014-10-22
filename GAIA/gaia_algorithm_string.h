@@ -844,16 +844,19 @@ namespace GAIA
 		template<typename _CharType, typename _SizeType> GAIA::BL value_cast(const GAIA::F32& v, _CharType* p, const _SizeType& size)
 		{
 			GAIA::ALGO::real2str(v, p);
+			GAIA_AST(GAIA::ALGO::strlen(p) < size);
 			return GAIA::True;
 		}
 		template<typename _CharType, typename _SizeType> GAIA::BL value_cast(const GAIA::F64& v, _CharType* p, const _SizeType& size)
 		{
 			GAIA::ALGO::real2str(v, p);
+			GAIA_AST(GAIA::ALGO::strlen(p) < size);
 			return GAIA::True;
 		}
 		template<typename _ValueType, typename _CharType, typename _SizeType> GAIA::BL value_cast(const _ValueType& v, _CharType* p, const _SizeType& size)
 		{
 			GAIA::ALGO::int2str(v, p);
+			GAIA_AST(GAIA::ALGO::strlen(p) < size);
 			return GAIA::True;
 		}
 		class string_autocast
