@@ -5,16 +5,16 @@ namespace GAIA
 {
 	namespace ALLOCATOR
 	{
-#if GAIA_OS == GAIA_OS_WINDOWS
-#	if GAIA_PROFILE == GAIA_PROFILE_DEBUG
+	#if GAIA_OS == GAIA_OS_WINDOWS
+	#	if GAIA_PROFILE == GAIA_PROFILE_DEBUG
 		inline GAIA::N32 crt_alloc_hook(
 			GAIA::N32 nAllocType,
 			GAIA::GVOID* pUserData,
-#		if GAIA_MACHINE == GAIA_MACHINE32
+		#if GAIA_MACHINE == GAIA_MACHINE32
 			GAIA::U32 size,
-#		elif GAIA_MACHINE == GAIA_MACHINE64
+		#elif GAIA_MACHINE == GAIA_MACHINE64
 			GAIA::U64 size,
-#		endif
+		#endif
 			GAIA::N32 nBlockType,
 			GAIA::NM nRequestNum,
 			const GAIA::U8* pszFileName,
@@ -31,19 +31,19 @@ namespace GAIA
 				++s_uFreeCount;
 			return GAIA::True;
 		}
-#	endif
-#endif
+	#	endif
+	#endif
 
 		class Allocator : public RefObject
 		{
 		public:
 			GINL Allocator()
 			{
-#if GAIA_OS == GAIA_OS_WINDOWS
-#	if GAIA_PROFILE == GAIA_PROFILE_DEBUG
+			#if GAIA_OS == GAIA_OS_WINDOWS
+			#	if GAIA_PROFILE == GAIA_PROFILE_DEBUG
 				_CrtSetAllocHook(crt_alloc_hook);
-#	endif
-#endif
+			#	endif
+			#endif
 			}
 			virtual GAIA::GVOID* memory_alloc(const GAIA::UM& size) = 0;
 			virtual GAIA::GVOID memory_release(GAIA::GVOID* p) = 0;
