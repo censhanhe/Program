@@ -157,18 +157,18 @@ namespace GAIA
 			}
 			GINL Time& operator += (const Time& src)
 			{
-				GAIA::U64 uself = this->tousecond();
-				GAIA::U64 u = src.tousecond();
+				GAIA::U64 uself = this->usecond();
+				GAIA::U64 u = src.usecond();
 				uself += u;
-				this->fromsecond(uself);
+				this->second(uself);
 				return *this;
 			}
 			GINL Time& operator -= (const Time& src)
 			{
-				GAIA::U64 uself = this->tousecond();
-				GAIA::U64 u = src.tousecond();
+				GAIA::U64 uself = this->usecond();
+				GAIA::U64 u = src.usecond();
 				uself -= u;
-				this->fromsecond(uself);
+				this->second(uself);
 				return *this;
 			}
 			GINL GAIA::GVOID systime();
@@ -186,23 +186,23 @@ namespace GAIA
 				p[1] |= (GSCAST(GAIA::U32)(usec)) & 0x000003FF;
 				return ret;
 			}
-			GINL GAIA::U64 toyear() const{return y;}
-			GINL GAIA::U64 tomonth() const{return this->toyear() * 12 + mo;}
-			GINL GAIA::U64 today() const{return y * 365 + y / 4 + GAIA::TIME::monthdaysall(y, mo) + d;}
-			GINL GAIA::U64 tohour() const{return this->today() * 24 + h;}
-			GINL GAIA::U64 tominute() const{return this->tohour() * 60 + mi;}
-			GINL GAIA::U64 tosecond() const{return this->tominute() * 60 + sec;}
-			GINL GAIA::U64 tomsecond() const{return this->tosecond() * 1000 + msec;}
-			GINL GAIA::U64 tousecond() const{return this->tomsecond() * 1000 + usec;}
-			GINL GAIA::GVOID fromyear(GAIA::U64 year){y = year; mo = d = 1; h = mi = sec = msec = usec = 0;}
-			GINL GAIA::GVOID frommonth(GAIA::U64 month){y = month / 12; mo = month % 12 + 1; d = 1; h = mi = sec = msec = usec = 0;}
-			GINL GAIA::GVOID fromday(GAIA::U64 day)
+			GINL GAIA::N64 year() const{return y;}
+			GINL GAIA::N64 month() const{return this->year() * 12 + mo;}
+			GINL GAIA::N64 day() const{return y * 365 + y / 4 + GAIA::TIME::monthdaysall(y, mo) + d;}
+			GINL GAIA::N64 hour() const{return this->day() * 24 + h;}
+			GINL GAIA::N64 minute() const{return this->hour() * 60 + mi;}
+			GINL GAIA::N64 second() const{return this->minute() * 60 + sec;}
+			GINL GAIA::N64 msecond() const{return this->second() * 1000 + msec;}
+			GINL GAIA::N64 usecond() const{return this->msecond() * 1000 + usec;}
+			GINL GAIA::GVOID year(GAIA::N64 year){y = year; mo = d = 1; h = mi = sec = msec = usec = 0;}
+			GINL GAIA::GVOID month(GAIA::N64 month){y = month / 12; mo = month % 12 + 1; d = 1; h = mi = sec = msec = usec = 0;}
+			GINL GAIA::GVOID day(GAIA::N64 day)
 			{
-				static const GAIA::U64 DAYS4YEAR = (4 * 365 + 1) * 4;
-				static const GAIA::U64 ONEYEARDAYS = 366;
-				static const GAIA::U64 TWOYEARDAYS = ONEYEARDAYS + 365;
-				static const GAIA::U64 THREEYEARDAYS = TWOYEARDAYS + 365;
-				static const GAIA::U64 FOURYEARDAYS = THREEYEARDAYS + 365;
+				static const GAIA::N64 DAYS4YEAR = (4 * 365 + 1) * 4;
+				static const GAIA::N64 ONEYEARDAYS = 366;
+				static const GAIA::N64 TWOYEARDAYS = ONEYEARDAYS + 365;
+				static const GAIA::N64 THREEYEARDAYS = TWOYEARDAYS + 365;
+				static const GAIA::N64 FOURYEARDAYS = THREEYEARDAYS + 365;
 				y = day / DAYS4YEAR * 4;
 				day %= DAYS4YEAR;
 				if(day < ONEYEARDAYS){}
@@ -233,40 +233,48 @@ namespace GAIA
 				}
 				h = mi = sec = msec = usec = 0;
 			}
-			GINL GAIA::GVOID fromhour(GAIA::U64 hour)
+			GINL GAIA::GVOID hour(GAIA::N64 hour)
 			{
-				this->fromday(hour / 24);
+				this->day(hour / 24);
 				h = hour % 24;
 				mi = sec = msec = usec = 0;
 			}
-			GINL GAIA::GVOID fromminute(GAIA::U64 minute)
+			GINL GAIA::GVOID minute(GAIA::N64 minute)
 			{
-				this->fromhour(minute / 60);
+				this->hour(minute / 60);
 				mi = minute % 60;
 				sec = msec = usec = 0;
 			}
-			GINL GAIA::GVOID fromsecond(GAIA::U64 second)
+			GINL GAIA::GVOID second(GAIA::N64 second)
 			{
-				this->fromminute(second / 60);
+				this->minute(second / 60);
 				sec = second % 60;
 				msec = usec = 0;
 			}
-			GINL GAIA::GVOID frommsecond(GAIA::U64 msecond)
+			GINL GAIA::GVOID msecond(GAIA::N64 msecond)
 			{
-				this->fromsecond(msecond / 1000);
+				this->second(msecond / 1000);
 				msec = msecond % 1000;
 				usec = 0;
 			}
-			GINL GAIA::GVOID fromusecond(GAIA::U64 usecond)
+			GINL GAIA::GVOID usecond(GAIA::N64 usecond)
 			{
-				this->frommsecond(usecond / 1000);
+				this->msecond(usecond / 1000);
 				usec = usecond % 1000;
 			}
 			GINL GAIA::GVOID dayinc()
 			{
+				GAIA::TIME::Time t;
+				t.clear();
+				t.d = 1;
+				(*this) += t;
 			}
 			GINL GAIA::GVOID daydec()
 			{
+				GAIA::TIME::Time t;
+				t.clear();
+				t.d = 1;
+				(*this) -= t;
 			}
 			GINL GAIA::GVOID string(const GAIA::TCH* psz)
 			{
