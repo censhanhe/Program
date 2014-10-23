@@ -185,6 +185,7 @@ namespace GAIA
 			GINL Time(){}
 			GINL Time(const Time& src){this->operator = (src);}
 			GINL Time(const GAIA::U64& src){this->operator = (src);}
+			template<typename _ParamDataType> Time(const _ParamDataType* psz){this->operator = (psz);}
 			GINL GAIA::BL check() const{return !(y == 0 && mo == 0 && d == 0 && h == 0 && mi == 0 && sec == 0 && msec == 0 && usec == 0);}
 			GINL GAIA::GVOID reset(){y = mo = d = h = mi = sec = msec = usec = 0;}
 			GINL GAIA::BL isvalid() const
