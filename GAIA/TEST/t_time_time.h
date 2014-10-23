@@ -75,7 +75,8 @@ namespace GAIA_TEST
 		for(GAIA::SIZE x = 0; x < sizeofarray(STRTIMELIST); ++x)
 		{
 			t = STRTIMELIST[x];
-			t.tostring(szTemp);
+
+			t.to(szTemp);
 			if(GAIA::ALGO::strcmp(szTemp, STRTIMELIST[x], GAIA::ALGO::strlen(STRTIMELIST[x])) != 0)
 			{
 				GTLINE2("Time to string error!");
@@ -88,6 +89,23 @@ namespace GAIA_TEST
 				++nRet;
 				break;
 			}
+
+			GAIA::U64 uCompressTime;
+			t.to(uCompressTime);
+			t.from(uCompressTime);
+			if(GAIA::ALGO::strcmp(szTemp, STRTIMELIST[x], GAIA::ALGO::strlen(STRTIMELIST[x])) != 0)
+			{
+				GTLINE2("Time to compress time error!");
+				++nRet;
+				break;
+			}
+			if(!t.isvalid())
+			{
+				GTLINE2("Time operator = from compress time failed!");
+				++nRet;
+				break;
+			}
+
 			GAIA::N64 usec = t.usecond();
 			GAIA::TIME::Time tt;
 			tt.usecond(usec);
@@ -133,47 +151,47 @@ namespace GAIA_TEST
 				++nRet;
 				break;
 			}
-			GAIA::U64 uTime = t;
-			if(!(t == uTime))
+			GAIA::N64 nTime = t;
+			if(!(t == nTime))
 			{
 				GTLINE2("Time operator = from string and compare == failed!");
 				++nRet;
 				break;
 			}
-			if(t != uTime)
+			if(t != nTime)
 			{
 				GTLINE2("Time operator = from string and compare != failed!");
 				++nRet;
 				break;
 			}
-			if(!(t >= uTime))
+			if(!(t >= nTime))
 			{
 				GTLINE2("Time operator = from string and compare >= failed!");
 				++nRet;
 				break;
 			}
-			if(!(t <= uTime))
+			if(!(t <= nTime))
 			{
 				GTLINE2("Time operator = from string and compare <= failed!");
 				++nRet;
 				break;
 			}
-			if(t > uTime)
+			if(t > nTime)
 			{
 				GTLINE2("Time operator = from string and compare > failed!");
 				++nRet;
 				break;
 			}
-			if(t < uTime)
+			if(t < nTime)
 			{
 				GTLINE2("Time operator = from string and compare < failed!");
 				++nRet;
 				break;
 			}
-			t = uTime;
+			t = nTime;
 			if(!t.isvalid())
 			{
-				GTLINE2("Time operator = from U64 failed!");
+				GTLINE2("Time operator = from N64 failed!");
 				++nRet;
 				break;
 			}
@@ -215,6 +233,89 @@ namespace GAIA_TEST
 			}
 		}
 
+		t = _T("20000930083059999123");
+		GAIA::N64 usec = t.usecond();
+		t.usecond(usec);
+		if(t != _T("20000930083059999123"))
+		{
+			GTLINE2("Time with leapyear convert to N64 failed!");
+			++nRet;
+		}
+
+		t = _T("20001001083059999123");
+		usec = t.usecond();
+		t.usecond(usec);
+		if(t != _T("20001001083059999123"))
+		{
+			GTLINE2("Time with leapyear convert to N64 failed!");
+			++nRet;
+		}
+
+		t = _T("20140930083059999123");
+		usec = t.usecond();
+		t.usecond(usec);
+		if(t != _T("20140930083059999123"))
+		{
+			GTLINE2("Time with leapyear convert to N64 failed!");
+			++nRet;
+		}
+
+		t = _T("20141001083059999123");
+		usec = t.usecond();
+		t.usecond(usec);
+		if(t != _T("20141001083059999123"))
+		{
+			GTLINE2("Time with leapyear convert to N64 failed!");
+			++nRet;
+		}
+
+		t = _T("20000930083059999123");
+		t.dayinc();
+		if(!t.isvalid() || t != _T("20001001083059999123"))
+		{
+			GTLINE2("Time dayinc failed!");
+			++nRet;
+		}
+
+		t = _T("20001001083059999123");
+		t.daydec();
+		if(!t.isvalid() || t != _T("20000930083059999123"))
+		{
+			GTLINE2("Time daydec failed!");
+			++nRet;
+		}
+
+		t = _T("20000930083059999123");
+		t += GSCAST(GAIA::N64)(24) * 60 * 60 * 1000 * 1000;
+		if(!t.isvalid() || t != _T("20001001083059999123"))
+		{
+			GTLINE2("Time operator += Time failed!");
+			++nRet;
+		}
+
+		t = _T("20001001083059999123");
+		t -= GSCAST(GAIA::N64)(24) * 60 * 60 * 1000 * 1000;
+		if(!t.isvalid() || t != _T("20000930083059999123"))
+		{
+			GTLINE2("Time operator -= Time failed!");
+			++nRet;
+		}
+
+		t = _T("20000930083059999123");
+		t = t + GSCAST(GAIA::N64)(24) * 60 * 60 * 1000 * 1000;
+		if(!t.isvalid() || t != _T("20001001083059999123"))
+		{
+			GTLINE2("Time operator + Time failed!");
+			++nRet;
+		}
+
+		t = _T("20001001083059999123");
+		t = t - GSCAST(GAIA::N64)(24) * 60 * 60 * 1000 * 1000;
+		if(!t.isvalid() || t != _T("20000930083059999123"))
+		{
+			GTLINE2("Time operator - Time failed!");
+			++nRet;
+		}
 
 		return nRet;
 	}

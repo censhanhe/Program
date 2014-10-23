@@ -184,7 +184,7 @@ namespace GAIA
 		public:
 			GINL Time(){}
 			GINL Time(const Time& src){this->operator = (src);}
-			GINL Time(const GAIA::U64& src){this->operator = (src);}
+			GINL Time(const GAIA::N64& src){this->operator = (src);}
 			template<typename _ParamDataType> Time(const _ParamDataType* psz){this->operator = (psz);}
 			GINL GAIA::BL check() const{return !(y == 0 && mo == 0 && d == 0 && h == 0 && mi == 0 && sec == 0 && msec == 0 && usec == 0);}
 			GINL GAIA::GVOID reset(){y = mo = d = h = mi = sec = msec = usec = 0;}
@@ -194,24 +194,8 @@ namespace GAIA
 					return GAIA::False;
 				if(mo < 1 || mo > 12)
 					return GAIA::False;
-				if(GAIA::TIME::leapyear(y))
-				{
-					if(mo == 2)
-					{
-						if(d < 1 || d > 29)
-							return GAIA::False;
-					}
-					else
-					{
-						if(d < 1 || d > 28)
-							return GAIA::False;
-					}
-				}
-				else
-				{
-					if(d < 1 || d > 28)
-						return GAIA::False;
-				}
+				if(d < 1 || d > GAIA::TIME::monthdays(y, mo))
+					return GAIA::False;
 				if(h < 0 || h > 23)
 					return GAIA::False;
 				if(mi < 0 || mi > 59)
@@ -225,20 +209,8 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL Time& operator = (const Time& src){GAIA_AST(&src != this); y = src.y; mo = src.mo; d = src.d; h = src.h; mi = src.mi; sec = src.sec; msec = src.msec; usec = src.usec; return *this;}
-			GINL Time& operator = (const GAIA::U64& src)
-			{
-				const GAIA::U32* p = (const GAIA::U32*)&src;
-				y = (p[0] >> 14) & 0x00003FFF;
-				mo = (p[0] >> 10) & 0x0000000F;
-				d = (p[0] >> 5) & 0x0000001F;
-				h = p[0] & 0x0000001F;
-				mi = (p[1] >> 26) & 0x0000003F;
-				sec = (p[1] >> 20) & 0x0000003F;
-				msec = (p[1] >> 10) & 0x000003FF;
-				usec = p[1] & 0x000003FF;
-				return *this;
-			}
-			template<typename _ParamDataType> Time& operator = (const _ParamDataType* psz){this->fromstring(psz); return *this;}
+			GINL Time& operator = (const GAIA::N64& src){this->usecond(src); return *this;}
+			template<typename _ParamDataType> Time& operator = (const _ParamDataType* psz){this->from(psz); return *this;}
 			GINL GAIA::BL operator == (const Time& src) const{return y == src.y && mo == src.mo && d == src.d && h == src.h && mi == src.mi && sec == src.sec && msec == src.msec && usec == src.usec;}
 			GINL GAIA::BL operator != (const Time& src) const{return !this->operator == (src);}
 			GINL GAIA::BL operator >= (const Time& src) const
@@ -313,64 +285,49 @@ namespace GAIA
 			}
 			GINL GAIA::BL operator > (const Time& src) const{return !this->operator <= (src);}
 			GINL GAIA::BL operator < (const Time& src) const{return !this->operator >= (src);}
-			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) == t;}
-			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) != t;}
-			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) >= t;}
-			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) <= t;}
-			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) > t;}
-			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.fromstring(psz); return (*this) < t;}
-			GINL GAIA::BL operator == (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) == t;}
-			GINL GAIA::BL operator != (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) != t;}
-			GINL GAIA::BL operator >= (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) >= t;}
-			GINL GAIA::BL operator <= (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) <= t;}
-			GINL GAIA::BL operator > (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) > t;}
-			GINL GAIA::BL operator < (const GAIA::U64& src) const{GAIA::TIME::Time t = src; return (*this) < t;}
-			GINL Time operator + (const Time& src) const
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.from(psz); return (*this) == t;}
+			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.from(psz); return (*this) != t;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.from(psz); return (*this) >= t;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.from(psz); return (*this) <= t;}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.from(psz); return (*this) > t;}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType* psz) const{GAIA::TIME::Time t; t.from(psz); return (*this) < t;}
+			GINL GAIA::BL operator == (const GAIA::N64& src) const{GAIA::TIME::Time t = src; return (*this) == t;}
+			GINL GAIA::BL operator != (const GAIA::N64& src) const{GAIA::TIME::Time t = src; return (*this) != t;}
+			GINL GAIA::BL operator >= (const GAIA::N64& src) const{GAIA::TIME::Time t = src; return (*this) >= t;}
+			GINL GAIA::BL operator <= (const GAIA::N64& src) const{GAIA::TIME::Time t = src; return (*this) <= t;}
+			GINL GAIA::BL operator > (const GAIA::N64& src) const{GAIA::TIME::Time t = src; return (*this) > t;}
+			GINL GAIA::BL operator < (const GAIA::N64& src) const{GAIA::TIME::Time t = src; return (*this) < t;}
+			GINL Time operator + (const GAIA::N64& src) const
 			{
 				Time ret = *this;
 				ret += src;
 				return ret;
 			}
-			GINL Time operator - (const Time& src) const
+			GINL Time operator - (const GAIA::N64& src) const
 			{
 				Time ret = *this;
 				ret -= src;
 				return ret;
 			}
-			GINL Time& operator += (const Time& src)
+			GINL Time& operator += (const GAIA::N64& src)
 			{
-				GAIA::U64 uself = this->usecond();
-				GAIA::U64 u = src.usecond();
-				uself += u;
-				this->usecond(uself);
+				GAIA::N64 n = this->usecond();
+				n += src;
+				this->usecond(n);
 				return *this;
 			}
-			GINL Time& operator -= (const Time& src)
+			GINL Time& operator -= (const GAIA::N64& src)
 			{
-				GAIA::U64 uself = this->usecond();
-				GAIA::U64 u = src.usecond();
-				uself -= u;
-				this->usecond(uself);
+				GAIA::N64 n = this->usecond();
+				n -= src;
+				this->usecond(n);
 				return *this;
 			}
 			GINL GAIA::GVOID systime();
-			GINL operator GAIA::U64() const
-			{
-				GAIA::U64 ret;
-				GAIA::U32* p = (GAIA::U32*)&ret;
-				p[0] = (GSCAST(GAIA::U32)(y) << 14) & 0xFFFFC000;
-				p[0] |= (GSCAST(GAIA::U32)(mo) << 10) & 0x00003C00;
-				p[0] |= (GSCAST(GAIA::U32)(d) << 5) & 0x000003E0;
-				p[0] |= (GSCAST(GAIA::U32)(h)) & 0x0000001F;
-				p[1] = (GSCAST(GAIA::U32)(mi) << 26) & 0xFC000000;
-				p[1] |= (GSCAST(GAIA::U32)(sec) << 20) & 0x03F00000;
-				p[1] |= (GSCAST(GAIA::U32)(msec) << 10) & 0x000FFC00;
-				p[1] |= (GSCAST(GAIA::U32)(usec)) & 0x000003FF;
-				return ret;
-			}
+			GINL operator GAIA::N64() const{return this->usecond();}
 			GINL GAIA::N64 year() const{return y;}
-			GINL GAIA::N64 month() const{return this->year() * 12 + mo;}
-			GINL GAIA::N64 day() const{return y * 365 + y / 4 + GAIA::TIME::monthdaysall(y, mo) + d;}
+			GINL GAIA::N64 month() const{return this->year() * 12 + mo - 1;}
+			GINL GAIA::N64 day() const{return y * 365 + y / 4 + ((y % 4 == 0) ? 0 : 1) + GAIA::TIME::monthdaysall(y, mo) + d - 1;}
 			GINL GAIA::N64 hour() const{return this->day() * 24 + h;}
 			GINL GAIA::N64 minute() const{return this->hour() * 60 + mi;}
 			GINL GAIA::N64 second() const{return this->minute() * 60 + sec;}
@@ -445,21 +402,9 @@ namespace GAIA
 				this->msecond(usecond / 1000);
 				usec = usecond % 1000;
 			}
-			GINL GAIA::GVOID dayinc()
-			{
-				GAIA::TIME::Time t;
-				t.reset();
-				t.d = 1;
-				(*this) += t;
-			}
-			GINL GAIA::GVOID daydec()
-			{
-				GAIA::TIME::Time t;
-				t.reset();
-				t.d = 1;
-				(*this) -= t;
-			}
-			template<typename _ParamDataType> GAIA::GVOID fromstring(const _ParamDataType* psz)
+			GINL GAIA::GVOID dayinc(){(*this) += GSCAST(GAIA::N64)(24) * 60 * 60 * 1000 * 1000;}
+			GINL GAIA::GVOID daydec(){(*this) -= GSCAST(GAIA::N64)(24) * 60 * 60 * 1000 * 1000;}
+			template<typename _ParamDataType> GAIA::GVOID from(const _ParamDataType* psz)
 			{
 				GPCHR_NULLSTRPTR(psz);
 				GAIA::SIZE sLen = GAIA::ALGO::strlen(psz);
@@ -502,7 +447,7 @@ namespace GAIA
 					usec = GAIA::ALGO::string_autocast(temp);
 				}
 			}
-			template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz) const
+			template<typename _ParamDataType> GAIA::GVOID to(_ParamDataType* psz) const
 			{
 				_ParamDataType temp[32];
 
@@ -547,6 +492,31 @@ namespace GAIA
 				psz += 3;
 
 				*psz = '\0';
+			}
+
+			GINL GAIA::GVOID from(const GAIA::U64& src)
+			{
+				const GAIA::U32* p = (const GAIA::U32*)&src;
+				y = (p[0] >> 14) & 0x00003FFF;
+				mo = (p[0] >> 10) & 0x0000000F;
+				d = (p[0] >> 5) & 0x0000001F;
+				h = p[0] & 0x0000001F;
+				mi = (p[1] >> 26) & 0x0000003F;
+				sec = (p[1] >> 20) & 0x0000003F;
+				msec = (p[1] >> 10) & 0x000003FF;
+				usec = p[1] & 0x000003FF;
+			}
+			GINL GAIA::GVOID to(GAIA::U64& u) const
+			{
+				GAIA::U32* p = (GAIA::U32*)&u;
+				p[0] = (GSCAST(GAIA::U32)(y) << 14) & 0xFFFFC000;
+				p[0] |= (GSCAST(GAIA::U32)(mo) << 10) & 0x00003C00;
+				p[0] |= (GSCAST(GAIA::U32)(d) << 5) & 0x000003E0;
+				p[0] |= (GSCAST(GAIA::U32)(h)) & 0x0000001F;
+				p[1] = (GSCAST(GAIA::U32)(mi) << 26) & 0xFC000000;
+				p[1] |= (GSCAST(GAIA::U32)(sec) << 20) & 0x03F00000;
+				p[1] |= (GSCAST(GAIA::U32)(msec) << 10) & 0x000FFC00;
+				p[1] |= (GSCAST(GAIA::U32)(usec)) & 0x000003FF;
 			}
 		public:
 			GAIA::N16 y; 	// Year.4
