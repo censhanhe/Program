@@ -2201,7 +2201,6 @@ namespace GAIA
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
 			GAIA::BL m_bBeginStatePipeline;
-
 		#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
 			HDC m_hDC;
 			Gdiplus::Graphics* m_pGraphics;

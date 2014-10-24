@@ -16,6 +16,9 @@
 #	ifdef GAIA_PLATFORM_OPENGL1
 #		pragma comment(lib, "opengl32.lib")
 #	endif
+#	ifdef GAIA_PLATFORM_DX9
+#		pragma comment(lib, "d3d9.lib")
+#	endif
 #	ifdef GAIA_PLATFORM_COM
 #		include <objbase.h>
 #		pragma comment(lib, "ole32.lib")

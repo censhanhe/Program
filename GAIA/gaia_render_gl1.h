@@ -838,7 +838,7 @@ namespace GAIA
 				m_hDC = ::GetDC(hWnd);
 
 				PIXELFORMATDESCRIPTOR pfd;
-				memset(&pfd, 0, sizeof(pfd));
+				GAIA::ALGO::xmemset(&pfd, 0, sizeof(pfd));
 				pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
 				pfd.nVersion = 1;
 				pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
@@ -860,6 +860,11 @@ namespace GAIA
 				{
 					::ReleaseDC(hWnd, m_hDC);
 					m_hDC = GNIL;
+
+					m_desc.pCanvas->Release();
+					m_desc.pCanvas = GNIL;
+					m_desc.reset();
+
 					return GAIA::False;
 				}
 
@@ -867,6 +872,11 @@ namespace GAIA
 				{
 					::ReleaseDC(hWnd, m_hDC);
 					m_hDC = GNIL;
+
+					m_desc.pCanvas->Release();
+					m_desc.pCanvas = GNIL;
+					m_desc.reset();
+
 					return GAIA::False;
 				}
 
@@ -875,14 +885,26 @@ namespace GAIA
 				{
 					::ReleaseDC(hWnd, m_hDC);
 					m_hDC = GNIL;
+
+					m_desc.pCanvas->Release();
+					m_desc.pCanvas = GNIL;
+					m_desc.reset();
+
 					return GAIA::False;
 				}
+
 				if(!::wglMakeCurrent(m_hDC, m_hGLRC))
 				{
 					::wglDeleteContext(m_hGLRC);
 					m_hGLRC = GNIL;
+
 					::ReleaseDC(hWnd, m_hDC);
 					m_hDC = GNIL;
+
+					m_desc.pCanvas->Release();
+					m_desc.pCanvas = GNIL;
+					m_desc.reset();
+
 					return GAIA::False;
 				}
 
@@ -1714,7 +1736,6 @@ namespace GAIA
 				m_bCreated = GAIA::False;
 				m_desc.reset();
 				m_bBeginStatePipeline = GAIA::False;
-
 			#if defined(GAIA_PLATFORM_OPENGL1)
 				m_hDC = GNIL;
 				m_hGLRC = GNIL;
@@ -1725,7 +1746,6 @@ namespace GAIA
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
 			GAIA::BL m_bBeginStatePipeline;
-
 		#if defined(GAIA_PLATFORM_OPENGL1)
 			HDC m_hDC;
 			HGLRC m_hGLRC;

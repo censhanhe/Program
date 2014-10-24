@@ -2,7 +2,7 @@
 #define		__GAIA_RENDER_DX9_H__
 
 #if defined(GAIA_PLATFORM_DX9)
-#	include <gl/gl.h>
+#	include <d3d9.h>
 #endif
 
 namespace GAIA
@@ -833,6 +833,48 @@ namespace GAIA
 				GAIA::GVOID* pHandle = desc.pCanvas->GetHandle();
 				GAIA_AST(pHandle != GNIL);
 
+			#if defined(GAIA_PLATFORM_DX9)
+				HWND hWnd = GSCAST(HWND)(pHandle);
+
+				m_pD3D = ::Direct3DCreate9(D3D_SDK_VERSION);
+				if(m_pD3D == GNIL)
+				{
+					m_desc.pCanvas->Release();
+					m_desc.pCanvas = GNIL;
+					m_desc.reset();
+					return GAIA::False;
+				}
+
+				D3DPRESENT_PARAMETERS d3dpp;
+				GAIA::ALGO::xmemset(&d3dpp, 0, sizeof(d3dpp));
+				d3dpp.Windowed = GAIA::True;
+				d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
+				d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+				d3dpp.BackBufferCount = 2;
+				d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+				d3dpp.BackBufferWidth = desc.pCanvas->Size().x;
+				d3dpp.BackBufferHeight = desc.pCanvas->Size().y;
+				d3dpp.EnableAutoDepthStencil = GAIA::True;
+				d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;
+				d3dpp.hDeviceWindow = hWnd;
+
+				if(m_pD3D->CreateDevice(
+					0, D3DDEVTYPE_HAL, hWnd, 
+					D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED,
+					&d3dpp,
+					&m_pD3DDevice) != D3D_OK)
+				{
+					GAIA_RELEASE_SAFE(m_pD3D);
+
+					m_desc.pCanvas->Release();
+					m_desc.pCanvas = GNIL;
+					m_desc.reset();
+
+					return GAIA::False;
+				}
+
+			#endif
+
 				m_bCreated = GAIA::True;
 				return GAIA::True;
 			}
@@ -843,6 +885,11 @@ namespace GAIA
 
 				GAIA::GVOID* pHandle = m_desc.pCanvas->GetHandle();
 				GAIA_AST(pHandle != GNIL);
+
+			#if defined(GAIA_PLATFORM_DX9)
+				GAIA_RELEASE_SAFE(m_pD3DDevice);
+				GAIA_RELEASE_SAFE(m_pD3D);
+			#endif
 
 				m_desc.pCanvas->Release();
 				m_desc.reset();
@@ -884,6 +931,11 @@ namespace GAIA
 				GAIA_AST(!this->IsBeginStatePipeline());
 				if(m_bBeginStatePipeline)
 					return GAIA::False;
+			#if defined(GAIA_PLATFORM_DX9)
+				if(m_pD3DDevice == GNIL)
+					return GAIA::False;
+				m_pD3DDevice->BeginScene();
+			#endif
 				m_bBeginStatePipeline = GAIA::True;
 				return GAIA::True;
 			}
@@ -892,6 +944,11 @@ namespace GAIA
 				GAIA_AST(this->IsBeginStatePipeline());
 				if(!m_bBeginStatePipeline)
 					return GAIA::False;
+			#if defined(GAIA_PLATFORM_DX9)
+				if(m_pD3DDevice == GNIL)
+					return GAIA::False;
+				m_pD3DDevice->EndScene();
+			#endif
 				m_bBeginStatePipeline = GAIA::False;
 				return GAIA::True;
 			}
@@ -902,6 +959,12 @@ namespace GAIA
 
 			virtual GAIA::GVOID Flush()
 			{
+				GPCHR_TRUE(this->IsBeginStatePipeline());
+			#if defined(GAIA_PLATFORM_DX9)
+				if(m_pD3DDevice == GNIL)
+					return;
+				m_pD3DDevice->Present(GNIL, GNIL, GNIL, GNIL);
+			#endif
 			}
 
 		public:
@@ -909,6 +972,14 @@ namespace GAIA
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 			{
 				GPCHR_FALSE(this->IsBeginStatePipeline());
+			#if defined(GAIA_PLATFORM_DX9)
+				if(m_pD3DDevice == GNIL)
+					return;
+				GAIA::MATH::ARGB<GAIA::REAL> crTemp = cr;
+				crTemp.tobytemode();
+				GAIA::U32 uColor = crTemp.tou32();
+				m_pD3DDevice->Clear(0, GNIL, D3DCLEAR_TARGET, uColor, 0.0F, 0);
+			#endif
 			}
 
 			/* State. */
@@ -1628,12 +1699,20 @@ namespace GAIA
 				m_bCreated = GAIA::False;
 				m_desc.reset();
 				m_bBeginStatePipeline = GAIA::False;
+			#if defined(GAIA_PLATFORM_DX9)
+				m_pD3D = GNIL;
+				m_pD3DDevice = GNIL;
+			#endif
 			}
 
 		private:
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
 			GAIA::BL m_bBeginStatePipeline;
+		#if defined(GAIA_PLATFORM_DX9)
+			IDirect3D9* m_pD3D;
+			IDirect3DDevice9* m_pD3DDevice;
+		#endif
 		};
 	};
 };

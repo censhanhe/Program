@@ -2,7 +2,6 @@
 #define		__GAIA_RENDER_DX10_H__
 
 #if defined(GAIA_PLATFORM_DX10)
-#	include <gl/gl.h>
 #endif
 
 namespace GAIA
