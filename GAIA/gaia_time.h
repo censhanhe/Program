@@ -31,7 +31,6 @@ namespace GAIA
 					return DAYSALL[month] + 1;
 			}
 			return DAYSALL[month];
-
 		}
 		GINL GAIA::U64 clock_time(); // return value is micro second from 1970.1.1.
 		GINL GAIA::U64 tick_time(); // return value is micro second from process startuped.
