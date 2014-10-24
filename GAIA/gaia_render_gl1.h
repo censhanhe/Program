@@ -124,27 +124,36 @@ namespace GAIA
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL1_PEN;}
 				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 				{
-					return GAIA::False;
+					m_cr = cr;
+					return GAIA::True;
 				}
 				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const
 				{
-					return GAIA::False;
+					cr = m_cr;
+					return GAIA::True;
 				}
 				virtual GAIA::BL SetWidth(const GAIA::REAL& rWidth)
 				{
-					return GAIA::False;
+					m_rWidth = rWidth;
+					return GAIA::True;
 				}
 				virtual GAIA::BL GetWidth(GAIA::REAL& rWidth) const
 				{
-					return GAIA::False;
+					rWidth = m_rWidth;
+					return GAIA::True;
 				}
 			private:
 				GINL GAIA::GVOID init()
 				{
 					m_desc.reset();
+					m_cr.fromu32(0xFF000000);
+					m_cr.torealmode();
+					m_rWidth = 1.0F;
 				}
 			private:
 				PenDesc m_desc;
+				GAIA::MATH::ARGB<GAIA::REAL> m_cr;
+				GAIA::REAL m_rWidth;
 			};
 
 			class Brush : public virtual GAIA::RENDER::Render2D::Brush
@@ -174,19 +183,23 @@ namespace GAIA
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL1_BRUSH;}
 				virtual GAIA::BL SetColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 				{
-					return GAIA::False;
+					m_cr = cr;
+					return GAIA::True;
 				}
 				virtual GAIA::BL GetColor(GAIA::MATH::ARGB<GAIA::REAL>& cr) const
 				{
-					return GAIA::False;
+					cr = m_cr;
+					return GAIA::True;
 				}
 			private:
 				GINL GAIA::GVOID init()
 				{
 					m_desc.reset();
+					m_cr.fromu32(0xFF000000);
 				}
 			private:
 				BrushDesc m_desc;
+				GAIA::MATH::ARGB<GAIA::REAL> m_cr;
 			};
 
 			class FontFamily : public virtual GAIA::RENDER::Render2D::FontFamily
@@ -284,35 +297,47 @@ namespace GAIA
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL1_FONTFORMAT;}
 				virtual GAIA::BL SetAlignDirectionH(GAIA::N8 nDirection)
 				{
-					return GAIA::False;
+					m_nAlignDirH = nDirection;
+					return GAIA::True;
 				}
 				virtual GAIA::BL GetAlignDirectionH(GAIA::N8& nDirection)
 				{
-					return GAIA::False;
+					nDirection = m_nAlignDirH;
+					return GAIA::True;
 				}
 				virtual GAIA::BL SetAlignDirectionV(GAIA::N8 nDirection)
 				{
-					return GAIA::False;
+					m_nAlignDirV = nDirection;
+					return GAIA::True;
 				}
 				virtual GAIA::BL GetAlignDirectionV(GAIA::N8& nDirection)
 				{
-					return GAIA::False;
+					nDirection = m_nAlignDirV;
+					return GAIA::True;
 				}
 				virtual GAIA::BL EnableWrap(GAIA::BL bEnable)
 				{
-					return GAIA::False;
+					m_bEnableWrap = bEnable;
+					return GAIA::True;
 				}
 				virtual GAIA::BL IsEnableWrap(GAIA::BL& bEnable)
 				{
-					return GAIA::False;
+					bEnable = m_bEnableWrap;
+					return GAIA::True;
 				}
 			private:
 				GINL GAIA::GVOID init()
 				{
 					m_desc.reset();
+					m_nAlignDirH = -1;
+					m_nAlignDirV = -1;
+					m_bEnableWrap = GAIA::True;
 				}
 			private:
 				FontFormatDesc m_desc;
+				GAIA::N8 m_nAlignDirH;
+				GAIA::N8 m_nAlignDirV;
+				GAIA::U8 m_bEnableWrap : 1;
 			};
 
 			class Target : public virtual GAIA::RENDER::Render2D::Target
