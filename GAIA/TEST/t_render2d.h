@@ -1,7 +1,7 @@
 #ifndef		__T_RENDER2D_H__
 #define		__T_RENDER2D_H__
 
-namespace GAIA
+namespace GAIA_TEST
 {
 	template<typename _RenderType> GAIA::N32 t_render2d(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt, const GAIA::FWORK::ClsID& cid)
 	{

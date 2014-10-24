@@ -6,6 +6,10 @@ namespace GAIA_TEST
 	GINL GAIA::N32 t_render_gles3(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
+
+		nRet += t_render2d<GAIA::RENDER::Render3DGLES3>(file, prt, GAIA::FWORK::CLSID_RENDER_3D_GLES3);
+		nRet += t_render3d<GAIA::RENDER::Render3DGLES3>(file, prt, GAIA::FWORK::CLSID_RENDER_3D_GLES3);
+
 		return nRet;
 	}
 };

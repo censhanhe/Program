@@ -7,7 +7,7 @@ namespace GAIA_TEST
 	{
 		GAIA::N32 nRet = 0;
 
-		nRet = t_render2d<GAIA::RENDER::Render2DGDIPlus>(file, prt, GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS);
+		nRet += t_render2d<GAIA::RENDER::Render2DGDIPlus>(file, prt, GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS);
 
 		return nRet;
 	}
