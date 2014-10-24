@@ -1,7 +1,7 @@
 #ifndef		__GAIA_RENDER_GLES2_H__
 #define		__GAIA_RENDER_GLES2_H__
 
-#if defined(GAIA_PLATFORM_OPENGL)
+#if defined(GAIA_PLATFORM_OPENGLES2)
 #	include <gl/gl.h>
 #endif
 
@@ -862,7 +862,7 @@ namespace GAIA
 			virtual GAIA::RENDER::Render::Context* CreateContext(const GAIA::RENDER::Render::Context::ContextDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
-			#if defined(GAIA_PLATFORM_OPENGL)
+			#if defined(GAIA_PLATFORM_OPENGLES2)
 				Context* pContext = GDCAST(Context*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_GLES2_CONTEXT, GNIL));
 				GAIA_AST(pContext != GNIL);
 				if(pContext == GNIL)
@@ -1111,7 +1111,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DGLES2::Context* pContext = GDCAST(GAIA::RENDER::Render3DGLES2::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_OPENGL)
+			#if defined(GAIA_PLATFORM_OPENGLES2)
 				Pen* pPen = GDCAST(Pen*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_GLES2_PEN, GNIL));
 				GAIA_AST(pPen != GNIL);
 				if(pPen == GNIL)
@@ -1157,7 +1157,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DGLES2::Context* pContext = GDCAST(GAIA::RENDER::Render3DGLES2::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_OPENGL)
+			#if defined(GAIA_PLATFORM_OPENGLES2)
 				Brush* pBrush = GDCAST(Brush*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_GLES2_BRUSH, GNIL));
 				pBrush->SetRender(this);
 				if(!pBrush->Create(desc))
@@ -1201,7 +1201,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DGLES2::Context* pContext = GDCAST(GAIA::RENDER::Render3DGLES2::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_OPENGL)
+			#if defined(GAIA_PLATFORM_OPENGLES2)
 				FontFamily* pFontFamily = GDCAST(FontFamily*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_GLES2_FONTFAMILY, GNIL));
 				GAIA_AST(pFontFamily != GNIL);
 				if(pFontFamily == GNIL)
@@ -1224,7 +1224,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DGLES2::Context* pContext = GDCAST(GAIA::RENDER::Render3DGLES2::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_OPENGL)
+			#if defined(GAIA_PLATFORM_OPENGLES2)
 				FontPainter* pFontPainter = GDCAST(FontPainter*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_GLES2_FONTPAINTER, GNIL));
 				GAIA_AST(pFontPainter != GNIL);
 				if(pFontPainter == GNIL)
@@ -1247,7 +1247,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DGLES2::Context* pContext = GDCAST(GAIA::RENDER::Render3DGLES2::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_OPENGL)
+			#if defined(GAIA_PLATFORM_OPENGLES2)
 				FontFormat* pFontFormat = GDCAST(FontFormat*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_GLES2_FONTFORMAT, GNIL));
 				GAIA_AST(pFontFormat != GNIL);
 				if(pFontFormat == GNIL)
@@ -1338,7 +1338,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DGLES2::Context* pContext = GDCAST(GAIA::RENDER::Render3DGLES2::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_OPENGL)
+			#if defined(GAIA_PLATFORM_OPENGLES2)
 				Texture* pTex = GDCAST(Texture*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_GLES2_TEXTURE, GNIL));
 				GAIA_AST(pTex != GNIL);
 				if(pTex == GNIL)
