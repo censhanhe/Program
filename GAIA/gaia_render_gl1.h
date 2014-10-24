@@ -834,7 +834,8 @@ namespace GAIA
 				GAIA_AST(pHandle != GNIL);
 
 			#if defined(GAIA_PLATFORM_OPENGL1)
-				m_hDC = ::GetDC(GSCAST(HWND)(pHandle));
+				HWND hWnd = GSCAST(HWND)(pHandle);
+				m_hDC = ::GetDC(hWnd);
 
 				PIXELFORMATDESCRIPTOR pfd;
 				memset(&pfd, 0, sizeof(pfd));
@@ -854,15 +855,36 @@ namespace GAIA
 				pfd.bReserved = 0;
 				pfd.dwLayerMask = pfd.dwVisibleMask = pfd.dwDamageMask = 0;
 
-				int nIndex = ::ChoosePixelFormat(m_hDC, &pfd);
+				GAIA::N32 nIndex = ::ChoosePixelFormat(m_hDC, &pfd);
 				if(nIndex == 0)
-					return false;
+				{
+					::ReleaseDC(hWnd, m_hDC);
+					m_hDC = GNIL;
+					return GAIA::False;
+				}
 
 				if(!::SetPixelFormat(m_hDC, nIndex, &pfd))
-					return false;
+				{
+					::ReleaseDC(hWnd, m_hDC);
+					m_hDC = GNIL;
+					return GAIA::False;
+				}
 
-				HGLRC hGLRC = ::wglCreateContext(m_hDC);
-				::wglMakeCurrent(m_hDC, hGLRC);
+				m_hGLRC = ::wglCreateContext(m_hDC);
+				if(m_hGLRC == GNIL)
+				{
+					::ReleaseDC(hWnd, m_hDC);
+					m_hDC = GNIL;
+					return GAIA::False;
+				}
+				if(!::wglMakeCurrent(m_hDC, m_hGLRC))
+				{
+					::wglDeleteContext(m_hGLRC);
+					m_hGLRC = GNIL;
+					::ReleaseDC(hWnd, m_hDC);
+					m_hDC = GNIL;
+					return GAIA::False;
+				}
 
 				::glShadeModel(GL_SMOOTH);
 				::glEnable(GL_DEPTH_TEST);
@@ -882,9 +904,15 @@ namespace GAIA
 				GAIA_AST(pHandle != GNIL);
 
 			#if defined(GAIA_PLATFORM_OPENGL1)
+				HWND hWnd = GSCAST(HWND)(pHandle);
+				if(m_hGLRC != GNIL)
+				{
+					::wglDeleteContext(m_hGLRC);
+					m_hGLRC = GNIL;
+				}
+
 				if(m_hDC != GNIL)
 				{
-					HWND hWnd = GSCAST(HWND)(pHandle);
 					::ReleaseDC(hWnd, m_hDC);
 					m_hDC = GNIL;
 				}
@@ -1689,6 +1717,7 @@ namespace GAIA
 
 			#if defined(GAIA_PLATFORM_OPENGL1)
 				m_hDC = GNIL;
+				m_hGLRC = GNIL;
 			#endif
 			}
 
@@ -1699,6 +1728,7 @@ namespace GAIA
 
 		#if defined(GAIA_PLATFORM_OPENGL1)
 			HDC m_hDC;
+			HGLRC m_hGLRC;
 		#endif
 		};
 	};

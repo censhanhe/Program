@@ -125,37 +125,43 @@ namespace GAIA_TEST
 			GTLINE2("Render create fetch data failed!");
 			++nRet;
 		}
-		if(pFetchData2->GetSize() != 128 * 128 * 4)
+		else
 		{
-			GTLINE2("Render create fetch data failed!");
-			++nRet;
-		}
-		GAIA::MATH::ARGB<GAIA::U8>* pColor = new GAIA::MATH::ARGB<GAIA::U8>[pTexture->GetDesc().uWidth * pTexture->GetDesc().uHeight];
-		GAIA::MATH::VEC2<GAIA::REAL> center(pTexture->GetDesc().uWidth / 2, pTexture->GetDesc().uHeight / 2);
-		for(GAIA::SIZE x = 0; x < (GAIA::SIZE)pTexture->GetDesc().uWidth; ++x)
-		{
-			for(GAIA::SIZE y = 0; y < (GAIA::SIZE)pTexture->GetDesc().uHeight; ++y)
+			if(pFetchData2->GetSize() != 128 * 128 * 4)
 			{
-				GAIA::MATH::VEC2<GAIA::REAL> t(x, y);
-				GAIA::MATH::ARGB<GAIA::U8>& cr = pColor[y * pTexture->GetDesc().uWidth + x];
-				GAIA::REAL rLen = (t - center).length() / (GAIA::REAL)(pTexture->GetDesc().uWidth / 2);
-				rLen = 1.0F - GAIA::MATH::xclamp(rLen, 0, 1);
-				cr = rLen * 255;
-				cr.a = 255;
+				GTLINE2("Render create fetch data failed!");
+				++nRet;
+			}
+			else
+			{
+				GAIA::MATH::ARGB<GAIA::U8>* pColor = new GAIA::MATH::ARGB<GAIA::U8>[pTexture->GetDesc().uWidth * pTexture->GetDesc().uHeight];
+				GAIA::MATH::VEC2<GAIA::REAL> center(pTexture->GetDesc().uWidth / 2, pTexture->GetDesc().uHeight / 2);
+				for(GAIA::SIZE x = 0; x < (GAIA::SIZE)pTexture->GetDesc().uWidth; ++x)
+				{
+					for(GAIA::SIZE y = 0; y < (GAIA::SIZE)pTexture->GetDesc().uHeight; ++y)
+					{
+						GAIA::MATH::VEC2<GAIA::REAL> t(x, y);
+						GAIA::MATH::ARGB<GAIA::U8>& cr = pColor[y * pTexture->GetDesc().uWidth + x];
+						GAIA::REAL rLen = (t - center).length() / (GAIA::REAL)(pTexture->GetDesc().uWidth / 2);
+						rLen = 1.0F - GAIA::MATH::xclamp(rLen, 0, 1);
+						cr = rLen * 255;
+						cr.a = 255;
+					}
+				}
+				pFetchData2->Set(pColor, pTexture->GetDesc().uWidth * pTexture->GetDesc().uHeight * 4, 4 * 8, 0);
+				GAIA_DELETE_SAFE(pColor);
+				pFetchData->Release();
+				pFetchData = GNIL;
+				pFetchData2 = GNIL;
 			}
 		}
-		pFetchData2->Set(pColor, pTexture->GetDesc().uWidth * pTexture->GetDesc().uHeight * 4, 4 * 8, 0);
-		GAIA_DELETE_SAFE(pColor);
-		pFetchData->Release();
-		pFetchData = GNIL;
-		pFetchData2 = GNIL;
 
 		/* Begin state pipeline. */
 		pRender->BeginStatePipeline();
 
 		/* Clear screen. */
 		GAIA::MATH::ARGB<GAIA::REAL> crClear;
-		crClear.r = crClear.g = crClear.b = 1.0F;
+		crClear.r = crClear.g = crClear.b = 0.5F;
 		crClear.a = 1.0F;
 		pRender->ClearColor(crClear);
 		DEBUG_FLUSH;
