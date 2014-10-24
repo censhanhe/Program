@@ -827,7 +827,11 @@ namespace GAIA
 				if(!desc.check())
 					return GAIA::False;
 
+				desc.pCanvas->Reference();
 				m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::RenderDesc&)(desc);
+
+				GAIA::GVOID* pHandle = desc.pCanvas->GetHandle();
+				GAIA_AST(pHandle != GNIL);
 
 				m_bCreated = GAIA::True;
 				return GAIA::True;
@@ -836,6 +840,13 @@ namespace GAIA
 			{
 				if(!m_bCreated)
 					return GAIA::False;
+
+				GAIA::GVOID* pHandle = m_desc.pCanvas->GetHandle();
+				GAIA_AST(pHandle != GNIL);
+
+				m_desc.pCanvas->Release();
+				m_desc.reset();
+
 				m_bCreated = GAIA::False;
 				return GAIA::True;
 			}
@@ -850,7 +861,18 @@ namespace GAIA
 
 			virtual GAIA::RENDER::Render::Context* CreateContext(const GAIA::RENDER::Render::Context::ContextDesc& desc)
 			{
-				return GNIL;
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				Context* pContext = GDCAST(Context*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS_CONTEXT, GNIL));
+				GAIA_AST(pContext != GNIL);
+				if(pContext == GNIL)
+					return GNIL;
+				pContext->SetRender(this);
+				if(!pContext->Create(desc))
+				{
+					pContext->Release();
+					return GNIL;
+				}
+				return pContext;
 			}
 
 			virtual GAIA::BL BeginStatePipeline()
@@ -880,133 +902,470 @@ namespace GAIA
 
 		public:
 			/* Clear. */
-			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr){}
+			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
+			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+			}
 
 			/* State. */
 			virtual GAIA::GVOID SetQuality2DState(GAIA::RENDER::Render::Context& ctx, const QUALITY2D_STATE& qs, const GAIA::CH* pszState)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
+					return;
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(GAIA::ALGO::stremp(pszState))
+					this->SetQuality2DState(ctx, qs, RENDER2D_QUALITYSTATE_DEFAULT[qs]);
+				switch(qs)
+				{
+				case GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS:
+					{
+					}
+					break;
+				case GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS:
+					{
+					}
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					break;
+				}
 			}
 			virtual const GAIA::CH* GetQuality2DState(GAIA::RENDER::Render::Context& ctx, const QUALITY2D_STATE& qs)
 			{
-				return GNIL;
+				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
+				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
+					return GNILSTR;
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNILSTR;
+				switch(qs)
+				{
+				case GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS:
+					{
+					}
+					break;
+				case GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS:
+					{
+					}
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					break;
+				}
+				return GNILSTR;
 			}
 			virtual GAIA::GVOID SetRender2DState(GAIA::RENDER::Render::Context& ctx, const RENDER2D_STATE& rs, const GAIA::CH* pszState)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
+					return;
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(GAIA::ALGO::stremp(pszState))
+					this->SetRender2DState(ctx, rs, RENDER2D_RENDERSTATE_DEFAULT[rs]);
+				switch(rs)
+				{
+				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND:
+					{
+						if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
+							pContext->bEnableAlphaBlend = GAIA::True;
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF]) == 0)
+							pContext->bEnableAlphaBlend = GAIA::False;
+					}
+					break;
+
+				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHATEST:
+					{
+						if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]) == 0)
+							pContext->bEnableAlphaTest = GAIA::True;
+						else if(GAIA::ALGO::strcmp(pszState, GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF]) == 0)
+							pContext->bEnableAlphaTest = GAIA::False;
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					break;
+				}
 			}
 			virtual const GAIA::CH* GetRender2DState(GAIA::RENDER::Render::Context& ctx, const RENDER2D_STATE& rs) const
 			{
-				return GNIL;
+				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
+				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
+					return GNILSTR;
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNILSTR;
+				switch(rs)
+				{
+				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND:
+					{
+						if(pContext->bEnableAlphaBlend)
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON];
+						else
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF];
+					}
+					break;
+
+				case GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHATEST:
+					{
+						if(pContext->bEnableAlphaTest)
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON];
+						else
+							return GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF];
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					break;
+				}
+				return GNILSTR;
 			}
 			virtual GAIA::GVOID SetSampler2DState(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
+					return;
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(GAIA::ALGO::stremp(pszState))
+					this->SetSampler2DState(ctx, nSamplerIndex, ss, RENDER2D_SAMPLERSTATE_DEFAULT[ss]);
+				switch(ss)
+				{
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_ADDRESSU:
+					{
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					break;
+				}
 			}
 			virtual const GAIA::CH* GetSampler2DState(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const
 			{
-				return GNIL;
+				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
+				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
+					return GNILSTR;
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNILSTR;
+				switch(ss)
+				{
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_ADDRESSU:
+					{
+					}
+					break;
+
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					break;
+				}
+				return GNILSTR;
 			}
 
 			/* Pen. */
 			virtual GAIA::RENDER::Render2D::Pen* CreatePen(GAIA::RENDER::Render::Context& ctx, const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 				return GNIL;
 			}
 			virtual GAIA::GVOID SetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen* pPen)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pPen != GNIL)
+					pPen->Reference();
+				if(pContext->pCurrentPen != GNIL)
+					pContext->pCurrentPen->Release();
+				pContext->pCurrentPen = pPen;
 			}
 			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen*& pPen)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pContext->pCurrentPen != GNIL)
+					pContext->pCurrentPen->Reference();
+				pPen = pContext->pCurrentPen;
 			}
 
 			/* Brush. */
 			virtual GAIA::RENDER::Render2D::Brush* CreateBrush(GAIA::RENDER::Render::Context& ctx, const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 				return GNIL;
 			}
 			virtual GAIA::GVOID SetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush* pBrush)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pBrush != GNIL)
+					pBrush->Reference();
+				if(pContext->pCurrentBrush != GNIL)
+					pContext->pCurrentBrush->Release();
+				pContext->pCurrentBrush = pBrush;
 			}
 			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush*& pBrush)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pContext->pCurrentBrush != GNIL)
+					pContext->pCurrentBrush->Reference();
+				pBrush = pContext->pCurrentBrush;
 			}
 
 			/* FontPainter. */
 			virtual GAIA::RENDER::Render2D::FontFamily* CreateFontFamily(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 				return GNIL;
 			}
 			virtual GAIA::RENDER::Render2D::FontPainter* CreateFontPainter(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 				return GNIL;
 			}
 			virtual GAIA::RENDER::Render2D::FontFormat* CreateFontFormat(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 				return GNIL;
 			}
 			virtual GAIA::GVOID SetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily* pFontFamily)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pFontFamily != GNIL)
+					pFontFamily->Reference();
+				if(pContext->pCurrentFontFamily != GNIL)
+					pContext->pCurrentFontFamily->Release();
+				pContext->pCurrentFontFamily = pFontFamily;
 			}
 			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily*& pFontFamily)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pContext->pCurrentFontFamily != GNIL)
+					pContext->pCurrentFontFamily->Reference();
+				pFontFamily = pContext->pCurrentFontFamily;
 			}
 			virtual GAIA::GVOID SetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter* pFontPainter)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pFontPainter != GNIL)
+					pFontPainter->Reference();
+				if(pContext->pCurrentFontPainter != GNIL)
+					pContext->pCurrentFontPainter->Release();
+				pContext->pCurrentFontPainter = pFontPainter;
 			}
 			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter*& pFontPainter)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pContext->pCurrentFontPainter != GNIL)
+					pContext->pCurrentFontPainter->Reference();
+				pFontPainter = pContext->pCurrentFontPainter;
 			}
 			virtual GAIA::GVOID SetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat* pFontFormat)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pFontFormat != GNIL)
+					pFontFormat->Reference();
+				if(pContext->pCurrentFontFormat != GNIL)
+					pContext->pCurrentFontFormat->Release();
+				pContext->pCurrentFontFormat = pFontFormat;
 			}
 			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat*& pFontFormat)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pContext->pCurrentFontFormat != GNIL)
+					pContext->pCurrentFontFormat->Reference();
+				pFontFormat = pContext->pCurrentFontFormat;
 			}
 
 			/* Texture. */
 			virtual GAIA::RENDER::Render2D::Texture* CreateTexture(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::Texture::TextureDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
 				return GNIL;
 			}
 			virtual GAIA::GVOID SetTexture(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				GAIA_AST(nTextureIndex >= 0);
+				if(nTextureIndex < 0)
+					return;
+				GAIA_AST(nTextureIndex < MAX_TEXTURE_COUNT);
+				if(nTextureIndex >= MAX_TEXTURE_COUNT)
+					return;
+				if(pTexture != GNIL)
+					pTexture->Reference();
+				if(pContext->pCurrentTexture[nTextureIndex] != GNIL)
+					pContext->pCurrentTexture[nTextureIndex]->Release();
+				pContext->pCurrentTexture[nTextureIndex] = pTexture;
 			}
 			virtual GAIA::GVOID GetTexture(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				GAIA_AST(nTextureIndex >= 0);
+				if(nTextureIndex < 0)
+					return;
+				GAIA_AST(nTextureIndex < MAX_TEXTURE_COUNT);
+				if(nTextureIndex >= MAX_TEXTURE_COUNT)
+					return;
+				if(pContext->pCurrentTexture[nTextureIndex] != GNIL)
+					pContext->pCurrentTexture[nTextureIndex]->Reference();
+				pTexture = pContext->pCurrentTexture[nTextureIndex];
 			}
 
 			/* Target. */
 			virtual GAIA::RENDER::Render2D::Target* CreateTarget(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::Target::TargetDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
+
 				return GNIL;
 			}
 			virtual GAIA::GVOID SetTarget(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target* pTarget)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				GAIA_AST(nTargetIndex >= 0);
+				if(nTargetIndex < 0)
+					return;
+				GAIA_AST(nTargetIndex < MAX_TARGET_COUNT);
+				if(nTargetIndex >= MAX_TARGET_COUNT)
+					return;
+				if(pTarget != GNIL)
+					pTarget->Reference();
+				if(pContext->pCurrentTarget[nTargetIndex] != GNIL)
+					pContext->pCurrentTarget[nTargetIndex]->Release();
+				pContext->pCurrentTarget[nTargetIndex] = pTarget;
 			}
 			virtual GAIA::GVOID GetTarget(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				GAIA_AST(nTargetIndex >= 0);
+				if(nTargetIndex < 0)
+					return;
+				GAIA_AST(nTargetIndex < MAX_TARGET_COUNT);
+				if(nTargetIndex >= MAX_TARGET_COUNT)
+					return;
+				if(pContext->pCurrentTarget[nTargetIndex] != GNIL)
+					pContext->pCurrentTarget[nTargetIndex]->Reference();
+				pTarget = pContext->pCurrentTarget[nTargetIndex];
 			}
 
 			/* Shader. */
 			virtual GAIA::RENDER::Render2D::Shader* CreateShader(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc)
 			{
+				GPCHR_NULL_RET(this->GetFactory(), GNIL);
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return GNIL;
+
 				return GNIL;
 			}
 			virtual GAIA::GVOID SetShader(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Shader* pShader)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pShader != GNIL)
+					pShader->Reference();
+				if(pContext->pCurrentShader != GNIL)
+					pContext->pCurrentShader->Release();
+				pContext->pCurrentShader = pShader;
 			}
 			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Shader*& pShader) const
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				if(pContext->pCurrentShader != GNIL)
+					pContext->pCurrentShader->Reference();
+				pShader = pContext->pCurrentShader;
 			}
 			virtual GAIA::GVOID SetShaderConstant(GAIA::RENDER::Render::Context& ctx, const GAIA::SIZE& sStartIndex, const GAIA::REAL* p, const GAIA::SIZE& sSize)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 			virtual GAIA::GVOID GetShaderConstant(GAIA::RENDER::Render::Context& ctx, const GAIA::SIZE& sStartIndex, GAIA::REAL* p, const GAIA::SIZE& sSize, GAIA::SIZE& sResultSize) const
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
 			}
 
 			/* Draw. */
@@ -1014,26 +1373,53 @@ namespace GAIA
 				const GAIA::MATH::VEC2<GAIA::REAL>& s,
 				const GAIA::MATH::VEC2<GAIA::REAL>& e)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				GPCHR_NULL(pContext->pCurrentPen);
 			}
 			virtual GAIA::GVOID DrawRect(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				GPCHR_NULL(pContext->pCurrentBrush);
 			}
 			virtual GAIA::GVOID DrawTriangle(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos1,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos3)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				GPCHR_NULL(pContext->pCurrentBrush);
 			}
 			virtual GAIA::GVOID DrawFontPainter(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::TCH* pszText,
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_NULLSTRPTR(pszText);
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				GPCHR_NULL(pContext->pCurrentFontPainter);
+				GPCHR_NULL(pContext->pCurrentBrush);
 			}
 			virtual GAIA::GVOID DrawTexture(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::MTX33<GAIA::REAL>& mtxTM)
 			{
+				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+				GPCHR_NULL(pContext->pCurrentTexture[0]);
 			}
 
 		public:
