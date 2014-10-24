@@ -161,17 +161,17 @@ namespace GAIA_TEST
 			GTLINE1("UI: Canvas test begin!"); nRet += t_ui_canvas(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("Render: ImageWork test begin!"); nRet += t_render_imagework(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: DDraw test begin!"); nRet += t_render_ddraw(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: DDraw test begin!"); nRet += t_render_ddraw(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Render: gdiplus test begin!"); nRet += t_render_gdiplus(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: dx9 test begin!"); nRet += t_render_dx9(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: dx10 test begin!"); nRet += t_render_dx10(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: dx11 test begin!"); nRet += t_render_dx11(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: gl1 test begin!"); nRet += t_render_gl1(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: gl2 test begin!"); nRet += t_render_gl2(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: gl3 test begin!"); nRet += t_render_gl3(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: gles1 test begin!"); nRet += t_render_gles1(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: gles2 test begin!"); nRet += t_render_gles2(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: gles3 test begin!"); nRet += t_render_gles3(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: dx9 test begin!"); nRet += t_render_dx9(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: dx10 test begin!"); nRet += t_render_dx10(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: dx11 test begin!"); nRet += t_render_dx11(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: gl1 test begin!"); nRet += t_render_gl1(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: gl2 test begin!"); nRet += t_render_gl2(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: gl3 test begin!"); nRet += t_render_gl3(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: gles1 test begin!"); nRet += t_render_gles1(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: gles2 test begin!"); nRet += t_render_gles2(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: gles3 test begin!"); nRet += t_render_gles3(file, prt); GTLINE1("End"); GTLINE("\t");
 		}
 		GTLINE("[GAIA TEST END]");
 
