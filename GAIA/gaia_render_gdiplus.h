@@ -77,6 +77,7 @@ namespace GAIA
 			private:
 				GINL GAIA::GVOID init()
 				{
+					m_desc.reset();
 					pCurrentPen = GNIL;
 					pCurrentBrush = GNIL;
 					pCurrentFontFamily = GNIL;
