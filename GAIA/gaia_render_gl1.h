@@ -43,7 +43,13 @@ namespace GAIA
 			public:
 				GINL Context(){this->init();}
 				GINL ~Context(){this->Destroy();}
-				virtual GAIA::BL Create(const GAIA::RENDER::Render::Context::ContextDesc& desc){return GAIA::True;}
+				virtual GAIA::BL Create(const GAIA::RENDER::Render::Context::ContextDesc& desc)
+				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::Context::ContextDesc&)(desc);
+					return GAIA::True;
+				}
 				virtual GAIA::GVOID Destroy()
 				{
 					GAIA_RELEASE_SAFE(pCurrentPen);
@@ -105,6 +111,9 @@ namespace GAIA
 				GINL ~Pen(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Pen::PenDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::Pen::PenDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -152,6 +161,9 @@ namespace GAIA
 				GINL ~Brush(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Brush::BrushDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::Brush::BrushDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -191,6 +203,9 @@ namespace GAIA
 				GINL ~FontFamily(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::FontFamily::FontFamilyDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::FontFamily::FontFamilyDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -222,6 +237,9 @@ namespace GAIA
 				GINL ~FontPainter(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::FontPainter::FontPainterDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::FontPainter::FontPainterDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -253,6 +271,9 @@ namespace GAIA
 				GINL ~FontFormat(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::FontFormat::FontFormatDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::FontFormat::FontFormatDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -317,6 +338,9 @@ namespace GAIA
 					GINL ~FetchData(){this->Destroy();}
 					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
 					{
+						if(!desc.check())
+							return GAIA::False;
+						m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::Target::FetchData::FetchDataDesc&)(desc);
 						return GAIA::True;
 					}
 					virtual GAIA::GVOID Destroy()
@@ -374,6 +398,9 @@ namespace GAIA
 				GINL ~Target(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Target::TargetDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::Target::TargetDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -382,7 +409,10 @@ namespace GAIA
 				}
 				virtual const TargetDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL1_TARGET;}
-				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+				{
+					return GNIL;
+				}
 			private:
 				GINL GAIA::GVOID init()
 				{
@@ -406,6 +436,9 @@ namespace GAIA
 				GINL ~Shader(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Shader::ShaderDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::Shader::ShaderDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -446,6 +479,9 @@ namespace GAIA
 					GINL ~FetchData(){this->Destroy();}
 					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
 					{
+						if(!desc.check())
+							return GAIA::False;
+						m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::Texture::FetchData::FetchDataDesc&)(desc);
 						return GAIA::True;
 					}
 					virtual GAIA::GVOID Destroy()
@@ -503,6 +539,9 @@ namespace GAIA
 				GINL ~Texture(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render2D::Texture::TextureDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::Texture::TextureDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -511,7 +550,10 @@ namespace GAIA
 				}
 				virtual const TextureDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL1_TEXTURE;}
-				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+				{
+					return GNIL;
+				}
 			private:
 				GINL GAIA::GVOID init()
 				{
@@ -536,6 +578,9 @@ namespace GAIA
 				GINL ~VertexDeclaration(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::VertexDeclaration::VertexDeclarationDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -576,6 +621,9 @@ namespace GAIA
 					GINL ~FetchData(){this->Destroy();}
 					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
 					{
+						if(!desc.check())
+							return GAIA::False;
+						m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::IndexBuffer::FetchData::FetchDataDesc&)(desc);
 						return GAIA::True;
 					}
 					virtual GAIA::GVOID Destroy()
@@ -621,6 +669,9 @@ namespace GAIA
 				GINL ~IndexBuffer(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::IndexBuffer::IndexBufferDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::IndexBuffer::IndexBufferDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -629,7 +680,10 @@ namespace GAIA
 				}
 				virtual const IndexBufferDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL1_INDEXBUFFER;}
-				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+				{
+					return GNIL;
+				}
 			private:
 				GINL GAIA::GVOID init()
 				{
@@ -662,6 +716,9 @@ namespace GAIA
 					GINL ~FetchData(){this->Destroy();}
 					virtual GAIA::BL Create(const GAIA::FAVO::FetchData::FetchDataDesc& desc)
 					{
+						if(!desc.check())
+							return GAIA::False;
+						m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::VertexBuffer::FetchData::FetchDataDesc&)(desc);
 						return GAIA::True;
 					}
 					virtual GAIA::GVOID Destroy()
@@ -707,6 +764,9 @@ namespace GAIA
 				GINL ~VertexBuffer(){this->Destroy();}
 				virtual GAIA::BL Create(const GAIA::RENDER::Render3D::VertexBuffer::VertexBufferDesc& desc)
 				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::VertexBuffer::VertexBufferDesc&)(desc);
 					return GAIA::True;
 				}
 				virtual GAIA::GVOID Destroy()
@@ -715,7 +775,10 @@ namespace GAIA
 				}
 				virtual const VertexBufferDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL1_VERTEXBUFFER;}
-				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc){return GNIL;}
+				virtual GAIA::FAVO::FetchData* CreateFetchData(GAIA::RENDER::Render::Context& ctx, const GAIA::FAVO::FetchData::FetchDataDesc& desc)
+				{
+					return GNIL;
+				}
 			private:
 				GINL GAIA::GVOID init()
 				{
@@ -735,6 +798,12 @@ namespace GAIA
 			{
 				if(m_bCreated)
 					return GAIA::False;
+
+				if(!desc.check())
+					return GAIA::False;
+
+				m_desc = GDCAST(const GAIA::RENDER::Render3DGL1::RenderDesc&)(desc);
+
 				m_bCreated = GAIA::True;
 				return GAIA::True;
 			}

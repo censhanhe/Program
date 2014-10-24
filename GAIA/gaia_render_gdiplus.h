@@ -46,7 +46,13 @@ namespace GAIA
 			public:
 				GINL Context(){this->init();}
 				GINL ~Context(){this->Destroy();}
-				virtual GAIA::BL Create(const GAIA::RENDER::Render::Context::ContextDesc& desc){return GAIA::True;}
+				virtual GAIA::BL Create(const GAIA::RENDER::Render::Context::ContextDesc& desc)
+				{
+					if(!desc.check())
+						return GAIA::False;
+					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::Context::ContextDesc&)(desc);
+					return GAIA::True;
+				}
 				virtual GAIA::GVOID Destroy()
 				{
 					GAIA_RELEASE_SAFE(pCurrentPen);
