@@ -68,6 +68,8 @@
 #include "t_ui_canvas.h"
 
 #include "t_render_imagework.h"
+#include "t_render2d.h"
+#include "t_render3d.h"
 #include "t_render_ddraw.h"
 #include "t_render_gdiplus.h"
 #include "t_render_dx9.h"

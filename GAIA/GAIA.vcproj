@@ -2192,6 +2192,10 @@
 							Name="2D"
 							>
 							<File
+								RelativePath=".\TEST\t_render2d.h"
+								>
+							</File>
+							<File
 								RelativePath=".\TEST\t_render_ddraw.h"
 								>
 							</File>
@@ -2203,6 +2207,10 @@
 						<Filter
 							Name="3D"
 							>
+							<File
+								RelativePath=".\TEST\t_render3d.h"
+								>
+							</File>
 							<File
 								RelativePath=".\TEST\t_render_dx10.h"
 								>
