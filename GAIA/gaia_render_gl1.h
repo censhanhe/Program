@@ -833,6 +833,43 @@ namespace GAIA
 				GAIA::GVOID* pHandle = desc.pCanvas->GetHandle();
 				GAIA_AST(pHandle != GNIL);
 
+			#if defined(GAIA_PLATFORM_OPENGL1)
+				m_hDC = ::GetDC(GSCAST(HWND)(pHandle));
+
+				PIXELFORMATDESCRIPTOR pfd;
+				memset(&pfd, 0, sizeof(pfd));
+				pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+				pfd.nVersion = 1;
+				pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+				pfd.iPixelType = PFD_TYPE_RGBA;
+				pfd.cColorBits = 24;
+				pfd.cRedBits = pfd.cRedShift = pfd.cGreenBits = pfd.cGreenShift = pfd.cBlueBits = pfd.cBlueShift = 0;
+				pfd.cAlphaBits = pfd.cAlphaShift = 0;
+				pfd.cAccumBits = 0;
+				pfd.cAccumRedBits = pfd.cAccumGreenBits = pfd.cAccumBlueBits = pfd.cAccumAlphaBits = 0;
+				pfd.cDepthBits = 32;
+				pfd.cStencilBits = 0;
+				pfd.cAuxBuffers= 0;
+				pfd.iLayerType = PFD_MAIN_PLANE;
+				pfd.bReserved = 0;
+				pfd.dwLayerMask = pfd.dwVisibleMask = pfd.dwDamageMask = 0;
+
+				int nIndex = ::ChoosePixelFormat(m_hDC, &pfd);
+				if(nIndex == 0)
+					return false;
+
+				if(!::SetPixelFormat(m_hDC, nIndex, &pfd))
+					return false;
+
+				HGLRC hGLRC = ::wglCreateContext(m_hDC);
+				::wglMakeCurrent(m_hDC, hGLRC);
+
+				::glShadeModel(GL_SMOOTH);
+				::glEnable(GL_DEPTH_TEST);
+				::glDepthFunc(GL_LEQUAL);
+				::glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+			#endif
+
 				m_bCreated = GAIA::True;
 				return GAIA::True;
 			}
@@ -843,6 +880,15 @@ namespace GAIA
 
 				GAIA::GVOID* pHandle = m_desc.pCanvas->GetHandle();
 				GAIA_AST(pHandle != GNIL);
+
+			#if defined(GAIA_PLATFORM_OPENGL1)
+				if(m_hDC != GNIL)
+				{
+					HWND hWnd = GSCAST(HWND)(pHandle);
+					::ReleaseDC(hWnd, m_hDC);
+					m_hDC = GNIL;
+				}
+			#endif
 
 				m_desc.pCanvas->Release();
 				m_desc.reset();
@@ -902,6 +948,12 @@ namespace GAIA
 
 			virtual GAIA::GVOID Flush()
 			{
+				GPCHR_TRUE(this->IsBeginStatePipeline());
+			#if defined(GAIA_PLATFORM_OPENGL1)
+				if(m_hDC == GNIL)
+					return;
+				::SwapBuffers(m_hDC);
+			#endif
 			}
 
 		public:
@@ -909,6 +961,12 @@ namespace GAIA
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 			{
 				GPCHR_FALSE(this->IsBeginStatePipeline());
+			#if defined(GAIA_PLATFORM_OPENGL1)
+				if(m_hDC == GNIL)
+					return;
+				::glClearColor(cr.r, cr.g, cr.b, cr.a);
+				::glClear(GL_COLOR_BUFFER_BIT);
+			#endif
 			}
 
 			/* State. */
@@ -1628,12 +1686,20 @@ namespace GAIA
 				m_bCreated = GAIA::False;
 				m_desc.reset();
 				m_bBeginStatePipeline = GAIA::False;
+
+			#if defined(GAIA_PLATFORM_OPENGL1)
+				m_hDC = GNIL;
+			#endif
 			}
 
 		private:
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
 			GAIA::BL m_bBeginStatePipeline;
+
+		#if defined(GAIA_PLATFORM_OPENGL1)
+			HDC m_hDC;
+		#endif
 		};
 	};
 };
