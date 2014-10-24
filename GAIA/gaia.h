@@ -291,8 +291,9 @@
 *
 *        1. GAIA_PLATFORM_NETWORK
 *        2. GAIA_PLATFORM_GDIPLUS
-*        3. GAIA_PLATFORM_COM
-*        4. 
+*        3. GAIA_PLATFORM_OPENGL
+*        4. GAIA_PLATFORM_COM
+*        5. 
 *
 *
 *

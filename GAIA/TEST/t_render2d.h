@@ -111,7 +111,7 @@ namespace GAIA_TEST
 		}
 
 		/* Generate texture. */
-		GAIA::RENDER::Render2DGDIPlus::Texture::FetchData::FetchDataDesc descFetchData;
+		_RenderType::Texture::FetchData::FetchDataDesc descFetchData;
 		descFetchData.reset();
 		descFetchData.pTexture = pTexture;
 		descFetchData.sOffsetX = 0;

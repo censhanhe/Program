@@ -1,6 +1,8 @@
 #ifndef		__GAIA_RENDER_GL1_H__
 #define		__GAIA_RENDER_GL1_H__
 
+#include <gl/gl.h>
+
 namespace GAIA
 {
 	namespace RENDER
