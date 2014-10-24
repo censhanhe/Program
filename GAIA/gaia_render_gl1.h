@@ -1047,6 +1047,21 @@ namespace GAIA
 					}
 					break;
 
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_ADDRESSV:
+					{
+					}
+					break;
+
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_MINFILTER:
+					{
+					}
+					break;
+
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_MAXFILTER:
+					{
+					}
+					break;
+
 				default:
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
@@ -1063,6 +1078,21 @@ namespace GAIA
 				switch(ss)
 				{
 				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_ADDRESSU:
+					{
+					}
+					break;
+
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_ADDRESSV:
+					{
+					}
+					break;
+
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_MINFILTER:
+					{
+					}
+					break;
+
+				case GAIA::RENDER::Render2D::SAMPLER2D_STATE_MAXFILTER:
 					{
 					}
 					break;
