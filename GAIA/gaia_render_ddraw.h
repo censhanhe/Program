@@ -676,6 +676,10 @@ namespace GAIA
 			}
 
 		public:
+			/* Scissor. */
+			virtual GAIA::GVOID SetScissor(const GAIA::MATH::AABR<GAIA::REAL>& aabr){if(aabr.isidentity()) return;}
+			virtual GAIA::GVOID GetScissor(GAIA::MATH::AABR<GAIA::REAL>& aabr) const{}
+
 			/* Clear. */
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 			{

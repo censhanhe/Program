@@ -176,6 +176,10 @@ namespace GAIA
 			virtual GAIA::GVOID SetViewport(const VIEWPORT& vp) = 0;
 			virtual GAIA::GVOID GetViewport(VIEWPORT& vp) const = 0;
 
+			/* Clip planes. */
+			virtual GAIA::GVOID SetClipPlane(GAIA::U8 uClipPlaneIndex, const GAIA::MATH::PLANE<GAIA::REAL>& planes) = 0;
+			virtual GAIA::GVOID GetClipPlane(GAIA::U8 uClipPlaneIndex, GAIA::MATH::PLANE<GAIA::REAL>& planes) const = 0;
+
 			/* State. */
 			virtual GAIA::GVOID SetQuality3DState(const QUALITY3D_STATE& qs, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
 			virtual const GAIA::CH* GetQuality3DState(const QUALITY3D_STATE& qs) = 0; // This function will never return GNIL, it will return "" instead.

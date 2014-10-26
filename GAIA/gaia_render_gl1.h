@@ -1007,6 +1007,10 @@ namespace GAIA
 			}
 
 		public:
+			/* Scissor. */
+			virtual GAIA::GVOID SetScissor(const GAIA::MATH::AABR<GAIA::REAL>& aabr){if(aabr.isidentity()) return;}
+			virtual GAIA::GVOID GetScissor(GAIA::MATH::AABR<GAIA::REAL>& aabr) const{}
+
 			/* Clear. */
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 			{
@@ -1653,6 +1657,10 @@ namespace GAIA
 			virtual GAIA::GVOID GetViewport(VIEWPORT& vp) const
 			{
 			}
+
+			/* Clip planes. */
+			virtual GAIA::GVOID SetClipPlane(GAIA::U8 uClipPlaneIndex, const GAIA::MATH::PLANE<GAIA::REAL>& planes){}
+			virtual GAIA::GVOID GetClipPlane(GAIA::U8 uClipPlaneIndex, GAIA::MATH::PLANE<GAIA::REAL>& planes) const{}
 
 			/* State. */
 			virtual GAIA::GVOID SetQuality3DState(const QUALITY3D_STATE& qs, const GAIA::CH* pszState)
