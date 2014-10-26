@@ -7,7 +7,7 @@ namespace GAIA_TEST
 	{
 		GAIA::N32 nRet = 0;
 
-	#define DEBUG_FLUSH pRender->EndStatePipeline(); pRender->Flush(); pRender->BeginStatePipeline();
+	#define DEBUG_FLUSH pRender->EndStatePipeline(); pRender->Flush(); pRender->BeginStatePipeline(); pRender->ClearColor(crClear);
 
 		/* Create factory. */
 		GAIA::FWORK::Factory fac;
@@ -163,7 +163,6 @@ namespace GAIA_TEST
 		GAIA::MATH::ARGB<GAIA::REAL> crClear;
 		crClear.r = crClear.g = crClear.b = 0.5F;
 		crClear.a = 1.0F;
-		pRender->ClearColor(crClear);
 		DEBUG_FLUSH;
 
 		/* Set anti-alias state. */

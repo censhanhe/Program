@@ -845,23 +845,22 @@ namespace GAIA
 					return GAIA::False;
 				}
 
-				D3DPRESENT_PARAMETERS d3dpp;
-				GAIA::ALGO::xmemset(&d3dpp, 0, sizeof(d3dpp));
-				d3dpp.Windowed = GAIA::True;
-				d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
-				d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-				d3dpp.BackBufferCount = 2;
-				d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
-				d3dpp.BackBufferWidth = desc.pCanvas->Size().x;
-				d3dpp.BackBufferHeight = desc.pCanvas->Size().y;
-				d3dpp.EnableAutoDepthStencil = GAIA::True;
-				d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;
-				d3dpp.hDeviceWindow = hWnd;
+				GAIA::ALGO::xmemset(&m_d3dpp, 0, sizeof(m_d3dpp));
+				m_d3dpp.Windowed = GAIA::True;
+				m_d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
+				m_d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+				m_d3dpp.BackBufferCount = 2;
+				m_d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+				m_d3dpp.BackBufferWidth = desc.pCanvas->Size().x;
+				m_d3dpp.BackBufferHeight = desc.pCanvas->Size().y;
+				m_d3dpp.EnableAutoDepthStencil = GAIA::True;
+				m_d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;
+				m_d3dpp.hDeviceWindow = hWnd;
 
 				if(m_pD3D->CreateDevice(
 					0, D3DDEVTYPE_HAL, hWnd, 
 					D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED,
-					&d3dpp,
+					&m_d3dpp,
 					&m_pD3DDevice) != D3D_OK)
 				{
 					GAIA_RELEASE_SAFE(m_pD3D);
@@ -934,6 +933,13 @@ namespace GAIA
 			#if defined(GAIA_PLATFORM_DX9)
 				if(m_pD3DDevice == GNIL)
 					return GAIA::False;
+
+				if(m_pD3DDevice->TestCooperativeLevel() != D3D_OK)
+				{
+					HRESULT hResetResult = NULL;
+					while((hResetResult = m_pD3DDevice->Reset(&m_d3dpp)) != D3D_OK){}
+				}
+
 				m_pD3DDevice->BeginScene();
 			#endif
 				m_bBeginStatePipeline = GAIA::True;
@@ -1702,6 +1708,7 @@ namespace GAIA
 			#if defined(GAIA_PLATFORM_DX9)
 				m_pD3D = GNIL;
 				m_pD3DDevice = GNIL;
+				GAIA::ALGO::xmemset(&m_d3dpp, 0, sizeof(m_d3dpp));
 			#endif
 			}
 
@@ -1712,6 +1719,7 @@ namespace GAIA
 		#if defined(GAIA_PLATFORM_DX9)
 			IDirect3D9* m_pD3D;
 			IDirect3DDevice9* m_pD3DDevice;
+			D3DPRESENT_PARAMETERS m_d3dpp;
 		#endif
 		};
 	};
