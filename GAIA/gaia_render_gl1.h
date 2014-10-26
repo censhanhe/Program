@@ -996,13 +996,16 @@ namespace GAIA
 				return m_bBeginStatePipeline;
 			}
 
-			virtual GAIA::GVOID Flush()
+			virtual GAIA::GVOID Flush(GAIA::BL bWait)
 			{
 				GPCHR_TRUE(this->IsBeginStatePipeline());
 			#if defined(GAIA_PLATFORM_OPENGL1)
 				if(m_hDC == GNIL)
 					return;
-				::SwapBuffers(m_hDC);
+				if(bWait)
+					::SwapBuffers(m_hDC);
+				else
+					::glFlush();
 			#endif
 			}
 

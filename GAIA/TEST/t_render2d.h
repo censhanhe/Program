@@ -7,7 +7,7 @@ namespace GAIA_TEST
 	{
 		GAIA::N32 nRet = 0;
 
-	#define DEBUG_FLUSH pRender->EndStatePipeline(); pRender->Flush(); pRender->BeginStatePipeline(); pRender->ClearColor(crClear);
+	#define DEBUG_FLUSH pRender->EndStatePipeline(); pRender->Flush(GAIA::True); pRender->BeginStatePipeline(); pRender->ClearColor(crClear);
 
 		/* Create factory. */
 		GAIA::FWORK::Factory fac;
@@ -246,7 +246,7 @@ namespace GAIA_TEST
 
 		/* Flush. */
 		pRender->EndStatePipeline();
-		pRender->Flush();
+		pRender->Flush(GAIA::True);
 
 		/* Release resource. */
 		GAIA_RELEASE_SAFE(pPen);

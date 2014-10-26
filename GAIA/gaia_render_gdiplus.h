@@ -1282,7 +1282,7 @@ namespace GAIA
 				return m_bBeginStatePipeline;
 			}
 
-			virtual GAIA::GVOID Flush()
+			virtual GAIA::GVOID Flush(GAIA::BL bWait)
 			{
 				GPCHR_TRUE(this->IsBeginStatePipeline());
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
@@ -1290,10 +1290,13 @@ namespace GAIA
 					return;
 				if(m_pSwapBitmap == GNIL)
 					return;
-				m_pGraphics->DrawImage(
-					m_pSwapBitmap, 0, 0, 
-					m_pSwapBitmap->GetWidth(), 
-					m_pSwapBitmap->GetHeight());
+				if(bWait)
+				{
+					m_pGraphics->DrawImage(
+						m_pSwapBitmap, 0, 0, 
+						m_pSwapBitmap->GetWidth(), 
+						m_pSwapBitmap->GetHeight());
+				}
 			#endif
 			}
 

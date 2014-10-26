@@ -963,13 +963,14 @@ namespace GAIA
 				return m_bBeginStatePipeline;
 			}
 
-			virtual GAIA::GVOID Flush()
+			virtual GAIA::GVOID Flush(GAIA::BL bWait)
 			{
 				GPCHR_TRUE(this->IsBeginStatePipeline());
 			#if defined(GAIA_PLATFORM_DX9)
 				if(m_pD3DDevice == GNIL)
 					return;
-				m_pD3DDevice->Present(GNIL, GNIL, GNIL, GNIL);
+				if(bWait)
+					m_pD3DDevice->Present(GNIL, GNIL, GNIL, GNIL);
 			#endif
 			}
 

@@ -899,7 +899,7 @@ namespace GAIA
 				return m_bBeginStatePipeline;
 			}
 
-			virtual GAIA::GVOID Flush()
+			virtual GAIA::GVOID Flush(GAIA::BL bWait)
 			{
 			}
 
