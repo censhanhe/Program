@@ -182,7 +182,7 @@ namespace GAIA
 
 			/* State. */
 			virtual GAIA::GVOID SetQuality3DState(const QUALITY3D_STATE& qs, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
-			virtual const GAIA::CH* GetQuality3DState(const QUALITY3D_STATE& qs) = 0; // This function will never return GNIL, it will return "" instead.
+			virtual const GAIA::CH* GetQuality3DState(const QUALITY3D_STATE& qs) const = 0; // This function will never return GNIL, it will return "" instead.
 			virtual GAIA::GVOID SetRender3DState(const RENDER3D_STATE& rs, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
 			virtual const GAIA::CH* GetRender3DState(const RENDER3D_STATE& rs) const = 0; // This function will never return GNIL, it will return "" instead.
 			virtual GAIA::GVOID SetSampler3DState(GAIA::N32 nSamplerIndex, const SAMPLER3D_STATE& ss, const GAIA::CH* pszState) = 0; // if pszState is GNIL or "", the state will be reset to default state.
@@ -192,7 +192,7 @@ namespace GAIA
 			virtual GAIA::RENDER::Render3D::VertexDeclaration* CreateVertexDeclaration(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::RENDER::Render3D::VertexDeclaration::VertexDeclarationDesc& desc) = 0;
 			virtual GAIA::GVOID SetVertexDeclaration(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render3D::VertexDeclaration* pVDecl) = 0;
-			virtual GAIA::GVOID GetVertexDeclaration(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render3D::VertexDeclaration*& pVDecl) = 0;
+			virtual GAIA::GVOID GetVertexDeclaration(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render3D::VertexDeclaration*& pVDecl) const = 0;
 
 			/* Index buffer. */
 			virtual GAIA::RENDER::Render3D::IndexBuffer* CreateIndexBuffer(GAIA::RENDER::Render::Context& ctx, 

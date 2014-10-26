@@ -712,7 +712,7 @@ namespace GAIA
 					break;
 				}
 			}
-			virtual const GAIA::CH* GetQuality2DState(GAIA::RENDER::Render::Context& ctx, const QUALITY2D_STATE& qs)
+			virtual const GAIA::CH* GetQuality2DState(GAIA::RENDER::Render::Context& ctx, const QUALITY2D_STATE& qs) const
 			{
 				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
@@ -914,7 +914,7 @@ namespace GAIA
 					pContext->pCurrentPen->Release();
 				pContext->pCurrentPen = pPen;
 			}
-			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen*& pPen)
+			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen*& pPen) const
 			{
 				GPCHR_FALSE(this->IsBeginStatePipeline());
 				GAIA::RENDER::Render2DDDraw::Context* pContext = GDCAST(GAIA::RENDER::Render2DDDraw::Context*)(&ctx);
@@ -957,7 +957,7 @@ namespace GAIA
 					pContext->pCurrentBrush->Release();
 				pContext->pCurrentBrush = pBrush;
 			}
-			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush*& pBrush)
+			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush*& pBrush) const
 			{
 				GPCHR_FALSE(this->IsBeginStatePipeline());
 				GAIA::RENDER::Render2DDDraw::Context* pContext = GDCAST(GAIA::RENDER::Render2DDDraw::Context*)(&ctx);
@@ -1050,7 +1050,7 @@ namespace GAIA
 					pContext->pCurrentFontFamily->Release();
 				pContext->pCurrentFontFamily = pFontFamily;
 			}
-			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily*& pFontFamily)
+			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily*& pFontFamily) const
 			{
 				GPCHR_FALSE(this->IsBeginStatePipeline());
 				GAIA::RENDER::Render2DDDraw::Context* pContext = GDCAST(GAIA::RENDER::Render2DDDraw::Context*)(&ctx);
@@ -1072,7 +1072,7 @@ namespace GAIA
 					pContext->pCurrentFontPainter->Release();
 				pContext->pCurrentFontPainter = pFontPainter;
 			}
-			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter*& pFontPainter)
+			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter*& pFontPainter) const
 			{
 				GPCHR_FALSE(this->IsBeginStatePipeline());
 				GAIA::RENDER::Render2DDDraw::Context* pContext = GDCAST(GAIA::RENDER::Render2DDDraw::Context*)(&ctx);
@@ -1094,7 +1094,7 @@ namespace GAIA
 					pContext->pCurrentFontFormat->Release();
 				pContext->pCurrentFontFormat = pFontFormat;
 			}
-			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat*& pFontFormat)
+			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat*& pFontFormat) const
 			{
 				GPCHR_FALSE(this->IsBeginStatePipeline());
 				GAIA::RENDER::Render2DDDraw::Context* pContext = GDCAST(GAIA::RENDER::Render2DDDraw::Context*)(&ctx);
