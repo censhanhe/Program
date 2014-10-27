@@ -120,7 +120,7 @@ namespace GAIA
 				m[3][0] = (_DataType)0; m[3][1] = (_DataType)0; m[3][2] = (_DataType)0; m[3][3] = (_DataType)1; 
 			}
 			template<typename _ParamDataType> GAIA::GVOID position(const GAIA::MATH::VEC3<_ParamDataType>& src){m[3][0] = src.x; m[3][1] = src.y; m[3][2] = src.z;}
-			template<typename _ParamDataType> GAIA::MATH::VEC3<_ParamDataType> position() const{GAIA::MATH::VEC3<_ParamDataType> ret; ret.x = m[3][0]; ret.y = m[3][1]; ret.z = m[3][2]; return ret;}
+			GAIA::MATH::VEC3<_DataType> position() const{GAIA::MATH::VEC3<_DataType> ret; ret.x = m[3][0]; ret.y = m[3][1]; ret.z = m[3][2]; return ret;}
 			template<typename _ParamEndDataType, typename _ParamFactorDataType> __MyType& lerp(const GAIA::MATH::MTX44<_ParamEndDataType>& end, const _ParamFactorDataType& factor)
 			{
 			}

@@ -8,6 +8,7 @@ namespace GAIA_TEST
 		GAIA::N32 nRet = 0;
 
 		typedef GAIA::REAL __DataType;
+		typedef GAIA::MATH::VEC3<__DataType> __PosType;
 		typedef GAIA::MATH::MTX44<__DataType> __MtxType;
 
 		static const __DataType DATA_LIST[] = 
@@ -21,22 +22,33 @@ namespace GAIA_TEST
 		__MtxType mtx, mtx1;
 		if(mtx.size() != 16)
 		{
+			GTLINE2("MTX44 size error!");
+			++nRet;
 		}
+		if(mtx.isidentity())
+		{
+			GTLINE2("New MTX44 is identity!");
+			++nRet;
+		}
+		mtx.identity();
 		if(!mtx.isfinited())
 		{
-		}
-		if(mtx.isidentity())
-		{
-		}
-		if(mtx.isidentity())
-		{
-		}
-		if(mtx.isfinited())
-		{
+			GTLINE2("MTX44 is finited after identity!");
+			++nRet;
 		}
 		if(!mtx.isidentity())
 		{
+			GTLINE2("MTX44 is not identity after identity!");
+			++nRet;
 		}
+
+		mtx = GAIA::MATH::xsqrt(-1.0F);
+		if(mtx.isfinited())
+		{
+			GTLINE2("MTX44 isfinite error!");
+			++nRet;
+		}
+
 		mtx = 10.0F;
 		for(GAIA::SIZE x = 0; x < mtx.size(); ++x)
 		{
@@ -57,6 +69,7 @@ namespace GAIA_TEST
 				break;
 			}
 		}
+
 		mtx = DATA_LIST;
 		for(GAIA::SIZE x = 0; x < sizeofarray(DATA_LIST); ++x)
 		{
@@ -77,14 +90,36 @@ namespace GAIA_TEST
 				break;
 			}
 		}
+		
 		mtx = DATA_LIST;
 		mtx.transpose();
 		if(mtx == DATA_LIST)
 		{
+			GTLINE2("MTX44 operator = data pointer error!");
+			++nRet;
 		}
 		mtx.transpose();
 		if(mtx != DATA_LIST)
 		{
+			GTLINE2("MTX44 transpose error!");
+			++nRet;
+		}
+
+		mtx.identity();
+		mtx.rotatex(1.0F);
+		mtx.rotatey(2.0F);
+		mtx.rotatez(3.0F);
+		mtx.rotate(__PosType(1.23F), 4.56F);
+		if(mtx.isidentity())
+		{
+			GTLINE2("MTX44 rotate error!");
+			++nRet;
+		}
+		__PosType pos = mtx.position();
+		if(pos != 0.0F)
+		{
+			GTLINE2("MTX44 rotate error!");
+			++nRet;
 		}
 
 		return nRet;
