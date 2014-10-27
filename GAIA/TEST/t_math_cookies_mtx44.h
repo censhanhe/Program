@@ -19,6 +19,7 @@ namespace GAIA_TEST
 			12.0F, 13.0F, 14.0F, 15.0F,
 		};
 
+		__VecType pos;
 		__MtxType mtx, mtx1, mtxResult;
 		if(mtx.size() != 16)
 		{
@@ -106,13 +107,35 @@ namespace GAIA_TEST
 		}
 
 		mtx.identity();
+		mtx.translate(1.1F, 2.2F, 3.3F);
+		if(mtx.isidentity())
+		{
+			GTLINE2("MTX44 translate error!");
+			++nRet;
+		}
+		pos = mtx.position();
+		if(pos.x != 1.1F || pos.y != 2.2F || pos.z != 3.3F)
+		{
+			GTLINE2("MTX44 translate error!");
+			++nRet;
+		}
+		mtx1.isidentity();
+		mtx1.translate(-1.1F, -2.2F, -3.3F);
+		mtxResult = mtx * mtx1;
+		if(!mtxResult.isalmostidentity())
+		{
+			GTLINE2("MTX44 translate error!");
+			++nRet;
+		}
+
+		mtx.identity();
 		mtx.rotatex(1.23F);
 		if(mtx.isidentity())
 		{
 			GTLINE2("MTX44 rotatex error!");
 			++nRet;
 		}
-		__VecType pos = mtx.position();
+		pos = mtx.position();
 		if(pos != 0.0F)
 		{
 			GTLINE2("MTX44 rotatex error!");
@@ -194,24 +217,83 @@ namespace GAIA_TEST
 		}
 
 		mtx.identity();
-		mtx.translate(1.1F, 2.2F, 3.3F);
+		mtx.scale(1.1F, 2.2F, 3.3F);
 		if(mtx.isidentity())
 		{
-			GTLINE2("MTX44 translate error!");
-			++nRet;
-		}
-		pos = mtx.position();
-		if(pos.x != 1.1F || pos.y != 2.2F || pos.z != 3.3F)
-		{
-			GTLINE2("MTX44 translate error!");
+			GTLINE2("MTX44 scale error!");
 			++nRet;
 		}
 		mtx1.isidentity();
-		mtx1.translate(-1.1F, -2.2F, -3.3F);
+		mtx1.scale(1.0F / 1.1F, 1.0F / 2.2F, 1.0F / 3.3F);
 		mtxResult = mtx * mtx1;
 		if(!mtxResult.isalmostidentity())
 		{
-			GTLINE2("MTX44 translate error!");
+			GTLINE2("MTX44 scale error!");
+			++nRet;
+		}
+
+		mtx = DATA_LIST;
+		mtx1 = DATA_LIST;
+		mtx1[2] *= 2.0F;
+		if(mtx == mtx1)
+		{
+			GTLINE2("MTX44 operator == MTX44 error!");
+			++nRet;
+		}
+		if(!(mtx != mtx1))
+		{
+			GTLINE2("MTX44 operator != MTX44 error!");
+			++nRet;
+		}
+		if(mtx >= mtx1)
+		{
+			GTLINE2("MTX44 operator >= MTX44 error!");
+			++nRet;
+		}
+		if(!(mtx <= mtx1))
+		{
+			GTLINE2("MTX44 operator <= MTX44 error!");
+			++nRet;
+		}
+		if(mtx > mtx1)
+		{
+			GTLINE2("MTX44 operator > MTX44 error!");
+			++nRet;
+		}
+		if(!(mtx < mtx1))
+		{
+			GTLINE2("MTX44 operator < MTX44 error!");
+			++nRet;
+		}
+
+		if(mtx == mtx1.front_ptr())
+		{
+			GTLINE2("MTX44 operator == data pointer error!");
+			++nRet;
+		}
+		if(!(mtx != mtx1.front_ptr()))
+		{
+			GTLINE2("MTX44 operator != data pointer error!");
+			++nRet;
+		}
+		if(mtx >= mtx1.front_ptr())
+		{
+			GTLINE2("MTX44 operator >= data pointer error!");
+			++nRet;
+		}
+		if(!(mtx <= mtx1.front_ptr()))
+		{
+			GTLINE2("MTX44 operator <= data pointer error!");
+			++nRet;
+		}
+		if(mtx > mtx1.front_ptr())
+		{
+			GTLINE2("MTX44 operator > data pointer error!");
+			++nRet;
+		}
+		if(!(mtx < mtx1.front_ptr()))
+		{
+			GTLINE2("MTX44 operator < data pointer error!");
 			++nRet;
 		}
 
