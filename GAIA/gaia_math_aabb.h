@@ -237,8 +237,10 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& t) const{return !this->operator <= (t);}
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& t) const{return !this->operator >= (t);}
-			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return ((_DataType*)&pmin)[index];}
-			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return ((_DataType*)&pmin)[index];}
+			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return this->front_ptr()[index];}
+			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return this->front_ptr()[index];}
+			GINL operator _DataType*(){return this->front_ptr();}
+			GINL operator const _DataType*() const{return this->front_ptr();}
 		private:
 			GINL GAIA::GVOID selfupdate()
 			{

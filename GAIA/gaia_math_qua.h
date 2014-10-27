@@ -65,7 +65,11 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& src) const{}
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& src) const{}
 
-			template<typename _ParamDataType> _DataType operator [] (const _ParamDataType& index){}
+			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return this->front_ptr()[index];}
+			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return this->front_ptr()[index];}
+
+			GINL operator _DataType*(){return this->front_ptr();}
+			GINL operator const _DataType*() const{return this->front_ptr();}
 		public:
 			_DataType x, y, z, w;
 		};

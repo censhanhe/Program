@@ -118,10 +118,10 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& src) const{return !(this->operator <= (src));}
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& src) const{return !(this->operator >= (src));}
 
-			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index < 4); return (&b)[index];}
-			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index < 4); return (&b)[index];}
-			GINL operator _DataType*(){return &b;}
-			GINL operator const _DataType*() const{return &b;}
+			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index < 4); return this->front_ptr()[index];}
+			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index < 4); return this->front_ptr()[index];}
+			GINL operator _DataType*(){return this->front_ptr();}
+			GINL operator const _DataType*() const{return this->front_ptr();}
 
 		public:
 			_DataType b, g, r, a;
