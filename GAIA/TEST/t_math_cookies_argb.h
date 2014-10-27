@@ -11,6 +11,11 @@ namespace GAIA_TEST
 		typedef GAIA::MATH::ARGB<GAIA::N16> __ARGBN16Type;
 
 		__ARGBType argb;
+		if(argb.size() != 4)
+		{
+			GTLINE2("ARGB size error!");
+			++nRet;
+		}
 		argb.a = 1;
 		argb.r = 2;
 		argb.g = 3;

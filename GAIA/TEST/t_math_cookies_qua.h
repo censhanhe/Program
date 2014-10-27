@@ -6,6 +6,7 @@ namespace GAIA_TEST
 	GINL GAIA::N32 t_math_cookies_qua(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
 	{
 		GAIA::N32 nRet = 0;
+
 		return nRet;
 	}
 };

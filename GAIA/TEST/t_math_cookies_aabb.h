@@ -10,6 +10,11 @@ namespace GAIA_TEST
 		typedef GAIA::MATH::AABB<GAIA::REAL> __AABBType;
 		typedef GAIA::MATH::AABB<GAIA::N16> __AABBTypeN16;
 		__AABBType aabb;
+		if(aabb.size() != 6)
+		{
+			GTLINE2("AABB size error!");
+			++nRet;
+		}
 		aabb.identity();
 		if(!aabb.isidentity())
 		{

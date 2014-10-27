@@ -10,6 +10,11 @@ namespace GAIA_TEST
 		typedef GAIA::MATH::AABR<GAIA::REAL> __AABRType;
 		typedef GAIA::MATH::AABR<GAIA::N16> __AABRTypeN16;
 		__AABRType aabr;
+		if(aabr.size() != 4)
+		{
+			GTLINE2("AABR size error!");
+			++nRet;
+		}
 		aabr.identity();
 		if(!aabr.isidentity())
 		{

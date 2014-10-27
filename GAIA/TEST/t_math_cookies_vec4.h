@@ -12,6 +12,11 @@ namespace GAIA_TEST
 
 		__RealVecType rv, rv1;
 		__NMVecType nmv;
+		if(rv.size() != 4)
+		{
+			GTLINE2("VEC4 size error!");
+			++nRet;
+		}
 		rv = 10.0F;
 		if(rv != 10.0F)
 		{

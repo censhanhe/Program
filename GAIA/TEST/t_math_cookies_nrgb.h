@@ -11,6 +11,11 @@ namespace GAIA_TEST
 		typedef GAIA::MATH::NRGB<GAIA::N16> __NRGBN16Type;
 
 		__NRGBType nrgb;
+		if(nrgb.size() != 3)
+		{
+			GTLINE2("NRGB size error!");
+			++nRet;
+		}
 		nrgb.r = 2;
 		nrgb.g = 3;
 		nrgb.b = 4;
