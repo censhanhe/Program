@@ -1116,6 +1116,10 @@
 								>
 							</File>
 							<File
+								RelativePath=".\gaia_math_mtx32.h"
+								>
+							</File>
+							<File
 								RelativePath=".\gaia_math_mtx33.h"
 								>
 							</File>
@@ -2453,6 +2457,10 @@
 							</File>
 							<File
 								RelativePath=".\TEST\t_math_cookies_mtx22.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TEST\t_math_cookies_mtx32.h"
 								>
 							</File>
 							<File

@@ -14,6 +14,7 @@
 #include "t_math_cookies_vec4.h"
 #include "t_math_cookies_mtx22.h"
 #include "t_math_cookies_mtx33.h"
+#include "t_math_cookies_mtx32.h"
 #include "t_math_cookies_mtx44.h"
 #include "t_math_cookies_mtx43.h"
 #include "t_math_cookies_qua.h"
@@ -107,6 +108,7 @@ namespace GAIA_TEST
 			GTLINE1("MathCookies: VEC4 test begin!"); nRet += t_math_cookies_vec4(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: MTX22 test begin!"); nRet += t_math_cookies_mtx22(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: MTX33 test begin!"); nRet += t_math_cookies_mtx33(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX32 test begin!"); nRet += t_math_cookies_mtx32(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: MTX44 test begin!"); nRet += t_math_cookies_mtx44(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: MTX43 test begin!"); nRet += t_math_cookies_mtx43(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("MathCookies: QUA test begin!"); nRet += t_math_cookies_qua(file, prt); GTLINE1("End"); GTLINE("\t");
