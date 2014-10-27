@@ -224,7 +224,6 @@ namespace GAIA
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
 			template<typename _ParamDataType1, typename _ParamDataType2> _DataType& operator () (const _ParamDataType1& i1, const _ParamDataType2& i2){GAIA_AST(i1 >= 0 && i1 < 3); GAIA_AST(i2 >= 0 && i2 < 3); return m[i1][i2];}
 		public:
-		public:
 			_DataType m[3][3];
 		};
 	};
