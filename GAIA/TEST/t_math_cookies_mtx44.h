@@ -26,6 +26,16 @@ namespace GAIA_TEST
 			GTLINE2("MTX44 size error!");
 			++nRet;
 		}
+		if(mtx.sizex() != 4)
+		{
+			GTLINE2("MTX44 sizex error!");
+			++nRet;
+		}
+		if(mtx.sizey() != 4)
+		{
+			GTLINE2("MTX44 sizey error!");
+			++nRet;
+		}
 		if(mtx.isidentity())
 		{
 			GTLINE2("New MTX44 is identity!");

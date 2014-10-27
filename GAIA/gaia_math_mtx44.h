@@ -19,6 +19,8 @@ namespace GAIA
 			template<typename _ParamDataType> MTX44(const _ParamDataType& t){this->operator = (t);}
 
 			GINL GAIA::SIZE size() const{return sizeofarray2(m);}
+			GINL GAIA::SIZE sizex() const{return sizeofarray(m[0]);}
+			GINL GAIA::SIZE sizey() const{return this->size() / this->sizex();}
 
 			GINL GAIA::GVOID identity()
 			{
