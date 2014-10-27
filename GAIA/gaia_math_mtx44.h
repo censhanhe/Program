@@ -394,6 +394,12 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType* p) const{return GAIA::ALGO::cmps(this->front_ptr(), p, this->size()) <= 0;}
 			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType* p) const{return GAIA::ALGO::cmps(this->front_ptr(), p, this->size()) > 0;}
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType* p) const{return GAIA::ALGO::cmps(this->front_ptr(), p, this->size()) < 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& t){return GAIA::ALGO::cmpk(this->front_ptr(), t, this->size()) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& t){return GAIA::ALGO::cmpk(this->front_ptr(), t, this->size()) != 0;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& t){return GAIA::ALGO::cmpk(this->front_ptr(), t, this->size()) >= 0;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& t){return GAIA::ALGO::cmpk(this->front_ptr(), t, this->size()) <= 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& t){return GAIA::ALGO::cmpk(this->front_ptr(), t, this->size()) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& t){return GAIA::ALGO::cmpk(this->front_ptr(), t, this->size()) < 0;}
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index < this->size()); return this->front_ptr()[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index < this->size()); return this->front_ptr()[index];}
 		public:
