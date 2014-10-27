@@ -8,7 +8,7 @@ namespace GAIA_TEST
 		GAIA::N32 nRet = 0;
 
 		typedef GAIA::REAL __DataType;
-		typedef GAIA::MATH::VEC3<__DataType> __PosType;
+		typedef GAIA::MATH::VEC3<__DataType> __VecType;
 		typedef GAIA::MATH::MTX44<__DataType> __MtxType;
 
 		static const __DataType DATA_LIST[] = 
@@ -109,13 +109,13 @@ namespace GAIA_TEST
 		mtx.rotatex(1.0F);
 		mtx.rotatey(2.0F);
 		mtx.rotatez(3.0F);
-		mtx.rotate(__PosType(1.23F), 4.56F);
+		mtx.rotate(__VecType(1.23F), 4.56F);
 		if(mtx.isidentity())
 		{
 			GTLINE2("MTX44 rotate error!");
 			++nRet;
 		}
-		__PosType pos = mtx.position();
+		__VecType pos = mtx.position();
 		if(pos != 0.0F)
 		{
 			GTLINE2("MTX44 rotate error!");

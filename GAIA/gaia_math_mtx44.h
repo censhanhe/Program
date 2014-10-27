@@ -65,8 +65,93 @@ namespace GAIA
 				GAIA::ALGO::swap(m[1][3], m[3][1]);
 				GAIA::ALGO::swap(m[2][3], m[3][2]);
 			}
-			GINL GAIA::GVOID inverse()
+			GINL _DataType inverse()
 			{
+				__MyType m = (*this);
+				_DataType det = GSCAST(_DataType)(1);
+				GAIA::N8 is[4];
+				GAIA::N8 js[4];
+				GAIA::N8 f = 1;
+				for(GAIA::N8 k = 0; k < 4; ++k)
+				{
+					_DataType tmax = 0.0F;
+					for(GAIA::N8 i = k; i < 4; ++i)
+					{
+						for(GAIA::N8 j = k; j < 4; ++j)
+						{
+							const _DataType t = GAIA::MATH::xabs(m(i, j));
+							if(t > tmax)
+							{
+								tmax = t;
+								is[k] = i;
+								js[k] = j;
+							}
+						}
+					}
+					if(GAIA::MATH::xabs(tmax) < 0.0001F)
+						return GSCAST(_DataType)(0);
+					if(is[k] != k)
+					{
+						f = -f;
+						GAIA::ALGO::swap(m(k, 0), m(is[k], 0));
+						GAIA::ALGO::swap(m(k, 1), m(is[k], 1));
+						GAIA::ALGO::swap(m(k, 2), m(is[k], 2));
+						GAIA::ALGO::swap(m(k, 3), m(is[k], 3));
+					}
+					if(js[k] != k)
+					{
+						f = -f;
+						GAIA::ALGO::swap(m(0, k), m(0, js[k]));
+						GAIA::ALGO::swap(m(1, k), m(1, js[k]));
+						GAIA::ALGO::swap(m(2, k), m(2, js[k]));
+						GAIA::ALGO::swap(m(3, k), m(3, js[k]));
+					}
+					det *= m(k, k);
+					m(k, k) = 1.0F / m(k, k);	
+					for(GAIA::N8 j = 0; j < 4; ++j)
+					{
+						if(j != k)
+							m(k, j) *= m(k, k);
+					}
+					for(GAIA::N8 i = 0; i < 4; ++i)
+					{
+						if(i != k)
+						{
+							for(GAIA::N8 j = 0; j < 4; ++j)
+							{
+								if(j != k)
+									m(i, j) = m(i, j) - m(i, k) * m(k, j);
+							}
+						}
+					}
+					for(GAIA::N8 i = 0; i < 4; ++i)
+					{
+						if(i != k)
+							m(i, k) *= -m(k, k);
+					}
+				}
+				for(GAIA::N8 k = 3; k >= 0; --k)
+				{
+					if(js[k] != k)
+					{
+						GAIA::ALGO::swap(m(k, 0), m(js[k], 0));
+						GAIA::ALGO::swap(m(k, 1), m(js[k], 1));
+						GAIA::ALGO::swap(m(k, 2), m(js[k], 2));
+						GAIA::ALGO::swap(m(k, 3), m(js[k], 3));
+					}
+					if(is[k] != k)
+					{
+						GAIA::ALGO::swap(m(0, k), m(0, is[k]));
+						GAIA::ALGO::swap(m(1, k), m(1, is[k]));
+						GAIA::ALGO::swap(m(2, k), m(2, is[k]));
+						GAIA::ALGO::swap(m(3, k), m(3, is[k]));
+					}
+				}
+				(*this) = m;
+				if(f < 0)
+					return -det;
+				else
+					return +det;
 			}
 			template<typename _ParamDataType1, typename _ParamDataType2, typename _ParamDataType3> GAIA::GVOID translate(const _ParamDataType1& x, const _ParamDataType2& y, const _ParamDataType3& z)
 			{
@@ -396,6 +481,7 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType* p) const{return GAIA::ALGO::cmps(this->front_ptr(), p, this->size()) < 0;}
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index < this->size()); return this->front_ptr()[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index < this->size()); return this->front_ptr()[index];}
+			template<typename _ParamDataType1, typename _ParamDataType2> _DataType& operator ()(const _ParamDataType1& i1, const _ParamDataType2& i2){return m[i1][i2];}
 		public:
 			_DataType m[4][4];
 		};
