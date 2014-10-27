@@ -8,7 +8,6 @@ namespace GAIA
 		template<typename _DataType> class MTX33 : public GAIA::Base
 		{
 		public:
-		public:
 			_DataType m[3][3];
 		};
 	};

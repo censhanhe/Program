@@ -318,6 +318,10 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::MTX33<_ParamDataType>& src){__MyType temp = *this; *this = temp * src; return *this;}
 			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::MTX22<_ParamDataType>& src){__MyType temp = *this; *this = temp * src; return *this;}
 
+			GINL const _DataType* front_ptr() const{return GRCAST(const _DataType*)(m);}
+			GINL _DataType* front_ptr(){return GRCAST(_DataType*)(m);}
+			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}
+			GINL _DataType* back_ptr(){return this->front_ptr() + this->size() - 1;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				m[0][0] = (_DataType)src.m[0][0]; m[0][1] = (_DataType)src.m[0][1]; m[0][2] = (_DataType)src.m[0][2]; m[0][3] = (_DataType)src.m[0][3];
@@ -326,10 +330,6 @@ namespace GAIA
 				m[3][0] = (_DataType)src.m[3][0]; m[3][1] = (_DataType)src.m[3][1]; m[3][2] = (_DataType)src.m[3][2]; m[3][3] = (_DataType)src.m[3][3];
 				return *this;
 			}
-			GINL const _DataType* front_ptr() const{return GRCAST(const _DataType*)(m);}
-			GINL _DataType* front_ptr(){return GRCAST(_DataType*)(m);}
-			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}
-			GINL _DataType* back_ptr(){return this->front_ptr() + this->size() - 1;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNIL); GAIA::ALGO::copy(this->front_ptr(), p, this->size()); return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGO::set(this->front_ptr(), t, this->size()); return *this;}
@@ -499,7 +499,7 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType* p) const{return GAIA::ALGO::cmps(this->front_ptr(), p, this->size()) < 0;}
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index < this->size()); return this->front_ptr()[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index < this->size()); return this->front_ptr()[index];}
-			template<typename _ParamDataType1, typename _ParamDataType2> _DataType& operator () (const _ParamDataType1& i1, const _ParamDataType2& i2){return m[i1][i2];}
+			template<typename _ParamDataType1, typename _ParamDataType2> _DataType& operator () (const _ParamDataType1& i1, const _ParamDataType2& i2){GAIA_AST(i1 >= 0 && i1 < 4); GAIA_AST(i2 >= 0 && i2 < 4); return m[i1][i2];}
 		public:
 			_DataType m[4][4];
 		};
