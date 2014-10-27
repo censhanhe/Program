@@ -60,6 +60,11 @@ namespace GAIA
 				b = GSCAST(_DataType)(GRCAST(GAIA::U8*)(&u)[0]);
 			}
 
+			GINL const _DataType* front_ptr() const{return &b;}
+			GINL _DataType* front_ptr(){return &b;}
+			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}
+			GINL _DataType* back_ptr(){return this->front_ptr() + this->size() - 1;}
+
 			template<typename _ParamEndDataType, typename _ParamFactorDataType> GAIA::GVOID lerp(GAIA::MATH::NRGB<_ParamEndDataType>& end, const _ParamFactorDataType& factor)
 			{
 				r = GAIA::MATH::lerp(r, end.r, factor);

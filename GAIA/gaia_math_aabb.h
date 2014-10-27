@@ -90,6 +90,10 @@ namespace GAIA
 			GINL _vectype bsb() const{return _vectype(pmax.x, pmin.y, pmax.z);}
 			GINL _vectype bbs() const{return _vectype(pmax.x, pmax.y, pmin.z);}
 			GINL _vectype bbb() const{return _vectype(pmax.x, pmax.y, pmax.z);}
+			GINL const _DataType* front_ptr() const{return GRCAST(const _DataType*)(&pmin);}
+			GINL _DataType* front_ptr(){return GRCAST(_DataType*)(&pmin);}
+			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}
+			GINL _DataType* back_ptr(){return this->front_ptr() + this->size() - 1;}
 			template<typename _ParamDataType> GAIA::GVOID expand(const GAIA::MATH::AABB<_ParamDataType>& t){pmin.minimize(t.pmin); pmax.maximize(t.pmax);}
 			template<typename _ParamDataType> GAIA::GVOID expand(const GAIA::MATH::VEC3<_ParamDataType>& t){pmin.minimize(t); pmax.maximize(t);}
 			template<typename _ParamDataType> __MyType operator + (const GAIA::MATH::VEC3<_ParamDataType>& v){__MyType ret; ret.pmin = pmin + v; ret.pmax = pmax + v; return ret;}

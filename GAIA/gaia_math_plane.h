@@ -42,6 +42,10 @@ namespace GAIA
 			}
 			GINL GAIA::BL iszero() const{return a == (_DataType)0 && b == (_DataType)0 && c == (_DataType)0 && d == (_DataType)0;}
 			GINL GAIA::BL isfinited() const{return GAIA::MATH::xfinite(a) && GAIA::MATH::xfinite(b) && GAIA::MATH::xfinite(c) && GAIA::MATH::xfinite(d);}
+			GINL const _DataType* front_ptr() const{return &a;}
+			GINL _DataType* front_ptr(){return &a;}
+			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}
+			GINL _DataType* back_ptr(){return this->front_ptr() + this->size() - 1;}
 			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::MTX44<_ParamDataType>& mtx) const
 			{
 			}
