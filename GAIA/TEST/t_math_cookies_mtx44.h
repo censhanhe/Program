@@ -18,7 +18,7 @@ namespace GAIA_TEST
 			12.0F, 13.0F, 14.0F, 15.0F,
 		};
 
-		__MtxType mtx;
+		__MtxType mtx, mtx1;
 		if(mtx.size() != 16)
 		{
 		}
@@ -42,12 +42,50 @@ namespace GAIA_TEST
 		{
 			if(mtx[x] != 10.0F)
 			{
-				GTLINE2("MTX44 operator = constant value error!");
+				GTLINE2("MTX44 operator = const value error!");
+				++nRet;
+				break;
+			}
+		}
+		mtx1 = mtx;
+		for(GAIA::SIZE x = 0; x < mtx1.size(); ++x)
+		{
+			if(mtx1[x] != 10.0F)
+			{
+				GTLINE2("MTX44 operator = const value error!");
 				++nRet;
 				break;
 			}
 		}
 		mtx = DATA_LIST;
+		for(GAIA::SIZE x = 0; x < sizeofarray(DATA_LIST); ++x)
+		{
+			if(mtx[x] != DATA_LIST[x])
+			{
+				GTLINE2("MTX44 operator = const datapointer error!");
+				++nRet;
+				break;
+			}
+		}
+		mtx1 = mtx;
+		for(GAIA::SIZE x = 0; x < sizeofarray(DATA_LIST); ++x)
+		{
+			if(mtx1[x] != DATA_LIST[x])
+			{
+				GTLINE2("MTX44 operator = const datapointer error!");
+				++nRet;
+				break;
+			}
+		}
+		mtx = DATA_LIST;
+		mtx.transpose();
+		if(mtx == DATA_LIST)
+		{
+		}
+		mtx.transpose();
+		if(mtx != DATA_LIST)
+		{
+		}
 
 		return nRet;
 	}
