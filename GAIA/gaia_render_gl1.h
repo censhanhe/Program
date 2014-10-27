@@ -32,15 +32,33 @@ namespace GAIA
 					if(m_bInitialized)
 						return GAIA::False;
 				#if GAIA_PLATFORM_OPENGL1
+					GLPROCMAP(GetError);
 					GLPROCMAP(Flush);
 					GLPROCMAP(Enable);
 					GLPROCMAP(Disable);
 					GLPROCMAP(Hint);
+					GLPROCMAP(BlendFunc);
 					GLPROCMAP(ShadeModel);
 					GLPROCMAP(DepthFunc);
 					GLPROCMAP(ClearColor);
 					GLPROCMAP(Clear);
+					GLPROCMAP(LoadIdentity);
+					GLPROCMAP(Ortho);
+					GLPROCMAP(PointSize);
+					GLPROCMAP(LineWidth);
+					GLPROCMAP(EnableClientState);
+					GLPROCMAP(DisableClientState);
+					GLPROCMAP(VertexPointer);
+					GLPROCMAP(NormalPointer);
+					GLPROCMAP(ColorPointer);
+					GLPROCMAP(TexCoordPointer);
+					GLPROCMAP(DrawElements);
 				#endif
+					if(!this->check())
+					{
+						this->reset();
+						return GAIA::False;
+					}
 					m_bInitialized = GAIA::True;
 					return GAIA::True;
 				}
@@ -58,47 +76,99 @@ namespace GAIA
 				GINL GAIA::GVOID reset()
 				{
 					m_bInitialized = GAIA::False;
+					GLPROCINIT(GetError);
 					GLPROCINIT(Flush);
 					GLPROCINIT(Enable);
 					GLPROCINIT(Disable);
 					GLPROCINIT(Hint);
+					GLPROCINIT(BlendFunc);
 					GLPROCINIT(ShadeModel);
 					GLPROCINIT(DepthFunc);
 					GLPROCINIT(ClearColor);
 					GLPROCINIT(Clear);
+					GLPROCINIT(LoadIdentity);
+					GLPROCINIT(Ortho);
+					GLPROCINIT(PointSize);
+					GLPROCINIT(LineWidth);
+					GLPROCINIT(EnableClientState);
+					GLPROCINIT(DisableClientState);
+					GLPROCINIT(VertexPointer);
+					GLPROCINIT(NormalPointer);
+					GLPROCINIT(ColorPointer);
+					GLPROCINIT(TexCoordPointer);
+					GLPROCINIT(DrawElements);
 				}
 				GINL GAIA::BL check() const
 				{
+					GLPROCCHECK(GetError);
 					GLPROCCHECK(Flush);
 					GLPROCCHECK(Enable);
 					GLPROCCHECK(Disable);
 					GLPROCCHECK(Hint);
+					GLPROCCHECK(BlendFunc);
 					GLPROCCHECK(ShadeModel);
 					GLPROCCHECK(DepthFunc);
 					GLPROCCHECK(ClearColor);
 					GLPROCCHECK(Clear);
+					GLPROCCHECK(LoadIdentity);
+					GLPROCCHECK(Ortho);
+					GLPROCCHECK(PointSize);
+					GLPROCCHECK(LineWidth);
+					GLPROCCHECK(EnableClientState);
+					GLPROCCHECK(DisableClientState);
+					GLPROCCHECK(VertexPointer);
+					GLPROCCHECK(NormalPointer);
+					GLPROCCHECK(ColorPointer);
+					GLPROCCHECK(TexCoordPointer);
+					GLPROCCHECK(DrawElements);
 					return GAIA::True;
 				}
 
 			private:
+				typedef GAIA::U32 (GAIA_BASEAPI* glGetErrorProc)();
 				typedef GAIA::GVOID (GAIA_BASEAPI *glFlushProc)();
 				typedef GAIA::GVOID (GAIA_BASEAPI *glEnableProc)(GAIA::U32 cap);
 				typedef GAIA::GVOID (GAIA_BASEAPI *glDisableProc)(GAIA::U32 cap);
 				typedef GAIA::GVOID (GAIA_BASEAPI *glHintProc)(GAIA::U32 target, GAIA::U32 mode);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glBlendFuncProc)(GAIA::U32 sfactor, GAIA::U32 dfactor);
 				typedef GAIA::GVOID (GAIA_BASEAPI *glShadeModelProc)(GAIA::U32 mode);
 				typedef GAIA::GVOID (GAIA_BASEAPI *glDepthFuncProc)(GAIA::U32 func);
 				typedef GAIA::GVOID (GAIA_BASEAPI *glClearColorProc)(GAIA::F32 r, GAIA::F32 g, GAIA::F32 b, GAIA::F32 a);
 				typedef GAIA::GVOID (GAIA_BASEAPI *glClearProc)(GAIA::U32 clear_mask);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glLoadIdentityProc)();
+				typedef GAIA::GVOID (GAIA_BASEAPI *glOrthoProc)(GAIA::F64 left, GAIA::F64 right, GAIA::F64 bottom, GAIA::F64 top, GAIA::F64 zNear, GAIA::F64 zFar);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glPointSizeProc)(GAIA::F32 size);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glLineWidthProc)(GAIA::F32 width);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glEnableClientStateProc)(GAIA::U32 array);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glDisableClientStateProc)(GAIA::U32 array);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glVertexPointerProc)(GAIA::N32 size, GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glNormalPointerProc)(GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glColorPointerProc)(GAIA::N32 size, GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glTexCoordPointerProc)(GAIA::N32 size, GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glDrawElementsProc)(GAIA::U32 mode, GAIA::N32 count, GAIA::U32 type, const GAIA::GVOID* indices);
 
 			public:
+				GLPROCINST(GetError);
 				GLPROCINST(Flush);
 				GLPROCINST(Enable);
 				GLPROCINST(Disable);
 				GLPROCINST(Hint);
+				GLPROCINST(BlendFunc);
 				GLPROCINST(ShadeModel);
 				GLPROCINST(DepthFunc);
 				GLPROCINST(ClearColor);
 				GLPROCINST(Clear);
+				GLPROCINST(LoadIdentity);
+				GLPROCINST(Ortho);
+				GLPROCINST(PointSize);
+				GLPROCINST(LineWidth);
+				GLPROCINST(EnableClientState);
+				GLPROCINST(DisableClientState);
+				GLPROCINST(VertexPointer);
+				GLPROCINST(NormalPointer);
+				GLPROCINST(ColorPointer);
+				GLPROCINST(TexCoordPointer);
+				GLPROCINST(DrawElements);
 
 			private:
 				GAIA::BL m_bInitialized;
@@ -1114,8 +1184,6 @@ namespace GAIA
 			{
 				GPCHR_FALSE(this->IsBeginStatePipeline());
 			#if defined(GAIA_PLATFORM_OPENGL1)
-				if(m_hDC == GNIL)
-					return;
 				m_gl.ClearColor(cr.r, cr.g, cr.b, cr.a);
 				m_gl.Clear(GL_COLOR_BUFFER_BIT);
 			#endif
@@ -1703,6 +1771,24 @@ namespace GAIA
 				if(pContext == GNIL)
 					return;
 				GPCHR_NULL(pContext->pCurrentPen);
+			#if defined(GAIA_PLATFORM_OPENGL1)
+				GAIA::REAL rWidth;
+				pContext->pCurrentPen->GetWidth(rWidth);
+
+				m_gl.EnableClientState(GL_VERTEX_ARRAY);
+				m_gl.EnableClientState(GL_COLOR_ARRAY);
+				m_gl.DisableClientState(GL_NORMAL_ARRAY);
+				m_gl.DisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+				GAIA::MATH::ARGB<GAIA::REAL> cr;
+				pContext->pCurrentPen->GetColor(cr);
+				GAIA::REAL vbpos[4] = {s.x, s.y, e.x, e.y};
+				GAIA::REAL vbcr[8] = {cr.r, cr.g, cr.b, cr.a, cr.r, cr.g, cr.b, cr.a};
+				m_gl.VertexPointer(2, GL_FLOAT, 0, vbpos);
+				m_gl.ColorPointer(4, GL_FLOAT, 0, vbcr);
+				GAIA::U32 ib[2] = {0, 1};
+				m_gl.DrawElements(GL_LINES, 2, GL_UNSIGNED_INT, ib);
+			#endif
 			}
 			virtual GAIA::GVOID DrawRect(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr)
