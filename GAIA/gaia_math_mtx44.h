@@ -253,6 +253,32 @@ namespace GAIA
 			GINL _DataType* front_ptr(){return GRCAST(_DataType*)(m);}
 			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}
 			GINL _DataType* back_ptr(){return this->front_ptr() + this->size() - 1;}
+			GINL GAIA::GVOID to43(GAIA::MATH::MTX43<_DataType>& dst) const
+			{
+				dst.m[0][0] = m[0][0]; dst.m[0][1] = m[0][1]; dst.m[0][2] = m[0][2];
+				dst.m[1][0] = m[1][0]; dst.m[1][1] = m[1][1]; dst.m[1][2] = m[1][2];
+				dst.m[2][0] = m[2][0]; dst.m[2][1] = m[2][1]; dst.m[2][2] = m[2][2];
+				dst.m[3][0] = m[3][0]; dst.m[3][1] = m[3][1]; dst.m[3][2] = m[3][2];
+			}
+			GINL GAIA::GVOID from43(const GAIA::MATH::MTX43<_DataType>& src)
+			{
+				m[0][0] = src.m[0][0]; m[0][1] = src.m[0][1]; m[0][2] = src.m[0][2];
+				m[1][0] = src.m[1][0]; m[1][1] = src.m[1][1]; m[1][2] = src.m[1][2];
+				m[2][0] = src.m[2][0]; m[2][1] = src.m[2][1]; m[2][2] = src.m[2][2];
+				m[3][0] = src.m[3][0]; m[3][1] = src.m[3][1]; m[3][2] = src.m[3][2];
+			}
+			GINL GAIA::GVOID to33(GAIA::MATH::MTX33<_DataType>& dst) const
+			{
+				dst.m[0][0] = m[0][0]; dst.m[0][1] = m[0][1]; dst.m[0][2] = m[0][2];
+				dst.m[1][0] = m[1][0]; dst.m[1][1] = m[1][1]; dst.m[1][2] = m[1][2];
+				dst.m[2][0] = m[2][0]; dst.m[2][1] = m[2][1]; dst.m[2][2] = m[2][2];
+			}
+			GINL GAIA::GVOID from33(const GAIA::MATH::MTX33<_DataType>& src)
+			{
+				m[0][0] = src.m[0][0]; m[0][1] = src.m[0][1]; m[0][2] = src.m[0][2];
+				m[1][0] = src.m[1][0]; m[1][1] = src.m[1][1]; m[1][2] = src.m[1][2];
+				m[2][0] = src.m[2][0]; m[2][1] = src.m[2][1]; m[2][2] = src.m[2][2];
+			}
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::MTX44<_ParamDataType>& src)
 			{
 				m[0][0] = (_DataType)src.m[0][0]; m[0][1] = (_DataType)src.m[0][1]; m[0][2] = (_DataType)src.m[0][2]; m[0][3] = (_DataType)src.m[0][3];
