@@ -122,6 +122,11 @@
 #	endif
 #endif
 
+/* Function call type. */
+#if GAIA_OS == GAIA_OS_WINDOWS
+#	define GAIA_BASEAPI __stdcall
+#endif
+
 /* Integration flag. */
 #define GAIA_USESTL
 

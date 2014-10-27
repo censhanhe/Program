@@ -19,6 +19,97 @@ namespace GAIA
 			static const GAIA::SIZE MAX_TARGET_COUNT = 1;
 
 		public:
+			class GLI : public GAIA::Base
+			{
+			#define GLPROCINST(name) gl##name##Proc name
+			#define GLPROCINIT(name) name = GNIL
+			#define GLPROCMAP(name) name = gl##name
+			#define GLPROCCHECK(name) if(name == GNIL) return GAIA::False;
+			public:
+				GINL GLI(){this->reset();}
+				GINL GAIA::BL Initialize()
+				{
+					if(m_bInitialized)
+						return GAIA::False;
+				#if GAIA_PLATFORM_OPENGL1
+					GLPROCMAP(Flush);
+					GLPROCMAP(Enable);
+					GLPROCMAP(Disable);
+					GLPROCMAP(Hint);
+					GLPROCMAP(ShadeModel);
+					GLPROCMAP(DepthFunc);
+					GLPROCMAP(ClearColor);
+					GLPROCMAP(Clear);
+				#endif
+					m_bInitialized = GAIA::True;
+					return GAIA::True;
+				}
+				GINL GAIA::BL Release()
+				{
+					if(!m_bInitialized)
+						return GAIA::False;
+					m_bInitialized = GAIA::False;
+					return GAIA::True;
+				}
+				GINL GAIA::BL IsInitialized() const
+				{
+					return m_bInitialized;
+				}
+				GINL GAIA::GVOID reset()
+				{
+					m_bInitialized = GAIA::False;
+					GLPROCINIT(Flush);
+					GLPROCINIT(Enable);
+					GLPROCINIT(Disable);
+					GLPROCINIT(Hint);
+					GLPROCINIT(ShadeModel);
+					GLPROCINIT(DepthFunc);
+					GLPROCINIT(ClearColor);
+					GLPROCINIT(Clear);
+				}
+				GINL GAIA::BL check() const
+				{
+					GLPROCCHECK(Flush);
+					GLPROCCHECK(Enable);
+					GLPROCCHECK(Disable);
+					GLPROCCHECK(Hint);
+					GLPROCCHECK(ShadeModel);
+					GLPROCCHECK(DepthFunc);
+					GLPROCCHECK(ClearColor);
+					GLPROCCHECK(Clear);
+					return GAIA::True;
+				}
+
+			private:
+				typedef GAIA::GVOID (GAIA_BASEAPI *glFlushProc)();
+				typedef GAIA::GVOID (GAIA_BASEAPI *glEnableProc)(GAIA::U32 cap);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glDisableProc)(GAIA::U32 cap);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glHintProc)(GAIA::U32 target, GAIA::U32 mode);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glShadeModelProc)(GAIA::U32 mode);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glDepthFuncProc)(GAIA::U32 func);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glClearColorProc)(GAIA::F32 r, GAIA::F32 g, GAIA::F32 b, GAIA::F32 a);
+				typedef GAIA::GVOID (GAIA_BASEAPI *glClearProc)(GAIA::U32 clear_mask);
+
+			public:
+				GLPROCINST(Flush);
+				GLPROCINST(Enable);
+				GLPROCINST(Disable);
+				GLPROCINST(Hint);
+				GLPROCINST(ShadeModel);
+				GLPROCINST(DepthFunc);
+				GLPROCINST(ClearColor);
+				GLPROCINST(Clear);
+
+			private:
+				GAIA::BL m_bInitialized;
+
+			#undef GLPROCINST
+			#undef GLPROCINIT
+			#undef GLPROCMAP
+			#undef GLPROCCHECK
+			};
+
+		public:
 			class RenderDesc : public virtual GAIA::RENDER::Render3D::RenderDesc
 			{
 			public:
@@ -908,10 +999,12 @@ namespace GAIA
 					return GAIA::False;
 				}
 
-				::glShadeModel(GL_SMOOTH);
-				::glEnable(GL_DEPTH_TEST);
-				::glDepthFunc(GL_LEQUAL);
-				::glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+				m_gl.Initialize();
+
+				m_gl.ShadeModel(GL_SMOOTH);
+				m_gl.Enable(GL_DEPTH_TEST);
+				m_gl.DepthFunc(GL_LEQUAL);
+				m_gl.Hint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 			#endif
 
 				m_bCreated = GAIA::True;
@@ -924,6 +1017,8 @@ namespace GAIA
 
 				GAIA::GVOID* pHandle = m_desc.pCanvas->GetHandle();
 				GAIA_AST(pHandle != GNIL);
+
+				m_gl.Release();
 
 			#if defined(GAIA_PLATFORM_OPENGL1)
 				HWND hWnd = GSCAST(HWND)(pHandle);
@@ -1005,7 +1100,7 @@ namespace GAIA
 				if(bWait)
 					::SwapBuffers(m_hDC);
 				else
-					::glFlush();
+					m_gl.Flush();
 			#endif
 			}
 
@@ -1021,8 +1116,8 @@ namespace GAIA
 			#if defined(GAIA_PLATFORM_OPENGL1)
 				if(m_hDC == GNIL)
 					return;
-				::glClearColor(cr.r, cr.g, cr.b, cr.a);
-				::glClear(GL_COLOR_BUFFER_BIT);
+				m_gl.ClearColor(cr.r, cr.g, cr.b, cr.a);
+				m_gl.Clear(GL_COLOR_BUFFER_BIT);
 			#endif
 			}
 
@@ -1757,6 +1852,7 @@ namespace GAIA
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
 			GAIA::BL m_bBeginStatePipeline;
+			GLI m_gl;
 		#if defined(GAIA_PLATFORM_OPENGL1)
 			HDC m_hDC;
 			HGLRC m_hGLRC;
