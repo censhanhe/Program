@@ -98,18 +98,18 @@ namespace GAIA_TEST
 			//GTLINE1("MathArithmatic: Lerp test begin!"); nRet += t_math_arithmatic_lerp(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("MathArithmatic: Random test begin!"); nRet += t_math_arithmatic_random(file, prt); GTLINE1("End"); GTLINE("\t");
 
-			//GTLINE1("MathCookies: ARGB test begin!"); nRet += t_math_cookies_argb(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: NRGB test begin!"); nRet += t_math_cookies_nrgb(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: AABB test begin!"); nRet += t_math_cookies_aabb(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: AABR test begin!"); nRet += t_math_cookies_aabr(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: VEC2 test begin!"); nRet += t_math_cookies_vec2(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: VEC3 test begin!"); nRet += t_math_cookies_vec3(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: VEC4 test begin!"); nRet += t_math_cookies_vec4(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: MTX22 test begin!"); nRet += t_math_cookies_mtx22(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: MTX33 test begin!"); nRet += t_math_cookies_mtx33(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: MTX44 test begin!"); nRet += t_math_cookies_mtx44(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: MTX43 test begin!"); nRet += t_math_cookies_mtx43(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("MathCookies: QUA test begin!"); nRet += t_math_cookies_qua(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: ARGB test begin!"); nRet += t_math_cookies_argb(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: NRGB test begin!"); nRet += t_math_cookies_nrgb(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: AABB test begin!"); nRet += t_math_cookies_aabb(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: AABR test begin!"); nRet += t_math_cookies_aabr(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: VEC2 test begin!"); nRet += t_math_cookies_vec2(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: VEC3 test begin!"); nRet += t_math_cookies_vec3(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: VEC4 test begin!"); nRet += t_math_cookies_vec4(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX22 test begin!"); nRet += t_math_cookies_mtx22(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX33 test begin!"); nRet += t_math_cookies_mtx33(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX44 test begin!"); nRet += t_math_cookies_mtx44(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: MTX43 test begin!"); nRet += t_math_cookies_mtx43(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("MathCookies: QUA test begin!"); nRet += t_math_cookies_qua(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			//GTLINE1("Algorithm: Set test begin!"); nRet += t_algorithm_set(file, prt); GTLINE1("End"); GTLINE("\t");
 
@@ -166,7 +166,7 @@ namespace GAIA_TEST
 			//GTLINE1("Render: dx9 test begin!"); nRet += t_render_dx9(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx10 test begin!"); nRet += t_render_dx10(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx11 test begin!"); nRet += t_render_dx11(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: gl1 test begin!"); nRet += t_render_gl1(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: gl1 test begin!"); nRet += t_render_gl1(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: gl2 test begin!"); nRet += t_render_gl2(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: gl3 test begin!"); nRet += t_render_gl3(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: gles1 test begin!"); nRet += t_render_gles1(file, prt); GTLINE1("End"); GTLINE("\t");

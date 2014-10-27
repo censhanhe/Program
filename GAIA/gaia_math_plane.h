@@ -18,6 +18,7 @@ namespace GAIA
 			template<typename _ParamDataType> PLANE(const _ParamDataType& v){this->operator = (v);}
 			template<typename _ParamDataType> PLANE(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> PLANE(_ParamDataType* p){this->operator = (p);}
+			GINL GAIA::SIZE size() const{return 4;}
 			template<typename _ParamDataType> GAIA::GVOID build(const GAIA::MATH::VEC3<_ParamDataType>& pos, const GAIA::MATH::VEC3<_ParamDataType>& nor)
 			{
 			}

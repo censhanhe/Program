@@ -45,10 +45,11 @@ namespace GAIA
 			template<typename _ParamDataType> AABB(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> AABB(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> AABB(const _ParamDataType& t){this->operator = (t);}
+			GINL GAIA::SIZE size() const{return 6;}
 			GINL GAIA::GVOID identity(){pmin = (_DataType)+1; pmax = (_DataType)-1;}
 			GINL GAIA::BL isidentity() const{return pmin.x > pmax.x || pmin.y > pmax.y || pmin.z > pmax.z;}
 			GINL _vectype center() const{return (pmin + pmax) / (_DataType)2;}
-			GINL _vectype size() const{return pmax - pmin;}
+			GINL _vectype long_size() const{return pmax - pmin;}
 			GINL _DataType long_radius() const{return (pmax - pmin).length() / (_DataType)2;}
 			GINL _DataType short_radius() const{return (pmax - pmin).minimize() / (_DataType)2;}
 			GINL _DataType width() const{return pmax.x - pmin.x;}

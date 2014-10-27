@@ -17,6 +17,7 @@ namespace GAIA
 			template<typename _ParamDataType> QUA(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> QUA(const _ParamDataType& t){this->operator = (t);}
 
+			GINL GAIA::SIZE size() const{return 4;}
 			GINL _DataType length() const{}
 			GINL _DataType lengthsq() const{}
 			GINL GAIA::GVOID normalize(){}

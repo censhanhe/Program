@@ -9,6 +9,7 @@ namespace GAIA
 		class RID128 : public GAIA::Base
 		{
 		public:
+			GINL GAIA::SIZE size() const{return sizeofarray(u);}
 			GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
 			GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
 			GINL GAIA::GVOID uuid();
@@ -41,6 +42,7 @@ namespace GAIA
 		class RID64 : public GAIA::Entity
 		{
 		public:
+			GINL GAIA::SIZE size() const{return sizeofarray(u);}
 			GINL GAIA::BL empty() const{return u64_0 == 0;}
 			GINL GAIA::GVOID clear(){u64_0 = 0;}
 			GINL GAIA::GVOID uuid();
@@ -70,6 +72,7 @@ namespace GAIA
 		class RID32 : public GAIA::Entity
 		{
 		public:
+			GINL GAIA::SIZE size() const{return sizeofarray(u);}
 			GINL GAIA::BL empty() const{return u0 == 0;}
 			GINL GAIA::GVOID clear(){u0 = 0;}
 			GINL GAIA::GVOID uuid();

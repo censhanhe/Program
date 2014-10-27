@@ -18,6 +18,7 @@ namespace GAIA
 			template<typename _ParamDataType> VEC4(const _ParamDataType& v){this->operator = (v);}
 			template<typename _ParamDataType> VEC4(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> VEC4(_ParamDataType* p){this->operator = (p);}
+			GINL GAIA::SIZE size() const{return 4;}
 			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq());}
 			GINL _DataType lengthsq() const{return (x * x + y * y + z * z) * (w * w);}
 			GINL _DataType minimize() const{return GAIA::ALGO::minimize(GAIA::ALGO::minimize(x, y), GAIA::ALGO::minimize(z, w));}

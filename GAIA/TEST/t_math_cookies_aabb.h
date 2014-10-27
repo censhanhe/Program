@@ -22,10 +22,10 @@ namespace GAIA_TEST
 			GTLINE2("AABB center error!");
 			++nRet;
 		}
-		__AABBType::_vectype size = aabb.size();
-		if(size != (__AABBType::_datatype)-2)
+		__AABBType::_vectype long_size = aabb.long_size();
+		if(long_size != (__AABBType::_datatype)-2)
 		{
-			GTLINE2("AABB size error!");
+			GTLINE2("AABB long_size error!");
 			++nRet;
 		}
 		aabb.expand((__AABBType::_vectype)+10);
@@ -36,10 +36,10 @@ namespace GAIA_TEST
 			GTLINE2("AABB center error!");
 			++nRet;
 		}
-		size = aabb.size();
-		if(size != (__AABBType::_datatype)20)
+		long_size = aabb.long_size();
+		if(long_size != (__AABBType::_datatype)20)
 		{
-			GTLINE2("AABB size error!");
+			GTLINE2("AABB long_size error!");
 			++nRet;
 		}
 		if(aabb.long_radius() != GAIA::MATH::xsqrt(300.0))
@@ -82,8 +82,8 @@ namespace GAIA_TEST
 			GTLINE2("AABB += or -= or *= or /= error!");
 			++nRet;
 		}
-		size = aabb.size();
-		if(size != (__AABBType::_datatype)20)
+		long_size = aabb.long_size();
+		if(long_size != (__AABBType::_datatype)20)
 		{
 			GTLINE2("AABB += or -= or *= or /= error!");
 			++nRet;
@@ -128,8 +128,8 @@ namespace GAIA_TEST
 			GTLINE2("AABB += or -= or *= or /= error!");
 			++nRet;
 		}
-		size = aabb.size();
-		if(size != (__AABBType::_datatype)20)
+		long_size = aabb.long_size();
+		if(long_size != (__AABBType::_datatype)20)
 		{
 			GTLINE2("AABB += or -= or *= or /= error!");
 			++nRet;

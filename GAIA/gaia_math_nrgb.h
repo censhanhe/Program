@@ -30,6 +30,8 @@ namespace GAIA
 			template<typename _ParamDataType> NRGB(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> NRGB(const _ParamDataType& t){this->operator = (t);}
 
+			GINL GAIA::SIZE size() const{return 3;}
+
 			GINL _DataType length() const{return GAIA::MATH::xsqrt(this->lengthsq());}
 			GINL _DataType lengthsq() const{return r * r + g * g + b * b;}
 

@@ -18,6 +18,8 @@ namespace GAIA
 			template<typename _ParamDataType> MTX44(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> MTX44(const _ParamDataType& t){this->operator = (t);}
 
+			GINL GAIA::SIZE size() const{return sizeofarray2(m);}
+
 			GINL GAIA::GVOID identity()
 			{
 				m[0][0] = (_DataType)1; m[0][1] = (_DataType)0; m[0][2] = (_DataType)0; m[0][3] = (_DataType)0; 
@@ -221,9 +223,9 @@ namespace GAIA
 				m[3][0] = (_DataType)src.m[3][0]; m[3][1] = (_DataType)src.m[3][1]; m[3][2] = (_DataType)src.m[3][2]; m[3][3] = (_DataType)src.m[3][3];
 				return *this;
 			}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNIL); GAIA::ALGO::copy(GSCAST(_DataType*)(m), p, sizeofarray2(m));}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNIL); GAIA::ALGO::copy(GRCAST(_DataType*)(m), p, sizeofarray2(m)); return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGO::set((_DataType*)m, t, sizeofarray2(m));}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGO::set((_DataType*)m, t, sizeofarray2(m)); return *this;}
 
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGO::cmps(GSCAST(_DataType)(m), GSCAST(_DataType)(src.m), sizeofarray2(m)) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return !(this->operator == (src));}
@@ -384,7 +386,7 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::MTX43<_ParamDataType>& src) const{return !(this->operator >= (src));}
 
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{return const_cast<__MyType*>(this)[index];}
-			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return (GSCAST(_DataType*)(m))[index];}
+			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){return (GRCAST(_DataType*)(m))[index];}
 		public:
 			_DataType m[4][4];
 		};
