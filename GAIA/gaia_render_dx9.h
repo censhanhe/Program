@@ -1,7 +1,7 @@
 #ifndef		__GAIA_RENDER_DX9_H__
 #define		__GAIA_RENDER_DX9_H__
 
-#if defined(GAIA_PLATFORM_DX9)
+#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 #	include <d3d9.h>
 #endif
 
@@ -833,7 +833,7 @@ namespace GAIA
 				GAIA::GVOID* pHandle = desc.pCanvas->GetHandle();
 				GAIA_AST(pHandle != GNIL);
 
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				HWND hWnd = GSCAST(HWND)(pHandle);
 
 				m_pD3D = ::Direct3DCreate9(D3D_SDK_VERSION);
@@ -885,7 +885,7 @@ namespace GAIA
 				GAIA::GVOID* pHandle = m_desc.pCanvas->GetHandle();
 				GAIA_AST(pHandle != GNIL);
 
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				GAIA_RELEASE_SAFE(m_pD3DDevice);
 				GAIA_RELEASE_SAFE(m_pD3D);
 			#endif
@@ -908,7 +908,7 @@ namespace GAIA
 			virtual GAIA::RENDER::Render::Context* CreateContext(const GAIA::RENDER::Render::Context::ContextDesc& desc)
 			{
 				GPCHR_NULL_RET(this->GetFactory(), GNIL);
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				Context* pContext = GDCAST(Context*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_DX9_CONTEXT, GNIL));
 				GAIA_AST(pContext != GNIL);
 				if(pContext == GNIL)
@@ -930,7 +930,7 @@ namespace GAIA
 				GAIA_AST(!this->IsBeginStatePipeline());
 				if(m_bBeginStatePipeline)
 					return GAIA::False;
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				if(m_pD3DDevice == GNIL)
 					return GAIA::False;
 
@@ -950,7 +950,7 @@ namespace GAIA
 				GAIA_AST(this->IsBeginStatePipeline());
 				if(!m_bBeginStatePipeline)
 					return GAIA::False;
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				if(m_pD3DDevice == GNIL)
 					return GAIA::False;
 				m_pD3DDevice->EndScene();
@@ -966,7 +966,7 @@ namespace GAIA
 			virtual GAIA::GVOID Flush(GAIA::BL bWait)
 			{
 				GPCHR_TRUE(this->IsBeginStatePipeline());
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				if(m_pD3DDevice == GNIL)
 					return;
 				if(bWait)
@@ -983,7 +983,7 @@ namespace GAIA
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 			{
 				GPCHR_FALSE(this->IsBeginStatePipeline());
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				if(m_pD3DDevice == GNIL)
 					return;
 				GAIA::MATH::ARGB<GAIA::REAL> crTemp = cr;
@@ -1193,7 +1193,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				Pen* pPen = GDCAST(Pen*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_DX9_PEN, GNIL));
 				GAIA_AST(pPen != GNIL);
 				if(pPen == GNIL)
@@ -1239,7 +1239,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				Brush* pBrush = GDCAST(Brush*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_DX9_BRUSH, GNIL));
 				pBrush->SetRender(this);
 				if(!pBrush->Create(desc))
@@ -1283,7 +1283,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				FontFamily* pFontFamily = GDCAST(FontFamily*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_DX9_FONTFAMILY, GNIL));
 				GAIA_AST(pFontFamily != GNIL);
 				if(pFontFamily == GNIL)
@@ -1306,7 +1306,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				FontPainter* pFontPainter = GDCAST(FontPainter*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_DX9_FONTPAINTER, GNIL));
 				GAIA_AST(pFontPainter != GNIL);
 				if(pFontPainter == GNIL)
@@ -1329,7 +1329,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				FontFormat* pFontFormat = GDCAST(FontFormat*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_DX9_FONTFORMAT, GNIL));
 				GAIA_AST(pFontFormat != GNIL);
 				if(pFontFormat == GNIL)
@@ -1420,7 +1420,7 @@ namespace GAIA
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return GNIL;
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				Texture* pTex = GDCAST(Texture*)(this->GetFactory()->CreateInstance(GAIA::FWORK::CLSID_RENDER_3D_DX9_TEXTURE, GNIL));
 				GAIA_AST(pTex != GNIL);
 				if(pTex == GNIL)
@@ -1714,7 +1714,7 @@ namespace GAIA
 				m_bCreated = GAIA::False;
 				m_desc.reset();
 				m_bBeginStatePipeline = GAIA::False;
-			#if defined(GAIA_PLATFORM_DX9)
+			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				m_pD3D = GNIL;
 				m_pD3DDevice = GNIL;
 				GAIA::ALGO::xmemset(&m_d3dpp, 0, sizeof(m_d3dpp));
@@ -1725,7 +1725,7 @@ namespace GAIA
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
 			GAIA::BL m_bBeginStatePipeline;
-		#if defined(GAIA_PLATFORM_DX9)
+		#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 			IDirect3D9* m_pD3D;
 			IDirect3DDevice9* m_pD3DDevice;
 			D3DPRESENT_PARAMETERS m_d3dpp;
