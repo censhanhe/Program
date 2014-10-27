@@ -36,6 +36,24 @@ namespace GAIA
 					return GAIA::True;
 				return GAIA::False;
 			}
+			GINL GAIA::BL isalmostidentity() const
+			{
+				if(	GAIA::MATH::xequal(m[0][0], (_DataType)1) && GAIA::MATH::xequal(m[0][1], (_DataType)0) && GAIA::MATH::xequal(m[0][2], (_DataType)0) && GAIA::MATH::xequal(m[0][3], (_DataType)0) && 
+					GAIA::MATH::xequal(m[1][0], (_DataType)0) && GAIA::MATH::xequal(m[1][1], (_DataType)1) && GAIA::MATH::xequal(m[1][2], (_DataType)0) && GAIA::MATH::xequal(m[1][3], (_DataType)0) && 
+					GAIA::MATH::xequal(m[2][0], (_DataType)0) && GAIA::MATH::xequal(m[2][1], (_DataType)0) && GAIA::MATH::xequal(m[2][2], (_DataType)1) && GAIA::MATH::xequal(m[2][3], (_DataType)0) && 
+					GAIA::MATH::xequal(m[3][0], (_DataType)0) && GAIA::MATH::xequal(m[3][1], (_DataType)0) && GAIA::MATH::xequal(m[3][2], (_DataType)0) && GAIA::MATH::xequal(m[3][3], (_DataType)1))
+					return GAIA::True;
+				return GAIA::False;
+			}
+			GINL GAIA::BL isalmostidentity(const _DataType& epsilon) const
+			{
+				if(	GAIA::MATH::xequal(m[0][0], (_DataType)1, epsilon) && GAIA::MATH::xequal(m[0][1], (_DataType)0, epsilon) && GAIA::MATH::xequal(m[0][2], (_DataType)0, epsilon) && GAIA::MATH::xequal(m[0][3], (_DataType)0, epsilon) && 
+					GAIA::MATH::xequal(m[1][0], (_DataType)0, epsilon) && GAIA::MATH::xequal(m[1][1], (_DataType)1, epsilon) && GAIA::MATH::xequal(m[1][2], (_DataType)0, epsilon) && GAIA::MATH::xequal(m[1][3], (_DataType)0, epsilon) && 
+					GAIA::MATH::xequal(m[2][0], (_DataType)0, epsilon) && GAIA::MATH::xequal(m[2][1], (_DataType)0, epsilon) && GAIA::MATH::xequal(m[2][2], (_DataType)1, epsilon) && GAIA::MATH::xequal(m[2][3], (_DataType)0, epsilon) && 
+					GAIA::MATH::xequal(m[3][0], (_DataType)0, epsilon) && GAIA::MATH::xequal(m[3][1], (_DataType)0, epsilon) && GAIA::MATH::xequal(m[3][2], (_DataType)0, epsilon) && GAIA::MATH::xequal(m[3][3], (_DataType)1, epsilon))
+					return GAIA::True;
+				return GAIA::False;
+			}
 			GINL GAIA::BL isfinited() const
 			{
 				return GAIA::MATH::xfinite(m[0][0]) && 
@@ -481,7 +499,7 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType* p) const{return GAIA::ALGO::cmps(this->front_ptr(), p, this->size()) < 0;}
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index < this->size()); return this->front_ptr()[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index < this->size()); return this->front_ptr()[index];}
-			template<typename _ParamDataType1, typename _ParamDataType2> _DataType& operator ()(const _ParamDataType1& i1, const _ParamDataType2& i2){return m[i1][i2];}
+			template<typename _ParamDataType1, typename _ParamDataType2> _DataType& operator () (const _ParamDataType1& i1, const _ParamDataType2& i2){return m[i1][i2];}
 		public:
 			_DataType m[4][4];
 		};

@@ -19,7 +19,7 @@ namespace GAIA_TEST
 			12.0F, 13.0F, 14.0F, 15.0F,
 		};
 
-		__MtxType mtx, mtx1;
+		__MtxType mtx, mtx1, mtxResult;
 		if(mtx.size() != 16)
 		{
 			GTLINE2("MTX44 size error!");
@@ -106,19 +106,112 @@ namespace GAIA_TEST
 		}
 
 		mtx.identity();
-		mtx.rotatex(1.0F);
-		mtx.rotatey(2.0F);
-		mtx.rotatez(3.0F);
-		mtx.rotate(__VecType(1.23F), 4.56F);
+		mtx.rotatex(1.23F);
 		if(mtx.isidentity())
 		{
-			GTLINE2("MTX44 rotate error!");
+			GTLINE2("MTX44 rotatex error!");
 			++nRet;
 		}
 		__VecType pos = mtx.position();
 		if(pos != 0.0F)
 		{
+			GTLINE2("MTX44 rotatex error!");
+			++nRet;
+		}
+		mtx1.isidentity();
+		mtx1.rotatex(-1.23F);
+		mtxResult = mtx * mtx1;
+		if(!mtxResult.isalmostidentity())
+		{
+			GTLINE2("MTX44 rotatex error!");
+			++nRet;
+		}
+
+		mtx.identity();
+		mtx.rotatey(1.23F);
+		if(mtx.isidentity())
+		{
+			GTLINE2("MTX44 rotatey error!");
+			++nRet;
+		}
+		pos = mtx.position();
+		if(pos != 0.0F)
+		{
+			GTLINE2("MTX44 rotatey error!");
+			++nRet;
+		}
+		mtx1.isidentity();
+		mtx1.rotatey(-1.23F);
+		mtxResult = mtx * mtx1;
+		if(!mtxResult.isalmostidentity())
+		{
+			GTLINE2("MTX44 rotatey error!");
+			++nRet;
+		}
+
+		mtx.identity();
+		mtx.rotatez(1.23F);
+		if(mtx.isidentity())
+		{
+			GTLINE2("MTX44 rotatez error!");
+			++nRet;
+		}
+		pos = mtx.position();
+		if(pos != 0.0F)
+		{
+			GTLINE2("MTX44 rotatez error!");
+			++nRet;
+		}
+		mtx1.isidentity();
+		mtx1.rotatez(-1.23F);
+		mtxResult = mtx * mtx1;
+		if(!mtxResult.isalmostidentity())
+		{
+			GTLINE2("MTX44 rotatez error!");
+			++nRet;
+		}
+
+		mtx.identity();
+		mtx.rotate(__VecType(1.1F, 2.2F, 3.3F), 4.56F);
+		if(mtx.isidentity())
+		{
 			GTLINE2("MTX44 rotate error!");
+			++nRet;
+		}
+		pos = mtx.position();
+		if(pos != 0.0F)
+		{
+			GTLINE2("MTX44 rotate error!");
+			++nRet;
+		}
+		mtx1 = mtx;
+		mtx1.inverse();
+		mtxResult = mtx * mtx1;
+		if(!mtxResult.isalmostidentity())
+		{
+			GTLINE2("MTX44 rotate error!");
+			++nRet;
+		}
+
+		mtx.identity();
+		mtx.translate(1.1F, 2.2F, 3.3F);
+		if(mtx.isidentity())
+		{
+			GTLINE2("MTX44 translate error!");
+			++nRet;
+		}
+		pos = mtx.position();
+		if(pos.x != 1.1F || pos.y != 2.2F || pos.z != 3.3F)
+		{
+			GTLINE2("MTX44 translate error!");
+			++nRet;
+		}
+		mtx1.isidentity();
+		mtx1.translate(-1.1F, -2.2F, -3.3F);
+		mtxResult = mtx * mtx1;
+		if(!mtxResult.isalmostidentity())
+		{
+			GTLINE2("MTX44 translate error!");
 			++nRet;
 		}
 
