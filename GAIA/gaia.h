@@ -137,6 +137,7 @@
 #include	"gaia_math_vec4.h"
 #include	"gaia_math_qua.h"
 #include	"gaia_math_mtx22.h"
+#include	"gaia_math_mtx32.h"
 #include	"gaia_math_mtx33.h"
 #include	"gaia_math_mtx43.h"
 #include	"gaia_math_mtx44.h"

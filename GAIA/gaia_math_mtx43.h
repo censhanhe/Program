@@ -17,11 +17,9 @@ namespace GAIA
 			template<typename _ParamDataType> MTX43(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> MTX43(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> MTX43(const _ParamDataType& t){this->operator = (t);}
-
 			GINL GAIA::SIZE size() const{return sizeofarray2(m);}
 			GINL GAIA::SIZE sizex() const{return sizeofarray(m[0]);}
 			GINL GAIA::SIZE sizey() const{return this->size() / this->sizex();}
-
 			GINL GAIA::GVOID identity()
 			{
 				m[0][0] = (_DataType)1; m[0][1] = (_DataType)0; m[0][2] = (_DataType)0;
@@ -152,7 +150,6 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::MTX43<_ParamDataType>& src) const{return GAIA::ALGO::cmps(this->front_ptr(), src.front_ptr(), this->size()) <= 0;}
 			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::MTX43<_ParamDataType>& src) const{return !(this->operator <= (src));}
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::MTX43<_ParamDataType>& src) const{return !(this->operator >= (src));}
-
 			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType* p) const{return GAIA::ALGO::cmps(this->front_ptr(), p, this->size()) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType* p) const{return GAIA::ALGO::cmps(this->front_ptr(), p, this->size()) != 0;}
 			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType* p) const{return GAIA::ALGO::cmps(this->front_ptr(), p, this->size()) >= 0;}

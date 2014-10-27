@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		template<typename _DataType> class MTX33 : public GAIA::Base
+		template<typename _DataType> class MTX32 : public GAIA::Base
 		{
 		public:
 			_DataType m[3][2];
