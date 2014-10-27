@@ -29,10 +29,10 @@ namespace GAIA
 			GINL GAIA::U8* back_ptr(){if(this->empty()) return GNIL; return &m_pFront[this->buffer_size(this->size()) - 1];}
 			GINL const GAIA::U8* front_ptr() const{if(this->empty()) return GNIL; return m_pFront;}
 			GINL const GAIA::U8* back_ptr() const{if(this->empty()) return GNIL; return &m_pFront[this->buffer_size(this->size()) - 1];}
-			GINL GAIA::BL exist(const _SizeType& index) const{GAIA_AST(index > 0 && index < this->size()); if(index >= this->size()) return GAIA::False; return (GAIA_BITSET_SRC & GAIA_BITSET_CUR) != 0;}
-			GINL GAIA::GVOID set(const _SizeType& index){GAIA_AST(index > 0 && index < this->size()); if(index >= this->size()) return; GAIA_BITSET_SRC |= GAIA_BITSET_CUR;}
-			GINL GAIA::GVOID reset(const _SizeType& index){GAIA_AST(index > 0 && index < this->size()); if(index >= this->size()) return; GAIA_BITSET_SRC &= ~GAIA_BITSET_CUR;}
-			GINL GAIA::GVOID inverse(const _SizeType& index){GAIA_AST(index > 0 && index < this->size()); if(index >= this->size()) return; if(this->exist(index)) this->reset(index); else this->set(index);}
+			GINL GAIA::BL exist(const _SizeType& index) const{GAIA_AST(index >= 0 && index < this->size()); if(index >= this->size()) return GAIA::False; return (GAIA_BITSET_SRC & GAIA_BITSET_CUR) != 0;}
+			GINL GAIA::GVOID set(const _SizeType& index){GAIA_AST(index >= 0 && index < this->size()); if(index >= this->size()) return; GAIA_BITSET_SRC |= GAIA_BITSET_CUR;}
+			GINL GAIA::GVOID reset(const _SizeType& index){GAIA_AST(index >= 0 && index < this->size()); if(index >= this->size()) return; GAIA_BITSET_SRC &= ~GAIA_BITSET_CUR;}
+			GINL GAIA::GVOID inverse(const _SizeType& index){GAIA_AST(index >= 0 && index < this->size()); if(index >= this->size()) return; if(this->exist(index)) this->reset(index); else this->set(index);}
 			GINL GAIA::GVOID push_back(GAIA::BL bSet)
 			{
 				if(this->size() == this->capacity())
