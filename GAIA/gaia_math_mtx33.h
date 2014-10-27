@@ -157,7 +157,7 @@ namespace GAIA
 			{
 				m[0][0] = (_DataType)1; m[0][1] = (_DataType)0; m[0][2] = (_DataType)0;
 				m[1][0] = (_DataType)0; m[1][1] = (_DataType)1; m[1][2] = (_DataType)0;
-				m[2][0] = x;			m[2][1] = y;			m[2][2] = 1;
+				m[2][0] = (_DataType)x;	m[2][1] = (_DataType)y;	m[2][2] = (_DataType)1;
 			}
 			template<typename _ParamDataType> GAIA::GVOID rotatex(const _ParamDataType& x)
 			{
