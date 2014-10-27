@@ -263,7 +263,7 @@ namespace GAIA
 			}
 			GINL _DataType& operator[](const _SizeType& index)
 			{
-				GAIA_AST(index < this->size());
+				GAIA_AST(index > 0 && index < this->size());
 				if(m_pFront < m_pBack)
 					return m_pFront[index];
 				else
@@ -276,7 +276,7 @@ namespace GAIA
 			}
 			GINL const _DataType& operator[](const _SizeType& index) const
 			{
-				GAIA_AST(index < this->size());
+				GAIA_AST(index > 0 && index < this->size());
 				if(m_pFront < m_pBack)
 					return m_pFront[index];
 				else
