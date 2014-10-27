@@ -56,7 +56,8 @@ namespace GAIA
 			}
 			GINL GAIA::BL isfinited() const
 			{
-				return GAIA::MATH::xfinite(m[0][0]) && 
+				return
+					GAIA::MATH::xfinite(m[0][0]) && 
 					GAIA::MATH::xfinite(m[0][1]) && 
 					GAIA::MATH::xfinite(m[0][2]) && 
 					GAIA::MATH::xfinite(m[0][3]) && 
@@ -105,7 +106,7 @@ namespace GAIA
 							}
 						}
 					}
-					if(GAIA::MATH::xabs(tmax) < 0.0001F)
+					if(GAIA::MATH::xequalzero(tmax))
 						return GSCAST(_DataType)(0);
 					if(is[k] != k)
 					{

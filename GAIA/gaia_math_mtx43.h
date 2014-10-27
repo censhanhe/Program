@@ -56,7 +56,8 @@ namespace GAIA
 			}
 			GINL GAIA::BL isfinited() const
 			{
-				return GAIA::MATH::xfinite(m[0][0]) && 
+				return
+					GAIA::MATH::xfinite(m[0][0]) && 
 					GAIA::MATH::xfinite(m[0][1]) && 
 					GAIA::MATH::xfinite(m[0][2]) && 
 					GAIA::MATH::xfinite(m[1][0]) && 
