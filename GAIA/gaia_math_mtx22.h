@@ -58,7 +58,7 @@ namespace GAIA
 			GINL _DataType* front_ptr(){return GRCAST(_DataType*)(m);}
 			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}
 			GINL _DataType* back_ptr(){return this->front_ptr() + this->size() - 1;}
-			GINL __MyType& operator = (const __MyType& src)
+			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::MTX22<_ParamDataType>& src)
 			{
 				m[0][0] = (_DataType)src.m[0][0]; m[0][1] = (_DataType)src.m[0][1];
 				m[1][0] = (_DataType)src.m[1][0]; m[1][1] = (_DataType)src.m[1][1];
