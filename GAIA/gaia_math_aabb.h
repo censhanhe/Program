@@ -96,6 +96,17 @@ namespace GAIA
 			GINL _DataType* back_ptr(){return this->front_ptr() + this->size() - 1;}
 			template<typename _ParamDataType> GAIA::GVOID expand(const GAIA::MATH::AABB<_ParamDataType>& t){pmin.minimize(t.pmin); pmax.maximize(t.pmax);}
 			template<typename _ParamDataType> GAIA::GVOID expand(const GAIA::MATH::VEC3<_ParamDataType>& t){pmin.minimize(t); pmax.maximize(t);}
+			template<typename _ParamDataType> GAIA::BL clamp(GAIA::MATH::VEC3<_ParamDataType>& t) const
+			{
+				GAIA::BL bRet = GAIA::False;
+				if(t.x < pmin.x){t.x = pmin.x; bRet = GAIA::True;}
+				if(t.y < pmin.y){t.y = pmin.y; bRet = GAIA::True;}
+				if(t.z < pmin.z){t.z = pmin.z; bRet = GAIA::True;}
+				if(t.x > pmax.x){t.x = pmax.x; bRet = GAIA::True;}
+				if(t.y > pmax.y){t.y = pmax.y; bRet = GAIA::True;}
+				if(t.z > pmax.z){t.z = pmax.z; bRet = GAIA::True;}
+				return bRet;
+			}
 			template<typename _ParamDataType> __MyType operator + (const GAIA::MATH::VEC3<_ParamDataType>& v){__MyType ret; ret.pmin = pmin + v; ret.pmax = pmax + v; return ret;}
 			template<typename _ParamDataType> __MyType operator - (const GAIA::MATH::VEC3<_ParamDataType>& v){__MyType ret; ret.pmin = pmin - v; ret.pmax = pmax - v; return ret;}
 			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::VEC3<_ParamDataType>& v){__MyType ret; ret.pmin = pmin * v; ret.pmax = pmax * v; return ret;}

@@ -6,6 +6,7 @@ namespace GAIA
 	namespace MATH
 	{
 		GINL GAIA::N32 xrandom();
+		GINL GAIA::N32 xrandom_max();
 		GINL GAIA::GVOID xrandom_seed(GAIA::N32 seed);
 	};
 };

@@ -1,51 +1,4 @@
 		/* Create resource. */
-		typename _RenderType::Pen::PenDesc descPen;
-		descPen.reset();
-		__BaseRenderType::Pen* pPen = pRender->CreatePen(*pContext, descPen);
-		if(pPen == GNIL)
-		{
-			GTLINE2("Render create pen failed!");
-			++nRet;
-		}
-
-		typename _RenderType::Brush::BrushDesc descBrush;
-		descBrush.reset();
-		__BaseRenderType::Brush* pBrush = pRender->CreateBrush(*pContext, descBrush);
-		if(pBrush == GNIL)
-		{
-			GTLINE2("Render create brush failed!");
-			++nRet;
-		}
-
-		typename _RenderType::FontFamily::FontFamilyDesc descFontFamily;
-		descFontFamily.reset();
-		descFontFamily.strFontName = _T("Arial");
-		__BaseRenderType::FontFamily* pFontFamily = pRender->CreateFontFamily(*pContext, descFontFamily);
-		if(pFontFamily == GNIL)
-		{
-			GTLINE2("Render create fontfamily failed!");
-			++nRet;
-		}
-
-		typename _RenderType::FontPainter::FontPainterDesc descFontPainter;
-		descFontPainter.reset();
-		descFontPainter.pFontFamily = pFontFamily;
-		__BaseRenderType::FontPainter* pFontPainter = pRender->CreateFontPainter(*pContext, descFontPainter);
-		if(pFontPainter == GNIL)
-		{
-			GTLINE2("Render create fontpainter failed!");
-			++nRet;
-		}
-
-		typename _RenderType::FontFormat::FontFormatDesc descFontFormat;
-		descFontFormat.reset();
-		__BaseRenderType::FontFormat* pFontFormat = pRender->CreateFontFormat(*pContext, descFontFormat);
-		if(pFontFormat == GNIL)
-		{
-			GTLINE2("Render create fontformat failed!");
-			++nRet;
-		}
-
 		typename _RenderType::Texture::TextureDesc descTexture;
 		descTexture.reset();
 		descTexture.uWidth = 128;
@@ -198,10 +151,5 @@
 		DEBUG_FLUSH;
 
 		/* Release resource. */
-		GAIA_RELEASE_SAFE(pPen);
-		GAIA_RELEASE_SAFE(pBrush);
-		GAIA_RELEASE_SAFE(pFontPainter);
-		GAIA_RELEASE_SAFE(pFontFamily);
-		GAIA_RELEASE_SAFE(pFontFormat);
 		GAIA_RELEASE_SAFE(pTexture);
 		GAIA_RELEASE_SAFE(pFileTexture);
