@@ -11,10 +11,6 @@ namespace GAIA
 			typedef GAIA::RENDER::Render2DDDraw __MyType;
 
 		public:
-			static const GAIA::SIZE MAX_TEXTURE_COUNT = 4;
-			static const GAIA::SIZE MAX_TARGET_COUNT = 1;
-
-		public:
 			class RenderDesc : public virtual GAIA::RENDER::Render3D::RenderDesc
 			{
 			public:
@@ -53,9 +49,9 @@ namespace GAIA
 					GAIA_RELEASE_SAFE(pCurrentFontFamily);
 					GAIA_RELEASE_SAFE(pCurrentFontPainter);
 					GAIA_RELEASE_SAFE(pCurrentFontFormat);
-					for(GAIA::SIZE x = 0; x < MAX_TEXTURE_COUNT; ++x)
+					for(GAIA::SIZE x = 0; x < sizeofarray(pCurrentTexture); ++x)
 						GAIA_RELEASE_SAFE(pCurrentTexture[x]);
-					for(GAIA::SIZE x = 0; x < MAX_TARGET_COUNT; ++x)
+					for(GAIA::SIZE x = 0; x < sizeofarray(pCurrentTarget); ++x)
 						GAIA_RELEASE_SAFE(pCurrentTarget[x]);
 					GAIA_RELEASE_SAFE(pCurrentShader);
 					m_desc.reset();
@@ -68,8 +64,8 @@ namespace GAIA
 				GAIA::RENDER::Render2D::FontFamily* pCurrentFontFamily;
 				GAIA::RENDER::Render2D::FontPainter* pCurrentFontPainter;
 				GAIA::RENDER::Render2D::FontFormat* pCurrentFontFormat;
-				GAIA::RENDER::Render2D::Texture* pCurrentTexture[MAX_TEXTURE_COUNT];
-				GAIA::RENDER::Render2D::Target* pCurrentTarget[MAX_TARGET_COUNT];
+				GAIA::RENDER::Render2D::Texture* pCurrentTexture[4];
+				GAIA::RENDER::Render2D::Target* pCurrentTarget[1];
 				GAIA::RENDER::Render2D::Shader* pCurrentShader;
 				GAIA::U8 bEnableAlphaBlend : 1;
 				GAIA::U8 bEnableAlphaTest : 1;
@@ -82,8 +78,8 @@ namespace GAIA
 					pCurrentFontFamily = GNIL;
 					pCurrentFontPainter = GNIL;
 					pCurrentFontFormat = GNIL;
-					GAIA::ALGO::nil(pCurrentTexture, MAX_TEXTURE_COUNT);
-					GAIA::ALGO::nil(pCurrentTarget, MAX_TARGET_COUNT);
+					GAIA::ALGO::nil(pCurrentTexture, sizeofarray(pCurrentTexture));
+					GAIA::ALGO::nil(pCurrentTarget, sizeofarray(pCurrentTarget));
 					pCurrentShader = GNIL;
 					bEnableAlphaBlend = GAIA::False;
 					bEnableAlphaTest = GAIA::False;
@@ -1138,8 +1134,8 @@ namespace GAIA
 				GAIA_AST(nTextureIndex >= 0);
 				if(nTextureIndex < 0)
 					return;
-				GAIA_AST(nTextureIndex < MAX_TEXTURE_COUNT);
-				if(nTextureIndex >= MAX_TEXTURE_COUNT)
+				GAIA_AST(nTextureIndex < sizeofarray(pContext->pCurrentTexture));
+				if(nTextureIndex >= sizeofarray(pContext->pCurrentTexture))
 					return;
 				if(pTexture != GNIL)
 					pTexture->Reference();
@@ -1156,8 +1152,8 @@ namespace GAIA
 				GAIA_AST(nTextureIndex >= 0);
 				if(nTextureIndex < 0)
 					return;
-				GAIA_AST(nTextureIndex < MAX_TEXTURE_COUNT);
-				if(nTextureIndex >= MAX_TEXTURE_COUNT)
+				GAIA_AST(nTextureIndex < sizeofarray(pContext->pCurrentTexture));
+				if(nTextureIndex >= sizeofarray(pContext->pCurrentTexture))
 					return;
 				if(pContext->pCurrentTexture[nTextureIndex] != GNIL)
 					pContext->pCurrentTexture[nTextureIndex]->Reference();
@@ -1184,8 +1180,8 @@ namespace GAIA
 				GAIA_AST(nTargetIndex >= 0);
 				if(nTargetIndex < 0)
 					return;
-				GAIA_AST(nTargetIndex < MAX_TARGET_COUNT);
-				if(nTargetIndex >= MAX_TARGET_COUNT)
+				GAIA_AST(nTargetIndex < sizeofarray(pContext->pCurrentTarget));
+				if(nTargetIndex >= sizeofarray(pContext->pCurrentTarget))
 					return;
 				if(pTarget != GNIL)
 					pTarget->Reference();
@@ -1202,8 +1198,8 @@ namespace GAIA
 				GAIA_AST(nTargetIndex >= 0);
 				if(nTargetIndex < 0)
 					return;
-				GAIA_AST(nTargetIndex < MAX_TARGET_COUNT);
-				if(nTargetIndex >= MAX_TARGET_COUNT)
+				GAIA_AST(nTargetIndex < sizeofarray(pContext->pCurrentTarget));
+				if(nTargetIndex >= sizeofarray(pContext->pCurrentTarget))
 					return;
 				if(pContext->pCurrentTarget[nTargetIndex] != GNIL)
 					pContext->pCurrentTarget[nTargetIndex]->Reference();
