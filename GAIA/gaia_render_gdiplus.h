@@ -2165,6 +2165,7 @@ namespace GAIA
 				rc.Height = aabr.height();
 
 				GAIA::WCH szPracStackBuf[128];
+				szPracStackBuf[0] = '\0';
 				const GAIA::WCH* pszPrac;
 			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 				if(GAIA::ALGO::strlen(pszText) < 128)
