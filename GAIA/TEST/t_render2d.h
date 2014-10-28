@@ -7,8 +7,6 @@ namespace GAIA_TEST
 	{
 		GAIA::N32 nRet = 0;
 
-	#define DEBUG_FLUSH pRender->EndStatePipeline(); pRender->Flush(GAIA::True); pRender->BeginStatePipeline(); pRender->ClearColor(crClear);
-
 		/* Create factory. */
 		GAIA::FWORK::Factory fac;
 		typedef GAIA::RENDER::Render2D __BaseRenderType;
@@ -605,7 +603,7 @@ namespace GAIA_TEST
 			pRender->EndStatePipeline();
 
 			/* Flush. */
-			pRender->Flush(GAIA::True);
+			pRender->Flush(*pContext, GAIA::True);
 
 			++nFrameCount;
 		}

@@ -61,8 +61,13 @@ namespace GAIA
 	/* Float type declaration. */
 	typedef float F32; // Variable will have a 'f' prefix.
 	typedef double F64; // Variable will have a 'd' prefix.
-	typedef float REAL; // variable will have a 'r' prefix.
-#define R(x) x##F
+#if GAIA_REAL == GAIA_REAL_F32
+	typedef F32 REAL; // variable will have a 'r' prefix.
+#	define R(x) x##F
+#elif GAIA_REAL == GAIA_REAL_F64
+	typedef F64 REAL;
+#	define R(x) x
+#endif
 
 	/* Char type declaration. */
 	typedef char CH;

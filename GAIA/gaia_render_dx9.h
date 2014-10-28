@@ -58,6 +58,8 @@ namespace GAIA
 					for(GAIA::SIZE x = 0; x < sizeofarray(pCurrentTarget); ++x)
 						GAIA_RELEASE_SAFE(pCurrentTarget[x]);
 					GAIA_RELEASE_SAFE(pCurrentShader);
+					bEnableAlphaBlend = GAIA::False;
+					bEnableAlphaTest = GAIA::False;
 					m_desc.reset();
 				}
 				virtual const ContextDesc& GetDesc() const{return m_desc;}
@@ -959,7 +961,7 @@ namespace GAIA
 				return m_bBeginStatePipeline;
 			}
 
-			virtual GAIA::GVOID Flush(GAIA::BL bWait)
+			virtual GAIA::GVOID Flush(GAIA::RENDER::Render::Context& ctx, GAIA::BL bWait)
 			{
 				GPCHR_TRUE(this->IsBeginStatePipeline());
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
@@ -969,16 +971,17 @@ namespace GAIA
 					m_pD3DDevice->Present(GNIL, GNIL, GNIL, GNIL);
 			#endif
 			}
+			virtual GAIA::BL IsFlushing() const{return m_bFlushing;}
 
 		public:
 			/* Scissor. */
-			virtual GAIA::GVOID SetScissor(const GAIA::MATH::AABR<GAIA::REAL>& aabr){if(aabr.isidentity()) return;}
-			virtual GAIA::GVOID GetScissor(GAIA::MATH::AABR<GAIA::REAL>& aabr) const{}
+			virtual GAIA::GVOID SetScissor(GAIA::RENDER::Render::Context& ctx, const GAIA::MATH::AABR<GAIA::REAL>& aabr){if(aabr.isidentity()) return;}
+			virtual GAIA::GVOID GetScissor(GAIA::RENDER::Render::Context& ctx, GAIA::MATH::AABR<GAIA::REAL>& aabr) const{}
 
 			/* Clear. */
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				if(m_pD3DDevice == GNIL)
 					return;
@@ -992,7 +995,7 @@ namespace GAIA
 			/* State. */
 			virtual GAIA::GVOID SetQuality2DState(GAIA::RENDER::Render::Context& ctx, const QUALITY2D_STATE& qs, const GAIA::CH* pszState)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
 					return;
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
@@ -1017,7 +1020,7 @@ namespace GAIA
 			}
 			virtual const GAIA::CH* GetQuality2DState(GAIA::RENDER::Render::Context& ctx, const QUALITY2D_STATE& qs) const
 			{
-				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
+				GPCHR_FALSE_RET(this->IsBeginStatePipeline() || this->IsFlushing(), GNIL);
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
 					return GNILSTR;
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
@@ -1041,7 +1044,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetRender2DState(GAIA::RENDER::Render::Context& ctx, const RENDER2D_STATE& rs, const GAIA::CH* pszState)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
 					return;
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
@@ -1076,7 +1079,7 @@ namespace GAIA
 			}
 			virtual const GAIA::CH* GetRender2DState(GAIA::RENDER::Render::Context& ctx, const RENDER2D_STATE& rs) const
 			{
-				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
+				GPCHR_FALSE_RET(this->IsBeginStatePipeline() || this->IsFlushing(), GNIL);
 				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
 					return GNILSTR;
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
@@ -1110,7 +1113,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetSampler2DState(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
 					return;
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
@@ -1147,7 +1150,7 @@ namespace GAIA
 			}
 			virtual const GAIA::CH* GetSampler2DState(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const
 			{
-				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
+				GPCHR_FALSE_RET(this->IsBeginStatePipeline() || this->IsFlushing(), GNIL);
 				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
 					return GNILSTR;
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
@@ -1207,7 +1210,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen* pPen)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1219,7 +1222,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen*& pPen) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1250,7 +1253,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush* pBrush)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1262,7 +1265,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush*& pBrush) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1343,7 +1346,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily* pFontFamily)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1355,7 +1358,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily*& pFontFamily) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1365,7 +1368,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter* pFontPainter)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1377,7 +1380,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter*& pFontPainter) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1387,7 +1390,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat* pFontFormat)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1399,7 +1402,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat*& pFontFormat) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1434,7 +1437,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetTexture(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1452,7 +1455,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetTexture(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1480,7 +1483,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetTarget(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target* pTarget)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1498,7 +1501,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetTarget(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1526,7 +1529,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetShader(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Shader* pShader)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1538,7 +1541,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Shader*& pShader) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1548,14 +1551,14 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetShaderConstant(GAIA::RENDER::Render::Context& ctx, const GAIA::SIZE& sStartIndex, const GAIA::REAL* p, const GAIA::SIZE& sSize)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
 			}
 			virtual GAIA::GVOID GetShaderConstant(GAIA::RENDER::Render::Context& ctx, const GAIA::SIZE& sStartIndex, GAIA::REAL* p, const GAIA::SIZE& sSize, GAIA::SIZE& sResultSize) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1566,7 +1569,7 @@ namespace GAIA
 				const GAIA::MATH::VEC2<GAIA::REAL>& s,
 				const GAIA::MATH::VEC2<GAIA::REAL>& e)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1575,7 +1578,7 @@ namespace GAIA
 			virtual GAIA::GVOID DrawRect(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1586,7 +1589,7 @@ namespace GAIA
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos3)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1596,7 +1599,7 @@ namespace GAIA
 				const GAIA::TCH* pszText,
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GPCHR_NULLSTRPTR(pszText);
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
@@ -1608,7 +1611,7 @@ namespace GAIA
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::MTX33<GAIA::REAL>& mtxTM)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DDX9::Context* pContext = GDCAST(GAIA::RENDER::Render3DDX9::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1710,6 +1713,7 @@ namespace GAIA
 				m_bCreated = GAIA::False;
 				m_desc.reset();
 				m_bBeginStatePipeline = GAIA::False;
+				m_bFlushing = GAIA::False;
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				m_pD3D = GNIL;
 				m_pD3DDevice = GNIL;
@@ -1721,6 +1725,7 @@ namespace GAIA
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
 			GAIA::BL m_bBeginStatePipeline;
+			GAIA::BL m_bFlushing;
 		#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 			IDirect3D9* m_pD3D;
 			IDirect3DDevice9* m_pD3DDevice;

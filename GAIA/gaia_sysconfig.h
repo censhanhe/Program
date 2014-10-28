@@ -122,6 +122,11 @@
 #	endif
 #endif
 
+/* Real type. */
+#define GAIA_REAL_F32 1
+#define GAIA_REAL_F64 2
+#define GAIA_REAL GAIA_REAL_F32
+
 /* Function call type. */
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	define GAIA_BASEAPI __stdcall

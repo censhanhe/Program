@@ -5,6 +5,12 @@
 #	include <gl/gl.h>
 #endif
 
+#if GAIA_REAL == GAIA_REAL_F32
+#	define GL_REAL GL_FLOAT
+#elif GAIA_REAL == GAIA_REAL_F64
+#	define GAIA_REAL GL_DOUBLE
+#endif
+
 namespace GAIA
 {
 	namespace RENDER
@@ -29,6 +35,10 @@ namespace GAIA
 						return GAIA::False;
 				#if GAIA_PLATFORM_OPENGL1
 					GLPROCMAP(GetError);
+					GLPROCMAP(GetBooleanv);
+					GLPROCMAP(GetIntegerv);
+					GLPROCMAP(GetFloatv);
+					GLPROCMAP(GetDoublev);
 					GLPROCMAP(Flush);
 					GLPROCMAP(Enable);
 					GLPROCMAP(Disable);
@@ -73,6 +83,10 @@ namespace GAIA
 				{
 					m_bInitialized = GAIA::False;
 					GLPROCINIT(GetError);
+					GLPROCINIT(GetBooleanv);
+					GLPROCINIT(GetIntegerv);
+					GLPROCINIT(GetFloatv);
+					GLPROCINIT(GetDoublev);
 					GLPROCINIT(Flush);
 					GLPROCINIT(Enable);
 					GLPROCINIT(Disable);
@@ -97,6 +111,10 @@ namespace GAIA
 				GINL GAIA::BL check() const
 				{
 					GLPROCCHECK(GetError);
+					GLPROCCHECK(GetBooleanv);
+					GLPROCCHECK(GetIntegerv);
+					GLPROCCHECK(GetFloatv);
+					GLPROCCHECK(GetDoublev);
 					GLPROCCHECK(Flush);
 					GLPROCCHECK(Enable);
 					GLPROCCHECK(Disable);
@@ -122,29 +140,37 @@ namespace GAIA
 
 			private:
 				typedef GAIA::U32 (GAIA_BASEAPI* glGetErrorProc)();
-				typedef GAIA::GVOID (GAIA_BASEAPI *glFlushProc)();
-				typedef GAIA::GVOID (GAIA_BASEAPI *glEnableProc)(GAIA::U32 cap);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glDisableProc)(GAIA::U32 cap);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glHintProc)(GAIA::U32 target, GAIA::U32 mode);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glBlendFuncProc)(GAIA::U32 sfactor, GAIA::U32 dfactor);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glShadeModelProc)(GAIA::U32 mode);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glDepthFuncProc)(GAIA::U32 func);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glClearColorProc)(GAIA::F32 r, GAIA::F32 g, GAIA::F32 b, GAIA::F32 a);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glClearProc)(GAIA::U32 clear_mask);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glLoadIdentityProc)();
-				typedef GAIA::GVOID (GAIA_BASEAPI *glOrthoProc)(GAIA::F64 left, GAIA::F64 right, GAIA::F64 bottom, GAIA::F64 top, GAIA::F64 zNear, GAIA::F64 zFar);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glPointSizeProc)(GAIA::F32 size);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glLineWidthProc)(GAIA::F32 width);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glEnableClientStateProc)(GAIA::U32 array);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glDisableClientStateProc)(GAIA::U32 array);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glVertexPointerProc)(GAIA::N32 size, GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glNormalPointerProc)(GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glColorPointerProc)(GAIA::N32 size, GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glTexCoordPointerProc)(GAIA::N32 size, GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
-				typedef GAIA::GVOID (GAIA_BASEAPI *glDrawElementsProc)(GAIA::U32 mode, GAIA::N32 count, GAIA::U32 type, const GAIA::GVOID* indices);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glGetBooleanvProc)(GAIA::U32 pname, GAIA::U8* params);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glGetIntegervProc)(GAIA::U32 pname, GAIA::N32* params);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glGetFloatvProc)(GAIA::U32 pname, GAIA::F32* params);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glGetDoublevProc)(GAIA::U32 pname, GAIA::F64* params);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glFlushProc)();
+				typedef GAIA::GVOID (GAIA_BASEAPI* glEnableProc)(GAIA::U32 cap);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glDisableProc)(GAIA::U32 cap);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glHintProc)(GAIA::U32 target, GAIA::U32 mode);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glBlendFuncProc)(GAIA::U32 sfactor, GAIA::U32 dfactor);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glShadeModelProc)(GAIA::U32 mode);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glDepthFuncProc)(GAIA::U32 func);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glClearColorProc)(GAIA::F32 r, GAIA::F32 g, GAIA::F32 b, GAIA::F32 a);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glClearProc)(GAIA::U32 clear_mask);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glLoadIdentityProc)();
+				typedef GAIA::GVOID (GAIA_BASEAPI* glOrthoProc)(GAIA::F64 left, GAIA::F64 right, GAIA::F64 bottom, GAIA::F64 top, GAIA::F64 zNear, GAIA::F64 zFar);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glPointSizeProc)(GAIA::F32 size);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glLineWidthProc)(GAIA::F32 width);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glEnableClientStateProc)(GAIA::U32 array);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glDisableClientStateProc)(GAIA::U32 array);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glVertexPointerProc)(GAIA::N32 size, GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glNormalPointerProc)(GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glColorPointerProc)(GAIA::N32 size, GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glTexCoordPointerProc)(GAIA::N32 size, GAIA::U32 type, GAIA::N32 stride, const GAIA::GVOID* pointer);
+				typedef GAIA::GVOID (GAIA_BASEAPI* glDrawElementsProc)(GAIA::U32 mode, GAIA::N32 count, GAIA::U32 type, const GAIA::GVOID* indices);
 
 			public:
 				GLPROCINST(GetError);
+				GLPROCINST(GetBooleanv);
+				GLPROCINST(GetIntegerv);
+				GLPROCINST(GetFloatv);
+				GLPROCINST(GetDoublev);
 				GLPROCINST(Flush);
 				GLPROCINST(Enable);
 				GLPROCINST(Disable);
@@ -219,10 +245,28 @@ namespace GAIA
 					for(GAIA::SIZE x = 0; x < sizeofarray(pCurrentTarget); ++x)
 						GAIA_RELEASE_SAFE(pCurrentTarget[x]);
 					GAIA_RELEASE_SAFE(pCurrentShader);
+
+					slines.destroy();
+					GAIA_RELEASE_SAFE(pSLineLastPen);
+					pszSLineLastAlphaBlendState = GNILSTR;
+					pszSLineLastQualityState = GNILSTR;
+
+					bEnableAlphaBlend = GAIA::False;
+					bEnableAlphaTest = GAIA::False;
+
 					m_desc.reset();
 				}
 				virtual const ContextDesc& GetDesc() const{return m_desc;}
 				virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL1_CONTEXT;}
+			public:
+				class Line2DNode : public GAIA::Base
+				{
+				public:
+					GAIA::MATH::VEC2<GAIA::REAL> pos;
+					GAIA::MATH::ARGB<GAIA::REAL> cr;
+				};
+			public:
+				typedef GAIA::CTN::Vector<Line2DNode> __Line2DListType;
 			public:
 				GAIA::RENDER::Render2D::Pen* pCurrentPen;
 				GAIA::RENDER::Render2D::Brush* pCurrentBrush;
@@ -232,6 +276,12 @@ namespace GAIA
 				GAIA::RENDER::Render2D::Texture* pCurrentTexture[4];
 				GAIA::RENDER::Render2D::Target* pCurrentTarget[1];
 				GAIA::RENDER::Render2D::Shader* pCurrentShader;
+
+				__Line2DListType slines; // Screen lines buffer.
+				GAIA::RENDER::Render2D::Pen* pSLineLastPen;
+				const GAIA::CH* pszSLineLastQualityState;
+				const GAIA::CH* pszSLineLastAlphaBlendState;
+
 				GAIA::U8 bEnableAlphaBlend : 1;
 				GAIA::U8 bEnableAlphaTest : 1;
 			private:
@@ -246,6 +296,11 @@ namespace GAIA
 					GAIA::ALGO::nil(pCurrentTexture, sizeofarray(pCurrentTexture));
 					GAIA::ALGO::nil(pCurrentTarget, sizeofarray(pCurrentTarget));
 					pCurrentShader = GNIL;
+
+					pSLineLastPen = GNIL;
+					pszSLineLastQualityState = GNILSTR;
+					pszSLineLastAlphaBlendState = GNILSTR;
+
 					bEnableAlphaBlend = GAIA::False;
 					bEnableAlphaTest = GAIA::False;
 				}
@@ -990,6 +1045,10 @@ namespace GAIA
 				GAIA::GVOID* pHandle = desc.pCanvas->GetHandle();
 				GAIA_AST(pHandle != GNIL);
 
+				m_incindexbuf.reserve(2 * 3 * 4 * 1000); // 2, 3, 4 must be the common divisor.
+				for(GAIA::SIZE x = 0; x < 2 * 3 * 4 * 1000; ++x)
+					m_incindexbuf.push_back(x);
+
 			#if defined(GAIA_PLATFORM_OPENGL1)
 				HWND hWnd = GSCAST(HWND)(pHandle);
 				m_hDC = ::GetDC(hWnd);
@@ -1066,11 +1125,7 @@ namespace GAIA
 				}
 
 				m_gl.Initialize();
-
 				m_gl.ShadeModel(GL_SMOOTH);
-				m_gl.Enable(GL_DEPTH_TEST);
-				m_gl.DepthFunc(GL_LEQUAL);
-				m_gl.Hint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 			#endif
 
 				m_bCreated = GAIA::True;
@@ -1157,28 +1212,40 @@ namespace GAIA
 				return m_bBeginStatePipeline;
 			}
 
-			virtual GAIA::GVOID Flush(GAIA::BL bWait)
+			virtual GAIA::GVOID Flush(GAIA::RENDER::Render::Context& ctx, GAIA::BL bWait)
 			{
 				GPCHR_TRUE(this->IsBeginStatePipeline());
 			#if defined(GAIA_PLATFORM_OPENGL1)
 				if(m_hDC == GNIL)
 					return;
+
+				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
+				if(pContext == GNIL)
+					return;
+
+				m_bFlushing = GAIA::True;
+
+				this->FlushScreenLine(*pContext);
+
 				if(bWait)
 					::SwapBuffers(m_hDC);
 				else
 					m_gl.Flush();
+
+				m_bFlushing = GAIA::False;
 			#endif
 			}
+			virtual GAIA::BL IsFlushing() const{return m_bFlushing;}
 
 		public:
 			/* Scissor. */
-			virtual GAIA::GVOID SetScissor(const GAIA::MATH::AABR<GAIA::REAL>& aabr){if(aabr.isidentity()) return;}
-			virtual GAIA::GVOID GetScissor(GAIA::MATH::AABR<GAIA::REAL>& aabr) const{}
+			virtual GAIA::GVOID SetScissor(GAIA::RENDER::Render::Context& ctx, const GAIA::MATH::AABR<GAIA::REAL>& aabr){if(aabr.isidentity()) return;}
+			virtual GAIA::GVOID GetScissor(GAIA::RENDER::Render::Context& ctx, GAIA::MATH::AABR<GAIA::REAL>& aabr) const{}
 
 			/* Clear. */
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 			#if defined(GAIA_PLATFORM_OPENGL1)
 				m_gl.ClearColor(cr.r, cr.g, cr.b, cr.a);
 				m_gl.Clear(GL_COLOR_BUFFER_BIT);
@@ -1188,7 +1255,7 @@ namespace GAIA
 			/* State. */
 			virtual GAIA::GVOID SetQuality2DState(GAIA::RENDER::Render::Context& ctx, const QUALITY2D_STATE& qs, const GAIA::CH* pszState)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
 					return;
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
@@ -1213,7 +1280,7 @@ namespace GAIA
 			}
 			virtual const GAIA::CH* GetQuality2DState(GAIA::RENDER::Render::Context& ctx, const QUALITY2D_STATE& qs) const
 			{
-				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
+				GPCHR_FALSE_RET(this->IsBeginStatePipeline() || this->IsFlushing(), GNIL);
 				if(!GAIA_ENUM_VALID(QUALITY2D_STATE, qs))
 					return GNILSTR;
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
@@ -1237,7 +1304,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetRender2DState(GAIA::RENDER::Render::Context& ctx, const RENDER2D_STATE& rs, const GAIA::CH* pszState)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
 					return;
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
@@ -1272,7 +1339,7 @@ namespace GAIA
 			}
 			virtual const GAIA::CH* GetRender2DState(GAIA::RENDER::Render::Context& ctx, const RENDER2D_STATE& rs) const
 			{
-				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
+				GPCHR_FALSE_RET(this->IsBeginStatePipeline() || this->IsFlushing(), GNIL);
 				if(!GAIA_ENUM_VALID(RENDER2D_STATE, rs))
 					return GNILSTR;
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
@@ -1306,7 +1373,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetSampler2DState(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss, const GAIA::CH* pszState)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
 					return;
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
@@ -1343,7 +1410,7 @@ namespace GAIA
 			}
 			virtual const GAIA::CH* GetSampler2DState(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nSamplerIndex, const SAMPLER2D_STATE& ss) const
 			{
-				GPCHR_FALSE_RET(this->IsBeginStatePipeline(), GNIL);
+				GPCHR_FALSE_RET(this->IsBeginStatePipeline() || this->IsFlushing(), GNIL);
 				if(!GAIA_ENUM_VALID(SAMPLER2D_STATE, ss))
 					return GNILSTR;
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
@@ -1403,7 +1470,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen* pPen)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1415,7 +1482,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetPen(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Pen*& pPen) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1446,7 +1513,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush* pBrush)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1458,7 +1525,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetBrush(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Brush*& pBrush) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1539,7 +1606,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily* pFontFamily)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1551,7 +1618,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetFontFamily(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFamily*& pFontFamily) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1561,7 +1628,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter* pFontPainter)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1573,7 +1640,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetFontPainter(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontPainter*& pFontPainter) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1583,7 +1650,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat* pFontFormat)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1595,7 +1662,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetFontFormat(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::FontFormat*& pFontFormat) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1630,7 +1697,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetTexture(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture* pTexture)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1648,7 +1715,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetTexture(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTextureIndex, GAIA::RENDER::Render2D::Texture*& pTexture) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1676,7 +1743,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetTarget(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target* pTarget)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1694,7 +1761,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetTarget(GAIA::RENDER::Render::Context& ctx, GAIA::N32 nTargetIndex, GAIA::RENDER::Render2D::Target*& pTarget) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1722,7 +1789,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetShader(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Shader* pShader)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1734,7 +1801,7 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID GetShader(GAIA::RENDER::Render::Context& ctx, GAIA::RENDER::Render2D::Shader*& pShader) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1744,14 +1811,14 @@ namespace GAIA
 			}
 			virtual GAIA::GVOID SetShaderConstant(GAIA::RENDER::Render::Context& ctx, const GAIA::SIZE& sStartIndex, const GAIA::REAL* p, const GAIA::SIZE& sSize)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
 			}
 			virtual GAIA::GVOID GetShaderConstant(GAIA::RENDER::Render::Context& ctx, const GAIA::SIZE& sStartIndex, GAIA::REAL* p, const GAIA::SIZE& sSize, GAIA::SIZE& sResultSize) const
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1762,34 +1829,58 @@ namespace GAIA
 				const GAIA::MATH::VEC2<GAIA::REAL>& s,
 				const GAIA::MATH::VEC2<GAIA::REAL>& e)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
 				GPCHR_NULL(pContext->pCurrentPen);
 			#if defined(GAIA_PLATFORM_OPENGL1)
-				GAIA::REAL rWidth;
-				pContext->pCurrentPen->GetWidth(rWidth);
-
-				m_gl.EnableClientState(GL_VERTEX_ARRAY);
-				m_gl.EnableClientState(GL_COLOR_ARRAY);
-				m_gl.DisableClientState(GL_NORMAL_ARRAY);
-				m_gl.DisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-				GAIA::MATH::ARGB<GAIA::REAL> cr;
-				pContext->pCurrentPen->GetColor(cr);
-				GAIA::REAL vbpos[4] = {s.x, s.y, e.x, e.y};
-				GAIA::REAL vbcr[8] = {cr.r, cr.g, cr.b, cr.a, cr.r, cr.g, cr.b, cr.a};
-				m_gl.VertexPointer(2, GL_FLOAT, 0, vbpos);
-				m_gl.ColorPointer(4, GL_FLOAT, 0, vbcr);
-				GAIA::U32 ib[2] = {0, 1};
-				m_gl.DrawElements(GL_LINES, 2, GL_UNSIGNED_INT, ib);
+				GAIA::BL bNeedSwitchContext = GAIA::False;
+				if(pContext->pSLineLastPen == GNIL)
+					bNeedSwitchContext = GAIA::True;
+				else
+				{
+					GAIA::REAL rWidth, rLastWidth;
+					GAIA::MATH::ARGB<GAIA::REAL> cr, crLast;
+					pContext->pCurrentPen->GetWidth(rWidth);
+					pContext->pSLineLastPen->GetWidth(rLastWidth);
+					pContext->pCurrentPen->GetColor(cr);
+					pContext->pSLineLastPen->GetColor(crLast);
+					if(rWidth != rLastWidth || cr != crLast)
+						bNeedSwitchContext = GAIA::True;
+					else
+					{
+						const GAIA::CH* pszAlphaBlend = this->GetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+						const GAIA::CH* pszQualityState = this->GetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS);
+						if(GAIA::ALGO::strcmp(pszAlphaBlend, pContext->pszSLineLastAlphaBlendState) != 0 || 
+							GAIA::ALGO::strcmp(pszQualityState, pContext->pszSLineLastQualityState) != 0)
+							bNeedSwitchContext = GAIA::True;
+					}
+				}
+				if(pContext->slines.size() + 2 > m_incindexbuf.size())
+					bNeedSwitchContext = GAIA::True;
+				if(bNeedSwitchContext)
+					this->FlushScreenLine(*pContext);
+				Context::Line2DNode n;
+				n.pos = s;
+				pContext->pCurrentPen->GetColor(n.cr);
+				pContext->slines.push_back(n);
+				n.pos = e;
+				pContext->slines.push_back(n);
+				if(bNeedSwitchContext)
+				{
+					pContext->pszSLineLastAlphaBlendState = this->GetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+					pContext->pszSLineLastQualityState = this->GetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS);
+					GAIA_RELEASE_SAFE(pContext->pSLineLastPen);
+					pContext->pSLineLastPen = pContext->pCurrentPen;
+					pContext->pSLineLastPen->Reference();
+				}
 			#endif
 			}
 			virtual GAIA::GVOID DrawRect(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1800,7 +1891,7 @@ namespace GAIA
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos2,
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos3)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1810,7 +1901,7 @@ namespace GAIA
 				const GAIA::TCH* pszText,
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GPCHR_NULLSTRPTR(pszText);
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
@@ -1822,7 +1913,7 @@ namespace GAIA
 				const GAIA::MATH::AABR<GAIA::REAL>& aabr,
 				const GAIA::MATH::MTX33<GAIA::REAL>& mtxTM)
 			{
-				GPCHR_FALSE(this->IsBeginStatePipeline());
+				GPCHR_FALSE(this->IsBeginStatePipeline() || this->IsFlushing());
 				GAIA::RENDER::Render3DGL1::Context* pContext = GDCAST(GAIA::RENDER::Render3DGL1::Context*)(&ctx);
 				if(pContext == GNIL)
 					return;
@@ -1924,17 +2015,74 @@ namespace GAIA
 				m_bCreated = GAIA::False;
 				m_desc.reset();
 				m_bBeginStatePipeline = GAIA::False;
+				m_bFlushing = GAIA::False;
 			#if defined(GAIA_PLATFORM_OPENGL1)
 				m_hDC = GNIL;
 				m_hGLRC = GNIL;
 			#endif
 			}
+			GINL GAIA::GVOID FlushScreenLine(GAIA::RENDER::Render3DGL1::Context& ctx)
+			{
+				if(ctx.slines.size() == 0)
+					return;
+				GAIA_AST(ctx.slines.size() % 2 == 0);
+				GAIA_AST(ctx.pSLineLastPen != GNIL);
 
+			#if defined(GAIA_PLATFORM_OPENGL1)
+				const GAIA::UI::Canvas::__SizeType& sizeCanvas = m_desc.pCanvas->Size();
+
+				/* Get old pipeline parameter. */
+				GAIA::F32 fLastLineWidth;
+				m_gl.GetFloatv(GL_LINE_WIDTH, &fLastLineWidth);
+				GAIA::U8 bLastEnableVertexArray;
+				GAIA::U8 bLastEnableColorArray;
+				m_gl.GetBooleanv(GL_VERTEX_ARRAY, &bLastEnableVertexArray);
+				m_gl.GetBooleanv(GL_COLOR_ARRAY, &bLastEnableColorArray);
+				const GAIA::CH* pszLastAlphaBlend = this->GetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				const GAIA::CH* pszLastAntiAlias = this->GetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS);
+
+				/* Setup current pipeline parameter and draw. */
+				m_gl.LoadIdentity();
+				m_gl.Ortho(0.0F, sizeCanvas.x, 0.0F, sizeCanvas.y, 0.0F, 1000.0F);
+
+				this->SetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, ctx.pszSLineLastAlphaBlendState);
+				this->SetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, ctx.pszSLineLastQualityState);
+
+				GAIA::REAL rWidth;
+				ctx.pSLineLastPen->GetWidth(rWidth);
+				m_gl.LineWidth(rWidth);
+
+				m_gl.EnableClientState(GL_VERTEX_ARRAY);
+				m_gl.EnableClientState(GL_COLOR_ARRAY);
+				m_gl.VertexPointer(2, GL_REAL, sizeof(Context::Line2DNode), &ctx.slines.front().pos);
+				m_gl.ColorPointer(4, GL_REAL, sizeof(Context::Line2DNode), &ctx.slines.front().cr);
+				m_gl.DrawElements(GL_LINES, ctx.slines.size(), GL_UNSIGNED_INT, m_incindexbuf.front_ptr());
+
+				/* Restore old pipeline parameter. */
+				m_gl.LineWidth(fLastLineWidth);
+				if(bLastEnableVertexArray)
+					m_gl.EnableClientState(GL_VERTEX_ARRAY);
+				else
+					m_gl.DisableClientState(GL_VERTEX_ARRAY);
+				if(bLastEnableColorArray)
+					m_gl.EnableClientState(GL_COLOR_ARRAY);
+				else
+					m_gl.DisableClientState(GL_COLOR_ARRAY);
+				this->SetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, pszLastAlphaBlend);
+				this->SetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, pszLastAntiAlias);
+			#endif
+				ctx.slines.clear();
+			}
+			
 		private:
 			GAIA::BL m_bCreated;
 			RenderDesc m_desc;
 			GAIA::BL m_bBeginStatePipeline;
+			GAIA::BL m_bFlushing;
 			GLI m_gl;
+
+			GAIA::CTN::Vector<GAIA::U32> m_incindexbuf; // self-increase-index-buffer.
+
 		#if defined(GAIA_PLATFORM_OPENGL1)
 			HDC m_hDC;
 			HGLRC m_hGLRC;

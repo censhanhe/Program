@@ -135,7 +135,8 @@ namespace GAIA
 			virtual GAIA::BL EndStatePipeline() = 0;
 			virtual GAIA::BL IsBeginStatePipeline() const = 0;
 
-			virtual GAIA::GVOID Flush(GAIA::BL bWait) = 0;
+			virtual GAIA::GVOID Flush(GAIA::RENDER::Render::Context& ctx, GAIA::BL bWait) = 0;
+			virtual GAIA::BL IsFlushing() const = 0;
 		};
 	};
 };

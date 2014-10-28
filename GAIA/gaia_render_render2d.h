@@ -304,8 +304,8 @@ namespace GAIA
 
 		public:
 			/* Scissor. */
-			virtual GAIA::GVOID SetScissor(const GAIA::MATH::AABR<GAIA::REAL>& aabr) = 0;
-			virtual GAIA::GVOID GetScissor(GAIA::MATH::AABR<GAIA::REAL>& aabr) const = 0;
+			virtual GAIA::GVOID SetScissor(GAIA::RENDER::Render::Context& ctx, const GAIA::MATH::AABR<GAIA::REAL>& aabr) = 0;
+			virtual GAIA::GVOID GetScissor(GAIA::RENDER::Render::Context& ctx, GAIA::MATH::AABR<GAIA::REAL>& aabr) const = 0;
 
 			/* Clear. */
 			virtual GAIA::GVOID ClearColor(const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
