@@ -62,8 +62,16 @@ namespace GAIA_TEST
 
 		typename _RenderType::Brush::BrushDesc descBrush;
 		descBrush.reset();
-		__BaseRenderType::Brush* pBrush = pRender->CreateBrush(*pContext, descBrush);
-		if(pBrush == GNIL)
+		__BaseRenderType::Brush* pFontBrush = pRender->CreateBrush(*pContext, descBrush);
+		if(pFontBrush == GNIL)
+		{
+			GTLINE2("Render create brush failed!");
+			++nRet;
+		}
+
+		descBrush.reset();
+		__BaseRenderType::Brush* pRectBrush = pRender->CreateBrush(*pContext, descBrush);
+		if(pRectBrush == GNIL)
 		{
 			GTLINE2("Render create brush failed!");
 			++nRet;
@@ -100,11 +108,19 @@ namespace GAIA_TEST
 		}
 
 		/* Test context. */
+		static const GAIA::REAL ANISPEED = R(4.0);
+
+		GAIA::MATH::xrandom_seed(GAIA::TIME::clock_time());
+
 		GAIA::MATH::VEC2<GAIA::REAL> l1, l2, ld1, ld2;
-		l1 = 0.0F;
-		l2 = 0.0F;
-		ld1 = 0.0F;
-		ld2 = 0.0F;
+		l1 = R(0.0);
+		l2 = R(0.0);
+		ld1 = R(0.0);
+		ld2 = R(0.0);
+
+		GAIA::MATH::AABR<GAIA::REAL> rect;
+		rect.identity();
+		GAIA::MATH::VEC2<GAIA::REAL> rectd = R(0.0);
 
 		/**/
 		GAIA::N64 nFrameCount = 0;
@@ -155,7 +171,7 @@ namespace GAIA_TEST
 				aabr.pmin.y = 0;
 				aabr.pmax = aabr.pmin;
 				aabr.pmax += R(128.0);
-				pRender->SetBrush(*pContext, pBrush);
+				pRender->SetBrush(*pContext, pFontBrush);
 				pRender->SetFontFamily(*pContext, pFontFamily);
 				pRender->SetFontPainter(*pContext, pFontPainter);
 				pRender->SetFontFormat(*pContext, pFontFormat);
@@ -164,25 +180,25 @@ namespace GAIA_TEST
 				pRender->DrawFontPainter(*pContext, strTemp, aabr);
 			}
 
-			// Line test.
+#define BLOCKINFO(i)	GAIA::SIZE BLOCKINDEX = i;\
+						GAIA::SIZE BLOCKSIZEX = sizeCanvas.x / BLOCKCNTX;\
+						GAIA::SIZE BLOCKSIZEY = sizeCanvas.y / BLOCKCNTY;\
+						GAIA::SIZE BLOCKINDEXX = BLOCKINDEX % BLOCKCNTX;\
+						GAIA::SIZE BLOCKINDEXY = BLOCKINDEX / BLOCKCNTX;\
+						GAIA::REAL rBlockWeightX = (GAIA::REAL)BLOCKINDEXX / (GAIA::REAL)BLOCKCNTX;\
+						GAIA::REAL rBlockWeightY = (GAIA::REAL)BLOCKINDEXY / (GAIA::REAL)BLOCKCNTY;\
+						GAIA::MATH::AABR<GAIA::REAL> aabr;\
+						aabr.pmin.x = rBlockWeightX * sizeCanvas.x;\
+						aabr.pmin.y = rBlockWeightY * sizeCanvas.y;\
+						aabr.pmax = aabr.pmin;\
+						aabr.pmax.x += BLOCKSIZEX;\
+						aabr.pmax.y += BLOCKSIZEY;\
+						GAIA::MATH::VEC2<GAIA::REAL> center = aabr.center();\
+						GAIA::REAL rLen = GAIA::MATH::xsqrt((GAIA::REAL)(BLOCKSIZEX * BLOCKSIZEX + BLOCKSIZEY * BLOCKSIZEY));
+
+			/* Line test. */
 			{
-				GAIA::SIZE BLOCKINDEX = 0;
-				GAIA::SIZE BLOCKSIZEX = sizeCanvas.x / BLOCKCNTX;
-				GAIA::SIZE BLOCKSIZEY = sizeCanvas.y / BLOCKCNTY;
-				GAIA::SIZE BLOCKINDEXX = BLOCKINDEX % BLOCKCNTX;
-				GAIA::SIZE BLOCKINDEXY = BLOCKINDEX / BLOCKCNTX;
-				GAIA::REAL rBlockWeightX = (GAIA::REAL)BLOCKINDEXX / (GAIA::REAL)BLOCKCNTX;
-				GAIA::REAL rBlockWeightY = (GAIA::REAL)BLOCKINDEXY / (GAIA::REAL)BLOCKCNTY;
-				GAIA::MATH::AABR<GAIA::REAL> aabr;
-				aabr.pmin.x = rBlockWeightX * sizeCanvas.x;
-				aabr.pmin.y = rBlockWeightY * sizeCanvas.y;
-				aabr.pmax = aabr.pmin;
-				aabr.pmax.x += BLOCKSIZEX;
-				aabr.pmax.y += BLOCKSIZEY;
-
-				GAIA::MATH::VEC2<GAIA::REAL> center = aabr.center();
-				GAIA::REAL rLen = GAIA::MATH::xsqrt((GAIA::REAL)(BLOCKSIZEX * BLOCKSIZEX + BLOCKSIZEY * BLOCKSIZEY));
-
+				BLOCKINFO(0);
 				if(l1 == 0)
 					l1 = center;
 				if(l2 == 0)
@@ -192,12 +208,14 @@ namespace GAIA_TEST
 					ld1.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
 					ld1.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
 					ld1.normalize();
+					ld1 *= ANISPEED;
 				}
 				if(ld2 == 0)
 				{
 					ld2.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
 					ld2.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
 					ld2.normalize();
+					ld2 *= ANISPEED;
 				}
 				if(aabr.clamp(l1))
 				{
@@ -217,12 +235,72 @@ namespace GAIA_TEST
 				l2 += ld2;
 				pRender->SetPen(*pContext, pLinePen);
 				pLinePen->SetWidth(R(4.0));
-				GAIA::MATH::ARGB<GAIA::REAL> argb;
-				argb.r = R(1.0);
-				argb.g = argb.b = R(0.0);
-				argb.a = R(0.5);
-				pLinePen->SetColor(argb);
+				GAIA::MATH::ARGB<GAIA::REAL> cr;
+				cr.r = R(1.0);
+				cr.g = cr.b = R(0.0);
+				cr.a = R(0.5);
+				pLinePen->SetColor(cr);
 				pRender->DrawLine(*pContext, l1, l2);
+			}
+
+			/* Rect test. */
+			{
+				BLOCKINFO(1);
+
+				static const GAIA::REAL RECTSIZE = R(16.0);
+
+				if(rect.isidentity())
+				{
+					rect.pmin = R(0.0);
+					rect.pmax = RECTSIZE;
+					rect.pmin.x += center.x;
+					rect.pmax.x += center.x;
+					rect.pmin.y += center.y;
+					rect.pmax.y += center.y;
+				}
+
+				if(rectd == 0)
+				{
+					rectd.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+					rectd.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+					rectd.normalize();
+					rectd *= ANISPEED;
+				}
+
+				if(aabr.clamp(rect))
+				{
+					if(rect.pmin.x == aabr.pmin.x)
+					{
+						rect.pmax.x = rect.pmin.x + RECTSIZE;
+						rectd.x = -rectd.x;
+					}
+					if(rect.pmin.y == aabr.pmin.y)
+					{
+						rect.pmax.y = rect.pmin.y + RECTSIZE;
+						rectd.y = -rectd.y;
+					}
+					if(rect.pmax.x == aabr.pmax.x)
+					{
+						rect.pmin.x = rect.pmax.x - RECTSIZE;
+						rectd.x = -rectd.x;
+					}
+					if(rect.pmax.y == aabr.pmax.y)
+					{
+						rect.pmin.y = rect.pmax.y - RECTSIZE;
+						rectd.y = -rectd.y;
+					}
+				}
+
+
+				rect += rectd;
+
+				GAIA::MATH::ARGB<GAIA::REAL> cr;
+				cr.r = R(1.0);
+				cr.g = cr.b = R(0.0);
+				cr.a = 0.5F;
+				pRectBrush->SetColor(cr);
+				pRender->SetBrush(*pContext, pRectBrush);
+				pRender->DrawRect(*pContext, rect);
 			}
 
 			/* End state pipeline. */
@@ -237,7 +315,8 @@ namespace GAIA_TEST
 		/* Release resource. */
 		GAIA_RELEASE_SAFE(pGridPen);
 		GAIA_RELEASE_SAFE(pLinePen);
-		GAIA_RELEASE_SAFE(pBrush);
+		GAIA_RELEASE_SAFE(pFontBrush);
+		GAIA_RELEASE_SAFE(pRectBrush);
 		GAIA_RELEASE_SAFE(pFontPainter);
 		GAIA_RELEASE_SAFE(pFontFamily);
 		GAIA_RELEASE_SAFE(pFontFormat);

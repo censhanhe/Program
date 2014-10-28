@@ -86,6 +86,19 @@ namespace GAIA
 				if(t.y > pmax.y){t.y = pmax.y; bRet = GAIA::True;}
 				return bRet;
 			}
+			template<typename _ParamDataType> GAIA::BL clamp(GAIA::MATH::AABR<_ParamDataType>& t) const
+			{
+				GAIA::BL bRet = GAIA::False;
+				if(t.pmin.x < pmin.x){t.pmin.x = pmin.x; bRet = GAIA::True;}
+				if(t.pmin.y < pmin.y){t.pmin.y = pmin.y; bRet = GAIA::True;}
+				if(t.pmax.x < pmin.x){t.pmax.x = pmin.x; bRet = GAIA::True;}
+				if(t.pmax.y < pmin.y){t.pmax.y = pmin.y; bRet = GAIA::True;}
+				if(t.pmin.x > pmax.x){t.pmin.x = pmax.x; bRet = GAIA::True;}
+				if(t.pmin.y > pmax.y){t.pmin.y = pmax.y; bRet = GAIA::True;}
+				if(t.pmax.x > pmax.x){t.pmax.x = pmax.x; bRet = GAIA::True;}
+				if(t.pmax.y > pmax.y){t.pmax.y = pmax.y; bRet = GAIA::True;}
+				return bRet;
+			}
 			template<typename _ParamDataType> __MyType operator + (const GAIA::MATH::VEC2<_ParamDataType>& v){__MyType ret; ret.pmin = pmin + v; ret.pmax = pmax + v; return ret;}
 			template<typename _ParamDataType> __MyType operator - (const GAIA::MATH::VEC2<_ParamDataType>& v){__MyType ret; ret.pmin = pmin - v; ret.pmax = pmax - v; return ret;}
 			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::VEC2<_ParamDataType>& v){__MyType ret; ret.pmin = pmin * v; ret.pmax = pmax * v; return ret;}

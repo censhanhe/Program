@@ -107,6 +107,23 @@ namespace GAIA
 				if(t.z > pmax.z){t.z = pmax.z; bRet = GAIA::True;}
 				return bRet;
 			}
+			template<typename _ParamDataType> GAIA::BL clamp(GAIA::MATH::AABB<_ParamDataType>& t) const
+			{
+				GAIA::BL bRet = GAIA::False;
+				if(t.pmin.x < pmin.x){t.pmin.x = pmin.x; bRet = GAIA::True;}
+				if(t.pmin.y < pmin.y){t.pmin.y = pmin.y; bRet = GAIA::True;}
+				if(t.pmin.z < pmin.z){t.pmin.z = pmin.z; bRet = GAIA::True;}
+				if(t.pmax.x < pmin.x){t.pmax.x = pmin.x; bRet = GAIA::True;}
+				if(t.pmax.y < pmin.y){t.pmax.y = pmin.y; bRet = GAIA::True;}
+				if(t.pmax.z < pmin.z){t.pmax.z = pmin.z; bRet = GAIA::True;}
+				if(t.pmin.x > pmax.x){t.pmin.x = pmax.x; bRet = GAIA::True;}
+				if(t.pmin.y > pmax.y){t.pmin.y = pmax.y; bRet = GAIA::True;}
+				if(t.pmin.z > pmax.z){t.pmin.z = pmax.z; bRet = GAIA::True;}
+				if(t.pmax.x > pmax.x){t.pmax.x = pmax.x; bRet = GAIA::True;}
+				if(t.pmax.y > pmax.y){t.pmax.y = pmax.y; bRet = GAIA::True;}
+				if(t.pmax.z > pmax.z){t.pmax.z = pmax.z; bRet = GAIA::True;}
+				return bRet;
+			}
 			template<typename _ParamDataType> __MyType operator + (const GAIA::MATH::VEC3<_ParamDataType>& v){__MyType ret; ret.pmin = pmin + v; ret.pmax = pmax + v; return ret;}
 			template<typename _ParamDataType> __MyType operator - (const GAIA::MATH::VEC3<_ParamDataType>& v){__MyType ret; ret.pmin = pmin - v; ret.pmax = pmax - v; return ret;}
 			template<typename _ParamDataType> __MyType operator * (const GAIA::MATH::VEC3<_ParamDataType>& v){__MyType ret; ret.pmin = pmin * v; ret.pmax = pmax * v; return ret;}
