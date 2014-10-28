@@ -52,7 +52,7 @@ namespace GAIA
 					GAIA::MATH::xfinite(m[0][0]) && 
 					GAIA::MATH::xfinite(m[0][1]) && 
 					GAIA::MATH::xfinite(m[1][0]) && 
-					GAIA::MATH::xfinite(m[1][1]));
+					GAIA::MATH::xfinite(m[1][1]);
 			}
 			GINL const _DataType* front_ptr() const{return GRCAST(const _DataType*)(m);}
 			GINL _DataType* front_ptr(){return GRCAST(_DataType*)(m);}

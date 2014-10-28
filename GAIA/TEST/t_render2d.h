@@ -28,12 +28,12 @@ namespace GAIA_TEST
 		GAIA_AST(pRender != GNIL);
 
 		/* Create render. */
-		_RenderType::RenderDesc descRender;
+		typename _RenderType::RenderDesc descRender;
 		descRender.pCanvas = pCanvas;
 		pRender->Create(descRender);
 
 		/* Create context. */
-		_RenderType::Context::ContextDesc descContext;
+		typename _RenderType::Context::ContextDesc descContext;
 		descContext.reset();
 		__RootRenderType::Context* pContext = pRender->CreateContext(descContext);
 		if(pContext == GNIL)
@@ -43,7 +43,7 @@ namespace GAIA_TEST
 		}
 
 		/* Create resource. */
-		_RenderType::Pen::PenDesc descPen;
+		typename _RenderType::Pen::PenDesc descPen;
 		descPen.reset();
 		__BaseRenderType::Pen* pPen = pRender->CreatePen(*pContext, descPen);
 		if(pPen == GNIL)
@@ -52,7 +52,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		_RenderType::Brush::BrushDesc descBrush;
+		typename _RenderType::Brush::BrushDesc descBrush;
 		descBrush.reset();
 		__BaseRenderType::Brush* pBrush = pRender->CreateBrush(*pContext, descBrush);
 		if(pBrush == GNIL)
@@ -61,7 +61,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		_RenderType::FontFamily::FontFamilyDesc descFontFamily;
+		typename _RenderType::FontFamily::FontFamilyDesc descFontFamily;
 		descFontFamily.reset();
 		descFontFamily.strFontName = _T("Arial");
 		__BaseRenderType::FontFamily* pFontFamily = pRender->CreateFontFamily(*pContext, descFontFamily);
@@ -71,7 +71,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		_RenderType::FontPainter::FontPainterDesc descFontPainter;
+		typename _RenderType::FontPainter::FontPainterDesc descFontPainter;
 		descFontPainter.reset();
 		descFontPainter.pFontFamily = pFontFamily;
 		__BaseRenderType::FontPainter* pFontPainter = pRender->CreateFontPainter(*pContext, descFontPainter);
@@ -81,7 +81,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		_RenderType::FontFormat::FontFormatDesc descFontFormat;
+		typename _RenderType::FontFormat::FontFormatDesc descFontFormat;
 		descFontFormat.reset();
 		__BaseRenderType::FontFormat* pFontFormat = pRender->CreateFontFormat(*pContext, descFontFormat);
 		if(pFontFormat == GNIL)
@@ -90,7 +90,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		_RenderType::Texture::TextureDesc descTexture;
+		typename _RenderType::Texture::TextureDesc descTexture;
 		descTexture.reset();
 		descTexture.uWidth = 128;
 		descTexture.uHeight = 128;
@@ -111,7 +111,7 @@ namespace GAIA_TEST
 		}
 
 		/* Generate texture. */
-		_RenderType::Texture::FetchData::FetchDataDesc descFetchData;
+		typename _RenderType::Texture::FetchData::FetchDataDesc descFetchData;
 		descFetchData.reset();
 		descFetchData.pTexture = pTexture;
 		descFetchData.sOffsetX = 0;

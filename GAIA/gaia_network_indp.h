@@ -208,7 +208,7 @@ namespace GAIA
 						{
 						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
 							nSended = static_cast<GAIA::N32>(send(
-								m_h, GSCAST(const GAIA::N8*)(p), uSize, MSG_NOSIGNAL));
+								m_h, GRCAST(const GAIA::N8*)(p), uSize, MSG_NOSIGNAL));
 						#else
 							nSended = static_cast<GAIA::N32>(send(
 								m_h, GRCAST(const GAIA::N8*)(p), uSize, 0));
@@ -228,7 +228,7 @@ namespace GAIA
 								(na.ip.u3 << 24);
 						#if GAIA_OS == GAIA_OS_LINUX || GAIA_OS == GAIA_OS_UNIX
 							nSended = static_cast<GAIA::N32>(sendto(
-								m_h, GSCAST(const GAIA::N8*)(p), uSize, MSG_NOSIGNAL,
+								m_h, GRCAST(const GAIA::N8*)(p), uSize, MSG_NOSIGNAL,
 								(sockaddr*)&sinaddr, sizeof(sinaddr)));
 						#else
 							nSended = static_cast<GAIA::N32>(sendto(
@@ -445,7 +445,7 @@ namespace GAIA
 				GAIA::N32 newsize = sizeof(addrnew);
 				GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
 			#else
-				GAIA::U32 newsize = sizeof(addrnew);
+				GAIA::N32 newsize = sizeof(addrnew);
 				GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
 			#endif
 				if(newsock != GINVALID)
@@ -637,7 +637,7 @@ namespace GAIA
 						#if GAIA_OS == GAIA_OS_WINDOWS
 							GAIA::N32 recvfrom_addr_len;
 						#else
-							GAIA::U32 recvfrom_addr_len;
+							GAIA::N32 recvfrom_addr_len;
 						#endif
 							GAIA::N32 nRecv;
 							if(pHandle->IsStabilityLink())
