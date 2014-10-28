@@ -62,6 +62,7 @@ namespace GAIA
 	typedef float F32; // Variable will have a 'f' prefix.
 	typedef double F64; // Variable will have a 'd' prefix.
 	typedef float REAL; // variable will have a 'r' prefix.
+#define R(x) x##F
 
 	/* Char type declaration. */
 	typedef char CH;

@@ -117,7 +117,7 @@ namespace GAIA
 					if(!desc.check())
 						return GAIA::False;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					m_pPen = new Gdiplus::Pen((Gdiplus::Color)0xFF000000, 1.0F);
+					m_pPen = new Gdiplus::Pen((Gdiplus::Color)0xFF000000, 1);
 				#endif
 					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::Pen::PenDesc&)(desc);
 					return GAIA::True;
@@ -1998,7 +1998,7 @@ namespace GAIA
 					bCurrentAlphaBlend = GAIA::False;
 					pContext->pCurrentPen->GetColor(crOld);
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
-					crNew.a = 1.0F;
+					crNew.a = 1;
 					pContext->pCurrentPen->SetColor(crNew);
 				}
 
@@ -2035,7 +2035,7 @@ namespace GAIA
 					bCurrentAlphaBlend = GAIA::False;
 					pContext->pCurrentBrush->GetColor(crOld);
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
-					crNew.a = 1.0F;
+					crNew.a = 1;
 					pContext->pCurrentBrush->SetColor(crNew);
 				}
 
@@ -2074,7 +2074,7 @@ namespace GAIA
 					bCurrentAlphaBlend = GAIA::False;
 					pContext->pCurrentBrush->GetColor(crOld);
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
-					crNew.a = 1.0F;
+					crNew.a = 1;
 					pContext->pCurrentBrush->SetColor(crNew);
 				}
 
@@ -2121,7 +2121,7 @@ namespace GAIA
 					bCurrentAlphaBlend = GAIA::False;
 					pContext->pCurrentBrush->GetColor(crOld);
 					GAIA::MATH::ARGB<GAIA::REAL> crNew = crOld;
-					crNew.a = 1.0F;
+					crNew.a = 1;
 					pContext->pCurrentBrush->SetColor(crNew);
 				}
 
@@ -2182,7 +2182,7 @@ namespace GAIA
 				if(m_pSwapGraphics->DrawImage(
 					pPracTexture->GetInternalTexture(), 
 					pt, 3, 
-					0.0F, 0.0F, 
+					0, 0, 
 					(GAIA::REAL)pPracTexture->GetDesc().uWidth, 
 					(GAIA::REAL)pPracTexture->GetDesc().uHeight, 
 					Gdiplus::UnitPixel, GNIL, GNIL, GNIL) != Gdiplus::Ok)

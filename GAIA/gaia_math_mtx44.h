@@ -92,7 +92,7 @@ namespace GAIA
 				GAIA::N8 f = 1;
 				for(GAIA::N8 k = 0; k < 4; ++k)
 				{
-					_DataType tmax = 0.0F;
+					_DataType tmax = 0;
 					for(GAIA::N8 i = k; i < 4; ++i)
 					{
 						for(GAIA::N8 j = k; j < 4; ++j)
@@ -125,7 +125,7 @@ namespace GAIA
 						GAIA::ALGO::swap(m(3, k), m(3, js[k]));
 					}
 					det *= m(k, k);
-					m(k, k) = 1.0F / m(k, k);	
+					m(k, k) = 1 / m(k, k);	
 					for(GAIA::N8 j = 0; j < 4; ++j)
 					{
 						if(j != k)

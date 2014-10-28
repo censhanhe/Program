@@ -148,7 +148,7 @@ namespace GAIA
 					m_desc.reset();
 					m_cr.fromu32(0xFF000000);
 					m_cr.torealmode();
-					m_rWidth = 1.0F;
+					m_rWidth = 1;
 				}
 			private:
 				PenDesc m_desc;
@@ -989,7 +989,7 @@ namespace GAIA
 				GAIA::MATH::ARGB<GAIA::REAL> crTemp = cr;
 				crTemp.tobytemode();
 				GAIA::U32 uColor = crTemp.tou32();
-				m_pD3DDevice->Clear(0, GNIL, D3DCLEAR_TARGET, uColor, 0.0F, 0);
+				m_pD3DDevice->Clear(0, GNIL, D3DCLEAR_TARGET, uColor, 0, 0);
 			#endif
 			}
 

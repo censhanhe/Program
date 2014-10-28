@@ -52,7 +52,7 @@ namespace GAIA
 		}
 		template<typename _DataType> GAIA::BL xequalzero(const _DataType& t)
 		{
-			if(t >= -0.00001 && t <= +0.00001)
+			if(t >= R(-0.00001) && t <= R(+0.00001))
 				return GAIA::True;
 			return GAIA::False;
 		}
@@ -64,7 +64,7 @@ namespace GAIA
 		}
 		template<typename _DataType1, typename _DataType2> GAIA::BL xequal(const _DataType1& t1, const _DataType2& t2)
 		{
-			if(GAIA::MATH::xabs(t1 - t2) <= (typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType)0.00001)
+			if(GAIA::MATH::xabs(t1 - t2) <= (typename GAIA::DATATYPE::TRAITS::DataTypeConvertTraits<_DataType1, _DataType2>::ConvertedType)R(0.00001))
 				return GAIA::True;
 			return GAIA::False;
 		}

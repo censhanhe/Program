@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace MATH
 	{
-		static const GAIA::REAL PI = 3.141592654F;
+		static const GAIA::REAL PI = R(3.141592654);
 	};
 };
 

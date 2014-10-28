@@ -144,7 +144,7 @@ namespace GAIA
 					m_desc.reset();
 					m_cr.fromu32(0xFF000000);
 					m_cr.torealmode();
-					m_rWidth = 1.0F;
+					m_rWidth = 1;
 				}
 			private:
 				PenDesc m_desc;

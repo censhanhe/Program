@@ -592,7 +592,7 @@ namespace GAIA
 			_SrcDataType right = src - (_SrcDataType)left;
 			right = GAIA::MATH::xabs(right);
 			while(right - GSCAST(_SrcDataType)(GSCAST(GAIA::N64)(right)) != 0)
-				right *= 10.0F;
+				right *= R(10.0);
 			_DstDataType p = GAIA::ALGO::int2str(left, pDst);
 			--p;
 			*p = '.';
@@ -743,7 +743,7 @@ namespace GAIA
 				right_dst = *pTarget / right_div;
 			}
 			else
-				right_dst = 0.0F;
+				right_dst = R(0.0);
 			dst = left + right_dst;
 			if(bSign)
 				dst = -dst;

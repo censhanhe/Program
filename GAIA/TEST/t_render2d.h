@@ -143,7 +143,7 @@ namespace GAIA_TEST
 						GAIA::MATH::VEC2<GAIA::REAL> t(x, y);
 						GAIA::MATH::ARGB<GAIA::U8>& cr = pColor[y * pTexture->GetDesc().uWidth + x];
 						GAIA::REAL rLen = (t - center).length() / (GAIA::REAL)(pTexture->GetDesc().uWidth / 2);
-						rLen = 1.0F - GAIA::MATH::xclamp(rLen, 0, 1);
+						rLen = 1 - GAIA::MATH::xclamp(rLen, 0, 1);
 						cr = rLen * 255;
 						cr.a = 255;
 					}
@@ -161,8 +161,8 @@ namespace GAIA_TEST
 
 		/* Clear screen. */
 		GAIA::MATH::ARGB<GAIA::REAL> crClear;
-		crClear.r = crClear.g = crClear.b = 0.5F;
-		crClear.a = 1.0F;
+		crClear.r = crClear.g = crClear.b = R(0.5);
+		crClear.a = 1;
 		DEBUG_FLUSH;
 
 		/* Set anti-alias state. */
@@ -180,13 +180,13 @@ namespace GAIA_TEST
 
 		/* Draw text. */
 		GAIA::MATH::ARGB<GAIA::REAL> cr;
-		cr.r = cr.g = 0.0F;
-		cr.b = 0.0F;
-		cr.a = 0.4F;
+		cr.r = cr.g = 0;
+		cr.b = 0;
+		cr.a = R(0.4);
 		pBrush->SetColor(cr);
 		GAIA::MATH::AABR<GAIA::REAL> aabr;
-		aabr.pmin = 100.0F;
-		aabr.pmax = 400.0F;
+		aabr.pmin = R(100.0);
+		aabr.pmax = R(400.0);
 		pRender->SetBrush(*pContext, pBrush);
 		pRender->SetFontPainter(*pContext, pFontPainter);
 		pRender->SetFontFormat(*pContext, pFontFormat);
@@ -194,51 +194,51 @@ namespace GAIA_TEST
 		DEBUG_FLUSH;
 
 		/* Draw line. */
-		pPen->SetWidth(4.0F);
-		cr.r = 1.0F;
-		cr.g = 0.5F;
-		cr.b = 0.2F;
-		cr.a = 0.5F;
+		pPen->SetWidth(4);
+		cr.r = R(1.0);
+		cr.g = R(0.5);
+		cr.b = R(0.2);
+		cr.a = R(0.5);
 		pPen->SetColor(cr);
 		pRender->SetPen(*pContext, pPen);
 		GAIA::MATH::VEC2<GAIA::REAL> s, e;
-		s = 100.0F;
-		e = 200.0F;
-		e.x += 100.0F;
+		s = R(100.0);
+		e = R(200.0);
+		e.x += R(100.0);
 		pRender->DrawLine(*pContext, s, e);
 		DEBUG_FLUSH;
 
 		/* Draw rect. */
-		aabr.pmin = 200.0F;
-		aabr.pmax = 300.0F;
-		aabr.pmin.x += 200.0F;
-		aabr.pmax.x += 400.0F;
+		aabr.pmin = R(200.0);
+		aabr.pmax = R(300.0);
+		aabr.pmin.x += R(200.0);
+		aabr.pmax.x += R(400.0);
 		pRender->DrawRect(*pContext, aabr);
 		DEBUG_FLUSH;
 
 		/* Draw triangle. */
 		GAIA::MATH::VEC2<GAIA::REAL> tri[3];
-		tri[0].x = 240.0F;
-		tri[0].y = 120.0F;
-		tri[1].x = 240.0F - 64.0F;
-		tri[2].x = 240.0F + 64.0F;
-		tri[1].y = 120.0F + 64.0F;
-		tri[2].y = 120.0F + 64.0F;
+		tri[0].x = R(240.0);
+		tri[0].y = R(120.0);
+		tri[1].x = R(240.0) - R(64.0);
+		tri[2].x = R(240.0) + R(64.0);
+		tri[1].y = R(120.0) + R(64.0);
+		tri[2].y = R(120.0) + R(64.0);
 		pRender->DrawTriangle(*pContext, tri[0], tri[1], tri[2]);
 		DEBUG_FLUSH;
 
 		/* Draw texture. */
-		aabr.pmin.x = 10.0F;
-		aabr.pmin.y = 10.0F;
+		aabr.pmin.x = R(10.0);
+		aabr.pmin.y = R(10.0);
 		aabr.pmax = aabr.pmin;
-		aabr.pmax += 128.0F;
+		aabr.pmax += R(128.0);
 		GAIA::MATH::MTX33<GAIA::REAL> mtx;
 		pRender->SetTexture(*pContext, 0, pTexture);
 		pRender->DrawTexture(*pContext, aabr, mtx);
 		DEBUG_FLUSH;
 
 		/* Draw texture file. */
-		aabr.pmin += 200.0F;
+		aabr.pmin += R(200.0);
 		aabr.pmax = aabr.pmin + GAIA::MATH::VEC2<GAIA::REAL>(pFileTexture->GetDesc().uWidth, pFileTexture->GetDesc().uHeight);
 		pRender->SetTexture(*pContext, 0, pFileTexture);
 		pRender->DrawTexture(*pContext, aabr, mtx);

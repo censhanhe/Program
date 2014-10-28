@@ -193,7 +193,7 @@ namespace GAIA_TEST
 			GTLINE2("String operator GAIA::U64 failed!");
 			++nRet;
 		}
-		chs = (GAIA::F32)1234.567F;
+		chs = 1234.567F;
 		chs.resize(8);
 		if(chs != _T("1234.567"))
 		{
