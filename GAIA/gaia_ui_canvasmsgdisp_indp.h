@@ -12,7 +12,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		GINL GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage)
+		GINL GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage, GAIA::BL& bExistMsg)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			MSG msg;
@@ -22,7 +22,13 @@ namespace GAIA
 				{
 					::TranslateMessage(&msg);
 					::DispatchMessage(&msg);
+					bExistMsg = GAIA::True;
 					return GAIA::True;
+				}
+				else
+				{
+					bExistMsg = GAIA::False;
+					return GAIA::False;
 				}
 			}
 			else
@@ -31,10 +37,17 @@ namespace GAIA
 				{
 					::TranslateMessage(&msg);
 					::DispatchMessage(&msg);
+					bExistMsg = GAIA::True;
+					if(msg.message == WM_QUIT)
+						return GAIA::False;
+					return GAIA::True;
+				}
+				else
+				{
+					bExistMsg = GAIA::False;
 					return GAIA::True;
 				}
 			}
-			return GAIA::False;
 		#else
 			return GAIA::False;
 		#endif

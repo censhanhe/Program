@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prometheus", "PROMETHEUS\pr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{E11624AF-30B6-4368-B83F-4415D567CB8B}"
 	ProjectSection(SolutionItems) = preProject
-		DOC\code.txt = DOC\code.txt
+		DOC\code.h = DOC\code.h
 		DOC\concept.txt = DOC\concept.txt
 		DOC\designment.txt = DOC\designment.txt
 		DOC\gaia_reference.txt = DOC\gaia_reference.txt

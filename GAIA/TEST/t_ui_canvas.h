@@ -93,7 +93,12 @@ namespace GAIA_TEST
 		GAIA::FWORK::Factory fac;
 
 		/* For aync ui test. */
-		while(GAIA::UI::UpdateMessage(GAIA::False)){}
+		GAIA::BL bExistMsg;
+		while(GAIA::UI::UpdateMessage(GAIA::False, bExistMsg))
+		{
+			if(!bExistMsg)
+				break;
+		}
 
 		/* Construct canvas instance. */
 		GAIA::UI::Canvas* pCanvas1 = dynamic_cast<GAIA::UI::Canvas*>(fac.CreateInstance(GAIA::FWORK::CLSID_UI_CANVAS, GNIL));
@@ -136,9 +141,7 @@ namespace GAIA_TEST
 		th.Run();
 
 		/* Dispatch message in main thread. */
-		while(GAIA::UI::UpdateMessage(GAIA::True))
-		{
-		}
+		while(GAIA::UI::UpdateMessage(GAIA::True, bExistMsg)){}
 
 		/* Print the test result. */
 		if(!th.GetResult())

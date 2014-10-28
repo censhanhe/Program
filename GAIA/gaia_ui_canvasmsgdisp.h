@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		GINL GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage);
+		GINL GAIA::BL UpdateMessage(GAIA::BL bWaitForMessage, GAIA::BL& bExistMsg);
 	};
 };
 
