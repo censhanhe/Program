@@ -352,9 +352,9 @@ namespace GAIA
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
 		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
-				GAIA::UM uFlag = ::GetFileAttributes(pszName);
+				GAIA::UM uFlag = ::GetFileAttributesA(pszName);
 		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-				GAIA::UM uFlag = ::GetFileAttributes(pszName);
+				GAIA::UM uFlag = ::GetFileAttributesW(pszName);
 		#	endif
 			if(uFlag == GINVALID)
 				return GAIA::False;

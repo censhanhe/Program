@@ -13,7 +13,7 @@
 #ifdef _MSC_VER
 #	define GAIA_OS GAIA_OS_WINDOWS
 #else
-#	define GAIA_OS GAIA_OS_OSX
+#	define GAIA_OS GAIA_OS_LINUX
 #endif
 
 /* Compiler profile. */
@@ -62,7 +62,7 @@
 /* Language code flag. */
 #define GAIA_CHARSET_ANSI 1
 #define GAIA_CHARSET_UNICODE 2
-#define GAIA_CHARSET GAIA_CHARSET_UNICODE
+#define GAIA_CHARSET GAIA_CHARSET_ANSI
 
 /* Machine bit count flag. */
 #define GAIA_MACHINE32 32
@@ -125,6 +125,8 @@
 /* Function call type. */
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	define GAIA_BASEAPI __stdcall
+#else
+#	define GAIA_BASEAPI
 #endif
 
 /* Integration flag. */

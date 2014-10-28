@@ -173,7 +173,13 @@ namespace GAIA
 		}
 		template<typename _DataType> _DataType* strnew(const _DataType* p)
 		{
-			_DataType* ret = (_DataType*)GAIA_MALLOC(GAIA::U8, GAIA::ALGO::strlen(p) * sizeof(p[0]) + sizeof(p[0]));
+			_DataType* ret = (_DataType*)GAIA_MALLOC(_DataType, GAIA::ALGO::strlen(p) + 1);
+			GAIA::ALGO::strcpy(ret, p);
+			return ret;
+		}
+		template<typename _DataTypeDst, typename _DataTypeSrc> _DataTypeDst* strnewex(const _DataTypeSrc* p)
+		{
+			_DataTypeDst* ret = (_DataTypeDst*)GAIA_MALLOC(_DataTypeDst, GAIA::ALGO::strlen(p) + 1);
 			GAIA::ALGO::strcpy(ret, p);
 			return ret;
 		}

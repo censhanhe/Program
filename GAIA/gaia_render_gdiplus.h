@@ -18,10 +18,6 @@ namespace GAIA
 			typedef GAIA::RENDER::Render2DGDIPlus __MyType;
 
 		public:
-			static const GAIA::SIZE MAX_TEXTURE_COUNT = 1;
-			static const GAIA::SIZE MAX_TARGET_COUNT = 1;
-
-		public:
 			class RenderDesc : public virtual GAIA::RENDER::Render2D::RenderDesc
 			{
 			public:
@@ -60,9 +56,9 @@ namespace GAIA
 					GAIA_RELEASE_SAFE(pCurrentFontFamily);
 					GAIA_RELEASE_SAFE(pCurrentFontPainter);
 					GAIA_RELEASE_SAFE(pCurrentFontFormat);
-					for(GAIA::SIZE x = 0; x < MAX_TEXTURE_COUNT; ++x)
+					for(GAIA::SIZE x = 0; x < sizeofarray(pCurrentTexture); ++x)
 						GAIA_RELEASE_SAFE(pCurrentTexture[x]);
-					for(GAIA::SIZE x = 0; x < MAX_TARGET_COUNT; ++x)
+					for(GAIA::SIZE x = 0; x < sizeofarray(pCurrentTarget); ++x)
 						GAIA_RELEASE_SAFE(pCurrentTarget[x]);
 					GAIA_RELEASE_SAFE(pCurrentShader);
 					m_desc.reset();
@@ -75,8 +71,8 @@ namespace GAIA
 				GAIA::RENDER::Render2D::FontFamily* pCurrentFontFamily;
 				GAIA::RENDER::Render2D::FontPainter* pCurrentFontPainter;
 				GAIA::RENDER::Render2D::FontFormat* pCurrentFontFormat;
-				GAIA::RENDER::Render2D::Texture* pCurrentTexture[MAX_TEXTURE_COUNT];
-				GAIA::RENDER::Render2D::Target* pCurrentTarget[MAX_TARGET_COUNT];
+				GAIA::RENDER::Render2D::Texture* pCurrentTexture[1];
+				GAIA::RENDER::Render2D::Target* pCurrentTarget[1];
 				GAIA::RENDER::Render2D::Shader* pCurrentShader;
 				GAIA::U8 bEnableAlphaBlend : 1;
 				GAIA::U8 bEnableAlphaTest : 1;
@@ -89,8 +85,8 @@ namespace GAIA
 					pCurrentFontFamily = GNIL;
 					pCurrentFontPainter = GNIL;
 					pCurrentFontFormat = GNIL;
-					GAIA::ALGO::nil(pCurrentTexture, MAX_TEXTURE_COUNT);
-					GAIA::ALGO::nil(pCurrentTarget, MAX_TARGET_COUNT);
+					GAIA::ALGO::nil(pCurrentTexture, sizeofarray(pCurrentTexture));
+					GAIA::ALGO::nil(pCurrentTarget, sizeofarray(pCurrentTarget));
 					pCurrentShader = GNIL;
 					bEnableAlphaBlend = GAIA::False;
 					bEnableAlphaTest = GAIA::False;
@@ -292,7 +288,23 @@ namespace GAIA
 					if(!desc.check())
 						return GAIA::False;
 				#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_GDIPLUS)
-					m_pFontFamily = new Gdiplus::FontFamily(desc.strFontName, GNIL);
+				#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+						if(desc.strFontName.size() < 128)
+						{
+							GAIA::WCH szName[128];
+							GAIA::ALGO::strcpy(szName, desc.strFontName.front_ptr());
+							m_pFontFamily = new Gdiplus::FontFamily(szName, GNIL);
+						}
+						else
+						{
+							GAIA::WCH* pszName = GAIA::ALGO::strnewex<GAIA::WCH>(desc.strFontName.front_ptr());
+							m_pFontFamily = new Gdiplus::FontFamily(pszName, GNIL);
+							GAIA_MFREE(pszName);
+						}
+				#	else
+						m_pFontFamily = new Gdiplus::FontFamily(desc.strFontName, GNIL);
+				#	endif
+					
 				#endif
 					m_desc = GDCAST(const GAIA::RENDER::Render2DGDIPlus::FontFamily::FontFamilyDesc&)(desc);
 					return GAIA::True;
@@ -952,7 +964,23 @@ namespace GAIA
 					}
 					else
 					{
+					#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+						if(GAIA::ALGO::strlen(desc.pszFileName) < 128)
+						{
+							GAIA::WCH szName[128];
+							GAIA::ALGO::strcpy(szName, desc.pszFileName);
+							m_pBitmap = new Gdiplus::Bitmap(szName, GAIA::False);
+						}
+						else
+						{
+							GAIA::WCH* pszName = GAIA::ALGO::strnewex<GAIA::WCH>(desc.pszFileName);
+							m_pBitmap = new Gdiplus::Bitmap(pszName, GAIA::False);
+							GAIA_MFREE(pszName);
+						}
+					#else
 						m_pBitmap = new Gdiplus::Bitmap(desc.pszFileName, GAIA::False);
+					#endif
+						
 						if(m_pBitmap == GNIL)
 							return GAIA::False;
 					}
@@ -1853,8 +1881,8 @@ namespace GAIA
 				GAIA_AST(nTextureIndex >= 0);
 				if(nTextureIndex < 0)
 					return;
-				GAIA_AST(nTextureIndex < MAX_TEXTURE_COUNT);
-				if(nTextureIndex >= MAX_TEXTURE_COUNT)
+				GAIA_AST(nTextureIndex < sizeofarray(pContext->pCurrentTexture));
+				if(nTextureIndex >= sizeofarray(pContext->pCurrentTexture))
 					return;
 				if(pTexture != GNIL)
 					pTexture->Reference();
@@ -1871,8 +1899,8 @@ namespace GAIA
 				GAIA_AST(nTextureIndex >= 0);
 				if(nTextureIndex < 0)
 					return;
-				GAIA_AST(nTextureIndex < MAX_TEXTURE_COUNT);
-				if(nTextureIndex >= MAX_TEXTURE_COUNT)
+				GAIA_AST(nTextureIndex < sizeofarray(pContext->pCurrentTexture));
+				if(nTextureIndex >= sizeofarray(pContext->pCurrentTexture))
 					return;
 				if(pContext->pCurrentTexture[nTextureIndex] != GNIL)
 					pContext->pCurrentTexture[nTextureIndex]->Reference();
@@ -1899,8 +1927,8 @@ namespace GAIA
 				GAIA_AST(nTargetIndex >= 0);
 				if(nTargetIndex < 0)
 					return;
-				GAIA_AST(nTargetIndex < MAX_TARGET_COUNT);
-				if(nTargetIndex >= MAX_TARGET_COUNT)
+				GAIA_AST(nTargetIndex < sizeofarray(pContext->pCurrentTarget));
+				if(nTargetIndex >= sizeofarray(pContext->pCurrentTarget))
 					return;
 				if(pTarget != GNIL)
 					pTarget->Reference();
@@ -1917,8 +1945,8 @@ namespace GAIA
 				GAIA_AST(nTargetIndex >= 0);
 				if(nTargetIndex < 0)
 					return;
-				GAIA_AST(nTargetIndex < MAX_TARGET_COUNT);
-				if(nTargetIndex >= MAX_TARGET_COUNT)
+				GAIA_AST(nTargetIndex < sizeofarray(pContext->pCurrentTarget));
+				if(nTargetIndex >= sizeofarray(pContext->pCurrentTarget))
 					return;
 				if(pContext->pCurrentTarget[nTargetIndex] != GNIL)
 					pContext->pCurrentTarget[nTargetIndex]->Reference();
@@ -2135,11 +2163,26 @@ namespace GAIA
 				rc.Y = aabr.pmin.y;
 				rc.Width = aabr.width();
 				rc.Height = aabr.height();
+
+				GAIA::WCH szPracStackBuf[128];
+				const GAIA::WCH* pszPrac;
+			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(GAIA::ALGO::strlen(pszText) < 128)
+				{
+					GAIA::ALGO::strcpy(szPracStackBuf, pszText);
+					pszPrac = szPracStackBuf;
+				}
+				else
+					pszPrac = GAIA::ALGO::strnewex<GAIA::WCH>(pszText);
+			#else
+				pszPrac = pszText;
+			#endif
+
 				if(pContext->pCurrentFontFormat == GNIL)
 				{
 					Gdiplus::StringFormat sf;
 					m_pSwapGraphics->DrawString(
-						pszText, GAIA::ALGO::strlen(pszText),
+						pszPrac, GAIA::ALGO::strlen(pszPrac),
 						pPracFontPainter->GetInternalFontPainter(), 
 						rc, &sf, 
 						pPracBrush->GetInternalBrush());
@@ -2149,11 +2192,16 @@ namespace GAIA
 					GAIA::RENDER::Render2DGDIPlus::FontFormat* pPracFontFormat = GDCAST(GAIA::RENDER::Render2DGDIPlus::FontFormat*)(pContext->pCurrentFontFormat);
 					GPCHR_NULL(pPracFontFormat);
 					m_pSwapGraphics->DrawString(
-						pszText, GAIA::ALGO::strlen(pszText),
+						pszPrac, GAIA::ALGO::strlen(pszPrac),
 						pPracFontPainter->GetInternalFontPainter(), 
 						rc, &pPracFontFormat->GetInternalFontFormat(), 
 						pPracBrush->GetInternalBrush());
 				}
+
+			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(pszPrac != szPracStackBuf)
+					GAIA_MFREE(pszPrac);
+			#endif
 
 				/* Restore alpha for pipeline. */
 				if(!bCurrentAlphaBlend)
