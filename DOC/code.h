@@ -4,18 +4,8 @@
 		crClear.a = 1;
 		DEBUG_FLUSH;
 
-		/* Set anti-alias state. */
-		pRender->SetQuality2DState(*pContext, 
-			GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, 
-			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
-		pRender->SetQuality2DState(*pContext, 
-			GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS,
-			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
-
 		/* Set render2d state. */
-		pRender->SetRender2DState(*pContext, 
-			GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, 
-			GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]);
+
 
 		/* Draw text. */
 		GAIA::MATH::ARGB<GAIA::REAL> cr;

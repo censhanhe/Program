@@ -279,255 +279,321 @@ namespace GAIA_TEST
 						GAIA::MATH::VEC2<GAIA::REAL> center = aabr.center();\
 						GAIA::REAL rLen = GAIA::MATH::xsqrt((GAIA::REAL)(BLOCKSIZEX * BLOCKSIZEX + BLOCKSIZEY * BLOCKSIZEY));
 
-			/* Line test. */
+			for(GAIA::SIZE c = 0; c < BLOCKCNTY; ++c)
 			{
-				BLOCKINFO(0);
-				if(l1 == 0)
-					l1 = center;
-				if(l2 == 0)
-					l2 = center;
-				if(ld1 == 0)
+				/* Set state. */
+				if(c == 1)
 				{
-					ld1.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					ld1.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					ld1.normalize();
-					ld1 *= ANISPEED;
+					pRender->SetQuality2DState(*pContext, 
+						GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, 
+						GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
+					pRender->SetQuality2DState(*pContext, 
+						GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS,
+						GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_HIGH]);
 				}
-				if(ld2 == 0)
+				else if(c == 2)
 				{
-					ld2.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					ld2.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					ld2.normalize();
-					ld2 *= ANISPEED;
-				}
-				if(aabr.clamp(l1))
-				{
-					if(l1.x == aabr.pmin.x || l1.x == aabr.pmax.x)
-						ld1.x = -ld1.x;
-					if(l1.y == aabr.pmin.y || l1.y == aabr.pmax.y)
-						ld1.y = -ld1.y;
-				}
-				if(aabr.clamp(l2))
-				{
-					if(l2.x == aabr.pmin.x || l2.x == aabr.pmax.x)
-						ld2.x = -ld2.x;
-					if(l2.y == aabr.pmin.y || l2.y == aabr.pmax.y)
-						ld2.y = -ld2.y;
-				}
-				l1 += ld1;
-				l2 += ld2;
-				pRender->SetPen(*pContext, pLinePen);
-				pLinePen->SetWidth(R(4.0));
-				GAIA::MATH::ARGB<GAIA::REAL> cr;
-				cr.r = R(1.0);
-				cr.g = cr.b = R(0.0);
-				cr.a = R(0.5);
-				pLinePen->SetColor(cr);
-				pRender->DrawLine(*pContext, l1, l2);
-			}
-
-			/* Rect test. */
-			{
-				BLOCKINFO(1);
-
-				static const GAIA::REAL RECTSIZE = R(16.0);
-
-				if(rect.isidentity())
-				{
-					rect.pmin = R(0.0);
-					rect.pmax = RECTSIZE;
-					rect.pmin.x += center.x;
-					rect.pmax.x += center.x;
-					rect.pmin.y += center.y;
-					rect.pmax.y += center.y;
+					pRender->SetRender2DState(*pContext, 
+						GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, 
+						GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_ON]);
 				}
 
-				if(rectd == 0)
+				/* Line test. */
 				{
-					rectd.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					rectd.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					rectd.normalize();
-					rectd *= ANISPEED;
-				}
-
-				if(aabr.clamp(rect))
-				{
-					if(rect.pmin.x == aabr.pmin.x)
+					BLOCKINFO(0 + c * BLOCKCNTX);
+					if(c == 0)
 					{
-						rect.pmax.x = rect.pmin.x + RECTSIZE;
-						rectd.x = -rectd.x;
+						if(l1 == 0)
+							l1 = center;
+						if(l2 == 0)
+							l2 = center;
+						if(ld1 == 0)
+						{
+							ld1.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							ld1.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							ld1.normalize();
+							ld1 *= ANISPEED;
+						}
+						if(ld2 == 0)
+						{
+							ld2.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							ld2.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							ld2.normalize();
+							ld2 *= ANISPEED;
+						}
+						if(aabr.clamp(l1))
+						{
+							if(l1.x == aabr.pmin.x || l1.x == aabr.pmax.x)
+								ld1.x = -ld1.x;
+							if(l1.y == aabr.pmin.y || l1.y == aabr.pmax.y)
+								ld1.y = -ld1.y;
+						}
+						if(aabr.clamp(l2))
+						{
+							if(l2.x == aabr.pmin.x || l2.x == aabr.pmax.x)
+								ld2.x = -ld2.x;
+							if(l2.y == aabr.pmin.y || l2.y == aabr.pmax.y)
+								ld2.y = -ld2.y;
+						}
+						l1 += ld1;
+						l2 += ld2;
 					}
-					if(rect.pmin.y == aabr.pmin.y)
-					{
-						rect.pmax.y = rect.pmin.y + RECTSIZE;
-						rectd.y = -rectd.y;
-					}
-					if(rect.pmax.x == aabr.pmax.x)
-					{
-						rect.pmin.x = rect.pmax.x - RECTSIZE;
-						rectd.x = -rectd.x;
-					}
-					if(rect.pmax.y == aabr.pmax.y)
-					{
-						rect.pmin.y = rect.pmax.y - RECTSIZE;
-						rectd.y = -rectd.y;
-					}
+					GAIA::MATH::VEC2<GAIA::REAL> lprac1, lprac2;
+					lprac1 = l1;
+					lprac2 = l2;
+					lprac1.y += c * BLOCKSIZEY;
+					lprac2.y += c * BLOCKSIZEY;
+					pRender->SetPen(*pContext, pLinePen);
+					pLinePen->SetWidth(R(4.0));
+					GAIA::MATH::ARGB<GAIA::REAL> cr;
+					cr.r = R(1.0);
+					cr.g = cr.b = R(0.0);
+					cr.a = R(0.25);
+					pLinePen->SetColor(cr);
+					pRender->DrawLine(*pContext, lprac1, lprac2);
 				}
 
-
-				rect += rectd;
-
-				GAIA::MATH::ARGB<GAIA::REAL> cr;
-				cr.g = R(1.0);
-				cr.r = cr.b = R(0.0);
-				cr.a = 0.5F;
-				pRectBrush->SetColor(cr);
-				pRender->SetBrush(*pContext, pRectBrush);
-				pRender->DrawRect(*pContext, rect);
-			}
-
-			/* Triangle test. */
-			{
-				BLOCKINFO(2);
-
-				GAIA::MATH::VEC2<GAIA::REAL> pt[3];
-				for(GAIA::SIZE x = 0; x < 3; ++x)
+				/* Rect test. */
 				{
-					GAIA::REAL rRadian = GAIA::MATH::PI * 2 / 3 * x - GAIA::MATH::PI * R(0.5) + rTriangleRotate;
-					pt[x].x = center.x + GAIA::MATH::xcos(rRadian) * rLen * R(0.25);
-					pt[x].y = center.y + GAIA::MATH::xsin(rRadian) * rLen * R(0.25);
+					BLOCKINFO(1 + c * BLOCKCNTX);
+
+					static const GAIA::REAL RECTSIZE = R(16.0);
+
+					if(c == 0)
+					{
+						if(rect.isidentity())
+						{
+							rect.pmin = R(0.0);
+							rect.pmax = RECTSIZE;
+							rect.pmin.x += center.x;
+							rect.pmax.x += center.x;
+							rect.pmin.y += center.y;
+							rect.pmax.y += center.y;
+						}
+
+						if(rectd == 0)
+						{
+							rectd.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							rectd.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							rectd.normalize();
+							rectd *= ANISPEED;
+						}
+
+						if(aabr.clamp(rect))
+						{
+							if(rect.pmin.x == aabr.pmin.x)
+							{
+								rect.pmax.x = rect.pmin.x + RECTSIZE;
+								rectd.x = -rectd.x;
+							}
+							if(rect.pmin.y == aabr.pmin.y)
+							{
+								rect.pmax.y = rect.pmin.y + RECTSIZE;
+								rectd.y = -rectd.y;
+							}
+							if(rect.pmax.x == aabr.pmax.x)
+							{
+								rect.pmin.x = rect.pmax.x - RECTSIZE;
+								rectd.x = -rectd.x;
+							}
+							if(rect.pmax.y == aabr.pmax.y)
+							{
+								rect.pmin.y = rect.pmax.y - RECTSIZE;
+								rectd.y = -rectd.y;
+							}
+						}
+
+						rect += rectd;
+					}
+
+					GAIA::MATH::AABR<GAIA::REAL> rectprac = rect;
+					rectprac.pmin.y += c * BLOCKSIZEY;
+					rectprac.pmax.y += c * BLOCKSIZEY;
+
+					GAIA::MATH::ARGB<GAIA::REAL> cr;
+					cr.g = R(1.0);
+					cr.r = cr.b = R(0.0);
+					cr.a = R(0.25);
+					pRectBrush->SetColor(cr);
+					pRender->SetBrush(*pContext, pRectBrush);
+					pRender->DrawRect(*pContext, rectprac);
 				}
 
-				rTriangleRotate += ANISPEED / 180;
-
-				GAIA::MATH::ARGB<GAIA::REAL> cr;
-				cr.r = cr.g = R(0.0);
-				cr.b = R(1.0);
-				cr.a = R(0.5);
-				pTriangleBrush->SetColor(cr);
-				pRender->SetBrush(*pContext, pTriangleBrush);
-				pRender->DrawTriangle(*pContext, pt[0], pt[1], pt[2]);
-			}
-
-			/* Texture test. */
-			{
-				BLOCKINFO(3);
-
-				static const GAIA::REAL RECTSIZE = R(64.0);
-
-				if(recttex.isidentity())
+				/* Triangle test. */
 				{
-					recttex.pmin = R(0.0);
-					recttex.pmax = RECTSIZE;
-					recttex.pmin.x += center.x;
-					recttex.pmax.x += center.x;
-					recttex.pmin.y += center.y;
-					recttex.pmax.y += center.y;
+					BLOCKINFO(2 + c * BLOCKCNTX);
+
+					GAIA::MATH::VEC2<GAIA::REAL> pt[3];
+					for(GAIA::SIZE x = 0; x < 3; ++x)
+					{
+						GAIA::REAL rRadian = GAIA::MATH::PI * 2 / 3 * x - GAIA::MATH::PI * R(0.5) + rTriangleRotate;
+						pt[x].x = center.x + GAIA::MATH::xcos(rRadian) * rLen * R(0.25);
+						pt[x].y = center.y + GAIA::MATH::xsin(rRadian) * rLen * R(0.25);
+					}
+
+					if(c == 0)
+						rTriangleRotate += ANISPEED / 180;
+
+					GAIA::MATH::ARGB<GAIA::REAL> cr;
+					cr.r = cr.g = R(0.0);
+					cr.b = R(1.0);
+					cr.a = R(0.25);
+					pTriangleBrush->SetColor(cr);
+					pRender->SetBrush(*pContext, pTriangleBrush);
+					pRender->DrawTriangle(*pContext, pt[0], pt[1], pt[2]);
 				}
 
-				if(recttexd == 0)
+				/* Texture test. */
 				{
-					recttexd.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					recttexd.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					recttexd.normalize();
-					recttexd *= ANISPEED;
+					BLOCKINFO(3 + c * BLOCKCNTX);
+
+					static const GAIA::REAL RECTSIZE = R(64.0);
+
+					if(c == 0)
+					{
+						if(recttex.isidentity())
+						{
+							recttex.pmin = R(0.0);
+							recttex.pmax = RECTSIZE;
+							recttex.pmin.x += center.x;
+							recttex.pmax.x += center.x;
+							recttex.pmin.y += center.y;
+							recttex.pmax.y += center.y;
+						}
+
+						if(recttexd == 0)
+						{
+							recttexd.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							recttexd.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							recttexd.normalize();
+							recttexd *= ANISPEED;
+						}
+
+						if(aabr.clamp(recttex))
+						{
+							if(recttex.pmin.x == aabr.pmin.x)
+							{
+								recttex.pmax.x = recttex.pmin.x + RECTSIZE;
+								recttexd.x = -recttexd.x;
+							}
+							if(recttex.pmin.y == aabr.pmin.y)
+							{
+								recttex.pmax.y = recttex.pmin.y + RECTSIZE;
+								recttexd.y = -recttexd.y;
+							}
+							if(recttex.pmax.x == aabr.pmax.x)
+							{
+								recttex.pmin.x = recttex.pmax.x - RECTSIZE;
+								recttexd.x = -recttexd.x;
+							}
+							if(recttex.pmax.y == aabr.pmax.y)
+							{
+								recttex.pmin.y = recttex.pmax.y - RECTSIZE;
+								recttexd.y = -recttexd.y;
+							}
+						}
+
+						recttex += recttexd;
+					}
+
+					GAIA::MATH::AABR<GAIA::REAL> rectpractex = recttex;
+					rectpractex.pmin.y += c * BLOCKSIZEY;
+					rectpractex.pmax.y += c * BLOCKSIZEY;
+
+					GAIA::MATH::ARGB<GAIA::REAL> cr;
+					cr.r = R(1.0);
+					cr.g = cr.b = R(0.0);
+					cr.a = R(0.25);
+					pRender->SetTexture(*pContext, 0, pTexture);
+					GAIA::MATH::MTX33<GAIA::REAL> mtx;
+					mtx.identity();
+					pRender->DrawTexture(*pContext, rectpractex, mtx);
 				}
 
-				if(aabr.clamp(recttex))
+				/* Filed texture test. */
 				{
-					if(recttex.pmin.x == aabr.pmin.x)
+					BLOCKINFO(4 + c * BLOCKCNTX);
+
+					static const GAIA::REAL RECTSIZE = R(128.0);
+
+					if(c == 0)
 					{
-						recttex.pmax.x = recttex.pmin.x + RECTSIZE;
-						recttexd.x = -recttexd.x;
+						if(recttexf.isidentity())
+						{
+							recttexf.pmin = R(0.0);
+							recttexf.pmax = RECTSIZE;
+							recttexf.pmin.x += center.x;
+							recttexf.pmax.x += center.x;
+							recttexf.pmin.y += center.y;
+							recttexf.pmax.y += center.y;
+						}
+
+						if(recttexdf == 0)
+						{
+							recttexdf.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							recttexdf.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+							recttexdf.normalize();
+							recttexdf *= ANISPEED;
+						}
+
+						if(aabr.clamp(recttexf))
+						{
+							if(recttexf.pmin.x == aabr.pmin.x)
+							{
+								recttexf.pmax.x = recttexf.pmin.x + RECTSIZE;
+								recttexdf.x = -recttexdf.x;
+							}
+							if(recttexf.pmin.y == aabr.pmin.y)
+							{
+								recttexf.pmax.y = recttexf.pmin.y + RECTSIZE;
+								recttexdf.y = -recttexdf.y;
+							}
+							if(recttexf.pmax.x == aabr.pmax.x)
+							{
+								recttexf.pmin.x = recttexf.pmax.x - RECTSIZE;
+								recttexdf.x = -recttexdf.x;
+							}
+							if(recttexf.pmax.y == aabr.pmax.y)
+							{
+								recttexf.pmin.y = recttexf.pmax.y - RECTSIZE;
+								recttexdf.y = -recttexdf.y;
+							}
+						}
+
+						recttexf += recttexdf;
 					}
-					if(recttex.pmin.y == aabr.pmin.y)
-					{
-						recttex.pmax.y = recttex.pmin.y + RECTSIZE;
-						recttexd.y = -recttexd.y;
-					}
-					if(recttex.pmax.x == aabr.pmax.x)
-					{
-						recttex.pmin.x = recttex.pmax.x - RECTSIZE;
-						recttexd.x = -recttexd.x;
-					}
-					if(recttex.pmax.y == aabr.pmax.y)
-					{
-						recttex.pmin.y = recttex.pmax.y - RECTSIZE;
-						recttexd.y = -recttexd.y;
-					}
+
+					GAIA::MATH::AABR<GAIA::REAL> rectpractexf = recttexf;
+					rectpractexf.pmin.y += c * BLOCKSIZEY;
+					rectpractexf.pmax.y += c * BLOCKSIZEY;
+
+					GAIA::MATH::ARGB<GAIA::REAL> cr;
+					cr.r = R(1.0);
+					cr.g = cr.b = R(0.0);
+					cr.a = R(0.25);
+					pRectBrush->SetColor(cr);
+					pRender->SetTexture(*pContext, 0, pFileTexture);
+					GAIA::MATH::MTX33<GAIA::REAL> mtx;
+					mtx.identity();
+					pRender->DrawTexture(*pContext, rectpractexf, mtx);
 				}
 
-				recttex += recttexd;
-
-				GAIA::MATH::ARGB<GAIA::REAL> cr;
-				cr.r = R(1.0);
-				cr.g = cr.b = R(0.0);
-				cr.a = 0.5F;
-				pRender->SetTexture(*pContext, 0, pTexture);
-				GAIA::MATH::MTX33<GAIA::REAL> mtx;
-				mtx.identity();
-				pRender->DrawTexture(*pContext, recttex, mtx);
-			}
-
-			/* Filed texture test. */
-			{
-				BLOCKINFO(4);
-
-				static const GAIA::REAL RECTSIZE = R(128.0);
-
-				if(recttexf.isidentity())
+				/* Restore state. */
+				if(c == 1)
 				{
-					recttexf.pmin = R(0.0);
-					recttexf.pmax = RECTSIZE;
-					recttexf.pmin.x += center.x;
-					recttexf.pmax.x += center.x;
-					recttexf.pmin.y += center.y;
-					recttexf.pmax.y += center.y;
+					pRender->SetQuality2DState(*pContext, 
+						GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, 
+						GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_LOW]);
+					pRender->SetQuality2DState(*pContext, 
+						GAIA::RENDER::Render2D::QUALITY2D_STATE_FONTANTIALIAS,
+						GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_LOW]);
 				}
-
-				if(recttexdf == 0)
+				else if(c == 2)
 				{
-					recttexdf.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					recttexdf.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
-					recttexdf.normalize();
-					recttexdf *= ANISPEED;
+					pRender->SetRender2DState(*pContext, 
+						GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, 
+						GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF]);
 				}
-
-				if(aabr.clamp(recttexf))
-				{
-					if(recttexf.pmin.x == aabr.pmin.x)
-					{
-						recttexf.pmax.x = recttexf.pmin.x + RECTSIZE;
-						recttexdf.x = -recttexdf.x;
-					}
-					if(recttexf.pmin.y == aabr.pmin.y)
-					{
-						recttexf.pmax.y = recttexf.pmin.y + RECTSIZE;
-						recttexdf.y = -recttexdf.y;
-					}
-					if(recttexf.pmax.x == aabr.pmax.x)
-					{
-						recttexf.pmin.x = recttexf.pmax.x - RECTSIZE;
-						recttexdf.x = -recttexdf.x;
-					}
-					if(recttexf.pmax.y == aabr.pmax.y)
-					{
-						recttexf.pmin.y = recttexf.pmax.y - RECTSIZE;
-						recttexdf.y = -recttexdf.y;
-					}
-				}
-
-				recttexf += recttexdf;
-
-				GAIA::MATH::ARGB<GAIA::REAL> cr;
-				cr.r = R(1.0);
-				cr.g = cr.b = R(0.0);
-				cr.a = 0.5F;
-				pRectBrush->SetColor(cr);
-				pRender->SetTexture(*pContext, 0, pFileTexture);
-				GAIA::MATH::MTX33<GAIA::REAL> mtx;
-				mtx.identity();
-				pRender->DrawTexture(*pContext, recttexf, mtx);
 			}
 
 			/* End state pipeline. */
