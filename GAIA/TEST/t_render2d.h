@@ -77,6 +77,15 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
+		descBrush.reset();
+		__BaseRenderType::Brush* pTriangleBrush = pRender->CreateBrush(*pContext, descBrush);
+		if(pTriangleBrush == GNIL)
+		{
+			GTLINE2("Render create brush failed!");
+			++nRet;
+		}
+
+
 		typename _RenderType::FontFamily::FontFamilyDesc descFontFamily;
 		descFontFamily.reset();
 		descFontFamily.strFontName = _T("Arial");
@@ -107,6 +116,70 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
+		typename _RenderType::Texture::TextureDesc descTexture;
+		descTexture.reset();
+		descTexture.uWidth = 128;
+		descTexture.uHeight = 128;
+		__BaseRenderType::Texture* pTexture = pRender->CreateTexture(*pContext, descTexture);
+		if(pTexture == GNIL)
+		{
+			GTLINE2("Render create texture failed!");
+			++nRet;
+		}
+		typename _RenderType::Texture::FetchData::FetchDataDesc descFetchData;
+		descFetchData.reset();
+		descFetchData.pTexture = pTexture;
+		descFetchData.sOffsetX = 0;
+		descFetchData.sOffsetY = 0;
+		descFetchData.sSizeX = pTexture->GetDesc().uWidth;
+		descFetchData.sSizeY = pTexture->GetDesc().uHeight;
+		GAIA::FAVO::FetchData* pFetchData = pTexture->CreateFetchData(*pContext, descFetchData);
+		GAIA::FAVO::FetchData2* pFetchData2 = GDCAST(GAIA::FAVO::FetchData2*)(pFetchData);
+		if(pFetchData2 == GNIL)
+		{
+			GTLINE2("Render create fetch data failed!");
+			++nRet;
+		}
+		else
+		{
+			if(pFetchData2->GetSize() != 128 * 128 * 4)
+			{
+				GTLINE2("Render create fetch data failed!");
+				++nRet;
+			}
+			else
+			{
+				GAIA::MATH::ARGB<GAIA::U8>* pColor = new GAIA::MATH::ARGB<GAIA::U8>[pTexture->GetDesc().uWidth * pTexture->GetDesc().uHeight];
+				GAIA::MATH::VEC2<GAIA::REAL> center(pTexture->GetDesc().uWidth / 2, pTexture->GetDesc().uHeight / 2);
+				for(GAIA::SIZE x = 0; x < (GAIA::SIZE)pTexture->GetDesc().uWidth; ++x)
+				{
+					for(GAIA::SIZE y = 0; y < (GAIA::SIZE)pTexture->GetDesc().uHeight; ++y)
+					{
+						GAIA::MATH::VEC2<GAIA::REAL> t(x, y);
+						GAIA::MATH::ARGB<GAIA::U8>& cr = pColor[y * pTexture->GetDesc().uWidth + x];
+						GAIA::REAL rLen = (t - center).length() / (GAIA::REAL)(pTexture->GetDesc().uWidth / 2);
+						rLen = 1 - GAIA::MATH::xclamp(rLen, 0, 1);
+						cr = rLen * 255;
+						cr.a = 255;
+					}
+				}
+				pFetchData2->Set(pColor, pTexture->GetDesc().uWidth * pTexture->GetDesc().uHeight * 4, 4 * 8, 0);
+				GAIA_DELETE_SAFE(pColor);
+				pFetchData->Release();
+				pFetchData = GNIL;
+				pFetchData2 = GNIL;
+			}
+		}
+
+		descTexture.reset();
+		descTexture.pszFileName = _T("../TESTRES/car.jpg");
+		__BaseRenderType::Texture* pFileTexture = pRender->CreateTexture(*pContext, descTexture);
+		if(pFileTexture == GNIL)
+		{
+			GTLINE2("Render create texture from file failed!");
+			++nRet;
+		}
+
 		/* Test context. */
 		static const GAIA::REAL ANISPEED = R(4.0);
 
@@ -122,7 +195,17 @@ namespace GAIA_TEST
 		rect.identity();
 		GAIA::MATH::VEC2<GAIA::REAL> rectd = R(0.0);
 
-		/**/
+		GAIA::REAL rTriangleRotate = R(0.0);
+
+		GAIA::MATH::AABR<GAIA::REAL> recttex;
+		recttex.identity();
+		GAIA::MATH::VEC2<GAIA::REAL> recttexd = R(0.0);
+
+		GAIA::MATH::AABR<GAIA::REAL> recttexf;
+		recttexf.identity();
+		GAIA::MATH::VEC2<GAIA::REAL> recttexdf = R(0.0);
+
+		/* Frame. */
 		GAIA::N64 nFrameCount = 0;
 		for(;;)
 		{
@@ -140,11 +223,11 @@ namespace GAIA_TEST
 			pRender->ClearColor(crClear);
 
 			/* Helper. */
-			static const GAIA::SIZE BLOCKCNTX = 4;
+			static const GAIA::SIZE BLOCKCNTX = 5;
 			static const GAIA::SIZE BLOCKCNTY = 4;
 			const GAIA::UI::Canvas::__SizeType& sizeCanvas = pCanvas->Size();
 
-			// Draw grid.
+			/* Draw grid. */
 			{
 				pRender->SetPen(*pContext, pGridPen);
 				GAIA::MATH::VEC2<GAIA::REAL> p1, p2;
@@ -164,7 +247,7 @@ namespace GAIA_TEST
 				}
 			}
 
-			// Draw frame.
+			/* Draw frame. */
 			{
 				GAIA::MATH::AABR<GAIA::REAL> aabr;
 				aabr.pmin.x = sizeCanvas.x - 128;
@@ -295,12 +378,156 @@ namespace GAIA_TEST
 				rect += rectd;
 
 				GAIA::MATH::ARGB<GAIA::REAL> cr;
-				cr.r = R(1.0);
-				cr.g = cr.b = R(0.0);
+				cr.g = R(1.0);
+				cr.r = cr.b = R(0.0);
 				cr.a = 0.5F;
 				pRectBrush->SetColor(cr);
 				pRender->SetBrush(*pContext, pRectBrush);
 				pRender->DrawRect(*pContext, rect);
+			}
+
+			/* Triangle test. */
+			{
+				BLOCKINFO(2);
+
+				GAIA::MATH::VEC2<GAIA::REAL> pt[3];
+				for(GAIA::SIZE x = 0; x < 3; ++x)
+				{
+					GAIA::REAL rRadian = GAIA::MATH::PI * 2 / 3 * x - GAIA::MATH::PI * R(0.5) + rTriangleRotate;
+					pt[x].x = center.x + GAIA::MATH::xcos(rRadian) * rLen * R(0.25);
+					pt[x].y = center.y + GAIA::MATH::xsin(rRadian) * rLen * R(0.25);
+				}
+
+				rTriangleRotate += ANISPEED / 180;
+
+				GAIA::MATH::ARGB<GAIA::REAL> cr;
+				cr.r = cr.g = R(0.0);
+				cr.b = R(1.0);
+				cr.a = R(0.5);
+				pTriangleBrush->SetColor(cr);
+				pRender->SetBrush(*pContext, pTriangleBrush);
+				pRender->DrawTriangle(*pContext, pt[0], pt[1], pt[2]);
+			}
+
+			/* Texture test. */
+			{
+				BLOCKINFO(3);
+
+				static const GAIA::REAL RECTSIZE = R(64.0);
+
+				if(recttex.isidentity())
+				{
+					recttex.pmin = R(0.0);
+					recttex.pmax = RECTSIZE;
+					recttex.pmin.x += center.x;
+					recttex.pmax.x += center.x;
+					recttex.pmin.y += center.y;
+					recttex.pmax.y += center.y;
+				}
+
+				if(recttexd == 0)
+				{
+					recttexd.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+					recttexd.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+					recttexd.normalize();
+					recttexd *= ANISPEED;
+				}
+
+				if(aabr.clamp(recttex))
+				{
+					if(recttex.pmin.x == aabr.pmin.x)
+					{
+						recttex.pmax.x = recttex.pmin.x + RECTSIZE;
+						recttexd.x = -recttexd.x;
+					}
+					if(recttex.pmin.y == aabr.pmin.y)
+					{
+						recttex.pmax.y = recttex.pmin.y + RECTSIZE;
+						recttexd.y = -recttexd.y;
+					}
+					if(recttex.pmax.x == aabr.pmax.x)
+					{
+						recttex.pmin.x = recttex.pmax.x - RECTSIZE;
+						recttexd.x = -recttexd.x;
+					}
+					if(recttex.pmax.y == aabr.pmax.y)
+					{
+						recttex.pmin.y = recttex.pmax.y - RECTSIZE;
+						recttexd.y = -recttexd.y;
+					}
+				}
+
+				recttex += recttexd;
+
+				GAIA::MATH::ARGB<GAIA::REAL> cr;
+				cr.r = R(1.0);
+				cr.g = cr.b = R(0.0);
+				cr.a = 0.5F;
+				pRender->SetTexture(*pContext, 0, pTexture);
+				GAIA::MATH::MTX33<GAIA::REAL> mtx;
+				mtx.identity();
+				pRender->DrawTexture(*pContext, recttex, mtx);
+			}
+
+			/* Filed texture test. */
+			{
+				BLOCKINFO(4);
+
+				static const GAIA::REAL RECTSIZE = R(128.0);
+
+				if(recttexf.isidentity())
+				{
+					recttexf.pmin = R(0.0);
+					recttexf.pmax = RECTSIZE;
+					recttexf.pmin.x += center.x;
+					recttexf.pmax.x += center.x;
+					recttexf.pmin.y += center.y;
+					recttexf.pmax.y += center.y;
+				}
+
+				if(recttexdf == 0)
+				{
+					recttexdf.x = GAIA::MATH::xsin((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+					recttexdf.y = GAIA::MATH::xcos((GAIA::REAL)GAIA::MATH::xrandom() / (GAIA::REAL)GAIA::MATH::xrandom_max() * GAIA::MATH::PI);
+					recttexdf.normalize();
+					recttexdf *= ANISPEED;
+				}
+
+				if(aabr.clamp(recttexf))
+				{
+					if(recttexf.pmin.x == aabr.pmin.x)
+					{
+						recttexf.pmax.x = recttexf.pmin.x + RECTSIZE;
+						recttexdf.x = -recttexdf.x;
+					}
+					if(recttexf.pmin.y == aabr.pmin.y)
+					{
+						recttexf.pmax.y = recttexf.pmin.y + RECTSIZE;
+						recttexdf.y = -recttexdf.y;
+					}
+					if(recttexf.pmax.x == aabr.pmax.x)
+					{
+						recttexf.pmin.x = recttexf.pmax.x - RECTSIZE;
+						recttexdf.x = -recttexdf.x;
+					}
+					if(recttexf.pmax.y == aabr.pmax.y)
+					{
+						recttexf.pmin.y = recttexf.pmax.y - RECTSIZE;
+						recttexdf.y = -recttexdf.y;
+					}
+				}
+
+				recttexf += recttexdf;
+
+				GAIA::MATH::ARGB<GAIA::REAL> cr;
+				cr.r = R(1.0);
+				cr.g = cr.b = R(0.0);
+				cr.a = 0.5F;
+				pRectBrush->SetColor(cr);
+				pRender->SetTexture(*pContext, 0, pFileTexture);
+				GAIA::MATH::MTX33<GAIA::REAL> mtx;
+				mtx.identity();
+				pRender->DrawTexture(*pContext, recttexf, mtx);
 			}
 
 			/* End state pipeline. */
@@ -317,9 +544,12 @@ namespace GAIA_TEST
 		GAIA_RELEASE_SAFE(pLinePen);
 		GAIA_RELEASE_SAFE(pFontBrush);
 		GAIA_RELEASE_SAFE(pRectBrush);
+		GAIA_RELEASE_SAFE(pTriangleBrush);
 		GAIA_RELEASE_SAFE(pFontPainter);
 		GAIA_RELEASE_SAFE(pFontFamily);
 		GAIA_RELEASE_SAFE(pFontFormat);
+		GAIA_RELEASE_SAFE(pTexture);
+		GAIA_RELEASE_SAFE(pFileTexture);
 
 		/* Release context. */
 		pContext->Release();
