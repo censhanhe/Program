@@ -341,7 +341,12 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(!::SetWindowPos(m_hWnd, GNIL, 0, 0, size.x, size.y, SWP_NOMOVE))
+			RECT rc, rcClient;
+			::GetWindowRect(m_hWnd, &rc);
+			::GetClientRect(m_hWnd, &rcClient);
+			if(!::SetWindowPos(m_hWnd, GNIL, 0, 0, 
+				size.x + (rc.right - rc.left) - (rcClient.right - rcClient.left), 
+				size.y + (rc.bottom - rc.top) - (rcClient.bottom - rcClient.top), SWP_NOMOVE))
 				return GAIA::False;
 			return GAIA::True;
 		#else
@@ -359,7 +364,7 @@ namespace GAIA
 			}
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			RECT rc;
-			if(!::GetWindowRect(m_hWnd, &rc))
+			if(!::GetClientRect(m_hWnd, &rc))
 			{
 				__SizeType ret;
 				ret.x = 0;

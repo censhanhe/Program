@@ -21,6 +21,7 @@ namespace GAIA_TEST
 		descCanvas.reset();
 		descCanvas.pszCaptionText = _T("Render test");
 		pCanvas->Create(descCanvas);
+		pCanvas->Size(GAIA::UI::Canvas::__SizeType(1024, 768));
 		pCanvas->Show(GAIA::True);
 
 		/* Create render instance. */
@@ -226,42 +227,6 @@ namespace GAIA_TEST
 			static const GAIA::SIZE BLOCKCNTX = 5;
 			static const GAIA::SIZE BLOCKCNTY = 4;
 			const GAIA::UI::Canvas::__SizeType& sizeCanvas = pCanvas->Size();
-
-			/* Draw grid. */
-			{
-				pRender->SetPen(*pContext, pGridPen);
-				GAIA::MATH::VEC2<GAIA::REAL> p1, p2;
-				for(GAIA::SIZE x = 0; x < BLOCKCNTX; ++x)
-				{
-					p1.y = 0;
-					p2.y = sizeCanvas.y;
-					p1.x = p2.x = (GAIA::REAL)x / (GAIA::REAL)BLOCKCNTX * sizeCanvas.x;
-					pRender->DrawLine(*pContext, p1, p2);
-				}
-				for(GAIA::SIZE y = 0; y < BLOCKCNTY; ++y)
-				{
-					p1.x = 0;
-					p2.x = sizeCanvas.x;
-					p1.y = p2.y = (GAIA::REAL)y / (GAIA::REAL)BLOCKCNTY * sizeCanvas.y;
-					pRender->DrawLine(*pContext, p1, p2);
-				}
-			}
-
-			/* Draw frame. */
-			{
-				GAIA::MATH::AABR<GAIA::REAL> aabr;
-				aabr.pmin.x = sizeCanvas.x - 128;
-				aabr.pmin.y = 0;
-				aabr.pmax = aabr.pmin;
-				aabr.pmax += R(128.0);
-				pRender->SetBrush(*pContext, pFontBrush);
-				pRender->SetFontFamily(*pContext, pFontFamily);
-				pRender->SetFontPainter(*pContext, pFontPainter);
-				pRender->SetFontFormat(*pContext, pFontFormat);
-				GAIA::CTN::TChars strTemp = _T("Frame = ");
-				strTemp += nFrameCount;
-				pRender->DrawFontPainter(*pContext, strTemp, aabr);
-			}
 
 #define BLOCKINFO(i)	GAIA::SIZE BLOCKINDEX = i;\
 						GAIA::SIZE BLOCKSIZEX = sizeCanvas.x / BLOCKCNTX;\
@@ -594,6 +559,46 @@ namespace GAIA_TEST
 						GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, 
 						GAIA::RENDER::RENDER_STATEWORD_STRING[GAIA::RENDER::RENDER_STATEWORD_OFF]);
 				}
+			}
+
+			/* Draw grid. */
+			{
+				pRender->SetPen(*pContext, pGridPen);
+				GAIA::MATH::VEC2<GAIA::REAL> p1, p2;
+				for(GAIA::SIZE x = 0; x < BLOCKCNTX; ++x)
+				{
+					p1.y = 0;
+					p2.y = sizeCanvas.y;
+					p1.x = p2.x = (GAIA::REAL)x / (GAIA::REAL)BLOCKCNTX * sizeCanvas.x;
+					pRender->DrawLine(*pContext, p1, p2);
+				}
+				for(GAIA::SIZE y = 0; y < BLOCKCNTY; ++y)
+				{
+					p1.x = 0;
+					p2.x = sizeCanvas.x;
+					p1.y = p2.y = (GAIA::REAL)y / (GAIA::REAL)BLOCKCNTY * sizeCanvas.y;
+					pRender->DrawLine(*pContext, p1, p2);
+				}
+			}
+
+			/* Draw frame. */
+			{
+				GAIA::MATH::AABR<GAIA::REAL> aabr;
+				aabr.pmin.x = sizeCanvas.x - 128;
+				aabr.pmin.y = 0;
+				aabr.pmax = aabr.pmin;
+				aabr.pmax += R(128.0);
+				GAIA::MATH::ARGB<GAIA::REAL> cr;
+				cr.r = cr.g = cr.b = R(1.0);
+				cr.a = R(1.0);
+				pFontBrush->SetColor(cr);
+				pRender->SetBrush(*pContext, pFontBrush);
+				pRender->SetFontFamily(*pContext, pFontFamily);
+				pRender->SetFontPainter(*pContext, pFontPainter);
+				pRender->SetFontFormat(*pContext, pFontFormat);
+				GAIA::CTN::TChars strTemp = _T("Frame = ");
+				strTemp += nFrameCount;
+				pRender->DrawFontPainter(*pContext, strTemp, aabr);
 			}
 
 			/* End state pipeline. */
