@@ -14,7 +14,7 @@
 
 #include "preheader.h"
 
-#include "../gaia_sysconfig.h"
+#include "gaia_sysconfig.h"
 #if GAIA_COMPILER == GAIA_COMPILER_CL && GAIA_PROFILE == GAIA_PROFILE_DEBUG
 #	define	_CRTDBG_MAP_ALLOC
 #	include	<stdlib.h>
@@ -32,9 +32,9 @@
 #	endif
 #endif
 
-#include "../gaia.h"
-#include "../gaia_global_impl.h"
-#include "t_header.h"
+#include "gaia.h"
+#include "gaia_global_impl.h"
+#include "./TEST/t_header.h"
 
 int main()
 {

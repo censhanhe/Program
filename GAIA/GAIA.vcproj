@@ -2163,10 +2163,6 @@
 				RelativePath=".\TEST\t_header.h"
 				>
 			</File>
-			<File
-				RelativePath=".\TEST\t_main.cpp"
-				>
-			</File>
 			<Filter
 				Name="PLATFORMTEST"
 				>
@@ -2548,6 +2544,10 @@
 				>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\main.cpp"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
