@@ -56,7 +56,7 @@ namespace GAIA
 					return GAIA::True;
 				}
 			public:
-				GAIA::TCH* pszCaptionText;
+				const GAIA::TCH* pszCaptionText;
 				Canvas* pParent;
 				CanvasStyle style;
 			};

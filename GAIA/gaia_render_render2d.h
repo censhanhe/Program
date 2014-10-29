@@ -251,7 +251,7 @@ namespace GAIA
 						}
 						return GAIA::True;
 					}
-					GAIA::TCH* pszFileName;
+					const GAIA::TCH* pszFileName;
 					GAIA::U32 uWidth;
 					GAIA::U32 uHeight;
 				};

@@ -403,16 +403,16 @@ namespace GAIA
 	namespace GAIA{namespace ALLOCATOR{class AllocatorESG;};};
 	extern GAIA::ALLOCATOR::AllocatorESG g_gaia_globalallocator;
 #	define GAIA_MALLOC(type, size) (type*)g_gaia_globalallocator.memory_alloc(sizeof(type) * (size))
-#	define GAIA_MFREE(p) g_gaia_globalallocator.memory_release(p)
-#	define GAIA_MFREE_SAFE(p) if(p != GNIL){GAIA_MFREE(p); p = GNIL}
+#	define GAIA_MFREE(p) g_gaia_globalallocator.memory_release((GAIA::GVOID*)(p))
+#	define GAIA_MFREE_SAFE(p) if((p) != GNIL){GAIA_MFREE(p); (p) = GNIL;}
 #else
-#	define GAIA_MALLOC(type, size) new type[size]
+#	define GAIA_MALLOC(type, size) new type[(size)]
 #	define GAIA_MFREE(p) delete[] (p);
 #	define GAIA_MFREE_SAFE(p) do{if((p) != GNIL){GAIA_MFREE(p); (p) = GNIL;}}while(0)
 #endif
 
 #define GAIA_DELETE_SAFE(p) do{if((p) != GNIL){delete (p); (p) = GNIL;}}while(0)
 #define GAIA_DELETEARRAY_SAFE(p) do{if((p) != GNIL){delete[] (p); (p) = GNIL;}}while(0)
-#define GAIA_RELEASE_SAFE(p) do{if((p) != GNIL){(p)->Release(); p = GNIL;}}while(0)
+#define GAIA_RELEASE_SAFE(p) do{if((p) != GNIL){(p)->Release(); (p) = GNIL;}}while(0)
 
 #endif
