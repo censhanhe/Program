@@ -2533,6 +2533,14 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="THREAD"
+						>
+						<File
+							RelativePath=".\TEST\t_thread_thread.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

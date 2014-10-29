@@ -57,6 +57,8 @@
 
 #include "t_time_time.h"
 
+#include "t_thread_thread.h"
+
 #include "t_filesystem_file.h"
 #include "t_filesystem_directory.h"
 
@@ -150,6 +152,7 @@ namespace GAIA_TEST
 
 			//GTLINE1("Time: Time test begin!"); nRet += t_time_time(file, prt); GTLINE1("End"); GTLINE("\t");
 
+			GTLINE1("Thread: Thread test begin!"); nRet += t_thread_thread(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("File: File test begin!"); nRet += t_filesystem_file(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("File: Directory test begin!"); nRet += t_filesystem_directory(file, prt); GTLINE1("End"); GTLINE("\t");
 
@@ -168,7 +171,7 @@ namespace GAIA_TEST
 			//GTLINE1("Render: dx9 test begin!"); nRet += t_render_dx9(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx10 test begin!"); nRet += t_render_dx10(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx11 test begin!"); nRet += t_render_dx11(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: gl1 test begin!"); nRet += t_render_gl1(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: gl1 test begin!"); nRet += t_render_gl1(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: gl2 test begin!"); nRet += t_render_gl2(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: gl3 test begin!"); nRet += t_render_gl3(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: gles1 test begin!"); nRet += t_render_gles1(file, prt); GTLINE1("End"); GTLINE("\t");
