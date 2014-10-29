@@ -24,8 +24,8 @@ namespace GAIA_TEST
 		GAIA::N32 nRet = 0;
 
 		Thd t;
-		t.SetStackSize(1024);
-		if(t.GetStackSize() != 1024)
+		t.SetStackSize(1024 * 128);
+		if(t.GetStackSize() != 1024 * 128)
 		{
 			GTLINE2("Thread stack size set failed!");
 			++nRet;
