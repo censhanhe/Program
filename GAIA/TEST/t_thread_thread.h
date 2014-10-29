@@ -35,8 +35,16 @@ namespace GAIA_TEST
 			GTLINE2("Thread state error!");
 			++nRet;
 		}
-		t.Run();
-		t.Wait();
+		if(!t.Run())
+		{
+			GTLINE2("Thread run failed!");
+			++nRet;
+		}
+		if(!t.Wait())
+		{
+			GTLINE2("Thread wait failed!");
+			++nRet;
+		}
 		if(t.GetState() != GAIA::THREAD::Thread::STATE_INVALID)
 		{
 			GTLINE2("Thread state error!");
