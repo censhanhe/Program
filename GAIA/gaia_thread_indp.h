@@ -26,7 +26,7 @@ namespace GAIA
 	#else
 		static GAIA::GVOID* thread_procedure(GAIA::GVOID* p){Thread* pThread = static_cast<Thread*>(p); pThread->WorkProcedure(); pthread_exit(0);}
 	#endif
-		GINL Thread::Thread(){m_stacksize = 1024 * 1024; m_state = THREAD_STATE_INVALID; m_pThread = GNIL;}
+		GINL Thread::Thread(){m_stacksize = 1024 * 1024; m_state = STATE_INVALID; m_pThread = GNIL;}
 		GINL Thread::~Thread()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
@@ -51,7 +51,7 @@ namespace GAIA
 			m_pThread = ::CreateThread(GNIL, m_stacksize, thread_procedure, static_cast<GAIA::GVOID*>(this), 0, GNIL);
 			if(m_pThread == GNIL)
 				return GAIA::False;
-			m_state = THREAD_STATE_RUNING;
+			m_state = STATE_RUNNING;
 			return GAIA::True;
 		#else
 			pthread_attr_t attr;
@@ -63,7 +63,7 @@ namespace GAIA
 			if(pthread_create((pthread_t*)m_pThread, &attr, thread_procedure, static_cast<GAIA::GVOID*>(this)) != 0)
 				return GAIA::False;
 			pthread_attr_destroy(&attr);
-			m_state = THREAD_STATE_RUNING;
+			m_state = STATE_RUNNING;
 			return GAIA::True;
 		#endif
 		}
@@ -78,7 +78,7 @@ namespace GAIA
 					{
 						::CloseHandle((HANDLE)m_pThread);
 						(const_cast<Thread*>(this))->m_pThread = GNIL;
-						(const_cast<Thread*>(this))->m_state = THREAD_STATE_INVALID;
+						(const_cast<Thread*>(this))->m_state = STATE_INVALID;
 						return GAIA::True;
 					}
 				}
@@ -88,7 +88,7 @@ namespace GAIA
 					pthread_join(*(pthread_t*)m_pThread, GNIL);
 					delete GSCAST(pthread_t*)((const_cast<Thread*>(this))->m_pThread);
 					(const_cast<Thread*>(this))->m_pThread = GNIL;
-					(const_cast<Thread*>(this))->m_state = THREAD_STATE_INVALID;
+					(const_cast<Thread*>(this))->m_state = STATE_INVALID;
 					return GAIA::True;
 				}
 			#endif

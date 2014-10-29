@@ -9,7 +9,7 @@ namespace GAIA_TEST
 		GINL Thd(){this->init();}
 		virtual GAIA::GVOID WorkProcedure()
 		{
-			if(this->GetState() == GAIA::THREAD::Thread::THREAD_STATE_RUNING)
+			if(this->GetState() == GAIA::THREAD::Thread::STATE_RUNNING)
 				m_sData = 1;
 		}
 		GINL GAIA::SIZE GetData() const{return m_sData;}
@@ -30,14 +30,14 @@ namespace GAIA_TEST
 			GTLINE2("Thread stack size set failed!");
 			++nRet;
 		}
-		if(t.GetState() != GAIA::THREAD::Thread::THREAD_STATE_INVALID)
+		if(t.GetState() != GAIA::THREAD::Thread::STATE_INVALID)
 		{
 			GTLINE2("Thread state error!");
 			++nRet;
 		}
 		t.Run();
 		t.Wait();
-		if(t.GetState() != GAIA::THREAD::Thread::THREAD_STATE_INVALID)
+		if(t.GetState() != GAIA::THREAD::Thread::STATE_INVALID)
 		{
 			GTLINE2("Thread state error!");
 			++nRet;
