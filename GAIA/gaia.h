@@ -209,6 +209,7 @@
 
 #include	"gaia_state_statemgr.h"
 #include	"gaia_timer_timer.h"
+#include	"gaia_timer_timer_impl.h"
 #include	"gaia_timer_realtimer.h"
 
 #include	"gaia_collisioner_bounder.h"

@@ -12,17 +12,9 @@ namespace GAIA
 			GINL GAIA::GVOID* Base::operator new(GAIA::U64 size){return g_gaia_globalallocator.memory_alloc((GAIA::UM)size);}
 			GINL GAIA::GVOID* Base::operator new[](GAIA::U64 size){return g_gaia_globalallocator.memory_alloc((GAIA::UM)size);}
 #		endif
-#	elif GAIA_OS == GAIA_OS_OSX
-		GINL GAIA::GVOID* Base::operator new(GAIA::UM size){return g_gaia_globalallocator.memory_alloc((GAIA::UM)size);}
-		GINL GAIA::GVOID* Base::operator new[](GAIA::UM size){return g_gaia_globalallocator.memory_alloc((GAIA::UM)size);}
 #	else
-#		if GAIA_MACHINE == GAIA_MACHINE32
-			GINL GAIA::GVOID* Base::operator new(GAIA::U32 size){return g_gaia_globalallocator.memory_alloc((GAIA::U32)size);}
-			GINL GAIA::GVOID* Base::operator new[](GAIA::U32 size){return g_gaia_globalallocator.memory_alloc((GAIA::U32)size);}
-#		elif GAIA_MACHINE == GAIA_MACHINE64
-			GINL GAIA::GVOID* Base::operator new(GAIA::U64 size){return g_gaia_globalallocator.memory_alloc((GAIA::U64)size);}
-			GINL GAIA::GVOID* Base::operator new[](GAIA::U64 size){return g_gaia_globalallocator.memory_alloc((GAIA::U64)size);}
-#		endif
+		GINL GAIA::GVOID* Base::operator new(GAIA::UM size){return g_gaia_globalallocator.memory_alloc(size);}
+		GINL GAIA::GVOID* Base::operator new[](GAIA::UM size){return g_gaia_globalallocator.memory_alloc(size);}
 #	endif
 	GINL GAIA::GVOID Base::operator delete(GAIA::GVOID* p){return g_gaia_globalallocator.memory_release(p);}
 	GINL GAIA::GVOID Base::operator delete[](GAIA::GVOID* p){return g_gaia_globalallocator.memory_release(p);}

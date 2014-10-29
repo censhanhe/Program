@@ -170,17 +170,9 @@ namespace GAIA
 				GINL GAIA::GVOID* operator new(GAIA::U64 size);
 				GINL GAIA::GVOID* operator new[](GAIA::U64 size);
 	#		endif
-	#	elif GAIA_OS == GAIA_OS_OSX
+	#	else
 			GINL GAIA::GVOID* operator new(GAIA::UM size);
 			GINL GAIA::GVOID* operator new[](GAIA::UM size);
-	#	else
-	#		if GAIA_MACHINE == GAIA_MACHINE32
-				GINL GAIA::GVOID* operator new(GAIA::U32 size);
-				GINL GAIA::GVOID* operator new[](GAIA::U32 size);
-	#		elif GAIA_MACHINE == GAIA_MACHINE64
-				GINL GAIA::GVOID* operator new(GAIA::U64 size);
-				GINL GAIA::GVOID* operator new[](GAIA::U64 size);
-	#		endif
 	#	endif
 		GINL GAIA::GVOID operator delete(GAIA::GVOID* p);
 		GINL GAIA::GVOID operator delete[](GAIA::GVOID* p);
