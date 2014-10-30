@@ -20,9 +20,9 @@ namespace GAIA
 							{\
 								GAIA::PRINT::Print prt;\
 								prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue:";\
-								GAIA::CH ch;\
+								GAIA::CH ch[32];\
 								prt >> ch;\
-								if(ch == '1')\
+								if(ch[0] == '1' && ch[1] == '\0')\
 									throw GAIA::DEBUG::AstException(__FILE__, __LINE__);\
 							}\
 						}while(0)
