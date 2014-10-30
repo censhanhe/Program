@@ -32,8 +32,8 @@
 #	endif
 #endif
 
-#include "../GAIA/gaia.h"
-#include "../GAIA/gaia_global_impl.h"
+#include "../gaia.h"
+#include "../gaia_global_impl.h"
 #include "t_header.h"
 
 int main()
