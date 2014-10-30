@@ -13,14 +13,23 @@ namespace GAIA
 				STATE_RUNNING,
 			GAIA_ENUM_END(STATE)
 		public:
-			GINL Thread();
+			GINL Thread(){this->init();}
 			GINL virtual ~Thread();
-			GINL GAIA::GVOID SetStackSize(const GAIA::U32& size){m_stacksize = size;}
+			GINL GAIA::GVOID SetStackSize(const GAIA::U32& size)
+			{
+			#ifdef GAIA_DEBUG_PLATFORM
+				GAIA_AST(m_stacksize % 1024 == 0);
+				GAIA_AST(m_stacksize / 1024 >= 10);
+			#endif
+				m_stacksize = size;
+			}
 			GINL const GAIA::U32& GetStackSize() const{return m_stacksize;}
 			GINL STATE GetState() const{return m_state;}
 			GINL GAIA::BL Run();
 			GINL GAIA::BL Wait() const;
 			virtual GAIA::GVOID WorkProcedure() = 0;
+		private:
+			GINL GAIA::GVOID init(){m_stacksize = 1024 * 1024; m_state = STATE_INVALID; m_pThread = GNIL;}
 		private:
 			GAIA::U32 m_stacksize;
 			STATE m_state;

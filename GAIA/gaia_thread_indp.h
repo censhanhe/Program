@@ -26,7 +26,6 @@ namespace GAIA
 	#else
 		static GAIA::GVOID* thread_procedure(GAIA::GVOID* p){Thread* pThread = static_cast<Thread*>(p); pThread->WorkProcedure(); pthread_exit(0);}
 	#endif
-		GINL Thread::Thread(){m_stacksize = 1024 * 1024; m_state = STATE_INVALID; m_pThread = GNIL;}
 		GINL Thread::~Thread()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
