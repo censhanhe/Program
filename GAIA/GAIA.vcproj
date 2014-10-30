@@ -2180,7 +2180,7 @@
 							Name="CANVAS"
 							>
 							<File
-								RelativePath=".\TEST\t_ui_canvas.h"
+								RelativePath=".\TEST\t_ui_canvas.cpp"
 								>
 							</File>
 						</Filter>
@@ -2196,11 +2196,11 @@
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_ddraw.h"
+								RelativePath=".\TEST\t_render_ddraw.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gdiplus.h"
+								RelativePath=".\TEST\t_render_gdiplus.cpp"
 								>
 							</File>
 						</Filter>
@@ -2212,39 +2212,39 @@
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_dx10.h"
+								RelativePath=".\TEST\t_render_dx10.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_dx11.h"
+								RelativePath=".\TEST\t_render_dx11.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_dx9.h"
+								RelativePath=".\TEST\t_render_dx9.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gl1.h"
+								RelativePath=".\TEST\t_render_gl1.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gl2.h"
+								RelativePath=".\TEST\t_render_gl2.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gl3.h"
+								RelativePath=".\TEST\t_render_gl3.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gles1.h"
+								RelativePath=".\TEST\t_render_gles1.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gles2.h"
+								RelativePath=".\TEST\t_render_gles2.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_render_gles3.h"
+								RelativePath=".\TEST\t_render_gles3.cpp"
 								>
 							</File>
 						</Filter>
@@ -2252,7 +2252,7 @@
 							Name="IMAGEWORK"
 							>
 							<File
-								RelativePath=".\TEST\t_render_imagework.h"
+								RelativePath=".\TEST\t_render_imagework.cpp"
 								>
 							</File>
 						</Filter>
@@ -2265,7 +2265,7 @@
 						Name="NAMESPACE"
 						>
 						<File
-							RelativePath=".\TEST\t_namespace.h"
+							RelativePath=".\TEST\t_namespace.cpp"
 							>
 						</File>
 					</Filter>
@@ -2273,131 +2273,131 @@
 						Name="CONTAINER"
 						>
 						<File
-							RelativePath=".\TEST\t_container_accesser.h"
+							RelativePath=".\TEST\t_container_accesser.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_array.h"
+							RelativePath=".\TEST\t_container_array.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_arrayvector.h"
+							RelativePath=".\TEST\t_container_arrayvector.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_avltree.h"
+							RelativePath=".\TEST\t_container_avltree.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_bitset.h"
+							RelativePath=".\TEST\t_container_bitset.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_book.h"
+							RelativePath=".\TEST\t_container_book.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_buffer.h"
+							RelativePath=".\TEST\t_container_buffer.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_chars.h"
+							RelativePath=".\TEST\t_container_chars.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_cooperate.h"
+							RelativePath=".\TEST\t_container_cooperate.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_graph.h"
+							RelativePath=".\TEST\t_container_graph.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_list.h"
+							RelativePath=".\TEST\t_container_list.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_map.h"
+							RelativePath=".\TEST\t_container_map.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_multiavltree.h"
+							RelativePath=".\TEST\t_container_multiavltree.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_multimap.h"
+							RelativePath=".\TEST\t_container_multimap.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_multiset.h"
+							RelativePath=".\TEST\t_container_multiset.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_orderless.h"
+							RelativePath=".\TEST\t_container_orderless.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_pool.h"
+							RelativePath=".\TEST\t_container_pool.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_ptr.h"
+							RelativePath=".\TEST\t_container_ptr.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_queue.h"
+							RelativePath=".\TEST\t_container_queue.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_ref.h"
+							RelativePath=".\TEST\t_container_ref.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_set.h"
+							RelativePath=".\TEST\t_container_set.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_stack.h"
+							RelativePath=".\TEST\t_container_stack.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_stackbitset.h"
+							RelativePath=".\TEST\t_container_stackbitset.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_stackqueue.h"
+							RelativePath=".\TEST\t_container_stackqueue.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_stackstack.h"
+							RelativePath=".\TEST\t_container_stackstack.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_staticstringpool.h"
+							RelativePath=".\TEST\t_container_staticstringpool.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_storage.h"
+							RelativePath=".\TEST\t_container_storage.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_string.h"
+							RelativePath=".\TEST\t_container_string.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_stringpool.h"
+							RelativePath=".\TEST\t_container_stringpool.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_tree.h"
+							RelativePath=".\TEST\t_container_tree.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_trietree.h"
+							RelativePath=".\TEST\t_container_trietree.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_container_vector.h"
+							RelativePath=".\TEST\t_container_vector.cpp"
 							>
 						</File>
 					</Filter>
@@ -2405,7 +2405,7 @@
 						Name="ALGORITHM"
 						>
 						<File
-							RelativePath=".\TEST\t_algorithm_set.h"
+							RelativePath=".\TEST\t_algorithm_set.cpp"
 							>
 						</File>
 					</Filter>
@@ -2413,7 +2413,7 @@
 						Name="LOCALE"
 						>
 						<File
-							RelativePath=".\TEST\t_locale.h"
+							RelativePath=".\TEST\t_locale.cpp"
 							>
 						</File>
 					</Filter>
@@ -2424,15 +2424,15 @@
 							Name="ARITHMATIC"
 							>
 							<File
-								RelativePath=".\TEST\t_math_arithmatic_basic.h"
+								RelativePath=".\TEST\t_math_arithmatic_basic.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_arithmatic_lerp.h"
+								RelativePath=".\TEST\t_math_arithmatic_lerp.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_arithmatic_random.h"
+								RelativePath=".\TEST\t_math_arithmatic_random.cpp"
 								>
 							</File>
 						</Filter>
@@ -2440,55 +2440,55 @@
 							Name="COOKIES"
 							>
 							<File
-								RelativePath=".\TEST\t_math_cookies_aabb.h"
+								RelativePath=".\TEST\t_math_cookies_aabb.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_aabr.h"
+								RelativePath=".\TEST\t_math_cookies_aabr.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_argb.h"
+								RelativePath=".\TEST\t_math_cookies_argb.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_mtx22.h"
+								RelativePath=".\TEST\t_math_cookies_mtx22.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_mtx32.h"
+								RelativePath=".\TEST\t_math_cookies_mtx32.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_mtx33.h"
+								RelativePath=".\TEST\t_math_cookies_mtx33.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_mtx43.h"
+								RelativePath=".\TEST\t_math_cookies_mtx43.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_mtx44.h"
+								RelativePath=".\TEST\t_math_cookies_mtx44.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_nrgb.h"
+								RelativePath=".\TEST\t_math_cookies_nrgb.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_qua.h"
+								RelativePath=".\TEST\t_math_cookies_qua.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_vec2.h"
+								RelativePath=".\TEST\t_math_cookies_vec2.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_vec3.h"
+								RelativePath=".\TEST\t_math_cookies_vec3.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TEST\t_math_cookies_vec4.h"
+								RelativePath=".\TEST\t_math_cookies_vec4.cpp"
 								>
 							</File>
 						</Filter>
@@ -2497,7 +2497,7 @@
 						Name="DATAPHASE"
 						>
 						<File
-							RelativePath=".\TEST\t_dataphase_xml.h"
+							RelativePath=".\TEST\t_dataphase_xml.cpp"
 							>
 						</File>
 					</Filter>
@@ -2505,11 +2505,11 @@
 						Name="FILESYSTEM"
 						>
 						<File
-							RelativePath=".\TEST\t_filesystem_directory.h"
+							RelativePath=".\TEST\t_filesystem_directory.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_filesystem_file.h"
+							RelativePath=".\TEST\t_filesystem_file.cpp"
 							>
 						</File>
 					</Filter>
@@ -2517,7 +2517,7 @@
 						Name="NETWORK"
 						>
 						<File
-							RelativePath=".\TEST\t_network.h"
+							RelativePath=".\TEST\t_network.cpp"
 							>
 						</File>
 					</Filter>
@@ -2525,7 +2525,7 @@
 						Name="TIME"
 						>
 						<File
-							RelativePath=".\TEST\t_time_time.h"
+							RelativePath=".\TEST\t_time_time.cpp"
 							>
 						</File>
 					</Filter>
@@ -2533,7 +2533,7 @@
 						Name="THREAD"
 						>
 						<File
-							RelativePath=".\TEST\t_thread_thread.h"
+							RelativePath=".\TEST\t_thread_thread.cpp"
 							>
 						</File>
 					</Filter>
@@ -2541,19 +2541,19 @@
 						Name="SYNC"
 						>
 						<File
-							RelativePath=".\TEST\t_sync_atomic.h"
+							RelativePath=".\TEST\t_sync_atomic.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_sync_event.h"
+							RelativePath=".\TEST\t_sync_event.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_sync_lock.h"
+							RelativePath=".\TEST\t_sync_lock.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TEST\t_sync_mutex.h"
+							RelativePath=".\TEST\t_sync_mutex.cpp"
 							>
 						</File>
 					</Filter>
