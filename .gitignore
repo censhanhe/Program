@@ -234,3 +234,4 @@ accesser_file
 xmlfile.xml
 *.acc
 *.o
+*.gch
