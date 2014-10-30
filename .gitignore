@@ -233,3 +233,4 @@ gaia_test.txt
 accesser_file
 xmlfile.xml
 *.acc
+*.o
