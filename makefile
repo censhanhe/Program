@@ -1,21 +1,18 @@
-CXX=clang++
-CXXFLAGS=-pthread
-BINPATH=./BIN/
+cxx=g++
+linkflag=-luuid -lpthread -o
+compflag=-c -Wall
+binpath=./BIN/
 
-all:gaia dwarfs prom fsha
+srcs=$(wildcard ./GAIA/TEST/*.cpp)
+objs=$(srcs:%.cpp=%.o)
 
-gaia:./GAIA/TEST/t_main.cpp
-	$(CXX) $(CXXFLAGS) ./GAIA/TEST/t_main.cpp -o $(BINPATH)gaia
+build:$(objs)
+	@echo ------print comment------ $(objs)
+	$(cxx) $(objs) $(linkflag) $(binpath)gaia
 
-dwarfs:./DWARFS/TEST/t_main.cpp
-	$(CXX) $(CXXFLAGS) ./DWARFS/TEST/t_main.cpp -o $(BINPATH)dwarfs
+$(objs):%.o:%.cpp
+	$(cxx) $(compflag) $<
 
-prom:./PROMETHEUS/main.cpp
-	$(CXX) $(CXXFLAGS) ./PROMETHEUS/main.cpp -o $(BINPATH)prom
-
-fsha:./DWARFS/FILESHARE/main.cpp
-	$(CXX) $(CXXFLAGS) ./DWARFS/FILESHARE/main.cpp -o $(BINPATH)fsha
-
-
-
-
+.PHONY:clean
+clean:
+	-rm $(binpath)gaia $(objs)
