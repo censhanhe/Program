@@ -57,6 +57,10 @@
 
 #include "t_time_time.h"
 
+#include "t_sync_atomic.h"
+#include "t_sync_event.h"
+#include "t_sync_lock.h"
+#include "t_sync_mutex.h"
 #include "t_thread_thread.h"
 
 #include "t_filesystem_file.h"
@@ -152,6 +156,10 @@ namespace GAIA_TEST
 
 			//GTLINE1("Time: Time test begin!"); nRet += t_time_time(file, prt); GTLINE1("End"); GTLINE("\t");
 
+			GTLINE1("Sync: Atomic test begin!"); nRet += t_sync_atomic(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Sync: Event test begin!"); nRet += t_sync_event(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Sync: Lock test begin!"); nRet += t_sync_lock(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Sync: Mutex test begin!"); nRet += t_sync_mutex(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Thread: Thread test begin!"); nRet += t_thread_thread(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("File: File test begin!"); nRet += t_filesystem_file(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("File: Directory test begin!"); nRet += t_filesystem_directory(file, prt); GTLINE1("End"); GTLINE("\t");

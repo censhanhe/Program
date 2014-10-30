@@ -2537,6 +2537,26 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="SYNC"
+						>
+						<File
+							RelativePath=".\TEST\t_sync_atomic.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_sync_event.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_sync_lock.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_sync_mutex.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
