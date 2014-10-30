@@ -10,6 +10,7 @@ namespace GAIA
 		public:
 			GINL Atomic(){this->init();}
 			GINL Atomic(const Atomic& src){this->operator = (src);}
+			GINL Atomic(const GAIA::N64& src){this->operator = (src);}
 			GINL ~Atomic(){}
 			GINL Atomic& operator = (const Atomic& src){GAIA_AST(&src != this); m_n = src.m_n; return *this;}
 			GINL Atomic& operator = (const GAIA::N64& src){m_n = src; return *this;}
