@@ -19,13 +19,7 @@ namespace GAIA
 			GINL virtual GAIA::UM piece_size();
 			GINL virtual GAIA::U64 alloc_times();
 		private:
-			GINL GAIA::GVOID init()
-			{
-				m_capacity = 0;
-				m_usesize = 0;
-				m_piecesize = 0;
-				m_alloctimes = 0;
-			}
+			GINL GAIA::GVOID init(){}
 		private:
 			GAIA::SYNC::Atomic m_capacity;
 			GAIA::SYNC::Atomic m_usesize;

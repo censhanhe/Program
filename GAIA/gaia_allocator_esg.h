@@ -47,11 +47,6 @@ namespace GAIA
 				m_uSecListSize = 0;
 				m_secsizelist = GNIL;
 				m_uSecSizeListSize = 0;
-				m_capacity = 0;
-				m_size = 0;
-				m_usesize = 0;
-				m_piecesize = 0;
-				m_alloctimes = 0;
 			}
 			GINL GAIA::UM GetSectionPatchSize(GAIA::UM uIndex) const{return 32 + 32 * uIndex * uIndex;}
 			GINL GAIA::UM GetSectionPatchCount(GAIA::UM uIndex) const{if(uIndex == 0) uIndex = 1; return 40000 / (uIndex * uIndex);}

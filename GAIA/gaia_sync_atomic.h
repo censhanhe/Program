@@ -8,7 +8,7 @@ namespace GAIA
 		class Atomic : public GAIA::Entity
 		{
 		public:
-			GINL Atomic(){}
+			GINL Atomic(){this->init();}
 			GINL Atomic(const Atomic& src){this->operator = (src);}
 			GINL ~Atomic(){}
 			GINL Atomic& operator = (const Atomic& src){GAIA_AST(&src != this); m_n = src.m_n; return *this;}
@@ -17,6 +17,9 @@ namespace GAIA
 			GINL GAIA::N64 Increase();
 			GINL GAIA::N64 Decrease();
 			GINL GAIA::N64 Add(const GAIA::N64& src);
+			GINL GAIA::N64 Add(const Atomic& src);
+		private:
+			GINL GAIA::GVOID init(){m_n = 0;}
 		private:
 			volatile GAIA::N64 m_n;
 		};
