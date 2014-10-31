@@ -86,9 +86,9 @@ namespace GAIA
 						return GAIA::False;
 					if(!descDir.check())
 						return GAIA::False;
-					if(nEscapeUSec == 0)
+					if(nEscapeUSec <= 0)
 						return GAIA::False;
-					if(nMaxFireTimes == 0)
+					if(nMaxFireTimes <= 0)
 						return GAIA::False;
 					if(pCallBack == GNIL)
 						return GAIA::False;
@@ -209,7 +209,7 @@ namespace GAIA
 				timer.Reference();
 
 				/* Regist. */
-				GAIA::SIZE sGroupIndex = GSCAST(GAIA::SIZE)(GAIA::MATH::xsqrt(GSCAST(GAIA::REAL)(timer.GetDesc().nEscapeUSec / 1000 / 1000)));
+				GAIA::SIZE sGroupIndex = this->GetGroupIndexByTime(timer.GetDesc().nEscapeUSec);
 				if(sGroupIndex >= m_groups.size())
 					sGroupIndex = m_groups.size() - 1;
 				Group& g = m_groups[sGroupIndex];
@@ -273,6 +273,10 @@ namespace GAIA
 
 			GINL GAIA::BL Update(const GAIA::TIMER::Timer::__MicroSecType& nEscape)
 			{
+				for(GAIA::SIZE x = 0; x < m_groups.size(); ++x)
+				{
+					Group& g = m_groups[x];
+				}
 				return GAIA::True;
 			}
 
@@ -301,8 +305,10 @@ namespace GAIA
 					g.nEscape = x * x * 1000 * 1000; // The first group's escape must zero for always update.
 					g.nLastUpdate = 0;
 				}
+				m_groups.back().nEscape = GAIA::N64MAXSIZE;
 			}
 
+			GINL GAIA::SIZE GetGroupIndexByTime(const GAIA::N64& nEscapeUSec) const{return GAIA::MATH::xsqrt(nEscapeUSec / 1000 / 1000);}
 		private:
 			typedef GAIA::CTN::Vector<Group> __GroupList;
 
