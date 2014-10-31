@@ -17,6 +17,29 @@ namespace GAIA
 				m_pTimerMgr->Reference();
 			return m_pTimerMgr;
 		}
+		GINL GAIA::BL Timer::Pause()
+		{
+			/* Pause. */
+			m_bPaused = GAIA::True;
+
+			/* Pause fire. */
+			if(m_desc.descFire.bPauseFire)
+				this->Update(GAIA::TIMER::Timer::FIRE_REASON_PAUSE);
+
+			return GAIA::True;
+		}
+		GINL GAIA::BL Timer::Resume()
+		{
+			/* Resume. */
+			m_bPaused = GAIA::False;
+
+			/* Resume fire. */
+			if(m_desc.descFire.bResumeFire)
+				this->Update(GAIA::TIMER::Timer::FIRE_REASON_RESUME);
+
+			return GAIA::True;
+		}
+
 		GINL GAIA::GVOID Timer::SetTimerMgr(GAIA::TIMER::TimerMgr* pTimerMgr)
 		{
 			GAIA_RELEASE_SAFE(m_pTimerMgr);

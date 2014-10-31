@@ -25,6 +25,14 @@ namespace GAIA
 				FIRE_REASON_UPDATE,
 			GAIA_ENUM_END(FIRE_REASON)
 
+		public:
+			class CallBack : public GAIA::Base
+			{
+			public:
+				GINL CallBack(){}
+				virtual GAIA::BL UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason) = 0;
+			};
+
 			class TimerFireDesc : public virtual GAIA::FWORK::InstanceDesc
 			{
 			public:
@@ -68,8 +76,9 @@ namespace GAIA
 				{
 					descFire.reset();
 					descDir.reset();
-					nEscape = 0;
+					nEscapeUSec = 0;
 					nMaxFireTimes = 0;
+					pCallBack = GNIL;
 				}
 				virtual GAIA::BL check() const
 				{
@@ -77,22 +86,26 @@ namespace GAIA
 						return GAIA::False;
 					if(!descDir.check())
 						return GAIA::False;
-					if(nEscape == 0)
+					if(nEscapeUSec == 0)
 						return GAIA::False;
 					if(nMaxFireTimes == 0)
+						return GAIA::False;
+					if(pCallBack == GNIL)
 						return GAIA::False;
 					return GAIA::True;
 				}
 				TimerFireDesc descFire;
 				TimerDirDesc descDir;
-				__MicroSecType nEscape;
+				__MicroSecType nEscapeUSec;
 				__FireTimesType nMaxFireTimes;
+				CallBack* pCallBack;
 			};
 
 		public:
 			GINL Timer(){this->init();}
 			GINL ~Timer(){}
 
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_TIMER_TIMER;}
 			GINL GAIA::BL Create(const GAIA::TIMER::Timer::TimerDesc& desc)
 			{
 				if(!desc.check())
@@ -109,31 +122,18 @@ namespace GAIA
 			GINL GAIA::TIMER::TimerMgr* GetTimerMgr() const;
 			GINL GAIA::BL IsRegisted() const{return m_pTimerMgr != GNIL;}
 
-			GINL GAIA::BL Pause()
-			{
-				/* Pause. */
-				m_bPaused = GAIA::True;
-
-				/* Pause fire. */
-				if(m_desc.descFire.bPauseFire)
-					this->Update(GAIA::TIMER::Timer::FIRE_REASON_PAUSE);
-
-				return GAIA::True;
-			}
-			GINL GAIA::BL Resume()
-			{
-				/* Resume. */
-				m_bPaused = GAIA::False;
-
-				/* Resume fire. */
-				if(m_desc.descFire.bResumeFire)
-					this->Update(GAIA::TIMER::Timer::FIRE_REASON_RESUME);
-
-				return GAIA::True;
-			}
-
+			GINL GAIA::BL Pause();
+			GINL GAIA::BL Resume();
 			GINL GAIA::BL IsPaused() const{return m_bPaused;}
-			virtual GAIA::BL Update(GAIA::TIMER::Timer::FIRE_REASON reason) = 0;
+			GINL GAIA::BL Update(GAIA::TIMER::Timer::FIRE_REASON reason)
+			{
+				if(m_desc.pCallBack == GNIL)
+					return GAIA::False;
+				this->Reference();
+				GAIA::BL bRet = m_desc.pCallBack->UpdateTimer(this, reason);
+				this->Release();
+				return bRet;
+			}
 
 		private:
 			GINL GAIA::GVOID init()
@@ -187,6 +187,7 @@ namespace GAIA
 			GINL TimerMgr(){this->init();}
 			GINL ~TimerMgr(){}
 
+			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_TIMER_TIMERMGR;}
 			GINL GAIA::BL Create(const GAIA::TIMER::TimerMgr::TimerMgrDesc& desc)
 			{
 				if(!desc.check())
@@ -208,7 +209,9 @@ namespace GAIA
 				timer.Reference();
 
 				/* Regist. */
-				GAIA::SIZE sGroupIndex = GSCAST(GAIA::SIZE)(GAIA::MATH::xsqrt(GSCAST(GAIA::REAL)(timer.GetDesc().nEscape / 1000 / 1000)));
+				GAIA::SIZE sGroupIndex = GSCAST(GAIA::SIZE)(GAIA::MATH::xsqrt(GSCAST(GAIA::REAL)(timer.GetDesc().nEscapeUSec / 1000 / 1000)));
+				if(sGroupIndex >= m_groups.size())
+					sGroupIndex = m_groups.size() - 1;
 				Group& g = m_groups[sGroupIndex];
 				GAIA::SIZE sUsedIndex = g.timers.set(&timer);
 				timer.SetTimerMgr(this);
