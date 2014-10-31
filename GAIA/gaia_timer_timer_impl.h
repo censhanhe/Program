@@ -7,7 +7,7 @@ namespace GAIA
 	{
 		GINL GAIA::GVOID Timer::Destroy()
 		{
-			if(m_pTimerMgr != GNIL)
+			if(this->IsRegisted())
 				m_pTimerMgr->Unregist(*this);
 			GAIA_RELEASE_SAFE(m_pTimerMgr);
 		}

@@ -13,7 +13,7 @@ namespace GAIA
 		public:
 			typedef GAIA::N32 __FireTimesType;
 			typedef GAIA::N64 __MicroSecType;
-			typedef GAIA::CTN::Vector<Timer*> __TimerList;
+			typedef GAIA::CTN::Book<Timer*> __TimerList;
 
 		public:
 			GAIA_ENUM_BEGIN(FIRE_REASON)
@@ -97,6 +97,7 @@ namespace GAIA
 			{
 				if(!desc.check())
 					return GAIA::False;
+				m_desc = desc;
 				return GAIA::True;
 			}
 			GINL GAIA::GVOID Destroy();
@@ -110,13 +111,28 @@ namespace GAIA
 
 			GINL GAIA::BL Pause()
 			{
+				/* Pause. */
+				m_bPaused = GAIA::True;
+
+				/* Pause fire. */
+				if(m_desc.descFire.bPauseFire)
+					this->Update(GAIA::TIMER::Timer::FIRE_REASON_PAUSE);
+
 				return GAIA::True;
 			}
 			GINL GAIA::BL Resume()
 			{
+				/* Resume. */
+				m_bPaused = GAIA::False;
+
+				/* Resume fire. */
+				if(m_desc.descFire.bResumeFire)
+					this->Update(GAIA::TIMER::Timer::FIRE_REASON_RESUME);
+
 				return GAIA::True;
 			}
 
+			GINL GAIA::BL IsPaused() const{return m_bPaused;}
 			virtual GAIA::BL Update(GAIA::TIMER::Timer::FIRE_REASON reason) = 0;
 
 		private:
@@ -127,8 +143,15 @@ namespace GAIA
 				m_nLastFireTime = 0;
 				m_nFireTimes = 0;
 				m_pTimerMgr = GNIL;
+				m_sGroupIndex = GINVALID;
+				m_sIndex = GINVALID;
+				m_bPaused = GAIA::False;
 			}
 			GINL GAIA::GVOID SetTimerMgr(GAIA::TIMER::TimerMgr* pTimerMgr);
+			GINL GAIA::GVOID SetGroupIndex(const GAIA::SIZE& index){m_sGroupIndex = index;}
+			GINL const GAIA::SIZE& GetGroupIndex() const{return m_sGroupIndex;}
+			GINL GAIA::GVOID SetIndex(const GAIA::SIZE& index){m_sIndex = index;}
+			GINL const GAIA::SIZE& GetIndex() const{return m_sIndex;}
 
 		private:
 			TimerDesc m_desc;
@@ -136,6 +159,9 @@ namespace GAIA
 			__MicroSecType m_nLastFireTime;
 			__FireTimesType m_nFireTimes;
 			GAIA::TIMER::TimerMgr* m_pTimerMgr;
+			GAIA::SIZE m_sGroupIndex;
+			GAIA::SIZE m_sIndex;
+			GAIA::U8 m_bPaused : 1;
 		};
 
 		class TimerMgr : public virtual GAIA::FWORK::Instance
@@ -178,12 +204,50 @@ namespace GAIA
 				if(this->IsRegisted(timer))
 					return GAIA::False;
 
+				/* Add reference. */
+				timer.Reference();
+
+				/* Regist. */
+				GAIA::SIZE sGroupIndex = GSCAST(GAIA::SIZE)(GAIA::MATH::xsqrt(GSCAST(GAIA::REAL)(timer.GetDesc().nEscape / 1000 / 1000)));
+				Group& g = m_groups[sGroupIndex];
+				GAIA::SIZE sUsedIndex = g.timers.set(&timer);
+				timer.SetTimerMgr(this);
+				timer.SetGroupIndex(sGroupIndex);
+				timer.SetIndex(g.timers.fixedindex(sUsedIndex));
+
+				/* Regist fire. */
+				if(timer.GetDesc().descFire.bRegistFire)
+					timer.Update(GAIA::TIMER::Timer::FIRE_REASON_REGIST);
+
 				return GAIA::True;
 			}
 			GINL GAIA::BL Unregist(GAIA::TIMER::Timer& timer)
 			{
 				if(!this->IsRegisted(timer))
 					return GAIA::False;
+
+				/* Unregist fire. */
+				if(timer.GetDesc().descFire.bUnregistFire)
+					timer.Update(GAIA::TIMER::Timer::FIRE_REASON_UNREGIST);
+
+				/* Unregist. */
+				GAIA::SIZE sGroupIndex = timer.GetGroupIndex();
+				GAIA::SIZE sFixedIndex = timer.GetIndex();
+				GAIA_AST(sGroupIndex != GINVALID);
+				GAIA_AST(sFixedIndex != GINVALID);
+				Group& g = m_groups[sGroupIndex];
+				GAIA::SIZE sUsedIndex = g.timers.usedindex(sFixedIndex);
+				if(!g.timers.erase(sUsedIndex))
+				{
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+				timer.SetTimerMgr(GNIL);
+				timer.SetGroupIndex(GINVALID);
+				timer.SetIndex(GINVALID);
+
+				/* Release. */
+				timer.Release();
 
 				return GAIA::True;
 			}
@@ -195,6 +259,12 @@ namespace GAIA
 				pTimerMgr->Release();
 				if(pTimerMgr != this)
 					return GAIA::False;
+				GAIA_AST(timer.GetGroupIndex() != GINVALID);
+				GAIA_AST(timer.GetGroupIndex() < m_groups.size());
+				const Group& g = m_groups[timer.GetGroupIndex()];
+				GAIA::SIZE sUseIndex = g.timers.usedindex(timer.GetIndex());
+				GAIA_AST(sUseIndex != GINVALID);
+				GAIA_AST(g.timers[sUseIndex] == &timer);
 				return GAIA::True;
 			}
 
