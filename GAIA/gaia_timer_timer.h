@@ -30,7 +30,7 @@ namespace GAIA
 			{
 			public:
 				GINL CallBack(){}
-				virtual GAIA::BL UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason) = 0;
+				virtual GAIA::GVOID UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason) = 0;
 			};
 
 			class FireDesc : public virtual GAIA::FWORK::InstanceDesc
@@ -132,7 +132,7 @@ namespace GAIA
 			GINL GAIA::BL Pause();
 			GINL GAIA::BL Resume();
 			GINL GAIA::BL IsPaused() const{return m_bPaused;}
-			GINL GAIA::BL Update(GAIA::TIMER::Timer::FIRE_REASON reason);
+			GINL GAIA::GVOID Update(GAIA::TIMER::Timer::FIRE_REASON reason);
 
 		private:
 			GINL GAIA::GVOID init()
@@ -274,7 +274,7 @@ namespace GAIA
 				return GAIA::True;
 			}
 
-			GINL GAIA::BL Update(const GAIA::TIMER::Timer::__MicroSecType& nEscape)
+			GINL GAIA::GVOID Update(const GAIA::TIMER::Timer::__MicroSecType& nEscape)
 			{
 				m_nLastUpdateTime += nEscape;
 				for(GAIA::SIZE x = 0; x < m_groups.size(); ++x)
@@ -315,7 +315,6 @@ namespace GAIA
 						}
 					}
 				}
-				return GAIA::True;
 			}
 			GINL const GAIA::TIMER::Timer::__MicroSecType& GetLastUpdateTime() const{return m_nLastUpdateTime;}
 

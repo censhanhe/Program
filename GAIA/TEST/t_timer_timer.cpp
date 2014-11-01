@@ -7,10 +7,9 @@ namespace GAIA_TEST
 	{
 	public:
 		GINL TimerCallBack1(GAIA::SYNC::Lock& lock){this->init(); m_l = &lock;}
-		virtual GAIA::BL UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason)
+		virtual GAIA::GVOID UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason)
 		{
 			GAIA::SYNC::AutoLock al(*m_l);
-			return GAIA::True;
 		}
 	private:
 		GINL GAIA::GVOID init(){m_l = GNIL;}
@@ -22,10 +21,9 @@ namespace GAIA_TEST
 	{
 	public:
 		GINL TimerCallBack2(GAIA::SYNC::Lock& lock){this->init(); m_l = &lock;}
-		virtual GAIA::BL UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason)
+		virtual GAIA::GVOID UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason)
 		{
 			GAIA::SYNC::AutoLock al(*m_l);
-			return GAIA::True;
 		}
 	private:
 		GINL GAIA::GVOID init(){m_l = GNIL;}

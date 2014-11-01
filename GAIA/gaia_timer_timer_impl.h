@@ -40,9 +40,8 @@ namespace GAIA
 
 			return GAIA::True;
 		}
-		GINL GAIA::BL Timer::Update(GAIA::TIMER::Timer::FIRE_REASON reason)
+		GINL GAIA::GVOID Timer::Update(GAIA::TIMER::Timer::FIRE_REASON reason)
 		{
-			GAIA::BL bRet = GAIA::False;
 			this->Reference();
 			{
 				/* Get timer manager. */
@@ -56,7 +55,7 @@ namespace GAIA
 
 				/* Update. */
 				if(m_desc.pCallBack != GNIL)
-					bRet = m_desc.pCallBack->UpdateTimer(this, reason);
+					m_desc.pCallBack->UpdateTimer(this, reason);
 
 				/* If complete, unregist and release(if user specified. */
 				if(this->GetUpdateTimes() == this->GetDesc().nMaxUpdateTimes)
@@ -77,8 +76,6 @@ namespace GAIA
 				pTimerMgr->Release();
 			}
 			this->Release();
-
-			return bRet;
 		}
 		GINL GAIA::GVOID Timer::SetTimerMgr(GAIA::TIMER::TimerMgr* pTimerMgr)
 		{
