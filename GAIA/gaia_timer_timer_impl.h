@@ -42,10 +42,7 @@ namespace GAIA
 		}
 		GINL GAIA::BL Timer::Update(GAIA::TIMER::Timer::FIRE_REASON reason)
 		{
-			if(m_desc.pCallBack == GNIL)
-				return GAIA::False;
-
-			GAIA::BL bRet;
+			GAIA::BL bRet = GAIA::False;
 			this->Reference();
 			{
 				/* Get timer manager. */
@@ -58,7 +55,8 @@ namespace GAIA
 				this->SetUpdateTimes(this->GetUpdateTimes() + 1);
 
 				/* Update. */
-				bRet = m_desc.pCallBack->UpdateTimer(this, reason);
+				if(m_desc.pCallBack != GNIL)
+					bRet = m_desc.pCallBack->UpdateTimer(this, reason);
 
 				/* If complete, unregist and release(if user specified. */
 				if(this->GetUpdateTimes() == this->GetDesc().nMaxUpdateTimes)

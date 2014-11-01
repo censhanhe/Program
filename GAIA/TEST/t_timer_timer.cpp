@@ -47,7 +47,7 @@ namespace GAIA_TEST
 		TimerCallBack1 cb1(l);
 		TimerCallBack2 cb2(l);
 
-		GAIA::TIMER::Timer::TimerDesc descTimer;
+		GAIA::TIMER::Timer::Desc descTimer;
 		descTimer.reset();
 
 		descTimer.nEscapeUSec = 1000 * 1000;

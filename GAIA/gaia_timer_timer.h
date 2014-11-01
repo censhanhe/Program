@@ -33,7 +33,7 @@ namespace GAIA
 				virtual GAIA::BL UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason) = 0;
 			};
 
-			class TimerFireDesc : public virtual GAIA::FWORK::InstanceDesc
+			class FireDesc : public virtual GAIA::FWORK::InstanceDesc
 			{
 			public:
 				virtual GAIA::GVOID reset()
@@ -54,7 +54,7 @@ namespace GAIA
 				GAIA::U8 bResumeFire : 1; // Fired when resume the timer.
 				GAIA::U8 bUpdate : 1; // Fired when the time escape reached and update the TimerMgr.
 			};
-			class TimerDirDesc : public virtual GAIA::FWORK::InstanceDesc
+			class DirDesc : public virtual GAIA::FWORK::InstanceDesc
 			{
 			public:
 				virtual GAIA::GVOID reset()
@@ -69,7 +69,7 @@ namespace GAIA
 				GAIA::U8 bGoFrontAble : 1; // Specified the timer can go front. 
 				GAIA::U8 bGoBackAble : 1; // Specified the timer can go back.
 			};
-			class TimerDesc : public virtual GAIA::FWORK::InstanceDesc
+			class Desc : public virtual GAIA::FWORK::InstanceDesc
 			{
 			public:
 				virtual GAIA::GVOID reset()
@@ -80,6 +80,7 @@ namespace GAIA
 					nMaxUpdateTimes = 0;
 					pCallBack = GNIL;
 					bAutoRelease = GAIA::True;
+					bMultiCallBack = GAIA::True;
 				}
 				virtual GAIA::BL check() const
 				{
@@ -95,12 +96,13 @@ namespace GAIA
 						return GAIA::False;
 					return GAIA::True;
 				}
-				TimerFireDesc descFire;
-				TimerDirDesc descDir;
+				FireDesc descFire;
+				DirDesc descDir;
 				__MicroSecType nEscapeUSec;
 				__UpdateTimesType nMaxUpdateTimes;
 				CallBack* pCallBack;
-				GAIA::U8 bAutoRelease : 1;
+				GAIA::U8 bAutoRelease : 1; // If the timer update times equal to max update times, the timer instance will released automatically.
+				GAIA::U8 bMultiCallBack : 1; // If the timer will be callback many times in single frame.
 			};
 
 		public:
@@ -108,7 +110,7 @@ namespace GAIA
 			GINL ~Timer(){}
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_TIMER_TIMER;}
-			GINL GAIA::BL Create(const GAIA::TIMER::Timer::TimerDesc& desc)
+			GINL GAIA::BL Create(const GAIA::TIMER::Timer::Desc& desc)
 			{
 				if(!desc.check())
 					return GAIA::False;
@@ -116,10 +118,10 @@ namespace GAIA
 				return GAIA::True;
 			}
 			GINL GAIA::GVOID Destroy();
-			GINL const GAIA::TIMER::Timer::TimerDesc& GetDesc() const{return m_desc;}
+			GINL const GAIA::TIMER::Timer::Desc& GetDesc() const{return m_desc;}
 
-			GINL const GAIA::TIMER::Timer::TimerFireDesc& GetFireDesc() const{return m_desc.descFire;}
-			GINL GAIA::BL SetFireDesc(const GAIA::TIMER::Timer::TimerFireDesc& descFire){m_desc.descFire = descFire; return GAIA::True;}
+			GINL const GAIA::TIMER::Timer::FireDesc& GetFireDesc() const{return m_desc.descFire;}
+			GINL GAIA::BL SetFireDesc(const GAIA::TIMER::Timer::FireDesc& descFire){m_desc.descFire = descFire; return GAIA::True;}
 
 			GINL GAIA::TIMER::TimerMgr* GetTimerMgr() const;
 			GINL GAIA::BL IsRegisted() const{return m_pTimerMgr != GNIL;}
@@ -154,7 +156,7 @@ namespace GAIA
 			GINL const GAIA::SIZE& GetIndex() const{return m_sIndex;}
 
 		private:
-			TimerDesc m_desc;
+			Desc m_desc;
 			__MicroSecType m_nRegistTime;
 			__MicroSecType m_nLastUpdateTime;
 			__UpdateTimesType m_nUpdateTimes;
@@ -167,7 +169,7 @@ namespace GAIA
 		class TimerMgr : public virtual GAIA::FWORK::Instance
 		{
 		public:
-			class TimerMgrDesc : public virtual GAIA::FWORK::InstanceDesc
+			class Desc : public virtual GAIA::FWORK::InstanceDesc
 			{
 			public:
 				virtual GAIA::GVOID reset()
@@ -188,7 +190,7 @@ namespace GAIA
 			GINL ~TimerMgr(){}
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_TIMER_TIMERMGR;}
-			GINL GAIA::BL Create(const GAIA::TIMER::TimerMgr::TimerMgrDesc& desc)
+			GINL GAIA::BL Create(const GAIA::TIMER::TimerMgr::Desc& desc)
 			{
 				if(!desc.check())
 					return GAIA::False;
@@ -198,7 +200,7 @@ namespace GAIA
 			GINL GAIA::GVOID Destroy()
 			{
 			}
-			GINL const GAIA::TIMER::TimerMgr::TimerMgrDesc& GetDesc() const{return m_desc;}
+			GINL const GAIA::TIMER::TimerMgr::Desc& GetDesc() const{return m_desc;}
 
 			GINL GAIA::BL Regist(GAIA::TIMER::Timer& timer)
 			{
@@ -274,6 +276,7 @@ namespace GAIA
 
 			GINL GAIA::BL Update(const GAIA::TIMER::Timer::__MicroSecType& nEscape)
 			{
+				m_nLastUpdateTime += nEscape;
 				for(GAIA::SIZE x = 0; x < m_groups.size(); ++x)
 				{
 					Group& g = m_groups[x];
@@ -286,13 +289,13 @@ namespace GAIA
 							GAIA_AST(pTimer != GNIL);
 							pTimer->Update(GAIA::TIMER::Timer::FIRE_REASON_UPDATE);
 						}
-						g.nLastUpdate = m_nLastUpdateTime + nEscape;
+						g.nLastUpdate = m_nLastUpdateTime;
 					}
 					else
 					{
 						/* Get need update for current group. */
 						GAIA::BL bNeedUpdate = GAIA::False;
-						GAIA::N64 nGroupOffsetTime = m_nLastUpdateTime + nEscape - g.nLastUpdate;
+						GAIA::TIMER::Timer::__MicroSecType nGroupOffsetTime = m_nLastUpdateTime - g.nLastUpdate;
 						if(nGroupOffsetTime > m_groups[x - 1].nEscape)
 							bNeedUpdate = GAIA::True;
 
@@ -303,11 +306,15 @@ namespace GAIA
 							for(; it.empty(); ++it)
 							{
 								GAIA::TIMER::Timer* pTimer = *it;
+								GAIA::TIMER::Timer::__MicroSecType nOffsetTime = m_nLastUpdateTime - pTimer->GetLastUpdateTime();
+								const GAIA::TIMER::Timer::Desc& descTimer = pTimer->GetDesc();
+								if(nOffsetTime > descTimer.nEscapeUSec)
+								{
+								}
 							}
 						}
 					}
 				}
-				m_nLastUpdateTime += nEscape;
 				return GAIA::True;
 			}
 			GINL const GAIA::TIMER::Timer::__MicroSecType& GetLastUpdateTime() const{return m_nLastUpdateTime;}
@@ -340,12 +347,16 @@ namespace GAIA
 				m_groups.back().nEscape = GAIA::N64MAXSIZE;
 			}
 
-			GINL GAIA::SIZE GetGroupIndexByTime(const GAIA::N64& nEscapeUSec) const{return GAIA::MATH::xsqrt(nEscapeUSec / 1000 / 1000);}
+			GINL GAIA::SIZE GetGroupIndexByTime(const GAIA::TIMER::Timer::__MicroSecType& nEscapeUSec) const{return GAIA::MATH::xsqrt(nEscapeUSec / 1000 / 1000);}
+			GINL GAIA::GVOID SwitchTimerToNewGroup(GAIA::TIMER::Timer& timer)
+			{
+
+			}
 		private:
 			typedef GAIA::CTN::Vector<Group> __GroupList;
 
 		private:
-			TimerMgrDesc m_desc;
+			Desc m_desc;
 			__GroupList m_groups;
 			GAIA::TIMER::Timer::__MicroSecType m_nLastUpdateTime;
 		};
