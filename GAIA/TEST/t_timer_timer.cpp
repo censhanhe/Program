@@ -51,6 +51,7 @@ namespace GAIA_TEST
 		descTimer.reset();
 
 		descTimer.nEscapeUSec = 1000 * 1000;
+		descTimer.nMaxUpdateTimes = 10;
 		descTimer.pCallBack = &cb1;
 		if(!pTimer1->Create(descTimer))
 		{
@@ -59,6 +60,7 @@ namespace GAIA_TEST
 		}
 
 		descTimer.nEscapeUSec = 1000 * 200;
+		descTimer.nMaxUpdateTimes = 50;
 		descTimer.pCallBack = &cb2;
 		if(!pTimer2->Create(descTimer))
 		{

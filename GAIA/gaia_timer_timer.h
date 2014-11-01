@@ -11,7 +11,7 @@ namespace GAIA
 			friend class GAIA::TIMER::TimerMgr;
 
 		public:
-			typedef GAIA::N32 __FireTimesType;
+			typedef GAIA::N32 __UpdateTimesType;
 			typedef GAIA::N64 __MicroSecType;
 			typedef GAIA::CTN::Book<Timer*> __TimerList;
 
@@ -77,7 +77,7 @@ namespace GAIA
 					descFire.reset();
 					descDir.reset();
 					nEscapeUSec = 0;
-					nMaxFireTimes = 0;
+					nMaxUpdateTimes = 0;
 					pCallBack = GNIL;
 				}
 				virtual GAIA::BL check() const
@@ -88,7 +88,7 @@ namespace GAIA
 						return GAIA::False;
 					if(nEscapeUSec <= 0)
 						return GAIA::False;
-					if(nMaxFireTimes <= 0)
+					if(nMaxUpdateTimes <= 0)
 						return GAIA::False;
 					if(pCallBack == GNIL)
 						return GAIA::False;
@@ -97,7 +97,7 @@ namespace GAIA
 				TimerFireDesc descFire;
 				TimerDirDesc descDir;
 				__MicroSecType nEscapeUSec;
-				__FireTimesType nMaxFireTimes;
+				__UpdateTimesType nMaxUpdateTimes;
 				CallBack* pCallBack;
 			};
 
@@ -121,6 +121,9 @@ namespace GAIA
 
 			GINL GAIA::TIMER::TimerMgr* GetTimerMgr() const;
 			GINL GAIA::BL IsRegisted() const{return m_pTimerMgr != GNIL;}
+			GINL const __MicroSecType& GetRegistTime() const{return m_nRegistTime;}
+			GINL const __MicroSecType& GetLastUpdateTime() const{return m_nLastUpdateTime;}
+			GINL const __UpdateTimesType& GetUpdateTimes() const{return m_nUpdateTimes;}
 
 			GINL GAIA::BL Pause();
 			GINL GAIA::BL Resume();
@@ -140,14 +143,17 @@ namespace GAIA
 			{
 				m_desc.reset();
 				m_nRegistTime = 0;
-				m_nLastFireTime = 0;
-				m_nFireTimes = 0;
+				m_nLastUpdateTime = 0;
+				m_nUpdateTimes = 0;
 				m_pTimerMgr = GNIL;
 				m_sGroupIndex = GINVALID;
 				m_sIndex = GINVALID;
 				m_bPaused = GAIA::False;
 			}
 			GINL GAIA::GVOID SetTimerMgr(GAIA::TIMER::TimerMgr* pTimerMgr);
+			GINL GAIA::GVOID SetRegistTime(const __MicroSecType& t){m_nRegistTime = t;}
+			GINL GAIA::GVOID SetLastUpdateTime(const __MicroSecType& t){m_nLastUpdateTime = t;}
+			GINL GAIA::GVOID SetUpdateTimes(const __UpdateTimesType& t){m_nUpdateTimes = t;}
 			GINL GAIA::GVOID SetGroupIndex(const GAIA::SIZE& index){m_sGroupIndex = index;}
 			GINL const GAIA::SIZE& GetGroupIndex() const{return m_sGroupIndex;}
 			GINL GAIA::GVOID SetIndex(const GAIA::SIZE& index){m_sIndex = index;}
@@ -156,8 +162,8 @@ namespace GAIA
 		private:
 			TimerDesc m_desc;
 			__MicroSecType m_nRegistTime;
-			__MicroSecType m_nLastFireTime;
-			__FireTimesType m_nFireTimes;
+			__MicroSecType m_nLastUpdateTime;
+			__UpdateTimesType m_nUpdateTimes;
 			GAIA::TIMER::TimerMgr* m_pTimerMgr;
 			GAIA::SIZE m_sGroupIndex;
 			GAIA::SIZE m_sIndex;
@@ -215,6 +221,7 @@ namespace GAIA
 				Group& g = m_groups[sGroupIndex];
 				GAIA::SIZE sUsedIndex = g.timers.set(&timer);
 				timer.SetTimerMgr(this);
+				timer.SetRegistTime(this->GetLastUpdateTime());
 				timer.SetGroupIndex(sGroupIndex);
 				timer.SetIndex(g.timers.fixedindex(sUsedIndex));
 
@@ -276,9 +283,40 @@ namespace GAIA
 				for(GAIA::SIZE x = 0; x < m_groups.size(); ++x)
 				{
 					Group& g = m_groups[x];
+					if(x == 0)
+					{
+						GAIA::TIMER::Timer::__TimerList::it it = g.timers.front_it();
+						for(; it.empty(); ++it)
+						{
+							GAIA::TIMER::Timer* pTimer = *it;
+							GAIA_AST(pTimer != GNIL);
+							pTimer->Update(GAIA::TIMER::Timer::FIRE_REASON_UPDATE);
+						}
+						g.nLastUpdate = m_nLastUpdateTime + nEscape;
+					}
+					else
+					{
+						/* Get need update for current group. */
+						GAIA::BL bNeedUpdate = GAIA::False;
+						GAIA::N64 nGroupOffsetTime = m_nLastUpdateTime + nEscape - g.nLastUpdate;
+						if(nGroupOffsetTime > m_groups[x - 1].nEscape)
+							bNeedUpdate = GAIA::True;
+
+						/* If current group need update, update it. */
+						if(bNeedUpdate)
+						{
+							GAIA::TIMER::Timer::__TimerList::it it = g.timers.front_it();
+							for(; it.empty(); ++it)
+							{
+								GAIA::TIMER::Timer* pTimer = *it;
+							}
+						}
+					}
 				}
+				m_nLastUpdateTime += nEscape;
 				return GAIA::True;
 			}
+			GINL const GAIA::TIMER::Timer::__MicroSecType& GetLastUpdateTime() const{return m_nLastUpdateTime;}
 
 		private:
 			class Group : public GAIA::Base

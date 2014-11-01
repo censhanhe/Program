@@ -49,3 +49,6 @@ EXCEPTION
 DataResearch
 	Pair operation end's special operations.
 	Change U64 to N64.
+	
+	
+24198

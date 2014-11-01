@@ -216,6 +216,7 @@ namespace GAIA
 			}
 			GINL _SizeType fixedindex(const _SizeType& usedindex) const{return m_usedlist[usedindex];}
 			GINL const _DataType& operator[](const _SizeType& usedindex) const{return m_fixedlist[m_usedlist[usedindex]].t;}
+			GINL _DataType& operator[](const _SizeType& usedindex){return m_fixedlist[m_usedlist[usedindex]].t;}
 			GINL __MyType& operator = (const __MyType& src)
 			{
 				m_fixedlist = src.m_fixedlist;
