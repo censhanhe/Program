@@ -10,6 +10,7 @@ namespace GAIA
 			if(this->IsRegisted())
 				m_pTimerMgr->Unregist(*this);
 			GAIA_RELEASE_SAFE(m_pTimerMgr);
+			m_desc.reset();
 		}
 		GINL GAIA::TIMER::TimerMgr* Timer::GetTimerMgr() const
 		{
@@ -39,7 +40,48 @@ namespace GAIA
 
 			return GAIA::True;
 		}
+		GINL GAIA::BL Timer::Update(GAIA::TIMER::Timer::FIRE_REASON reason)
+		{
+			if(m_desc.pCallBack == GNIL)
+				return GAIA::False;
 
+			GAIA::BL bRet;
+			this->Reference();
+			{
+				/* Get timer manager. */
+				GAIA::TIMER::TimerMgr* pTimerMgr = this->GetTimerMgr();
+
+				/* Update last update time. */
+				this->SetLastUpdateTime(pTimerMgr->GetLastUpdateTime());
+
+				/* Update update times. */
+				this->SetUpdateTimes(this->GetUpdateTimes() + 1);
+
+				/* Update. */
+				bRet = m_desc.pCallBack->UpdateTimer(this, reason);
+
+				/* If complete, unregist and release(if user specified. */
+				if(this->GetUpdateTimes() == this->GetDesc().nMaxUpdateTimes)
+				{
+					if(this->IsRegisted())
+					{
+						GAIA::BL bUnregistRes = pTimerMgr->Unregist(*this);
+						GAIA_AST(bUnregistRes);
+					}
+					if(this->GetDesc().bAutoRelease)
+					{
+						if(this->GetRef() > 1)
+							this->Release();
+					}
+				}
+
+				/* Release timer manager. */
+				pTimerMgr->Release();
+			}
+			this->Release();
+
+			return bRet;
+		}
 		GINL GAIA::GVOID Timer::SetTimerMgr(GAIA::TIMER::TimerMgr* pTimerMgr)
 		{
 			GAIA_RELEASE_SAFE(m_pTimerMgr);

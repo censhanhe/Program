@@ -79,6 +79,7 @@ namespace GAIA
 					nEscapeUSec = 0;
 					nMaxUpdateTimes = 0;
 					pCallBack = GNIL;
+					bAutoRelease = GAIA::True;
 				}
 				virtual GAIA::BL check() const
 				{
@@ -99,6 +100,7 @@ namespace GAIA
 				__MicroSecType nEscapeUSec;
 				__UpdateTimesType nMaxUpdateTimes;
 				CallBack* pCallBack;
+				GAIA::U8 bAutoRelease : 1;
 			};
 
 		public:
@@ -128,15 +130,7 @@ namespace GAIA
 			GINL GAIA::BL Pause();
 			GINL GAIA::BL Resume();
 			GINL GAIA::BL IsPaused() const{return m_bPaused;}
-			GINL GAIA::BL Update(GAIA::TIMER::Timer::FIRE_REASON reason)
-			{
-				if(m_desc.pCallBack == GNIL)
-					return GAIA::False;
-				this->Reference();
-				GAIA::BL bRet = m_desc.pCallBack->UpdateTimer(this, reason);
-				this->Release();
-				return bRet;
-			}
+			GINL GAIA::BL Update(GAIA::TIMER::Timer::FIRE_REASON reason);
 
 		private:
 			GINL GAIA::GVOID init()
