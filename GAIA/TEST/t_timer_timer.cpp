@@ -147,7 +147,6 @@ namespace GAIA_TEST
 		descTimer.nEscapeUSec = 0;
 		descTimer.nMaxUpdateTimes = GAIA::N32MAXSIZE;
 		descTimer.pCallBack = &cb4;
-		descTimer.bAutoRelease = GAIA::True;
 		if(!pTimer4->Create(descTimer))
 		{
 			GTLINE2("Timer create failed!");
