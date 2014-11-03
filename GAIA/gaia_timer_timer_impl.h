@@ -7,9 +7,13 @@ namespace GAIA
 	{
 		GINL GAIA::GVOID Timer::Destroy()
 		{
+			m_bPaused = GAIA::False;
 			if(this->IsRegisted())
 				m_pTimerMgr->Unregist(*this);
 			GAIA_RELEASE_SAFE(m_pTimerMgr);
+			m_nRegistTime = 0;
+			m_nLastUpdateTime = 0;
+			m_nUpdateTimes = 0;
 			m_desc.reset();
 		}
 		GINL GAIA::TIMER::TimerMgr* Timer::GetTimerMgr() const

@@ -17,14 +17,13 @@ namespace GAIA_TEST
 		GINL const GAIA::TIMER::Timer::__UpdateTimesType& GetLastUpdateTimeSum() const{return m_nLastUpdateTimeSum;}
 		GINL GAIA::GVOID UpdateTimerBase(const GAIA::TIMER::Timer::__UpdateTimesType& t)
 		{
-			if(m_nLastUpdateTime == GINVALID)
-				m_nLastUpdateTime = t;
-			else
+			if(m_nLastUpdateTime != GINVALID)
 			{
 				GAIA::SIZE sDeltaTime = t - m_nLastUpdateTime;
 				m_nLastUpdateTimeSum += sDeltaTime;
 				++m_nTimeIncreaseTimes;
 			}
+			m_nLastUpdateTime = t;
 		}
 		GINL const GAIA::TIMER::Timer::__MicroSecType& GetAvgTime() const
 		{
@@ -191,23 +190,23 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		//if(!pTimerMgr->Regist(*pTimer2))
-		//{
-		//	GTLINE2("Timer regist failed!");
-		//	++nRet;
-		//}
+		if(!pTimerMgr->Regist(*pTimer2))
+		{
+			GTLINE2("Timer regist failed!");
+			++nRet;
+		}
 
-		//if(!pTimerMgr->Regist(*pTimer3))
-		//{
-		//	GTLINE2("Timer regist failed!");
-		//	++nRet;
-		//}
+		if(!pTimerMgr->Regist(*pTimer3))
+		{
+			GTLINE2("Timer regist failed!");
+			++nRet;
+		}
 
-		//if(!pTimerMgr->Regist(*pTimer4))
-		//{
-		//	GTLINE2("Timer regist failed!");
-		//	++nRet;
-		//}
+		if(!pTimerMgr->Regist(*pTimer4))
+		{
+			GTLINE2("Timer regist failed!");
+			++nRet;
+		}
 
 		/* Update. */
 		GAIA::TIMER::Timer::__MicroSecType tDelta = 0;
