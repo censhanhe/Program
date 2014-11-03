@@ -47,9 +47,6 @@ namespace GAIA
 				/* Get timer manager. */
 				GAIA::TIMER::TimerMgr* pTimerMgr = this->GetTimerMgr();
 
-				/* Update last update time. */
-				this->SetLastUpdateTime(pTimerMgr->GetLastUpdateTime());
-
 				/* Update update times. */
 				this->SetUpdateTimes(this->GetUpdateTimes() + 1);
 

@@ -224,6 +224,7 @@ namespace GAIA
 
 				/* Regist. */
 				GAIA::SIZE sGroupIndex = this->GetGroupIndexByTime(timer.GetDesc().nEscapeUSec);
+				GAIA_AST(sGroupIndex != GINVALID);
 				if(sGroupIndex >= m_groups.size())
 					sGroupIndex = m_groups.size() - 1;
 				Group& g = m_groups[sGroupIndex];
@@ -387,6 +388,7 @@ namespace GAIA
 				GAIA_AST(timer.IsRegisted());
 				GAIA::TIMER::Timer::__MicroSecType nOffsetTime = this->GetLastUpdateTime() - timer.GetLastUpdateTime();
 				GAIA::SIZE sNewGroupIndex = this->GetGroupIndexByTime(nOffsetTime);
+				GAIA_AST(sNewGroupIndex != GINVALID);
 				if(sNewGroupIndex != timer.GetGroupIndex())
 				{
 					GAIA_AST(sNewGroupIndex < m_groups.size());
@@ -394,6 +396,7 @@ namespace GAIA
 					/* Erase from old group. */
 					Group& gold = m_groups[timer.GetGroupIndex()];
 					GAIA::SIZE sOldUsedIndex = gold.timers.usedindex(timer.GetIndex());
+					GAIA_AST(sOldUsedIndex != GINVALID);
 					gold.timers.erase(sOldUsedIndex);
 
 					/* Add to new group. */

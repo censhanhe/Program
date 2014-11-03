@@ -11,15 +11,42 @@ namespace GAIA_TEST
 		GINL GAIA::SYNC::Lock& GetLock() const{return *m_pLock;}
 		GINL GAIA::GVOID SetUpdateTimeSum(GAIA::TIMER::Timer::__UpdateTimesType& nSum){m_pSum = &nSum;}
 		GINL GAIA::TIMER::Timer::__UpdateTimesType& GetUpdateTimeSum() const{return *m_pSum;}
+		GINL GAIA::GVOID SetLastUpdateTime(const GAIA::TIMER::Timer::__UpdateTimesType& t){m_nLastUpdateTime = t;}
+		GINL const GAIA::TIMER::Timer::__UpdateTimesType& GetLastUpdateTime() const{return m_nLastUpdateTime;}
+		GINL GAIA::GVOID SetLastUpdateTimeSum(const GAIA::TIMER::Timer::__UpdateTimesType& t){m_nLastUpdateTimeSum = t;}
+		GINL const GAIA::TIMER::Timer::__UpdateTimesType& GetLastUpdateTimeSum() const{return m_nLastUpdateTimeSum;}
+		GINL GAIA::GVOID UpdateTimerBase(const GAIA::TIMER::Timer::__UpdateTimesType& t)
+		{
+			if(m_nLastUpdateTime == GINVALID)
+				m_nLastUpdateTime = t;
+			else
+			{
+				GAIA::SIZE sDeltaTime = t - m_nLastUpdateTime;
+				m_nLastUpdateTimeSum += sDeltaTime;
+				++m_nTimeIncreaseTimes;
+			}
+		}
+		GINL const GAIA::TIMER::Timer::__MicroSecType& GetAvgTime() const
+		{
+			if(m_nTimeIncreaseTimes == 0)
+				return 0;
+			return m_nLastUpdateTimeSum / m_nTimeIncreaseTimes;
+		}
 	private:
 		GINL GAIA::GVOID init()
 		{
 			m_pLock = GNIL;
 			m_pSum = GNIL;
+			m_nLastUpdateTime = GINVALID;
+			m_nLastUpdateTimeSum = 0;
+			m_nTimeIncreaseTimes = 0;
 		}
 	private:
 		GAIA::SYNC::Lock* m_pLock;
 		GAIA::TIMER::Timer::__UpdateTimesType* m_pSum;
+		GAIA::TIMER::Timer::__UpdateTimesType m_nLastUpdateTime;
+		GAIA::TIMER::Timer::__UpdateTimesType m_nLastUpdateTimeSum;
+		GAIA::N64 m_nTimeIncreaseTimes;
 	};
 	class TimerCallBack1 : public GAIA::TIMER::Timer::CallBack, public TimerCallBackBase
 	{
@@ -29,6 +56,7 @@ namespace GAIA_TEST
 		{
 			GAIA::SYNC::AutoLock al(this->GetLock());
 			++this->GetUpdateTimeSum();
+			this->UpdateTimerBase(pTimer->GetLastUpdateTime());
 		}
 	private:
 		GINL GAIA::GVOID init(){}
@@ -42,6 +70,7 @@ namespace GAIA_TEST
 		{
 			GAIA::SYNC::AutoLock al(this->GetLock());
 			++this->GetUpdateTimeSum();
+			this->UpdateTimerBase(pTimer->GetLastUpdateTime());
 		}
 	private:
 		GINL GAIA::GVOID init(){}
@@ -55,6 +84,7 @@ namespace GAIA_TEST
 		{
 			GAIA::SYNC::AutoLock al(this->GetLock());
 			++this->GetUpdateTimeSum();
+			this->UpdateTimerBase(pTimer->GetLastUpdateTime());
 		}
 	private:
 		GINL GAIA::GVOID init(){}
@@ -67,6 +97,7 @@ namespace GAIA_TEST
 		virtual GAIA::GVOID UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason)
 		{
 			GAIA::SYNC::AutoLock al(this->GetLock());
+			this->UpdateTimerBase(pTimer->GetLastUpdateTime());
 		}
 	private:
 		GINL GAIA::GVOID init(){}
@@ -103,7 +134,7 @@ namespace GAIA_TEST
 		cb2.SetLock(l);
 		cb2.SetUpdateTimeSum(sum);
 
-		TimerCallBack2 cb3;
+		TimerCallBack3 cb3;
 		cb3.SetLock(l);
 		cb3.SetUpdateTimeSum(sum);
 
@@ -160,23 +191,23 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		if(!pTimerMgr->Regist(*pTimer2))
-		{
-			GTLINE2("Timer regist failed!");
-			++nRet;
-		}
+		//if(!pTimerMgr->Regist(*pTimer2))
+		//{
+		//	GTLINE2("Timer regist failed!");
+		//	++nRet;
+		//}
 
-		if(!pTimerMgr->Regist(*pTimer3))
-		{
-			GTLINE2("Timer regist failed!");
-			++nRet;
-		}
+		//if(!pTimerMgr->Regist(*pTimer3))
+		//{
+		//	GTLINE2("Timer regist failed!");
+		//	++nRet;
+		//}
 
-		if(!pTimerMgr->Regist(*pTimer4))
-		{
-			GTLINE2("Timer regist failed!");
-			++nRet;
-		}
+		//if(!pTimerMgr->Regist(*pTimer4))
+		//{
+		//	GTLINE2("Timer regist failed!");
+		//	++nRet;
+		//}
 
 		/* Update. */
 		GAIA::TIMER::Timer::__MicroSecType tDelta = 0;
@@ -204,6 +235,11 @@ namespace GAIA_TEST
 			GTLINE2("Timer3 update times error!");
 			++nRet;
 		}
+
+		GAIA::TIMER::Timer::__MicroSecType nAveTime1 = cb1.GetAvgTime();
+		GAIA::TIMER::Timer::__MicroSecType nAveTime2 = cb2.GetAvgTime();
+		GAIA::TIMER::Timer::__MicroSecType nAveTime3 = cb3.GetAvgTime();
+		GAIA::TIMER::Timer::__MicroSecType nAveTime4 = cb4.GetAvgTime();
 
 		/* Release instance. */
 		GAIA_RELEASE_SAFE(pTimerMgr);
