@@ -284,7 +284,7 @@ namespace GAIA
 					if(x == 0)
 					{
 						GAIA::TIMER::Timer::__TimerList::it it = g.timers.front_it();
-						for(; it.empty(); ++it)
+						for(; !it.empty(); ++it)
 						{
 							GAIA::TIMER::Timer* pTimer = *it;
 							GAIA_AST(pTimer != GNIL);
@@ -305,7 +305,7 @@ namespace GAIA
 						if(bNeedUpdate)
 						{
 							GAIA::TIMER::Timer::__TimerList::it it = g.timers.front_it();
-							for(; it.empty(); ++it)
+							for(; !it.empty(); ++it)
 							{
 								GAIA::TIMER::Timer* pTimer = *it;
 								GAIA::TIMER::Timer::__MicroSecType nOffsetTime = this->GetLastUpdateTime() - pTimer->GetLastUpdateTime();

@@ -82,7 +82,18 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		GAIA::SYNC::xsleep(1100);
+		GAIA::TIMER::Timer::__MicroSecType tDelta = 0;
+		GAIA::TIMER::Timer::__MicroSecType t = GAIA::TIME::tick_time();
+		for(;;)
+		{
+			GAIA::TIMER::Timer::__MicroSecType tNew = GAIA::TIME::tick_time();
+			pTimerMgr->Update(tNew - t);
+			tDelta += tNew - t;
+			t = tNew;
+			if(tDelta > 1200 * 1000)
+				break;
+		}
+		pTimerMgr->Update(0);
 
 		GAIA_RELEASE_SAFE(pTimerMgr);
 		GAIA_RELEASE_SAFE(pTimer1);
