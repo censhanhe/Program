@@ -33,7 +33,7 @@ namespace GAIA
 		public:
 			/* Base. */
 			GINL Form(){this->init();}
-			GINL ~Form(){}
+			GINL ~Form(){this->Destroy();}
 
 			/* Location management. */
 			GINL GAIA::BL Position(const __PosType& pos){m_pos = pos;}
@@ -78,6 +78,7 @@ namespace GAIA
 					else
 						pParent->m_childs[nFreeIndex] = this;
 				}
+				return GAIA::True;
 			}
 			GINL __MyType* GetParent() const
 			{
@@ -157,6 +158,13 @@ namespace GAIA
 					return GAIA::False;
 				GAIA_MFREE_SAFE(m_desc.pszName);
 				m_desc.reset();
+				if(m_parent != GNIL)
+					this->SetParent(GNIL);
+				for(__ChildListType::it it = m_childs.front_it(); !it.empty(); ++it)
+				{
+					__MyType* p = *it;
+					p->SetParent(GNIL);
+				}
 				return GAIA::True;
 			}
 			virtual GAIA::BL IsCreated() const{return !GAIA::ALGO::stremp(m_desc.pszName);}

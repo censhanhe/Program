@@ -812,7 +812,7 @@ namespace GAIA
 
 		public:
 			GINL Render3DDX11(){this->init();}
-			GINL ~Render3DDX11(){}
+			GINL ~Render3DDX11(){if(this->IsCreated()) this->Destroy();}
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_DX11;}
 

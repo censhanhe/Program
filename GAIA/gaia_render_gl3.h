@@ -813,7 +813,7 @@ namespace GAIA
 
 		public:
 			GINL Render3DGL3(){this->init();}
-			GINL ~Render3DGL3(){}
+			GINL ~Render3DGL3(){if(this->IsCreated()) this->Destroy();}
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_3D_GL3;}
 

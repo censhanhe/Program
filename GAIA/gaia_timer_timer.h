@@ -107,7 +107,7 @@ namespace GAIA
 
 		public:
 			GINL Timer(){this->init();}
-			GINL ~Timer(){}
+			GINL ~Timer(){this->Destroy();}
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_TIMER_TIMER;}
 			GINL GAIA::BL Create(const GAIA::TIMER::Timer::Desc& desc)
@@ -187,7 +187,7 @@ namespace GAIA
 
 		public:
 			GINL TimerMgr(){this->init();}
-			GINL ~TimerMgr(){}
+			GINL ~TimerMgr(){this->Destroy();}
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_TIMER_TIMERMGR;}
 			GINL GAIA::BL Create(const GAIA::TIMER::TimerMgr::Desc& desc)
@@ -199,6 +199,18 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID Destroy()
 			{
+				for(GAIA::SIZE x = 0; x < m_groups.size(); ++x)
+				{
+					Group& g = m_groups[x];
+					GAIA::TIMER::Timer::__TimerList::it it = g.timers.front_it();
+					for(; !it.empty(); ++it)
+					{
+						GAIA::TIMER::Timer* pTimer = *it;
+						GAIA_RELEASE_SAFE(pTimer);
+					}
+				}
+				m_nLastUpdateTime = 0;
+				m_desc.reset();
 			}
 			GINL const GAIA::TIMER::TimerMgr::Desc& GetDesc() const{return m_desc;}
 

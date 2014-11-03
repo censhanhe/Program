@@ -584,7 +584,7 @@ namespace GAIA
 
 		public:
 			GINL Render2DDDraw(){this->init();}
-			GINL ~Render2DDDraw(){}
+			GINL ~Render2DDDraw(){if(this->IsCreated()) this->Destroy();}
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_DDRAW;}
 

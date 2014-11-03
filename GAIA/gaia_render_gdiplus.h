@@ -1207,7 +1207,7 @@ namespace GAIA
 
 		public:
 			GINL Render2DGDIPlus(){this->init();}
-			GINL ~Render2DGDIPlus(){}
+			GINL ~Render2DGDIPlus(){if(this->IsCreated()) this->Destroy();}
 
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_RENDER_2D_GDIPLUS;}
 
