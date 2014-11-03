@@ -41,6 +41,10 @@ namespace GAIA_TEST
 		GAIA::TIMER::Timer* pTimer1 = GDCAST(GAIA::TIMER::Timer*)(fac.CreateInstance(GAIA::FWORK::CLSID_TIMER_TIMER, GNIL));
 		GAIA::TIMER::Timer* pTimer2 = GDCAST(GAIA::TIMER::Timer*)(fac.CreateInstance(GAIA::FWORK::CLSID_TIMER_TIMER, GNIL));
 
+		GAIA::TIMER::TimerMgr::Desc descTimerMgr;
+		descTimerMgr.reset();
+		pTimerMgr->Create(descTimerMgr);
+
 		GAIA::SYNC::Lock l;
 		TimerCallBack1 cb1(l);
 		TimerCallBack2 cb2(l);
@@ -48,7 +52,7 @@ namespace GAIA_TEST
 		GAIA::TIMER::Timer::Desc descTimer;
 		descTimer.reset();
 
-		descTimer.nEscapeUSec = 1000 * 1000;
+		descTimer.nEscapeUSec = 1000 * 100;
 		descTimer.nMaxUpdateTimes = 10;
 		descTimer.pCallBack = &cb1;
 		if(!pTimer1->Create(descTimer))
@@ -57,7 +61,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
-		descTimer.nEscapeUSec = 1000 * 200;
+		descTimer.nEscapeUSec = 1000 * 20;
 		descTimer.nMaxUpdateTimes = 50;
 		descTimer.pCallBack = &cb2;
 		if(!pTimer2->Create(descTimer))
@@ -77,6 +81,8 @@ namespace GAIA_TEST
 			GTLINE2("Timer regist failed!");
 			++nRet;
 		}
+
+		GAIA::SYNC::xsleep(1100);
 
 		GAIA_RELEASE_SAFE(pTimerMgr);
 		GAIA_RELEASE_SAFE(pTimer1);
