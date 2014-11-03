@@ -218,6 +218,7 @@ namespace GAIA
 				GAIA::SIZE sUsedIndex = g.timers.set(&timer);
 				timer.SetTimerMgr(this);
 				timer.SetRegistTime(this->GetLastUpdateTime());
+				timer.SetLastUpdateTime(this->GetLastUpdateTime());
 				timer.SetGroupIndex(sGroupIndex);
 				timer.SetIndex(g.timers.fixedindex(sUsedIndex));
 
@@ -287,15 +288,16 @@ namespace GAIA
 						{
 							GAIA::TIMER::Timer* pTimer = *it;
 							GAIA_AST(pTimer != GNIL);
+							pTimer->SetLastUpdateTime(this->GetLastUpdateTime());
 							pTimer->Update(GAIA::TIMER::Timer::FIRE_REASON_UPDATE);
 						}
-						g.nLastUpdate = m_nLastUpdateTime;
+						g.nLastUpdate = this->GetLastUpdateTime();
 					}
 					else
 					{
 						/* Get need update for current group. */
 						GAIA::BL bNeedUpdate = GAIA::False;
-						GAIA::TIMER::Timer::__MicroSecType nGroupOffsetTime = m_nLastUpdateTime - g.nLastUpdate;
+						GAIA::TIMER::Timer::__MicroSecType nGroupOffsetTime = this->GetLastUpdateTime() - g.nLastUpdate;
 						if(nGroupOffsetTime > m_groups[x - 1].nEscape)
 							bNeedUpdate = GAIA::True;
 
@@ -306,11 +308,26 @@ namespace GAIA
 							for(; it.empty(); ++it)
 							{
 								GAIA::TIMER::Timer* pTimer = *it;
-								GAIA::TIMER::Timer::__MicroSecType nOffsetTime = m_nLastUpdateTime - pTimer->GetLastUpdateTime();
+								GAIA::TIMER::Timer::__MicroSecType nOffsetTime = this->GetLastUpdateTime() - pTimer->GetLastUpdateTime();
 								const GAIA::TIMER::Timer::Desc& descTimer = pTimer->GetDesc();
 								if(nOffsetTime > descTimer.nEscapeUSec)
 								{
+									if(pTimer->GetDesc().bMultiCallBack)
+									{
+										while(this->GetLastUpdateTime() - pTimer->GetLastUpdateTime() > descTimer.nEscapeUSec)
+										{
+											pTimer->SetLastUpdateTime(pTimer->GetLastUpdateTime() + pTimer->GetDesc().nEscapeUSec);
+											pTimer->Update(GAIA::TIMER::Timer::FIRE_REASON_UPDATE);
+										}
+									}
+									else
+									{
+										GAIA::TIMER::Timer::__MicroSecType nFireTimes = nOffsetTime / descTimer.nEscapeUSec;
+										pTimer->SetLastUpdateTime(pTimer->GetLastUpdateTime() + nFireTimes * pTimer->GetDesc().nEscapeUSec);
+										pTimer->Update(GAIA::TIMER::Timer::FIRE_REASON_UPDATE);
+									}
 								}
+								this->SwitchTimerToNewGroup(*pTimer);
 							}
 						}
 					}
@@ -349,7 +366,27 @@ namespace GAIA
 			GINL GAIA::SIZE GetGroupIndexByTime(const GAIA::TIMER::Timer::__MicroSecType& nEscapeUSec) const{return GAIA::MATH::xsqrt(nEscapeUSec / 1000 / 1000);}
 			GINL GAIA::GVOID SwitchTimerToNewGroup(GAIA::TIMER::Timer& timer)
 			{
+				GAIA_AST(timer.IsRegisted());
+				GAIA::TIMER::Timer::__MicroSecType nOffsetTime = this->GetLastUpdateTime() - timer.GetLastUpdateTime();
+				GAIA::SIZE sNewGroupIndex = this->GetGroupIndexByTime(nOffsetTime);
+				if(sNewGroupIndex != timer.GetGroupIndex())
+				{
+					GAIA_AST(sNewGroupIndex < m_groups.size());
 
+					/* Erase from old group. */
+					Group& gold = m_groups[timer.GetGroupIndex()];
+					GAIA::SIZE sOldUsedIndex = gold.timers.usedindex(timer.GetIndex());
+					gold.timers.erase(sOldUsedIndex);
+
+					/* Add to new group. */
+					Group& gnew = m_groups[sNewGroupIndex];
+					GAIA::SIZE sNewUsedIndex = gnew.timers.set(&timer);
+					GAIA::SIZE sNewFixedIndex = gnew.timers.fixedindex(sNewUsedIndex);
+
+					/* Update index. */
+					timer.SetGroupIndex(sNewGroupIndex);
+					timer.SetIndex(sNewUsedIndex);
+				}
 			}
 		private:
 			typedef GAIA::CTN::Vector<Group> __GroupList;
