@@ -1,6 +1,6 @@
 cxx=g++
 linkflag=-luuid -lpthread -o
-compflag=-c
+compflag=-c -w
 binpath=./BIN/
 
 srcs=$(wildcard ./GAIA/TEST/*.cpp)
