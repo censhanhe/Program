@@ -363,7 +363,13 @@ namespace GAIA
 				m_groups.back().nEscape = GAIA::N64MAXSIZE;
 			}
 
-			GINL GAIA::SIZE GetGroupIndexByTime(const GAIA::TIMER::Timer::__MicroSecType& nEscapeUSec) const{return GAIA::MATH::xsqrt(nEscapeUSec / 1000 / 1000);}
+			GINL GAIA::SIZE GetGroupIndexByTime(const GAIA::TIMER::Timer::__MicroSecType& nEscapeUSec) const
+			{
+				if(nEscapeUSec == 0)
+					return 0;
+				GAIA::F64 fGroupIndex = GAIA::MATH::xsqrt(GSCAST(GAIA::F64)(nEscapeUSec) / 1000.0 / 1000.0);
+				return GSCAST(GAIA::SIZE)(GAIA::MATH::xceil(fGroupIndex));
+			}
 			GINL GAIA::GVOID SwitchTimerToNewGroup(GAIA::TIMER::Timer& timer)
 			{
 				GAIA_AST(timer.IsRegisted());

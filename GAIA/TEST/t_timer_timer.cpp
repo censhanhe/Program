@@ -3,32 +3,48 @@
 
 namespace GAIA_TEST
 {
-	class TimerCallBack1 : public GAIA::TIMER::Timer::CallBack
+	class TimerCallBackBase : public GAIA::Base
 	{
 	public:
-		GINL TimerCallBack1(GAIA::SYNC::Lock& lock){this->init(); m_l = &lock;}
-		virtual GAIA::GVOID UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason)
+		GINL TimerCallBackBase(){this->init();}
+		GINL GAIA::GVOID SetLock(GAIA::SYNC::Lock& lock){m_pLock = &lock;}
+		GINL GAIA::SYNC::Lock& GetLock() const{return *m_pLock;}
+		GINL GAIA::GVOID SetUpdateTimeSum(GAIA::TIMER::Timer::__UpdateTimesType& nSum){m_pSum = &nSum;}
+		GINL GAIA::TIMER::Timer::__UpdateTimesType& GetUpdateTimeSum() const{return *m_pSum;}
+	private:
+		GINL GAIA::GVOID init()
 		{
-			GAIA::SYNC::AutoLock al(*m_l);
+			m_pLock = GNIL;
+			m_pSum = GNIL;
 		}
 	private:
-		GINL GAIA::GVOID init(){m_l = GNIL;}
+		GAIA::SYNC::Lock* m_pLock;
+		GAIA::TIMER::Timer::__UpdateTimesType* m_pSum;
+	};
+	class TimerCallBack1 : public GAIA::TIMER::Timer::CallBack, public TimerCallBackBase
+	{
+	public:
+		GINL TimerCallBack1(){this->init();}
+		virtual GAIA::GVOID UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason)
+		{
+			GAIA::SYNC::AutoLock al(this->GetLock());
+			++this->GetUpdateTimeSum();
+		}
 	private:
-		GAIA::SYNC::Lock* m_l;
+		GINL GAIA::GVOID init(){}
 	};
 
-	class TimerCallBack2 : public GAIA::TIMER::Timer::CallBack
+	class TimerCallBack2 : public GAIA::TIMER::Timer::CallBack, public TimerCallBackBase
 	{
 	public:
-		GINL TimerCallBack2(GAIA::SYNC::Lock& lock){this->init(); m_l = &lock;}
+		GINL TimerCallBack2(){this->init();}
 		virtual GAIA::GVOID UpdateTimer(GAIA::TIMER::Timer* pTimer, GAIA::TIMER::Timer::FIRE_REASON reason)
 		{
-			GAIA::SYNC::AutoLock al(*m_l);
+			GAIA::SYNC::AutoLock al(this->GetLock());
+			++this->GetUpdateTimeSum();
 		}
 	private:
-		GINL GAIA::GVOID init(){m_l = GNIL;}
-	private:
-		GAIA::SYNC::Lock* m_l;
+		GINL GAIA::GVOID init(){}
 	};
 
 	extern GAIA::N32 t_timer_timer(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
@@ -46,8 +62,13 @@ namespace GAIA_TEST
 		pTimerMgr->Create(descTimerMgr);
 
 		GAIA::SYNC::Lock l;
-		TimerCallBack1 cb1(l);
-		TimerCallBack2 cb2(l);
+		GAIA::TIMER::Timer::__UpdateTimesType sum = 0;
+		TimerCallBack1 cb1;
+		cb1.SetLock(l);
+		cb1.SetUpdateTimeSum(sum);
+		TimerCallBack2 cb2;
+		cb2.SetLock(l);
+		cb2.SetUpdateTimeSum(sum);
 
 		GAIA::TIMER::Timer::Desc descTimer;
 		descTimer.reset();
@@ -90,14 +111,18 @@ namespace GAIA_TEST
 			pTimerMgr->Update(tNew - t);
 			tDelta += tNew - t;
 			t = tNew;
-			if(tDelta > 1200 * 1000)
+			if(tDelta > 2000 * 1000)
 				break;
 		}
 		pTimerMgr->Update(0);
 
+		if(sum != 60)
+		{
+			GTLINE2("Timer update failed!");
+			++nRet;
+		}
+
 		GAIA_RELEASE_SAFE(pTimerMgr);
-		GAIA_RELEASE_SAFE(pTimer1);
-		GAIA_RELEASE_SAFE(pTimer2);
 
 		return nRet;
 	}
