@@ -282,6 +282,24 @@ namespace GAIA_TEST
 		bt.clear();
 		bt.destroy();
 
+		{
+			GAIA::SIZE u1 = bt.set(0);
+			GAIA::SIZE f1 = bt.fixedindex(u1);
+			GAIA::SIZE u2 = bt.set(1);
+			GAIA::SIZE f2 = bt.fixedindex(u2);
+			if(!bt.erase(bt.usedindex(f1)))
+			{
+				GTLINE2("Book erase error!");
+				++nRet;
+			}
+			u2 = bt.usedindex(f2);
+			if(u2 == GINVALID)
+			{
+				GTLINE2("Book usedindex error!");
+				++nRet;
+			}
+		}
+
 		return nRet;
 	}
 };

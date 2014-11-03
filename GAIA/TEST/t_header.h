@@ -146,7 +146,7 @@ namespace GAIA_TEST
 			//GTLINE1("Container: MultiMap test begin!"); nRet += t_container_multimap(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Tree test begin!"); nRet += t_container_tree(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Orderless test begin!"); nRet += t_container_orderless(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("Container: Book test begin!"); nRet += t_container_book(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Book test begin!"); nRet += t_container_book(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Pool test begin!"); nRet += t_container_pool(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Graph test begin!"); nRet += t_container_graph(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Storage test begin!"); nRet += t_container_storage(file, prt); GTLINE1("End"); GTLINE("\t");

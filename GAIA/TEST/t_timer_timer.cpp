@@ -25,7 +25,7 @@ namespace GAIA_TEST
 			}
 			m_nLastUpdateTime = t;
 		}
-		GINL const GAIA::TIMER::Timer::__MicroSecType& GetAvgTime() const
+		GINL GAIA::TIMER::Timer::__MicroSecType GetAvgTime() const
 		{
 			if(m_nTimeIncreaseTimes == 0)
 				return 0;
@@ -236,9 +236,29 @@ namespace GAIA_TEST
 		}
 
 		GAIA::TIMER::Timer::__MicroSecType nAveTime1 = cb1.GetAvgTime();
+		if(nAveTime1 != 1000 * 100)
+		{
+			GTLINE2("Timer1 ave time error!");
+			++nRet;
+		}
 		GAIA::TIMER::Timer::__MicroSecType nAveTime2 = cb2.GetAvgTime();
+		if(nAveTime2 != 1000 * 20)
+		{
+			GTLINE2("Timer2 ave time error!");
+			++nRet;
+		}
 		GAIA::TIMER::Timer::__MicroSecType nAveTime3 = cb3.GetAvgTime();
+		if(nAveTime3 != 1000 * 1100)
+		{
+			GTLINE2("Timer3 ave time error!");
+			++nRet;
+		}
 		GAIA::TIMER::Timer::__MicroSecType nAveTime4 = cb4.GetAvgTime();
+		if(nAveTime4 > 10)
+		{
+			GTLINE2("Timer4 ave time error!");
+			++nRet;
+		}
 
 		/* Release instance. */
 		GAIA_RELEASE_SAFE(pTimerMgr);
