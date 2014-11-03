@@ -34,23 +34,25 @@ namespace GAIA
 			else
 				return GAIA::False;
 		#else
+			GAIA::CH szTempFileKey[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(filekey, szTempFileKey, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
 			if(opentype & OPEN_TYPE_CREATEALWAYS)
 		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
-				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+"); // Create for read and write.
+				m_pFile = (GAIA::GVOID*)fopen(szTempFileKey, "wb+"); // Create for read and write.
 		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-				m_pFile = (GAIA::GVOID*)fopen(filekey, "wb+");
+				m_pFile = (GAIA::GVOID*)fopen(szTempFileKey, "wb+");
 		#	endif
 			else if(opentype & OPEN_TYPE_WRITE)
 		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
-				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+"); // Open for read and write.
+				m_pFile = (GAIA::GVOID*)fopen(szTempFileKey, "rb+"); // Open for read and write.
 		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb+");
+				m_pFile = (GAIA::GVOID*)fopen(szTempFileKey, "rb+");
 		#	endif
 			else if(opentype == OPEN_TYPE_READ)
 		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
-				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb"); // Open for read.
+				m_pFile = (GAIA::GVOID*)fopen(szTempFileKey, "rb"); // Open for read.
 		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-				m_pFile = (GAIA::GVOID*)fopen(filekey, "rb");
+				m_pFile = (GAIA::GVOID*)fopen(szTempFileKey, "rb");
 		#	endif
 			else
 				return GAIA::False;

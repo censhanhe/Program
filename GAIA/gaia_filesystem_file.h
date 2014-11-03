@@ -5,6 +5,12 @@ namespace GAIA
 {
 	namespace FSYS
 	{
+	#if GAIA_OS == GAIA_OS_WINDOWS
+		static const GAIA::U32 MAXPL = MAX_PATH;
+	#else
+		static const GAIA::U32 MAXPL = 260;
+	#endif
+
 		class FileBase : public GAIA::Entity
 		{
 		public:

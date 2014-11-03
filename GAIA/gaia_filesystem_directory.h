@@ -12,7 +12,7 @@ namespace GAIA
 		public:
 			Directory(){}
 			~Directory(){}
-			GINL GAIA::BL SetWorkingDirectory(const GAIA::TCH* dir);
+			GINL GAIA::BL SetWorkingDirectory(const GAIA::TCH* pszPath);
 			GINL GAIA::GVOID GetWorkingDirectory(GAIA::CTN::TString& result) const;
 			GINL GAIA::GVOID GetBinaryDirectory(GAIA::CTN::TString& result) const;
 			GINL GAIA::BL Create(const GAIA::TCH* pszName, GAIA::BL bOverlapped);

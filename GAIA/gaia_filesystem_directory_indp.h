@@ -17,23 +17,20 @@ namespace GAIA
 {
 	namespace FSYS
 	{
-	#if GAIA_OS == GAIA_OS_WINDOWS
-		static const GAIA::U32 MAXPL = MAX_PATH;
-	#else
-		static const GAIA::U32 MAXPL = 260;
-	#endif
-		GINL GAIA::BL Directory::SetWorkingDirectory(const GAIA::TCH* dir)
+		GINL GAIA::BL Directory::SetWorkingDirectory(const GAIA::TCH* pszPath)
 		{
-			if(GAIA::ALGO::stremp(dir))
+			if(GAIA::ALGO::stremp(pszPath))
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
 		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
-				if(::SetCurrentDirectoryA(dir))
+				if(::SetCurrentDirectoryA(pszPath))
 		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-				if(::SetCurrentDirectoryW(dir))
+				if(::SetCurrentDirectoryW(pszPath))
 		#	endif
 		#else
-			if(chdir(dir) == 0)
+			GAIA::CH szTempPath[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(pszPath, szTempPath, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+			if(chdir(szTempPath) == 0)
 		#endif
 				return GAIA::True;
 			return GAIA::False;
@@ -48,7 +45,9 @@ namespace GAIA
 				::GetCurrentDirectoryW(MAXPL, szPath);
 		#	endif
 		#else
-			::getcwd(szPath, MAXPL);
+			GAIA::CH szTempPath[GAIA::FSYS::MAXPL];
+			::getcwd(szTempPath, MAXPL);
+			GAIA::LOCALE::m2w(szTempPath, szPath, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
 		#endif
 			result = szPath;
 		}
@@ -106,7 +105,9 @@ namespace GAIA
 							if(!::CreateDirectoryW(sz, GNIL))
 					#	endif
 					#else
-						if(mkdir(sz, S_IRWXU | S_IRWXG | S_IRWXO) != 0)
+						GAIA::CH szTemp[GAIA::FSYS::MAXPL];
+						GAIA::LOCALE::w2m(sz, szTemp, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+						if(mkdir(szTemp, S_IRWXU | S_IRWXG | S_IRWXO) != 0)
 					#endif
 							return GAIA::False;
 					}
@@ -126,7 +127,9 @@ namespace GAIA
 					if(::CreateDirectoryW(pszName, GNIL))
 			#	endif
 			#else
-				if(mkdir(pszName, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
+				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+				if(mkdir(szTempName, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
 			#endif
 					return GAIA::True;
 				return GAIA::False;
@@ -216,7 +219,9 @@ namespace GAIA
 				if(*p != '/')
 					GAIA::ALGO::strcat(p, _T("/"));
 				/* find */
-				DIR* pdir = opendir(pszName);
+				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+				DIR* pdir = opendir(szTempName);
 				if(pdir == GNIL)
 					return GAIA::False;
 				dirent* pdirent;
@@ -230,7 +235,9 @@ namespace GAIA
 						GAIA::TCH sz[MAXPL];
 						GAIA::ALGO::strcpy(sz, szFind);
 						GAIA::ALGO::strcat(sz, pdirent->d_name);
-						if(lstat(sz, &s) >= 0)
+						GAIA::CH szTemp[GAIA::FSYS::MAXPL];
+						GAIA::LOCALE::w2m(sz, szTemp, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+						if(lstat(szTemp, &s) >= 0)
 						{
 							if(S_ISDIR(s.st_mode))
 							{
@@ -256,7 +263,9 @@ namespace GAIA
 			}
 			else
 			{
-				if(rmdir(pszName) == 0)
+				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+				if(rmdir(szTempName) == 0)
 					return GAIA::True;
 				return GAIA::False;
 			}
@@ -279,7 +288,9 @@ namespace GAIA
 			return GAIA::False;
 		#else
 			struct stat s;
-			if(lstat(pszName, &s) >= 0)
+			GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+			if(lstat(szTempName, &s) >= 0)
 			{
 				if(S_ISDIR(s.st_mode))
 					return GAIA::True;
@@ -301,7 +312,9 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
-			if(unlink(pszName) == 0)
+			GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+			if(unlink(szTempName) == 0)
 				return GAIA::True;
 			return GAIA::False;
 		#endif
@@ -321,7 +334,11 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
-			if(link(pszSrc, pszDst) == 0)
+			GAIA::CH szTempSrc[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(pszSrc, szTempSrc, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+			GAIA::CH szTempDst[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(pszDst, szTempDst, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+			if(link(szTempSrc, szTempDst) == 0)
 				return GAIA::True;
 			return GAIA::False;
 		#endif
@@ -341,7 +358,11 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
-			if(rename(pszSrc, pszDst) == 0)
+			GAIA::CH szTempSrc[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(pszSrc, szTempSrc, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+			GAIA::CH szTempDst[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(pszDst, szTempDst, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+			if(rename(szTempSrc, szTempDst) == 0)
 				return GAIA::True;
 			return GAIA::False;
 		#endif
@@ -363,7 +384,9 @@ namespace GAIA
 			return GAIA::True;
 		#else
 			struct stat s;
-			if(lstat(pszName, &s) >= 0)
+			GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+			if(lstat(szTempName, &s) >= 0)
 			{
 				if(S_ISDIR(s.st_mode))
 					return GAIA::False;
@@ -473,7 +496,9 @@ namespace GAIA
 			if(*p != '/')
 				GAIA::ALGO::strcat(p, _T("/"));
 			/* find */
-			DIR* pdir = opendir(pszName);
+			GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+			GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+			DIR* pdir = opendir(szTempName);
 			if(pdir == GNIL)
 				return GAIA::False;
 			dirent* pdirent;
@@ -487,7 +512,9 @@ namespace GAIA
 					GAIA::TCH sz[MAXPL];
 					GAIA::ALGO::strcpy(sz, szFind);
 					GAIA::ALGO::strcat(sz, pdirent->d_name);
-					if(lstat(sz, &s) >= 0)
+					GAIA::CH szTemp[GAIA::FSYS::MAXPL];
+					GAIA::LOCALE::w2m(sz, szTemp, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+					if(lstat(szTemp, &s) >= 0)
 					{
 						if(S_ISDIR(s.st_mode))
 						{
@@ -501,7 +528,7 @@ namespace GAIA
 								bExtMatch = GAIA::True;
 							else
 							{
-								const GAIA::TCH* pExt = GAIA::ALGO::strext(pdirent->d_name);
+								const GAIA::CH* pExt = GAIA::ALGO::strext(pdirent->d_name);
 								if(pExt != GNIL && GAIA::ALGO::striwrd(pszFilter, pExt) != GNIL)
 									bExtMatch = GAIA::True;
 							}
