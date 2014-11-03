@@ -88,7 +88,7 @@ namespace GAIA
 						return GAIA::False;
 					if(!descDir.check())
 						return GAIA::False;
-					if(nEscapeUSec <= 0)
+					if(nEscapeUSec < 0)
 						return GAIA::False;
 					if(nMaxUpdateTimes <= 0)
 						return GAIA::False;
