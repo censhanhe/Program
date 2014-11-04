@@ -28,9 +28,13 @@ namespace GAIA
 				if(::SetCurrentDirectoryW(pszPath))
 		#	endif
 		#else
-			GAIA::CH szTempPath[GAIA::FSYS::MAXPL];
-			GAIA::LOCALE::w2m(pszPath, szTempPath, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-			if(chdir(szTempPath) == 0)
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(chdir(pszPath) == 0)
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				GAIA::CH szTempPath[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszPath, szTempPath, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				if(chdir(szTempPath) == 0)
+		#	endif
 		#endif
 				return GAIA::True;
 			return GAIA::False;
@@ -45,9 +49,13 @@ namespace GAIA
 				::GetCurrentDirectoryW(MAXPL, szPath);
 		#	endif
 		#else
-			GAIA::CH szTempPath[GAIA::FSYS::MAXPL];
-			::getcwd(szTempPath, MAXPL);
-			GAIA::LOCALE::m2w(szTempPath, szPath, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				::getcwd(szPath, MAXPL);
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				GAIA::CH szTempPath[GAIA::FSYS::MAXPL];
+				::getcwd(szTempPath, MAXPL);
+				GAIA::LOCALE::m2w(szTempPath, szPath, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+		#	endif
 		#endif
 			result = szPath;
 		}
@@ -105,9 +113,13 @@ namespace GAIA
 							if(!::CreateDirectoryW(sz, GNIL))
 					#	endif
 					#else
-						GAIA::CH szTemp[GAIA::FSYS::MAXPL];
-						GAIA::LOCALE::w2m(sz, szTemp, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-						if(mkdir(szTemp, S_IRWXU | S_IRWXG | S_IRWXO) != 0)
+					#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+							if(mkdir(sz, S_IRWXU | S_IRWXG | S_IRWXO) != 0)
+					#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+							GAIA::CH szTemp[GAIA::FSYS::MAXPL];
+							GAIA::LOCALE::w2m(sz, szTemp, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+							if(mkdir(szTemp, S_IRWXU | S_IRWXG | S_IRWXO) != 0)
+					#	endif
 					#endif
 							return GAIA::False;
 					}
@@ -127,9 +139,13 @@ namespace GAIA
 					if(::CreateDirectoryW(pszName, GNIL))
 			#	endif
 			#else
-				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
-				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-				if(mkdir(szTempName, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
+			#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+					if(mkdir(pszName, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
+			#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+					GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+					GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+					if(mkdir(szTempName, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
+			#	endif
 			#endif
 					return GAIA::True;
 				return GAIA::False;
@@ -219,9 +235,13 @@ namespace GAIA
 				if(*p != '/')
 					GAIA::ALGO::strcat(p, _T("/"));
 				/* find */
+			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				DIR* pdir = opendir(pszName);
+			#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
-				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
 				DIR* pdir = opendir(szTempName);
+			#endif
 				if(pdir == GNIL)
 					return GAIA::False;
 				dirent* pdirent;
@@ -235,9 +255,13 @@ namespace GAIA
 						GAIA::TCH sz[MAXPL];
 						GAIA::ALGO::strcpy(sz, szFind);
 						GAIA::ALGO::strcat(sz, pdirent->d_name);
+					#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+						if(lstat(sz, &s) >= 0)
+					#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 						GAIA::CH szTemp[GAIA::FSYS::MAXPL];
-						GAIA::LOCALE::w2m(sz, szTemp, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+						GAIA::LOCALE::w2m(sz, szTemp, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
 						if(lstat(szTemp, &s) >= 0)
+					#endif
 						{
 							if(S_ISDIR(s.st_mode))
 							{
@@ -263,9 +287,13 @@ namespace GAIA
 			}
 			else
 			{
+			#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(rmdir(pszName) == 0)
+			#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
-				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
 				if(rmdir(szTempName) == 0)
+			#endif
 					return GAIA::True;
 				return GAIA::False;
 			}
@@ -288,9 +316,13 @@ namespace GAIA
 			return GAIA::False;
 		#else
 			struct stat s;
-			GAIA::CH szTempName[GAIA::FSYS::MAXPL];
-			GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-			if(lstat(szTempName, &s) >= 0)
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(lstat(pszName, &s) >= 0)
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				if(lstat(szTempName, &s) >= 0)
+		#	endif
 			{
 				if(S_ISDIR(s.st_mode))
 					return GAIA::True;
@@ -312,9 +344,13 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
-			GAIA::CH szTempName[GAIA::FSYS::MAXPL];
-			GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-			if(unlink(szTempName) == 0)
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(unlink(pszName) == 0)
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				if(unlink(szTempName) == 0)
+		#	endif
 				return GAIA::True;
 			return GAIA::False;
 		#endif
@@ -334,11 +370,15 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
-			GAIA::CH szTempSrc[GAIA::FSYS::MAXPL];
-			GAIA::LOCALE::w2m(pszSrc, szTempSrc, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-			GAIA::CH szTempDst[GAIA::FSYS::MAXPL];
-			GAIA::LOCALE::w2m(pszDst, szTempDst, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-			if(link(szTempSrc, szTempDst) == 0)
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(link(pszSrc, pszDst) == 0)
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				GAIA::CH szTempSrc[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszSrc, szTempSrc, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				GAIA::CH szTempDst[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszDst, szTempDst, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				if(link(szTempSrc, szTempDst) == 0)
+		#	endif
 				return GAIA::True;
 			return GAIA::False;
 		#endif
@@ -358,11 +398,15 @@ namespace GAIA
 				return GAIA::True;
 			return GAIA::False;
 		#else
-			GAIA::CH szTempSrc[GAIA::FSYS::MAXPL];
-			GAIA::LOCALE::w2m(pszSrc, szTempSrc, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-			GAIA::CH szTempDst[GAIA::FSYS::MAXPL];
-			GAIA::LOCALE::w2m(pszDst, szTempDst, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-			if(rename(szTempSrc, szTempDst) == 0)
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(rename(pszSrc, pszDst) == 0)
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				GAIA::CH szTempSrc[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszSrc, szTempSrc, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				GAIA::CH szTempDst[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszDst, szTempDst, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				if(rename(szTempSrc, szTempDst) == 0)
+		#	endif
 				return GAIA::True;
 			return GAIA::False;
 		#endif
@@ -384,9 +428,13 @@ namespace GAIA
 			return GAIA::True;
 		#else
 			struct stat s;
-			GAIA::CH szTempName[GAIA::FSYS::MAXPL];
-			GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-			if(lstat(szTempName, &s) >= 0)
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				if(lstat(pszName, &s) >= 0)
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				if(lstat(szTempName, &s) >= 0)
+		#	endif
 			{
 				if(S_ISDIR(s.st_mode))
 					return GAIA::False;
@@ -496,9 +544,13 @@ namespace GAIA
 			if(*p != '/')
 				GAIA::ALGO::strcat(p, _T("/"));
 			/* find */
-			GAIA::CH szTempName[GAIA::FSYS::MAXPL];
-			GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
-			DIR* pdir = opendir(szTempName);
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				DIR* pdir = opendir(pszName);
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				GAIA::CH szTempName[GAIA::FSYS::MAXPL];
+				GAIA::LOCALE::w2m(pszName, szTempName, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				DIR* pdir = opendir(szTempName);
+		#	endif
 			if(pdir == GNIL)
 				return GAIA::False;
 			dirent* pdirent;
@@ -512,9 +564,13 @@ namespace GAIA
 					GAIA::TCH sz[MAXPL];
 					GAIA::ALGO::strcpy(sz, szFind);
 					GAIA::ALGO::strcat(sz, pdirent->d_name);
+				#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+					if(lstat(sz, &s) >= 0)
+				#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 					GAIA::CH szTemp[GAIA::FSYS::MAXPL];
-					GAIA::LOCALE::w2m(sz, szTemp, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_UTF8);
+					GAIA::LOCALE::w2m(sz, szTemp, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
 					if(lstat(szTemp, &s) >= 0)
+				#endif
 					{
 						if(S_ISDIR(s.st_mode))
 						{
