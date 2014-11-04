@@ -443,7 +443,7 @@ namespace GAIA
 
 					/* Update index. */
 					timer.SetGroupIndex(sNewGroupIndex);
-					timer.SetIndex(sNewUsedIndex);
+					timer.SetIndex(sNewFixedIndex);
 				}
 			}
 			GINL GAIA::GVOID SwitchToTempTimerList(Group& g)
