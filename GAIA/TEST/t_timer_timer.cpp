@@ -254,7 +254,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 		GAIA::TIMER::Timer::__MicroSecType nAveTime4 = cb4.GetAvgTime();
-		if(nAveTime4 > 10)
+		if(nAveTime4 > 100)
 		{
 			GTLINE2("Timer4 ave time error!");
 			++nRet;
