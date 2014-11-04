@@ -154,8 +154,8 @@ namespace GAIA
 	#define GINVALID (~0)
 
 	/* Common operation. */
-	#define sizeofarray(arr) (sizeof(arr) / sizeof((arr)[0]))
-	#define sizeofarray2(arr) (sizeof(arr) / sizeof((arr)[0][0]))
+	#define sizeofarray(arr) ((GAIA::NM)(sizeof(arr) / sizeof((arr)[0])))
+	#define sizeofarray2(arr) ((GAIA::NM)(sizeof(arr) / sizeof((arr)[0][0])))
 
 	/* Class Base. All class's parent. */
 	class Base

@@ -38,9 +38,9 @@ namespace GAIA
 			/* Location management. */
 			GINL GAIA::BL Position(const __PosType& pos){m_pos = pos;}
 			GINL const __PosType& Position() const{return m_pos;}
-			GINL GAIA::BL Size(const __SizeType& size){m_size = size;}
+			GINL GAIA::BL Size(const __SizeType& size){m_size = size; return GAIA::True;}
 			GINL const __SizeType& Size() const{return m_size;}
-			GINL GAIA::BL Rotate(const __RotateType& rotate){m_rotate = rotate;}
+			GINL GAIA::BL Rotate(const __RotateType& rotate){m_rotate = rotate; return GAIA::True;}
 			GINL const __RotateType& Rotate() const{return m_rotate;}
 
 			/* Link management. */
@@ -126,9 +126,9 @@ namespace GAIA
 			GINL GAIA::BL Modal() const{return m_bModal;}
 
 			/* Display management. */
-			GINL GAIA::BL Show(GAIA::BL bShow){m_bShow = bShow;}
+			GINL GAIA::BL Show(GAIA::BL bShow){m_bShow = bShow; return GAIA::True;}
 			GINL GAIA::BL IsShow() const{return m_bShow;}
-			GINL GAIA::BL Color(const __ColorType& cr){m_cr = cr;}
+			GINL GAIA::BL Color(const __ColorType& cr){m_cr = cr; return GAIA::True;}
 			GINL const __ColorType& Color() const{return m_cr;}
 
 			/* Scissor management. */

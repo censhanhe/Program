@@ -646,7 +646,7 @@ namespace GAIA
 							{
 								recvfrom_addr_len = sizeof(recvfrom_addr);
 								GAIA::ALGO::xmemset(&recvfrom_addr, 0, recvfrom_addr_len);
-								GAIA_AST(m_buf.write_size() > sizeof(Addr));
+								GAIA_AST(m_buf.write_size() > (GAIA::SIZE)sizeof(Addr));
 								nRecv = (GAIA::N32)recvfrom(
 									pHandle->m_h,
 									(GAIA::N8*)m_buf.front_ptr() + sizeof(Addr),

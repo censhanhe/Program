@@ -46,18 +46,18 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){}
-			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::QUA<_ParamDataType>& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::QUA<_ParamDataType>& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::QUA<_ParamDataType>& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::QUA<_ParamDataType>& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::QUA<_ParamDataType>& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::QUA<_ParamDataType>& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& src) const{}
-			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& src) const{}
+			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::QUA<_ParamDataType>& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::QUA<_ParamDataType>& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::QUA<_ParamDataType>& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::QUA<_ParamDataType>& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::QUA<_ParamDataType>& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::QUA<_ParamDataType>& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& src) const{return GAIA::True;}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& src) const{return GAIA::True;}
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
 			GINL operator _DataType*(){return this->front_ptr();}
