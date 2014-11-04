@@ -153,35 +153,38 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID clear()
 			{
+				m_pool.clear();
 				m_fixedlist.clear();
 				m_freestack.clear();
 				m_usedlist.clear();
 			}
 			GINL GAIA::GVOID destroy()
 			{
+				m_pool.destroy();
 				m_fixedlist.destroy();
 				m_freestack.destroy();
 				m_usedlist.destroy();
 			}
 			GINL _SizeType set(const _DataType& t)
 			{
-				Node n;
+				UsedNode* p = m_pool.alloc();
+				FixedNode n;
+				n.t = t;
+				n.p = p;
 				if(m_freestack.empty())
 				{
 					m_fixedlist.push_back(n);
-					n.fixedindex = m_fixedlist.size() - 1;
+					p->fi = m_fixedlist.size() - 1;
 				}
 				else
 				{
-					n.fixedindex = m_freestack.back();
+					p->fi = m_freestack.back();
+					m_fixedlist[p->fi] = n;
 					m_freestack.pop_back();
 				}
-				Node& nref = m_fixedlist[n.fixedindex];
-				nref.t = t;
-				nref.fixedindex = n.fixedindex;
-				m_usedlist.push_back(nref.fixedindex);
-				nref.usedindex = m_usedlist.size() - 1;
-				return nref.usedindex;
+				m_usedlist.push_back(p);
+				p->ui = m_usedlist.size() - 1;
+				return p->ui;
 			}
 			GINL GAIA::BL erase(const _SizeType& usedindex)
 			{
@@ -190,35 +193,58 @@ namespace GAIA
 					return GAIA::False;
 				if(usedindex >= m_usedlist.size())
 					return GAIA::False;
-				_SizeType fixedindex = m_usedlist[usedindex];
+				_SizeType fixedindex = this->fixedindex(usedindex);
 				GAIA_AST(fixedindex >= 0 && fixedindex < m_fixedlist.size());
 				if(fixedindex < 0)
 					return GAIA::False;
 				if(fixedindex >= m_fixedlist.size())
 					return GAIA::False;
-				Node& nref = m_fixedlist[fixedindex];
-				GAIA_AST(nref.fixedindex != GINVALID);
-				GAIA_AST(nref.usedindex != GINVALID);
-				nref.fixedindex = GINVALID;
-				nref.usedindex = GINVALID;
-				m_freestack.push_back(fixedindex);
+				FixedNode& n = m_fixedlist[fixedindex];
+				GAIA_AST(n.p != GNIL);
+				m_freestack.push_back(n.p->fi);
 				if(usedindex + 1 != m_usedlist.size())
+				{
+					m_usedlist.back()->ui = usedindex;
 					m_usedlist[usedindex] = m_usedlist.back();
+				}
 				m_usedlist.resize(m_usedlist.size() - 1);
+				m_pool.release(n.p);
+				n.p = GNIL;
 				return GAIA::True;
 			}
 			GINL _SizeType usedindex(const _SizeType& fixedindex) const
 			{
-				_SizeType ret = m_fixedlist[fixedindex].usedindex;
-				if(ret >= m_usedlist.size())
+				UsedNode* p = m_fixedlist[fixedindex].p;
+				GAIA_AST(p != GNIL);
+				if(p == GNIL)
 					return GINVALID;
-				return ret;
+				GAIA_AST(p->ui < m_usedlist.size());
+				return p->ui;
 			}
-			GINL _SizeType fixedindex(const _SizeType& usedindex) const{return m_usedlist[usedindex];}
-			GINL const _DataType& operator[](const _SizeType& usedindex) const{return m_fixedlist[m_usedlist[usedindex]].t;}
-			GINL _DataType& operator[](const _SizeType& usedindex){return m_fixedlist[m_usedlist[usedindex]].t;}
+			GINL _SizeType fixedindex(const _SizeType& usedindex) const
+			{
+				UsedNode* p = m_usedlist[usedindex];
+				GAIA_AST(p != GNIL);
+				if(p == GNIL)
+					return GINVALID;
+				GAIA_AST(p->fi < m_fixedlist.size());
+				return p->fi;
+			}
+			GINL const _DataType& operator[](const _SizeType& usedindex) const
+			{
+				_SizeType fixedindex = this->fixedindex(usedindex);
+				GAIA_AST(fixedindex != GINVALID);
+				return m_fixedlist[fixedindex].t;
+			}
+			GINL _DataType& operator[](const _SizeType& usedindex)
+			{
+				_SizeType fixedindex = this->fixedindex(usedindex);
+				GAIA_AST(fixedindex != GINVALID);
+				return m_fixedlist[fixedindex].t;
+			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
+				m_pool = src.m_pool;
 				m_fixedlist = src.m_fixedlist;
 				m_freestack = src.m_freestack;
 				m_usedlist = src.m_usedlist;
@@ -356,23 +382,30 @@ namespace GAIA
 				return ret;
 			}
 		private:
-			class Node : public GAIA::Base
+			class UsedNode : public GAIA::Base
+			{
+			public:
+				_SizeType fi; // Fixed index.
+				_SizeType ui; // Used index.
+			};
+			class FixedNode : public GAIA::Base
 			{
 			public:
 				_DataType t;
-				_SizeType fixedindex;
-				_SizeType usedindex;
+				UsedNode* p;
 			};
 		private:
-			typedef GAIA::CTN::BasicVector<Node, _SizeType, _SizeIncreaserType> __ListType;
-			typedef GAIA::CTN::BasicStack<_SizeType, _SizeType, _SizeIncreaserType> __FreeStackType;
-			typedef GAIA::CTN::BasicVector<_SizeType, _SizeType, _SizeIncreaserType> __UseListType;
+			typedef GAIA::CTN::BasicPool<UsedNode, _SizeType, _SizeIncreaserType> __PoolType; // UsedNode pool.
+			typedef GAIA::CTN::BasicVector<FixedNode, _SizeType, _SizeIncreaserType> __FixedListType;
+			typedef GAIA::CTN::BasicStack<_SizeType, _SizeType, _SizeIncreaserType> __FreeStackType; // Fixed list free stack.
+			typedef GAIA::CTN::BasicVector<UsedNode*, _SizeType, _SizeIncreaserType> __UsedListType;
 		private:
 			GINL GAIA::GVOID init(){}
 		private:
-			__ListType m_fixedlist;
+			__PoolType m_pool;
+			__FixedListType m_fixedlist;
 			__FreeStackType m_freestack;
-			__UseListType m_usedlist;
+			__UsedListType m_usedlist;
 		};
 	};
 };
