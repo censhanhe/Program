@@ -215,7 +215,6 @@ namespace GAIA
 			GINL _SizeType usedindex(const _SizeType& fixedindex) const
 			{
 				UsedNode* p = m_fixedlist[fixedindex].p;
-				GAIA_AST(p != GNIL);
 				if(p == GNIL)
 					return GINVALID;
 				GAIA_AST(p->ui < m_usedlist.size());
@@ -244,10 +243,19 @@ namespace GAIA
 			}
 			GINL __MyType& operator = (const __MyType& src)
 			{
-				m_pool = src.m_pool;
+				this->clear();
 				m_fixedlist = src.m_fixedlist;
 				m_freestack = src.m_freestack;
 				m_usedlist = src.m_usedlist;
+				for(_SizeType x = 0; x < m_usedlist.size(); ++x)
+				{
+					UsedNode* p = m_usedlist[x];
+					GAIA_AST(p != GNIL);
+					UsedNode* pNew = m_pool.alloc();
+					*pNew = *p;
+					m_usedlist[x] = pNew;
+					m_fixedlist[pNew->fi].p = pNew;
+				}
 				return *this;
 			}
 			GINL GAIA::BL operator == (const __MyType& src) const

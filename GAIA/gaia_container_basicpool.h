@@ -105,11 +105,11 @@ namespace GAIA
 				_SizeIncreaserType increaser;
 				_SizeType newsize = increaser.Increase(m_use.size());
 				GAIA_AST(newsize - m_use.size() > 0);
-				pGroup->listEle.resize(newsize - m_use.size());
-				for(_SizeType x = 0; x < pGroup->listEle.size(); ++x)
+				pGroup->eles.resize(newsize - m_use.size());
+				for(_SizeType x = 0; x < pGroup->eles.size(); ++x)
 				{
-					m_use.push_back(&pGroup->listEle[x]);
-					m_free.push_back(&pGroup->listEle[x]);
+					m_use.push_back(&pGroup->eles[x]);
+					m_free.push_back(&pGroup->eles[x]);
 				}
 				m_buf.push_back(pGroup);
 			}
@@ -117,7 +117,7 @@ namespace GAIA
 			class Group : public GAIA::Entity
 			{
 			public:
-				__ElementListType listEle;
+				__ElementListType eles;
 			};
 		private:
 			BasicVector<Group*, _SizeType, _SizeIncreaserType> m_buf;
