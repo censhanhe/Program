@@ -20,11 +20,11 @@ namespace GAIA
 			GINL _DataType length() const{}
 			GINL _DataType lengthsq() const{}
 			GINL GAIA::GVOID normalize(){}
-			GINL GAIA::BL isnormalized() const{}
+			GINL GAIA::BL isnormalized() const{return GAIA::False;}
 			GINL GAIA::GVOID identity();
-			GINL GAIA::BL isidentity() const{}
-			GINL GAIA::BL isalmostidentity() const{}
-			GINL GAIA::BL isalmostidentity(const _DataType& epsilon) const{}
+			GINL GAIA::BL isidentity() const{return GAIA::False;}
+			GINL GAIA::BL isalmostidentity() const{return GAIA::False;}
+			GINL GAIA::BL isalmostidentity(const _DataType& epsilon) const{return GAIA::False;}
 			GINL GAIA::BL iszero() const{return x == (_DataType)0 && y == (_DataType)0 && z == (_DataType)0 && w == (_DataType)0;}
 			GINL GAIA::BL isfinited() const{return GAIA::MATH::xfinite(x) && GAIA::MATH::xfinite(y) && GAIA::MATH::xfinite(z) && GAIA::MATH::xfinite(w);}
 			GINL GAIA::GVOID inverse(){}

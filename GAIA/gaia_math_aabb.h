@@ -200,10 +200,12 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_ray(const GAIA::MATH::VEC3<_ParamDataType>& pos, const GAIA::MATH::VEC3<_ParamDataType>& dir) const
 			{
+				return GAIA::INTERSECT_TYPE_INVALID;
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_plane(const GAIA::MATH::PLANE<_ParamDataType>* pPlanes, const GAIA::SIZE& sPlaneCount) const
 			{
 				GAIA_AST(pPlanes != GNIL);
+				return GAIA::INTERSECT_TYPE_INVALID;
 			}
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::AABB<_ParamDataType>& src){pmin = src.pmin; pmax = src.pmax; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){pmin = p; pmax = p + 3; return *this;}

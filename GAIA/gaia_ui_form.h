@@ -36,7 +36,7 @@ namespace GAIA
 			GINL ~Form(){this->Destroy();}
 
 			/* Location management. */
-			GINL GAIA::BL Position(const __PosType& pos){m_pos = pos;}
+			GINL GAIA::BL Position(const __PosType& pos){m_pos = pos; return GAIA::True;}
 			GINL const __PosType& Position() const{return m_pos;}
 			GINL GAIA::BL Size(const __SizeType& size){m_size = size; return GAIA::True;}
 			GINL const __SizeType& Size() const{return m_size;}
