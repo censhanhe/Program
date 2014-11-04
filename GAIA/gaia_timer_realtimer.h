@@ -25,7 +25,7 @@ namespace GAIA
 			GINL ~RealTimer(){this->Destroy();}
 
 			GINL GAIA::BL Create(const GAIA::TIMER::RealTimer::RealTimerDesc& desc);
-			GINL GAIA::GVOID Destroy();
+			GINL GAIA::GVOID Destroy(){}
 			GINL const GAIA::TIMER::RealTimer::RealTimerDesc& GetDesc() const{return m_desc;}
 
 		private:
@@ -57,7 +57,7 @@ namespace GAIA
 			GINL ~RealTimerMgr(){this->Destroy();}
 
 			GINL GAIA::BL Create(const GAIA::TIMER::RealTimerMgr::RealTimerMgrDesc& desc);
-			GINL GAIA::GVOID Destroy();
+			GINL GAIA::GVOID Destroy(){}
 			GINL const GAIA::TIMER::RealTimerMgr::RealTimerMgrDesc& GetDesc() const{return m_desc;}
 
 			GINL GAIA::BL Regist(GAIA::TIMER::RealTimer* pRealTimer);
