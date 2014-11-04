@@ -246,15 +246,15 @@ namespace GAIA
 	#ifdef GAIA_DEBUG_MACHINELENGTH
 		private: // Protect for 32-64bit error.
 			GINL GAIA::GVOID write(const GAIA::NM& obj){}
-			GINL GAIA::BL read(GAIA::NM& obj){}
+			GINL GAIA::BL read(GAIA::NM& obj){return GAIA::False;}
 			GINL GAIA::GVOID write(const GAIA::UM& obj){}
-			GINL GAIA::BL read(GAIA::UM& obj){}
+			GINL GAIA::BL read(GAIA::UM& obj){return GAIA::False;}
 			GINL GAIA::GVOID write(const GAIA::WCH& obj){}
-			GINL GAIA::BL read(GAIA::WCH& obj){}
+			GINL GAIA::BL read(GAIA::WCH& obj){return GAIA::False;}
 			GINL GAIA::GVOID write(const GAIA::NM* psz){}
-			GINL GAIA::BL read(GAIA::NM* psz){}
+			GINL GAIA::BL read(GAIA::NM* psz){return GAIA::False;}
 			GINL GAIA::GVOID write(const GAIA::UM* psz){}
-			GINL GAIA::BL read(GAIA::UM* psz){}
+			GINL GAIA::BL read(GAIA::UM* psz){return GAIA::False;}
 			GINL __MyType& operator << (const GAIA::NM& obj){return *this;}
 			GINL __MyType& operator >> (GAIA::NM& obj){return *this;}
 			GINL __MyType& operator << (const GAIA::UM& obj){return *this;}
