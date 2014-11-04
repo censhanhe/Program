@@ -114,7 +114,7 @@ namespace GAIA
 				return;
 			}
 			GAIA::UM uSectionIndex = this->GetSectionIndex(*GRCAST(GAIA::UM*)(pOriginP) + HEAP_BUFFER_HEADERSIZE);
-			GAIA_AST(uSectionIndex != GINVALID);
+			GAIA_AST(uSectionIndex != (GAIA::UM)GINVALID);
 			m_size.Add(-(GAIA::N64)m_secsizelist[uSectionIndex]);
 			m_usesize.Add(-(GAIA::N64)this->memory_size(p));
 			m_piecesize.Decrease();

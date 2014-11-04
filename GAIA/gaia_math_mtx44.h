@@ -87,15 +87,15 @@ namespace GAIA
 			{
 				__MyType m = (*this);
 				_DataType det = GSCAST(_DataType)(1);
-				GAIA::N8 is[4];
-				GAIA::N8 js[4];
-				GAIA::N8 f = 1;
-				for(GAIA::N8 k = 0; k < 4; ++k)
+				GAIA::N32 is[4];
+				GAIA::N32 js[4];
+				GAIA::N32 f = 1;
+				for(GAIA::N32 k = 0; k < 4; ++k)
 				{
 					_DataType tmax = 0;
-					for(GAIA::N8 i = k; i < 4; ++i)
+					for(GAIA::N32 i = k; i < 4; ++i)
 					{
-						for(GAIA::N8 j = k; j < 4; ++j)
+						for(GAIA::N32 j = k; j < 4; ++j)
 						{
 							const _DataType t = GAIA::MATH::xabs(m(i, j));
 							if(t > tmax)
@@ -126,29 +126,29 @@ namespace GAIA
 					}
 					det *= m(k, k);
 					m(k, k) = 1 / m(k, k);	
-					for(GAIA::N8 j = 0; j < 4; ++j)
+					for(GAIA::N32 j = 0; j < 4; ++j)
 					{
 						if(j != k)
 							m(k, j) *= m(k, k);
 					}
-					for(GAIA::N8 i = 0; i < 4; ++i)
+					for(GAIA::N32 i = 0; i < 4; ++i)
 					{
 						if(i != k)
 						{
-							for(GAIA::N8 j = 0; j < 4; ++j)
+							for(GAIA::N32 j = 0; j < 4; ++j)
 							{
 								if(j != k)
 									m(i, j) = m(i, j) - m(i, k) * m(k, j);
 							}
 						}
 					}
-					for(GAIA::N8 i = 0; i < 4; ++i)
+					for(GAIA::N32 i = 0; i < 4; ++i)
 					{
 						if(i != k)
 							m(i, k) *= -m(k, k);
 					}
 				}
-				for(GAIA::N8 k = 3; k >= 0; --k)
+				for(GAIA::N32 k = 3; k >= 0; --k)
 				{
 					if(js[k] != k)
 					{
