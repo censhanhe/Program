@@ -58,6 +58,12 @@ namespace GAIA
 				case GAIA::TYPEID_F64:
 					m_f64 = src.m_f64;
 					break;
+				case GAIA::TYPEID_POINTER:
+					m_p = src.m_p;
+					break;
+				case GAIA::TYPEID_CONSTPOINTER:
+					m_cp = src.m_cp;
+					break;
 				default:
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					break;
@@ -77,6 +83,8 @@ namespace GAIA
 			GINL Vari& operator = (const GAIA::U64& src){m_type = GAIA::TYPEID_U64; m_u64 = src; return *this;}
 			GINL Vari& operator = (GAIA::F32 src){m_type = GAIA::TYPEID_F32; m_f32 = src; return *this;}
 			GINL Vari& operator = (const GAIA::F64& src){m_type = GAIA::TYPEID_F64; m_f64 = src; return *this;}
+			GINL Vari& operator = (GAIA::GVOID* src){m_type = GAIA::TYPEID_POINTER; m_p = src; return *this;}
+			GINL Vari& operator = (const GAIA::GVOID* src){m_type = GAIA::TYPEID_CONSTPOINTER; m_cp = src; return *this;}
 			GINL operator const GAIA::NM(){GAIA_AST(m_type == GAIA::TYPEID_NM); return m_nm;}
 			GINL operator const GAIA::UM(){GAIA_AST(m_type == GAIA::TYPEID_UM); return m_um;}
 			GINL operator GAIA::BL(){GAIA_AST(m_type == GAIA::TYPEID_BL); return m_b;}
@@ -90,6 +98,8 @@ namespace GAIA
 			GINL operator GAIA::U64(){GAIA_AST(m_type == GAIA::TYPEID_U64); return m_u64;}
 			GINL operator GAIA::F32(){GAIA_AST(m_type == GAIA::TYPEID_F32); return m_f32;}
 			GINL operator GAIA::F64(){GAIA_AST(m_type == GAIA::TYPEID_F64); return m_f64;}
+			GINL operator GAIA::GVOID*(){GAIA_AST(m_type == GAIA::TYPEID_POINTER); return m_p;}
+			GINL operator const GAIA::GVOID*(){GAIA_AST(m_type == GAIA::TYPEID_CONSTPOINTER); return m_cp;}
 			GINL GAIA::BL operator == (const Vari& src) const
 			{
 				if(m_type != src.m_type)
@@ -124,6 +134,10 @@ namespace GAIA
 					return m_f32 == src.m_f32;
 				case GAIA::TYPEID_F64:
 					return m_f64 == src.m_f64;
+				case GAIA::TYPEID_POINTER:
+					return m_p == src.m_p;
+				case GAIA::TYPEID_CONSTPOINTER:
+					return m_cp == src.m_cp;
 				default:
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
@@ -164,6 +178,10 @@ namespace GAIA
 					return m_f32 >= src.m_f32;
 				case GAIA::TYPEID_F64:
 					return m_f64 >= src.m_f64;
+				case GAIA::TYPEID_POINTER:
+					return m_p >= src.m_p;
+				case GAIA::TYPEID_CONSTPOINTER:
+					return m_cp >= src.m_cp;
 				default:
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
@@ -203,6 +221,10 @@ namespace GAIA
 					return m_f32 <= src.m_f32;
 				case GAIA::TYPEID_F64:
 					return m_f64 <= src.m_f64;
+				case GAIA::TYPEID_POINTER:
+					return m_p <= src.m_p;
+				case GAIA::TYPEID_CONSTPOINTER:
+					return m_cp <= src.m_cp;
 				default:
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
@@ -226,6 +248,8 @@ namespace GAIA
 				GAIA::U64 m_u64;
 				GAIA::F32 m_f32;
 				GAIA::F64 m_f64;
+				GAIA::GVOID* m_p;
+				const GAIA::GVOID* m_cp;
 			};
 			GAIA::TYPEID m_type;
 		};
