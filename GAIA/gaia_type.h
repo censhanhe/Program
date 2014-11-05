@@ -162,17 +162,12 @@ namespace GAIA
 	{
 	public:
 	#ifndef GAIA_DEBUG_MEMORYLEAK
-	#	if GAIA_OS == GAIA_OS_WINDOWS
-	#		if GAIA_MACHINE == GAIA_MACHINE32
-				GINL GAIA::GVOID* operator new(GAIA::U32 size);
-				GINL GAIA::GVOID* operator new[](GAIA::U32 size);
-	#		elif GAIA_MACHINE == GAIA_MACHINE64
-				GINL GAIA::GVOID* operator new(GAIA::U64 size);
-				GINL GAIA::GVOID* operator new[](GAIA::U64 size);
-	#		endif
-	#	else
-			GINL GAIA::GVOID* operator new(GAIA::UM size);
-			GINL GAIA::GVOID* operator new[](GAIA::UM size);
+	#	if GAIA_MACHINE == GAIA_MACHINE32
+			GINL GAIA::GVOID* operator new(GAIA::U32 size);
+			GINL GAIA::GVOID* operator new[](GAIA::U32 size);
+	#	elif GAIA_MACHINE == GAIA_MACHINE64
+			GINL GAIA::GVOID* operator new(GAIA::U64 size);
+			GINL GAIA::GVOID* operator new[](GAIA::U64 size);
 	#	endif
 		GINL GAIA::GVOID operator delete(GAIA::GVOID* p);
 		GINL GAIA::GVOID operator delete[](GAIA::GVOID* p);

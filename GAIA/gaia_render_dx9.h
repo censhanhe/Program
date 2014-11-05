@@ -1700,10 +1700,10 @@ namespace GAIA
 			virtual GAIA::GVOID GetTriangleType(GAIA::RENDER::Render::Context& ctx, DRAW_TRIANGLE_TYPE& dtt) const
 			{
 			}
-			virtual GAIA::GVOID DrawTriangle(GAIA::RENDER::Render::Context& ctx)
+			virtual GAIA::GVOID DrawTriangle3D(GAIA::RENDER::Render::Context& ctx)
 			{
 			}
-			virtual GAIA::GVOID DrawIndexedTriangle(GAIA::RENDER::Render::Context& ctx)
+			virtual GAIA::GVOID DrawIndexedTriangle3D(GAIA::RENDER::Render::Context& ctx)
 			{
 			}
 

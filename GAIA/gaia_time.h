@@ -340,7 +340,6 @@ namespace GAIA
 				static const GAIA::N64 ONEYEARDAYS = 366;
 				static const GAIA::N64 TWOYEARDAYS = ONEYEARDAYS + 365;
 				static const GAIA::N64 THREEYEARDAYS = TWOYEARDAYS + 365;
-				static const GAIA::N64 FOURYEARDAYS = THREEYEARDAYS + 365;
 				y = day / DAYS4YEAR * 4;
 				day %= DAYS4YEAR;
 				if(day < ONEYEARDAYS){}

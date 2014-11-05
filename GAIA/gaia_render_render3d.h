@@ -209,8 +209,8 @@ namespace GAIA
 			/* Draw. */
 			virtual GAIA::GVOID SetTriangleType(GAIA::RENDER::Render::Context& ctx, DRAW_TRIANGLE_TYPE dtt) = 0;
 			virtual GAIA::GVOID GetTriangleType(GAIA::RENDER::Render::Context& ctx, DRAW_TRIANGLE_TYPE& dtt) const = 0;
-			virtual GAIA::GVOID DrawTriangle(GAIA::RENDER::Render::Context& ctx) = 0;
-			virtual GAIA::GVOID DrawIndexedTriangle(GAIA::RENDER::Render::Context& ctx) = 0;
+			virtual GAIA::GVOID DrawTriangle3D(GAIA::RENDER::Render::Context& ctx) = 0;
+			virtual GAIA::GVOID DrawIndexedTriangle3D(GAIA::RENDER::Render::Context& ctx) = 0;
 
 		private:
 		};
