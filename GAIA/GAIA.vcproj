@@ -1617,6 +1617,14 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="MESSAGE"
+						>
+						<File
+							RelativePath=".\gaia_ui_message.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="DATATRAFFIC"
@@ -2192,6 +2200,14 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="MESSAGE"
+							>
+							<File
+								RelativePath=".\TEST\t_ui_message.cpp"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="RENDER"
@@ -2410,6 +2426,10 @@
 						</File>
 						<File
 							RelativePath=".\TEST\t_container_trietree.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_vari.cpp"
 							>
 						</File>
 						<File

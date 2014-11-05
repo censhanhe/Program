@@ -198,6 +198,7 @@
 #include	"gaia_datatraffic_route_net.h"
 #include	"gaia_datatraffic_transmission_idm.h"
 
+#include	"gaia_ui_message.h"
 #include	"gaia_ui_canvas.h"
 #include	"gaia_ui_canvasmsgdisp.h"
 

@@ -242,8 +242,6 @@ namespace GAIA
 		TYPEID_X128,
 		TYPEID_F32,
 		TYPEID_F64,
-		TYPEID_CH,
-		TYPEID_WCH,
 	GAIA_ENUM_END(TYPEID)
 
 	static const GAIA::CH* TYPEID_ANAME[] =
@@ -263,8 +261,6 @@ namespace GAIA
 		"X128",
 		"F32",
 		"F64",
-		"CH",
-		"WCH",
 	};
 
 	static const GAIA::WCH* TYPEID_WNAME[] =
@@ -284,8 +280,6 @@ namespace GAIA
 		L"X128",
 		L"F32",
 		L"F64",
-		L"CH",
-		L"WCH",
 	};
 
 	GINL TYPEID nametotype(const GAIA::CH* psz);
