@@ -50,7 +50,7 @@ namespace GAIA
 			{
 				for(LIST_CREATECALLBACK::_sizetype x = 0; x < m_listCreateCB.size(); ++x)
 				{
-					FactoryCreateCallBack* pCallBack = m_listCreateCB[x];
+					CreateCallBack* pCallBack = m_listCreateCB[x];
 					pRet = pCallBack->Create(this, cid);
 					if(pRet != GNIL)
 						break;

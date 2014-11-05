@@ -38,7 +38,7 @@ namespace GAIA_TEST
 			Canvas* pCanvas = dynamic_cast<Canvas*>(fac.CreateInstance(CLSID_UI_CANVAS, GNIL));
 			if(pCanvas != GNIL)
 			{
-				Canvas::CanvasDesc desc;
+				Canvas::Desc desc;
 				desc.reset();
 				desc.pszCaptionText = _T("Hello World");
 				if(!pCanvas->Create(desc))

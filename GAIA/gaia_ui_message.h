@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace UI
 	{
-		class Msg : public GAIA::Base
+		class Message : public GAIA::Base
 		{
 		public:
 			GAIA_ENUM_BEGIN(TYPE)
@@ -18,9 +18,11 @@ namespace GAIA
 				TYPE_MOVED, // Param0 is the new position(GAIA::UI::Canvas::__PosType*). When the message sent, the canvas position is changed.
 				TYPE_RESIZE, // Param0 is the new size(GAIA::UI::Canvas::__SizeType*). When the message sent, the canvas size is not changed.
 				TYPE_RESIZED, // Param0 is the new size(GAIA::UI::Canvas::__SizeType*). When the message sent, the canvas size is changed.
+				TYPE_ACTIVE, // No parameter.
+				TYPE_INACTIVE, // No parameter.
 				/* Cursor message. */
-				TYPE_CURSORDOWN, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*).
-				TYPE_CURSORUP, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*).
+				TYPE_CURSORDOWN, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). Param1 is the key id.
+				TYPE_CURSORUP, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). Param1 is the key id.
 				TYPE_CURSORMOVE, // Param0 is the new cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). When the message sent, the cursor's position is not changed.
 				TYPE_CURSORMOVEIN, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*).
 				TYPE_CURSORMOVEOUT, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*).
@@ -32,6 +34,8 @@ namespace GAIA
 			GINL GAIA::GVOID reset()
 			{
 				m_type = TYPE_INVALID;
+				for(GAIA::SIZE x = 0; x < sizeofarray(m_v); ++x)
+					m_v[x].reset();
 			}
 			GINL GAIA::BL check()
 			{
@@ -39,8 +43,8 @@ namespace GAIA
 					return GAIA::False;
 				return GAIA::True;
 			}
-			GINL GAIA::GVOID SetMsgType(GAIA::UI::Msg::TYPE type){m_type = type;}
-			GINL GAIA::UI::Msg::TYPE GetMsgType() const{return m_type;}
+			GINL GAIA::GVOID SetMsgType(GAIA::UI::Message::TYPE type){m_type = type;}
+			GINL GAIA::UI::Message::TYPE GetMsgType() const{return m_type;}
 			GINL GAIA::GVOID SetParam(const GAIA::SIZE& index, const GAIA::CTN::Vari& v){GAIA_AST(index < sizeofarray(m_v)); m_v[index] = v;}
 			GINL const GAIA::CTN::Vari& GetParam(const GAIA::SIZE& index) const{GAIA_AST(index < sizeofarray(m_v)); return m_v[index];}
 		private:

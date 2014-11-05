@@ -26,7 +26,91 @@ namespace GAIA
 				::PostQuitMessage(0);
 				return 0;
 			}
-			return DefWindowProc(hWnd, message, wParam, lParam);
+			if(Canvas::WindowsMessageCallBack(hWnd, message, wParam, lParam))
+				return TRUE;
+			return ::DefWindowProc(hWnd, message, wParam, lParam);
+		}
+		GINL GAIA::BL Canvas::WindowsMessageCallBack(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+		{
+			GAIA::UI::Canvas canvas;
+			canvas.m_hWnd = hWnd;
+
+			GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded;
+
+			/* Find canvas pointer. */
+			{
+				GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);
+				GAIA::CTN::Ref<GAIA::UI::Canvas> finder(&canvas);
+				pFinded = g_gaia_windowlist.find(finder);
+				GAIA_AST(pFinded != GNIL);
+				if(pFinded == GNIL)
+					return GAIA::False;
+			}
+
+			Canvas* pFindedCanvas = *pFinded;
+			GAIA_AST(pFindedCanvas != GNIL);
+			if(pFindedCanvas == GNIL)
+				return GAIA::False;
+
+			GAIA::UI::Canvas::CallBack* pCallBack = pFindedCanvas->GetCallBack();
+			if(pCallBack == GNIL)
+				return GAIA::False;
+
+			switch(message)
+			{
+			case WM_CREATE:
+				break;
+				
+			case WM_DESTROY:
+				break;
+
+			case WM_SHOWWINDOW:
+				break;
+
+			case WM_MOVE:
+				break;
+
+			case WM_MOVING:
+				break;
+
+			case WM_SIZE:
+				break;
+
+			case WM_SIZING:
+				break;
+
+			case WM_ACTIVATE:
+				break;
+
+			case WM_LBUTTONDOWN:
+				break;
+
+			case WM_LBUTTONUP:
+				break;
+
+			case WM_RBUTTONDOWN:
+				break;
+
+			case WM_RBUTTONUP:
+				break;
+
+			case WM_MBUTTONDOWN:
+				break;
+
+			case WM_MBUTTONUP:
+				break;
+
+			case WM_KEYDOWN:
+				break;
+
+			case WM_KEYUP:
+				break;
+
+			default:
+				break;
+			}
+
+			return GAIA::False;
 		}
 	#else
 	#endif
@@ -40,7 +124,7 @@ namespace GAIA
 			if(this->IsCreated())
 				this->Destroy();
 		}
-		GINL GAIA::BL Canvas::Create(const CanvasDesc& desc)
+		GINL GAIA::BL Canvas::Create(const Desc& desc)
 		{
 			if(this->IsCreated())
 				return GAIA::False;
@@ -466,6 +550,7 @@ namespace GAIA
 		GINL GAIA::GVOID Canvas::init()
 		{
 			m_style.reset();
+			m_pCallBack = GNIL;
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			m_hWnd = GNIL;
 			m_pszClassName = GNIL;
@@ -478,6 +563,7 @@ namespace GAIA
 			GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);
 			GAIA::CTN::Ref<GAIA::UI::Canvas> finder(this);
 			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_gaia_windowlist.find(finder);
+			GAIA_AST(pFinded == GNIL);
 			if(pFinded != GNIL)
 				return GAIA::False;
 			return g_gaia_windowlist.insert(finder);
@@ -491,6 +577,7 @@ namespace GAIA
 			GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);
 			GAIA::CTN::Ref<GAIA::UI::Canvas> finder(this);
 			const GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded = g_gaia_windowlist.find(finder);
+			GAIA_AST(pFinded != GNIL);
 			if(pFinded == GNIL)
 				return GAIA::False;
 			return g_gaia_windowlist.erase(finder);

@@ -109,7 +109,7 @@ namespace GAIA
 				return bExist;
 			}
 
-			/* Msg management. */
+			/* Message management. */
 			GINL GAIA::GVOID EnableCallbackMsg(GAIA::BL bEnable){m_bEnableCallBackMsg = bEnable;}
 			GINL GAIA::BL IsEnableCallBackMsg() const{return m_bEnableCallBackMsg;}
 
