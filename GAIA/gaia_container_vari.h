@@ -10,8 +10,9 @@ namespace GAIA
 		public:
 			GINL Vari(){}
 			GINL ~Vari(){}
-			GINL GAIA::GVOID invalid(){m_type = GAIA::TYPEID_INVALID;}
-			GINL GAIA::BL isinvalid(){return m_type == GAIA::TYPEID_INVALID;}
+			GINL GAIA::GVOID reset(){m_type = GAIA::TYPEID_INVALID;}
+			GINL GAIA::BL check(){return m_type != GAIA::TYPEID_INVALID;}
+			GINL GAIA::TYPEID type() const{return m_type;}
 			GINL Vari& operator = (const Vari& src)
 			{
 				m_type = src.m_type;

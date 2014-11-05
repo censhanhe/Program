@@ -29,10 +29,20 @@ namespace GAIA
 				TYPE_KEYUP, // Param0 is the key's ansi character.
 			GAIA_ENUM_END(TYPE)
 		public:
-			GINL GAIA::GVOID SetMsgType(GAIA::UI::Msg::TYPE type);
-			GINL GAIA::UI::Msg::TYPE GetMsgType() const;
-			GINL GAIA::GVOID SetParam(const GAIA::SIZE& index, const GAIA::CTN::Vari& v);
-			GINL const GAIA::CTN::Vari& GetParam(const GAIA::SIZE& index) const;
+			GINL GAIA::GVOID reset()
+			{
+				m_type = TYPE_INVALID;
+			}
+			GINL GAIA::BL check()
+			{
+				if(m_type == TYPE_INVALID)
+					return GAIA::False;
+				return GAIA::True;
+			}
+			GINL GAIA::GVOID SetMsgType(GAIA::UI::Msg::TYPE type){m_type = type;}
+			GINL GAIA::UI::Msg::TYPE GetMsgType() const{return m_type;}
+			GINL GAIA::GVOID SetParam(const GAIA::SIZE& index, const GAIA::CTN::Vari& v){GAIA_AST(index < sizeofarray(m_v)); m_v[index] = v;}
+			GINL const GAIA::CTN::Vari& GetParam(const GAIA::SIZE& index) const{GAIA_AST(index < sizeofarray(m_v)); return m_v[index];}
 		private:
 			GAIA::CTN::Vari m_v[2];
 			TYPE m_type;
