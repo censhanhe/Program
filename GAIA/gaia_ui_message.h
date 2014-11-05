@@ -29,6 +29,8 @@ namespace GAIA
 				/* Keyboard message. */
 				TYPE_KEYDOWN, // Param0 is the key's ansi character.
 				TYPE_KEYUP, // Param0 is the key's ansi character.
+				/* Character message. */
+				TYPE_CHAR, // Param 0 is the key's ansi character.
 			GAIA_ENUM_END(TYPE)
 		public:
 			GINL GAIA::GVOID reset()

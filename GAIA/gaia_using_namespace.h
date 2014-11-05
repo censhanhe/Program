@@ -29,6 +29,7 @@ using namespace GAIA::TIMER;
 using namespace GAIA::STATE;
 using namespace GAIA::RENDER;
 using namespace GAIA::LAYOUT;
+using namespace GAIA::INPUT;
 using namespace GAIA::MVC;
 using namespace GAIA::UI;
 

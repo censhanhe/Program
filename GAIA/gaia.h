@@ -242,6 +242,8 @@
 
 #include	"gaia_render_resource_impl.h"
 
+#include	"gaia_input_inputstate.h"
+
 #include	"gaia_layout_widget.h"
 #include	"gaia_layout.h"
 #include	"gaia_layout_widget.h"

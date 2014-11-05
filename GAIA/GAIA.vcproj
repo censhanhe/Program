@@ -894,7 +894,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="VAR"
+						Name="VARI"
 						>
 						<File
 							RelativePath=".\gaia_container_vari.h"
@@ -2155,6 +2155,14 @@
 					</File>
 					<File
 						RelativePath=".\gaia_timer_timer_impl.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="INPUT"
+					>
+					<File
+						RelativePath=".\gaia_input_inputstate.h"
 						>
 					</File>
 				</Filter>
