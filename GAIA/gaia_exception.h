@@ -39,13 +39,11 @@ namespace GAIA
 		/*
 		*	When the GAIA_ASTDEBUG failed, the exception will occurred.
 		*/
-		class ExceptionAstDebug : public GAIA::EXCEPTION::Exception
+		class ExceptionAstDebug : public GAIA::EXCEPTION::ExceptionAst
 		{
 		public:
-			ExceptionAstDebug(const GAIA::CH* pszFile, GAIA::N32 nLine){m_pszFile = pszFile; m_nLine = nLine;}
-		private:
-			const GAIA::CH* m_pszFile;
-			GAIA::N32 m_nLine;
+			ExceptionAstDebug(const GAIA::CH* pszFile, GAIA::N32 nLine)
+				: ExceptionAst(pszFile, nLine){}
 		};
 
 		/*
