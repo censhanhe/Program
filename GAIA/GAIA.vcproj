@@ -480,6 +480,10 @@
 							RelativePath=".\gaia_filesystem_file_indp.h"
 							>
 						</File>
+						<File
+							RelativePath=".\gaia_filesystem_filebase.h"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="DIRECTORY"
@@ -1398,15 +1402,23 @@
 					Name="PRINT"
 					>
 					<File
-						RelativePath=".\gaia_print.h"
-						>
-					</File>
-					<File
 						RelativePath=".\gaia_print_format.h"
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_print_indp.h"
+						RelativePath=".\gaia_print_print.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_print_print_indp.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_print_printbase.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_print_stringprint.h"
 						>
 					</File>
 				</Filter>

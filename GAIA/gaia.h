@@ -13,9 +13,12 @@
 #include	"gaia_internal.h"
 
 #include	"gaia_print_format.h"
-#include	"gaia_print.h"
-#include	"gaia_assert.h"
+#include	"gaia_print_printbase.h"
+#include	"gaia_print_print.h"
+#include	"gaia_print_stringprint.h"
+
 #include	"gaia_exception.h"
+#include	"gaia_assert.h"
 
 #include	"gaia_system.h"
 
@@ -149,6 +152,7 @@
 #include	"gaia_datamodel.h"
 #include	"gaia_linkmodel.h"
 
+#include	"gaia_filesystem_filebase.h"
 #include	"gaia_filesystem_file.h"
 #include	"gaia_filesystem_directory.h"
 #include	"gaia_filesystem_chunkdef.h"

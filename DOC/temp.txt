@@ -44,6 +44,13 @@ LOG
 
 EXCEPTION
 	Add exception system.
+	Accesser will cause exception(OutOfBounder).
+	BasicChars will cause exception(NotEnoughMem).
+	BasicArray will cause exception(NotEnoughMem).
+	BasicStackQueue will cause exception(NotEnoughMem).
+	BasicStackStack will cause exception(NotEnoughMem).
+	BasicStackPackage will cause exception(NotEnoughMem).
+	BasicStackBitset will cause exception(NotEnoughMem).
 
 
 DataResearch

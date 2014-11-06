@@ -23,9 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{E11624AF-30B
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MAKEFILE", "MAKEFILE", "{C6359517-2075-49BB-B67B-ABA16F0329EB}"
-	ProjectSection(SolutionItems) = preProject
-		makefile = makefile
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,12 +34,10 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Debug|Win32.ActiveCfg = Debug|Win32
 		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Debug|Win32.Build.0 = Debug|Win32
-		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Debug|x64.ActiveCfg = Debug|x64
-		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Debug|x64.Build.0 = Debug|x64
+		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Debug|x64.ActiveCfg = Debug|Win32
 		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Release|Win32.ActiveCfg = Release|Win32
 		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Release|Win32.Build.0 = Release|Win32
-		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Release|x64.ActiveCfg = Release|x64
-		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Release|x64.Build.0 = Release|x64
+		{C552C70C-4991-4C3C-A8A3-AB5701576B02}.Release|x64.ActiveCfg = Release|Win32
 		{D1BF18A6-241A-4CBF-A458-DF73CED05774}.Debug|Win32.ActiveCfg = Debug|Win32
 		{D1BF18A6-241A-4CBF-A458-DF73CED05774}.Debug|Win32.Build.0 = Debug|Win32
 		{D1BF18A6-241A-4CBF-A458-DF73CED05774}.Debug|x64.ActiveCfg = Debug|x64
