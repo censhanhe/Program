@@ -10,6 +10,22 @@ namespace GAIA
 		public:
 			GINL Vari(){}
 			GINL ~Vari(){}
+			GINL Vari(const Vari& src){this->operator = (src);}
+			GINL Vari(const GAIA::NM& src){this->operator = (src);}
+			GINL Vari(const GAIA::UM& src){this->operator = (src);}
+			GINL Vari(GAIA::BL src){this->operator = (src);}
+			GINL Vari(GAIA::N8 src){this->operator = (src);}
+			GINL Vari(GAIA::N16 src){this->operator = (src);}
+			GINL Vari(GAIA::N32 src){this->operator = (src);}
+			GINL Vari(const GAIA::N64& src){this->operator = (src);}
+			GINL Vari(GAIA::U8 src){this->operator = (src);}
+			GINL Vari(GAIA::U16 src){this->operator = (src);}
+			GINL Vari(GAIA::U32 src){this->operator = (src);}
+			GINL Vari(const GAIA::U64& src){this->operator = (src);}
+			GINL Vari(GAIA::F32 src){this->operator = (src);}
+			GINL Vari(const GAIA::F64& src){this->operator = (src);}
+			GINL Vari(GAIA::GVOID* src){this->operator = (src);}
+			GINL Vari(const GAIA::GVOID* src){this->operator = (src);}
 			GINL GAIA::GVOID reset(){m_type = GAIA::TYPEID_INVALID;}
 			GINL GAIA::BL check(){return m_type != GAIA::TYPEID_INVALID;}
 			GINL GAIA::TYPEID type() const{return m_type;}

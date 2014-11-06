@@ -202,6 +202,8 @@
 #include	"gaia_datatraffic_route_net.h"
 #include	"gaia_datatraffic_transmission_idm.h"
 
+#include	"gaia_input_inputstate.h"
+
 #include	"gaia_ui_message.h"
 #include	"gaia_ui_canvas.h"
 #include	"gaia_ui_canvasmsgdisp.h"
@@ -245,8 +247,6 @@
 #include	"gaia_render_ddraw.h"
 
 #include	"gaia_render_resource_impl.h"
-
-#include	"gaia_input_inputstate.h"
 
 #include	"gaia_layout_widget.h"
 #include	"gaia_layout.h"

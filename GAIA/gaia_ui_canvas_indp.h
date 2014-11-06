@@ -59,51 +59,637 @@ namespace GAIA
 			switch(message)
 			{
 			case WM_CREATE:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_CREATE);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 				
 			case WM_DESTROY:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_DESTROY);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_SHOWWINDOW:
+				{
+					GAIA::UI::Message msg;
+					if((BOOL)wParam)
+						msg.SetMsgType(GAIA::UI::Message::TYPE_SHOW);
+					else
+						msg.SetMsgType(GAIA::UI::Message::TYPE_HIDE);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_MOVE:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_MOVED);
+					GAIA::UI::Canvas::__PosType pos;
+					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(LOWORD(lParam));
+					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
+					msg.SetParam(0, &pos);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_MOVING:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_MOVE);
+					GAIA::UI::Canvas::__PosType pos;
+					const RECT* pRect = GRCAST(const RECT*)(lParam);
+					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(pRect->left);
+					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(pRect->top);
+					msg.SetParam(0, &pos);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_SIZE:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_RESIZED);
+					GAIA::UI::Canvas::__SizeType size;
+					size.x = GSCAST(GAIA::UI::Canvas::__SizeType::_datatype)(LOWORD(lParam));
+					size.y = GSCAST(GAIA::UI::Canvas::__SizeType::_datatype)(HIWORD(lParam));
+					msg.SetParam(0, &size);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_SIZING:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_RESIZE);
+					GAIA::UI::Canvas::__SizeType size;
+					const RECT* pRect = GRCAST(const RECT*)(lParam);
+					size.x = GSCAST(GAIA::UI::Canvas::__SizeType::_datatype)(pRect->right - pRect->left);
+					size.y = GSCAST(GAIA::UI::Canvas::__SizeType::_datatype)(pRect->bottom - pRect->top);
+					msg.SetParam(0, &size);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_ACTIVATE:
+				{
+					GAIA::UI::Message msg;
+					if(wParam == WA_ACTIVE || wParam == WA_CLICKACTIVE)
+						msg.SetMsgType(GAIA::UI::Message::TYPE_ACTIVE);
+					else
+						msg.SetMsgType(GAIA::UI::Message::TYPE_INACTIVE);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_LBUTTONDOWN:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_CURSORDOWN);
+					GAIA::UI::Canvas::__PosType pos;
+					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(LOWORD(lParam));
+					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
+					msg.SetParam(0, &pos);
+					msg.SetParam(1, GAIA::INPUT::KEY_LBTN);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_LBUTTONUP:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_CURSORUP);
+					GAIA::UI::Canvas::__PosType pos;
+					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(LOWORD(lParam));
+					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
+					msg.SetParam(0, &pos);
+					msg.SetParam(1, GAIA::INPUT::KEY_LBTN);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_RBUTTONDOWN:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_CURSORDOWN);
+					GAIA::UI::Canvas::__PosType pos;
+					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(LOWORD(lParam));
+					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
+					msg.SetParam(0, &pos);
+					msg.SetParam(1, GAIA::INPUT::KEY_RBTN);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_RBUTTONUP:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_CURSORUP);
+					GAIA::UI::Canvas::__PosType pos;
+					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(LOWORD(lParam));
+					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
+					msg.SetParam(0, &pos);
+					msg.SetParam(1, GAIA::INPUT::KEY_RBTN);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_MBUTTONDOWN:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_CURSORDOWN);
+					GAIA::UI::Canvas::__PosType pos;
+					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(LOWORD(lParam));
+					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
+					msg.SetParam(0, &pos);
+					msg.SetParam(1, GAIA::INPUT::KEY_MBTN);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_MBUTTONUP:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_CURSORUP);
+					GAIA::UI::Canvas::__PosType pos;
+					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(LOWORD(lParam));
+					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
+					msg.SetParam(0, &pos);
+					msg.SetParam(1, GAIA::INPUT::KEY_MBTN);
+					if(pCallBack->Message(*pFindedCanvas, msg))
+						return GAIA::True;
+				}
 				break;
 
 			case WM_KEYDOWN:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_KEYDOWN);
+
+					GAIA::BL bCallBackAble = GAIA::True;
+					if(GAIA::ALGO::isalpha(wParam))
+					{
+						GAIA::N32 nLower = GAIA::ALGO::tolower(wParam);
+						msg.SetParam(0, nLower);
+						msg.SetParam(1, GAIA::INPUT::KEY_A + nLower - 'a');
+					}
+					else if(GAIA::ALGO::isdigit(wParam))
+					{
+						msg.SetParam(0, GSCAST(GAIA::N32)(wParam));
+						msg.SetParam(1, GAIA::INPUT::KEY_0 + wParam - '0');
+					}
+					else
+					{
+						switch(wParam)
+						{
+						case VK_SPACE:
+							msg.SetParam(0, GSCAST(GAIA::N32)(' '));
+							msg.SetParam(1, GAIA::INPUT::KEY_SPACE);
+							break;
+						case VK_TAB:
+							msg.SetParam(0, GSCAST(GAIA::N32)('\t'));
+							msg.SetParam(1, GAIA::INPUT::KEY_TAB);
+							break;
+						case VK_RETURN:
+							msg.SetParam(0, GSCAST(GAIA::N32)('\n'));
+							msg.SetParam(1, GAIA::INPUT::KEY_ENTER);
+							break;
+						case VK_OEM_4:
+							msg.SetParam(0, GSCAST(GAIA::N32)('['));
+							msg.SetParam(1, GAIA::INPUT::KEY_LEFTSQUAREBRACKET);
+							break;
+						case VK_OEM_6:
+							msg.SetParam(0, GSCAST(GAIA::N32)(']'));
+							msg.SetParam(1, GAIA::INPUT::KEY_RIGHTSQUAREBRACKET);
+							break;
+						case VK_OEM_COMMA:
+							msg.SetParam(0, GSCAST(GAIA::N32)(','));
+							msg.SetParam(1, GAIA::INPUT::KEY_COMMA);
+							break;
+						case VK_OEM_PERIOD:
+							msg.SetParam(0, GSCAST(GAIA::N32)('.'));
+							msg.SetParam(1, GAIA::INPUT::KEY_POINT);
+							break;
+						case VK_OEM_2:
+							msg.SetParam(0, GSCAST(GAIA::N32)('/'));
+							msg.SetParam(1, GAIA::INPUT::KEY_SLASH);
+							break;
+						case VK_OEM_5:
+							msg.SetParam(0, GSCAST(GAIA::N32)('\\'));
+							msg.SetParam(1, GAIA::INPUT::KEY_INVERSESLASH);
+							break;
+						case VK_OEM_3:
+							msg.SetParam(0, GSCAST(GAIA::N32)('`'));
+							msg.SetParam(1, GAIA::INPUT::KEY_UPPOINT);
+							break;
+						case VK_OEM_1:
+							msg.SetParam(0, GSCAST(GAIA::N32)(';'));
+							msg.SetParam(1, GAIA::INPUT::KEY_SEMICOLON);
+							break;
+						case VK_OEM_7:
+							msg.SetParam(0, GSCAST(GAIA::N32)('\''));
+							msg.SetParam(1, GAIA::INPUT::KEY_QUOTES);
+							break;
+						case VK_BACK:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_BACKSPACE);
+							break;
+						case VK_DELETE:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_DELETE);
+							break;
+						case VK_LEFT:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_LEFT);
+							break;
+						case VK_RIGHT:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_RIGHT);
+							break;
+						case VK_UP:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_UP);
+							break;
+						case VK_DOWN:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_DOWN);
+							break;
+						case VK_HOME:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_HOME);
+							break;
+						case VK_END:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_END);
+							break;
+						case VK_PRIOR:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_PAGEUP);
+							break;
+						case VK_NEXT:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_PAGEDOWN);
+							break;
+						case VK_F1:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F1);
+							break;
+						case VK_F2:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F2);
+							break;
+						case VK_F3:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F3);
+							break;
+						case VK_F4:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F4);
+							break;
+						case VK_F5:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F5);
+							break;
+						case VK_F6:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F6);
+							break;
+						case VK_F7:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F7);
+							break;
+						case VK_F8:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F8);
+							break;
+						case VK_F9:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F9);
+							break;
+						case VK_F10:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F10);
+							break;
+						case VK_F11:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F11);
+							break;
+						case VK_F12:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F12);
+							break;
+						case VK_NUMPAD0:
+							msg.SetParam(0, GSCAST(GAIA::N32)('0'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM0);
+							break;
+						case VK_NUMPAD1:
+							msg.SetParam(0, GSCAST(GAIA::N32)('1'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM1);
+							break;
+						case VK_NUMPAD2:
+							msg.SetParam(0, GSCAST(GAIA::N32)('2'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM2);
+							break;
+						case VK_NUMPAD3:
+							msg.SetParam(0, GSCAST(GAIA::N32)('3'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM3);
+							break;
+						case VK_NUMPAD4:
+							msg.SetParam(0, GSCAST(GAIA::N32)('4'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM4);
+							break;
+						case VK_NUMPAD5:
+							msg.SetParam(0, GSCAST(GAIA::N32)('5'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM5);
+							break;
+						case VK_NUMPAD6:
+							msg.SetParam(0, GSCAST(GAIA::N32)('6'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM6);
+							break;
+						case VK_NUMPAD7:
+							msg.SetParam(0, GSCAST(GAIA::N32)('7'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM7);
+							break;
+						case VK_NUMPAD8:
+							msg.SetParam(0, GSCAST(GAIA::N32)('8'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM8);
+							break;
+						case VK_NUMPAD9:
+							msg.SetParam(0, GSCAST(GAIA::N32)('9'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM9);
+							break;
+						case VK_CONTROL:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_CTRL);
+							break;
+						case VK_MENU:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_ALT);
+							break;
+						case VK_SHIFT:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_SHIFT);
+							break;
+						case VK_ESCAPE:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_ESC);
+							break;
+						default:
+							bCallBackAble = GAIA::False;
+							break;
+						}
+					}
+
+					if(bCallBackAble)
+					{
+						if(pCallBack->Message(*pFindedCanvas, msg))
+							return GAIA::True;
+					}
+				}
 				break;
 
 			case WM_KEYUP:
+				{
+					GAIA::UI::Message msg;
+					msg.SetMsgType(GAIA::UI::Message::TYPE_KEYUP);
+
+					GAIA::BL bCallBackAble = GAIA::True;
+					if(GAIA::ALGO::isalpha(wParam))
+					{
+						GAIA::N32 nLower = GAIA::ALGO::tolower(wParam);
+						msg.SetParam(0, nLower);
+						msg.SetParam(1, GAIA::INPUT::KEY_A + nLower - 'a');
+					}
+					else if(GAIA::ALGO::isdigit(wParam))
+					{
+						msg.SetParam(0, GSCAST(GAIA::N32)(wParam));
+						msg.SetParam(1, GAIA::INPUT::KEY_0 + wParam - '0');
+					}
+					else
+					{
+						switch(wParam)
+						{
+						case VK_SPACE:
+							msg.SetParam(0, GSCAST(GAIA::N32)(' '));
+							msg.SetParam(1, GAIA::INPUT::KEY_SPACE);
+							break;
+						case VK_TAB:
+							msg.SetParam(0, GSCAST(GAIA::N32)('\t'));
+							msg.SetParam(1, GAIA::INPUT::KEY_TAB);
+							break;
+						case VK_RETURN:
+							msg.SetParam(0, GSCAST(GAIA::N32)('\n'));
+							msg.SetParam(1, GAIA::INPUT::KEY_ENTER);
+							break;
+						case VK_OEM_4:
+							msg.SetParam(0, GSCAST(GAIA::N32)('['));
+							msg.SetParam(1, GAIA::INPUT::KEY_LEFTSQUAREBRACKET);
+							break;
+						case VK_OEM_6:
+							msg.SetParam(0, GSCAST(GAIA::N32)(']'));
+							msg.SetParam(1, GAIA::INPUT::KEY_RIGHTSQUAREBRACKET);
+							break;
+						case VK_OEM_COMMA:
+							msg.SetParam(0, GSCAST(GAIA::N32)(','));
+							msg.SetParam(1, GAIA::INPUT::KEY_COMMA);
+							break;
+						case VK_OEM_PERIOD:
+							msg.SetParam(0, GSCAST(GAIA::N32)('.'));
+							msg.SetParam(1, GAIA::INPUT::KEY_POINT);
+							break;
+						case VK_OEM_2:
+							msg.SetParam(0, GSCAST(GAIA::N32)('/'));
+							msg.SetParam(1, GAIA::INPUT::KEY_SLASH);
+							break;
+						case VK_OEM_5:
+							msg.SetParam(0, GSCAST(GAIA::N32)('\\'));
+							msg.SetParam(1, GAIA::INPUT::KEY_INVERSESLASH);
+							break;
+						case VK_OEM_3:
+							msg.SetParam(0, GSCAST(GAIA::N32)('`'));
+							msg.SetParam(1, GAIA::INPUT::KEY_UPPOINT);
+							break;
+						case VK_OEM_1:
+							msg.SetParam(0, GSCAST(GAIA::N32)(';'));
+							msg.SetParam(1, GAIA::INPUT::KEY_SEMICOLON);
+							break;
+						case VK_OEM_7:
+							msg.SetParam(0, GSCAST(GAIA::N32)('\''));
+							msg.SetParam(1, GAIA::INPUT::KEY_QUOTES);
+							break;
+						case VK_BACK:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_BACKSPACE);
+							break;
+						case VK_DELETE:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_DELETE);
+							break;
+						case VK_LEFT:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_LEFT);
+							break;
+						case VK_RIGHT:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_RIGHT);
+							break;
+						case VK_UP:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_UP);
+							break;
+						case VK_DOWN:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_DOWN);
+							break;
+						case VK_HOME:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_HOME);
+							break;
+						case VK_END:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_END);
+							break;
+						case VK_PRIOR:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_PAGEUP);
+							break;
+						case VK_NEXT:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_PAGEDOWN);
+							break;
+						case VK_F1:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F1);
+							break;
+						case VK_F2:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F2);
+							break;
+						case VK_F3:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F3);
+							break;
+						case VK_F4:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F4);
+							break;
+						case VK_F5:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F5);
+							break;
+						case VK_F6:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F6);
+							break;
+						case VK_F7:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F7);
+							break;
+						case VK_F8:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F8);
+							break;
+						case VK_F9:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F9);
+							break;
+						case VK_F10:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F10);
+							break;
+						case VK_F11:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F11);
+							break;
+						case VK_F12:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_F12);
+							break;
+						case VK_NUMPAD0:
+							msg.SetParam(0, GSCAST(GAIA::N32)('0'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM0);
+							break;
+						case VK_NUMPAD1:
+							msg.SetParam(0, GSCAST(GAIA::N32)('1'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM1);
+							break;
+						case VK_NUMPAD2:
+							msg.SetParam(0, GSCAST(GAIA::N32)('2'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM2);
+							break;
+						case VK_NUMPAD3:
+							msg.SetParam(0, GSCAST(GAIA::N32)('3'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM3);
+							break;
+						case VK_NUMPAD4:
+							msg.SetParam(0, GSCAST(GAIA::N32)('4'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM4);
+							break;
+						case VK_NUMPAD5:
+							msg.SetParam(0, GSCAST(GAIA::N32)('5'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM5);
+							break;
+						case VK_NUMPAD6:
+							msg.SetParam(0, GSCAST(GAIA::N32)('6'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM6);
+							break;
+						case VK_NUMPAD7:
+							msg.SetParam(0, GSCAST(GAIA::N32)('7'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM7);
+							break;
+						case VK_NUMPAD8:
+							msg.SetParam(0, GSCAST(GAIA::N32)('8'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM8);
+							break;
+						case VK_NUMPAD9:
+							msg.SetParam(0, GSCAST(GAIA::N32)('9'));
+							msg.SetParam(1, GAIA::INPUT::KEY_NUM9);
+							break;
+						case VK_CONTROL:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_CTRL);
+							break;
+						case VK_MENU:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_ALT);
+							break;
+						case VK_SHIFT:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_SHIFT);
+							break;
+						case VK_ESCAPE:
+							msg.SetParam(0, GSCAST(GAIA::N32)(0));
+							msg.SetParam(1, GAIA::INPUT::KEY_ESC);
+							break;
+						default:
+							bCallBackAble = GAIA::False;
+							break;
+						}
+					}
+
+					if(bCallBackAble)
+					{
+						if(pCallBack->Message(*pFindedCanvas, msg))
+							return GAIA::True;
+					}
+				}
 				break;
 
 			default:

@@ -21,14 +21,14 @@ namespace GAIA
 				TYPE_ACTIVE, // No parameter.
 				TYPE_INACTIVE, // No parameter.
 				/* Cursor message. */
-				TYPE_CURSORDOWN, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). Param1 is the key id.
-				TYPE_CURSORUP, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). Param1 is the key id.
+				TYPE_CURSORDOWN, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). Param1 is the key id(GAIA::INPUT::KEY).
+				TYPE_CURSORUP, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). Param1 is the key id(GAIA::INPUT::KEY).
 				TYPE_CURSORMOVE, // Param0 is the new cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). When the message sent, the cursor's position is not changed.
 				TYPE_CURSORMOVEIN, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*).
 				TYPE_CURSORMOVEOUT, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*).
 				/* Keyboard message. */
-				TYPE_KEYDOWN, // Param0 is the key's ansi character.
-				TYPE_KEYUP, // Param0 is the key's ansi character.
+				TYPE_KEYDOWN, // Param0 is the key's ansi character(GAIA::N32)(if is 0 means a pure virtual key), Param1 is the key id(GAIA::INPUT::KEY).
+				TYPE_KEYUP, // Param0 is the key's ansi character(GAIA::N32)(if is 0 means a pure virtual key), Param1 is the key id(GAIA::INPUT::KEY).
 				/* Character message. */
 				TYPE_CHAR, // Param 0 is the key's ansi character.
 			GAIA_ENUM_END(TYPE)
