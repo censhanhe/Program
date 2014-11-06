@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace FWORK
 	{
-		class Instance : public RefObject
+		class Instance : public GAIA::RefObject
 		{
 		private:
 			friend class GAIA::FWORK::Factory;

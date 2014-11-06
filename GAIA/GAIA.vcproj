@@ -2601,6 +2601,14 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="TYPE"
+						>
+						<File
+							RelativePath=".\TEST\t_type.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

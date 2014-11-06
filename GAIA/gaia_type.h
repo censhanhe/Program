@@ -175,7 +175,7 @@ namespace GAIA
 	};
 
 	/* Entity can been dispatch by virtual table and have a virtual destructor. */
-	class Entity : public Base
+	class Entity : public GAIA::Base
 	{
 	public:
 		GAIA_ENUM_BEGIN(FEATURE)
@@ -189,13 +189,13 @@ namespace GAIA
 	};
 
 	/* Class Object. It's the all class's base(except high-performance container and math class. */
-	class Object : public Entity
+	class Object : public GAIA::Entity
 	{
 	public:
 	};
 
 	/* Class RefObject. If a class need a reference function, it will derived from here. */
-	class RefObject : public Object
+	class RefObject : public GAIA::Object
 	{
 	public:
 		GINL RefObject(){m_nRef = 1; m_bDestructing = GAIA::False;}

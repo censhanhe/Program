@@ -34,7 +34,7 @@ namespace GAIA
 	#	endif
 	#endif
 
-		class Allocator : public RefObject
+		class Allocator : public GAIA::RefObject
 		{
 		public:
 			GINL Allocator()

@@ -5,6 +5,8 @@
 
 namespace GAIA_TEST
 {
+	extern GAIA::N32 t_type(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
+
 	extern GAIA::N32 t_math_arithmatic_basic(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 	extern GAIA::N32 t_math_arithmatic_lerp(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 	extern GAIA::N32 t_math_arithmatic_random(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
@@ -104,6 +106,8 @@ namespace GAIA_TEST
 		// Every test procedure.
 		GTLINE("[GAIA TEST BEGIN]");
 		{
+			GTLINE1("Type: Type test begin!"); nRet += t_type(file, prt); GTLINE1("End"); GTLINE("\t");
+
 			//GTLINE1("MathArithmatic: Basic test begin!"); nRet += t_math_arithmatic_basic(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("MathArithmatic: Lerp test begin!"); nRet += t_math_arithmatic_lerp(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("MathArithmatic: Random test begin!"); nRet += t_math_arithmatic_random(file, prt); GTLINE1("End"); GTLINE("\t");
@@ -124,7 +128,7 @@ namespace GAIA_TEST
 
 			//GTLINE1("Algorithm: Set test begin!"); nRet += t_algorithm_set(file, prt); GTLINE1("End"); GTLINE("\t");
 
-			GTLINE1("Container: Vari test begin!"); nRet += t_container_vari(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Container: Vari test begin!"); nRet += t_container_vari(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Buffer test begin!"); nRet += t_container_buffer(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Ptr test begin!"); nRet += t_container_ptr(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Ref test begin!"); nRet += t_container_ref(file, prt); GTLINE1("End"); GTLINE("\t");
@@ -177,7 +181,7 @@ namespace GAIA_TEST
 
 			//GTLINE1("Timer: Timer test begin!"); nRet += t_timer_timer(file, prt); GTLINE1("End"); GTLINE("\t");
 
-			GTLINE1("UI: Message test begin!"); nRet += t_ui_message(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("UI: Message test begin!"); nRet += t_ui_message(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("UI: Canvas test begin!"); nRet += t_ui_canvas(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			//GTLINE1("Render: ImageWork test begin!"); nRet += t_render_imagework(file, prt); GTLINE1("End"); GTLINE("\t");

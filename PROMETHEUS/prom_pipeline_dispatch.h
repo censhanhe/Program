@@ -7,6 +7,7 @@ namespace PROM
 	{
 	public:
 		GINL PipelineDispatch(){this->init();}
+		GINL ~PipelineDispatch(){}
 		GINL GAIA::GVOID Run(
 			Pipeline** ppPrevPL, const GAIA::SIZE& prevpl_size,
 			Pipeline** ppNextPL, const GAIA::SIZE& nextpl_size,
@@ -168,10 +169,6 @@ namespace PROM
 					new_plc_list[x]->Release();
 				}
 			}
-		}
-	protected:
-		virtual GAIA::GVOID RefObjectDestruct()
-		{
 		}
 	private:
 		GINL GAIA::GVOID init()

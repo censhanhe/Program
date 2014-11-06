@@ -101,7 +101,7 @@ namespace GAIA
 		};
 		GINL GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size);
 		GINL GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult);
-		class Handle : public RefObject
+		class Handle : public GAIA::RefObject
 		{
 		private:
 			friend class Listener;
