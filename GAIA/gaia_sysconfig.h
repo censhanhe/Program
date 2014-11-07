@@ -119,6 +119,11 @@
 #	if GAIA_OS == GAIA_OS_WINDOWS
 #		pragma warning(disable : 4100)
 #		pragma warning(disable : 4189)
+#		pragma warning(disable : 4996)
+#		pragma warning(disable : 4127)
+#		pragma warning(disable : 4201)
+#		pragma warning(disable : 4800)
+#		pragma warning(disable : 4244)
 #	else
 #	endif
 #endif
