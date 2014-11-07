@@ -57,6 +57,9 @@ namespace GAIA
 			*/
 			GPCHR_NULLSTRPTR_RET(pSrc, GAIA::False);
 			GPCHR_NULL_RET(pDst, GAIA::False);
+			GAIA_AST(pSrc != pDst);
+			if(pSrc == pDst)
+				return GAIA::False;
 			GAIA::SIZE sLen = GAIA::ALGO::strlen(pSrc);
 			if(sLen != 8 && sLen != 12 && sLen != 14 && sLen != 17 && sLen != 20 && sLen < 20)
 			{
@@ -123,6 +126,9 @@ namespace GAIA
 			*/
 			GPCHR_NULLSTRPTR_RET(pSrc, GAIA::False);
 			GPCHR_NULL_RET(pDst, GAIA::False);
+			GAIA_AST(pSrc != pDst);
+			if(pSrc == pDst)
+				return GAIA::False;
 			GAIA::SIZE sLen = GAIA::ALGO::strlen(pSrc);
 			if(sLen != 10 && sLen != 16 && sLen != 19 && sLen != 23 && sLen != 27 && sLen < 27)
 			{

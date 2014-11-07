@@ -356,9 +356,9 @@ namespace GAIA
 			GINL GAIA::BL SetLineFlag(const _CharType* p)
 			{
 				GPCHR_NULLSTRPTR_RET(p, GAIA::False);
-				if(GAIA::ALGO::strcmp(p, _T("\r")) != 0 &&
-					GAIA::ALGO::strcmp(p, _T("\n")) != 0 &&
-					GAIA::ALGO::strcmp(p, _T("\r\n")) != 0)
+				if(GAIA::ALGO::strcmp(p, _T(GAIA_FILELINEBREAK_R)) != 0 &&
+					GAIA::ALGO::strcmp(p, _T(GAIA_FILELINEBREAK_N)) != 0 &&
+					GAIA::ALGO::strcmp(p, _T(GAIA_FILELINEBREAK_RN)) != 0)
 					return GAIA::False;
 				m_lineflag = p;
 				return GAIA::True;
@@ -402,7 +402,7 @@ namespace GAIA
 			{
 				this->ResetCursor();
 				m_root = GNIL;
-				m_lineflag = _T("\r\n");
+				m_lineflag = _T(GAIA_FILELINEBREAK);
 			}
 			GINL GAIA::BL IsAttrExist(const Node& node, const _CharType* pAttrName) const
 			{

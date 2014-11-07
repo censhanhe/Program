@@ -348,6 +348,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gaia_global_decl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gaia_global_impl.h"
 				>
 			</File>

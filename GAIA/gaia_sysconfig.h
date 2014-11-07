@@ -143,4 +143,10 @@
 /* Integration flag. */
 #define GAIA_USESTL
 
+/* Line break flag. */
+#define GAIA_FILELINEBREAK_RN "\r\n"
+#define GAIA_FILELINEBREAK_R "\r"
+#define GAIA_FILELINEBREAK_N "\n"
+#define GAIA_FILELINEBREAK GAIA_FILELINEBREAK_RN
+
 #endif

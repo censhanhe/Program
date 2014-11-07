@@ -75,7 +75,10 @@ namespace GAIA
 #if GAIA_CHARSET == GAIA_CHARSET_UNICODE
 	typedef wchar_t TCH;
 #	ifndef _T
-#		define _T(x) L##x
+#		ifndef __T
+#			define __T(x)      L##x
+#		endif
+#		define _T(x) __T(x)
 #	endif
 #else
 	typedef char TCH;

@@ -49,11 +49,11 @@ namespace PROM
 				}
 			}
 			if(chs == _T("\\r\\n"))
-				chs = _T("\r\n");
+				chs = _T(GAIA_FILELINEBREAK_RN);
 			else if(chs == _T("\\n"))
-				chs = _T("\n");
+				chs = _T(GAIA_FILELINEBREAK_N);
 			else if(chs == _T("\\r"))
-				chs = _T("\r");
+				chs = _T(GAIA_FILELINEBREAK_R);
 			else
 				chs.clear();
 			if(!chs.empty())
@@ -112,18 +112,18 @@ namespace PROM
 						else
 							++add;
 
-						remove_rn += strTemp.replace(_T("\r\n"), _T(""));
-						remove_n += strTemp.replace(_T("\n"), _T(""));
-						remove_r += strTemp.replace(_T("\r"), _T(""));
+						remove_rn += strTemp.replace(_T(GAIA_FILELINEBREAK_RN), _T(""));
+						remove_n += strTemp.replace(_T(GAIA_FILELINEBREAK_N), _T(""));
+						remove_r += strTemp.replace(_T(GAIA_FILELINEBREAK_R), _T(""));
 						strTemp += chs.front_ptr();
 
 						if(bExistValidFlag)
 						{
-							if(chs == _T("\r\n"))
+							if(chs == _T(GAIA_FILELINEBREAK_RN))
 								--remove_rn;
-							if(chs == _T("\n"))
+							if(chs == _T(GAIA_FILELINEBREAK_N))
 								--remove_n;
-							if(chs == _T("\r"))
+							if(chs == _T(GAIA_FILELINEBREAK_R))
 								--remove_r;
 						}
 						t.lines.set_line(y, strTemp);
@@ -142,11 +142,11 @@ namespace PROM
 				}
 
 				GAIA::CTN::TChars tempchs;
-				if(chs == _T("\r\n"))
+				if(chs == _T(GAIA_FILELINEBREAK_RN))
 					tempchs = _T("\\r\\n");
-				else if(chs == _T("\n"))
+				else if(chs == _T(GAIA_FILELINEBREAK_N))
 					tempchs = _T("\\n");
-				else if(chs == _T("\r"))
+				else if(chs == _T(GAIA_FILELINEBREAK_R))
 					tempchs = _T("\\r");
 				else
 					tempchs = _T("(InvalidCharacter)");

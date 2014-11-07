@@ -72,15 +72,15 @@ namespace PROM
 							if(strLine.size() > 1)
 							{
 								if(strLine[strLine.size() - 2] == _T('\r'))
-									GAIA::ALGO::strcpy(szLineBreak, _T("\r\n"));
+									GAIA::ALGO::strcpy(szLineBreak, _T(GAIA_FILELINEBREAK_RN));
 								else
-									GAIA::ALGO::strcpy(szLineBreak, _T("\n"));
+									GAIA::ALGO::strcpy(szLineBreak, _T(GAIA_FILELINEBREAK_N));
 							}
 							else
-								GAIA::ALGO::strcpy(szLineBreak, _T("\n"));
+								GAIA::ALGO::strcpy(szLineBreak, _T(GAIA_FILELINEBREAK_N));
 						}
 						else if(strLine.back() == _T('\r'))
-							GAIA::ALGO::strcpy(szLineBreak, _T("\r"));
+							GAIA::ALGO::strcpy(szLineBreak, _T(GAIA_FILELINEBREAK_R));
 						if(GAIA::ALGO::strlen(szLineBreak) == 2)
 							strLine.resize(strLine.size() - 2);
 						else

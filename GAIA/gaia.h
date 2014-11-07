@@ -269,6 +269,8 @@
 #include	"gaia_framework_instancecreator_impl.h"
 #include	"gaia_framework_factory_impl.h"
 
+#include	"gaia_global_decl.h"
+
 #endif
 
 /*

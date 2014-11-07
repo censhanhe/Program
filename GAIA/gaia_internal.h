@@ -52,16 +52,8 @@ namespace GAIA_INTERNAL_NAMESPACE
 				++p2;
 			}
 		}
-	#ifdef GAIA_DEBUG_WARNING
-	#	if GAIA_COMPILER == GAIA_COMPILER_CL
-	#		pragma warning(disable : 4702)
-	#	endif
-	#endif
+	#if GAIA_COMPILER != GAIA_COMPILER_CL // For CL C4702 Warning.
 		return 0;
-	#ifdef GAIA_DEBUG_WARNING
-	#	if GAIA_COMPILER == GAIA_COMPILER_CL
-	#		pragma warning(default : 4702)
-	#	endif
 	#endif
 	}
 };
