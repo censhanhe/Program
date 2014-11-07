@@ -13,8 +13,6 @@ namespace GAIA
 			virtual GAIA::GVOID enable_read(GAIA::BL bEnable) = 0;
 			virtual GAIA::BL enable_read() const = 0;
 
-			virtual GAIA::GVOID clear_screen() = 0;
-
 			virtual PrintBase& operator << (GAIA::BL t) = 0;
 			virtual PrintBase& operator << (GAIA::NM t) = 0;
 			virtual PrintBase& operator << (GAIA::UM t) = 0;

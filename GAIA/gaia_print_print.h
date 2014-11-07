@@ -16,8 +16,6 @@ namespace GAIA
 			virtual GAIA::GVOID enable_read(GAIA::BL bEnable){m_bEnableRead = bEnable;}
 			virtual GAIA::BL enable_read() const{return m_bEnableRead;}
 
-			virtual GINL GAIA::GVOID clear_screen();
-
 			virtual GINL Print& operator << (GAIA::BL t);
 			virtual GINL Print& operator << (GAIA::NM t);
 			virtual GINL Print& operator << (GAIA::UM t);

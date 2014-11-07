@@ -2858,7 +2858,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 1)
 				{
 					AL alprt(m_lr_prt);
-					m_prt.clear_screen();
+					GAIA::SYSTEM::command_line("clear");
 				}
 				else
 					CMDFAILED;

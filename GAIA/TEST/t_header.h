@@ -61,6 +61,8 @@ namespace GAIA_TEST
 	extern GAIA::N32 t_container_staticstringpool(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 	extern GAIA::N32 t_container_cooperate(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 
+	extern GAIA::N32 t_print_printstring(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
+
 	extern GAIA::N32 t_time_time(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 
 	extern GAIA::N32 t_sync_atomic(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
@@ -71,6 +73,8 @@ namespace GAIA_TEST
 
 	extern GAIA::N32 t_filesystem_file(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 	extern GAIA::N32 t_filesystem_directory(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
+
+	extern GAIA::N32 t_log_log(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 
 	extern GAIA::N32 t_network(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 
@@ -162,6 +166,8 @@ namespace GAIA_TEST
 			GTLINE1("Container: StaticStringPool test begin!"); nRet += t_container_staticstringpool(file, prt); GTLINE1("End"); GTLINE("\t");	
 			GTLINE1("Container: Cooperate test begin!"); nRet += t_container_cooperate(file, prt); GTLINE1("End"); GTLINE("\t");
 
+			GTLINE1("Print: PrintString test begin!"); nRet += t_print_printstring(file, prt); GTLINE1("End"); GTLINE("\t");
+
 			GTLINE1("Time: Time test begin!"); nRet += t_time_time(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("Sync: Atomic test begin!"); nRet += t_sync_atomic(file, prt); GTLINE1("End"); GTLINE("\t");
@@ -171,6 +177,8 @@ namespace GAIA_TEST
 			GTLINE1("Thread: Thread test begin!"); nRet += t_thread_thread(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("File: File test begin!"); nRet += t_filesystem_file(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("File: Directory test begin!"); nRet += t_filesystem_directory(file, prt); GTLINE1("End"); GTLINE("\t");
+
+			GTLINE1("File: Log test begin!"); nRet += t_log_log(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("File: Network test begin!"); nRet += t_network(file, prt); GTLINE1("End"); GTLINE("\t");
 

@@ -9,14 +9,6 @@ namespace GAIA
 {
 	namespace PRINT
 	{
-		GINL GAIA::GVOID Print::clear_screen()
-		{
-		#if GAIA_OS == GAIA_OS_WINDOWS
-			system("cls");
-		#else
-			system("clear");
-		#endif
-		}
 		GINL Print& Print::operator << (GAIA::BL t)
 		{
 			if(!this->enable_write())

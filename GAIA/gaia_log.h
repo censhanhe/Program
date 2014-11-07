@@ -34,6 +34,11 @@ namespace GAIA
 			};
 			typedef GAIA::CTN::Vector<Node> __NodeList;
 		public:
+			class FlagEnd : public GAIA::Base
+			{
+			public:
+			};
+		public:
 			GINL Log(){this->init();}
 			GINL ~Log(){}
 			GINL GAIA::GVOID SetBufferSize(const __NodeList::_sizetype& size)
@@ -92,17 +97,49 @@ namespace GAIA
 				}
 				m_nodes.clear();
 			}
+		public:
+			virtual Log& operator << (GAIA::BL t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::NM t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::UM t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::N8 t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::N16 t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::N32 t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (const GAIA::N64& t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::U8 t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::U16 t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::U32 t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (const GAIA::U64& t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::F32 t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (const GAIA::F64& t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (const GAIA::WCH& t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (const GAIA::CH* p){this->WriteToStringPrint(p); return *this;}
+			virtual Log& operator << (const GAIA::WCH* p){this->WriteToStringPrint(p); return *this;}
+			virtual Log& operator << (const GAIA::X128& t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (const GAIA::LOG::Log::FlagEnd& t)
+			{
+				return *this;
+			}
+		public:
+			GINL const GAIA::LOG::Log::FlagEnd& End() const{return m_flagend;}
 		private:
 			GINL GAIA::GVOID init()
 			{
 				m_pCallBack = GNIL;
 				m_filter = (__FilterType)GINVALID;
 			}
+			template<typename _ParamDataType> GAIA::GVOID WriteToStringPrint(_ParamDataType t)
+			{
+				GAIA::SYNC::AutoLock al(m_locksprt);
+				m_sprt << t;
+			}
 		private:
 			CallBack* m_pCallBack;
 			__FilterType m_filter;
 			__NodeList m_nodes;
 			GAIA::SYNC::Lock m_lock;
+			GAIA::SYNC::Lock m_locksprt;
+			GAIA::PRINT::StringPrint m_sprt;
+			FlagEnd m_flagend;
 		};
 	};
 };
