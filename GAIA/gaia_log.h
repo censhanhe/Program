@@ -95,11 +95,18 @@ namespace GAIA
 					return GAIA::False;
 				GAIA::TIME::Time logtime;
 				GAIA::SYNC::AutoLock al(m_lock);
+				GAIA_AST(!m_bCallBacking);
+				if(m_bCallBacking)
+					return GAIA::False;
 				if(m_nodes.capacity() == 0)
 				{
 					if(m_pCallBack == GNIL)
 						return GAIA::False;
-					m_pCallBack->LogWrite(logtime, type, userfilter, pszLog);
+					m_bCallBacking = GAIA::True;
+					{
+						m_pCallBack->LogWrite(logtime, type, userfilter, pszLog);
+					}
+					m_bCallBacking = GAIA::False;
 				}
 				else
 				{
@@ -122,11 +129,15 @@ namespace GAIA
 				GAIA::SYNC::AutoLock al(m_lock);
 				if(m_pCallBack != GNIL)
 				{
-					for(__NodeList::_sizetype x = 0; x < m_nodes.size(); ++x)
+					m_bCallBacking = GAIA::True;
 					{
-						Node& n = m_nodes[x];
-						m_pCallBack->LogWrite(n.logtime, n.type, n.userfilter, n.strLog);
+						for(__NodeList::_sizetype x = 0; x < m_nodes.size(); ++x)
+						{
+							Node& n = m_nodes[x];
+							m_pCallBack->LogWrite(n.logtime, n.type, n.userfilter, n.strLog);
+						}
 					}
+					m_bCallBacking = GAIA::False;
 				}
 				m_nodes.clear();
 			}
@@ -151,14 +162,30 @@ namespace GAIA
 			virtual Log& operator << (const GAIA::X128& t){this->WriteToStringPrint(t); return *this;}
 			virtual Log& operator << (const GAIA::LOG::Log::FlagType& t)
 			{
+				this->EnterLock();
 				return *this;
 			}
 			virtual Log& operator << (const GAIA::LOG::Log::FlagUserFilter& t)
 			{
+				this->EnterLock();
 				return *this;
 			}
 			virtual Log& operator << (const GAIA::LOG::Log::FlagEnd& t)
 			{
+				GAIA_AST((GAIA::N64)m_lockcnt >= 0);
+				for(;;)
+				{
+					GAIA::N64 nNew = m_lockcnt.Decrease();
+					if(nNew < 0)
+					{
+						GAIA_AST(nNew == -1);
+						m_lockcnt.Increase();
+						break;
+					}
+					m_lock.Leave();
+					if(nNew == 0)
+						break;
+				}
 				return *this;
 			}
 			GINL GAIA::LOG::Log::FlagType Type(TYPE t)
@@ -201,13 +228,19 @@ namespace GAIA
 				m_pCallBack = GNIL;
 				m_typefilter = (__FilterType)GINVALID;
 				m_userfilter = (__FilterType)GINVALID;
+				m_bCallBacking = GAIA::False;
 				m_flagtype.m_type = TYPE_LOG;
 				m_flaguserfilter.m_filter = 0;
 			}
 			template<typename _ParamDataType> GAIA::GVOID WriteToStringPrint(_ParamDataType t)
 			{
-				GAIA::SYNC::AutoLock al(m_lock);
+				this->EnterLock();
 				m_sprt << t;
+			}
+			GINL GAIA::GVOID EnterLock()
+			{
+				m_lock.Enter();
+				m_lockcnt.Increase();
 			}
 		private:
 			__LineBreakFlagType m_linebreak;
@@ -216,6 +249,8 @@ namespace GAIA
 			__FilterType m_userfilter;
 			__NodeList m_nodes;
 			GAIA::SYNC::Lock m_lock;
+			GAIA::SYNC::Atomic m_lockcnt;
+			GAIA::BL m_bCallBacking;
 			GAIA::PRINT::StringPrint m_sprt;
 			FlagType m_flagtype;
 			FlagUserFilter m_flaguserfilter;
