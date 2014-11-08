@@ -71,6 +71,7 @@
 #include	"gaia_container_wstring.h"
 #include	"gaia_container_astring.h"
 #include	"gaia_container_tstring.h"
+#include	"gaia_container_basiccharsstring.h"
 #include 	"gaia_container_basicstackstack.h"
 #include	"gaia_container_stackstack.h"
 #include	"gaia_container_basicstack.h"

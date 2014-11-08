@@ -41,6 +41,7 @@ namespace GAIA_TEST
 	extern GAIA::N32 t_container_list(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 	extern GAIA::N32 t_container_chars(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 	extern GAIA::N32 t_container_string(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
+	extern GAIA::N32 t_container_charsstring(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 	extern GAIA::N32 t_container_stackbitset(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 	extern GAIA::N32 t_container_bitset(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
 	extern GAIA::N32 t_container_trietree(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt);
@@ -146,6 +147,7 @@ namespace GAIA_TEST
 			GTLINE1("Container: List test begin!"); nRet += t_container_list(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Chars test begin!"); nRet += t_container_chars(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: String test begin!"); nRet += t_container_string(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: CharsString test begin!"); nRet += t_container_charsstring(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: StackBitset test begin!"); nRet += t_container_stackbitset(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Bitset test begin!"); nRet += t_container_bitset(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: TrieTree test begin!"); nRet += t_container_trietree(file, prt); GTLINE1("End"); GTLINE("\t");

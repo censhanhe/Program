@@ -945,6 +945,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="CHARSSTRING"
+						>
+						<File
+							RelativePath=".\gaia_container_basiccharsstring.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_container_charsstring.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ALGORITHM"
@@ -2370,6 +2382,10 @@
 						</File>
 						<File
 							RelativePath=".\TEST\t_container_chars.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_charsstring.cpp"
 							>
 						</File>
 						<File
