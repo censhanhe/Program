@@ -50,3 +50,6 @@ EXCEPTION
 DataResearch
 	Pair operation end's special operations.
 	Change U64 to N64.
+
+
+assign/insert/extern/combin

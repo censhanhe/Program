@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace CTN
 	{
-		typedef BasicString<GAIA::WCH, GAIA::N32> WString;
+		typedef GAIA::CTN::BasicString<GAIA::WCH, GAIA::N32> WString;
 	};
 };
 
