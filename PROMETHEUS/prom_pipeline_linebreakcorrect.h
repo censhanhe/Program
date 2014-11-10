@@ -87,7 +87,7 @@ namespace PROM
 						GAIA::BL bExistValidFlag = GAIA::False;
 						if(strTemp.size () >= chs.size())
 						{
-							if(strTemp.rfind(chs.front_ptr(), strTemp.size() - 1) !=
+							if(strTemp.rfind(GCCAST(const GAIA::TCH*)(chs.front_ptr()), strTemp.size() - 1) !=
 								strTemp.size() - chs.size())
 								++add;
 							else

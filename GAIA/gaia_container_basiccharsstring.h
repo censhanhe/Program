@@ -295,7 +295,7 @@ namespace GAIA
 				return ret;
 			}
 			GINL GAIA::GVOID inverse(){if(m_string.capacity() != 0) m_string.inverse(); else m_chars.inverse();}
-			GINL GAIA::BL insert(const _DataType& t, const _SizeType& index)
+			template<typename _ParamDataType> GAIA::BL insert(const _ParamDataType& t, const _SizeType& index)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.insert(t, index);
@@ -321,7 +321,7 @@ namespace GAIA
 						return m_chars.insert(t, index);
 				}
 			}
-			GINL GAIA::BL insert(const _DataType* p, const _SizeType& index)
+			template<typename _ParamDataType> GAIA::BL insert(const _ParamDataType* p, const _SizeType& index)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.insert(p, index);
@@ -385,13 +385,13 @@ namespace GAIA
 					return m_string.erase_index(index_start, index_end);
 				return m_chars.erase_index(index_start, index_end);
 			}
-			GINL _SizeType erase(const _DataType& t, const _SizeType& index)
+			template<typename _ParamDataType> _SizeType erase(const _ParamDataType& t, const _SizeType& index)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.erase(t, index);
 				return m_chars.erase(t, index);
 			}
-			GINL _SizeType erase(const _DataType* p, const _SizeType& index)
+			template<typename _ParamDataType> _SizeType erase(const _ParamDataType* p, const _SizeType& index)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.erase(p, index);
@@ -403,13 +403,13 @@ namespace GAIA
 					return m_string.erase(src.front_ptr(), index);
 				return m_chars.erase(src.front_ptr(), index);
 			}
-			GINL _SizeType find(const _DataType& t, const _SizeType& index) const
+			template<typename _ParamDataType> _SizeType find(const _ParamDataType& t, const _SizeType& index) const
 			{
 				if(m_string.capacity() != 0)
 					return m_string.find(t, index);
 				return m_chars.find(t, index);
 			}
-			GINL _SizeType find(const _DataType* p, const _SizeType& index) const
+			template<typename _ParamDataType> _SizeType find(const _ParamDataType* p, const _SizeType& index) const
 			{
 				if(m_string.capacity() != 0)
 					return m_string.find(p, index);
@@ -421,13 +421,13 @@ namespace GAIA
 					return m_string.find(src, index);
 				return m_chars.find(src, index);
 			}
-			GINL _SizeType rfind(const _DataType& t, const _SizeType& index) const
+			template<typename _ParamDataType> _SizeType rfind(const _ParamDataType& t, const _SizeType& index) const
 			{
 				if(m_string.capacity() != 0)
 					return m_string.rfind(t, index);
 				return m_chars.rfind(t, index);
 			}
-			GINL _SizeType rfind(const _DataType* p, const _SizeType& size, const _SizeType& index) const
+			template<typename _ParamDataType> _SizeType rfind(const _ParamDataType* p, const _SizeType& index) const
 			{
 				if(m_string.capacity() != 0)
 					return m_string.rfind(p, index);
@@ -436,8 +436,8 @@ namespace GAIA
 			GINL _SizeType rfind(const __MyType& src, const _SizeType& index) const
 			{
 				if(m_string.capacity() != 0)
-					return m_string.rfind(src.front_ptr(), src.size(), index);
-				return m_chars.rfind(src.front_ptr(), src.size(), index);
+					return m_string.rfind(src.front_ptr(), index);
+				return m_chars.rfind(src.front_ptr(), index);
 			}
 			GINL _SizeType replace(const _DataType& src, const _DataType& dst)
 			{
@@ -445,7 +445,7 @@ namespace GAIA
 					return m_string.replace(src, dst);
 				return m_chars.replace(src, dst);
 			}
-			GINL _SizeType replace(const _DataType* pSrc, const _DataType* pDst)
+			template<typename _ParamDataType> _SizeType replace(const _ParamDataType* pSrc, const _ParamDataType* pDst)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.replace(pSrc, pDst);
@@ -481,19 +481,19 @@ namespace GAIA
 					m_chars.mid(index_start, index_end);
 				return *this;
 			}
-			template<typename _ParamSizeType> GAIA::BL trim_left(const _ParamSizeType& index)
+			template<typename _ParamSizeType> GAIA::BL trim_left_index(const _ParamSizeType& index)
 			{
 				if(m_string.capacity() != 0)
-					return m_string.trim_left(index);
-				return m_chars.trim_left(index);
+					return m_string.trim_left_index(index);
+				return m_chars.trim_left_index(index);
 			}
-			GINL GAIA::BL trim_left(const _DataType& t)
+			template<typename _ParamDataType> GAIA::BL trim_left(const _ParamDataType& t)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.trim_left(t);
 				return m_chars.trim_left(t);
 			}
-			GINL GAIA::BL trim_left(const _DataType* p)
+			template<typename _ParamDataType> GAIA::BL trim_left(const _ParamDataType* p)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.trim_left(p);
@@ -505,13 +505,13 @@ namespace GAIA
 					return m_string.trim_left(src.front_ptr());
 				return m_chars.trim_left(src.front_ptr());
 			}
-			GINL GAIA::BL trim_lefti(const _DataType& t)
+			template<typename _ParamDataType> GAIA::BL trim_lefti(const _ParamDataType& t)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.trim_lefti(t);
 				return m_chars.trim_lefti(t);
 			}
-			GINL GAIA::BL trim_lefti(const _DataType* p)
+			template<typename _ParamDataType> GAIA::BL trim_lefti(const _ParamDataType* p)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.trim_lefti(p);
@@ -523,19 +523,19 @@ namespace GAIA
 					return m_string.trim_lefti(src.front_ptr());
 				return m_chars.trim_lefti(src.front_ptr());
 			}
-			template<typename _ParamSizeType> GAIA::BL trim_right(const _ParamSizeType& index)
+			template<typename _ParamSizeType> GAIA::BL trim_right_index(const _ParamSizeType& index)
 			{
 				if(m_string.capacity() != 0)
-					return m_string.trim_right(index);
-				return m_chars.trim_right(index);
+					return m_string.trim_right_index(index);
+				return m_chars.trim_right_index(index);
 			}
-			GINL GAIA::BL trim_right(const _DataType& t)
+			template<typename _ParamDataType> GAIA::BL trim_right(const _ParamDataType& t)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.trim_right(t);
 				return m_chars.trim_right(t);
 			}
-			GINL GAIA::BL trim_right(const _DataType* p)
+			template<typename _ParamDataType> GAIA::BL trim_right(const _ParamDataType* p)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.trim_right(p);
@@ -547,13 +547,13 @@ namespace GAIA
 					return m_string.trim_right(src.front_ptr());
 				return m_chars.trim_right(src.front_ptr());
 			}
-			GINL GAIA::BL trim_righti(const _DataType& t)
+			template<typename _ParamDataType> GAIA::BL trim_righti(const _ParamDataType& t)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.trim_righti(t);
 				return m_chars.trim_righti(t);
 			}
-			GINL GAIA::BL trim_righti(const _DataType* p)
+			template<typename _ParamDataType> GAIA::BL trim_righti(const _ParamDataType* p)
 			{
 				if(m_string.capacity() != 0)
 					return m_string.trim_righti(p);

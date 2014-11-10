@@ -735,7 +735,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 		chs = _T("HelloWorld");
-		chs.trim_left(5);
+		chs.trim_left_index(5);
 		if(chs != _T("World"))
 		{
 			GTLINE2("String trim_left by index failed!");
@@ -891,7 +891,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 		chs = _T("HelloWorld");
-		chs.trim_right(4);
+		chs.trim_right_index(4);
 		if(chs != _T("Hello"))
 		{
 			GTLINE2("String trim_right by index failed!");
