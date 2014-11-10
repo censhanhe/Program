@@ -58,8 +58,7 @@ public:
 		GAIA::TCH szLogTimeAux[64];
 		GAIA::TIME::timemkaux(szLogTime, szLogTimeAux);
 		GAIA::TCH szFilter[32];
-		if(!GAIA::ALGO::value_cast(userfilter, szFilter, 32))
-			return GAIA::False;
+		GAIA::ALGO::hex2str(GRCAST(const GAIA::U8*)(&userfilter), sizeof(userfilter), szFilter);
 
 		/* Write log to file. */
 		m_pFile->WriteText(szLogTimeAux);

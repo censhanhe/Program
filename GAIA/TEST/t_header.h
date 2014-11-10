@@ -145,9 +145,9 @@ namespace GAIA_TEST
 			//GTLINE1("Container: StackQueue test begin!"); nRet += t_container_stackqueue(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Queue test begin!"); nRet += t_container_queue(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: List test begin!"); nRet += t_container_list(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: Chars test begin!"); nRet += t_container_chars(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: String test begin!"); nRet += t_container_string(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Container: CharsString test begin!"); nRet += t_container_charsstring(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Container: Chars test begin!"); nRet += t_container_chars(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Container: String test begin!"); nRet += t_container_string(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Container: CharsString test begin!"); nRet += t_container_charsstring(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: StackBitset test begin!"); nRet += t_container_stackbitset(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Bitset test begin!"); nRet += t_container_bitset(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: TrieTree test begin!"); nRet += t_container_trietree(file, prt); GTLINE1("End"); GTLINE("\t");
@@ -168,7 +168,7 @@ namespace GAIA_TEST
 			//GTLINE1("Container: StaticStringPool test begin!"); nRet += t_container_staticstringpool(file, prt); GTLINE1("End"); GTLINE("\t");	
 			//GTLINE1("Container: Cooperate test begin!"); nRet += t_container_cooperate(file, prt); GTLINE1("End"); GTLINE("\t");
 
-			GTLINE1("Print: PrintString test begin!"); nRet += t_print_stringprint(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Print: PrintString test begin!"); nRet += t_print_stringprint(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			//GTLINE1("Time: Time test begin!"); nRet += t_time_time(file, prt); GTLINE1("End"); GTLINE("\t");
 
@@ -180,7 +180,7 @@ namespace GAIA_TEST
 			//GTLINE1("File: File test begin!"); nRet += t_filesystem_file(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("File: Directory test begin!"); nRet += t_filesystem_directory(file, prt); GTLINE1("End"); GTLINE("\t");
 
-			//GTLINE1("File: Log test begin!"); nRet += t_log_log(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Log: Log test begin!"); nRet += t_log_log(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			//GTLINE1("File: Network test begin!"); nRet += t_network(file, prt); GTLINE1("End"); GTLINE("\t");
 
