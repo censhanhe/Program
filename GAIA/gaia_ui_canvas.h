@@ -109,7 +109,7 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID init();
 			GINL GAIA::BL RegistToGlobalList();
-			GINL GAIA::BL UnregistToGlobalList();
+			GINL GAIA::BL UnregistFromGlobalList();
 		#if GAIA_OS == GAIA_OS_WINDOWS
 		public:
 			static GINL GAIA::BL WindowsMessageCallBack(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

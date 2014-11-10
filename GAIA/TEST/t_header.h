@@ -180,7 +180,7 @@ namespace GAIA_TEST
 			//GTLINE1("File: File test begin!"); nRet += t_filesystem_file(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("File: Directory test begin!"); nRet += t_filesystem_directory(file, prt); GTLINE1("End"); GTLINE("\t");
 
-			GTLINE1("Log: Log test begin!"); nRet += t_log_log(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Log: Log test begin!"); nRet += t_log_log(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			//GTLINE1("File: Network test begin!"); nRet += t_network(file, prt); GTLINE1("End"); GTLINE("\t");
 
@@ -196,7 +196,7 @@ namespace GAIA_TEST
 
 			//GTLINE1("Render: ImageWork test begin!"); nRet += t_render_imagework(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: DDraw test begin!"); nRet += t_render_ddraw(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("Render: gdiplus test begin!"); nRet += t_render_gdiplus(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Render: gdiplus test begin!"); nRet += t_render_gdiplus(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx9 test begin!"); nRet += t_render_dx9(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx10 test begin!"); nRet += t_render_dx10(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx11 test begin!"); nRet += t_render_dx11(file, prt); GTLINE1("End"); GTLINE("\t");

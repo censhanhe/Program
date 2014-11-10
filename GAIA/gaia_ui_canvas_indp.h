@@ -21,31 +21,55 @@ namespace GAIA
 	#if GAIA_OS == GAIA_OS_WINDOWS
 		static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
+			if(Canvas::WindowsMessageCallBack(hWnd, message, wParam, lParam))
+				return TRUE;
 			if(message == WM_DESTROY)
 			{
 				::PostQuitMessage(0);
 				return 0;
 			}
-			if(Canvas::WindowsMessageCallBack(hWnd, message, wParam, lParam))
-				return TRUE;
 			return ::DefWindowProc(hWnd, message, wParam, lParam);
 		}
 		GINL GAIA::BL Canvas::WindowsMessageCallBack(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
-			GAIA::UI::Canvas canvas;
-			canvas.m_hWnd = hWnd;
+			switch(message)
+			{
+			case WM_DESTROY:
+			case WM_SHOWWINDOW:
+			case WM_MOVE:
+			case WM_MOVING:
+			case WM_SIZE:
+			case WM_SIZING:
+			case WM_ACTIVATE:
+			case WM_LBUTTONDOWN:
+			case WM_LBUTTONUP:
+			case WM_RBUTTONDOWN:
+			case WM_RBUTTONUP:
+			case WM_MBUTTONDOWN:
+			case WM_MBUTTONUP:
+			case WM_KEYDOWN:
+			case WM_KEYUP:
+				break;
 
-			GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded;
+			default:
+				return GAIA::False;
+			}
 
 			/* Find canvas pointer. */
+			GAIA::UI::Canvas canvas;
+			canvas.m_hWnd = hWnd;
+			GAIA::CTN::Ref<GAIA::UI::Canvas>* pFinded;
 			{
 				GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);
 				GAIA::CTN::Ref<GAIA::UI::Canvas> finder(&canvas);
 				pFinded = g_gaia_windowlist.find(finder);
-				GAIA_AST(pFinded != GNIL);
 				if(pFinded == GNIL)
+				{
+					canvas.m_hWnd = GNIL;
 					return GAIA::False;
+				}
 			}
+			canvas.m_hWnd = GNIL;
 
 			Canvas* pFindedCanvas = *pFinded;
 			GAIA_AST(pFindedCanvas != GNIL);
@@ -53,26 +77,45 @@ namespace GAIA
 				return GAIA::False;
 
 			GAIA::UI::Canvas::CallBack* pCallBack = pFindedCanvas->GetCallBack();
-			if(pCallBack == GNIL)
-				return GAIA::False;
 
 			switch(message)
 			{
-			case WM_CREATE:
-				{
-					GAIA::UI::Message msg;
-					msg.SetMsgType(GAIA::UI::Message::TYPE_CREATE);
-					if(pCallBack->Message(*pFindedCanvas, msg))
-						return GAIA::True;
-				}
-				break;
-				
 			case WM_DESTROY:
 				{
-					GAIA::UI::Message msg;
-					msg.SetMsgType(GAIA::UI::Message::TYPE_DESTROY);
-					if(pCallBack->Message(*pFindedCanvas, msg))
-						return GAIA::True;
+					/*
+					* If the PostQuitMessage be called, 
+					* and the caller didn't call GAIA::UI::Canvas::Destroy function, 
+					* below code will been executed. 
+					*
+					* Because call GAIA::UI::Canvas::Destroy function manually will
+					* call UnregistFromGlobalList first,
+					* so the pFindedCanvas will been GNIL, and cannot execute codes below.
+					*/
+					if(pFindedCanvas != GNIL) 
+					{
+						if(pCallBack != GNIL)
+						{
+							GAIA::UI::Message msg;
+							msg.SetMsgType(GAIA::UI::Message::TYPE_DESTROY);
+							pCallBack->Message(*pFindedCanvas, msg);
+						}
+
+						if(!pFindedCanvas->UnregistFromGlobalList())
+							GAIA_AST(GAIA::ALWAYSFALSE);
+
+						pFindedCanvas->m_hWnd = GNIL;
+
+						GAIA_AST(!GAIA::ALGO::stremp(pFindedCanvas->m_pszClassName));
+					#if GAIA_CHARSET == GAIA_CHARSET_ANSI
+						::UnregisterClassA(pFindedCanvas->m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
+					#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+						::UnregisterClassW(pFindedCanvas->m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
+					#endif
+						GAIA_MFREE(pFindedCanvas->m_pszClassName);
+						pFindedCanvas->m_pszClassName = GNIL;
+
+						return GAIA::False;
+					}
 				}
 				break;
 
@@ -83,7 +126,7 @@ namespace GAIA
 						msg.SetMsgType(GAIA::UI::Message::TYPE_SHOW);
 					else
 						msg.SetMsgType(GAIA::UI::Message::TYPE_HIDE);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -96,7 +139,7 @@ namespace GAIA
 					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(LOWORD(lParam));
 					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
 					msg.SetParam(0, &pos);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -110,7 +153,7 @@ namespace GAIA
 					pos.x = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(pRect->left);
 					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(pRect->top);
 					msg.SetParam(0, &pos);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -123,7 +166,7 @@ namespace GAIA
 					size.x = GSCAST(GAIA::UI::Canvas::__SizeType::_datatype)(LOWORD(lParam));
 					size.y = GSCAST(GAIA::UI::Canvas::__SizeType::_datatype)(HIWORD(lParam));
 					msg.SetParam(0, &size);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -137,7 +180,7 @@ namespace GAIA
 					size.x = GSCAST(GAIA::UI::Canvas::__SizeType::_datatype)(pRect->right - pRect->left);
 					size.y = GSCAST(GAIA::UI::Canvas::__SizeType::_datatype)(pRect->bottom - pRect->top);
 					msg.SetParam(0, &size);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -149,7 +192,7 @@ namespace GAIA
 						msg.SetMsgType(GAIA::UI::Message::TYPE_ACTIVE);
 					else
 						msg.SetMsgType(GAIA::UI::Message::TYPE_INACTIVE);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -163,7 +206,7 @@ namespace GAIA
 					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
 					msg.SetParam(0, &pos);
 					msg.SetParam(1, GAIA::INPUT::KEY_LBTN);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -177,7 +220,7 @@ namespace GAIA
 					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
 					msg.SetParam(0, &pos);
 					msg.SetParam(1, GAIA::INPUT::KEY_LBTN);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -191,7 +234,7 @@ namespace GAIA
 					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
 					msg.SetParam(0, &pos);
 					msg.SetParam(1, GAIA::INPUT::KEY_RBTN);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -205,7 +248,7 @@ namespace GAIA
 					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
 					msg.SetParam(0, &pos);
 					msg.SetParam(1, GAIA::INPUT::KEY_RBTN);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -219,7 +262,7 @@ namespace GAIA
 					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
 					msg.SetParam(0, &pos);
 					msg.SetParam(1, GAIA::INPUT::KEY_MBTN);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -233,7 +276,7 @@ namespace GAIA
 					pos.y = GSCAST(GAIA::UI::Canvas::__PosType::_datatype)(HIWORD(lParam));
 					msg.SetParam(0, &pos);
 					msg.SetParam(1, GAIA::INPUT::KEY_MBTN);
-					if(pCallBack->Message(*pFindedCanvas, msg))
+					if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 						return GAIA::True;
 				}
 				break;
@@ -459,7 +502,7 @@ namespace GAIA
 
 					if(bCallBackAble)
 					{
-						if(pCallBack->Message(*pFindedCanvas, msg))
+						if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 							return GAIA::True;
 					}
 				}
@@ -686,7 +729,7 @@ namespace GAIA
 
 					if(bCallBackAble)
 					{
-						if(pCallBack->Message(*pFindedCanvas, msg))
+						if(pCallBack != GNIL && pCallBack->Message(*pFindedCanvas, msg))
 							return GAIA::True;
 					}
 				}
@@ -810,6 +853,14 @@ namespace GAIA
 				}
 			}
 			m_style = desc.style;
+
+			if(m_pCallBack != GNIL)
+			{
+				GAIA::UI::Message msg;
+				msg.SetMsgType(GAIA::UI::Message::TYPE_CREATE);
+				m_pCallBack->Message(*this, msg);
+			}
+
 			return ::UpdateWindow(m_hWnd);
 		#else
 			return GAIA::False;
@@ -820,7 +871,14 @@ namespace GAIA
 			if(!this->IsCreated())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(!this->UnregistToGlobalList())
+			if(m_pCallBack != GNIL)
+			{
+				GAIA::UI::Message msg;
+				msg.SetMsgType(GAIA::UI::Message::TYPE_DESTROY);
+				m_pCallBack->Message(*this, msg);
+			}
+
+			if(!this->UnregistFromGlobalList())
 			{
 				GAIA_AST(GAIA::ALWAYSFALSE);
 				return GAIA::False;
@@ -1157,7 +1215,7 @@ namespace GAIA
 			return GAIA::False;
 		#endif
 		}
-		GINL GAIA::BL Canvas::UnregistToGlobalList()
+		GINL GAIA::BL Canvas::UnregistFromGlobalList()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			GAIA::SYNC::AutoLock al(g_gaia_windowlistlock);
