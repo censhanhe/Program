@@ -189,14 +189,14 @@ namespace GAIA_TEST
 			//GTLINE1("Locale test begin!"); nRet += t_locale(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Namespace test begin!"); nRet += t_namespace(file, prt); GTLINE1("End"); GTLINE("\t");
 
-			//GTLINE1("Timer: Timer test begin!"); nRet += t_timer_timer(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Timer: Timer test begin!"); nRet += t_timer_timer(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			//GTLINE1("UI: Message test begin!"); nRet += t_ui_message(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("UI: Canvas test begin!"); nRet += t_ui_canvas(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			//GTLINE1("Render: ImageWork test begin!"); nRet += t_render_imagework(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: DDraw test begin!"); nRet += t_render_ddraw(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("Render: gdiplus test begin!"); nRet += t_render_gdiplus(file, prt); GTLINE1("End"); GTLINE("\t");
+			//GTLINE1("Render: gdiplus test begin!"); nRet += t_render_gdiplus(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx9 test begin!"); nRet += t_render_dx9(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx10 test begin!"); nRet += t_render_dx10(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Render: dx11 test begin!"); nRet += t_render_dx11(file, prt); GTLINE1("End"); GTLINE("\t");
