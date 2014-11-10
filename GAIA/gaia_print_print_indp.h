@@ -104,7 +104,7 @@ namespace GAIA
 		{
 			if(!this->enable_write())
 				return *this;
-			std::wcout << t;
+			std::cout << (GAIA::N64)t;
 			return *this;
 		}
 		GINL Print& Print::operator << (const GAIA::CH* p)
@@ -234,7 +234,9 @@ namespace GAIA
 		{
 			if(!this->enable_read())
 				return *this;
-			std::wcin >> t;
+			GAIA::N64 temp;
+			std::cin >> temp;
+			t = GSCAST(GAIA::WCH)(temp);
 			return *this;
 		}
 		GINL Print& Print::operator >> (GAIA::CH* p)

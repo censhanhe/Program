@@ -780,7 +780,7 @@ namespace GAIA
 			GINL __MyType& operator = (const GAIA::X128& t){if(!this->resize(32)) return *this; GAIA::ALGO::hex2str((const GAIA::U8*)&t, sizeof(t), this->front_ptr()); return *this;}
 			GINL __MyType& operator = (const GAIA::F32& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::real2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::F64& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::real2str(t, sz); return this->operator = (sz);}
-			GINL __MyType& operator = (const GAIA::BL& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::int2str(t, sz); return this->operator = (sz);}
+			GINL __MyType& operator = (const GAIA::BL& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; sz[0] = t ? '1' : '0'; sz[1] = '\0'; return this->operator = (sz);}
 			template<typename _ParamSizeType> __MyType& operator = (const GAIA::CTN::BasicString<_DataType, _ParamSizeType>& src);
 			GINL __MyType& operator += (const __MyType& src){return this->combin(src.front_ptr(), src.size());}
 			GINL __MyType& operator += (const _DataType* p){return this->combin(p, GAIA::ALGO::strlen(p));}

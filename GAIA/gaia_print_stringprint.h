@@ -8,6 +8,10 @@ namespace GAIA
 		class StringPrint : public PrintBase
 		{
 		public:
+			typedef GAIA::TCH __CharType;
+			typedef GAIA::CTN::TString __StringType;
+
+		public:
 			GINL StringPrint(){this->init();}
 			GINL ~StringPrint(){}
 
@@ -57,6 +61,9 @@ namespace GAIA
 
 			virtual GINL GAIA::GVOID flush();
 
+			GINL GAIA::GVOID SetString(const __CharType* p){m_str = p;}
+			GINL const __CharType* GetString() const{return m_str.front_ptr();}
+
 		private:
 			GINL GAIA::GVOID init()
 			{
@@ -69,6 +76,7 @@ namespace GAIA
 			PrintFormat m_pf;
 			GAIA::U8 m_bEnableWrite : 1;
 			GAIA::U8 m_bEnableRead : 1;
+			__StringType m_str;
 		};
 	};
 };

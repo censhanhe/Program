@@ -99,52 +99,6 @@ namespace GAIA
 	/* Void. */
 	typedef void GVOID;
 
-	/* X128 */
-	class X128
-	{
-	public:
-		GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
-		GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
-		GINL X128& operator = (const X128& src){u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
-		template<typename _DataType> X128& operator = (const _DataType* p)
-		{
-			u0 = u1 = u2 = u3 = 0;
-			for(GAIA::U32 x = 0; x < 32; ++x)
-			{
-				GAIA::U32 uIndex = x / 8;
-				if(p[x] >= '0' && p[x] <= '9')
-					u[uIndex] |= p[x] - '0';
-				else if(p[x] >= 'a' && p[x] <= 'f')
-					u[uIndex] |= p[x] - 'a' + 10;
-				else if(p[x] >= 'A' && p[x] <= 'F')
-					u[uIndex] |= p[x] - 'A' + 10;
-				if((x % 8) != 7)
-					u[uIndex] = u[uIndex] << 4;
-			}
-			return *this;
-		}
-		GAIA_CLASS_OPERATOR_COMPARE2(u64_0, u64_0, u64_1, u64_1, X128);
-	public:
-		union
-		{
-			GAIA::U32 u[4];
-			class
-			{
-			public:
-				GAIA::U32 u0;
-				GAIA::U32 u1;
-				GAIA::U32 u2;
-				GAIA::U32 u3;
-			};
-			class
-			{
-			public:
-				GAIA::U64 u64_0;
-				GAIA::U64 u64_1;
-			};
-		};
-	};
-
 	/* Other global constants. */
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSTRUE = GAIA::True;
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSFALSE = GAIA::False;
@@ -159,6 +113,58 @@ namespace GAIA
 	/* Common operation. */
 	#define sizeofarray(arr) ((GAIA::NM)(sizeof(arr) / sizeof((arr)[0])))
 	#define sizeofarray2(arr) ((GAIA::NM)(sizeof(arr) / sizeof((arr)[0][0])))
+
+	/* X128 */
+	class X128
+	{
+	public:
+		GINL X128(){}
+		GINL X128(const X128& src){this->operator = (src);}
+		template<typename _DataType> X128(const _DataType* p){this->operator = (p);}
+		GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
+		GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
+		template<typename _ParamDataType> GAIA::GVOID fromstring(const _ParamDataType* psz){GAIA_INTERNAL_NAMESPACE::str2hex(psz, sizeofarray(u8), u8);}
+		template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz) const{GAIA_INTERNAL_NAMESPACE::hex2str(u8, sizeofarray(u8), psz);}
+		GINL X128& operator = (const X128& src){u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
+		template<typename _DataType> X128& operator = (const _DataType* p)
+		{
+			u32_0 = u32_1 = u32_2 = u32_3 = 0;
+			for(GAIA::U32 x = 0; x < 32; ++x)
+			{
+				GAIA::U32 uIndex = x / 8;
+				if(p[x] >= '0' && p[x] <= '9')
+					u32[uIndex] |= p[x] - '0';
+				else if(p[x] >= 'a' && p[x] <= 'f')
+					u32[uIndex] |= p[x] - 'a' + 10;
+				else if(p[x] >= 'A' && p[x] <= 'F')
+					u32[uIndex] |= p[x] - 'A' + 10;
+				if((x % 8) != 7)
+					u32[uIndex] = u32[uIndex] << 4;
+			}
+			return *this;
+		}
+		GAIA_CLASS_OPERATOR_COMPARE2(u64_0, u64_0, u64_1, u64_1, X128);
+	public:
+		union
+		{
+			GAIA::U32 u32[4];
+			GAIA::U8 u8[16];
+			class
+			{
+			public:
+				GAIA::U32 u32_0;
+				GAIA::U32 u32_1;
+				GAIA::U32 u32_2;
+				GAIA::U32 u32_3;
+			};
+			class
+			{
+			public:
+				GAIA::U64 u64_0;
+				GAIA::U64 u64_1;
+			};
+		};
+	};
 
 	/* Class Base. All class's parent. */
 	class Base
