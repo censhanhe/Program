@@ -145,9 +145,9 @@ namespace GAIA_TEST
 			//GTLINE1("Container: StackQueue test begin!"); nRet += t_container_stackqueue(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Queue test begin!"); nRet += t_container_queue(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: List test begin!"); nRet += t_container_list(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("Container: Chars test begin!"); nRet += t_container_chars(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("Container: String test begin!"); nRet += t_container_string(file, prt); GTLINE1("End"); GTLINE("\t");
-			//GTLINE1("Container: CharsString test begin!"); nRet += t_container_charsstring(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: Chars test begin!"); nRet += t_container_chars(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: String test begin!"); nRet += t_container_string(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Container: CharsString test begin!"); nRet += t_container_charsstring(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: StackBitset test begin!"); nRet += t_container_stackbitset(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: Bitset test begin!"); nRet += t_container_bitset(file, prt); GTLINE1("End"); GTLINE("\t");
 			//GTLINE1("Container: TrieTree test begin!"); nRet += t_container_trietree(file, prt); GTLINE1("End"); GTLINE("\t");

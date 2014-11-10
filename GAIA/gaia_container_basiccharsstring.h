@@ -140,7 +140,7 @@ namespace GAIA
 				const __MyType* m_pContainer;
 			};
 			GINL BasicCharsString(){}
-			GINL BasicCharsString(const _DataType* p){this->operator = (p);}
+			template<typename _ParamDataType> BasicCharsString(const _ParamDataType* p){this->operator = (p);}
 			GINL BasicCharsString(const __MyType& src){this->operator = (src);}
 			GINL BasicCharsString(const GAIA::NM& t){this->operator = (t);}
 			GINL BasicCharsString(const GAIA::N8& t){this->operator = (t);}
@@ -156,7 +156,7 @@ namespace GAIA
 			GINL BasicCharsString(const GAIA::F32& t){this->operator = (t);}
 			GINL BasicCharsString(const GAIA::F64& t){this->operator = (t);}
 			GINL BasicCharsString(const GAIA::BL& t){this->operator = (t);}
-			GINL BasicCharsString(const _DataType* p1, const _SizeType& size1, const _DataType* p2, const _SizeType& size2)
+			template<typename _ParamDataType1, typename _ParamSizeType1, typename _ParamDataType2, typename _ParamSizeType2> BasicCharsString(const _ParamDataType1* p1, const _ParamSizeType1& size1, const _ParamDataType2* p2, const _ParamSizeType2& size2)
 			{
 				if(size1 + size2 > m_chars.capacity())
 					m_string.combin(p1, size1, p2, size2);
@@ -164,6 +164,7 @@ namespace GAIA
 					m_chars.combin(p1, size1, p2, size2);
 			}
 			template<typename _ParamSizeType, _ParamSizeType _Size> BasicCharsString(const GAIA::CTN::BasicChars<_DataType, _ParamSizeType, _Size>& src){this->operator = (src);}
+			template<typename _ParamSizeType> BasicCharsString(const GAIA::CTN::BasicString<_DataType, _ParamSizeType>& src){this->operator = (src);}
 			GINL ~BasicCharsString(){this->destroy();}
 			GINL GAIA::GVOID proxy(const _DataType* p, const _SizeType& size, const _SizeType& capacity)
 			{
@@ -211,7 +212,7 @@ namespace GAIA
 				m_string.destroy();
 			}
 			GINL GAIA::U32 type() const{if(m_string.capacity() != 0) return m_string.type(); return m_chars.type();}
-			GINL __MyType& assign(const _DataType* p, const _SizeType& size)
+			template<typename _ParamDataType> __MyType& assign(const _ParamDataType* p, const _SizeType& size)
 			{
 				if(p == GNIL || size == 0)
 				{
@@ -602,8 +603,8 @@ namespace GAIA
 					return m_string.isallupper();
 				return m_chars.isallupper();
 			}
-			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); this->assign(src, src.size()); return *this;}
-			GINL __MyType& operator = (const _DataType* p){this->assign(p, (_SizeType)GAIA::ALGO::strlen(p)); return *this;}
+			GINL __MyType& operator = (const __MyType& src){GAIA_AST(&src != this); this->assign(src.front_ptr(), src.size()); return *this;}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){this->assign(p, (_SizeType)GAIA::ALGO::strlen(p)); return *this;}
 			GINL __MyType& operator = (const GAIA::NM& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::int2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::N8& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::int2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::N16& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::int2str(t, sz); return this->operator = (sz);}
@@ -623,8 +624,8 @@ namespace GAIA
 			GINL __MyType& operator = (const GAIA::F32& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::real2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::F64& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::real2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::BL& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; sz[0] = t ? '1' : '0'; sz[1] = '\0'; return this->operator = (sz);}
-			template<typename _ParamSizeType, _ParamSizeType _Size> __MyType& operator = (const GAIA::CTN::BasicChars<_DataType, _ParamSizeType, _Size>& src);
-			template<typename _ParamSizeType, _ParamSizeType _Size> __MyType& operator = (const GAIA::CTN::BasicString<_DataType, _ParamSizeType>& src);
+			template<typename _ParamSizeType, _ParamSizeType _Size> __MyType& operator = (const GAIA::CTN::BasicChars<_DataType, _ParamSizeType, _Size>& src){this->operator = (src.front_ptr()); return *this;}
+			template<typename _ParamSizeType, _ParamSizeType _Size> __MyType& operator = (const GAIA::CTN::BasicString<_DataType, _ParamSizeType>& src){this->operator = (src.front_ptr()); return *this;}
 			GINL __MyType& operator += (const __MyType& src)
 			{
 				if(m_string.capacity() != 0)
@@ -642,7 +643,7 @@ namespace GAIA
 				}
 				return *this;
 			}
-			GINL __MyType& operator += (const _DataType* p)
+			template<typename _ParamDataType> __MyType& operator += (const _ParamDataType* p)
 			{
 				if(m_string.capacity() != 0)
 					m_string += p;
@@ -660,7 +661,7 @@ namespace GAIA
 				return *this;
 			}
 			GINL __MyType operator + (const __MyType& src) const{return __MyType(this->front_ptr(), this->size(), src.front_ptr(), src.size());}
-			GINL __MyType operator + (const _DataType* p) const{return __MyType(this->front_ptr(), this->size(), p, GAIA::ALGO::strlen(p));}
+			template<typename _ParamDataType> __MyType operator + (const _ParamDataType* p) const{return __MyType(this->front_ptr(), this->size(), p, GAIA::ALGO::strlen(p));}
 			GINL GAIA::BL operator == (const __MyType& src) const{if(this->size() != src.size()) return GAIA::False; return GAIA::ALGO::strcmp(this->front_ptr(), src.front_ptr()) == 0;}
 			GINL GAIA::BL operator != (const __MyType& src) const{if(this->size() != src.size()) return GAIA::True; return GAIA::ALGO::strcmp(this->front_ptr(), src.front_ptr()) != 0;}
 			GINL GAIA::BL operator >= (const __MyType& src) const{return GAIA::ALGO::strcmp(this->front_ptr(), src.front_ptr()) >= 0;}

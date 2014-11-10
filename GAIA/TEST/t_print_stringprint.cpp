@@ -19,8 +19,8 @@ namespace GAIA_TEST
 		sprt << (GAIA::UM)9 << " ";
 		sprt << (GAIA::NM)-10 << " ";
 		sprt << (GAIA::BL)GAIA::True << " ";
-		sprt << (GAIA::F32)11.12345678 << " ";
-		sprt << (GAIA::F64)12.12345678 << " ";
+		sprt << (GAIA::F32)11.123456 << " ";
+		sprt << (GAIA::F64)12.654321 << " ";
 		sprt << (GAIA::CH*)"ansi string" << " ";
 		sprt << (GAIA::WCH*)L"unicode string" << " ";
 
