@@ -264,7 +264,7 @@ namespace GAIA
 				this->operator[](index) = t;
 				return GAIA::True;
 			}
-			GINL GAIA::BL insert(const _DataType* p, const _SizeType& index)
+			template<typename _ParamDataType> GAIA::BL insert(const _ParamDataType* p, const _SizeType& index)
 			{
 				if(index > this->size())
 					return GAIA::False;
@@ -350,7 +350,7 @@ namespace GAIA
 				}
 				return ret;
 			}
-			GINL _SizeType erase(const _DataType* p, const _SizeType& index)
+			template<typename _ParamDataType> _SizeType erase(const _ParamDataType* p, const _SizeType& index)
 			{
 				GAIA_AST(!!p);
 				if(!p) return 0;
@@ -398,7 +398,7 @@ namespace GAIA
 					return (_SizeType)GINVALID;
 				return pFinded - this->front_ptr();
 			}
-			GINL _SizeType find(const _DataType* p, const _SizeType& index) const
+			template<typename _ParamDataType> _SizeType find(const _ParamDataType* p, const _SizeType& index) const
 			{
 				GAIA_AST(!!p);
 				if(p == GNIL)
@@ -437,7 +437,7 @@ namespace GAIA
 					return (_SizeType)GINVALID;
 				return pFinded - this->front_ptr();
 			}
-			GINL _SizeType rfind(const _DataType* p, const _SizeType& size, const _SizeType& index) const
+			template<typename _ParamDataType> _SizeType rfind(const _ParamDataType* p, const _SizeType& size, const _SizeType& index) const
 			{
 				GAIA_AST(!!p);
 				if(p == GNIL)
@@ -471,7 +471,7 @@ namespace GAIA
 					return 0;
 				return GAIA::ALGO::replace(this->front_ptr(), this->size(), src, dst);
 			}
-			GINL _SizeType replace(const _DataType* pSrc, const _DataType* pDst)
+			template<typename _ParamDataType> _SizeType replace(const _ParamDataType* pSrc, const _ParamDataType* pDst)
 			{
 				GAIA_AST(!!pSrc);
 				GAIA_AST(!!pDst);
@@ -586,7 +586,7 @@ namespace GAIA
 				this->resize(newsize);
 				return GAIA::True;
 			}
-			GINL GAIA::BL trim_left(const _DataType* p)
+			template<typename _ParamDataType> GAIA::BL trim_left(const _ParamDataType* p)
 			{
 				GAIA_AST(!!p);
 				if(this->empty())
@@ -630,7 +630,7 @@ namespace GAIA
 				this->resize(newsize);
 				return GAIA::True;
 			}
-			GINL GAIA::BL trim_lefti(const _DataType* p)
+			template<typename _ParamDataType> GAIA::BL trim_lefti(const _ParamDataType* p)
 			{
 				GAIA_AST(!!p);
 				if(this->empty())
@@ -681,7 +681,7 @@ namespace GAIA
 				this->resize(this->size() - (this->back_it() - it));
 				return GAIA::True;
 			}
-			GINL GAIA::BL trim_right(const _DataType* p)
+			template<typename _ParamDataType> GAIA::BL trim_right(const _ParamDataType* p)
 			{
 				GAIA_AST(!!p);
 				if(this->empty())
@@ -727,7 +727,7 @@ namespace GAIA
 				this->resize(this->size() - (this->back_it() - it));
 				return GAIA::True;
 			}
-			GINL GAIA::BL trim_righti(const _DataType* p)
+			template<typename _ParamDataType> GAIA::BL trim_righti(const _ParamDataType* p)
 			{
 				GAIA_AST(!!p);
 				if(this->empty())
