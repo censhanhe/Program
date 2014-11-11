@@ -9,7 +9,10 @@ namespace GAIA_TEST
 
 		for(GAIA::SIZE x = 0; x < 10; ++x)
 		{
-			g_gaia_log << "Test log " << 
+			g_gaia_log << 
+				g_gaia_log.Type(GAIA::LOG::Log::TYPE_WARNING) << 
+				g_gaia_log.UserFilter(0x12345678) << 
+				"Test log " << 
 				(GAIA::U8)1 << " " <<
 				(GAIA::U16)2 << " " <<
 				(GAIA::U32)3 << " " <<
