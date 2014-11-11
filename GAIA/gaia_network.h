@@ -69,7 +69,7 @@ namespace GAIA
 		public:
 			GINL Addr(){}
 			GINL Addr(const Addr& src){this->operator = (src);}
-			GINL Addr(const IP& ip, GAIA::U16 uPort){this->ip = ip; this->uPort = uPort;}
+			GINL Addr(const GAIA::NETWORK::IP& ip, GAIA::U16 uPort){this->ip = ip; this->uPort = uPort;}
 			GINL ~Addr(){}
 			GINL GAIA::GVOID Invalid(){ip.Invalid(); uPort = 0;}
 			GINL GAIA::BL IsInvalid() const{return ip.IsInvalid() || uPort == 0;}
@@ -96,11 +96,11 @@ namespace GAIA
 			GINL Addr& operator = (const Addr& src){GAIA_AST(&src != this); ip = src.ip; uPort = src.uPort; return *this;}
 			GAIA_CLASS_OPERATOR_COMPARE2(ip, ip, uPort, uPort, Addr);
 		public:
-			IP ip;
+			GAIA::NETWORK::IP ip;
 			GAIA::U16 uPort;
 		};
 		GINL GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size);
-		GINL GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult);
+		GINL GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<GAIA::NETWORK::IP>& listResult);
 		class Handle : public GAIA::RefObject
 		{
 		private:
@@ -126,9 +126,11 @@ namespace GAIA
 				{
 					addr.Invalid();
 					bStabilityLink = GAIA::True;
+					bSync = GAIA::False;
 				}
-				Addr addr;
+				GAIA::NETWORK::Addr addr;
 				GAIA::U8 bStabilityLink : 1;
+				GAIA::U8 bSync : 1;
 			};
 		public:
 			GINL Handle(){this->init();}
@@ -140,15 +142,16 @@ namespace GAIA
 			GINL GAIA::BL Connect(const ConnectDesc& desc);
 			GINL GAIA::BL Disconnect();
 			GINL GAIA::BL IsConnected() const{return m_bConnected;}
-			GINL GAIA::GVOID SetSelfAddress(const Addr& addr){m_addr_self = addr;}
-			GINL const Addr& GetSelfNetAddress() const{return m_addr_self;}
-			GINL const Addr& GetRemoteAddress() const{return m_conndesc.addr;}
+			GINL GAIA::GVOID SetSelfAddress(const GAIA::NETWORK::Addr& addr){m_addr_self = addr;}
+			GINL const GAIA::NETWORK::Addr& GetSelfNetAddress() const{return m_addr_self;}
+			GINL const GAIA::NETWORK::Addr& GetRemoteAddress() const{return m_conndesc.addr;}
 			GINL GAIA::BL IsStabilityLink() const{return m_conndesc.bStabilityLink;}
 			GINL GAIA::GVOID SetSender(Sender* pSender);
 			GINL Sender* GetSender() const{return m_pSender;}
 			GINL GAIA::GVOID SetReceiver(Receiver* pReceiver);
 			GINL Receiver* GetReceiver() const{return m_pReceiver;}
 			GINL BL Send(const GAIA::U8* p, GAIA::U32 uSize);
+			GINL BL Recv(GAIA::U8* p, GAIA::U32 uSize, GAIA::U32& uResultSize);
 			GAIA_CLASS_OPERATOR_COMPARE(m_h, m_h, Handle);
 		private:
 			GINL GAIA::GVOID init()
@@ -172,7 +175,7 @@ namespace GAIA
 			GINL GAIA::BL FlushSendQueue();
 		private:
 			GAIA::N32 m_h;
-			Addr m_addr_self;
+			GAIA::NETWORK::Addr m_addr_self;
 			ConnectDesc m_conndesc;
 			Sender* m_pSender;
 			Receiver* m_pReceiver;
@@ -196,12 +199,14 @@ namespace GAIA
 					nListenRecvBufSize = 1024;
 					nAcceptSendBufSize = 1024;
 					nAcceptRecvBufSize = 1024;
+					bSync = GAIA::False;
 				}
-				Addr addr;
+				GAIA::NETWORK::Addr addr;
 				GAIA::N32 nListenSendBufSize;
 				GAIA::N32 nListenRecvBufSize;
 				GAIA::N32 nAcceptSendBufSize;
 				GAIA::N32 nAcceptRecvBufSize;
+				GAIA::U8 bSync : 1;
 			};
 			class AcceptCallBack
 			{

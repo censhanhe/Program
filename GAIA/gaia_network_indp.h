@@ -100,12 +100,15 @@ namespace GAIA
 			m_conndesc = desc;
 
 			// Setup socket mode.
-		#if GAIA_OS == GAIA_OS_WINDOWS
-			GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
-		#else
-			GAIA::N32 flags = fcntl(m_h, F_GETFL, 0);
-			fcntl(m_h, F_SETFL, flags | O_NONBLOCK);
-		#endif
+			if(!desc.bSync)
+			{
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(m_h, FIONBIO, &bNotBlockModeEnable);
+			#else
+				GAIA::N32 flags = fcntl(m_h, F_GETFL, 0);
+				fcntl(m_h, F_SETFL, flags | O_NONBLOCK);
+			#endif
+			}
 
 			//
 			m_bConnected = GAIA::True;
@@ -131,6 +134,9 @@ namespace GAIA
 		}
 		GINL GAIA::GVOID Handle::SetSender(Sender* pSender)
 		{
+			GAIA_AST(!m_conndesc.bSync);
+			if(m_conndesc.bSync)
+				return;
 			if(pSender == m_pSender)
 				return;
 			if(m_pSender != GNIL)
@@ -141,6 +147,9 @@ namespace GAIA
 		}
 		GINL GAIA::GVOID Handle::SetReceiver(Receiver* pReceiver)
 		{
+			GAIA_AST(!m_conndesc.bSync);
+			if(m_conndesc.bSync)
+				return;
 			if(pReceiver == m_pReceiver)
 				return;
 			if(m_pReceiver != GNIL)
@@ -157,12 +166,12 @@ namespace GAIA
 				return GAIA::False;
 			if(!this->IsStabilityLink())
 			{
-				if(uSize <= sizeof(Addr))
+				if(uSize <= sizeof(GAIA::NETWORK::Addr))
 				{
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
 				}
-				if(uSize > MAX_NOSTABILITY_SENDSIZE + sizeof(Addr))
+				if(uSize > MAX_NOSTABILITY_SENDSIZE + sizeof(GAIA::NETWORK::Addr))
 				{
 					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
@@ -175,6 +184,44 @@ namespace GAIA
 			r.p = pNew;
 			r.uSize = uSize;
 			m_sendque.push_back(r);
+			if(m_conndesc.bSync)
+				this->FlushSendQueue();
+			return GAIA::True;
+		}
+		GINL BL Handle::Recv(GAIA::U8* p, GAIA::U32 uSize, GAIA::U32& uResultSize)
+		{
+			GPCHR_NULL_RET(p, GAIA::False);
+			GPCHR_BELOWEQUALZERO_RET(uSize, GAIA::False);
+			GPCHR_TRUE_RET(!m_conndesc.bSync, GAIA::False);
+			if(m_conndesc.bStabilityLink)
+				uResultSize = (GAIA::U32)recv(m_h, (GAIA::N8*)p, (GAIA::N32)uSize, 0);
+			else
+			{
+				GAIA_AST(uSize > (GAIA::SIZE)sizeof(GAIA::NETWORK::Addr));
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				GAIA::N32 recvfrom_addr_len;
+			#else
+				GAIA::N32 recvfrom_addr_len;
+			#endif
+				sockaddr_in recvfrom_addr;
+				GAIA::ALGO::xmemset(&recvfrom_addr, 0, sizeof(recvfrom_addr));
+				recvfrom_addr_len = sizeof(recvfrom_addr);
+				uResultSize = (GAIA::U32)recvfrom(
+					m_h,
+					(GAIA::N8*)p + sizeof(GAIA::NETWORK::Addr),
+					(GAIA::N32)uSize - sizeof(GAIA::NETWORK::Addr), 0,
+					(sockaddr*)&recvfrom_addr,
+					&recvfrom_addr_len);
+				GAIA::NETWORK::Addr na;
+				na.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
+				na.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
+				na.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
+				na.ip.u3 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
+				na.uPort = ntohs(recvfrom_addr.sin_port);
+				GAIA::ALGO::xmemcpy(p, &na, sizeof(na));
+			}
+			if(uResultSize == (GAIA::U32)GINVALID)
+				return GAIA::False;
 			return GAIA::True;
 		}
 		GINL GAIA::BL Handle::FlushSendQueue()
@@ -204,8 +251,8 @@ namespace GAIA
 					GAIA::U32 uSize = r.uSize;
 					if(!this->IsStabilityLink())
 					{
-						p += sizeof(Addr);
-						uSize -= sizeof(Addr);
+						p += sizeof(GAIA::NETWORK::Addr);
+						uSize -= sizeof(GAIA::NETWORK::Addr);
 					}
 					while(uSize > 0)
 					{
@@ -222,7 +269,7 @@ namespace GAIA
 						}
 						else
 						{
-							Addr& na = *GRCAST(Addr*)(r.p);
+							GAIA::NETWORK::Addr& na = *GRCAST(GAIA::NETWORK::Addr*)(r.p);
 							sockaddr_in sinaddr;
 							GAIA::ALGO::xmemset(&sinaddr, 0, sizeof(sinaddr));
 							sinaddr.sin_family = AF_INET;
@@ -262,7 +309,7 @@ namespace GAIA
 								}
 								else
 								{
-									Addr& na = *GRCAST(Addr*)(r.p);
+									GAIA::NETWORK::Addr& na = *GRCAST(GAIA::NETWORK::Addr*)(r.p);
 									this->LostConnection(na, GAIA::False);
 								}
 								break;
@@ -283,7 +330,7 @@ namespace GAIA
 								}
 								else
 								{
-									Addr& na = *GRCAST(Addr*)(r.p);
+									GAIA::NETWORK::Addr& na = *GRCAST(GAIA::NETWORK::Addr*)(r.p);
 									this->LostConnection(na, GAIA::False);
 								}
 								break;
@@ -305,7 +352,7 @@ namespace GAIA
 							}
 							else
 							{
-								Addr& na = *GRCAST(Addr*)(r.p);
+								GAIA::NETWORK::Addr& na = *GRCAST(GAIA::NETWORK::Addr*)(r.p);
 								this->LostConnection(na, GAIA::False);
 							}
 							break;
@@ -322,7 +369,7 @@ namespace GAIA
 			return GAIA::True;
 		}
 		GINL GAIA::BL GetHostName(GAIA::CH* pszResult, const GAIA::N32& size){return gethostname(pszResult, size) != GINVALID;}
-		GINL GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<IP>& listResult)
+		GINL GAIA::GVOID GetHostIPList(const GAIA::CH* pszHostName, GAIA::CTN::Vector<GAIA::NETWORK::IP>& listResult)
 		{
 			hostent* pHostEnt = gethostbyname(pszHostName);
 			if(pHostEnt != GNIL)
@@ -333,7 +380,7 @@ namespace GAIA
 					if(pHostEnt->h_addrtype == AF_INET)
 					{
 						in_addr* addr = GRCAST(in_addr*)(pHostEnt->h_addr_list[nIndex]);
-						IP ip;
+						GAIA::NETWORK::IP ip;
 						ip.Invalid();
 						ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)((*(GAIA::U32*)addr) & 0x000000FF) >> 0);
 						ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)((*(GAIA::U32*)addr) & 0x0000FF00) >> 8);
@@ -481,12 +528,15 @@ namespace GAIA
 						newsock = GINVALID;
 						break;
 					}
-				#if GAIA_OS == GAIA_OS_WINDOWS
-					GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(newsock, FIONBIO, &bNotBlockModeEnable);
-				#else
-					GAIA::N32 flags = fcntl(newsock, F_GETFL, 0);
-					fcntl(newsock, F_SETFL, flags | O_NONBLOCK);
-				#endif
+					if(!m_desc.bSync)
+					{
+					#if GAIA_OS == GAIA_OS_WINDOWS
+						GAIA::UM bNotBlockModeEnable = 1; ioctlsocket(newsock, FIONBIO, &bNotBlockModeEnable);
+					#else
+						GAIA::N32 flags = fcntl(newsock, F_GETFL, 0);
+						fcntl(newsock, F_SETFL, flags | O_NONBLOCK);
+					#endif
+					}
 
 					//
 					Handle* h = GNIL;
@@ -641,23 +691,24 @@ namespace GAIA
 						GAIA::BL bNeedRelease = GAIA::True;
 						for(;;)
 						{
-						#if GAIA_OS == GAIA_OS_WINDOWS
-							GAIA::N32 recvfrom_addr_len;
-						#else
-							GAIA::N32 recvfrom_addr_len;
-						#endif
+
 							GAIA::N32 nRecv;
 							if(pHandle->IsStabilityLink())
 								nRecv = (GAIA::N32)recv(pHandle->m_h, (GAIA::N8*)m_buf.front_ptr(), (GAIA::N32)m_buf.write_size(), 0);
 							else
 							{
+							#if GAIA_OS == GAIA_OS_WINDOWS
+								GAIA::N32 recvfrom_addr_len;
+							#else
+								GAIA::N32 recvfrom_addr_len;
+							#endif
 								recvfrom_addr_len = sizeof(recvfrom_addr);
 								GAIA::ALGO::xmemset(&recvfrom_addr, 0, recvfrom_addr_len);
-								GAIA_AST(m_buf.write_size() > (GAIA::SIZE)sizeof(Addr));
+								GAIA_AST(m_buf.write_size() > (GAIA::SIZE)sizeof(GAIA::NETWORK::Addr));
 								nRecv = (GAIA::N32)recvfrom(
 									pHandle->m_h,
-									(GAIA::N8*)m_buf.front_ptr() + sizeof(Addr),
-									(GAIA::N32)m_buf.write_size() - sizeof(Addr), 0,
+									(GAIA::N8*)m_buf.front_ptr() + sizeof(GAIA::NETWORK::Addr),
+									(GAIA::N32)m_buf.write_size() - sizeof(GAIA::NETWORK::Addr), 0,
 									(sockaddr*)&recvfrom_addr,
 									&recvfrom_addr_len);
 							}
@@ -682,7 +733,7 @@ namespace GAIA
 									}
 									else
 									{
-										Addr na_recvfrom;
+										GAIA::NETWORK::Addr na_recvfrom;
 										na_recvfrom.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
 										na_recvfrom.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
 										na_recvfrom.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
@@ -711,7 +762,7 @@ namespace GAIA
 									}
 									else
 									{
-										Addr na_recvfrom;
+										GAIA::NETWORK::Addr na_recvfrom;
 										na_recvfrom.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
 										na_recvfrom.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
 										na_recvfrom.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
@@ -739,7 +790,7 @@ namespace GAIA
 								}
 								else
 								{
-									Addr na_recvfrom;
+									GAIA::NETWORK::Addr na_recvfrom;
 									na_recvfrom.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
 									na_recvfrom.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
 									na_recvfrom.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
@@ -755,14 +806,14 @@ namespace GAIA
 									this->Receive(*pHandle, m_buf.front_ptr(), (GAIA::U32)nRecv);
 								else
 								{
-									Addr na;
+									GAIA::NETWORK::Addr na;
 									na.ip.u0 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x000000FF) >> 0);
 									na.ip.u1 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x0000FF00) >> 8);
 									na.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0x00FF0000) >> 16);
 									na.ip.u3 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(recvfrom_addr.sin_addr.s_addr & 0xFF000000) >> 24);
 									na.uPort = ntohs(recvfrom_addr.sin_port);
 									GAIA::ALGO::xmemcpy(m_buf.front_ptr(), &na, sizeof(na));
-									this->Receive(*pHandle, m_buf.front_ptr(), GSCAST(GAIA::U32)(nRecv + sizeof(Addr)));
+									this->Receive(*pHandle, m_buf.front_ptr(), GSCAST(GAIA::U32)(nRecv + sizeof(GAIA::NETWORK::Addr)));
 								}
 								bExistWork = GAIA::True;
 								if(nRecv < m_buf.write_size())
