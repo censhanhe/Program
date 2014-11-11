@@ -7,8 +7,6 @@ namespace GAIA_TEST
 	{
 		GAIA::N32 nRet = 0;
 
-
-
-		return nRet = 0;
+		return nRet;
 	}
 };

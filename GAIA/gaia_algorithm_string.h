@@ -613,6 +613,7 @@ namespace GAIA
 			GAIA_AST(size > 0);
 			_SizeType sizet = size;
 			_DstDataType p = pDst;
+			pSrc = pSrc + size - 1;
 			while(sizet > 0)
 			{
 				// Calculate high 4 bit.
@@ -632,7 +633,7 @@ namespace GAIA
 				++p;
 
 				// Combin.
-				++pSrc;
+				--pSrc;
 				--sizet;
 			}
 			*p = '\0';
@@ -645,7 +646,7 @@ namespace GAIA
 			GAIA_AST(size > 0);
 			GAIA_AST(size % 2 == 0);
 			_SizeType sizet = size;
-			GAIA::U8* p = pDst;
+			GAIA::U8* p = pDst + size - 1;
 			while(sizet > 0)
 			{
 				// Calculate high 4 bit.
@@ -679,8 +680,8 @@ namespace GAIA
 				++pSrc;
 
 				// Combin.
-				*p = GSCAST(GAIA::U8)(u0 * 16 + u1);
-				++p;
+				*p = GSCAST(GAIA::U8)((u0 << 4) + u1);
+				--p;
 				--sizet;
 			}
 			return pDst;

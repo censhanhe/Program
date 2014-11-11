@@ -26,6 +26,7 @@ namespace GAIA_TEST
 	extern GAIA::N32 t_math_cookies_aabr(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt);
 
 	extern GAIA::N32 t_algorithm_set(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt);
+	extern GAIA::N32 t_algorithm_string(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt);
 
 	extern GAIA::N32 t_container_vari(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt);
 	extern GAIA::N32 t_container_buffer(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt);
@@ -132,6 +133,7 @@ namespace GAIA_TEST
 			GTLINE1("MathCookies: QUA test begin!"); nRet += t_math_cookies_qua(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("Algorithm: Set test begin!"); nRet += t_algorithm_set(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Algorithm: String test begin!"); nRet += t_algorithm_string(file, prt); GTLINE1("End"); GTLINE("\t");
 
 			GTLINE1("Container: Vari test begin!"); nRet += t_container_vari(file, prt); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("Container: Buffer test begin!"); nRet += t_container_buffer(file, prt); GTLINE1("End"); GTLINE("\t");

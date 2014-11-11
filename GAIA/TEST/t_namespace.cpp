@@ -55,6 +55,6 @@ namespace GAIA_TEST
 				pCanvas = GNIL;
 			}
 		}
-		return nRet = 0;
+		return nRet;
 	}
 };
