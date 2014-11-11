@@ -139,7 +139,7 @@ namespace GAIA
 			GINL GAIA::N32 GetRecvBufSize() const{return m_nRecvBufferSize;}
 			GINL GAIA::BL Connect(const ConnectDesc& desc);
 			GINL GAIA::BL Disconnect();
-			GINL GAIA::BL IsConnected() const{return m_h != GINVALID;}
+			GINL GAIA::BL IsConnected() const{return m_bConnected;}
 			GINL GAIA::GVOID SetSelfAddress(const Addr& addr){m_addr_self = addr;}
 			GINL const Addr& GetSelfNetAddress() const{return m_addr_self;}
 			GINL const Addr& GetRemoteAddress() const{return m_conndesc.addr;}
@@ -166,6 +166,7 @@ namespace GAIA
 					GAIA_MFREE(r.p);
 					m_sendque.pop_front();
 				}
+				m_bConnected = GAIA::False;
 			}
 			GINL virtual GAIA::GVOID LostConnection(const GAIA::NETWORK::Addr& na, GAIA::BL bRecvTrueSendFalse){}
 			GINL GAIA::BL FlushSendQueue();
@@ -180,6 +181,7 @@ namespace GAIA
 			__SendListType m_tempsendlist;
 			GAIA::N32 m_nSendBufferSize;
 			GAIA::N32 m_nRecvBufferSize;
+			GAIA::U8 m_bConnected : 1;
 		};
 		class Listener : public GAIA::THREAD::Thread
 		{

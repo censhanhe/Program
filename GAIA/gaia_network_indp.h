@@ -107,12 +107,18 @@ namespace GAIA
 			fcntl(m_h, F_SETFL, flags | O_NONBLOCK);
 		#endif
 
+			//
+			m_bConnected = GAIA::True;
+
 			return GAIA::True;
 		}
 		GINL GAIA::BL Handle::Disconnect()
 		{
 			if(!this->IsConnected())
 				return GAIA::False;
+
+			m_bConnected = GAIA::False;
+
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			shutdown(m_h, SD_BOTH);
 			closesocket(m_h);
@@ -497,6 +503,7 @@ namespace GAIA
 						h->m_conndesc.addr.ip.u2 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(addrnew.sin_addr.s_addr & 0x00FF0000) >> 16);
 						h->m_conndesc.addr.ip.u3 = GSCAST(GAIA::U8)(GSCAST(GAIA::U32)(addrnew.sin_addr.s_addr & 0xFF000000) >> 24);
 						h->m_addr_self.uPort = ntohs(addrnew.sin_port);
+						h->m_bConnected = GAIA::True;
 						this->Accept(*h);
 						h->Release();
 					}
@@ -551,7 +558,7 @@ namespace GAIA
 					{
 						Handle* pHandle = *iter;
 						GAIA_AST(!!pHandle);
-						if(pHandle->m_h != GINVALID)
+						if(pHandle->IsConnected())
 						{
 							pHandle->Reference();
 							m_hl.push_back(pHandle);
@@ -617,7 +624,7 @@ namespace GAIA
 					{
 						Handle* pHandle = *iter;
 						GAIA_AST(!!pHandle);
-						if(pHandle->m_h != GINVALID)
+						if(pHandle->IsConnected())
 						{
 							pHandle->Reference();
 							m_hl.push_back(pHandle);
