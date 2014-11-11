@@ -6566,7 +6566,7 @@ namespace DWARFS_FSHA
 		NSender* m_pNSender;
 		NListener* m_pNListener;
 		NAcceptCallBack m_NAcceptCallBack;
-		GAIA::STREAM::Stream m_prt; GAIA::SYNC::Lock m_lr_prt;
+		GAIA::STREAM::STDStream m_prt; GAIA::SYNC::Lock m_lr_prt;
 		FSTR m_readroot;
 		FSTR m_writeroot;
 		__LinkListType m_links; GAIA::SYNC::Lock m_lr_links;

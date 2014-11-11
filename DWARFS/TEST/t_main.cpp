@@ -34,7 +34,7 @@ int main()
 #endif
 	GAIA::FSYS::File file;
 	file.Open(_T("../gaia_test.txt"), GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE);
-	GAIA::STREAM::Stream prt;
+	GAIA::STREAM::STDStream prt;
 	DWARFSTEST::t_all(file, prt);
 	return 0;
 }

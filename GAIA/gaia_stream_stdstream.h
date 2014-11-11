@@ -5,55 +5,55 @@ namespace GAIA
 {
 	namespace STREAM
 	{
-		class Stream : public StreamBase
+		class STDStream : public StreamBase
 		{
 		public:
-			GINL Stream(){this->init();}
-			GINL ~Stream(){}
+			GINL STDStream(){this->init();}
+			GINL ~STDStream(){}
 
 			virtual GAIA::GVOID enable_write(GAIA::BL bEnable){m_bEnableWrite = bEnable;}
 			virtual GAIA::BL enable_write() const{return m_bEnableWrite;}
 			virtual GAIA::GVOID enable_read(GAIA::BL bEnable){m_bEnableRead = bEnable;}
 			virtual GAIA::BL enable_read() const{return m_bEnableRead;}
 
-			virtual GINL Stream& operator << (GAIA::BL t);
-			virtual GINL Stream& operator << (GAIA::NM t);
-			virtual GINL Stream& operator << (GAIA::UM t);
-			virtual GINL Stream& operator << (GAIA::N8 t);
-			virtual GINL Stream& operator << (GAIA::N16 t);
-			virtual GINL Stream& operator << (GAIA::N32 t);
-			virtual GINL Stream& operator << (const GAIA::N64& t);
-			virtual GINL Stream& operator << (GAIA::U8 t);
-			virtual GINL Stream& operator << (GAIA::U16 t);
-			virtual GINL Stream& operator << (GAIA::U32 t);
-			virtual GINL Stream& operator << (const GAIA::U64& t);
-			virtual GINL Stream& operator << (GAIA::F32 t);
-			virtual GINL Stream& operator << (const GAIA::F64& t);
-			virtual GINL Stream& operator << (const GAIA::WCH& t);
-			virtual GINL Stream& operator << (const GAIA::CH* p);
-			virtual GINL Stream& operator << (const GAIA::WCH* p);
-			virtual GINL Stream& operator << (const GAIA::X128& t);
+			virtual GINL STDStream& operator << (GAIA::BL t);
+			virtual GINL STDStream& operator << (GAIA::NM t);
+			virtual GINL STDStream& operator << (GAIA::UM t);
+			virtual GINL STDStream& operator << (GAIA::N8 t);
+			virtual GINL STDStream& operator << (GAIA::N16 t);
+			virtual GINL STDStream& operator << (GAIA::N32 t);
+			virtual GINL STDStream& operator << (const GAIA::N64& t);
+			virtual GINL STDStream& operator << (GAIA::U8 t);
+			virtual GINL STDStream& operator << (GAIA::U16 t);
+			virtual GINL STDStream& operator << (GAIA::U32 t);
+			virtual GINL STDStream& operator << (const GAIA::U64& t);
+			virtual GINL STDStream& operator << (GAIA::F32 t);
+			virtual GINL STDStream& operator << (const GAIA::F64& t);
+			virtual GINL STDStream& operator << (const GAIA::WCH& t);
+			virtual GINL STDStream& operator << (const GAIA::CH* p);
+			virtual GINL STDStream& operator << (const GAIA::WCH* p);
+			virtual GINL STDStream& operator << (const GAIA::X128& t);
 
-			virtual GINL Stream& operator >> (GAIA::BL& t);
-			virtual GINL Stream& operator >> (GAIA::NM& t);
-			virtual GINL Stream& operator >> (GAIA::UM& t);
-			virtual GINL Stream& operator >> (GAIA::N8& t);
-			virtual GINL Stream& operator >> (GAIA::N16& t);
-			virtual GINL Stream& operator >> (GAIA::N32& t);
-			virtual GINL Stream& operator >> (GAIA::N64& t);
-			virtual GINL Stream& operator >> (GAIA::U8& t);
-			virtual GINL Stream& operator >> (GAIA::U16& t);
-			virtual GINL Stream& operator >> (GAIA::U32& t);
-			virtual GINL Stream& operator >> (GAIA::U64& t);
-			virtual GINL Stream& operator >> (GAIA::F32& t);
-			virtual GINL Stream& operator >> (GAIA::F64& t);
-			virtual GINL Stream& operator >> (GAIA::WCH& t);
-			virtual GINL Stream& operator >> (GAIA::CH* p);
-			virtual GINL Stream& operator >> (GAIA::WCH* p);
-			virtual GINL Stream& operator >> (GAIA::X128& t);
+			virtual GINL STDStream& operator >> (GAIA::BL& t);
+			virtual GINL STDStream& operator >> (GAIA::NM& t);
+			virtual GINL STDStream& operator >> (GAIA::UM& t);
+			virtual GINL STDStream& operator >> (GAIA::N8& t);
+			virtual GINL STDStream& operator >> (GAIA::N16& t);
+			virtual GINL STDStream& operator >> (GAIA::N32& t);
+			virtual GINL STDStream& operator >> (GAIA::N64& t);
+			virtual GINL STDStream& operator >> (GAIA::U8& t);
+			virtual GINL STDStream& operator >> (GAIA::U16& t);
+			virtual GINL STDStream& operator >> (GAIA::U32& t);
+			virtual GINL STDStream& operator >> (GAIA::U64& t);
+			virtual GINL STDStream& operator >> (GAIA::F32& t);
+			virtual GINL STDStream& operator >> (GAIA::F64& t);
+			virtual GINL STDStream& operator >> (GAIA::WCH& t);
+			virtual GINL STDStream& operator >> (GAIA::CH* p);
+			virtual GINL STDStream& operator >> (GAIA::WCH* p);
+			virtual GINL STDStream& operator >> (GAIA::X128& t);
 
-			virtual GINL Stream& operator >> (StreamFormat& pf);
-			virtual GINL Stream& operator << (const StreamFormat& pf);
+			virtual GINL STDStream& operator >> (StreamFormat& pf);
+			virtual GINL STDStream& operator << (const StreamFormat& pf);
 
 			virtual GINL GAIA::GVOID flush();
 
