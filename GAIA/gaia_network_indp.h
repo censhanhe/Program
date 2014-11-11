@@ -134,9 +134,7 @@ namespace GAIA
 		}
 		GINL GAIA::GVOID Handle::SetSender(Sender* pSender)
 		{
-			GAIA_AST(!m_conndesc.bSync);
-			if(m_conndesc.bSync)
-				return;
+			GPCHR_TRUE(m_conndesc.bSync);
 			if(pSender == m_pSender)
 				return;
 			if(m_pSender != GNIL)
@@ -147,9 +145,7 @@ namespace GAIA
 		}
 		GINL GAIA::GVOID Handle::SetReceiver(Receiver* pReceiver)
 		{
-			GAIA_AST(!m_conndesc.bSync);
-			if(m_conndesc.bSync)
-				return;
+			GPCHR_TRUE(m_conndesc.bSync);
 			if(pReceiver == m_pReceiver)
 				return;
 			if(m_pReceiver != GNIL)
@@ -192,7 +188,7 @@ namespace GAIA
 		{
 			GPCHR_NULL_RET(p, GAIA::False);
 			GPCHR_BELOWEQUALZERO_RET(uSize, GAIA::False);
-			GPCHR_TRUE_RET(!m_conndesc.bSync, GAIA::False);
+			GPCHR_FALSE_RET(m_conndesc.bSync, GAIA::False);
 			if(m_conndesc.bStabilityLink)
 				uResultSize = (GAIA::U32)recv(m_h, (GAIA::N8*)p, (GAIA::N32)uSize, 0);
 			else
