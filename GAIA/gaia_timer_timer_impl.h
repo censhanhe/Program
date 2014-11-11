@@ -10,7 +10,7 @@ namespace GAIA
 			m_bPaused = GAIA::False;
 			if(this->IsRegisted())
 				m_pTimerMgr->Unregist(*this);
-			GAIA_RELEASE_SAFE(m_pTimerMgr);
+			m_pTimerMgr = GNIL;
 			m_nRegistTime = 0;
 			m_nLastUpdateTime = 0;
 			m_nUpdateTimes = 0;
@@ -80,12 +80,7 @@ namespace GAIA
 		}
 		GINL GAIA::GVOID Timer::SetTimerMgr(GAIA::TIMER::TimerMgr* pTimerMgr)
 		{
-			GAIA_RELEASE_SAFE(m_pTimerMgr);
-			if(pTimerMgr != GNIL)
-			{
-				m_pTimerMgr = pTimerMgr;
-				m_pTimerMgr->Reference();
-			}
+			m_pTimerMgr = pTimerMgr;
 		}
 	};
 };

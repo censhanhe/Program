@@ -213,9 +213,15 @@ namespace GAIA
 					for(; !it.empty(); ++it)
 					{
 						GAIA::TIMER::Timer* pTimer = *it;
+						if(pTimer->GetDesc().bAutoRelease)
+						{
+							if(pTimer->GetRef() > 1)
+								pTimer->Release();
+						}
 						GAIA_RELEASE_SAFE(pTimer);
 					}
 				}
+				m_groups.destroy();
 				m_nLastUpdateTime = 0;
 				m_desc.reset();
 			}
