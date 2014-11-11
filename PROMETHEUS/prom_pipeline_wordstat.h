@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_WordStat(){}
 		GINL ~PL_WordStat(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_WordStat");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -148,7 +148,7 @@ namespace PROM
 				plc_codeline->Release();
 			return pRet;
 		}
-		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& prt)
 		{
 			/* Parameter check up. */
 			GAIA_AST(pPLC != GNIL);

@@ -144,23 +144,23 @@ namespace GAIA
 			}
 		public:
 			/* Stream output. */
-			virtual Log& operator << (GAIA::BL t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (GAIA::NM t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (GAIA::UM t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (GAIA::N8 t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (GAIA::N16 t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (GAIA::N32 t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (const GAIA::N64& t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (GAIA::U8 t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (GAIA::U16 t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (GAIA::U32 t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (const GAIA::U64& t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (GAIA::F32 t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (const GAIA::F64& t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (const GAIA::WCH& t){this->WriteToStringPrint(t); return *this;}
-			virtual Log& operator << (const GAIA::CH* p){this->WriteToStringPrint(p); return *this;}
-			virtual Log& operator << (const GAIA::WCH* p){this->WriteToStringPrint(p); return *this;}
-			virtual Log& operator << (const GAIA::X128& t){this->WriteToStringPrint(t); return *this;}
+			virtual Log& operator << (GAIA::BL t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (GAIA::NM t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (GAIA::UM t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (GAIA::N8 t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (GAIA::N16 t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (GAIA::N32 t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (const GAIA::N64& t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (GAIA::U8 t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (GAIA::U16 t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (GAIA::U32 t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (const GAIA::U64& t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (GAIA::F32 t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (const GAIA::F64& t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (const GAIA::WCH& t){this->WriteToStringStream(t); return *this;}
+			virtual Log& operator << (const GAIA::CH* p){this->WriteToStringStream(p); return *this;}
+			virtual Log& operator << (const GAIA::WCH* p){this->WriteToStringStream(p); return *this;}
+			virtual Log& operator << (const GAIA::X128& t){this->WriteToStringStream(t); return *this;}
 			virtual Log& operator << (const GAIA::LOG::Log::FlagType& t)
 			{
 				this->EnterLock();
@@ -178,7 +178,7 @@ namespace GAIA
 				/* Enter lock and output. */
 				this->EnterLock();
 				this->Write(m_flagtype.m_type, m_flaguserfilter.m_filter, m_sprt.GetString());
-				GAIA::PRINT::StringPrint::__CharType szEmpty[1];
+				GAIA::STREAM::StringStream::__CharType szEmpty[1];
 				szEmpty[0] = '\0';
 				m_sprt.SetString(szEmpty);
 				m_flagtype.m_type = TYPE_LOG;
@@ -245,7 +245,7 @@ namespace GAIA
 				m_flagtype.m_type = TYPE_LOG;
 				m_flaguserfilter.m_filter = (__FilterType)GINVALID;
 			}
-			template<typename _ParamDataType> GAIA::GVOID WriteToStringPrint(_ParamDataType t)
+			template<typename _ParamDataType> GAIA::GVOID WriteToStringStream(_ParamDataType t)
 			{
 				this->EnterLock();
 				m_sprt << t;
@@ -264,7 +264,7 @@ namespace GAIA
 			GAIA::SYNC::Lock m_lock;
 			GAIA::SYNC::Atomic m_lockcnt;
 			GAIA::BL m_bCallBacking;
-			GAIA::PRINT::StringPrint m_sprt;
+			GAIA::STREAM::StringStream m_sprt;
 			FlagType m_flagtype;
 			FlagUserFilter m_flaguserfilter;
 		};

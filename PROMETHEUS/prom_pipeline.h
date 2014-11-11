@@ -36,8 +36,8 @@ namespace PROM
 			return GNIL;
 		}
 		virtual const GAIA::TCH* GetName() const = 0;
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs) = 0;
-		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::PRINT::PrintBase& prt){return GAIA::False;}
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs) = 0;
+		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& prt){return GAIA::False;}
 	};
 };
 

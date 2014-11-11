@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_LineStat(){}
 		GINL ~PL_LineStat(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_LineStat");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);

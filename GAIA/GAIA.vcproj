@@ -1415,37 +1415,37 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="PRINT"
+					Name="STREAM"
 					>
 					<File
-						RelativePath=".\gaia_print_format.h"
+						RelativePath=".\gaia_stream_format.h"
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_print_printbase.h"
+						RelativePath=".\gaia_stream_streambase.h"
 						>
 					</File>
 					<Filter
-						Name="PRINT"
+						Name="STDSTREAM"
 						>
 						<File
-							RelativePath=".\gaia_print_print.h"
+							RelativePath=".\gaia_stream_stdstream.h"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_print_print_indp.h"
+							RelativePath=".\gaia_stream_stdstream_indp.h"
 							>
 						</File>
 					</Filter>
 					<Filter
-						Name="STRINGPRINT"
+						Name="STRINGSTREAM"
 						>
 						<File
-							RelativePath=".\gaia_print_stringprint.h"
+							RelativePath=".\gaia_stream_stringstream.h"
 							>
 						</File>
 						<File
-							RelativePath=".\gaia_print_stringprint_indp.h"
+							RelativePath=".\gaia_stream_stringstream_indp.h"
 							>
 						</File>
 					</Filter>
@@ -2657,7 +2657,7 @@
 						Name="PRINT"
 						>
 						<File
-							RelativePath=".\TEST\t_print_stringprint.cpp"
+							RelativePath=".\TEST\t_print_stringstream.cpp"
 							>
 						</File>
 					</Filter>

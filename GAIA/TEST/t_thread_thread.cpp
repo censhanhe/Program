@@ -19,7 +19,7 @@ namespace GAIA_TEST
 		GAIA::SIZE m_sData;
 	};
 
-	extern GAIA::N32 t_thread_thread(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_thread_thread(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 

@@ -278,7 +278,7 @@ namespace DWARFS_MISC
 		}
 
 	public:	/* Command access interface. */
-		GINL GAIA::BL build(const GAIA::TCH* pszCmd, GAIA::PRINT::PrintBase& prt)
+		GINL GAIA::BL build(const GAIA::TCH* pszCmd, GAIA::STREAM::StreamBase& prt)
 		{
 			GAIA_AST(!this->is_begin_decl());
 			if(this->is_begin_decl())

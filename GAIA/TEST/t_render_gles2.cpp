@@ -5,7 +5,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_render_gles2(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_render_gles2(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 

@@ -2,7 +2,7 @@
 #define 	__GAIA_USING_NAMESPACE_H__
 
 using namespace GAIA;
-using namespace GAIA::PRINT;
+using namespace GAIA::STREAM;
 using namespace GAIA::DEBUG;
 using namespace GAIA::EXCEPTION;
 using namespace GAIA::SYSTEM;

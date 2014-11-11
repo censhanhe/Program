@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_SymbolStat(){}
 		GINL ~PL_SymbolStat(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_SymbolStat");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
 		{
 			return GNIL;
 		}

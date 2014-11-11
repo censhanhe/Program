@@ -9,7 +9,7 @@
 
 namespace DWARFSTEST
 {
-	GINL GAIA::N32 t_all(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_all(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 		GAIA::BL bOutputTime = GAIA::False;

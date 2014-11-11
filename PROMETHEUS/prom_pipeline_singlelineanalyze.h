@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_SingleLineAnalyze(){}
 		GINL ~PL_SingleLineAnalyze(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_SingleLineAnalyze");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
 		{
 			return GNIL;
 		}

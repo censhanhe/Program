@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_FileStructureAnalyze(){}
 		GINL ~PL_FileStructureAnalyze(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_FileStructureAnalyze");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -73,7 +73,7 @@ namespace PROM
 				plc_codelineprepare->Release();
 			return pRet;
 		}
-		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& prt)
 		{
 			/* Parameter check up. */
 			GAIA_AST(pPLC != GNIL);
@@ -133,7 +133,7 @@ namespace PROM
 			PLC_FileStructure* plc_filestructure,
 			PLC_FileStructure::Node& node,
 			GAIA::FSYS::FileBase* pFile,
-			GAIA::PRINT::PrintBase& prt,
+			GAIA::STREAM::StreamBase& prt,
 			GAIA::SIZE depth)
 		{
 			GPCHR_NULL(plc_filestructure);
@@ -157,7 +157,7 @@ namespace PROM
 			PLC_FileStructure* plc_filestructure,
 			PLC_FileStructure::Node& node,
 			GAIA::FSYS::FileBase* pFile,
-			GAIA::PRINT::PrintBase& prt,
+			GAIA::STREAM::StreamBase& prt,
 			GAIA::SIZE depth)
 		{
 			GPCHR_NULL(plc_filestructure);
@@ -177,7 +177,7 @@ namespace PROM
 					this->OutputChildRelation(plc_filestructure, *pChildNode, pFile, prt, depth + 1);
 			}
 		}
-		GINL GAIA::GVOID OutputDepth(GAIA::PRINT::PrintBase& prt, GAIA::FSYS::FileBase* pFile, GAIA::SIZE depth)
+		GINL GAIA::GVOID OutputDepth(GAIA::STREAM::StreamBase& prt, GAIA::FSYS::FileBase* pFile, GAIA::SIZE depth)
 		{
 			for(GAIA::SIZE x = 0; x < depth; ++x)
 			{

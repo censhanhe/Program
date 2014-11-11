@@ -3,11 +3,11 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_print_stringprint(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_stream_stringstream(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 
-		GAIA::PRINT::StringPrint sprt;
+		GAIA::STREAM::StringStream sprt;
 		sprt << (GAIA::U8)1 << " ";
 		sprt << (GAIA::U16)2 << " ";
 		sprt << (GAIA::U32)3 << " ";
@@ -24,7 +24,7 @@ namespace GAIA_TEST
 		sprt << (GAIA::CH*)"ansi string" << " ";
 		sprt << (GAIA::WCH*)L"unicode string" << " ";
 
-		const GAIA::PRINT::StringPrint::__CharType* p = sprt.GetString();
+		const GAIA::STREAM::StringStream::__CharType* p = sprt.GetString();
 
 		return nRet;
 	}

@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_FileCollect(){}
 		GINL ~PL_FileCollect(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_FileCollect");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);

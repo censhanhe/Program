@@ -1,5 +1,5 @@
-#ifndef		__GAIA_PRINT_PRINT_INDP_H__
-#define		__GAIA_PRINT_PRINT_INDP_H__
+#ifndef		__GAIA_STREAM_STREAM_INDP_H__
+#define		__GAIA_STREAM_STREAM_INDP_H__
 
 #include <stdlib.h>
 #include <iostream>
@@ -7,107 +7,107 @@
 
 namespace GAIA
 {
-	namespace PRINT
+	namespace STREAM
 	{
-		GINL Print& Print::operator << (GAIA::BL t)
+		GINL Stream& Stream::operator << (GAIA::BL t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GINL Print& Print::operator << (GAIA::NM t)
+		GINL Stream& Stream::operator << (GAIA::NM t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GINL Print& Print::operator << (GAIA::UM t)
+		GINL Stream& Stream::operator << (GAIA::UM t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GINL Print& Print::operator << (GAIA::N8 t)
+		GINL Stream& Stream::operator << (GAIA::N8 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << (GAIA::N32)t;
 			return *this;
 		}
-		GINL Print& Print::operator << (GAIA::N16 t)
+		GINL Stream& Stream::operator << (GAIA::N16 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << (GAIA::N32)t;
 			return *this;
 		}
-		GINL Print& Print::operator << (GAIA::N32 t)
+		GINL Stream& Stream::operator << (GAIA::N32 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GINL Print& Print::operator << (const GAIA::N64& t)
+		GINL Stream& Stream::operator << (const GAIA::N64& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GINL Print& Print::operator << (GAIA::U8 t)
+		GINL Stream& Stream::operator << (GAIA::U8 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << (GAIA::U32)t;
 			return *this;
 		}
-		GINL Print& Print::operator << (GAIA::U16 t)
+		GINL Stream& Stream::operator << (GAIA::U16 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << (GAIA::U32)t;
 			return *this;
 		}
-		GINL Print& Print::operator << (GAIA::U32 t)
+		GINL Stream& Stream::operator << (GAIA::U32 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GINL Print& Print::operator << (const GAIA::U64& t)
+		GINL Stream& Stream::operator << (const GAIA::U64& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GINL Print& Print::operator << (GAIA::F32 t)
+		GINL Stream& Stream::operator << (GAIA::F32 t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GINL Print& Print::operator << (const GAIA::F64& t)
+		GINL Stream& Stream::operator << (const GAIA::F64& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << t;
 			return *this;
 		}
-		GINL Print& Print::operator << (const GAIA::WCH& t)
+		GINL Stream& Stream::operator << (const GAIA::WCH& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			std::cout << (GAIA::N64)t;
 			return *this;
 		}
-		GINL Print& Print::operator << (const GAIA::CH* p)
+		GINL Stream& Stream::operator << (const GAIA::CH* p)
 		{
 			if(p == GNIL)
 				return *this;
@@ -116,7 +116,7 @@ namespace GAIA
 			std::cout << p;
 			return *this;
 		}
-		GINL Print& Print::operator << (const GAIA::WCH* p)
+		GINL Stream& Stream::operator << (const GAIA::WCH* p)
 		{
 			if(p == GNIL)
 				return *this;
@@ -125,34 +125,34 @@ namespace GAIA
 			std::wcout << p;
 			return *this;
 		}
-		GINL Print& Print::operator << (const GAIA::X128& t)
+		GINL Stream& Stream::operator << (const GAIA::X128& t)
 		{
 			if(!this->enable_write())
 				return *this;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::BL& t)
+		GINL Stream& Stream::operator >> (GAIA::BL& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::NM& t)
+		GINL Stream& Stream::operator >> (GAIA::NM& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::UM& t)
+		GINL Stream& Stream::operator >> (GAIA::UM& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::N8& t)
+		GINL Stream& Stream::operator >> (GAIA::N8& t)
 		{
 			if(!this->enable_read())
 				return *this;
@@ -161,7 +161,7 @@ namespace GAIA
 			t = GSCAST(GAIA::N8)(temp);
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::N16& t)
+		GINL Stream& Stream::operator >> (GAIA::N16& t)
 		{
 			if(!this->enable_read())
 				return *this;
@@ -170,21 +170,21 @@ namespace GAIA
 			t = GSCAST(GAIA::N16)(temp);
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::N32& t)
+		GINL Stream& Stream::operator >> (GAIA::N32& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::N64& t)
+		GINL Stream& Stream::operator >> (GAIA::N64& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::U8& t)
+		GINL Stream& Stream::operator >> (GAIA::U8& t)
 		{
 			if(!this->enable_read())
 				return *this;
@@ -193,7 +193,7 @@ namespace GAIA
 			t = GSCAST(GAIA::U8)(temp);
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::U16& t)
+		GINL Stream& Stream::operator >> (GAIA::U16& t)
 		{
 			if(!this->enable_read())
 				return *this;
@@ -202,35 +202,35 @@ namespace GAIA
 			t = GSCAST(GAIA::U16)(temp);
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::U32& t)
+		GINL Stream& Stream::operator >> (GAIA::U32& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::U64& t)
+		GINL Stream& Stream::operator >> (GAIA::U64& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::F32& t)
+		GINL Stream& Stream::operator >> (GAIA::F32& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::F64& t)
+		GINL Stream& Stream::operator >> (GAIA::F64& t)
 		{
 			if(!this->enable_read())
 				return *this;
 			std::cin >> t;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::WCH& t)
+		GINL Stream& Stream::operator >> (GAIA::WCH& t)
 		{
 			if(!this->enable_read())
 				return *this;
@@ -239,7 +239,7 @@ namespace GAIA
 			t = GSCAST(GAIA::WCH)(temp);
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::CH* p)
+		GINL Stream& Stream::operator >> (GAIA::CH* p)
 		{
 			if(p == GNIL)
 				return *this;
@@ -248,7 +248,7 @@ namespace GAIA
 			std::cin >> p;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::WCH* p)
+		GINL Stream& Stream::operator >> (GAIA::WCH* p)
 		{
 			if(p == GNIL)
 				return *this;
@@ -257,7 +257,7 @@ namespace GAIA
 			std::wcin >> p;
 			return *this;
 		}
-		GINL Print& Print::operator >> (GAIA::X128& t)
+		GINL Stream& Stream::operator >> (GAIA::X128& t)
 		{
 			if(!this->enable_read())
 				return *this;
@@ -266,12 +266,12 @@ namespace GAIA
 			t = sz;
 			return *this;
 		}
-		GINL Print& Print::operator >> (PrintFormat& pf)
+		GINL Stream& Stream::operator >> (StreamFormat& pf)
 		{
 			pf = m_pf;
 			return *this;
 		}
-		GINL Print& Print::operator << (const PrintFormat& pf)
+		GINL Stream& Stream::operator << (const StreamFormat& pf)
 		{
 			if(pf.align() != m_pf.align() || pf.align() != 0)
 			{
@@ -378,7 +378,7 @@ namespace GAIA
 			m_pf = pf;
 			return *this;
 		}
-		GINL GAIA::GVOID Print::flush()
+		GINL GAIA::GVOID Stream::flush()
 		{
 			std::cout << std::flush;
 		}

@@ -10,7 +10,7 @@ namespace GAIA
 						{\
 							if(!(e))\
 							{\
-								GAIA::PRINT::Print prt;\
+								GAIA::STREAM::Stream prt;\
 								prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue:";\
 								GAIA::CH ch[32];\
 								prt >> ch;\
@@ -27,7 +27,7 @@ namespace GAIA
 								{\
 									if(!(e))\
 									{\
-										GAIA::PRINT::Print prt;\
+										GAIA::STREAM::Stream prt;\
 										prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue(Debug):";\
 										GAIA::CH ch;\
 										prt >> ch;\

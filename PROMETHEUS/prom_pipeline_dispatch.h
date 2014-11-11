@@ -12,7 +12,7 @@ namespace PROM
 			Pipeline** ppPrevPL, const GAIA::SIZE& prevpl_size,
 			Pipeline** ppNextPL, const GAIA::SIZE& nextpl_size,
 			PipelineContext** ppPLC, const GAIA::SIZE& plc_size,
-			GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+			GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
 		{
 			/* Internal type. */
 			typedef GAIA::CTN::Vector<Pipeline*> __PipelineList;
@@ -175,7 +175,7 @@ namespace PROM
 		{
 			m_plc_commandparam = GNIL;
 		}
-		GINL GAIA::GVOID ExecuteOutput(PipelineContext* pPLC, Pipeline* pPL, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		GINL GAIA::GVOID ExecuteOutput(PipelineContext* pPLC, Pipeline* pPL, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
 		{
 			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
 			if(!GAIA::ALGO::stremp(pPLC->GetName()))
@@ -236,7 +236,7 @@ namespace PROM
 				}
 			}
 		}
-		GINL GAIA::GVOID ExecuteExportTempResult(PipelineContext** ppPLC, const GAIA::SIZE& plc_size, PipelineContext* pNewPLC, Pipeline* pPL, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		GINL GAIA::GVOID ExecuteExportTempResult(PipelineContext** ppPLC, const GAIA::SIZE& plc_size, PipelineContext* pNewPLC, Pipeline* pPL, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
 		{
 			GPCHR_NULL(ppPLC);
 			GPCHR_ZERO(plc_size);

@@ -45,7 +45,7 @@ LOG
 EXCEPTION
 	Add exception system.
 	Accesser will cause exception(OutOfBounder).
-	StringPrint will case exception(ReceiverTypeNotMatch : public InvalidParam)
+	StringStream will case exception(ReceiverTypeNotMatch : public InvalidParam)
 
 
 DataResearch

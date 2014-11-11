@@ -8,7 +8,7 @@ namespace PROM
 	public:
 		GINL Prom(){}
 		GINL ~Prom(){}
-		GINL GAIA::BL Command(const GAIA::TCH* psz, GAIA::PRINT::PrintBase& prt)
+		GINL GAIA::BL Command(const GAIA::TCH* psz, GAIA::STREAM::StreamBase& prt)
 		{
 			GAIA_AST(psz != GNIL);
 			if(psz == GNIL)
@@ -21,7 +21,7 @@ namespace PROM
 			Pipeline* pPL = this->ConstructPipeline();
 			{
 				pPLD->Run(GNIL, 0, &pPL, 1, (PipelineContext**)&pPLC, 1, prt, m_errors);
-				this->PrintError(prt);
+				this->StreamError(prt);
 				this->ClearError();
 			}
 			this->DestructPipeline(pPL); pPL = GNIL;
@@ -95,10 +95,10 @@ namespace PROM
 			pPL->UnbindNextAll();
 			pPL->Release();
 		}
-		GINL GAIA::GVOID PrintError(GAIA::PRINT::PrintBase& prt)
+		GINL GAIA::GVOID StreamError(GAIA::STREAM::StreamBase& prt)
 		{
-			GAIA::PRINT::PrintFormat prtfmt;
-			GAIA::PRINT::PrintFormat prtfmt_old;
+			GAIA::STREAM::StreamFormat prtfmt;
+			GAIA::STREAM::StreamFormat prtfmt_old;
 			prtfmt.reset();
 			prtfmt_old.reset();
 			prt >> prtfmt_old;

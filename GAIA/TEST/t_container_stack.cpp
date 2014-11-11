@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_container_stack(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_container_stack(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
 	{
 		GAIA::N32 nRet = 0;
 		typedef GAIA::CTN::BasicStack<GAIA::N32, GAIA::N32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::N32> > __StackType;

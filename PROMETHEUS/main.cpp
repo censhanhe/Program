@@ -27,7 +27,7 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	GAIA::PRINT::Print prt;
+	GAIA::STREAM::Stream prt;
 
 	prt << "Prometheus " << PROM::VERSION_STRING << "\n";
 
