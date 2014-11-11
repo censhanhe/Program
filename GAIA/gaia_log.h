@@ -17,11 +17,12 @@ namespace GAIA
 			class CallBack : public GAIA::Base
 			{
 			public:
-				virtual GAIA::BL LogWrite(
+				virtual GAIA::BL WriteLog(
 					const GAIA::TIME::Time& logtime,
 					GAIA::LOG::Log::TYPE type,
 					GAIA::LOG::Log::__FilterType userfilter,
 					const GAIA::TCH* pszLog) = 0;
+				virtual GAIA::BL FlushLog() = 0;
 			};
 		private:
 			/* Internal data structure. */
@@ -105,9 +106,10 @@ namespace GAIA
 						return GAIA::False;
 					m_bCallBacking = GAIA::True;
 					{
-						m_pCallBack->LogWrite(logtime, type, userfilter, pszLog);
+						m_pCallBack->WriteLog(logtime, type, userfilter, pszLog);
 					}
 					m_bCallBacking = GAIA::False;
+					m_pCallBack->FlushLog();
 				}
 				else
 				{
@@ -135,10 +137,11 @@ namespace GAIA
 						for(__NodeList::_sizetype x = 0; x < m_nodes.size(); ++x)
 						{
 							Node& n = m_nodes[x];
-							m_pCallBack->LogWrite(n.logtime, n.type, n.userfilter, n.strLog);
+							m_pCallBack->WriteLog(n.logtime, n.type, n.userfilter, n.strLog);
 						}
 					}
 					m_bCallBacking = GAIA::False;
+					m_pCallBack->FlushLog();
 				}
 				m_nodes.clear();
 			}

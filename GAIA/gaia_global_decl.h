@@ -32,7 +32,7 @@ public:
 			GAIA_DELETE_SAFE(m_pFile);
 		}
 	}
-	virtual GAIA::BL LogWrite(
+	virtual GAIA::BL WriteLog(
 		const GAIA::TIME::Time& logtime,
 		GAIA::LOG::Log::TYPE type,
 		GAIA::LOG::Log::__FilterType userfilter,
@@ -69,6 +69,13 @@ public:
 		m_pFile->WriteText(_T(" "));
 		m_pFile->WriteText(pszLog);
 		m_pFile->WriteText(g_gaia_log.GetLineBreak());
+		return GAIA::True;
+	}
+	virtual GAIA::BL FlushLog()
+	{
+		if(m_pFile == GNIL)
+			return GAIA::False;
+		m_pFile->Flush();
 		return GAIA::True;
 	}
 private:
