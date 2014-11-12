@@ -12,7 +12,7 @@ namespace GAIA
 			{
 			public:
 				GINL CreateCallBack(){}
-				virtual Instance* Create(GAIA::FWORK::Factory* pFactory, const ClsID& cid) = 0;
+				virtual GAIA::FWORK::Instance* Create(GAIA::FWORK::Factory* pFactory, const GAIA::FWORK::ClsID& cid) = 0;
 			};
 		private: // Helper type declaration here for internal use.
 			typedef GAIA::CTN::Vector<CreateCallBack*> LIST_CREATECALLBACK;

@@ -1450,18 +1450,6 @@
 						>
 					</File>
 				</Filter>
-				<Filter
-					Name="FAVO"
-					>
-					<Filter
-						Name="FETCHDATA"
-						>
-						<File
-							RelativePath=".\gaia_favo_fetchdata.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="FUNCTON_LAYER"

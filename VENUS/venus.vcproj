@@ -332,22 +332,42 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath=".\TEST\t_main.cpp"
+		<Filter
+			Name="VENUS"
 			>
-		</File>
-		<File
-			RelativePath=".\venus_gl.cpp"
+			<File
+				RelativePath=".\venus.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\venus.h"
+				>
+			</File>
+			<File
+				RelativePath=".\venus_interface.h"
+				>
+			</File>
+			<Filter
+				Name="GL"
+				>
+				<File
+					RelativePath=".\venus_gl.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\venus_gl.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="TEST"
 			>
-		</File>
-		<File
-			RelativePath=".\venus_gl.h"
-			>
-		</File>
-		<File
-			RelativePath=".\venus_interface.h"
-			>
-		</File>
+			<File
+				RelativePath=".\TEST\t_main.cpp"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
