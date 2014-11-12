@@ -69,6 +69,8 @@ namespace GAIA
 #	define R(x) x
 #endif
 
+	typedef N32 EN;
+
 	/* Char type declaration. */
 	typedef char CH;
 	typedef wchar_t WCH;
