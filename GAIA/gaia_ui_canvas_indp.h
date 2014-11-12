@@ -107,12 +107,14 @@ namespace GAIA
 
 						GAIA_AST(!GAIA::ALGO::stremp(pFindedCanvas->m_pszClassName));
 					#if GAIA_CHARSET == GAIA_CHARSET_ANSI
-						::UnregisterClassA(pFindedCanvas->m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
+						if(::UnregisterClassA(pFindedCanvas->m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL)))
 					#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-						::UnregisterClassW(pFindedCanvas->m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
+						if(::UnregisterClassW(pFindedCanvas->m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL)))
 					#endif
-						GAIA_MFREE(pFindedCanvas->m_pszClassName);
-						pFindedCanvas->m_pszClassName = GNIL;
+						{
+							GAIA_MFREE(pFindedCanvas->m_pszClassName);
+							pFindedCanvas->m_pszClassName = GNIL;
+						}
 
 						return GAIA::False;
 					}
@@ -752,6 +754,18 @@ namespace GAIA
 		{
 			if(this->IsCreated())
 				this->Destroy();
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			if(!GAIA::ALGO::stremp(m_pszClassName))
+			{
+		#	if GAIA_CHARSET == GAIA_CHARSET_ANSI
+				::UnregisterClassA(m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
+		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
+				::UnregisterClassW(m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
+		#	endif
+				GAIA_MFREE(m_pszClassName);
+				m_pszClassName = GNIL;
+			}
+		#endif
 		}
 		GINL GAIA::BL Canvas::Create(const Desc& desc)
 		{
@@ -887,13 +901,14 @@ namespace GAIA
 			m_hWnd = GNIL;
 
 		#if GAIA_CHARSET == GAIA_CHARSET_ANSI
-			::UnregisterClassA(m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
+			if(::UnregisterClassA(m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL)))
 		#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
-			::UnregisterClassW(m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL));
+			if(::UnregisterClassW(m_pszClassName, (HINSTANCE)GetModuleHandle(GNIL)))
 		#endif
-
-			GAIA_MFREE(m_pszClassName);
-			m_pszClassName = GNIL;
+			{
+				GAIA_MFREE(m_pszClassName);
+				m_pszClassName = GNIL;
+			}
 
 			return GAIA::True;
 		#else

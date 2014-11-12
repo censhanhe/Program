@@ -180,7 +180,7 @@ namespace GAIA_TEST
 		}
 
 		/* Test context. */
-		static const GAIA::REAL ANISPEED = R(4.0);
+		static const GAIA::REAL ANISPEED = R(0.1);
 
 		GAIA::MATH::xrandom_seed(GAIA::TIME::clock_time());
 
