@@ -6,19 +6,6 @@
 #		include <winsock2.h>
 #		pragma comment(lib, "ws2_32.lib")
 #	endif
-#	ifdef GAIA_PLATFORM_GDIPLUS
-#		include <winsock2.h>
-#		include <ws2tcpip.h>
-#		include <windows.h>
-#		include <gdiplus.h>
-#		pragma comment(lib, "gdiplus.lib")
-#	endif
-#	ifdef GAIA_PLATFORM_OPENGL1
-#		pragma comment(lib, "opengl32.lib")
-#	endif
-#	ifdef GAIA_PLATFORM_DX9
-#		pragma comment(lib, "d3d9.lib")
-#	endif
 #	ifdef GAIA_PLATFORM_COM
 #		include <objbase.h>
 #		pragma comment(lib, "ole32.lib")
@@ -39,10 +26,6 @@ namespace GAIA
 				if(::WSAStartup(MAKEWORD(2, 2), &wsadata) != 0)
 					throw 0;
 		#	endif
-		#	ifdef GAIA_PLATFORM_GDIPLUS
-				if(Gdiplus::GdiplusStartup(&m_GDIPlusToken, &m_GDIPlusInput, &m_GDIPlusOutput) != Gdiplus::Ok)
-					throw 0;
-		#	endif
 		#	ifdef GAIA_PLATFORM_COM
 				if(CoInitialize(GNIL) != S_OK)
 					throw 0;
@@ -57,24 +40,12 @@ namespace GAIA
 				if(::WSACleanup() != 0)
 					throw 0;
 		#	endif
-		#	ifdef GAIA_PLATFORM_GDIPLUS
-				Gdiplus::GdiplusShutdown(m_GDIPlusToken);
-		#	endif
 		#	ifdef GAIA_PLATFORM_COM
 				CoUninitialize();
 		#	endif
 		#else
 		#endif
 		}
-	private:
-	#if GAIA_OS == GAIA_OS_WINDOWS
-	#	ifdef GAIA_PLATFORM_GDIPLUS
-			ULONG_PTR m_GDIPlusToken;
-			Gdiplus::GdiplusStartupInput m_GDIPlusInput;
-			Gdiplus::GdiplusStartupOutput m_GDIPlusOutput;
-	#	endif
-	#else
-	#endif
 	};
 };
 

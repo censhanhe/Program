@@ -280,18 +280,7 @@
 *    The following macro will specified which feature will be actived.
 *
 *        1.  GAIA_PLATFORM_NETWORK
-*        2.  GAIA_PLATFORM_GDIPLUS
-*        3.  GAIA_PLATFORM_DDRAW
-*        4.  GAIA_PLATFORM_OPENGL1
-*        5.  GAIA_PLATFORM_OPENGL2
-*        6.  GAIA_PLATFORM_OPENGL3
-*        7.  GAIA_PLATFORM_OPENGLES1
-*        8.  GAIA_PLATFORM_OPENGLES2
-*        9.  GAIA_PLATFORM_OPENGLES3
-*        10. GAIA_PLATFORM_DX9
-*        11. GAIA_PLATFORM_DX10
-*        12. GAIA_PLATFORM_DX11
-*        13. GAIA_PLATFORM_COM
+*        2.  GAIA_PLATFORM_COM
 *
 */
 
