@@ -35,53 +35,106 @@ namespace VENUS
 		class IndexBuffer : public virtual VENUS::Render::IndexBuffer
 		{
 		public:
+			IndexBuffer();
+			~IndexBuffer();
+			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
 			virtual GAIA::BL Unlock();
 			virtual GAIA::BL IsLocked() const;
+		public:
+			GAIA::BL Create(const VENUS::Render::IndexBuffer::Desc& desc);
+			GAIA::BL Destroy();
+		private:
+			GAIA::BL m_bLocked;
 		};
 
 		class VertexBuffer : public virtual VENUS::Render::VertexBuffer
 		{
-
 		public:
+			VertexBuffer();
+			~VertexBuffer();
+			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
 			virtual GAIA::BL Unlock();
 			virtual GAIA::BL IsLocked() const;
+		public:
+			GAIA::BL Create(const VENUS::Render::VertexBuffer::Desc& desc);
+			GAIA::BL Destroy();
+		private:
+			GAIA::BL m_bLocked;
 		};
 
 		class VertexDeclaration : public virtual VENUS::Render::VertexDeclaration
 		{
 		public:
+			VertexDeclaration();
+			~VertexDeclaration();
+			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
+		public:
+			GAIA::BL Create(const VENUS::Render::VertexDeclaration::Desc& desc);
+			GAIA::BL Destroy();
+		private:
 		};
 
 		class Shader : public virtual VENUS::Render::Shader
 		{
 		public:
+			Shader();
+			~Shader();
+			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual GAIA::BL Compile(const GAIA::GVOID* p);
+		public:
+			GAIA::BL Create(const VENUS::Render::Shader::Desc& desc);
+			GAIA::BL Destroy();
+		private:
 		};
 
 		class Texture : public virtual VENUS::Render::Texture
 		{
 		public:
+			Texture();
+			~Texture();
+			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex);
 			virtual GAIA::BL Unlock();
 			virtual GAIA::BL IsLocked() const;
+		public:
+			GAIA::BL Create(const VENUS::Render::Texture::Desc& desc);
+			GAIA::BL Destroy();
+		private:
+			GAIA::BL m_bLocked;
 		};
 
 		class Target : public virtual VENUS::Render::Target
 		{
 		public:
+			Target();
+			~Target();
+			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
 			virtual GAIA::BL Unlock();
 			virtual GAIA::BL IsLocked() const;
+		public:
+			GAIA::BL Create(const VENUS::Render::Target::Desc& desc);
+			GAIA::BL Destroy();
+		private:
+			GAIA::BL m_bLocked;
 		};
 
 		class Depther : public virtual VENUS::Render::Depther
 		{
 		public:
+			Depther();
+			~Depther();
+			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
 			virtual GAIA::BL Unlock();
 			virtual GAIA::BL IsLocked() const;
+		public:
+			GAIA::BL Create(const VENUS::Render::Depther::Desc& desc);
+			GAIA::BL Destroy();
+		private:
+			GAIA::BL m_bLocked;
 		};
 
 	public:

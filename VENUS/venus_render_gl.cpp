@@ -36,6 +36,239 @@ namespace VENUS
 		GAIA::ALGO::nil(pTarget, sizeofarray(pTarget));
 		pDepther = GNIL;
 	}
+	RenderGL::IndexBuffer::IndexBuffer()
+	{
+		m_bLocked = GAIA::False;
+	}
+	RenderGL::IndexBuffer::~IndexBuffer()
+	{
+	}
+	GAIA::BL RenderGL::IndexBuffer::SaveToFile(GAIA::FSYS::FileBase* pFile) const
+	{
+		GPCHR_NULL_RET(pFile, GAIA::False);
+		return GAIA::True;
+	}
+	GAIA::GVOID* RenderGL::IndexBuffer::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize)
+	{
+		if(this->IsLocked())
+			return GNIL;
+		m_bLocked = GAIA::True;
+		return GNIL;
+	}
+	GAIA::BL RenderGL::IndexBuffer::Unlock()
+	{
+		if(!this->IsLocked())
+			return GAIA::False;
+		m_bLocked = GAIA::False;
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::IndexBuffer::IsLocked() const
+	{
+		return m_bLocked;
+	}
+	GAIA::BL RenderGL::IndexBuffer::Create(const VENUS::Render::IndexBuffer::Desc& desc)
+	{
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::IndexBuffer::Destroy()
+	{
+		return GAIA::True;
+	}
+	RenderGL::VertexBuffer::VertexBuffer()
+	{
+		m_bLocked = GAIA::False;
+	}
+	RenderGL::VertexBuffer::~VertexBuffer()
+	{
+	}
+	GAIA::BL RenderGL::VertexBuffer::SaveToFile(GAIA::FSYS::FileBase* pFile) const
+	{
+		GPCHR_NULL_RET(pFile, GAIA::False);
+		return GAIA::True;
+	}
+	GAIA::GVOID* RenderGL::VertexBuffer::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize)
+	{
+		if(this->IsLocked())
+			return GNIL;
+		m_bLocked = GAIA::True;
+		return GNIL;
+	}
+	GAIA::BL RenderGL::VertexBuffer::Unlock()
+	{
+		if(!this->IsLocked())
+			return GAIA::False;
+		m_bLocked = GAIA::False;
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::VertexBuffer::IsLocked() const
+	{
+		return m_bLocked;
+	}
+	GAIA::BL RenderGL::VertexBuffer::Create(const VENUS::Render::VertexBuffer::Desc& desc)
+	{
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::VertexBuffer::Destroy()
+	{
+		return GAIA::True;
+	}
+	RenderGL::VertexDeclaration::VertexDeclaration()
+	{
+	}
+	RenderGL::VertexDeclaration::~VertexDeclaration()
+	{
+	}
+	GAIA::BL RenderGL::VertexDeclaration::SaveToFile(GAIA::FSYS::FileBase* pFile) const
+	{
+		GPCHR_NULL_RET(pFile, GAIA::False);
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::VertexDeclaration::Create(const VENUS::Render::VertexDeclaration::Desc& desc)
+	{
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::VertexDeclaration::Destroy()
+	{
+		return GAIA::True;
+	}
+	RenderGL::Shader::Shader()
+	{
+	}
+	RenderGL::Shader::~Shader()
+	{
+	}
+	GAIA::BL RenderGL::Shader::SaveToFile(GAIA::FSYS::FileBase* pFile) const
+	{
+		GPCHR_NULL_RET(pFile, GAIA::False);
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Shader::Compile(const GAIA::GVOID* p)
+	{
+		GPCHR_NULL_RET(p, GNIL);
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Shader::Create(const VENUS::Render::Shader::Desc& desc)
+	{
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Shader::Destroy()
+	{
+		return GAIA::True;
+	}
+	RenderGL::Texture::Texture()
+	{
+		m_bLocked = GAIA::False;
+	}
+	RenderGL::Texture::~Texture()
+	{
+	}
+	GAIA::BL RenderGL::Texture::SaveToFile(GAIA::FSYS::FileBase* pFile) const
+	{
+		GPCHR_NULL_RET(pFile, GAIA::False);
+		return GAIA::True;
+	}
+	GAIA::GVOID* RenderGL::Texture::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex)
+	{
+		if(this->IsLocked())
+			return GNIL;
+		m_bLocked = GAIA::True;
+		return GNIL;
+	}
+	GAIA::BL RenderGL::Texture::Unlock()
+	{
+		if(!this->IsLocked())
+			return GAIA::False;
+		m_bLocked = GAIA::False;
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Texture::IsLocked() const
+	{
+		return m_bLocked;
+	}
+	GAIA::BL RenderGL::Texture::Create(const VENUS::Render::Texture::Desc& desc)
+	{
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Texture::Destroy()
+	{
+		return GAIA::True;
+	}
+	RenderGL::Target::Target()
+	{
+		m_bLocked = GAIA::False;
+	}
+	RenderGL::Target::~Target()
+	{
+	}
+	GAIA::BL RenderGL::Target::SaveToFile(GAIA::FSYS::FileBase* pFile) const
+	{
+		GPCHR_NULL_RET(pFile, GAIA::False);
+		return GAIA::True;
+	}
+	GAIA::GVOID* RenderGL::Target::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize)
+	{
+		if(this->IsLocked())
+			return GNIL;
+		m_bLocked = GAIA::True;
+		return GNIL;
+	}
+	GAIA::BL RenderGL::Target::Unlock()
+	{
+		if(!this->IsLocked())
+			return GAIA::False;
+		m_bLocked = GAIA::False;
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Target::IsLocked() const
+	{
+		return m_bLocked;
+	}
+	GAIA::BL RenderGL::Target::Create(const VENUS::Render::Target::Desc& desc)
+	{
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Target::Destroy()
+	{
+		return GAIA::True;
+	}
+	RenderGL::Depther::Depther()
+	{
+		m_bLocked = GAIA::False;
+	}
+	RenderGL::Depther::~Depther()
+	{
+	}
+	GAIA::BL RenderGL::Depther::SaveToFile(GAIA::FSYS::FileBase* pFile) const
+	{
+		GPCHR_NULL_RET(pFile, GAIA::False);
+		return GAIA::True;
+	}
+	GAIA::GVOID* RenderGL::Depther::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize)
+	{
+		if(this->IsLocked())
+			return GNIL;
+		m_bLocked = GAIA::True;
+		return GNIL;
+	}
+	GAIA::BL RenderGL::Depther::Unlock()
+	{
+		if(!this->IsLocked())
+			return GAIA::False;
+		m_bLocked = GAIA::False;
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Depther::IsLocked() const
+	{
+		return m_bLocked;
+	}
+	GAIA::BL RenderGL::Depther::Create(const VENUS::Render::Depther::Desc& desc)
+	{
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Depther::Destroy()
+	{
+		return GAIA::True;
+	}
 	GAIA::FWORK::ClsID RenderGL::GetClassID() const
 	{
 		return VENUS::CLSID_VENUS_RENDERGL;
@@ -423,42 +656,84 @@ namespace VENUS
 	{
 		if(!desc.check())
 			return GNIL;
+		VENUS::RenderGL::IndexBuffer* pIB = new VENUS::RenderGL::IndexBuffer;
+		if(!pIB->Create(desc))
+		{
+			pIB->Release();
+			return GNIL;
+		}
 		return GNIL;
 	}
 	VENUS::Render::VertexBuffer* RenderGL::CreateVertexBuffer(const VENUS::Render::VertexBuffer::Desc& desc)
 	{
 		if(!desc.check())
 			return GNIL;
-		return GNIL;
+		VENUS::RenderGL::VertexBuffer* pVB = new VENUS::RenderGL::VertexBuffer;
+		if(!pVB->Create(desc))
+		{
+			pVB->Release();
+			return GNIL;
+		}
+		return pVB;
 	}
 	VENUS::Render::VertexDeclaration* RenderGL::CreateVertexDeclaration(const VENUS::Render::VertexDeclaration::Desc& desc)
 	{
 		if(!desc.check())
 			return GNIL;
+		VENUS::RenderGL::VertexDeclaration* pVDecl = new VENUS::RenderGL::VertexDeclaration;
+		if(!pVDecl->Create(desc))
+		{
+			pVDecl->Release();
+			return GNIL;
+		}
 		return GNIL;
 	}
 	VENUS::Render::Shader* RenderGL::CreateShader(const VENUS::Render::Shader::Desc& desc)
 	{
 		if(!desc.check())
 			return GNIL;
+		VENUS::RenderGL::Shader* pShader = new VENUS::RenderGL::Shader;
+		if(!pShader->Create(desc))
+		{
+			pShader->Release();
+			return GNIL;
+		}
 		return GNIL;
 	}
 	VENUS::Render::Texture* RenderGL::CreateTexture(const VENUS::Render::Texture::Desc& desc)
 	{
 		if(!desc.check())
 			return GNIL;
+		VENUS::RenderGL::Texture* pTex = new VENUS::RenderGL::Texture;
+		if(!pTex->Create(desc))
+		{
+			pTex->Release();
+			return GNIL;
+		}
 		return GNIL;
 	}
 	VENUS::Render::Target* RenderGL::CreateTarget(const VENUS::Render::Target::Desc& desc)
 	{
 		if(!desc.check())
 			return GNIL;
+		VENUS::RenderGL::Target* pTarget = new VENUS::RenderGL::Target;
+		if(!pTarget->Create(desc))
+		{
+			pTarget->Release();
+			return GNIL;
+		}
 		return GNIL;
 	}
 	VENUS::Render::Depther* RenderGL::CreateDepther(const VENUS::Render::Depther::Desc& desc)
 	{
 		if(!desc.check())
 			return GNIL;
+		VENUS::RenderGL::Depther* pDepther = new VENUS::RenderGL::Depther;
+		if(!pDepther->Create(desc))
+		{
+			pDepther->Release();
+			return GNIL;
+		}
 		return GNIL;
 	}
 	GAIA::BL RenderGL::SetIndexBuffer(VENUS::Render::Context& ctx, VENUS::Render::IndexBuffer* pIB)

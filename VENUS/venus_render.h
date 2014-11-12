@@ -51,9 +51,9 @@ namespace VENUS
 			FORMAT_DXT1,
 			FORMAT_DXT3,
 			FORMAT_DXT5,
-			FORMAT_DEPTHF16,
-			FORMAT_DEPTHF24,
-			FORMAT_DEPTHF32,
+			FORMAT_DEPTH16,
+			FORMAT_DEPTH24,
+			FORMAT_DEPTH32,
 		GAIA_ENUM_END(FORMAT)
 
 		GAIA_ENUM_BEGIN(ELEMENT_TYPE)
@@ -116,8 +116,14 @@ namespace VENUS
 			class Desc : public virtual GAIA::Base
 			{
 			public:
-				virtual GAIA::GVOID reset() = 0;
-				virtual GAIA::BL check() const = 0;
+				virtual GAIA::GVOID reset()
+				{
+					pFile = GNIL;
+				}
+				virtual GAIA::BL check() const
+				{
+					return GAIA::True;
+				}
 				GAIA::FSYS::FileBase* pFile;
 			};
 		public:
@@ -133,9 +139,20 @@ namespace VENUS
 			public:
 				virtual GAIA::GVOID reset()
 				{
+					VENUS::Render::Resource::Desc::reset();
+					fmt = VENUS::Render::FORMAT_INDEX16;
+					sCount = 0;
 				}
 				virtual GAIA::BL check() const
 				{
+					if(!VENUS::Render::Resource::Desc::check())
+						return GAIA::False;
+					if(pFile != GNIL)
+						return GAIA::True;
+					if(fmt != VENUS::Render::FORMAT_INDEX16)
+						return GAIA::False;
+					if(sCount <= 0)
+						return GAIA::False;
 					return GAIA::True;
 				}
 				VENUS::Render::FORMAT fmt;
@@ -156,9 +173,20 @@ namespace VENUS
 			public:
 				virtual GAIA::GVOID reset()
 				{
+					VENUS::Render::Resource::Desc::reset();
+					sElementSize = 0;
+					sElementCount = 0;
 				}
 				virtual GAIA::BL check() const
 				{
+					if(!VENUS::Render::Resource::Desc::check())
+						return GAIA::False;
+					if(pFile != GNIL)
+						return GAIA::True;
+					if(sElementSize <= 0)
+						return GAIA::False;
+					if(sElementCount <= 0)
+						return GAIA::False;
 					return GAIA::True;
 				}
 				GAIA::SIZE sElementSize; // In bytes.
@@ -179,9 +207,14 @@ namespace VENUS
 			public:
 				virtual GAIA::GVOID reset()
 				{
+					VENUS::Render::Resource::Desc::reset();
 				}
 				virtual GAIA::BL check() const
 				{
+					if(!VENUS::Render::Resource::Desc::check())
+						return GAIA::False;
+					if(pFile != GNIL)
+						return GAIA::True;
 					return GAIA::True;
 				}
 			};
@@ -197,9 +230,18 @@ namespace VENUS
 			public:
 				virtual GAIA::GVOID reset()
 				{
+					VENUS::Render::Resource::Desc::reset();
+					type = VENUS::Render::SHADER_TYPE_INVALID;
 				}
 				virtual GAIA::BL check() const
 				{
+					if(!VENUS::Render::Resource::Desc::check())
+						return GAIA::False;
+					if(pFile != GNIL)
+						return GAIA::True;
+					if(type == VENUS::Render::SHADER_TYPE_INVALID || 
+						type >= VENUS::Render::SHADER_TYPE_MAXENUMCOUNT)
+						return GAIA::False;
 					return GAIA::True;
 				}
 				VENUS::Render::SHADER_TYPE type;
@@ -217,9 +259,58 @@ namespace VENUS
 			public:
 				virtual GAIA::GVOID reset()
 				{
+					VENUS::Render::Resource::Desc::reset();
+					type = VENUS::Render::TEXTURE_TYPE_2D;
+					fmt = VENUS::Render::FORMAT_A8R8G8B8;
+					sSizeX = 0;
+					sSizeY = 0;
+					sSizeZ = 0;
 				}
 				virtual GAIA::BL check() const
 				{
+					if(!VENUS::Render::Resource::Desc::check())
+						return GAIA::False;
+					if(pFile != GNIL)
+						return GAIA::True;
+					if(type == VENUS::Render::TEXTURE_TYPE_INVALID || 
+						type >= VENUS::Render::TEXTURE_TYPE_MAXENUMCOUNT)
+						return GAIA::False;
+					switch(type)
+					{
+					case VENUS::Render::TEXTURE_TYPE_1D:
+						{
+							if(sSizeX <= 0)
+								return GAIA::False;
+							if(sSizeY != 0)
+								return GAIA::False;
+							if(sSizeZ != 0)
+								return GAIA::False;
+						}
+						break;
+					case VENUS::Render::TEXTURE_TYPE_2D:
+						{
+							if(sSizeX <= 0)
+								return GAIA::False;
+							if(sSizeY <= 0)
+								return GAIA::False;
+							if(sSizeZ != 0)
+								return GAIA::False;
+						}
+						break;
+					case VENUS::Render::TEXTURE_TYPE_3D:
+						{
+							if(sSizeX <= 0)
+								return GAIA::False;
+							if(sSizeY <= 0)
+								return GAIA::False;
+							if(sSizeZ <= 0)
+								return GAIA::False;
+						}
+						break;
+					default:
+						GAIA_AST(GAIA::ALWAYSFALSE);
+						break;
+					}
 					return GAIA::True;
 				}
 				VENUS::Render::TEXTURE_TYPE type;
@@ -243,9 +334,24 @@ namespace VENUS
 			public:
 				virtual GAIA::GVOID reset()
 				{
+					VENUS::Render::Resource::Desc::reset();
+					fmt = VENUS::Render::FORMAT_A8R8G8B8;
+					sSizeX = 0;
+					sSizeY = 0;
 				}
 				virtual GAIA::BL check() const
 				{
+					if(!VENUS::Render::Resource::Desc::check())
+						return GAIA::False;
+					if(pFile != GNIL)
+						return GAIA::True;
+					if(fmt != VENUS::Render::FORMAT_X8R8G8B8 && 
+						fmt != VENUS::Render::FORMAT_A8R8G8B8)
+						return GAIA::False;
+					if(sSizeX <= 0)
+						return GAIA::False;
+					if(sSizeY <= 0)
+						return GAIA::False;
 					return GAIA::True;
 				}
 				VENUS::Render::FORMAT fmt;
@@ -267,9 +373,23 @@ namespace VENUS
 			public:
 				virtual GAIA::GVOID reset()
 				{
+					VENUS::Render::Resource::Desc::reset();
+					fmt = VENUS::Render::FORMAT_DEPTH24;
+					sSizeX = 0;
+					sSizeY = 0;
 				}
 				virtual GAIA::BL check() const
 				{
+					if(!VENUS::Render::Resource::Desc::check())
+						return GAIA::False;
+					if(fmt != VENUS::Render::FORMAT_DEPTH16 && 
+						fmt != VENUS::Render::FORMAT_DEPTH24 && 
+						fmt != VENUS::Render::FORMAT_DEPTH32)
+						return GAIA::False;
+					if(sSizeX <= 0)
+						return GAIA::False;
+					if(sSizeY <= 0)
+						return GAIA::False;
 					return GAIA::True;
 				}
 				VENUS::Render::FORMAT fmt;
