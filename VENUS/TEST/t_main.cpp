@@ -35,6 +35,17 @@ int main()
 		descRender.pCanvas = pCanvas;
 		pRender->Create(descRender);
 
+		// Create context.
+		VENUS::Render::Context* pContext = pRender->CreateContext();
+
+		//
+		GAIA::MATH::ARGB<GAIA::REAL> crClear;
+		crClear.fromu32(0xFFFFFFFF);
+		pRender->ClearTarget(*pContext, 0, crClear);
+
+		// Release context.
+		pContext->Release();
+
 		// Destroy render.
 		pRender->Destroy();
 

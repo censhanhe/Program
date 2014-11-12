@@ -1,15 +1,8 @@
 #include	"venus.h"
-#include	"venus_gl.h"
+#include	"venus_render_gl.h"
 
 namespace VENUS
 {
-	GAIA::GVOID RenderGL::Desc::reset()
-	{
-	}
-	GAIA::BL RenderGL::Desc::check() const
-	{
-		return GAIA::True;
-	}
 	GAIA::FWORK::ClsID RenderGL::GetClassID() const
 	{
 		return VENUS::CLSID_VENUS_RENDERGL;
@@ -25,6 +18,89 @@ namespace VENUS
 	{
 		if(this->IsCreated())
 			return GAIA::False;
+		if(!desc.check())
+			return GAIA::False;
+
+	#if GAIA_OS == GAIA_OS_WINDOWS
+		HWND hWnd = GSCAST(HWND)(desc.pCanvas->GetHandle());
+		m_hDC = ::GetDC(hWnd);
+
+		PIXELFORMATDESCRIPTOR pfd;
+		GAIA::ALGO::xmemset(&pfd, 0, sizeof(pfd));
+		pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+		pfd.nVersion = 1;
+		pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+		pfd.iPixelType = PFD_TYPE_RGBA;
+		pfd.cColorBits = 24;
+		pfd.cRedBits = pfd.cRedShift = pfd.cGreenBits = pfd.cGreenShift = pfd.cBlueBits = pfd.cBlueShift = 0;
+		pfd.cAlphaBits = pfd.cAlphaShift = 0;
+		pfd.cAccumBits = 0;
+		pfd.cAccumRedBits = pfd.cAccumGreenBits = pfd.cAccumBlueBits = pfd.cAccumAlphaBits = 0;
+		pfd.cDepthBits = 32;
+		pfd.cStencilBits = 0;
+		pfd.cAuxBuffers= 0;
+		pfd.iLayerType = PFD_MAIN_PLANE;
+		pfd.bReserved = 0;
+		pfd.dwLayerMask = pfd.dwVisibleMask = pfd.dwDamageMask = 0;
+
+		GAIA::N32 nIndex = ::ChoosePixelFormat(m_hDC, &pfd);
+		if(nIndex == 0)
+		{
+			::ReleaseDC(hWnd, m_hDC);
+			m_hDC = GNIL;
+
+			m_desc.pCanvas->Release();
+			m_desc.pCanvas = GNIL;
+			m_desc.reset();
+
+			return GAIA::False;
+		}
+
+		if(!::SetPixelFormat(m_hDC, nIndex, &pfd))
+		{
+			::ReleaseDC(hWnd, m_hDC);
+			m_hDC = GNIL;
+
+			m_desc.pCanvas->Release();
+			m_desc.pCanvas = GNIL;
+			m_desc.reset();
+
+			return GAIA::False;
+		}
+
+		m_hGLRC = ::wglCreateContext(m_hDC);
+		if(m_hGLRC == GNIL)
+		{
+			::ReleaseDC(hWnd, m_hDC);
+			m_hDC = GNIL;
+
+			m_desc.pCanvas->Release();
+			m_desc.pCanvas = GNIL;
+			m_desc.reset();
+
+			return GAIA::False;
+		}
+
+		if(!::wglMakeCurrent(m_hDC, m_hGLRC))
+		{
+			::wglDeleteContext(m_hGLRC);
+			m_hGLRC = GNIL;
+
+			::ReleaseDC(hWnd, m_hDC);
+			m_hDC = GNIL;
+
+			m_desc.pCanvas->Release();
+			m_desc.pCanvas = GNIL;
+			m_desc.reset();
+
+			return GAIA::False;
+		}
+
+	#endif
+
+		m_desc = desc;
+		m_desc.pCanvas->Reference();
+
 		m_bCreated = GAIA::True;
 		return GAIA::True;
 	}
@@ -32,6 +108,27 @@ namespace VENUS
 	{
 		if(!this->IsCreated())
 			return GAIA::False;
+
+	#if GAIA_OS == GAIA_OS_WINDOWS
+		if(m_hGLRC != GNIL)
+		{
+			::wglDeleteContext(m_hGLRC);
+			m_hGLRC = GNIL;
+		}
+
+		if(m_hDC != GNIL)
+		{
+			HWND hWnd = GSCAST(HWND)(m_desc.pCanvas->GetHandle());
+			if(hWnd != GNIL)	// Because windows window can be destroy by user, so the handle could be GNIL. 
+								// Search ::PostQuitMessage in gaia will find out the reason.
+				::ReleaseDC(hWnd, m_hDC);
+			m_hDC = GNIL;
+		}
+	#endif
+
+		m_desc.pCanvas->Release();
+		m_desc.pCanvas = GNIL;
+
 		m_bCreated = GAIA::False;
 		return GAIA::True;
 	}
@@ -182,19 +279,19 @@ namespace VENUS
 	{
 		return GNIL;
 	}
-	GAIA::BL RenderGL::ClearTarget(GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& argb)
+	GAIA::BL RenderGL::ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& argb)
 	{
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::ClearDepther(GAIA::REAL rDepth)
+	GAIA::BL RenderGL::ClearDepther(VENUS::Render::Context& ctx, GAIA::REAL rDepth)
 	{
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::SetVertexBufferBase(GAIA::SIZE sStreamIndex, GAIA::SIZE sBaseIndex)
+	GAIA::BL RenderGL::SetVertexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex, GAIA::SIZE sBaseIndex)
 	{
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::SetIndexBufferBase(GAIA::SIZE sBaseIndex)
+	GAIA::BL RenderGL::SetIndexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sBaseIndex)
 	{
 		return GAIA::True;
 	}
@@ -206,5 +303,9 @@ namespace VENUS
 	{
 		m_bCreated = GAIA::False;
 		m_bBegin = GAIA::False;
+	#if GAIA_OS == GAIA_OS_WINDOWS
+		m_hDC = GNIL;
+		m_hGLRC = GNIL;
+	#endif
 	}
 };

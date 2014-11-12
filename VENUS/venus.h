@@ -2,7 +2,7 @@
 #define		__VENUS_H__
 
 #include "../GAIA/gaia.h"
-#include "venus_interface.h"
+#include "venus_render.h"
 
 namespace VENUS
 {

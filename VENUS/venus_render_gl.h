@@ -1,26 +1,24 @@
-#ifndef		__VENUS_GL_H__
-#define		__VENUS_GL_H__
+#ifndef		__VENUS_RENDER_GL_H__
+#define		__VENUS_RENDER_GL_H__
 
-#include "venus_interface.h"
+#include "venus_render.h"
+
+#if GAIA_OS == GAIA_OS_WINDOWS
+#include <windows.h>
+#pragma comment(lib, "opengl32.lib")
+#endif
 
 namespace VENUS
 {
-	class RenderGL : virtual public VENUS::Render
+	class RenderGL : public virtual VENUS::Render
 	{
 	public:
-		class Desc : public VENUS::Render::Desc
-		{
-		public:
-			virtual GAIA::GVOID reset();
-			virtual GAIA::BL check() const;
-		};
-
-		class Context : virtual public VENUS::Render::Context
+		class Context : public virtual VENUS::Render::Context
 		{
 		public:
 		};
 
-		class IndexBuffer : virtual public VENUS::Render::IndexBuffer
+		class IndexBuffer : public virtual VENUS::Render::IndexBuffer
 		{
 		public:
 			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
@@ -28,7 +26,7 @@ namespace VENUS
 			virtual GAIA::BL IsLocked() const;
 		};
 
-		class VertexBuffer : virtual public VENUS::Render::VertexBuffer
+		class VertexBuffer : public virtual VENUS::Render::VertexBuffer
 		{
 
 		public:
@@ -37,18 +35,18 @@ namespace VENUS
 			virtual GAIA::BL IsLocked() const;
 		};
 
-		class VertexDeclaration : virtual public VENUS::Render::VertexDeclaration
+		class VertexDeclaration : public virtual VENUS::Render::VertexDeclaration
 		{
 		public:
 		};
 
-		class Shader : virtual public VENUS::Render::Shader
+		class Shader : public virtual VENUS::Render::Shader
 		{
 		public:
 			virtual GAIA::BL Compile(const GAIA::GVOID* p);
 		};
 
-		class Texture : virtual public VENUS::Render::Texture
+		class Texture : public virtual VENUS::Render::Texture
 		{
 		public:
 			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex);
@@ -56,7 +54,7 @@ namespace VENUS
 			virtual GAIA::BL IsLocked() const;
 		};
 
-		class Target : virtual public VENUS::Render::Target
+		class Target : public virtual VENUS::Render::Target
 		{
 		public:
 			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
@@ -64,7 +62,7 @@ namespace VENUS
 			virtual GAIA::BL IsLocked() const;
 		};
 
-		class Depther : virtual public VENUS::Render::Depther
+		class Depther : public virtual VENUS::Render::Depther
 		{
 		public:
 			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
@@ -126,10 +124,10 @@ namespace VENUS
 		virtual VENUS::Render::Depther* GetDepther(VENUS::Render::Context& ctx);
 
 		/* Draw function. */
-		virtual GAIA::BL ClearTarget(GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& argb);
-		virtual GAIA::BL ClearDepther(GAIA::REAL rDepth);
-		virtual GAIA::BL SetVertexBufferBase(GAIA::SIZE sStreamIndex, GAIA::SIZE sBaseIndex);
-		virtual GAIA::BL SetIndexBufferBase(GAIA::SIZE sBaseIndex);
+		virtual GAIA::BL ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& argb);
+		virtual GAIA::BL ClearDepther(VENUS::Render::Context& ctx, GAIA::REAL rDepth);
+		virtual GAIA::BL SetVertexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex, GAIA::SIZE sBaseIndex);
+		virtual GAIA::BL SetIndexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sBaseIndex);
 		virtual GAIA::BL Draw(VENUS::Render::Context& ctx, GAIA::SIZE sElementCount);
 
 	private:
@@ -138,7 +136,11 @@ namespace VENUS
 	private:
 		GAIA::BL m_bCreated;
 		GAIA::BL m_bBegin;
-		VENUS::RenderGL::Desc m_desc;
+		VENUS::Render::Desc m_desc;
+	#if GAIA_OS == GAIA_OS_WINDOWS
+		HDC m_hDC;
+		HGLRC m_hGLRC;
+	#endif
 	};
 };
 

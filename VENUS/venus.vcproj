@@ -344,18 +344,18 @@
 				>
 			</File>
 			<File
-				RelativePath=".\venus_interface.h"
+				RelativePath=".\venus_render.h"
 				>
 			</File>
 			<Filter
 				Name="GL"
 				>
 				<File
-					RelativePath=".\venus_gl.cpp"
+					RelativePath=".\venus_render_gl.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\venus_gl.h"
+					RelativePath=".\venus_render_gl.h"
 					>
 				</File>
 			</Filter>

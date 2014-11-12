@@ -1,5 +1,5 @@
 #include	"venus.h"
-#include	"venus_gl.h"
+#include	"venus_render_gl.h"
 
 namespace VENUS
 {
