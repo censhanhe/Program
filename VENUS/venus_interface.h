@@ -100,7 +100,7 @@ namespace VENUS
 			public:
 			};
 		public:
-			VENUS::Render::RESOURCE_TYPE GetResourceType() const = 0;
+			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const = 0;
 		};
 
 		class IndexBuffer : virtual public Resource
@@ -113,7 +113,7 @@ namespace VENUS
 				GAIA::SIZE sCount;
 			};
 		public:
-			VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_INDEXBUFFER;}
+			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_INDEXBUFFER;}
 		};
 
 		class VertexBuffer : virtual public Resource
@@ -126,7 +126,7 @@ namespace VENUS
 				GAIA::SIZE sElementCount;
 			};
 		public:
-			VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_VERTEXBUFFER;}
+			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_VERTEXBUFFER;}
 		};
 
 		class VertexDeclaration : virtual public Resource
@@ -137,7 +137,7 @@ namespace VENUS
 			public:
 			};
 		public:
-			VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_VERTEXDECLARATION;}
+			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_VERTEXDECLARATION;}
 		};
 
 		class Shader : virtual public Resource
@@ -149,7 +149,7 @@ namespace VENUS
 				VENUS::Render::SHADER_TYPE type;
 			};
 		public:
-			VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_SHADER;}
+			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_SHADER;}
 		};
 
 		class Texture : virtual public Resource
@@ -165,7 +165,7 @@ namespace VENUS
 				GAIA::SIZE sSizeZ;
 			};
 		public:
-			VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_TEXTURE;}
+			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_TEXTURE;}
 		};
 
 		class Target : virtual public Resource
@@ -179,7 +179,7 @@ namespace VENUS
 				GAIA::SIZE sSizeY;
 			};
 		public:
-			VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_TARGET;}
+			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_TARGET;}
 		};
 
 		class Depther : virtual public Resource
@@ -193,7 +193,7 @@ namespace VENUS
 				GAIA::SIZE sSizeY;
 			};
 		public:
-			VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_DEPTHER;}
+			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_DEPTHER;}
 		};
 
 	public:
