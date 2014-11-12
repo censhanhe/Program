@@ -40,11 +40,6 @@ namespace GAIA
 	{
 		class TimerMgr;
 	};
-
-	namespace RENDER
-	{
-		class Render;
-	};
 };
 
 #endif

@@ -152,9 +152,6 @@
 #include	"gaia_math_aabb.h"
 #include	"gaia_math_cooperation.h"
 
-#include	"gaia_datamodel.h"
-#include	"gaia_linkmodel.h"
-
 #include	"gaia_filesystem_filebase.h"
 #include	"gaia_filesystem_file.h"
 #include	"gaia_filesystem_directory.h"
@@ -229,27 +226,6 @@
 #include	"gaia_collisioner_tree4.h"
 #include	"gaia_collisioner_tree8.h"
 #include	"gaia_collisioner_boundarea.h"
-
-#include	"gaia_render_material.h"
-#include	"gaia_render_imagework.h"
-#include	"gaia_render_resource.h"
-#include	"gaia_render_context.h"
-#include 	"gaia_render_render.h"
-#include 	"gaia_render_render2d.h"
-#include 	"gaia_render_render3d.h"
-#include 	"gaia_render_gl1.h"
-#include 	"gaia_render_gl2.h"
-#include 	"gaia_render_gl3.h"
-#include 	"gaia_render_gles1.h"
-#include 	"gaia_render_gles2.h"
-#include 	"gaia_render_gles3.h"
-#include 	"gaia_render_dx9.h"
-#include 	"gaia_render_dx10.h"
-#include 	"gaia_render_dx11.h"
-#include	"gaia_render_gdiplus.h"
-#include	"gaia_render_ddraw.h"
-
-#include	"gaia_render_resource_impl.h"
 
 #include	"gaia_layout_widget.h"
 #include	"gaia_layout.h"
