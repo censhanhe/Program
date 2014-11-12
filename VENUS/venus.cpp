@@ -17,19 +17,37 @@ namespace VENUS
 
 	GAIA::BL Initialize(GAIA::FWORK::Factory& fac)
 	{
+		if(!fac.BeginRegistClsID())
+			return GAIA::False;
 		if(!fac.RegistClsID(CLSID_VENUS_RENDERGL))
+		{
+			fac.EndRegistClsID();
 			return GAIA::False;
+		}
 		if(!fac.RegistCreateCallBack(&s_CallBack))
+		{
+			fac.EndRegistClsID();
 			return GAIA::False;
+		}
+		fac.EndRegistClsID();
 		return GAIA::True;
 	}
 
 	GAIA::BL Release(GAIA::FWORK::Factory& fac)
 	{
+		if(!fac.BeginRegistClsID())
+			return GAIA::False;
 		if(!fac.UnregistClsID(CLSID_VENUS_RENDERGL))
+		{
+			fac.EndRegistClsID();
 			return GAIA::False;
+		}
 		if(!fac.UnregistCreateCallBack(&s_CallBack))
+		{
+			fac.EndRegistClsID();
 			return GAIA::False;
+		}
+		fac.EndRegistClsID();
 		return GAIA::True;
 	}
 };

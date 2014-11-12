@@ -28,7 +28,7 @@ namespace GAIA
 					if(index != GINVALID)
 						pFinded = &m_RegClsIDList[index];
 				}
-				if(pFinded != GNIL)
+				if(pFinded != GNIL && pFinded->proc != GNIL)
 				{
 					pRet = pFinded->proc();
 				#ifdef GAIA_DEBUG_SELFCHECKROUTINE
