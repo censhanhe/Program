@@ -1,7 +1,6 @@
-#include	"venus.h"
-#include	"venus_render_gl.h"
-
-#include	<gl/gl.h>
+#include "venus.h"
+#include "venus_render_gl.h"
+#include <gl/gl.h>
 
 namespace VENUS
 {
@@ -464,22 +463,6 @@ namespace VENUS
 					::glDisable(GL_BLEND);
 			}
 			break;
-		case VENUS::Render::RENDER_STATE_ALPHATEST:
-			{
-				if((GAIA::BL)v)
-					::glEnable(GL_ALPHA_TEST);
-				else
-					::glDisable(GL_ALPHA_TEST);
-			}
-			break;
-		case VENUS::Render::RENDER_STATE_ALPHAFUNC:
-			{
-			}
-			break;
-		case VENUS::Render::RENDER_STATE_ALPHAREF:
-			{
-			}
-			break;
 		case VENUS::Render::RENDER_STATE_ZTEST:
 			{
 			}
@@ -563,22 +546,6 @@ namespace VENUS
 					v = GAIA::True;
 				else
 					v = GAIA::False;
-			}
-			break;
-		case VENUS::Render::RENDER_STATE_ALPHATEST:
-			{
-				if(::glIsEnabled(GL_ALPHA_TEST))
-					v = GAIA::True;
-				else
-					v = GAIA::False;
-			}
-			break;
-		case VENUS::Render::RENDER_STATE_ALPHAFUNC:
-			{
-			}
-			break;
-		case VENUS::Render::RENDER_STATE_ALPHAREF:
-			{
 			}
 			break;
 		case VENUS::Render::RENDER_STATE_ZTEST:
@@ -869,12 +836,6 @@ namespace VENUS
 			break;
 		case VENUS::Render::ELEMENT_TYPE_STRIANGLESTRIP:
 			mode = GL_TRIANGLE_STRIP;
-			break;
-		case VENUS::Render::ELEMENT_TYPE_SRECT:
-			mode = GL_QUADS;
-			break;
-		case VENUS::Render::ELEMENT_TYPE_SPOLYGON:
-			mode = GL_POLYGON;
 			break;
 		case VENUS::Render::ELEMENT_TYPE_TRIANGLELIST:
 			mode = GL_TRIANGLES;
