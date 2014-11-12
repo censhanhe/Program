@@ -840,7 +840,6 @@ namespace GAIA
 					return GAIA::False;
 
 				GAIA::GVOID* pHandle = m_desc.pCanvas->GetHandle();
-				GAIA_AST(pHandle != GNIL);
 
 				m_desc.pCanvas->Release();
 				m_desc.reset();

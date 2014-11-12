@@ -1137,12 +1137,10 @@ namespace GAIA
 					return GAIA::False;
 
 				GAIA::GVOID* pHandle = m_desc.pCanvas->GetHandle();
-				GAIA_AST(pHandle != GNIL);
 
 				m_gl.Release();
 
 			#if defined(GAIA_PLATFORM_OPENGL1)
-				HWND hWnd = GSCAST(HWND)(pHandle);
 				if(m_hGLRC != GNIL)
 				{
 					::wglDeleteContext(m_hGLRC);
@@ -1151,7 +1149,10 @@ namespace GAIA
 
 				if(m_hDC != GNIL)
 				{
-					::ReleaseDC(hWnd, m_hDC);
+					HWND hWnd = GSCAST(HWND)(pHandle);
+					if(hWnd != GNIL) // Because windows window can be destroy by user, so the handle could be GNIL. 
+									 // Search ::PostQuitMessage in gaia will find out the reason.
+						::ReleaseDC(hWnd, m_hDC);
 					m_hDC = GNIL;
 				}
 			#endif

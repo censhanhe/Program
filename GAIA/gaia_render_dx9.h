@@ -881,7 +881,6 @@ namespace GAIA
 					return GAIA::False;
 
 				GAIA::GVOID* pHandle = m_desc.pCanvas->GetHandle();
-				GAIA_AST(pHandle != GNIL);
 
 			#if GAIA_OS == GAIA_OS_WINDOWS && defined(GAIA_PLATFORM_DX9)
 				GAIA_RELEASE_SAFE(m_pD3DDevice);
