@@ -251,6 +251,11 @@ namespace GAIA
 					pszSLineLastAlphaBlendState = GNILSTR;
 					pszSLineLastQualityState = GNILSTR;
 
+					srects.destroy();
+					GAIA_RELEASE_SAFE(pSRectLastBrush);
+					pszSRectLastAlphaBlendState = GNILSTR;
+					pszSRectLastQualityState = GNILSTR;
+
 					bEnableAlphaBlend = GAIA::False;
 					bEnableAlphaTest = GAIA::False;
 
@@ -265,8 +270,15 @@ namespace GAIA
 					GAIA::MATH::VEC2<GAIA::REAL> pos;
 					GAIA::MATH::ARGB<GAIA::REAL> cr;
 				};
+				class Rect2DNode : public GAIA::Base
+				{
+				public:
+					GAIA::MATH::VEC2<GAIA::REAL> pos;
+					GAIA::MATH::ARGB<GAIA::REAL> cr;
+				};
 			public:
 				typedef GAIA::CTN::Vector<Line2DNode> __Line2DListType;
+				typedef GAIA::CTN::Vector<Rect2DNode> __Rect2DListType;
 			public:
 				GAIA::RENDER::Render2D::Pen* pCurrentPen;
 				GAIA::RENDER::Render2D::Brush* pCurrentBrush;
@@ -281,6 +293,11 @@ namespace GAIA
 				GAIA::RENDER::Render2D::Pen* pSLineLastPen;
 				const GAIA::CH* pszSLineLastQualityState;
 				const GAIA::CH* pszSLineLastAlphaBlendState;
+
+				__Rect2DListType srects;
+				GAIA::RENDER::Render2D::Brush* pSRectLastBrush;
+				const GAIA::CH* pszSRectLastQualityState;
+				const GAIA::CH* pszSRectLastAlphaBlendState;
 
 				GAIA::U8 bEnableAlphaBlend : 1;
 				GAIA::U8 bEnableAlphaTest : 1;
@@ -300,6 +317,10 @@ namespace GAIA
 					pSLineLastPen = GNIL;
 					pszSLineLastQualityState = GNILSTR;
 					pszSLineLastAlphaBlendState = GNILSTR;
+
+					pSRectLastBrush = GNIL;
+					pszSRectLastQualityState = GNILSTR;
+					pszSRectLastAlphaBlendState = GNILSTR;
 
 					bEnableAlphaBlend = GAIA::False;
 					bEnableAlphaTest = GAIA::False;
@@ -1886,6 +1907,49 @@ namespace GAIA
 				if(pContext == GNIL)
 					return;
 				GPCHR_NULL(pContext->pCurrentBrush);
+			#if defined(GAIA_PLATFORM_OPENGL1)
+				GAIA::BL bNeedSwitchContext = GAIA::False;
+				if(pContext->pSRectLastBrush == GNIL)
+					bNeedSwitchContext = GAIA::True;
+				else
+				{
+					GAIA::MATH::ARGB<GAIA::REAL> cr, crLast;
+					pContext->pCurrentBrush->GetColor(cr);
+					pContext->pSRectLastBrush->GetColor(crLast);
+					if(cr != crLast)
+						bNeedSwitchContext = GAIA::True;
+					else
+					{
+						const GAIA::CH* pszAlphaBlend = this->GetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+						const GAIA::CH* pszQualityState = this->GetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS);
+						if(GAIA::ALGO::strcmp(pszAlphaBlend, pContext->pszSRectLastAlphaBlendState) != 0 || 
+							GAIA::ALGO::strcmp(pszQualityState, pContext->pszSRectLastQualityState) != 0)
+							bNeedSwitchContext = GAIA::True;
+					}
+				}
+				if(pContext->srects.size() + 4 > m_incindexbuf.size())
+					bNeedSwitchContext = GAIA::True;
+				if(bNeedSwitchContext)
+					this->FlushScreenRect(*pContext);
+				Context::Rect2DNode n;
+				pContext->pCurrentBrush->GetColor(n.cr);
+				n.pos = aabr.ss();
+				pContext->srects.push_back(n);
+				n.pos = aabr.sb();
+				pContext->srects.push_back(n);
+				n.pos = aabr.bb();
+				pContext->srects.push_back(n);
+				n.pos = aabr.bs();
+				pContext->srects.push_back(n);
+				if(bNeedSwitchContext)
+				{
+					pContext->pszSRectLastAlphaBlendState = this->GetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+					pContext->pszSRectLastQualityState = this->GetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS);
+					GAIA_RELEASE_SAFE(pContext->pSRectLastBrush);
+					pContext->pSRectLastBrush = pContext->pCurrentBrush;
+					pContext->pSRectLastBrush->Reference();
+				}
+			#endif
 			}
 			virtual GAIA::GVOID DrawTriangle(GAIA::RENDER::Render::Context& ctx, 
 				const GAIA::MATH::VEC2<GAIA::REAL>& pos1,
@@ -2073,6 +2137,50 @@ namespace GAIA
 				this->SetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, pszLastAntiAlias);
 			#endif
 				ctx.slines.clear();
+			}
+			GINL GAIA::GVOID FlushScreenRect(GAIA::RENDER::Render3DGL1::Context& ctx)
+			{
+				if(ctx.srects.size() == 0)
+					return;
+				GAIA_AST(ctx.pSRectLastBrush != GNIL);
+
+			#if defined(GAIA_PLATFORM_OPENGL1)
+				const GAIA::UI::Canvas::__SizeType& sizeCanvas = m_desc.pCanvas->Size();
+
+				/* Get old pipeline parameter. */
+				GAIA::U8 bLastEnableVertexArray;
+				GAIA::U8 bLastEnableColorArray;
+				m_gl.GetBooleanv(GL_VERTEX_ARRAY, &bLastEnableVertexArray);
+				m_gl.GetBooleanv(GL_COLOR_ARRAY, &bLastEnableColorArray);
+				const GAIA::CH* pszLastAlphaBlend = this->GetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND);
+				const GAIA::CH* pszLastAntiAlias = this->GetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS);
+
+				/* Setup current pipeline parameter and draw. */
+				m_gl.LoadIdentity();
+				m_gl.Ortho(0.0F, sizeCanvas.x, 0.0F, sizeCanvas.y, 0.0F, 1000.0F);
+
+				this->SetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, ctx.pszSRectLastAlphaBlendState);
+				this->SetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, ctx.pszSRectLastQualityState);
+
+				m_gl.EnableClientState(GL_VERTEX_ARRAY);
+				m_gl.EnableClientState(GL_COLOR_ARRAY);
+				m_gl.VertexPointer(2, GL_REAL, sizeof(Context::Rect2DNode), &ctx.srects.front().pos);
+				m_gl.ColorPointer(4, GL_REAL, sizeof(Context::Rect2DNode), &ctx.srects.front().cr);
+				m_gl.DrawElements(GL_TRIANGLE_FAN, ctx.srects.size(), GL_UNSIGNED_INT, m_incindexbuf.front_ptr());
+
+				/* Restore old pipeline parameter. */
+				if(bLastEnableVertexArray)
+					m_gl.EnableClientState(GL_VERTEX_ARRAY);
+				else
+					m_gl.DisableClientState(GL_VERTEX_ARRAY);
+				if(bLastEnableColorArray)
+					m_gl.EnableClientState(GL_COLOR_ARRAY);
+				else
+					m_gl.DisableClientState(GL_COLOR_ARRAY);
+				this->SetRender2DState(ctx, GAIA::RENDER::Render2D::RENDER2D_STATE_ALPHABLEND, pszLastAlphaBlend);
+				this->SetQuality2DState(ctx, GAIA::RENDER::Render2D::QUALITY2D_STATE_ANTIALIAS, pszLastAntiAlias);
+			#endif
+				ctx.srects.clear();
 			}
 			
 		private:
