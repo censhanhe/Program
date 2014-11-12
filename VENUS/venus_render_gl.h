@@ -4,8 +4,8 @@
 #include "venus_render.h"
 
 #if GAIA_OS == GAIA_OS_WINDOWS
-#include <windows.h>
-#pragma comment(lib, "opengl32.lib")
+#	include <windows.h>
+#	pragma comment(lib, "opengl32.lib")
 #endif
 
 namespace VENUS
@@ -16,6 +16,20 @@ namespace VENUS
 		class Context : public virtual VENUS::Render::Context
 		{
 		public:
+			Context();
+			~Context();
+		public:
+			GAIA::GVOID init();
+		public:
+			VENUS::Render::ELEMENT_TYPE eletype;
+			VENUS::Render::IndexBuffer* pIB;
+			VENUS::Render::VertexBuffer* pVB[4];
+			VENUS::Render::VertexDeclaration* pVDecl;
+			VENUS::Render::Shader* pVS;
+			VENUS::Render::Shader* pPS;
+			VENUS::Render::Texture* pTex[4];
+			VENUS::Render::Target* pTarget[4];
+			VENUS::Render::Depther* pDepther;
 		};
 
 		class IndexBuffer : public virtual VENUS::Render::IndexBuffer
@@ -87,7 +101,6 @@ namespace VENUS
 		virtual GAIA::BL End(VENUS::Render::Context& ctx);
 		virtual GAIA::BL IsBegin(VENUS::Render::Context& ctx) const;
 		virtual GAIA::BL Flush(VENUS::Render::Context& ctx, GAIA::BL bWaitComplete);
-		virtual GAIA::BL Present();
 
 		/* State function. */
 		virtual GAIA::BL SetRenderState(VENUS::Render::Context& ctx, VENUS::Render::RENDER_STATE s, const GAIA::CTN::Vari& v);
@@ -124,7 +137,7 @@ namespace VENUS
 		virtual VENUS::Render::Depther* GetDepther(VENUS::Render::Context& ctx);
 
 		/* Draw function. */
-		virtual GAIA::BL ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& argb);
+		virtual GAIA::BL ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& cr);
 		virtual GAIA::BL ClearDepther(VENUS::Render::Context& ctx, GAIA::REAL rDepth);
 		virtual GAIA::BL SetVertexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex, GAIA::SIZE sBaseIndex);
 		virtual GAIA::BL SetIndexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sBaseIndex);

@@ -20,12 +20,12 @@ namespace VENUS
 
 		GAIA_ENUM_BEGIN(RENDER_STATE)
 			RENDER_STATE_ALPHABLEND,
+			RENDER_STATE_ALPHATEST,
 			RENDER_STATE_ALPHAFUNC,
 			RENDER_STATE_ALPHAREF,
 			RENDER_STATE_ZTEST,
 			RENDER_STATE_ZFUNC,
 			RENDER_STATE_ZWRITE,
-			RENDER_STATE_ALPHATEST,
 			RENDER_STATE_CULL,
 		GAIA_ENUM_END(RENDER_STATE)
 
@@ -45,7 +45,6 @@ namespace VENUS
 		GAIA_ENUM_BEGIN(FORMAT)
 			FORMAT_AUTO,
 			FORMAT_INDEX16,
-			FORMAT_INDEX32,
 			FORMAT_R8G8B8,
 			FORMAT_X8R8G8B8,
 			FORMAT_A8R8G8B8,
@@ -117,6 +116,8 @@ namespace VENUS
 			class Desc : public virtual GAIA::Base
 			{
 			public:
+				virtual GAIA::GVOID reset() = 0;
+				virtual GAIA::BL check() const = 0;
 				GAIA::FSYS::FileBase* pFile;
 			};
 		public:
@@ -127,9 +128,16 @@ namespace VENUS
 		class IndexBuffer : public virtual Resource
 		{
 		public:
-			class Desc : virtual Resource::Desc
+			class Desc : public virtual Resource::Desc
 			{
 			public:
+				virtual GAIA::GVOID reset()
+				{
+				}
+				virtual GAIA::BL check() const
+				{
+					return GAIA::True;
+				}
 				VENUS::Render::FORMAT fmt;
 				GAIA::SIZE sCount;
 			};
@@ -143,9 +151,16 @@ namespace VENUS
 		class VertexBuffer : public virtual Resource
 		{
 		public:
-			class Desc : virtual Resource::Desc
+			class Desc : public virtual Resource::Desc
 			{
 			public:
+				virtual GAIA::GVOID reset()
+				{
+				}
+				virtual GAIA::BL check() const
+				{
+					return GAIA::True;
+				}
 				GAIA::SIZE sElementSize; // In bytes.
 				GAIA::SIZE sElementCount;
 			};
@@ -159,9 +174,16 @@ namespace VENUS
 		class VertexDeclaration : public virtual Resource
 		{
 		public:
-			class Desc : virtual Resource::Desc
+			class Desc : public virtual Resource::Desc
 			{
 			public:
+				virtual GAIA::GVOID reset()
+				{
+				}
+				virtual GAIA::BL check() const
+				{
+					return GAIA::True;
+				}
 			};
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_VERTEXDECLARATION;}
@@ -170,9 +192,16 @@ namespace VENUS
 		class Shader : public virtual Resource
 		{
 		public:
-			class Desc : virtual Resource::Desc
+			class Desc : public virtual Resource::Desc
 			{
 			public:
+				virtual GAIA::GVOID reset()
+				{
+				}
+				virtual GAIA::BL check() const
+				{
+					return GAIA::True;
+				}
 				VENUS::Render::SHADER_TYPE type;
 			};
 		public:
@@ -183,9 +212,16 @@ namespace VENUS
 		class Texture : public virtual Resource
 		{
 		public:
-			class Desc : virtual Resource::Desc
+			class Desc : public virtual Resource::Desc
 			{
 			public:
+				virtual GAIA::GVOID reset()
+				{
+				}
+				virtual GAIA::BL check() const
+				{
+					return GAIA::True;
+				}
 				VENUS::Render::TEXTURE_TYPE type;
 				VENUS::Render::FORMAT fmt;
 				GAIA::SIZE sSizeX;
@@ -202,9 +238,16 @@ namespace VENUS
 		class Target : public virtual Resource
 		{
 		public:
-			class Desc : virtual Resource::Desc
+			class Desc : public virtual Resource::Desc
 			{
 			public:
+				virtual GAIA::GVOID reset()
+				{
+				}
+				virtual GAIA::BL check() const
+				{
+					return GAIA::True;
+				}
 				VENUS::Render::FORMAT fmt;
 				GAIA::SIZE sSizeX;
 				GAIA::SIZE sSizeY;
@@ -219,9 +262,16 @@ namespace VENUS
 		class Depther : public virtual Resource
 		{
 		public:
-			class Desc : virtual Resource::Desc
+			class Desc : public virtual Resource::Desc
 			{
 			public:
+				virtual GAIA::GVOID reset()
+				{
+				}
+				virtual GAIA::BL check() const
+				{
+					return GAIA::True;
+				}
 				VENUS::Render::FORMAT fmt;
 				GAIA::SIZE sSizeX;
 				GAIA::SIZE sSizeY;
@@ -245,7 +295,6 @@ namespace VENUS
 		virtual GAIA::BL End(VENUS::Render::Context& ctx) = 0;
 		virtual GAIA::BL IsBegin(VENUS::Render::Context& ctx) const = 0;
 		virtual GAIA::BL Flush(VENUS::Render::Context& ctx, GAIA::BL bWaitComplete) = 0;
-		virtual GAIA::BL Present() = 0;
 
 		/* State function. */
 		virtual GAIA::BL SetRenderState(VENUS::Render::Context& ctx, VENUS::Render::RENDER_STATE s, const GAIA::CTN::Vari& v) = 0;
@@ -282,7 +331,7 @@ namespace VENUS
 		virtual VENUS::Render::Depther* GetDepther(VENUS::Render::Context& ctx) = 0;
 
 		/* Draw function. */
-		virtual GAIA::BL ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& argb) = 0;
+		virtual GAIA::BL ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
 		virtual GAIA::BL ClearDepther(VENUS::Render::Context& ctx, GAIA::REAL rDepth) = 0;
 		virtual GAIA::BL SetVertexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex, GAIA::SIZE sBaseIndex) = 0;
 		virtual GAIA::BL SetIndexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sBaseIndex) = 0;

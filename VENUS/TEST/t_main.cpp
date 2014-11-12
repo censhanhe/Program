@@ -1,6 +1,20 @@
 #include "../venus.h"
 #include "gaia_global_impl.h"
 
+static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render* pRender)
+{
+	// Clear.
+	GAIA::MATH::ARGB<GAIA::REAL> crClear;
+	crClear.fromu32(0xFF8080FF);
+	crClear.torealmode();
+	pRender->ClearTarget(ctx, 0, crClear);
+
+	// Flush.
+	pRender->Flush(ctx, GAIA::True);
+
+	return GAIA::True;
+}
+
 int main()
 {
 	GAIA::FWORK::Factory fac;
@@ -38,10 +52,15 @@ int main()
 		// Create context.
 		VENUS::Render::Context* pContext = pRender->CreateContext();
 
-		//
-		GAIA::MATH::ARGB<GAIA::REAL> crClear;
-		crClear.fromu32(0xFFFFFFFF);
-		pRender->ClearTarget(*pContext, 0, crClear);
+		// 
+		for(;;)
+		{
+			GAIA::BL bExistMsg;
+			if(!GAIA::UI::UpdateMessage(GAIA::False, bExistMsg))
+				break;
+			if(!bExistMsg)
+				FrameLoop(*pContext, pRender);
+		}
 
 		// Release context.
 		pContext->Release();
