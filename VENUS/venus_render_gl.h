@@ -89,6 +89,20 @@ namespace VENUS
 			GAIA::U32 m_uShader;
 		};
 
+		class Program : public virtual VENUS::Render::Program
+		{
+		public:
+			Program();
+			~Program();
+			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
+		public:
+			GAIA::BL Create(const VENUS::Render::Program::Desc& desc);
+			GAIA::BL Destroy();
+			GAIA::BL IsCreated() const;
+		private:
+			GAIA::U32 m_uProgram;
+		};
+
 		class Texture : public virtual VENUS::Render::Texture
 		{
 		public:
@@ -163,6 +177,7 @@ namespace VENUS
 		virtual VENUS::Render::VertexBuffer* CreateVertexBuffer(const VENUS::Render::VertexBuffer::Desc& desc);
 		virtual VENUS::Render::VertexDeclaration* CreateVertexDeclaration(const VENUS::Render::VertexDeclaration::Desc& desc);
 		virtual VENUS::Render::Shader* CreateShader(const VENUS::Render::Shader::Desc& desc);
+		virtual VENUS::Render::Program* CreateProgram(const VENUS::Render::Program::Desc& desc);
 		virtual VENUS::Render::Texture* CreateTexture(const VENUS::Render::Texture::Desc& desc);
 		virtual VENUS::Render::Target* CreateTarget(const VENUS::Render::Target::Desc& desc);
 		virtual VENUS::Render::Depther* CreateDepther(const VENUS::Render::Depther::Desc& desc);
@@ -170,7 +185,7 @@ namespace VENUS
 		virtual GAIA::BL SetIndexBuffer(VENUS::Render::Context& ctx, VENUS::Render::IndexBuffer* pIB);
 		virtual GAIA::BL SetVertexBuffer(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex, VENUS::Render::VertexBuffer* pVB);
 		virtual GAIA::BL SetVertexDeclaration(VENUS::Render::Context& ctx, VENUS::Render::VertexDeclaration* pVDecl);
-		virtual GAIA::BL SetShader(VENUS::Render::Context& ctx, VENUS::Render::Shader* pShader);
+		virtual GAIA::BL SetProgram(VENUS::Render::Context& ctx, VENUS::Render::Program* pProgram);
 		virtual GAIA::BL SetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex, VENUS::Render::Texture* pTex);
 		virtual GAIA::BL SetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, VENUS::Render::Target* pTarget);
 		virtual GAIA::BL SetDepther(VENUS::Render::Context& ctx, VENUS::Render::Depther* pDepther);
@@ -178,7 +193,7 @@ namespace VENUS
 		virtual VENUS::Render::IndexBuffer* GetIndexBuffer(VENUS::Render::Context& ctx);
 		virtual VENUS::Render::VertexBuffer* GetVertexBuffer(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex);
 		virtual VENUS::Render::VertexDeclaration* GetVertexDeclaration(VENUS::Render::Context& ctx);
-		virtual VENUS::Render::Shader* GetShader(VENUS::Render::Context& ctx);
+		virtual VENUS::Render::Program* GetProgram(VENUS::Render::Context& ctx);
 		virtual VENUS::Render::Texture* GetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex);
 		virtual VENUS::Render::Target* GetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex);
 		virtual VENUS::Render::Depther* GetDepther(VENUS::Render::Context& ctx);

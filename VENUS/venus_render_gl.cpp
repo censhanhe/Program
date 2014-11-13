@@ -279,7 +279,41 @@ namespace VENUS
 	}
 	GAIA::BL RenderGL::Shader::IsCreated() const
 	{
-		return GAIA::False;
+		return m_uShader != GINVALID;
+	}
+	RenderGL::Program::Program()
+	{
+		m_uProgram = (GAIA::U32)GINVALID;
+	}
+	RenderGL::Program::~Program()
+	{
+		if(this->IsCreated())
+			this->Destroy();
+	}
+	GAIA::BL RenderGL::Program::SaveToFile(GAIA::FSYS::FileBase* pFile) const
+	{
+		GPCHR_NULL_RET(pFile, GAIA::False);
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Program::Create(const VENUS::Render::Program::Desc& desc)
+	{
+		GAIA_AST(desc.check());
+		if(this->IsCreated())
+			this->Destroy();
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Program::Destroy()
+	{
+		if(m_uProgram != GINVALID)
+		{
+			glDeleteProgram(m_uProgram);
+			m_uProgram = (GAIA::U32)GINVALID;
+		}
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Program::IsCreated() const
+	{
+		return m_uProgram != GINVALID;
 	}
 	RenderGL::Texture::Texture()
 	{
@@ -841,6 +875,18 @@ namespace VENUS
 		}
 		return pShader;
 	}
+	VENUS::Render::Program* RenderGL::CreateProgram(const VENUS::Render::Program::Desc& desc)
+	{
+		if(!desc.check())
+			return GNIL;
+		VENUS::RenderGL::Program* pProgram = new VENUS::RenderGL::Program;
+		if(!pProgram->Create(desc))
+		{
+			pProgram->Release();
+			return GNIL;
+		}
+		return pProgram;
+	}
 	VENUS::Render::Texture* RenderGL::CreateTexture(const VENUS::Render::Texture::Desc& desc)
 	{
 		if(!desc.check())
@@ -895,7 +941,7 @@ namespace VENUS
 		GPCHR_NULL_RET(pContext, GAIA::False);
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::SetShader(VENUS::Render::Context& ctx, VENUS::Render::Shader* pShader)
+	GAIA::BL RenderGL::SetProgram(VENUS::Render::Context& ctx, VENUS::Render::Program* pProgram)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
@@ -937,7 +983,7 @@ namespace VENUS
 		GPCHR_NULL_RET(pContext, GNIL);
 		return GNIL;
 	}
-	VENUS::Render::Shader* RenderGL::GetShader(VENUS::Render::Context& ctx)
+	VENUS::Render::Program* RenderGL::GetProgram(VENUS::Render::Context& ctx)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
