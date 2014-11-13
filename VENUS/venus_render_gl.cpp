@@ -27,6 +27,10 @@ namespace VENUS
 	#define GL_MAX_FRAGMENT_UNIFORM_VECTORS 0x8DFD
 	#define GL_MAX_TEXTURE_IMAGE_UNITS 0x8872
 	#define GL_LINK_STATUS 0x8B82
+	#define GL_ACTIVE_ATTRIBUTES 0x8B89
+	#define GL_ACTIVE_UNIFORMS 0x8B86
+	#define GL_ACTIVE_ATTRIBUTE_MAX_LENGTH 0x8B8A
+	#define GL_ACTIVE_UNIFORM_MAX_LENGTH 0x8B87
 
 	typedef void (GAIA_BASEAPI* GLGENBUFFERS)(GLsizei n, GLuint *buffers);
 	typedef void (GAIA_BASEAPI* GLDELETEBUFFERS)(GLsizei n, const GLuint *buffers);
@@ -50,6 +54,13 @@ namespace VENUS
 	typedef void (GAIA_BASEAPI* GLGETPROGRAMIV)(GLuint program, GLenum pname, GLint *params);
 	typedef void (GAIA_BASEAPI* GLGETPROGRAMINFOLOG)(GLuint program, GLsizei bufSize, GLsizei *length, GAIA::CH *infoLog);
 
+	typedef void (GAIA_BASEAPI* GLENABLEVERTEXATTRIBARRAY)(GLuint index);
+	typedef void (GAIA_BASEAPI* GLDISABLEVERTEXATTRIBARRAY)(GLuint index);
+	typedef GLint (GAIA_BASEAPI* GLGETATTRIBLOCATION)(GLuint program, const GAIA::CH *name);
+	typedef void (GAIA_BASEAPI* GLGETACTIVEATTRIB)(GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GAIA::CH *name);
+	typedef GLint (GAIA_BASEAPI* GLGETUNIFORMLOCATION)(GLuint program, const GAIA::CH *name);
+	typedef void (GAIA_BASEAPI* GLGETACTIVEUNIFORM)(GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GAIA::CH *name);
+
 	static GLGENBUFFERS glGenBuffers = GNIL;
 	static GLDELETEBUFFERS glDeleteBuffers = GNIL;
 	static GLBINDBUFFER glBindBuffer = GNIL;
@@ -71,6 +82,13 @@ namespace VENUS
 	static GLLINKPROGRAM glLinkProgram = GNIL;
 	static GLGETPROGRAMIV glGetProgramiv = GNIL;
 	static GLGETPROGRAMINFOLOG glGetProgramInfoLog = GNIL;
+
+	static GLENABLEVERTEXATTRIBARRAY glEnableVertexAttribArray = GNIL;
+	static GLDISABLEVERTEXATTRIBARRAY glDisableVertexAttribArray = GNIL;
+	static GLGETATTRIBLOCATION glGetAttribLocation = GNIL;
+	static GLGETACTIVEATTRIB glGetActiveAttrib = GNIL;
+	static GLGETUNIFORMLOCATION glGetUniformLocation = GNIL;
+	static GLGETACTIVEUNIFORM glGetActiveUniform = GNIL;
 #endif
 	RenderGL::Context::Context()
 	{
@@ -367,6 +385,32 @@ namespace VENUS
 			glGetProgramInfoLog(m_uProgram, 1024, &ressize, strLog.front_ptr());
 			return GAIA::False;
 		}
+		GLint nActiveAttrCount;
+		glGetProgramiv(m_uProgram, GL_ACTIVE_ATTRIBUTES, &nActiveAttrCount);
+		GLint nMaxAttrNameLen;
+		glGetProgramiv(m_uProgram, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &nMaxAttrNameLen);
+		for(GAIA::N32 x = 0; x < nActiveAttrCount; ++x)
+		{
+			GAIA::CH szTemp[1024];
+			GLsizei reslen;
+			GLint resdatasize;
+			GLenum restype;
+			glGetActiveAttrib(m_uProgram, x, sizeof(szTemp), &reslen, &resdatasize, &restype, szTemp);
+			GLint nLocation = glGetAttribLocation(m_uProgram, szTemp);
+		}
+		GLint nActiveUniformCount;
+		glGetProgramiv(m_uProgram, GL_ACTIVE_UNIFORMS, &nActiveUniformCount);
+		GLint nMaxUniformNameLen;
+		glGetProgramiv(m_uProgram, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nMaxUniformNameLen);
+		for(GAIA::N32 x = 0; x < nActiveUniformCount; ++x)
+		{
+			GAIA::CH szTemp[1024];
+			GLsizei reslen;
+			GLint resdatasize;
+			GLenum restype;
+			glGetActiveUniform(m_uProgram, x, sizeof(szTemp), &reslen, &resdatasize, &restype, szTemp);
+			GLint nLocation = glGetUniformLocation(m_uProgram, szTemp);
+		}
 		m_desc = desc;
 		if(m_desc.pVS != GNIL)
 			m_desc.pVS->Reference();
@@ -623,6 +667,12 @@ namespace VENUS
 		glGetProgramiv = (GLGETPROGRAMIV)::wglGetProcAddress("glGetProgramiv");
 		glGetProgramInfoLog = (GLGETPROGRAMINFOLOG)::wglGetProcAddress("glGetProgramInfoLog");
 
+		glEnableVertexAttribArray = (GLENABLEVERTEXATTRIBARRAY)::wglGetProcAddress("glEnableVertexAttribArray");
+		glDisableVertexAttribArray = (GLDISABLEVERTEXATTRIBARRAY)::wglGetProcAddress("glDisableVertexAttribArray");
+		glGetAttribLocation = (GLGETATTRIBLOCATION)::wglGetProcAddress("glGetAttribLocation");
+		glGetActiveAttrib = (GLGETACTIVEATTRIB)::wglGetProcAddress("glGetActiveAttrib");
+		glGetUniformLocation = (GLGETUNIFORMLOCATION)::wglGetProcAddress("glGetUniformLocation");
+		glGetActiveUniform = (GLGETACTIVEUNIFORM)::wglGetProcAddress("glGetActiveUniform");
 	#endif
 
 		const GLubyte* pVersion = glGetString(GL_VERSION);
