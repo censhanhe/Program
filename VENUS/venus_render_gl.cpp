@@ -84,6 +84,7 @@ namespace VENUS
 		GAIA_RELEASE_SAFE(pVDecl);
 		GAIA_RELEASE_SAFE(pVS);
 		GAIA_RELEASE_SAFE(pPS);
+		GAIA_RELEASE_SAFE(pProgram);
 		for(GAIA::SIZE x = 0; x < sizeofarray(pTex); ++x)
 			GAIA_RELEASE_SAFE(pTex[x]);
 		for(GAIA::SIZE x = 0; x < sizeofarray(pTarget); ++x)
@@ -99,12 +100,14 @@ namespace VENUS
 		pVDecl = GNIL;
 		pVS = GNIL;
 		pPS = GNIL;
+		pProgram = GNIL;
 		GAIA::ALGO::nil(pTex, sizeofarray(pTex));
 		GAIA::ALGO::nil(pTarget, sizeofarray(pTarget));
 		pDepther = GNIL;
 	}
 	RenderGL::IndexBuffer::IndexBuffer()
 	{
+		m_desc.reset();
 		m_uIB = GL_INVALID;
 	}
 	RenderGL::IndexBuffer::~IndexBuffer()
@@ -116,6 +119,10 @@ namespace VENUS
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
+	}
+	const VENUS::Render::IndexBuffer::Desc& RenderGL::IndexBuffer::GetDesc() const
+	{
+		return m_desc;
 	}
 	GAIA::BL RenderGL::IndexBuffer::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
@@ -130,6 +137,9 @@ namespace VENUS
 		if(this->IsCreated())
 			this->Destroy();
 		glGenBuffers(1, &m_uIB);
+		if(m_uIB == GL_INVALID)
+			return GAIA::False;
+		m_desc = desc;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::IndexBuffer::Destroy()
@@ -147,6 +157,7 @@ namespace VENUS
 	}
 	RenderGL::VertexBuffer::VertexBuffer()
 	{
+		m_desc.reset();
 		m_uVB = GL_INVALID;
 	}
 	RenderGL::VertexBuffer::~VertexBuffer()
@@ -158,6 +169,10 @@ namespace VENUS
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
+	}
+	const VENUS::Render::VertexBuffer::Desc& RenderGL::VertexBuffer::GetDesc() const
+	{
+		return m_desc;
 	}
 	GAIA::BL RenderGL::VertexBuffer::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
@@ -172,6 +187,9 @@ namespace VENUS
 		if(this->IsCreated())
 			this->Destroy();
 		glGenBuffers(1, &m_uVB);
+		if(m_uVB == GL_INVALID)
+			return GAIA::False;
+		m_desc = desc;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::VertexBuffer::Destroy()
@@ -189,6 +207,7 @@ namespace VENUS
 	}
 	RenderGL::VertexDeclaration::VertexDeclaration()
 	{
+		m_desc.reset();
 	}
 	RenderGL::VertexDeclaration::~VertexDeclaration()
 	{
@@ -200,11 +219,16 @@ namespace VENUS
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
+	const VENUS::Render::VertexDeclaration::Desc& RenderGL::VertexDeclaration::GetDesc() const
+	{
+		return m_desc;
+	}
 	GAIA::BL RenderGL::VertexDeclaration::Create(const VENUS::Render::VertexDeclaration::Desc& desc)
 	{
 		GAIA_AST(desc.check());
 		if(this->IsCreated())
 			this->Destroy();
+		m_desc = desc;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::VertexDeclaration::Destroy()
@@ -217,6 +241,7 @@ namespace VENUS
 	}
 	RenderGL::Shader::Shader()
 	{
+		m_desc.reset();
 		m_uShader = GL_INVALID;
 	}
 	RenderGL::Shader::~Shader()
@@ -228,6 +253,10 @@ namespace VENUS
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
+	}
+	const VENUS::Render::Shader::Desc& RenderGL::Shader::GetDesc() const
+	{
+		return m_desc;
 	}
 	GAIA::BL RenderGL::Shader::Commit(const GAIA::CH* p)
 	{
@@ -268,6 +297,7 @@ namespace VENUS
 		}
 		if(m_uShader == GL_INVALID)
 			return GAIA::False;
+		m_desc = desc;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Shader::Destroy()
@@ -285,6 +315,7 @@ namespace VENUS
 	}
 	RenderGL::Program::Program()
 	{
+		m_desc.reset();
 		m_uProgram = GL_INVALID;
 	}
 	RenderGL::Program::~Program()
@@ -296,6 +327,10 @@ namespace VENUS
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
+	}
+	const VENUS::Render::Program::Desc& RenderGL::Program::GetDesc() const
+	{
+		return m_desc;
 	}
 	GAIA::BL RenderGL::Program::Create(const VENUS::Render::Program::Desc& desc)
 	{
@@ -332,6 +367,11 @@ namespace VENUS
 			glGetProgramInfoLog(m_uProgram, 1024, &ressize, strLog.front_ptr());
 			return GAIA::False;
 		}
+		m_desc = desc;
+		if(m_desc.pVS != GNIL)
+			m_desc.pVS->Reference();
+		if(m_desc.pPS != GNIL)
+			m_desc.pPS->Reference();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Program::Destroy()
@@ -341,6 +381,8 @@ namespace VENUS
 			glDeleteProgram(m_uProgram);
 			m_uProgram = GL_INVALID;
 		}
+		GAIA_RELEASE_SAFE(m_desc.pVS);
+		GAIA_RELEASE_SAFE(m_desc.pPS);
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Program::IsCreated() const
@@ -349,6 +391,7 @@ namespace VENUS
 	}
 	RenderGL::Texture::Texture()
 	{
+		m_desc.reset();
 	}
 	RenderGL::Texture::~Texture()
 	{
@@ -360,6 +403,10 @@ namespace VENUS
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
+	const VENUS::Render::Texture::Desc& RenderGL::Texture::GetDesc() const
+	{
+		return m_desc;
+	}
 	GAIA::BL RenderGL::Texture::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p)
 	{
 		GPCHR_NULL_RET(p, GAIA::False);
@@ -370,6 +417,7 @@ namespace VENUS
 		GAIA_AST(desc.check());
 		if(this->IsCreated())
 			this->Destroy();
+		m_desc = desc;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Texture::Destroy()
@@ -382,6 +430,7 @@ namespace VENUS
 	}
 	RenderGL::Target::Target()
 	{
+		m_desc.reset();
 	}
 	RenderGL::Target::~Target()
 	{
@@ -393,6 +442,10 @@ namespace VENUS
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
+	const VENUS::Render::Target::Desc& RenderGL::Target::GetDesc() const
+	{
+		return m_desc;
+	}
 	GAIA::BL RenderGL::Target::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
 		GPCHR_NULL_RET(p, GAIA::False);
@@ -403,6 +456,7 @@ namespace VENUS
 		GAIA_AST(desc.check());
 		if(this->IsCreated())
 			this->Destroy();
+		m_desc = desc;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Target::Destroy()
@@ -415,6 +469,7 @@ namespace VENUS
 	}
 	RenderGL::Depther::Depther()
 	{
+		m_desc.reset();
 	}
 	RenderGL::Depther::~Depther()
 	{
@@ -426,6 +481,10 @@ namespace VENUS
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
+	const VENUS::Render::Depther::Desc& RenderGL::Depther::GetDesc() const
+	{
+		return m_desc;
+	}
 	GAIA::BL RenderGL::Depther::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
 		GPCHR_NULL_RET(p, GAIA::False);
@@ -436,6 +495,7 @@ namespace VENUS
 		GAIA_AST(desc.check());
 		if(this->IsCreated())
 			this->Destroy();
+		m_desc = desc;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Depther::Destroy()
@@ -1001,43 +1061,69 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		return GNIL;
+		if(pContext->pIB != GNIL)
+			pContext->pIB->Reference();
+		return pContext->pIB;
 	}
 	VENUS::Render::VertexBuffer* RenderGL::GetVertexBuffer(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		return GNIL;
+		GPCHR_BELOWZERO_RET(sStreamIndex, GNIL);
+		GAIA_AST(sStreamIndex < sizeofarray(pContext->pVB));
+		if(sStreamIndex >= sizeofarray(pContext->pVB))
+			return GAIA::False;
+		if(pContext->pVB[sStreamIndex] != GNIL)
+			pContext->pVB[sStreamIndex]->Reference();
+		return pContext->pVB[sStreamIndex];
 	}
 	VENUS::Render::VertexDeclaration* RenderGL::GetVertexDeclaration(VENUS::Render::Context& ctx)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		return GNIL;
+		if(pContext->pVDecl != GNIL)
+			pContext->pVDecl->Reference();
+		return pContext->pVDecl;
 	}
 	VENUS::Render::Program* RenderGL::GetProgram(VENUS::Render::Context& ctx)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		return GNIL;
+		if(pContext->pProgram != GNIL)
+			pContext->pProgram->Reference();
+		return pContext->pProgram;
 	}
 	VENUS::Render::Texture* RenderGL::GetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		return GNIL;
+		GPCHR_BELOWZERO_RET(sTextureIndex, GNIL);
+		GAIA_AST(sTextureIndex < sizeofarray(pContext->pTex));
+		if(sTextureIndex >= sizeofarray(pContext->pTex))
+			return GAIA::False;
+		if(pContext->pTex[sTextureIndex] != GNIL)
+			pContext->pTex[sTextureIndex]->Reference();
+		return pContext->pTex[sTextureIndex];
 	}
 	VENUS::Render::Target* RenderGL::GetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		return GNIL;
+		GPCHR_BELOWZERO_RET(sTargetIndex, GNIL);
+		GAIA_AST(sTargetIndex < sizeofarray(pContext->pTarget));
+		if(sTargetIndex >= sizeofarray(pContext->pTarget))
+			return GAIA::False;
+		if(pContext->pTarget[sTargetIndex] != GNIL)
+			pContext->pTarget[sTargetIndex]->Reference();
+		return pContext->pTarget[sTargetIndex];
 	}
 	VENUS::Render::Depther* RenderGL::GetDepther(VENUS::Render::Context& ctx)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		return GNIL;
+		if(pContext->pDepther != GNIL)
+			pContext->pDepther->Reference();
+		return pContext->pDepther;
 	}
 	GAIA::BL RenderGL::ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& cr)
 	{
