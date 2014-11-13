@@ -74,8 +74,10 @@ namespace VENUS
 		private:
 		};
 
+		class Program;
 		class Shader : public virtual VENUS::Render::Shader
 		{
+			friend class Program;
 		public:
 			Shader();
 			~Shader();

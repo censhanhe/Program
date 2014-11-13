@@ -67,6 +67,12 @@ public:
 			descPShader.type = VENUS::Render::SHADER_TYPE_PIXELSHADER;
 			pScreenPShader = r.CreateShader(descPShader);
 			pScreenPShader->Commit(PIXELSHADERSTRING);
+
+			VENUS::Render::Program::Desc descProgram;
+			descProgram.reset();
+			descProgram.pVS = pScreenVShader;
+			descProgram.pPS = pScreenPShader;
+			pScreenProgram = r.CreateProgram(descProgram);
 		}
 		return GAIA::True;
 	}
@@ -76,6 +82,7 @@ public:
 		GAIA_RELEASE_SAFE(pScreenTriangleIB);
 		GAIA_RELEASE_SAFE(pScreenVShader);
 		GAIA_RELEASE_SAFE(pScreenPShader);
+		GAIA_RELEASE_SAFE(pScreenProgram);
 		return GAIA::True;
 	}
 public:
@@ -83,6 +90,7 @@ public:
 	VENUS::Render::IndexBuffer* pScreenTriangleIB;
 	VENUS::Render::Shader* pScreenVShader;
 	VENUS::Render::Shader* pScreenPShader;
+	VENUS::Render::Program* pScreenProgram;
 private:
 	GAIA::GVOID init()
 	{
@@ -90,6 +98,7 @@ private:
 		pScreenTriangleIB = GNIL;
 		pScreenVShader = GNIL;
 		pScreenPShader = GNIL;
+		pScreenProgram = GNIL;
 	}
 };
 

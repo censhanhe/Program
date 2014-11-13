@@ -9,6 +9,7 @@
 namespace VENUS
 {
 #if GAIA_OS == GAIA_OS_WINDOWS
+	#define GL_INVALID 0
 	#define GL_ARRAY_BUFFER 0x8892
 	#define GL_ELEMENT_ARRAY_BUFFER 0x8893
 	#define GL_STATIC_DRAW 0x88E4
@@ -25,6 +26,7 @@ namespace VENUS
 	#define GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS 0x8B4D
 	#define GL_MAX_FRAGMENT_UNIFORM_VECTORS 0x8DFD
 	#define GL_MAX_TEXTURE_IMAGE_UNITS 0x8872
+	#define GL_LINK_STATUS 0x8B82
 
 	typedef void (GAIA_BASEAPI* GLGENBUFFERS)(GLsizei n, GLuint *buffers);
 	typedef void (GAIA_BASEAPI* GLDELETEBUFFERS)(GLsizei n, const GLuint *buffers);
@@ -103,7 +105,7 @@ namespace VENUS
 	}
 	RenderGL::IndexBuffer::IndexBuffer()
 	{
-		m_uIB = (GAIA::U32)GINVALID;
+		m_uIB = GL_INVALID;
 	}
 	RenderGL::IndexBuffer::~IndexBuffer()
 	{
@@ -132,20 +134,20 @@ namespace VENUS
 	}
 	GAIA::BL RenderGL::IndexBuffer::Destroy()
 	{
-		if(m_uIB != GINVALID)
+		if(m_uIB != GL_INVALID)
 		{
 			glDeleteBuffers(1, &m_uIB);
-			m_uIB = (GAIA::U32)GINVALID;
+			m_uIB = GL_INVALID;
 		}
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::IndexBuffer::IsCreated() const
 	{
-		return m_uIB != GINVALID;
+		return m_uIB != GL_INVALID;
 	}
 	RenderGL::VertexBuffer::VertexBuffer()
 	{
-		m_uVB = (GAIA::U32)GINVALID;
+		m_uVB = GL_INVALID;
 	}
 	RenderGL::VertexBuffer::~VertexBuffer()
 	{
@@ -174,16 +176,16 @@ namespace VENUS
 	}
 	GAIA::BL RenderGL::VertexBuffer::Destroy()
 	{
-		if(m_uVB != GINVALID)
+		if(m_uVB != GL_INVALID)
 		{
 			glDeleteBuffers(1, &m_uVB);
-			m_uVB = (GAIA::U32)GINVALID;
+			m_uVB = GL_INVALID;
 		}
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::VertexBuffer::IsCreated() const
 	{
-		return m_uVB != GINVALID;
+		return m_uVB != GL_INVALID;
 	}
 	RenderGL::VertexDeclaration::VertexDeclaration()
 	{
@@ -215,7 +217,7 @@ namespace VENUS
 	}
 	RenderGL::Shader::Shader()
 	{
-		m_uShader = (GAIA::U32)GINVALID;
+		m_uShader = GL_INVALID;
 	}
 	RenderGL::Shader::~Shader()
 	{
@@ -229,7 +231,7 @@ namespace VENUS
 	}
 	GAIA::BL RenderGL::Shader::Commit(const GAIA::CH* p)
 	{
-		if(m_uShader == GINVALID)
+		if(m_uShader == GL_INVALID)
 			return GAIA::False;
 		GPCHR_NULL_RET(p, GAIA::False);
 		GPCHR_NULL_RET(p, GNIL);
@@ -264,26 +266,26 @@ namespace VENUS
 		default:
 			return GAIA::False;
 		}
-		if(m_uShader == GINVALID)
+		if(m_uShader == GL_INVALID)
 			return GAIA::False;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Shader::Destroy()
 	{
-		if(m_uShader != GINVALID)
+		if(m_uShader != GL_INVALID)
 		{
 			glDeleteShader(m_uShader);
-			m_uShader = (GAIA::U32)GINVALID;
+			m_uShader = GL_INVALID;
 		}
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Shader::IsCreated() const
 	{
-		return m_uShader != GINVALID;
+		return m_uShader != GL_INVALID;
 	}
 	RenderGL::Program::Program()
 	{
-		m_uProgram = (GAIA::U32)GINVALID;
+		m_uProgram = GL_INVALID;
 	}
 	RenderGL::Program::~Program()
 	{
@@ -300,20 +302,50 @@ namespace VENUS
 		GAIA_AST(desc.check());
 		if(this->IsCreated())
 			this->Destroy();
+		m_uProgram = glCreateProgram();
+		if(m_uProgram == GL_INVALID)
+			return GAIA::False;
+		VENUS::RenderGL::Shader* pShader = GDCAST(VENUS::RenderGL::Shader*)(desc.pVS);
+		if(pShader == GNIL)
+		{
+			glDeleteProgram(m_uProgram);
+			m_uProgram = GL_INVALID;
+			return GAIA::False;
+		}
+		glAttachShader(m_uProgram, pShader->m_uShader);
+		pShader = GDCAST(VENUS::RenderGL::Shader*)(desc.pPS);
+		if(pShader == GNIL)
+		{
+			glDeleteProgram(m_uProgram);
+			m_uProgram = GL_INVALID;
+			return GAIA::False;
+		}
+		glAttachShader(m_uProgram, pShader->m_uShader);
+		glLinkProgram(m_uProgram);
+		GLint status;
+		glGetProgramiv(m_uProgram, GL_LINK_STATUS, &status);
+		if(status != GL_TRUE)
+		{
+			GAIA::CTN::AString strLog;
+			strLog.resize(1024);
+			GLsizei ressize;
+			glGetProgramInfoLog(m_uProgram, 1024, &ressize, strLog.front_ptr());
+			return GAIA::False;
+		}
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Program::Destroy()
 	{
-		if(m_uProgram != GINVALID)
+		if(m_uProgram != GL_INVALID)
 		{
 			glDeleteProgram(m_uProgram);
-			m_uProgram = (GAIA::U32)GINVALID;
+			m_uProgram = GL_INVALID;
 		}
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Program::IsCreated() const
 	{
-		return m_uProgram != GINVALID;
+		return m_uProgram != GL_INVALID;
 	}
 	RenderGL::Texture::Texture()
 	{
@@ -523,13 +555,13 @@ namespace VENUS
 		glGetShaderInfoLog = (GLGETSHADERINFOLOG)::wglGetProcAddress("glGetShaderInfoLog");
 		glReleaseShaderCompiler = (GLRELEASESHADERCOMPILER)::wglGetProcAddress("glReleaseShaderCompiler");
 
-		GLCREATEPROGRAM glCreateProgram = (GLCREATEPROGRAM)::wglGetProcAddress("glCreateProgram");
-		GLDELETEPROGRAM glDeleteProgram = (GLDELETEPROGRAM)::wglGetProcAddress("glDeleteProgram");
-		GLATTACHSHADER glAttachShader = (GLATTACHSHADER)::wglGetProcAddress("glAttachShader");
-		GLDETACHSHADER glDetachShader = (GLDETACHSHADER)::wglGetProcAddress("glDetachShader");
-		GLLINKPROGRAM glLinkProgram = (GLLINKPROGRAM)::wglGetProcAddress("glLinkProgram");
-		GLGETPROGRAMIV glGetProgramiv = (GLGETPROGRAMIV)::wglGetProcAddress("glGetProgramiv");
-		GLGETPROGRAMINFOLOG glGetProgramInfoLog = (GLGETPROGRAMINFOLOG)::wglGetProcAddress("glGetProgramInfoLog");
+		glCreateProgram = (GLCREATEPROGRAM)::wglGetProcAddress("glCreateProgram");
+		glDeleteProgram = (GLDELETEPROGRAM)::wglGetProcAddress("glDeleteProgram");
+		glAttachShader = (GLATTACHSHADER)::wglGetProcAddress("glAttachShader");
+		glDetachShader = (GLDETACHSHADER)::wglGetProcAddress("glDetachShader");
+		glLinkProgram = (GLLINKPROGRAM)::wglGetProcAddress("glLinkProgram");
+		glGetProgramiv = (GLGETPROGRAMIV)::wglGetProcAddress("glGetProgramiv");
+		glGetProgramInfoLog = (GLGETPROGRAMINFOLOG)::wglGetProcAddress("glGetProgramInfoLog");
 
 	#endif
 

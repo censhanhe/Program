@@ -258,6 +258,7 @@ namespace VENUS
 				{
 					if(pVS == GNIL && pPS == GNIL)
 						return GAIA::False;
+					return GAIA::True;
 				}
 				VENUS::Render::Shader* pVS;
 				VENUS::Render::Shader* pPS;
