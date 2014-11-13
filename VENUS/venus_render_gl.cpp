@@ -18,6 +18,13 @@ namespace VENUS
 	#define GL_FRAGMENT_SHADER 0x8B30
 	#define GL_VERTEX_SHADER 0x8B31
 	#define GL_COMPILE_STATUS 0x8B81
+	#define GL_MAX_VERTEX_ATTRIBS 0x8869
+	#define GL_MAX_VERTEX_UNIFORM_VECTORS 0x8DFB
+	#define GL_MAX_VARYING_VECTORS 0x8DFC
+	#define GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS 0x8B4C
+	#define GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS 0x8B4D
+	#define GL_MAX_FRAGMENT_UNIFORM_VECTORS 0x8DFD
+	#define GL_MAX_TEXTURE_IMAGE_UNITS 0x8872
 
 	typedef void (GAIA_BASEAPI* GLGENBUFFERS)(GLsizei n, GLuint *buffers);
 	typedef void (GAIA_BASEAPI* GLDELETEBUFFERS)(GLsizei n, const GLuint *buffers);
@@ -482,6 +489,27 @@ namespace VENUS
 			GLint nSupportBinShaderFormat;
 			glGetIntegerv(GL_SHADER_BINARY_FORMATS, &nSupportBinShaderFormat);
 		}
+
+		GLint nMaxVertexAttrCount;
+		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nMaxVertexAttrCount);
+
+		GLint nMaxVertexUniformVectorCount;
+		glGetIntegerv(GL_MAX_VERTEX_UNIFORM_VECTORS, &nMaxVertexUniformVectorCount);
+
+		GLint nMaxVaryingVectorCount;
+		glGetIntegerv(GL_MAX_VARYING_VECTORS, &nMaxVaryingVectorCount);
+
+		GLint nMaxFragmentUniformVectorCount;
+		glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_VECTORS, &nMaxFragmentUniformVectorCount);
+
+		GLint nMaxTextureImageUnit;
+		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &nMaxTextureImageUnit);
+
+		GLint nMaxVertexTextureImageUnit;
+		glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &nMaxVertexTextureImageUnit);
+
+		GLint nMaxCombinedTextureImageUnit;
+		glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &nMaxCombinedTextureImageUnit);
 
 		m_desc = desc;
 		m_desc.pCanvas->Reference();
