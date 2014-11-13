@@ -40,6 +40,14 @@ namespace VENUS
 	typedef void (GAIA_BASEAPI* GLGETSHADERINFOLOG)(GLuint shader, GLsizei bufSize, GLsizei *length, GAIA::CH *infoLog);
 	typedef void (GAIA_BASEAPI* GLRELEASESHADERCOMPILER)(void);
 
+	typedef GLuint (GAIA_BASEAPI* GLCREATEPROGRAM)(void);
+	typedef void (GAIA_BASEAPI* GLDELETEPROGRAM)(GLuint program);
+	typedef void (GAIA_BASEAPI* GLATTACHSHADER)(GLuint program, GLuint shader);
+	typedef void (GAIA_BASEAPI* GLDETACHSHADER)(GLuint program, GLuint shader);
+	typedef void (GAIA_BASEAPI* GLLINKPROGRAM)(GLuint program);
+	typedef void (GAIA_BASEAPI* GLGETPROGRAMIV)(GLuint program, GLenum pname, GLint *params);
+	typedef void (GAIA_BASEAPI* GLGETPROGRAMINFOLOG)(GLuint program, GLsizei bufSize, GLsizei *length, GAIA::CH *infoLog);
+
 	static GLGENBUFFERS glGenBuffers = GNIL;
 	static GLDELETEBUFFERS glDeleteBuffers = GNIL;
 	static GLBINDBUFFER glBindBuffer = GNIL;
@@ -53,6 +61,14 @@ namespace VENUS
 	static GLGETSHADERIV glGetShaderiv = GNIL;
 	static GLGETSHADERINFOLOG glGetShaderInfoLog = GNIL;
 	static GLRELEASESHADERCOMPILER glReleaseShaderCompiler = GNIL;
+
+	static GLCREATEPROGRAM glCreateProgram = GNIL;
+	static GLDELETEPROGRAM glDeleteProgram = GNIL;
+	static GLATTACHSHADER glAttachShader = GNIL;
+	static GLDETACHSHADER glDetachShader = GNIL;
+	static GLLINKPROGRAM glLinkProgram = GNIL;
+	static GLGETPROGRAMIV glGetProgramiv = GNIL;
+	static GLGETPROGRAMINFOLOG glGetProgramInfoLog = GNIL;
 #endif
 	RenderGL::Context::Context()
 	{
@@ -472,6 +488,14 @@ namespace VENUS
 		glGetShaderiv = (GLGETSHADERIV)::wglGetProcAddress("glGetShaderiv");
 		glGetShaderInfoLog = (GLGETSHADERINFOLOG)::wglGetProcAddress("glGetShaderInfoLog");
 		glReleaseShaderCompiler = (GLRELEASESHADERCOMPILER)::wglGetProcAddress("glReleaseShaderCompiler");
+
+		GLCREATEPROGRAM glCreateProgram = (GLCREATEPROGRAM)::wglGetProcAddress("glCreateProgram");
+		GLDELETEPROGRAM glDeleteProgram = (GLDELETEPROGRAM)::wglGetProcAddress("glDeleteProgram");
+		GLATTACHSHADER glAttachShader = (GLATTACHSHADER)::wglGetProcAddress("glAttachShader");
+		GLDETACHSHADER glDetachShader = (GLDETACHSHADER)::wglGetProcAddress("glDetachShader");
+		GLLINKPROGRAM glLinkProgram = (GLLINKPROGRAM)::wglGetProcAddress("glLinkProgram");
+		GLGETPROGRAMIV glGetProgramiv = (GLGETPROGRAMIV)::wglGetProcAddress("glGetProgramiv");
+		GLGETPROGRAMINFOLOG glGetProgramInfoLog = (GLGETPROGRAMINFOLOG)::wglGetProcAddress("glGetProgramInfoLog");
 
 	#endif
 
