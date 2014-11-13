@@ -80,7 +80,7 @@ namespace VENUS
 			Shader();
 			~Shader();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
-			virtual GAIA::BL Commit(const GAIA::GVOID* p);
+			virtual GAIA::BL Commit(const GAIA::CH* p);
 		public:
 			GAIA::BL Create(const VENUS::Render::Shader::Desc& desc);
 			GAIA::BL Destroy();

@@ -239,7 +239,7 @@ namespace VENUS
 			};
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_SHADER;}
-			virtual GAIA::BL Commit(const GAIA::GVOID* p) = 0;
+			virtual GAIA::BL Commit(const GAIA::CH* p) = 0;
 		};
 
 		class Texture : public virtual Resource

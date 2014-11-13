@@ -17,6 +17,7 @@ namespace VENUS
 	#define GL_SHADER_BINARY_FORMATS 0x8DF8
 	#define GL_FRAGMENT_SHADER 0x8B30
 	#define GL_VERTEX_SHADER 0x8B31
+	#define GL_COMPILE_STATUS 0x8B81
 
 	typedef void (GAIA_BASEAPI* GLGENBUFFERS)(GLsizei n, GLuint *buffers);
 	typedef void (GAIA_BASEAPI* GLDELETEBUFFERS)(GLsizei n, const GLuint *buffers);
@@ -203,10 +204,25 @@ namespace VENUS
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::Shader::Commit(const GAIA::GVOID* p)
+	GAIA::BL RenderGL::Shader::Commit(const GAIA::CH* p)
 	{
+		if(m_uShader == GINVALID)
+			return GAIA::False;
 		GPCHR_NULL_RET(p, GAIA::False);
 		GPCHR_NULL_RET(p, GNIL);
+		GLint nLen = GAIA::ALGO::strlen(p);
+		glShaderSource(m_uShader, 1, &p, &nLen);
+		glCompileShader(m_uShader);
+		GLint status;
+		glGetShaderiv(m_uShader, GL_COMPILE_STATUS, &status);
+		if(status != GL_TRUE)
+		{
+			GAIA::CTN::AString strLog;
+			strLog.resize(1024);
+			GLsizei ressize;
+			glGetShaderInfoLog(m_uShader, 1024, &ressize, strLog.front_ptr());
+			return GAIA::False;
+		}
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Shader::Create(const VENUS::Render::Shader::Desc& desc)
@@ -759,7 +775,7 @@ namespace VENUS
 			pVDecl->Release();
 			return GNIL;
 		}
-		return GNIL;
+		return pVDecl;
 	}
 	VENUS::Render::Shader* RenderGL::CreateShader(const VENUS::Render::Shader::Desc& desc)
 	{
@@ -771,7 +787,7 @@ namespace VENUS
 			pShader->Release();
 			return GNIL;
 		}
-		return GNIL;
+		return pShader;
 	}
 	VENUS::Render::Texture* RenderGL::CreateTexture(const VENUS::Render::Texture::Desc& desc)
 	{
@@ -783,7 +799,7 @@ namespace VENUS
 			pTex->Release();
 			return GNIL;
 		}
-		return GNIL;
+		return pTex;
 	}
 	VENUS::Render::Target* RenderGL::CreateTarget(const VENUS::Render::Target::Desc& desc)
 	{
@@ -795,7 +811,7 @@ namespace VENUS
 			pTarget->Release();
 			return GNIL;
 		}
-		return GNIL;
+		return pTarget;
 	}
 	VENUS::Render::Depther* RenderGL::CreateDepther(const VENUS::Render::Depther::Desc& desc)
 	{
@@ -807,7 +823,7 @@ namespace VENUS
 			pDepther->Release();
 			return GNIL;
 		}
-		return GNIL;
+		return pDepther;
 	}
 	GAIA::BL RenderGL::SetIndexBuffer(VENUS::Render::Context& ctx, VENUS::Render::IndexBuffer* pIB)
 	{

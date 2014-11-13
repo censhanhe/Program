@@ -12,6 +12,23 @@ class Vertex
 public:
 };
 
+static const GAIA::CH VERTEXSHADERSTRING[] = 
+"\
+attribute vec4 a_pos;\
+void main()\
+{\
+	gl_Position = a_pos;\
+}\
+";
+
+static const GAIA::CH PIXELSHADERSTRING[] = 
+"\
+void main()\
+{\
+	gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\
+}\
+";
+
 class Resource
 {
 public:
@@ -43,11 +60,13 @@ public:
 			descVShader.reset();
 			descVShader.type = VENUS::Render::SHADER_TYPE_VERTEXSHADER;
 			pScreenVShader = r.CreateShader(descVShader);
+			pScreenVShader->Commit(VERTEXSHADERSTRING);
 
 			VENUS::Render::Shader::Desc descPShader;
 			descPShader.reset();
 			descPShader.type = VENUS::Render::SHADER_TYPE_PIXELSHADER;
 			pScreenPShader = r.CreateShader(descPShader);
+			pScreenPShader->Commit(PIXELSHADERSTRING);
 		}
 		return GAIA::True;
 	}
