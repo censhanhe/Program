@@ -110,6 +110,12 @@ static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resourc
 	crClear.torealmode();
 	r.ClearTarget(ctx, 0, crClear);
 
+	//
+	r.SetVertexBuffer(ctx, 0, res.pScreenTriangleVB);
+	r.SetIndexBuffer(ctx, res.pScreenTriangleIB);
+	r.SetProgram(ctx, res.pScreenProgram);
+	r.Draw(ctx, 1);
+
 	// Flush.
 	r.Flush(ctx, GAIA::True);
 

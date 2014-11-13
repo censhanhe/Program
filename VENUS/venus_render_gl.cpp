@@ -1019,42 +1019,82 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
+		GPCHR_NULL_RET(pIB, GAIA::False);
+		GAIA_RELEASE_SAFE(pContext->pIB);
+		pContext->pIB = pIB;
+		pContext->pIB->Reference();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetVertexBuffer(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex, VENUS::Render::VertexBuffer* pVB)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
+		GPCHR_NULL_RET(pVB, GAIA::False);
+		GPCHR_BELOWZERO_RET(sStreamIndex, GAIA::False);
+		GAIA_AST(sStreamIndex < sizeofarray(pContext->pVB));
+		if(sStreamIndex >= sizeofarray(pContext->pVB))
+			return GAIA::False;
+		GAIA_RELEASE_SAFE(pContext->pVB[sStreamIndex]);
+		pContext->pVB[sStreamIndex] = pVB;
+		pContext->pVB[sStreamIndex]->Reference();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetVertexDeclaration(VENUS::Render::Context& ctx, VENUS::Render::VertexDeclaration* pVDecl)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
+		GPCHR_NULL_RET(pVDecl, GAIA::False);
+		GAIA_RELEASE_SAFE(pContext->pVDecl);
+		pContext->pVDecl = pVDecl;
+		pContext->pVDecl->Reference();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetProgram(VENUS::Render::Context& ctx, VENUS::Render::Program* pProgram)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
+		GPCHR_NULL_RET(pProgram, GAIA::False);
+		GAIA_RELEASE_SAFE(pContext->pProgram);
+		pContext->pProgram = pProgram;
+		pContext->pProgram->Reference();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex, VENUS::Render::Texture* pTex)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
+		GPCHR_NULL_RET(pTex, GAIA::False);
+		GPCHR_BELOWZERO_RET(sTextureIndex, GAIA::False);
+		GAIA_AST(sTextureIndex < sizeofarray(pContext->pTex));
+		if(sTextureIndex >= sizeofarray(pContext->pTex))
+			return GAIA::False;
+		GAIA_RELEASE_SAFE(pContext->pTex[sTextureIndex]);
+		pContext->pTex[sTextureIndex] = pTex;
+		pContext->pTex[sTextureIndex]->Reference();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, VENUS::Render::Target* pTarget)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
+		GPCHR_NULL_RET(pTarget, GAIA::False);
+		GPCHR_BELOWZERO_RET(sTargetIndex, GAIA::False);
+		GAIA_AST(sTargetIndex < sizeofarray(pContext->pTarget));
+		if(sTargetIndex >= sizeofarray(pContext->pTarget))
+			return GAIA::False;
+		GAIA_RELEASE_SAFE(pContext->pTarget[sTargetIndex]);
+		pContext->pTarget[sTargetIndex] = pTarget;
+		pContext->pTarget[sTargetIndex]->Reference();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetDepther(VENUS::Render::Context& ctx, VENUS::Render::Depther* pDepther)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
+		GPCHR_NULL_RET(pDepther, GAIA::False);
+		GAIA_RELEASE_SAFE(pContext->pDepther);
+		pContext->pDepther = pDepther;
+		pContext->pDepther->Reference();
 		return GAIA::True;
 	}
 	VENUS::Render::IndexBuffer* RenderGL::GetIndexBuffer(VENUS::Render::Context& ctx)
