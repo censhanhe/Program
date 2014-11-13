@@ -1,16 +1,89 @@
 #include "../venus.h"
 #include "gaia_global_impl.h"
 
-static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render* pRender)
+class ScreenVertex
+{
+public:
+	GAIA::MATH::VEC2<GAIA::F32> pos;
+};
+
+class Vertex
+{
+public:
+};
+
+class Resource
+{
+public:
+	Resource(){this->init();}
+	~Resource(){this->Destroy();}
+	GAIA::BL Create(VENUS::Render& r, VENUS::Render::Context& ctx)
+	{
+		{
+			VENUS::Render::VertexBuffer::Desc descVB;
+			descVB.reset();
+			descVB.sElementCount = 3;
+			descVB.sElementSize = sizeof(GAIA::MATH::VEC2<GAIA::F32>);
+			pScreenTriangleVB = r.CreateVertexBuffer(descVB);
+			ScreenVertex v[3];
+			v[0].pos = GAIA::MATH::VEC2<GAIA::F32>(100, 100);
+			v[1].pos = GAIA::MATH::VEC2<GAIA::F32>(200, 100);
+			v[2].pos = GAIA::MATH::VEC2<GAIA::F32>(150, 150);
+			pScreenTriangleVB->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, sizeof(v), v);
+
+			VENUS::Render::IndexBuffer::Desc descIB;
+			descIB.reset();
+			descIB.fmt = VENUS::Render::FORMAT_INDEX16;
+			descIB.sCount = 3;
+			pScreenTriangleIB = r.CreateIndexBuffer(descIB);
+			GAIA::U16 i[3] = {0, 1, 2};
+			pScreenTriangleIB->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, sizeof(i), i);
+
+			VENUS::Render::Shader::Desc descVShader;
+			descVShader.reset();
+			descVShader.type = VENUS::Render::SHADER_TYPE_VERTEXSHADER;
+			pScreenVShader = r.CreateShader(descVShader);
+
+			VENUS::Render::Shader::Desc descPShader;
+			descPShader.reset();
+			descPShader.type = VENUS::Render::SHADER_TYPE_PIXELSHADER;
+			pScreenPShader = r.CreateShader(descPShader);
+		}
+		return GAIA::True;
+	}
+	GAIA::BL Destroy()
+	{
+		GAIA_RELEASE_SAFE(pScreenTriangleVB);
+		GAIA_RELEASE_SAFE(pScreenTriangleIB);
+		GAIA_RELEASE_SAFE(pScreenVShader);
+		GAIA_RELEASE_SAFE(pScreenPShader);
+		return GAIA::True;
+	}
+public:
+	VENUS::Render::VertexBuffer* pScreenTriangleVB;
+	VENUS::Render::IndexBuffer* pScreenTriangleIB;
+	VENUS::Render::Shader* pScreenVShader;
+	VENUS::Render::Shader* pScreenPShader;
+private:
+	GAIA::GVOID init()
+	{
+		pScreenTriangleVB = GNIL;
+		pScreenTriangleIB = GNIL;
+		pScreenVShader = GNIL;
+		pScreenPShader = GNIL;
+	}
+};
+
+static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resource& res)
 {
 	// Clear.
 	GAIA::MATH::ARGB<GAIA::REAL> crClear;
 	crClear.fromu32(0xFF8080FF);
 	crClear.torealmode();
-	pRender->ClearTarget(ctx, 0, crClear);
+	r.ClearTarget(ctx, 0, crClear);
 
 	// Flush.
-	pRender->Flush(ctx, GAIA::True);
+	r.Flush(ctx, GAIA::True);
 
 	return GAIA::True;
 }
@@ -52,6 +125,10 @@ int main()
 		// Create context.
 		VENUS::Render::Context* pContext = pRender->CreateContext();
 
+		// Create resource.
+		Resource res;
+		res.Create(*pRender, *pContext);
+
 		// 
 		for(;;)
 		{
@@ -59,8 +136,11 @@ int main()
 			if(!GAIA::UI::UpdateMessage(GAIA::False, bExistMsg))
 				break;
 			if(!bExistMsg)
-				FrameLoop(*pContext, pRender);
+				FrameLoop(*pContext, *pRender, res);
 		}
+
+		// Release resource.
+		res.Destroy();
 
 		// Release context.
 		pContext->Release();

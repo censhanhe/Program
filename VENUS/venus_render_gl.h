@@ -5,7 +5,6 @@
 
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	include <windows.h>
-#	pragma comment(lib, "opengl32.lib")
 #endif
 
 namespace VENUS
@@ -38,14 +37,13 @@ namespace VENUS
 			IndexBuffer();
 			~IndexBuffer();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
-			virtual GAIA::BL Unlock();
-			virtual GAIA::BL IsLocked() const;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(const VENUS::Render::IndexBuffer::Desc& desc);
 			GAIA::BL Destroy();
+			GAIA::BL IsCreated() const;
 		private:
-			GAIA::BL m_bLocked;
+			GAIA::U32 m_uIB;
 		};
 
 		class VertexBuffer : public virtual VENUS::Render::VertexBuffer
@@ -54,14 +52,13 @@ namespace VENUS
 			VertexBuffer();
 			~VertexBuffer();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
-			virtual GAIA::BL Unlock();
-			virtual GAIA::BL IsLocked() const;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(const VENUS::Render::VertexBuffer::Desc& desc);
 			GAIA::BL Destroy();
+			GAIA::BL IsCreated() const;
 		private:
-			GAIA::BL m_bLocked;
+			GAIA::U32 m_uVB;
 		};
 
 		class VertexDeclaration : public virtual VENUS::Render::VertexDeclaration
@@ -73,6 +70,7 @@ namespace VENUS
 		public:
 			GAIA::BL Create(const VENUS::Render::VertexDeclaration::Desc& desc);
 			GAIA::BL Destroy();
+			GAIA::BL IsCreated() const;
 		private:
 		};
 
@@ -82,11 +80,13 @@ namespace VENUS
 			Shader();
 			~Shader();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
-			virtual GAIA::BL Compile(const GAIA::GVOID* p);
+			virtual GAIA::BL Commit(const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(const VENUS::Render::Shader::Desc& desc);
 			GAIA::BL Destroy();
+			GAIA::BL IsCreated() const;
 		private:
+			GAIA::U32 m_uShader;
 		};
 
 		class Texture : public virtual VENUS::Render::Texture
@@ -95,14 +95,12 @@ namespace VENUS
 			Texture();
 			~Texture();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex);
-			virtual GAIA::BL Unlock();
-			virtual GAIA::BL IsLocked() const;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(const VENUS::Render::Texture::Desc& desc);
 			GAIA::BL Destroy();
+			GAIA::BL IsCreated() const;
 		private:
-			GAIA::BL m_bLocked;
 		};
 
 		class Target : public virtual VENUS::Render::Target
@@ -111,14 +109,12 @@ namespace VENUS
 			Target();
 			~Target();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
-			virtual GAIA::BL Unlock();
-			virtual GAIA::BL IsLocked() const;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(const VENUS::Render::Target::Desc& desc);
 			GAIA::BL Destroy();
+			GAIA::BL IsCreated() const;
 		private:
-			GAIA::BL m_bLocked;
 		};
 
 		class Depther : public virtual VENUS::Render::Depther
@@ -127,14 +123,12 @@ namespace VENUS
 			Depther();
 			~Depther();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize);
-			virtual GAIA::BL Unlock();
-			virtual GAIA::BL IsLocked() const;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(const VENUS::Render::Depther::Desc& desc);
 			GAIA::BL Destroy();
+			GAIA::BL IsCreated() const;
 		private:
-			GAIA::BL m_bLocked;
 		};
 
 	public:

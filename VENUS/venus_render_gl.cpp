@@ -2,8 +2,50 @@
 #include "venus_render_gl.h"
 #include <gl/gl.h>
 
+#if GAIA_OS == GAIA_OS_WINDOWS
+#	pragma comment(lib, "opengl32.lib")
+#endif
+
 namespace VENUS
 {
+#if GAIA_OS == GAIA_OS_WINDOWS
+	#define GL_ARRAY_BUFFER 0x8892
+	#define GL_ELEMENT_ARRAY_BUFFER 0x8893
+	#define GL_STATIC_DRAW 0x88E4
+	#define GL_SHADER_COMPILER 0x8DFA
+	#define GL_NUM_SHADER_BINARY_FORMATS 0x8DF9
+	#define GL_SHADER_BINARY_FORMATS 0x8DF8
+	#define GL_FRAGMENT_SHADER 0x8B30
+	#define GL_VERTEX_SHADER 0x8B31
+
+	typedef void (GAIA_BASEAPI* GLGENBUFFERS)(GLsizei n, GLuint *buffers);
+	typedef void (GAIA_BASEAPI* GLDELETEBUFFERS)(GLsizei n, const GLuint *buffers);
+	typedef void (GAIA_BASEAPI* GLBINDBUFFER)(GLenum target, GLuint buffer);
+	typedef void (GAIA_BASEAPI* GLBUFFERDATA)(GLenum target, GAIA::NM size, const void *data, GLenum usage);
+
+	typedef GLuint (GAIA_BASEAPI* GLCREATESHADER)(GLenum type);
+	typedef void (GAIA_BASEAPI* GLDELETESHADER)(GLuint shader);
+	typedef void (GAIA_BASEAPI* GLSHADERSOURCE)(GLuint shader, GLsizei count, const GAIA::CH *const*string, const GLint *length);
+	typedef void (GAIA_BASEAPI* GLSHADERBINARY)(GLsizei count, const GLuint *shaders, GLenum binaryformat, const void *binary, GLsizei length);
+	typedef void (GAIA_BASEAPI* GLCOMPILESHADER)(GLuint shader);
+	typedef void (GAIA_BASEAPI* GLGETSHADERIV)(GLuint shader, GLenum pname, GLint *params);
+	typedef void (GAIA_BASEAPI* GLGETSHADERINFOLOG)(GLuint shader, GLsizei bufSize, GLsizei *length, GAIA::CH *infoLog);
+	typedef void (GAIA_BASEAPI* GLRELEASESHADERCOMPILER)(void);
+
+	static GLGENBUFFERS glGenBuffers = GNIL;
+	static GLDELETEBUFFERS glDeleteBuffers = GNIL;
+	static GLBINDBUFFER glBindBuffer = GNIL;
+	static GLBUFFERDATA glBufferData = GNIL;
+
+	static GLCREATESHADER glCreateShader = GNIL;
+	static GLDELETESHADER glDeleteShader = GNIL;
+	static GLSHADERSOURCE glShaderSource = GNIL;
+	static GLSHADERBINARY glShaderBinary = GNIL;
+	static GLCOMPILESHADER glCompileShader = GNIL;
+	static GLGETSHADERIV glGetShaderiv = GNIL;
+	static GLGETSHADERINFOLOG glGetShaderInfoLog = GNIL;
+	static GLRELEASESHADERCOMPILER glReleaseShaderCompiler = GNIL;
+#endif
 	RenderGL::Context::Context()
 	{
 		this->init();
@@ -37,85 +79,95 @@ namespace VENUS
 	}
 	RenderGL::IndexBuffer::IndexBuffer()
 	{
-		m_bLocked = GAIA::False;
+		m_uIB = (GAIA::U32)GINVALID;
 	}
 	RenderGL::IndexBuffer::~IndexBuffer()
 	{
+		if(this->IsCreated())
+			this->Destroy();
 	}
 	GAIA::BL RenderGL::IndexBuffer::SaveToFile(GAIA::FSYS::FileBase* pFile) const
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
-	GAIA::GVOID* RenderGL::IndexBuffer::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize)
+	GAIA::BL RenderGL::IndexBuffer::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
-		if(this->IsLocked())
-			return GNIL;
-		m_bLocked = GAIA::True;
-		return GNIL;
-	}
-	GAIA::BL RenderGL::IndexBuffer::Unlock()
-	{
-		if(!this->IsLocked())
-			return GAIA::False;
-		m_bLocked = GAIA::False;
+		GPCHR_NULL_RET(p, GAIA::False);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uIB);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sSize, p, GL_STATIC_DRAW);
 		return GAIA::True;
-	}
-	GAIA::BL RenderGL::IndexBuffer::IsLocked() const
-	{
-		return m_bLocked;
 	}
 	GAIA::BL RenderGL::IndexBuffer::Create(const VENUS::Render::IndexBuffer::Desc& desc)
 	{
+		GAIA_AST(desc.check());
+		if(this->IsCreated())
+			this->Destroy();
+		glGenBuffers(1, &m_uIB);
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::IndexBuffer::Destroy()
 	{
+		if(m_uIB != GINVALID)
+		{
+			glDeleteBuffers(1, &m_uIB);
+			m_uIB = (GAIA::U32)GINVALID;
+		}
 		return GAIA::True;
+	}
+	GAIA::BL RenderGL::IndexBuffer::IsCreated() const
+	{
+		return m_uIB != GINVALID;
 	}
 	RenderGL::VertexBuffer::VertexBuffer()
 	{
-		m_bLocked = GAIA::False;
+		m_uVB = (GAIA::U32)GINVALID;
 	}
 	RenderGL::VertexBuffer::~VertexBuffer()
 	{
+		if(this->IsCreated())
+			this->Destroy();
 	}
 	GAIA::BL RenderGL::VertexBuffer::SaveToFile(GAIA::FSYS::FileBase* pFile) const
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
-	GAIA::GVOID* RenderGL::VertexBuffer::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize)
+	GAIA::BL RenderGL::VertexBuffer::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
-		if(this->IsLocked())
-			return GNIL;
-		m_bLocked = GAIA::True;
-		return GNIL;
-	}
-	GAIA::BL RenderGL::VertexBuffer::Unlock()
-	{
-		if(!this->IsLocked())
-			return GAIA::False;
-		m_bLocked = GAIA::False;
+		GPCHR_NULL_RET(p, GAIA::False);
+		glBindBuffer(GL_ARRAY_BUFFER, m_uVB);
+		glBufferData(GL_ARRAY_BUFFER, sSize, p, GL_STATIC_DRAW);
 		return GAIA::True;
-	}
-	GAIA::BL RenderGL::VertexBuffer::IsLocked() const
-	{
-		return m_bLocked;
 	}
 	GAIA::BL RenderGL::VertexBuffer::Create(const VENUS::Render::VertexBuffer::Desc& desc)
 	{
+		GAIA_AST(desc.check());
+		if(this->IsCreated())
+			this->Destroy();
+		glGenBuffers(1, &m_uVB);
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::VertexBuffer::Destroy()
 	{
+		if(m_uVB != GINVALID)
+		{
+			glDeleteBuffers(1, &m_uVB);
+			m_uVB = (GAIA::U32)GINVALID;
+		}
 		return GAIA::True;
+	}
+	GAIA::BL RenderGL::VertexBuffer::IsCreated() const
+	{
+		return m_uVB != GINVALID;
 	}
 	RenderGL::VertexDeclaration::VertexDeclaration()
 	{
 	}
 	RenderGL::VertexDeclaration::~VertexDeclaration()
 	{
+		if(this->IsCreated())
+			this->Destroy();
 	}
 	GAIA::BL RenderGL::VertexDeclaration::SaveToFile(GAIA::FSYS::FileBase* pFile) const
 	{
@@ -124,149 +176,170 @@ namespace VENUS
 	}
 	GAIA::BL RenderGL::VertexDeclaration::Create(const VENUS::Render::VertexDeclaration::Desc& desc)
 	{
+		GAIA_AST(desc.check());
+		if(this->IsCreated())
+			this->Destroy();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::VertexDeclaration::Destroy()
 	{
 		return GAIA::True;
 	}
+	GAIA::BL RenderGL::VertexDeclaration::IsCreated() const
+	{
+		return GAIA::False;
+	}
 	RenderGL::Shader::Shader()
 	{
+		m_uShader = (GAIA::U32)GINVALID;
 	}
 	RenderGL::Shader::~Shader()
 	{
+		if(this->IsCreated())
+			this->Destroy();
 	}
 	GAIA::BL RenderGL::Shader::SaveToFile(GAIA::FSYS::FileBase* pFile) const
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::Shader::Compile(const GAIA::GVOID* p)
+	GAIA::BL RenderGL::Shader::Commit(const GAIA::GVOID* p)
 	{
+		GPCHR_NULL_RET(p, GAIA::False);
 		GPCHR_NULL_RET(p, GNIL);
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Shader::Create(const VENUS::Render::Shader::Desc& desc)
 	{
+		GAIA_AST(desc.check());
+		if(this->IsCreated())
+			this->Destroy();
+		switch(desc.type)
+		{
+		case VENUS::Render::SHADER_TYPE_VERTEXSHADER:
+			m_uShader = glCreateShader(GL_VERTEX_SHADER);
+			break;
+		case VENUS::Render::SHADER_TYPE_PIXELSHADER:
+			m_uShader = glCreateShader(GL_FRAGMENT_SHADER);
+			break;
+		default:
+			return GAIA::False;
+		}
+		if(m_uShader == GINVALID)
+			return GAIA::False;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Shader::Destroy()
 	{
+		if(m_uShader != GINVALID)
+		{
+			glDeleteShader(m_uShader);
+			m_uShader = (GAIA::U32)GINVALID;
+		}
 		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Shader::IsCreated() const
+	{
+		return GAIA::False;
 	}
 	RenderGL::Texture::Texture()
 	{
-		m_bLocked = GAIA::False;
 	}
 	RenderGL::Texture::~Texture()
 	{
+		if(this->IsCreated())
+			this->Destroy();
 	}
 	GAIA::BL RenderGL::Texture::SaveToFile(GAIA::FSYS::FileBase* pFile) const
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
-	GAIA::GVOID* RenderGL::Texture::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex)
+	GAIA::BL RenderGL::Texture::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p)
 	{
-		if(this->IsLocked())
-			return GNIL;
-		m_bLocked = GAIA::True;
-		return GNIL;
-	}
-	GAIA::BL RenderGL::Texture::Unlock()
-	{
-		if(!this->IsLocked())
-			return GAIA::False;
-		m_bLocked = GAIA::False;
+		GPCHR_NULL_RET(p, GAIA::False);
 		return GAIA::True;
-	}
-	GAIA::BL RenderGL::Texture::IsLocked() const
-	{
-		return m_bLocked;
 	}
 	GAIA::BL RenderGL::Texture::Create(const VENUS::Render::Texture::Desc& desc)
 	{
+		GAIA_AST(desc.check());
+		if(this->IsCreated())
+			this->Destroy();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Texture::Destroy()
 	{
 		return GAIA::True;
 	}
+	GAIA::BL RenderGL::Texture::IsCreated() const
+	{
+		return GAIA::False;
+	}
 	RenderGL::Target::Target()
 	{
-		m_bLocked = GAIA::False;
 	}
 	RenderGL::Target::~Target()
 	{
+		if(this->IsCreated())
+			this->Destroy();
 	}
 	GAIA::BL RenderGL::Target::SaveToFile(GAIA::FSYS::FileBase* pFile) const
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
-	GAIA::GVOID* RenderGL::Target::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize)
+	GAIA::BL RenderGL::Target::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
-		if(this->IsLocked())
-			return GNIL;
-		m_bLocked = GAIA::True;
-		return GNIL;
-	}
-	GAIA::BL RenderGL::Target::Unlock()
-	{
-		if(!this->IsLocked())
-			return GAIA::False;
-		m_bLocked = GAIA::False;
+		GPCHR_NULL_RET(p, GAIA::False);
 		return GAIA::True;
-	}
-	GAIA::BL RenderGL::Target::IsLocked() const
-	{
-		return m_bLocked;
 	}
 	GAIA::BL RenderGL::Target::Create(const VENUS::Render::Target::Desc& desc)
 	{
+		GAIA_AST(desc.check());
+		if(this->IsCreated())
+			this->Destroy();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Target::Destroy()
 	{
 		return GAIA::True;
 	}
+	GAIA::BL RenderGL::Target::IsCreated() const
+	{
+		return GAIA::False;
+	}
 	RenderGL::Depther::Depther()
 	{
-		m_bLocked = GAIA::False;
 	}
 	RenderGL::Depther::~Depther()
 	{
+		if(this->IsCreated())
+			this->Destroy();
 	}
 	GAIA::BL RenderGL::Depther::SaveToFile(GAIA::FSYS::FileBase* pFile) const
 	{
 		GPCHR_NULL_RET(pFile, GAIA::False);
 		return GAIA::True;
 	}
-	GAIA::GVOID* RenderGL::Depther::Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize)
+	GAIA::BL RenderGL::Depther::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
-		if(this->IsLocked())
-			return GNIL;
-		m_bLocked = GAIA::True;
-		return GNIL;
-	}
-	GAIA::BL RenderGL::Depther::Unlock()
-	{
-		if(!this->IsLocked())
-			return GAIA::False;
-		m_bLocked = GAIA::False;
+		GPCHR_NULL_RET(p, GAIA::False);
 		return GAIA::True;
-	}
-	GAIA::BL RenderGL::Depther::IsLocked() const
-	{
-		return m_bLocked;
 	}
 	GAIA::BL RenderGL::Depther::Create(const VENUS::Render::Depther::Desc& desc)
 	{
+		GAIA_AST(desc.check());
+		if(this->IsCreated())
+			this->Destroy();
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Depther::Destroy()
 	{
 		return GAIA::True;
+	}
+	GAIA::BL RenderGL::Depther::IsCreated() const
+	{
+		return GAIA::False;
 	}
 	GAIA::FWORK::ClsID RenderGL::GetClassID() const
 	{
@@ -362,7 +435,37 @@ namespace VENUS
 
 			return GAIA::False;
 		}
+
+		glGenBuffers = (GLGENBUFFERS)::wglGetProcAddress("glGenBuffers");
+		glDeleteBuffers = (GLDELETEBUFFERS)::wglGetProcAddress("glDeleteBuffers");
+		glBindBuffer = (GLBINDBUFFER)::wglGetProcAddress("glBindBuffer");
+		glBufferData = (GLBUFFERDATA)::wglGetProcAddress("glBufferData");
+
+		glCreateShader = (GLCREATESHADER)::wglGetProcAddress("glCreateShader");
+		glDeleteShader = (GLDELETESHADER)::wglGetProcAddress("glDeleteShader");
+		glShaderSource = (GLSHADERSOURCE)::wglGetProcAddress("glShaderSource");
+		glShaderBinary = (GLSHADERBINARY)::wglGetProcAddress("glShaderBinary");
+		glCompileShader = (GLCOMPILESHADER)::wglGetProcAddress("glCompileShader");
+		glGetShaderiv = (GLGETSHADERIV)::wglGetProcAddress("glGetShaderiv");
+		glGetShaderInfoLog = (GLGETSHADERINFOLOG)::wglGetProcAddress("glGetShaderInfoLog");
+		glReleaseShaderCompiler = (GLRELEASESHADERCOMPILER)::wglGetProcAddress("glReleaseShaderCompiler");
+
 	#endif
+
+		const GLubyte* pVersion = glGetString(GL_VERSION);
+		const GLubyte* pRenderer = glGetString(GL_RENDERER);
+		const GLubyte* pExtension = glGetString(GL_EXTENSIONS);
+		const GLubyte* pVendor = glGetString(GL_VENDOR);
+
+		GLboolean bSupportOnlineCompile;
+		glGetBooleanv(GL_SHADER_COMPILER, &bSupportOnlineCompile);
+		GLint nSupportBinShaderCount;
+		glGetIntegerv(GL_NUM_SHADER_BINARY_FORMATS, &nSupportBinShaderCount);
+		for(GAIA::SIZE x = 0; x < nSupportBinShaderCount; ++x)
+		{
+			GLint nSupportBinShaderFormat;
+			glGetIntegerv(GL_SHADER_BINARY_FORMATS, &nSupportBinShaderFormat);
+		}
 
 		m_desc = desc;
 		m_desc.pCanvas->Reference();
@@ -374,6 +477,8 @@ namespace VENUS
 	{
 		if(!this->IsCreated())
 			return GAIA::False;
+
+		GAIA_AST(glGetError() == GL_NO_ERROR);
 
 	#if GAIA_OS == GAIA_OS_WINDOWS
 		if(m_hGLRC != GNIL)
@@ -441,11 +546,12 @@ namespace VENUS
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			::SwapBuffers(m_hDC);
 		#else
-			::glFinish();
+			glFinish();
 		#endif
+			GAIA_AST(glGetError() == GL_NO_ERROR);
 		}
 		else
-			::glFlush();
+			glFlush();
 
 		return GAIA::True;
 	}
@@ -458,9 +564,9 @@ namespace VENUS
 		case VENUS::Render::RENDER_STATE_ALPHABLEND:
 			{
 				if((GAIA::BL)v)
-					::glEnable(GL_BLEND);
+					glEnable(GL_BLEND);
 				else
-					::glDisable(GL_BLEND);
+					glDisable(GL_BLEND);
 			}
 			break;
 		case VENUS::Render::RENDER_STATE_ZTEST:
@@ -542,7 +648,7 @@ namespace VENUS
 		{
 		case VENUS::Render::RENDER_STATE_ALPHABLEND:
 			{
-				if(::glIsEnabled(GL_BLEND))
+				if(glIsEnabled(GL_BLEND))
 					v = GAIA::True;
 				else
 					v = GAIA::False;
@@ -629,7 +735,7 @@ namespace VENUS
 			pIB->Release();
 			return GNIL;
 		}
-		return GNIL;
+		return pIB;
 	}
 	VENUS::Render::VertexBuffer* RenderGL::CreateVertexBuffer(const VENUS::Render::VertexBuffer::Desc& desc)
 	{
@@ -791,16 +897,16 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		::glClearColor(cr.r, cr.g, cr.b, cr.a);
-		::glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(cr.r, cr.g, cr.b, cr.a);
+		glClear(GL_COLOR_BUFFER_BIT);
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::ClearDepther(VENUS::Render::Context& ctx, GAIA::REAL rDepth)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		::glClearDepth(rDepth);
-		::glClear(GL_DEPTH_BUFFER_BIT);
+		glClearDepth(rDepth);
+		glClear(GL_DEPTH_BUFFER_BIT);
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetVertexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex, GAIA::SIZE sBaseIndex)
@@ -849,7 +955,7 @@ namespace VENUS
 		default:
 			return GAIA::False;
 		}
-		::glDrawElements(mode, sElementCount, GL_UNSIGNED_SHORT, GNIL);
+		glDrawElements(mode, sElementCount, GL_UNSIGNED_SHORT, GNIL);
 		return GAIA::True;
 	}
 	GAIA::GVOID RenderGL::init()

@@ -76,11 +76,11 @@ namespace VENUS
 			TEXTURE_TYPE_CUBE,
 		GAIA_ENUM_END(TEXTURE_TYPE)
 
-		GAIA_ENUM_BEGIN(LOCK_METHOD)
-			LOCK_METHOD_READ,
-			LOCK_METHOD_WRITE,
-			LOCK_METHOD_READWRITE,
-		GAIA_ENUM_END(LOCK_METHOD)
+		GAIA_ENUM_BEGIN(COMMIT_METHOD)
+			COMMIT_METHOD_READ,
+			COMMIT_METHOD_WRITE,
+			COMMIT_METHOD_READWRITE,
+		GAIA_ENUM_END(COMMIT_METHOD)
 
 		class Desc : public virtual GAIA::FWORK::InstanceDesc
 		{
@@ -155,9 +155,7 @@ namespace VENUS
 			};
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_INDEXBUFFER;}
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize) = 0;
-			virtual GAIA::BL Unlock() = 0;
-			virtual GAIA::BL IsLocked() const = 0;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
 		};
 
 		class VertexBuffer : public virtual Resource
@@ -189,9 +187,7 @@ namespace VENUS
 			};
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_VERTEXBUFFER;}
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize) = 0;
-			virtual GAIA::BL Unlock() = 0;
-			virtual GAIA::BL IsLocked() const = 0;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
 		};
 
 		class VertexDeclaration : public virtual Resource
@@ -243,7 +239,7 @@ namespace VENUS
 			};
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_SHADER;}
-			virtual GAIA::BL Compile(const GAIA::GVOID* p) = 0;
+			virtual GAIA::BL Commit(const GAIA::GVOID* p) = 0;
 		};
 
 		class Texture : public virtual Resource
@@ -316,9 +312,7 @@ namespace VENUS
 			};
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_TEXTURE;}
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex) = 0;
-			virtual GAIA::BL Unlock() = 0;
-			virtual GAIA::BL IsLocked() const = 0;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p) = 0;
 		};
 
 		class Target : public virtual Resource
@@ -355,9 +349,7 @@ namespace VENUS
 			};
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_TARGET;}
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize) = 0;
-			virtual GAIA::BL Unlock() = 0;
-			virtual GAIA::BL IsLocked() const = 0;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
 		};
 
 		class Depther : public virtual Resource
@@ -393,9 +385,7 @@ namespace VENUS
 			};
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_DEPTHER;}
-			virtual GAIA::GVOID* Lock(VENUS::Render::LOCK_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize) = 0;
-			virtual GAIA::BL Unlock() = 0;
-			virtual GAIA::BL IsLocked() const = 0;
+			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
 		};
 
 	public:
