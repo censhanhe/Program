@@ -11,7 +11,6 @@ namespace VENUS
 		GAIA_ENUM_BEGIN(RESOURCE_TYPE)
 			RESOURCE_TYPE_INDEXBUFFER,
 			RESOURCE_TYPE_VERTEXBUFFER,
-			RESOURCE_TYPE_VERTEXDECLARATION,
 			RESOURCE_TYPE_SHADER,
 			RESOURCE_TYPE_PROGRAM,
 			RESOURCE_TYPE_TEXTURE,
@@ -55,11 +54,7 @@ namespace VENUS
 		GAIA_ENUM_END(FORMAT)
 
 		GAIA_ENUM_BEGIN(ELEMENT_TYPE)
-			ELEMENT_TYPE_SLINE,
-			ELEMENT_TYPE_SLINESTRIP,
-			ELEMENT_TYPE_STRIANGLELIST,
-			ELEMENT_TYPE_STRIANGLEFAN,
-			ELEMENT_TYPE_STRIANGLESTRIP,
+			ELEMENT_TYPE_LINE,
 			ELEMENT_TYPE_TRIANGLELIST,
 			ELEMENT_TYPE_TRIANGLEFAN,
 			ELEMENT_TYPE_TRIANGLESTRIP,
@@ -191,30 +186,6 @@ namespace VENUS
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_VERTEXBUFFER;}
 			virtual const VENUS::Render::VertexBuffer::Desc& GetDesc() const = 0;
 			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
-		};
-
-		class VertexDeclaration : public virtual Resource
-		{
-		public:
-			class Desc : public virtual Resource::Desc
-			{
-			public:
-				virtual GAIA::GVOID reset()
-				{
-					VENUS::Render::Resource::Desc::reset();
-				}
-				virtual GAIA::BL check() const
-				{
-					if(!VENUS::Render::Resource::Desc::check())
-						return GAIA::False;
-					if(pFile != GNIL)
-						return GAIA::True;
-					return GAIA::True;
-				}
-			};
-		public:
-			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_VERTEXDECLARATION;}
-			virtual const VENUS::Render::VertexDeclaration::Desc& GetDesc() const = 0;
 		};
 
 		class Shader : public virtual Resource
@@ -446,7 +417,6 @@ namespace VENUS
 		/* Resource function. */
 		virtual VENUS::Render::IndexBuffer* CreateIndexBuffer(const VENUS::Render::IndexBuffer::Desc& desc) = 0;
 		virtual VENUS::Render::VertexBuffer* CreateVertexBuffer(const VENUS::Render::VertexBuffer::Desc& desc) = 0;
-		virtual VENUS::Render::VertexDeclaration* CreateVertexDeclaration(const VENUS::Render::VertexDeclaration::Desc& desc) = 0;
 		virtual VENUS::Render::Shader* CreateShader(const VENUS::Render::Shader::Desc& desc) = 0;
 		virtual VENUS::Render::Program* CreateProgram(const VENUS::Render::Program::Desc& desc) = 0;
 		virtual VENUS::Render::Texture* CreateTexture(const VENUS::Render::Texture::Desc& desc) = 0;
@@ -454,26 +424,24 @@ namespace VENUS
 		virtual VENUS::Render::Depther* CreateDepther(const VENUS::Render::Depther::Desc& desc) = 0;
 
 		virtual GAIA::BL SetIndexBuffer(VENUS::Render::Context& ctx, VENUS::Render::IndexBuffer* pIB) = 0;
-		virtual GAIA::BL SetVertexBuffer(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex, VENUS::Render::VertexBuffer* pVB) = 0;
-		virtual GAIA::BL SetVertexDeclaration(VENUS::Render::Context& ctx, VENUS::Render::VertexDeclaration* pVDecl) = 0;
+		virtual GAIA::BL SetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszAttrName, VENUS::Render::VertexBuffer* pVB, GAIA::SIZE sStride, GAIA::SIZE sOffset) = 0;
 		virtual GAIA::BL SetProgram(VENUS::Render::Context& ctx, VENUS::Render::Program* pProgram) = 0;
 		virtual GAIA::BL SetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex, VENUS::Render::Texture* pTex) = 0;
 		virtual GAIA::BL SetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, VENUS::Render::Target* pTarget) = 0;
 		virtual GAIA::BL SetDepther(VENUS::Render::Context& ctx, VENUS::Render::Depther* pDepther) = 0;
 
 		virtual VENUS::Render::IndexBuffer* GetIndexBuffer(VENUS::Render::Context& ctx) = 0;
-		virtual VENUS::Render::VertexBuffer* GetVertexBuffer(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex) = 0;
-		virtual VENUS::Render::VertexDeclaration* GetVertexDeclaration(VENUS::Render::Context& ctx) = 0;
+		virtual VENUS::Render::VertexBuffer* GetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszAttrName, GAIA::SIZE& sStride, GAIA::SIZE& sOffset) = 0;
 		virtual VENUS::Render::Program* GetProgram(VENUS::Render::Context& ctx) = 0;
 		virtual VENUS::Render::Texture* GetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex) = 0;
 		virtual VENUS::Render::Target* GetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex) = 0;
 		virtual VENUS::Render::Depther* GetDepther(VENUS::Render::Context& ctx) = 0;
 
 		/* Draw function. */
+		virtual GAIA::BL SetElementType(VENUS::Render::Context& ctx, VENUS::Render::ELEMENT_TYPE eletype) = 0;
+		virtual VENUS::Render::ELEMENT_TYPE GetElementType(VENUS::Render::Context& ctx) const = 0;
 		virtual GAIA::BL ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
 		virtual GAIA::BL ClearDepther(VENUS::Render::Context& ctx, GAIA::REAL rDepth) = 0;
-		virtual GAIA::BL SetVertexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sStreamIndex, GAIA::SIZE sBaseIndex) = 0;
-		virtual GAIA::BL SetIndexBufferBase(VENUS::Render::Context& ctx, GAIA::SIZE sBaseIndex) = 0;
 		virtual GAIA::BL Draw(VENUS::Render::Context& ctx, GAIA::SIZE sElementCount) = 0;
 	};
 };

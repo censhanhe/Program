@@ -5,6 +5,7 @@ class ScreenVertex
 {
 public:
 	GAIA::MATH::VEC2<GAIA::F32> pos;
+	GAIA::MATH::ARGB<GAIA::F32> cr;
 };
 
 class Vertex
@@ -14,18 +15,22 @@ public:
 
 static const GAIA::CH VERTEXSHADERSTRING[] = 
 "\
-attribute vec4 a_pos;\
+attribute vec2 a_pos;\
+attribute vec4 a_cr;\
+varying vec4 v_cr;\
 void main()\
 {\
-	gl_Position = a_pos;\
+	gl_Position = vec4(a_pos.x, a_pos.y, 0.5, 1.0);\
+	v_cr = a_cr;\
 }\
 ";
 
 static const GAIA::CH PIXELSHADERSTRING[] = 
 "\
+varying vec4 v_cr;\
 void main()\
 {\
-	gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\
+	gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * v_cr;\
 }\
 ";
 
@@ -43,9 +48,12 @@ public:
 			descVB.sElementSize = sizeof(GAIA::MATH::VEC2<GAIA::F32>);
 			pScreenTriangleVB = r.CreateVertexBuffer(descVB);
 			ScreenVertex v[3];
-			v[0].pos = GAIA::MATH::VEC2<GAIA::F32>(100, 100);
-			v[1].pos = GAIA::MATH::VEC2<GAIA::F32>(200, 100);
-			v[2].pos = GAIA::MATH::VEC2<GAIA::F32>(150, 150);
+			v[0].pos = GAIA::MATH::VEC2<GAIA::F32>(-0.8F, -0.8F);
+			v[1].pos = GAIA::MATH::VEC2<GAIA::F32>(+0.8F, -0.8F);
+			v[2].pos = GAIA::MATH::VEC2<GAIA::F32>(0.0F, 0.8F);
+			v[0].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 1.0F, 0.0F, 0.0F);
+			v[1].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 0.0F, 1.0F, 0.0F);
+			v[2].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 0.0F, 0.0F, 1.0F);
 			pScreenTriangleVB->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, sizeof(v), v);
 
 			VENUS::Render::IndexBuffer::Desc descIB;
@@ -110,10 +118,12 @@ static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resourc
 	crClear.torealmode();
 	r.ClearTarget(ctx, 0, crClear);
 
-	//
-	r.SetVertexBuffer(ctx, 0, res.pScreenTriangleVB);
+	// Draw screen triangle.
+	r.SetVertexBuffer(ctx, "a_pos", res.pScreenTriangleVB, sizeof(ScreenVertex), 0);
+	r.SetVertexBuffer(ctx, "a_cr", res.pScreenTriangleVB, sizeof(ScreenVertex), sizeof(GAIA::MATH::VEC2<GAIA::F32>));
 	r.SetIndexBuffer(ctx, res.pScreenTriangleIB);
 	r.SetProgram(ctx, res.pScreenProgram);
+	r.SetElementType(ctx, VENUS::Render::ELEMENT_TYPE_TRIANGLELIST);
 	r.Draw(ctx, 1);
 
 	// Flush.
