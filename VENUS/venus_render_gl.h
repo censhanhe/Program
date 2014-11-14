@@ -110,9 +110,10 @@ namespace VENUS
 			public:
 				GAIA::SIZE sNameIndex;
 				GAIA::TYPEID type;
-				GAIA::U8 uCountX;
-				GAIA::U8 uCountY;
-				GAIA::U8 uLocation;
+				GAIA::U16 uCount;
+				GAIA::U8 uDimenX;
+				GAIA::U8 uDimenY;
+				GAIA::N8 nLocation;
 			};
 		public:
 			Program();
@@ -231,6 +232,10 @@ namespace VENUS
 		virtual VENUS::Render::Texture* GetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex);
 		virtual VENUS::Render::Target* GetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex);
 		virtual VENUS::Render::Depther* GetDepther(VENUS::Render::Context& ctx);
+
+		/* Program constant management. */
+		virtual GAIA::BL SetConstant(VENUS::Render::Context& ctx, VENUS::Render::Program& prog, const GAIA::CH* pszUniformName, const GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount);
+		virtual GAIA::BL GetConstant(VENUS::Render::Context& ctx, VENUS::Render::Program& prog, const GAIA::CH* pszUniformName, GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount);
 
 		/* Draw function. */
 		virtual GAIA::BL SetElementType(VENUS::Render::Context& ctx, VENUS::Render::ELEMENT_TYPE eletype);

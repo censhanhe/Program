@@ -116,7 +116,7 @@
 
 /* Warning adjust. */
 #ifdef GAIA_DEBUG_WARNING
-#	if GAIA_OS == GAIA_OS_WINDOWS
+#	if GAIA_COMPILER == GAIA_COMPILER_CL
 #		pragma warning(disable : 4100)
 #		pragma warning(disable : 4189)
 #		pragma warning(disable : 4996)

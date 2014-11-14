@@ -28,9 +28,10 @@ void main()\
 static const GAIA::CH PIXELSHADERSTRING[] = 
 "\
 varying vec4 v_cr;\
+uniform float u_time;\
 void main()\
 {\
-	gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * v_cr;\
+	gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * v_cr * abs(sin(u_time));\
 }\
 ";
 
@@ -48,9 +49,9 @@ public:
 			descVB.sElementSize = sizeof(GAIA::MATH::VEC2<GAIA::F32>);
 			pScreenTriangleVB = r.CreateVertexBuffer(descVB);
 			ScreenVertex v[3];
-			v[0].pos = GAIA::MATH::VEC2<GAIA::F32>(-0.8F, -0.8F);
-			v[1].pos = GAIA::MATH::VEC2<GAIA::F32>(+0.8F, -0.8F);
-			v[2].pos = GAIA::MATH::VEC2<GAIA::F32>(0.0F, 0.8F);
+			v[0].pos = GAIA::MATH::VEC2<GAIA::F32>(-0.5F, -0.5F);
+			v[1].pos = GAIA::MATH::VEC2<GAIA::F32>(+0.5F, -0.5F);
+			v[2].pos = GAIA::MATH::VEC2<GAIA::F32>(0.0F, 0.5F);
 			v[0].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 1.0F, 0.0F, 0.0F);
 			v[1].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 0.0F, 1.0F, 0.0F);
 			v[2].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 0.0F, 0.0F, 1.0F);
@@ -123,6 +124,9 @@ static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resourc
 	r.SetVertexBuffer(ctx, "a_cr", res.pScreenTriangleVB, sizeof(ScreenVertex), sizeof(GAIA::MATH::VEC2<GAIA::F32>));
 	r.SetIndexBuffer(ctx, res.pScreenTriangleIB);
 	r.SetProgram(ctx, res.pScreenProgram);
+	GAIA::F32 fTime = (GAIA::F32)GAIA::TIME::tick_time() / 1000.0F / 1000.0F;
+	r.SetConstant(ctx, *res.pScreenProgram, "u_time", &fTime, 1, 1, 1);
+	r.GetConstant(ctx, *res.pScreenProgram, "u_time", &fTime, 1, 1, 1);
 	r.SetElementType(ctx, VENUS::Render::ELEMENT_TYPE_TRIANGLELIST);
 	r.Draw(ctx, 1);
 
