@@ -163,7 +163,7 @@ namespace GAIA
 				else
 					m_chars.combin(p1, size1, p2, size2);
 			}
-			template<typename _ParamSizeType, _ParamSizeType _Size> BasicCharsString(const GAIA::CTN::BasicChars<_DataType, _ParamSizeType, _Size>& src){this->operator = (src);}
+			template<typename _ParamSizeType, _ParamSizeType _ParamSize> BasicCharsString(const GAIA::CTN::BasicChars<_DataType, _ParamSizeType, _ParamSize>& src){this->operator = (src);}
 			template<typename _ParamSizeType> BasicCharsString(const GAIA::CTN::BasicString<_DataType, _ParamSizeType>& src){this->operator = (src);}
 			GINL ~BasicCharsString(){this->destroy();}
 			GINL GAIA::GVOID proxy(const _DataType* p, const _SizeType& size, const _SizeType& capacity)
@@ -624,8 +624,8 @@ namespace GAIA
 			GINL __MyType& operator = (const GAIA::F32& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::real2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::F64& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; GAIA::ALGO::real2str(t, sz); return this->operator = (sz);}
 			GINL __MyType& operator = (const GAIA::BL& t){_DataType sz[GAIA_DIGIT_TOSTRING_LEN]; sz[0] = t ? '1' : '0'; sz[1] = '\0'; return this->operator = (sz);}
-			template<typename _ParamSizeType, _ParamSizeType _Size> __MyType& operator = (const GAIA::CTN::BasicChars<_DataType, _ParamSizeType, _Size>& src){this->operator = (src.front_ptr()); return *this;}
-			template<typename _ParamSizeType, _ParamSizeType _Size> __MyType& operator = (const GAIA::CTN::BasicString<_DataType, _ParamSizeType>& src){this->operator = (src.front_ptr()); return *this;}
+			template<typename _ParamSizeType, _ParamSizeType _ParamSize> __MyType& operator = (const GAIA::CTN::BasicChars<_DataType, _ParamSizeType, _ParamSize>& src){this->operator = (src.front_ptr()); return *this;}
+			template<typename _ParamSizeType> __MyType& operator = (const GAIA::CTN::BasicString<_DataType, _ParamSizeType>& src){this->operator = (src.front_ptr()); return *this;}
 			GINL __MyType& operator += (const __MyType& src)
 			{
 				if(m_string.capacity() != 0)

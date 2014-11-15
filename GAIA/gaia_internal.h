@@ -100,10 +100,7 @@ namespace GAIA_INTERNAL_NAMESPACE
 			else if(*pSrc >= 'A' && *pSrc <= 'F')
 				u0 = *pSrc - 'A' + 10;
 			else
-			{
-				GAIA_AST(GAIA::ALWAYSFALSE);
 				u0 = 0;
-			}
 			++pSrc;
 
 			// Calculate low 4 bit.
@@ -115,10 +112,7 @@ namespace GAIA_INTERNAL_NAMESPACE
 			else if(*pSrc >= 'A' && *pSrc <= 'F')
 				u1 = *pSrc - 'A' + 10;
 			else
-			{
-				GAIA_AST(GAIA::ALWAYSFALSE);
 				u1 = 0;
-			}
 			++pSrc;
 
 			// Combin.

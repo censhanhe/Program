@@ -125,8 +125,8 @@ namespace GAIA
 		template<typename _DataType> X128(const _DataType* p){this->operator = (p);}
 		GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
 		GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
-		template<typename _ParamDataType> GAIA::GVOID fromstring(const _ParamDataType* psz){GAIA_INTERNAL_NAMESPACE::str2hex(psz, sizeofarray(u8), u8);}
-		template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz) const{GAIA_INTERNAL_NAMESPACE::hex2str(u8, sizeofarray(u8), psz);}
+		template<typename _ParamDataType> GAIA::GVOID fromstring(const _ParamDataType* psz);
+		template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz) const;
 		GINL X128& operator = (const X128& src){u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
 		template<typename _DataType> X128& operator = (const _DataType* p)
 		{

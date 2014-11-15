@@ -15,6 +15,15 @@ namespace GAIA
 	GINL GAIA::GVOID Base::operator delete[](GAIA::GVOID* p){return g_gaia_globalallocator.memory_release(p);}
 #endif
 
+	template<typename _ParamDataType> GAIA::GVOID X128::fromstring(const _ParamDataType* psz)
+	{
+		GAIA_INTERNAL_NAMESPACE::str2hex(psz, sizeofarray(u8), u8);
+	}
+	template<typename _ParamDataType> GAIA::GVOID X128::tostring(_ParamDataType* psz) const
+	{
+		GAIA_INTERNAL_NAMESPACE::hex2str(u8, sizeofarray(u8), psz);
+	}
+
 	GINL TYPEID nametotype(const GAIA::CH* psz)
 	{
 		for(GAIA::N32 x = 0; x < sizeofarray(TYPEID_ANAME); ++x)
