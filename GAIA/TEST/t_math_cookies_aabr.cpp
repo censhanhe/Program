@@ -47,7 +47,7 @@ namespace GAIA_TEST
 			GTLINE2("AABR long_size error!");
 			++nRet;
 		}
-		if(aabr.long_radius() != GAIA::MATH::xsqrt(200.0))
+		if(!GAIA::MATH::xequal(aabr.long_radius(), GAIA::MATH::xsqrt(200.0)))
 		{
 			GTLINE2("AABR long_radius error!");
 			++nRet;
@@ -88,7 +88,7 @@ namespace GAIA_TEST
 			GTLINE2("AABR += or -= or *= or /= error!");
 			++nRet;
 		}
-		if(aabr.long_radius() != GAIA::MATH::xsqrt(200.0))
+		if(!GAIA::MATH::xequal(aabr.long_radius(), GAIA::MATH::xsqrt(200.0)))
 		{
 			GTLINE2("AABR += or -= or *= or /= error!");
 			++nRet;
@@ -129,7 +129,7 @@ namespace GAIA_TEST
 			GTLINE2("AABR += or -= or *= or /= error!");
 			++nRet;
 		}
-		if(aabr.long_radius() != GAIA::MATH::xsqrt(200.0))
+		if(!GAIA::MATH::xequal(aabr.long_radius(), GAIA::MATH::xsqrt(200.0)))
 		{
 			GTLINE2("AABR += or -= or *= or /= error!");
 			++nRet;
