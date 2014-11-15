@@ -31,7 +31,7 @@ namespace GAIA
 	#	endif
 	#else
 	#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
-			return __sync_add_and_fetch(&m_nRef, 1) + 1;
+			return __sync_add_and_fetch(&m_nRef, 1);
 	#	else
 			return atomic_inc_return(&m_nRef);
 	#	endif
@@ -53,7 +53,7 @@ namespace GAIA
 	#	endif
 	#else
 	#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
-			GAIA::NM nNew = __sync_sub_and_fetch(&m_nRef, 1) - 1;
+			GAIA::NM nNew = __sync_sub_and_fetch(&m_nRef, 1);
 	#	else
 			GAIA::NM nNew = atomic_dec_return(&m_nRef);
 	#	endif

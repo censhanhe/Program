@@ -66,7 +66,7 @@ namespace GAIA
 			return OSAtomicIncrement64(&m_n);
 		#else
 		#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
-				return __sync_add_and_fetch((GAIA::N32*)&m_n, 1) + 1;
+				return __sync_add_and_fetch((GAIA::N32*)&m_n, 1);
 		#	else
 				return atomic_inc_return((GAIA::N32*)&m_n);
 		#	endif
@@ -84,7 +84,7 @@ namespace GAIA
 			return OSAtomicDecrement64(&m_n);
 		#else
 		#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
-				return __sync_sub_and_fetch((GAIA::N32*)&m_n, 1) - 1;
+				return __sync_sub_and_fetch((GAIA::N32*)&m_n, 1);
 		#	else
 				return atomic_dec_return((GAIA::N32*)&m_n);
 		#	endif
@@ -102,7 +102,7 @@ namespace GAIA
 			return OSAtomicAdd64(src, &m_n);
 		#else
 		#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
-				return __sync_add_and_fetch((GAIA::N32*)&m_n, (GAIA::N32)src) + src;
+				return __sync_add_and_fetch((GAIA::N32*)&m_n, (GAIA::N32)src);
 		#	else
 				return atomic_add_return((GAIA::N32)src, (GAIA::N32*)&m_n);
 		#	endif
