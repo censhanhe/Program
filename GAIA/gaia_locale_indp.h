@@ -50,13 +50,8 @@ namespace GAIA
 
 			GAIA::CH* pTempSrc = (GAIA::CH*)pszSrc;
 			GAIA::CH* pTempDst = (GAIA::CH*)pszDst;
-		#	if GAIA_MACHINE == GAIA_MACHINE32
-			GAIA::U32 uSrcSize = GAIA_INTERNAL_NAMESPACE::strlen(pszSrc);
-			GAIA::U32 uDstSize = dst_size_in_wchar * sizeof(GAIA::WCH);
-		#	elif GAIA_MACHINE == GAIA_MACHINE64
-			GAIA::U64 uSrcSize = GAIA_INTERNAL_NAMESPACE::strlen(pszSrc);
-			GAIA::U64 uDstSize = dst_size_in_wchar * sizeof(GAIA::WCH);
-		#	endif
+			size_t uSrcSize = GAIA_INTERNAL_NAMESPACE::strlen(pszSrc);
+			size_t uDstSize = dst_size_in_wchar * sizeof(GAIA::WCH);
 
 			if(iconv(cv, &pTempSrc, &uSrcSize, &pTempDst, &uDstSize) == -1)
 				return 0;
@@ -110,13 +105,8 @@ namespace GAIA
 
 			GAIA::CH* pTempSrc = (GAIA::CH*)pszSrc;
 			GAIA::CH* pTempDst = (GAIA::CH*)pszDst;
-		#	if GAIA_MACHINE == GAIA_MACHINE32
-			GAIA::U32 uSrcSize = GAIA_INTERNAL_NAMESPACE::strlen(pszSrc) * sizeof(GAIA::WCH);
-			GAIA::U32 uDstSize = dst_size_in_bytes;
-		#	elif GAIA_MACHINE == GAIA_MACHINE64
-			GAIA::U64 uSrcSize = GAIA_INTERNAL_NAMESPACE::strlen(pszSrc) * sizeof(GAIA::WCH);
-			GAIA::U64 uDstSize = dst_size_in_bytes;
-		#	endif
+			size_t uSrcSize = GAIA_INTERNAL_NAMESPACE::strlen(pszSrc) * sizeof(GAIA::WCH);
+			size_t uDstSize = dst_size_in_bytes;
 
 			if(iconv(cv, &pTempSrc, &uSrcSize, &pTempDst, &uDstSize) == -1)
 				return 0;

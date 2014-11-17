@@ -12,6 +12,14 @@
 #define GAIA_OS_UNIX 6
 #ifdef _MSC_VER
 #	define GAIA_OS GAIA_OS_WINDOWS
+#elif defined(__LINUX__)
+#	define GAIA_OS GAIA_OS_LINUX
+#elif defined(__OSX__)
+#	define GAIA_OS GAIA_OS_OSX
+#elif defined(__IOS__)
+#	define GAIA_OS GAIA_OS_IOS
+#elif defined(__ANDROID__)
+#	define GAIA_OS GAIA_OS_ANDROID
 #else
 #	define GAIA_OS GAIA_OS_LINUX
 #endif
@@ -62,7 +70,13 @@
 /* Language code flag. */
 #define GAIA_CHARSET_ANSI 1
 #define GAIA_CHARSET_UNICODE 2
-#define GAIA_CHARSET GAIA_CHARSET_UNICODE
+#ifdef __UNICODE__
+#	define GAIA_CHARSET GAIA_CHARSET_UNICODE
+#elif defined(__ANSI__)
+#	define GAIA_CHARSET GAIA_CHARSET_ANSI
+#else
+#	define GAIA_CHARSET GAIA_CHARSET_UNICODE
+#endif
 
 /* Machine bit count flag. */
 #define GAIA_MACHINE32 32
@@ -74,6 +88,12 @@
 #	else
 #		define GAIA_MACHINE GAIA_MACHINE32
 #	endif
+#elif __X32__
+#	define GAIA_MACHINE GAIA_MACHINE32
+#elif __X64__
+#	define GAIA_MACHINE GAIA_MACHINE64
+#elif __X128__
+#	define GAIA_MACHINE GAIA_MACHINE128
 #else
 #	define GAIA_MACHINE GAIA_MACHINE32
 #endif
