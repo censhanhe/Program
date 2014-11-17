@@ -1,5 +1,5 @@
 cxx=g++
-linkflag=-luuid -lpthread -o
+linkflag=-luuid -lpthread -liconv -o
 compflag=-c -pipe -O2
 binpath=./BIN/
 

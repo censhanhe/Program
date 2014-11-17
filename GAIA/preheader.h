@@ -31,7 +31,6 @@
 #	include <stdio.h>
 #	include <stdlib.h>
 #	include <iostream>
-#	include <locale.h>
 #	include <xlocale>
 #	if GAIA_OS == GAIA_OS_WINDOWS
 #		include <winsock2.h>
@@ -43,6 +42,7 @@
 #		include <uuid/uuid.h>
 #		include <pthread.h>
 #		include <time.h>
+#		include <iconv.h>
 #		include <sys/time.h>
 #		include <sys/errno.h>
 #		include <sys/fcntl.h>
