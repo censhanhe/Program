@@ -40,7 +40,7 @@ namespace GAIA
 		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 			{
 				GAIA::CH szTempFileKey[GAIA::FSYS::MAXPL];
-				GAIA::LOCALE::w2m(filekey, szTempFileKey, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				GAIA::LOCALE::w2m(filekey, szTempFileKey, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ASCII);
 				m_pFile = (GAIA::GVOID*)fopen(szTempFileKey, "wb+");
 			}
 		#	endif
@@ -50,7 +50,7 @@ namespace GAIA
 		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 			{
 				GAIA::CH szTempFileKey[GAIA::FSYS::MAXPL];
-				GAIA::LOCALE::w2m(filekey, szTempFileKey, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				GAIA::LOCALE::w2m(filekey, szTempFileKey, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ASCII);
 				m_pFile = (GAIA::GVOID*)fopen(szTempFileKey, "rb+");
 			}
 		#	endif
@@ -60,7 +60,7 @@ namespace GAIA
 		#	elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 			{
 				GAIA::CH szTempFileKey[GAIA::FSYS::MAXPL];
-				GAIA::LOCALE::w2m(filekey, szTempFileKey, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ANSI);
+				GAIA::LOCALE::w2m(filekey, szTempFileKey, GAIA::FSYS::MAXPL, GAIA::CHARSET_TYPE_ASCII);
 				m_pFile = (GAIA::GVOID*)fopen(szTempFileKey, "rb");
 			}
 		#	endif

@@ -15,7 +15,7 @@ namespace GAIA
 			GAIA_AST(charset_type < GAIA::CHARSET_TYPE_MAXENUMCOUNT);
 			if(charset_type >= GAIA::CHARSET_TYPE_MAXENUMCOUNT)
 				return 0;
-			if(charset_type == GAIA::CHARSET_TYPE_ANSI)
+			if(charset_type == GAIA::CHARSET_TYPE_ASCII)
 			{
 				GAIA::SIZE ret = 0;
 				for(;;)
@@ -52,7 +52,7 @@ namespace GAIA
 			GAIA_AST(charset_type < GAIA::CHARSET_TYPE_MAXENUMCOUNT);
 			if(charset_type >= GAIA::CHARSET_TYPE_MAXENUMCOUNT)
 				return 0;
-			if(charset_type == GAIA::CHARSET_TYPE_ANSI)
+			if(charset_type == GAIA::CHARSET_TYPE_ASCII)
 			{
 				GAIA::SIZE ret = 0;
 				for(;;)

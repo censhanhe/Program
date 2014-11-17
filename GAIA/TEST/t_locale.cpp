@@ -10,12 +10,12 @@ namespace GAIA_TEST
 		GAIA::WCH wszEnglishSrc[1024] = L"Hello World";
 		GAIA::CH szEnglishDst[1024];
 		GAIA::SIZE uStringLen = GAIA::ALGO::strlen(wszEnglishSrc) + 1;
-		if(GAIA::LOCALE::w2m(wszEnglishSrc, GNIL, 0, GAIA::CHARSET_TYPE_ANSI) != uStringLen)
+		if(GAIA::LOCALE::w2m(wszEnglishSrc, GNIL, 0, GAIA::CHARSET_TYPE_ASCII) != uStringLen)
 		{
 			GTLINE2("Locale calculate size from wide char to ansi multi bytes failed!");
 			++nRet;
 		}
-		if(GAIA::LOCALE::w2m(wszEnglishSrc, szEnglishDst, 1024, GAIA::CHARSET_TYPE_ANSI) != uStringLen)
+		if(GAIA::LOCALE::w2m(wszEnglishSrc, szEnglishDst, 1024, GAIA::CHARSET_TYPE_ASCII) != uStringLen)
 		{
 			GTLINE2("Locale convert from wide char to ansi multi bytes failed!");
 			++nRet;
@@ -25,12 +25,12 @@ namespace GAIA_TEST
 			GTLINE2("Locale convert from wide char to ansi multi bytes cause content error!");
 			++nRet;
 		}
-		if(GAIA::LOCALE::m2w(szEnglishDst, GNIL, 0, GAIA::CHARSET_TYPE_ANSI) != uStringLen)
+		if(GAIA::LOCALE::m2w(szEnglishDst, GNIL, 0, GAIA::CHARSET_TYPE_ASCII) != uStringLen)
 		{
 			GTLINE2("Locale calculate size from ansi multi bytes to wide char failed!");
 			++nRet;
 		}
-		if(GAIA::LOCALE::m2w(szEnglishDst, wszEnglishSrc, 1024, GAIA::CHARSET_TYPE_ANSI) != uStringLen)
+		if(GAIA::LOCALE::m2w(szEnglishDst, wszEnglishSrc, 1024, GAIA::CHARSET_TYPE_ASCII) != uStringLen)
 		{
 			GTLINE2("Locale convert from ansi multi bytes to wide char failed!");
 			++nRet;
@@ -122,12 +122,12 @@ namespace GAIA_TEST
 
 		GAIA::ALGO::strcpy(wszEnglishSrc, L"Kutal antik ahlak kalesi(muhteşem ışıl ışıl parlayan gökemli kılıç)");
 		uStringLen = GAIA::ALGO::strlen(wszEnglishSrc) + 1;
-		if(GAIA::LOCALE::w2m(wszEnglishSrc, GNIL, 0, GAIA::CHARSET_TYPE_ANSI) != uStringLen)
+		if(GAIA::LOCALE::w2m(wszEnglishSrc, GNIL, 0, GAIA::CHARSET_TYPE_ASCII) != uStringLen)
 		{
 			GTLINE2("Locale calculate size from wide char to ansi multi bytes failed!");
 			++nRet;
 		}
-		if(GAIA::LOCALE::w2m(wszEnglishSrc, szEnglishDst, 1024, GAIA::CHARSET_TYPE_ANSI) != uStringLen)
+		if(GAIA::LOCALE::w2m(wszEnglishSrc, szEnglishDst, 1024, GAIA::CHARSET_TYPE_ASCII) != uStringLen)
 		{
 			GTLINE2("Locale convert from wide char to ansi multi bytes failed!");
 			++nRet;
@@ -137,12 +137,12 @@ namespace GAIA_TEST
 			GTLINE2("Locale convert from wide char to ansi multi bytes cause content error!");
 			++nRet;
 		}
-		if(GAIA::LOCALE::m2w(szEnglishDst, GNIL, 0, GAIA::CHARSET_TYPE_ANSI) != uStringLen)
+		if(GAIA::LOCALE::m2w(szEnglishDst, GNIL, 0, GAIA::CHARSET_TYPE_ASCII) != uStringLen)
 		{
 			GTLINE2("Locale calculate size from ansi multi bytes to wide char failed!");
 			++nRet;
 		}
-		if(GAIA::LOCALE::m2w(szEnglishDst, wszEnglishSrc, 1024, GAIA::CHARSET_TYPE_ANSI) != uStringLen)
+		if(GAIA::LOCALE::m2w(szEnglishDst, wszEnglishSrc, 1024, GAIA::CHARSET_TYPE_ASCII) != uStringLen)
 		{
 			GTLINE2("Locale convert from ansi multi bytes to wide char failed!");
 			++nRet;

@@ -60,7 +60,7 @@ namespace GAIA
 					return GAIA::False;
 
 				/* Save file header. */
-				if(cst != CHARSET_TYPE_ANSI && 
+				if(cst != CHARSET_TYPE_ASCII && 
 					cst != CHARSET_TYPE_UTF7 && 
 					cst != CHARSET_TYPE_UTF8 && 
 					cst != CHARSET_TYPE_UTF16LE && 

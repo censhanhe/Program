@@ -21,7 +21,7 @@ namespace DWARFSTEST
 			GTLINE2("Load ansi.cpp failed!");
 			++nRet;
 		}
-		if(textfile.charset_type() != GAIA::CHARSET_TYPE_ANSI)
+		if(textfile.charset_type() != GAIA::CHARSET_TYPE_ASCII)
 		{
 			GTLINE2("File ansi charset error!");
 			++nRet;
