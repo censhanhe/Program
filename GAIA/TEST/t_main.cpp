@@ -32,7 +32,7 @@ int main()
 #endif
 	GAIA::FSYS::File file;
 	file.Open(_T("../gaia_test.txt"), GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE);
-	GAIA::STREAM::STDStream prt;
-	GAIA_TEST::t_all(file, prt);
+	GAIA::STREAM::STDStream stm;
+	GAIA_TEST::t_all(file, stm);
 	return 0;
 }

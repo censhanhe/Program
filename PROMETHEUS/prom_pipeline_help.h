@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_Help(){}
 		GINL ~PL_Help(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_Help");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -46,7 +46,7 @@ namespace PROM
 							DWARFS_MISC::CmdParam::CMD_TYPE cmdtype = plc_commandparam->cmdparam.cmd_decl_type(y);
 							if(GAIA::ALGO::stremp(pszDeclDesc))
 								pszDeclDesc = _T("NoInfo");
-							prt << "\t" << "[" << y << "]" << pszDeclCmd << ", Info:" << pszDeclDesc << ", " <<
+							stm << "\t" << "[" << y << "]" << pszDeclCmd << ", Info:" << pszDeclDesc << ", " <<
 								"[" << min_param_size << ", " << max_param_size << "] " <<
 								DWARFS_MISC::CMD_TYPE_NAME[cmdtype] << "\n";
 						}

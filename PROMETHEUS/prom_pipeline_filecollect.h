@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_FileCollect(){}
 		GINL ~PL_FileCollect(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_FileCollect");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -114,7 +114,7 @@ namespace PROM
 			}
 			pRet->filelist.sort();
 			pRet->filelist.unique();
-			prt << "\t\tThere are " << pRet->filelist.size() << " files collected!\n";
+			stm << "\t\tThere are " << pRet->filelist.size() << " files collected!\n";
 
 			/* Release. */
 			plc_commandparam->Release();

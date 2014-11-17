@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_FileStructureAnalyze(){}
 		GINL ~PL_FileStructureAnalyze(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_FileStructureAnalyze");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -73,7 +73,7 @@ namespace PROM
 				plc_codelineprepare->Release();
 			return pRet;
 		}
-		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& prt)
+		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& stm)
 		{
 			/* Parameter check up. */
 			GAIA_AST(pPLC != GNIL);
@@ -97,7 +97,7 @@ namespace PROM
 				pFile->Write(GAIA::UTF16LE_FILEHEAD, sizeof(GAIA::UTF16LE_FILEHEAD));
 			#endif
 			}
-			prt << "[To Parent]" << "\n";
+			stm << "[To Parent]" << "\n";
 			if(pFile != GNIL)
 			{
 				pFile->Write(_T("[To Parent]"), GAIA::ALGO::strlen("[To Parent]") * sizeof(GAIA::TCH));
@@ -108,11 +108,11 @@ namespace PROM
 			{
 				PLC_FileStructure::__FileNodeSet::_datatype& t = *it;
 				if(t.childs.empty())
-					this->OutputParentRelation(plc_filestructure, t, pFile, prt, 0);
+					this->OutputParentRelation(plc_filestructure, t, pFile, stm, 0);
 			}
 
 			/* Print child relation. */
-			prt << "[To Child]" << "\n";
+			stm << "[To Child]" << "\n";
 			if(pFile != GNIL)
 			{
 				pFile->Write(_T("[To Child]"), GAIA::ALGO::strlen("[To Child]") * sizeof(GAIA::TCH));
@@ -123,7 +123,7 @@ namespace PROM
 			{
 				PLC_FileStructure::__FileNodeSet::_datatype& t = *it;
 				if(t.parents.empty())
-					this->OutputChildRelation(plc_filestructure, t, pFile, prt, 0);
+					this->OutputChildRelation(plc_filestructure, t, pFile, stm, 0);
 			}
 
 			return GAIA::True;
@@ -133,14 +133,14 @@ namespace PROM
 			PLC_FileStructure* plc_filestructure,
 			PLC_FileStructure::Node& node,
 			GAIA::FSYS::FileBase* pFile,
-			GAIA::STREAM::StreamBase& prt,
+			GAIA::STREAM::StreamBase& stm,
 			GAIA::SIZE depth)
 		{
 			GPCHR_NULL(plc_filestructure);
-			prt << node.name.front_ptr() << "\n";
+			stm << node.name.front_ptr() << "\n";
 			if(pFile != GNIL)
 			{
-				this->OutputDepth(prt, pFile, depth);
+				this->OutputDepth(stm, pFile, depth);
 				pFile->Write(node.name.front_ptr(), node.name.size() * sizeof(__FileName::_datatype));
 				pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
@@ -150,21 +150,21 @@ namespace PROM
 				__FileName& filename = *itlink;
 				PLC_FileStructure::Node* pParentNode = plc_filestructure->FindNode(filename);
 				if(pParentNode != GNIL)
-					this->OutputParentRelation(plc_filestructure, *pParentNode, pFile, prt, depth + 1);
+					this->OutputParentRelation(plc_filestructure, *pParentNode, pFile, stm, depth + 1);
 			}
 		}
 		GINL GAIA::GVOID OutputChildRelation(
 			PLC_FileStructure* plc_filestructure,
 			PLC_FileStructure::Node& node,
 			GAIA::FSYS::FileBase* pFile,
-			GAIA::STREAM::StreamBase& prt,
+			GAIA::STREAM::StreamBase& stm,
 			GAIA::SIZE depth)
 		{
 			GPCHR_NULL(plc_filestructure);
-			prt << node.name.front_ptr() << "\n";
+			stm << node.name.front_ptr() << "\n";
 			if(pFile != GNIL)
 			{
-				this->OutputDepth(prt, pFile, depth);
+				this->OutputDepth(stm, pFile, depth);
 				pFile->Write(node.name.front_ptr(), node.name.size() * sizeof(__FileName::_datatype));
 				pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 			}
@@ -174,14 +174,14 @@ namespace PROM
 				__FileName& filename = *itlink;
 				PLC_FileStructure::Node* pChildNode = plc_filestructure->FindNode(filename);
 				if(pChildNode != GNIL)
-					this->OutputChildRelation(plc_filestructure, *pChildNode, pFile, prt, depth + 1);
+					this->OutputChildRelation(plc_filestructure, *pChildNode, pFile, stm, depth + 1);
 			}
 		}
-		GINL GAIA::GVOID OutputDepth(GAIA::STREAM::StreamBase& prt, GAIA::FSYS::FileBase* pFile, GAIA::SIZE depth)
+		GINL GAIA::GVOID OutputDepth(GAIA::STREAM::StreamBase& stm, GAIA::FSYS::FileBase* pFile, GAIA::SIZE depth)
 		{
 			for(GAIA::SIZE x = 0; x < depth; ++x)
 			{
-				prt << "\t";
+				stm << "\t";
 				if(pFile != GNIL)
 					pFile->Write(_T("\t"), sizeof(GAIA::TCH));
 			}

@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_LineBreakCorrect(){}
 		GINL ~PL_LineBreakCorrect(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_LineBreakCorrect");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -150,9 +150,9 @@ namespace PROM
 					tempchs = _T("\\r");
 				else
 					tempchs = _T("(InvalidCharacter)");
-				prt << "\t\tAdd " << tempchs.front_ptr() << "=" << add << ".\n";
-				prt << "\t\tRemove \\r\\n=" << remove_rn << ", \\n=" << remove_n << ", \\r=" << remove_r << ".\n";
-				prt << "\t\tChange " << need_save << " files.\n";
+				stm << "\t\tAdd " << tempchs.front_ptr() << "=" << add << ".\n";
+				stm << "\t\tRemove \\r\\n=" << remove_rn << ", \\n=" << remove_n << ", \\r=" << remove_r << ".\n";
+				stm << "\t\tChange " << need_save << " files.\n";
 			}
 
 			/* Release. */

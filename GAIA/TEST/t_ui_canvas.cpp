@@ -85,7 +85,7 @@ namespace GAIA_TEST
 		GAIA::BL m_bResult;
 	};
 
-	extern GAIA::N32 t_ui_canvas(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
+	extern GAIA::N32 t_ui_canvas(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 

@@ -10,10 +10,10 @@ namespace GAIA
 						{\
 							if(!(e))\
 							{\
-								GAIA::STREAM::STDStream prt;\
-								prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue:";\
+								GAIA::STREAM::STDStream stm;\
+								stm << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue:";\
 								GAIA::CH ch[32];\
-								prt >> ch;\
+								stm >> ch;\
 								if(ch[0] == '1' && ch[1] == '\0')\
 									throw GAIA::EXCEPTION::ExceptionAst(__FILE__, __LINE__);\
 							}\
@@ -27,10 +27,10 @@ namespace GAIA
 								{\
 									if(!(e))\
 									{\
-										GAIA::STREAM::STDStream prt;\
-										prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue(Debug):";\
+										GAIA::STREAM::STDStream stm;\
+										stm << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue(Debug):";\
 										GAIA::CH ch;\
-										prt >> ch;\
+										stm >> ch;\
 										if(ch == '1')\
 											throw GAIA::EXCEPTION::ExceptionAstDebug(__FILE__, __LINE__);\
 									}\

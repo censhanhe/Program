@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_container_bitset(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
+	extern GAIA::N32 t_container_bitset(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 		typedef GAIA::CTN::BasicBitset<GAIA::U32, GAIA::ALGO::TwiceSizeIncreaser<GAIA::SIZE> > __BitsetType;

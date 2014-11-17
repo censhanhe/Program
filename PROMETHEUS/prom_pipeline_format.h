@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_Format(){}
 		GINL ~PL_Format(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_Format");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -142,9 +142,9 @@ namespace PROM
 						++file_change_count;
 					}
 				}
-				prt << "\t\tCode line formated!" << "\n";
-				prt << "\t\tRemove space = " << remove_space_count << ", remove tab = " << remove_tab_count << ".\n";
-				prt << "\t\tThere are " << line_change_count << " line changed, and " << file_change_count << " file changed.\n";
+				stm << "\t\tCode line formated!" << "\n";
+				stm << "\t\tRemove space = " << remove_space_count << ", remove tab = " << remove_tab_count << ".\n";
+				stm << "\t\tThere are " << line_change_count << " line changed, and " << file_change_count << " file changed.\n";
 			}
 
 		FUNCTION_END:

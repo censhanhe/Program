@@ -3,7 +3,7 @@
 
 namespace DWARFSTEST
 {
-	GINL GAIA::N32 t_cmdparam(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
+	GINL GAIA::N32 t_cmdparam(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -111,7 +111,7 @@ namespace DWARFSTEST
 			GTLINE2("CmdParam finddecl failed!");
 			++nRet;
 		}
-		if(!cp.build(_T("-D text.txt -r -m -o output.txt -omax 123"), prt))
+		if(!cp.build(_T("-D text.txt -r -m -o output.txt -omax 123"), stm))
 		{
 			GTLINE2("CmdParam build failed!");
 			++nRet;
@@ -120,14 +120,14 @@ namespace DWARFSTEST
 		{
 			const GAIA::TCH* pszCmd = cp.cmd(x);
 			GAIA_AST(!GAIA::ALGO::stremp(pszCmd));
-			prt << pszCmd << " ";
+			stm << pszCmd << " ";
 			for(GAIA::SIZE y = 0; y < cp.param_size(x); ++y)
 			{
 				const GAIA::TCH* pszParam = cp.param(x, y);
 				GAIA_AST(!GAIA::ALGO::stremp(pszParam));
-				prt << pszParam << " ";
+				stm << pszParam << " ";
 			}
-			prt << "\n";
+			stm << "\n";
 		}
 		cp.clear_cmd();
 		cp.clear_decl();

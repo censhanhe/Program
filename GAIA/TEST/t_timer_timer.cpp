@@ -102,7 +102,7 @@ namespace GAIA_TEST
 		GINL GAIA::GVOID init(){}
 	};
 
-	extern GAIA::N32 t_timer_timer(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
+	extern GAIA::N32 t_timer_timer(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 

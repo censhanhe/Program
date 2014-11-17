@@ -27,15 +27,15 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	GAIA::STREAM::STDStream prt;
+	GAIA::STREAM::STDStream stm;
 
-	prt << "Prometheus " << PROM::VERSION_STRING << "\n";
+	stm << "Prometheus " << PROM::VERSION_STRING << "\n";
 
 	GAIA::FSYS::Directory dir;
 	GAIA::CTN::TString strWorkPath;
 	dir.GetWorkingDirectory(strWorkPath);
-	prt << "\tWorkPath = " << strWorkPath.front_ptr() << "\n";
-	prt << "\n";
+	stm << "\tWorkPath = " << strWorkPath.front_ptr() << "\n";
+	stm << "\n";
 
 	/* Calculate all args length. */
 	GAIA::N32 nLen = 1;
@@ -79,11 +79,11 @@ GAIA::N32 main(GAIA::N32 nargs, GAIA::CH* args[])
 	{
 REPEAT:
 		GAIA::CTN::AString strCombin;
-		prt << "Enter the command here : ";
+		stm << "Enter the command here : ";
 		GAIA::CH szParam[1024];
 		for(;;)
 		{
-			prt >> szParam;
+			stm >> szParam;
 			GAIA::CH* p = GAIA::ALGO::strch(szParam, ';');
 			if(p != GNIL)
 			{
@@ -113,7 +113,7 @@ REPEAT:
 	/* Execute command. */
 	PROM::Prom prom;
 #if GAIA_CHARSET == GAIA_CHARSET_ANSI
-	prom.Command((GAIA::CH*)buf.front_ptr() + first_command_index, prt);
+	prom.Command((GAIA::CH*)buf.front_ptr() + first_command_index, stm);
 #elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
 	GAIA::SIZE newsize = GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), GNIL, 0, GAIA::CHARSET_TYPE_SYS);
 	if(newsize > 0)
@@ -121,14 +121,14 @@ REPEAT:
 		GAIA::WCH* pNewCmd = new GAIA::WCH[newsize + 1];
 		GAIA::LOCALE::m2w((GAIA::CH*)buf.front_ptr(), pNewCmd, newsize, GAIA::CHARSET_TYPE_SYS);
 		pNewCmd[newsize] = '\0';
-		prom.Command(pNewCmd + first_command_index, prt);
+		prom.Command(pNewCmd + first_command_index, stm);
 		delete[] pNewCmd;
 	}
 #endif
 
 	/* Dump system status. */
 #ifndef GAIA_DEBUG_MEMORYLEAK
-	prt << "Allocate Times = " << g_gaia_globalallocator.alloc_times() << "\n";
+	stm << "Allocate Times = " << g_gaia_globalallocator.alloc_times() << "\n";
 #endif
 
 	if(nargs == 1)

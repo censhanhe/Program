@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_WordStat(){}
 		GINL ~PL_WordStat(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_WordStat");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -148,7 +148,7 @@ namespace PROM
 				plc_codeline->Release();
 			return pRet;
 		}
-		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& prt)
+		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& stm)
 		{
 			/* Parameter check up. */
 			GAIA_AST(pPLC != GNIL);
@@ -189,7 +189,7 @@ namespace PROM
 					pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 				}
 				else
-					prt << "[" << index++ << "] \"" << word.strWord.front_ptr() << "\", Count = " << word.uExistCount << "\n";
+					stm << "[" << index++ << "] \"" << word.strWord.front_ptr() << "\", Count = " << word.uExistCount << "\n";
 			}
 
 			typedef GAIA::CTN::Vector<WordByRefCount> __WordCountSortVectorType;
@@ -224,7 +224,7 @@ namespace PROM
 					pFile->Write(FILEBREAK, GAIA::ALGO::strlen(FILEBREAK) * sizeof(FILEBREAK[0]));
 				}
 				else
-					prt << "[" << index++ << "] \"" << word.pWord->front_ptr() << "\", Count = " << word.uExistCount << "\n";
+					stm << "[" << index++ << "] \"" << word.pWord->front_ptr() << "\", Count = " << word.uExistCount << "\n";
 			}
 
 			return GAIA::True;

@@ -9,7 +9,7 @@
 
 namespace DWARFSTEST
 {
-	GINL GAIA::N32 t_all(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
+	GINL GAIA::N32 t_all(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 		GAIA::BL bOutputTime = GAIA::False;
@@ -19,10 +19,10 @@ namespace DWARFSTEST
 		// Every test procedure.
 		GTLINE("[DWARFS TEST BEGIN]");
 		{
-			GTLINE1("TextFile test begin!"); nRet += t_textfile(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("TextLine test begin!"); nRet += t_textline(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("CmdParam test begin!"); nRet += t_cmdparam(file, prt); GTLINE1("End"); GTLINE("\t");
-			GTLINE1("SendMail test begin!"); nRet += t_sendmail(file, prt); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("TextFile test begin!"); nRet += t_textfile(file, stm); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("TextLine test begin!"); nRet += t_textline(file, stm); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("CmdParam test begin!"); nRet += t_cmdparam(file, stm); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("SendMail test begin!"); nRet += t_sendmail(file, stm); GTLINE1("End"); GTLINE("\t");
 		}
 		GTLINE("[DWARFS TEST END]");
 

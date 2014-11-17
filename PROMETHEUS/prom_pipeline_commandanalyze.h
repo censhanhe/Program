@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_CommandAnalyze(){}
 		GINL ~PL_CommandAnalyze(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_CommandAnalyze");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -43,7 +43,7 @@ namespace PROM
 			pRet->cmdparam.end_decl();
 
 			/* Execute. */
-			if(!pRet->cmdparam.build(plc_sourcecommand->pszCmd, prt))
+			if(!pRet->cmdparam.build(plc_sourcecommand->pszCmd, stm))
 			{
 				PROM_RAISE_FATALERROR(102);
 				pRet->Release();
@@ -56,7 +56,7 @@ namespace PROM
 
 			return pRet;
 		}
-		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& prt)
+		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& stm)
 		{
 			/* Parameter check up. */
 			GAIA_AST(pPLC != GNIL);
@@ -78,15 +78,15 @@ namespace PROM
 				const GAIA::TCH* pszCmd = plc_sourcecommand->cmdparam.cmd(x);
 				if(GAIA::ALGO::stremp(pszCmd))
 					continue;
-				prt << "\t\t" << pszCmd << " ";
+				stm << "\t\t" << pszCmd << " ";
 				for(GAIA::SIZE y = 0; y < plc_sourcecommand->cmdparam.param_size(x); ++y)
 				{
 					const GAIA::TCH* pszParam = plc_sourcecommand->cmdparam.param(x, y);
 					if(GAIA::ALGO::stremp(pszParam))
 						continue;
-					prt << pszParam << " ";
+					stm << pszParam << " ";
 				}
-				prt << "\n";
+				stm << "\n";
 			}
 
 			return GAIA::True;

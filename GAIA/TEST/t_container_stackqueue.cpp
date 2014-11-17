@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_container_stackqueue(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
+	extern GAIA::N32 t_container_stackqueue(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 		typedef GAIA::CTN::BasicStackQueue<GAIA::N32, GAIA::N32, 100> __StackQueueType;

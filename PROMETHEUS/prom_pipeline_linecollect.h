@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_LineCollect(){}
 		GINL ~PL_LineCollect(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_LineCollect");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -39,7 +39,7 @@ namespace PROM
 				}
 				uTotalLineCount += pRet->file_codelines_list.size();
 			}
-			prt << "\t\tThere are " << uTotalLineCount << " lines collected!\n";
+			stm << "\t\tThere are " << uTotalLineCount << " lines collected!\n";
 
 			/* Release. */
 			plc_file->Release();

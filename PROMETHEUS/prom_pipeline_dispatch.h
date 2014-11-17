@@ -12,7 +12,7 @@ namespace PROM
 			Pipeline** ppPrevPL, const GAIA::SIZE& prevpl_size,
 			Pipeline** ppNextPL, const GAIA::SIZE& nextpl_size,
 			PipelineContext** ppPLC, const GAIA::SIZE& plc_size,
-			GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+			GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Internal type. */
 			typedef GAIA::CTN::Vector<Pipeline*> __PipelineList;
@@ -68,17 +68,17 @@ namespace PROM
 				}
 				if(uPracPrevSize == 0)
 				{
-					prt << "\n\tPipeline Stage : " << pTempPL->GetName() << "\n";
+					stm << "\n\tPipeline Stage : " << pTempPL->GetName() << "\n";
 					GAIA::U64 uStartTick = GAIA::TIME::tick_time();
-					PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, prt, errs);
+					PipelineContext* pNewPLC = pTempPL->Execute(ppPLC, plc_size, stm, errs);
 					GAIA::U64 uEndTick = GAIA::TIME::tick_time();
-					prt << "\t\tTimeLost : " << GSCAST(GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
+					stm << "\t\tTimeLost : " << GSCAST(GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
 					if(pNewPLC == GNIL)
 						PROM_RAISE_FATALERROR(101);
 					else
 					{
-						this->ExecuteOutput(pNewPLC, pTempPL, prt, errs);
-						this->ExecuteExportTempResult(ppPLC, plc_size, pNewPLC, pTempPL, prt, errs);
+						this->ExecuteOutput(pNewPLC, pTempPL, stm, errs);
+						this->ExecuteExportTempResult(ppPLC, plc_size, pNewPLC, pTempPL, stm, errs);
 						for(GAIA::SIZE y = 0; y < plc_size; y++)
 						{
 							if(ppPLC[y] == GNIL)
@@ -115,17 +115,17 @@ namespace PROM
 							break;
 						}
 					}
-					prt << "\n\tPipeline Stage : " << pTempPL->GetName() << "\n";
+					stm << "\n\tPipeline Stage : " << pTempPL->GetName() << "\n";
 					GAIA::U64 uStartTick = GAIA::TIME::tick_time();
-					PipelineContext* pNewPLC = pTempPL->Execute(plc_list.front_ptr(), plc_list.size(), prt, errs);
+					PipelineContext* pNewPLC = pTempPL->Execute(plc_list.front_ptr(), plc_list.size(), stm, errs);
 					GAIA::U64 uEndTick = GAIA::TIME::tick_time();
-					prt << "\t\tTimeLost : " << GSCAST(GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
+					stm << "\t\tTimeLost : " << GSCAST(GAIA::F64)(uEndTick - uStartTick) / 1000.0 / 1000.0 << "\n";
 					if(pNewPLC == GNIL)
 						PROM_RAISE_FATALERROR(101);
 					else
 					{
-						this->ExecuteOutput(pNewPLC, pTempPL, prt, errs);
-						this->ExecuteExportTempResult(plc_list.front_ptr(), plc_list.size(), pNewPLC, pTempPL, prt, errs);
+						this->ExecuteOutput(pNewPLC, pTempPL, stm, errs);
+						this->ExecuteExportTempResult(plc_list.front_ptr(), plc_list.size(), pNewPLC, pTempPL, stm, errs);
 						for(GAIA::SIZE y = 0; y < plc_size; y++)
 						{
 							if(ppPLC[y] == GNIL)
@@ -154,7 +154,7 @@ namespace PROM
 				this->Run(ppNextPL, nextpl_size,
 					pl_list.front_ptr(), pl_list.size(),
 					new_plc_list.front_ptr(), new_plc_list.size(),
-					prt, errs);
+					stm, errs);
 			}
 			for(GAIA::SIZE x = 0; x < pl_list.size(); ++x)
 				pl_list[x]->Release();
@@ -175,7 +175,7 @@ namespace PROM
 		{
 			m_plc_commandparam = GNIL;
 		}
-		GINL GAIA::GVOID ExecuteOutput(PipelineContext* pPLC, Pipeline* pPL, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		GINL GAIA::GVOID ExecuteOutput(PipelineContext* pPLC, Pipeline* pPL, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			GAIA_AST(!GAIA::ALGO::stremp(pPLC->GetName()));
 			if(!GAIA::ALGO::stremp(pPLC->GetName()))
@@ -205,8 +205,8 @@ namespace PROM
 									GAIA::FSYS::File ofile;
 									if(ofile.Open(pszParam1, GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE))
 									{
-										if(pPL->Output(pPLC, &ofile, prt))
-											prt << "\t\tOutput " << pPL->GetName() << " successfully!\n";
+										if(pPL->Output(pPLC, &ofile, stm))
+											stm << "\t\tOutput " << pPL->GetName() << " successfully!\n";
 										else
 											PROM_RAISE_FATALERROR(104);
 									}
@@ -223,8 +223,8 @@ namespace PROM
 							{
 								if(GAIA::ALGO::strcmp(pszParam0, pPL->GetName()) == 0)
 								{
-									if(pPL->Output(pPLC, GNIL, prt))
-										prt << "\t\tOutput " << pPL->GetName() << " successfully!\n";
+									if(pPL->Output(pPLC, GNIL, stm))
+										stm << "\t\tOutput " << pPL->GetName() << " successfully!\n";
 									else
 										PROM_RAISE_FATALERROR(104);
 								}
@@ -236,7 +236,7 @@ namespace PROM
 				}
 			}
 		}
-		GINL GAIA::GVOID ExecuteExportTempResult(PipelineContext** ppPLC, const GAIA::SIZE& plc_size, PipelineContext* pNewPLC, Pipeline* pPL, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		GINL GAIA::GVOID ExecuteExportTempResult(PipelineContext** ppPLC, const GAIA::SIZE& plc_size, PipelineContext* pNewPLC, Pipeline* pPL, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			GPCHR_NULL(ppPLC);
 			GPCHR_ZERO(plc_size);

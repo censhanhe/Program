@@ -3,7 +3,7 @@
 
 namespace DWARFSTEST
 {
-	GINL GAIA::N32 t_textfile(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
+	GINL GAIA::N32 t_textfile(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 

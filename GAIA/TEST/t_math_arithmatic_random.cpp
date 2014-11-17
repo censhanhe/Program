@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_math_arithmatic_random(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& prt)
+	extern GAIA::N32 t_math_arithmatic_random(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		static const GAIA::SIZE SAMPLE_COUNT = 100;
 

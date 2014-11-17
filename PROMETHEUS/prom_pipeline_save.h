@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_Save(){}
 		GINL ~PL_Save(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_Save");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -68,9 +68,9 @@ namespace PROM
 						--save_failed_count;
 				}
 				if(save_failed_count == 0)
-					prt << "\t\tThere are " << save_success_count << " files save successfully.\n";
+					stm << "\t\tThere are " << save_success_count << " files save successfully.\n";
 				else
-					prt << "\t\tThere are " << save_success_count << " files save successfully, and " << save_failed_count << " files save failed!.\n";
+					stm << "\t\tThere are " << save_success_count << " files save successfully, and " << save_failed_count << " files save failed!.\n";
 			}
 
 			/* Release. */
