@@ -194,11 +194,7 @@ namespace GAIA
 			else
 			{
 				GAIA_AST(uSize > (GAIA::SIZE)sizeof(GAIA::NETWORK::Addr));
-			#if GAIA_OS == GAIA_OS_WINDOWS
-				GAIA::N32 recvfrom_addr_len;
-			#else
-				GAIA::N32 recvfrom_addr_len;
-			#endif
+				socklen_t recvfrom_addr_len;
 				sockaddr_in recvfrom_addr;
 				GAIA::ALGO::xmemset(&recvfrom_addr, 0, sizeof(recvfrom_addr));
 				recvfrom_addr_len = sizeof(recvfrom_addr);
@@ -490,13 +486,8 @@ namespace GAIA
 
 				// Accept.
 				sockaddr_in addrnew;
-			#if GAIA_OS == GAIA_OS_WINDOWS
-				GAIA::N32 newsize = sizeof(addrnew);
-				GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
-			#else
-				GAIA::N32 newsize = sizeof(addrnew);
-				GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &newsize);
-			#endif
+				socklen_t new_addr_len = sizeof(addrnew);
+				GAIA::N32 newsock = accept(listensock, (sockaddr*)&addrnew, &new_addr_len);
 				if(newsock != GINVALID)
 				{
 					// Setup socket.
@@ -693,11 +684,7 @@ namespace GAIA
 								nRecv = (GAIA::N32)recv(pHandle->m_h, (GAIA::N8*)m_buf.front_ptr(), (GAIA::N32)m_buf.write_size(), 0);
 							else
 							{
-							#if GAIA_OS == GAIA_OS_WINDOWS
-								GAIA::N32 recvfrom_addr_len;
-							#else
-								GAIA::N32 recvfrom_addr_len;
-							#endif
+								socklen_t recvfrom_addr_len;
 								recvfrom_addr_len = sizeof(recvfrom_addr);
 								GAIA::ALGO::xmemset(&recvfrom_addr, 0, recvfrom_addr_len);
 								GAIA_AST(m_buf.write_size() > (GAIA::SIZE)sizeof(GAIA::NETWORK::Addr));
