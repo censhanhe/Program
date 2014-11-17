@@ -9,10 +9,6 @@
 /* Platform. */
 GAIA::Platform g_gaia_platform;
 
-/* Locale. */
-GAIA::SYNC::Lock g_gaia_localelock;
-GAIA::CHARSET_TYPE g_gaia_charsettype = GAIA::CHARSET_TYPE_SYS;
-
 /* Log. */
 GAIA::LOG::Log g_gaia_log;
 DefaultGAIALogCallBack g_gaia_log_callback;
