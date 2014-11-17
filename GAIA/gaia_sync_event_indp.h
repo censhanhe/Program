@@ -8,6 +8,7 @@
 #else
 #	include <pthread.h>
 #	include <sys/time.h>
+#	include <sys/errno.h>
 #endif
 
 namespace GAIA
@@ -70,9 +71,14 @@ namespace GAIA
 						timeval now;
 						gettimeofday(&now, GNIL);
 						timespec abstime;
-						abstime.tv_nsec = now.tv_usec * 1000 + (uMilliSecond % 1000) * 1000000;
+						abstime.tv_nsec = now.tv_usec * 1000 + (uMilliSecond % 1000) * 1000 * 1000;
 						abstime.tv_sec = now.tv_sec + uMilliSecond / 1000;
-						if(pthread_cond_timedwait(&m_cond, &m_mutex, &abstime) == 0)
+						abstime.tv_sec += abstime.tv_nsec / (1000 * 1000 * 1000);
+						abstime.tv_nsec = abstime.tv_nsec % (1000 * 1000 * 1000);
+						GAIA::N32 nWaitResult = pthread_cond_timedwait(&m_cond, &m_mutex, &abstime);
+						if(nWaitResult == ETIMEDOUT)
+							--m_waitcnt;
+						else if(nWaitResult == 0)
 							ret = GAIA::True;
 					}
 				}
