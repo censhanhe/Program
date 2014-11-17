@@ -3,6 +3,9 @@
 
 #define GINL inline
 
+/* System codepage. */
+#define GAIA_SYS_CODEPAGE "GBK"
+
 /* OS flag. */
 #define GAIA_OS_WINDOWS 1
 #define GAIA_OS_OSX 2
