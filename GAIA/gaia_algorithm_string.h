@@ -597,12 +597,14 @@ namespace GAIA
 			GAIA::N64 left = (GAIA::N64)src;
 			_SrcDataType right = src - (_SrcDataType)left;
 			right = GAIA::MATH::xabs(right);
-			while(right - GSCAST(_SrcDataType)(GSCAST(GAIA::N64)(right)) != 0)
+			for(GAIA::SIZE x = 0; x < sizeof(src) * 2; ++x)
+			{
+				if(right - GSCAST(_SrcDataType)(GSCAST(GAIA::N64)(right)) == 0)
+					break;
 				right *= R(10.0);
+			}
 			_DstDataType p = GAIA::ALGO::int2str(left, pDst);
-			--p;
-			*p = '.';
-			++p;
+			p[-1] = '.';
 			p = GAIA::ALGO::int2str((GAIA::N64)right, p);
 			return p;
 		}
@@ -637,7 +639,7 @@ namespace GAIA
 				--sizet;
 			}
 			*p = '\0';
-			return pDst;
+			return p + 1;
 		}
 		template<typename _SrcDataType, typename _SizeType> GAIA::U8* str2hex(_SrcDataType pSrc, const _SizeType& size, GAIA::U8* pDst)
 		{
