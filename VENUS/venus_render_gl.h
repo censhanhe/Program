@@ -55,6 +55,8 @@ namespace VENUS
 			GAIA::CTN::Set<TextureRec> texset;
 			VENUS::RenderGL::Target* pTarget[4];
 			VENUS::RenderGL::Depther* pDepther;
+			GAIA::N32 nSrcBlend;
+			GAIA::N32 nDstBlend;
 		};
 
 		class IndexBuffer : public virtual VENUS::Render::IndexBuffer

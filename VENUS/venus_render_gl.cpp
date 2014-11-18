@@ -47,6 +47,12 @@ namespace VENUS
 	#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
 	#define GL_CLAMP_TO_EDGE 0x812F
 	#define GL_MIRRORED_REPEAT 0x8370
+	#define GL_BLEND_SRC_ALPHA 0x80CB
+	#define GL_BLEND_DST_ALPHA 0x80CA
+	#define GL_FUNC_ADD 0x8006
+	#define GL_FUNC_SUBTRACT 0x800A
+	#define GL_FUNC_REVERSE_SUBTRACT 0x800B
+	#define GL_BLEND_EQUATION_ALPHA 0x883D
 
 	typedef void (GAIA_BASEAPI* GLGENBUFFERS)(GLsizei n, GLuint *buffers);
 	typedef void (GAIA_BASEAPI* GLDELETEBUFFERS)(GLsizei n, const GLuint *buffers);
@@ -93,6 +99,8 @@ namespace VENUS
 	typedef void (GAIA_BASEAPI* GLGETUNIFORMFV)(GLuint program, GLint location, GLfloat *params);
 	typedef void (GAIA_BASEAPI* GLUNIFORM1I)(GLint location, GLint v0);
 
+	typedef void (GAIA_BASEAPI* GLBLENDEQUATION)(GLenum mode);
+
 	static GLGENBUFFERS glGenBuffers = GNIL;
 	static GLDELETEBUFFERS glDeleteBuffers = GNIL;
 	static GLBINDBUFFER glBindBuffer = GNIL;
@@ -137,6 +145,8 @@ namespace VENUS
 
 	static GLGETUNIFORMFV glGetUniformfv = GNIL;
 	static GLUNIFORM1I glUniform1i = GNIL;
+
+	static GLBLENDEQUATION glBlendEquation = GNIL;
 #endif
 	RenderGL::Context::Context()
 	{
@@ -169,6 +179,9 @@ namespace VENUS
 		pProgram = GNIL;
 		GAIA::ALGO::nil(pTarget, sizeofarray(pTarget));
 		pDepther = GNIL;
+
+		glGetIntegerv(GL_BLEND_SRC_ALPHA, &nSrcBlend);
+		glGetIntegerv(GL_BLEND_DST_ALPHA, &nDstBlend);
 	}
 	RenderGL::IndexBuffer::IndexBuffer()
 	{
@@ -921,6 +934,8 @@ namespace VENUS
 
 		glGetUniformfv = (GLGETUNIFORMFV)::wglGetProcAddress("glGetUniformfv");
 		glUniform1i = (GLUNIFORM1I)::wglGetProcAddress("glUniform1i");
+
+		glBlendEquation = (GLBLENDEQUATION)::wglGetProcAddress("glBlendEquation");
 	#endif
 
 		const GLubyte* pVersion = glGetString(GL_VERSION);
@@ -1053,12 +1068,102 @@ namespace VENUS
 		GPCHR_NULL_RET(pContext, GAIA::False);
 		switch(s)
 		{
-		case VENUS::Render::RENDER_STATE_ALPHABLEND:
+		case VENUS::Render::RENDER_STATE_BLEND:
 			{
 				if((GAIA::BL)v)
 					glEnable(GL_BLEND);
 				else
 					glDisable(GL_BLEND);
+			}
+			break;
+		case VENUS::Render::RENDER_STATE_BLENDSRC:
+			{
+				VENUS::Render::BLEND blend = (VENUS::Render::BLEND)(GAIA::EN)v;
+				switch(blend)
+				{
+				case VENUS::Render::BLEND_ZERO:
+					glBlendFunc(GL_ZERO, pContext->nDstBlend);
+					pContext->nSrcBlend = GL_ZERO;
+					break;
+				case VENUS::Render::BLEND_ONE:
+					glBlendFunc(GL_ONE, pContext->nDstBlend);
+					pContext->nSrcBlend = GL_ONE;
+					break;
+				case VENUS::Render::BLEND_SRCALPHA:
+					glBlendFunc(GL_SRC_ALPHA, pContext->nDstBlend);
+					pContext->nSrcBlend = GL_SRC_ALPHA;
+					break;
+				case VENUS::Render::BLEND_DSTALPHA:
+					glBlendFunc(GL_DST_ALPHA, pContext->nDstBlend);
+					pContext->nSrcBlend = GL_DST_ALPHA;
+					break;
+				case VENUS::Render::BLEND_SRCALPHAINV:
+					glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, pContext->nDstBlend);
+					pContext->nSrcBlend = GL_ONE_MINUS_SRC_ALPHA;
+					break;
+				case VENUS::Render::BLEND_DSTALPHAINV:
+					glBlendFunc(GL_ONE_MINUS_DST_ALPHA, pContext->nDstBlend);
+					pContext->nSrcBlend = GL_ONE_MINUS_DST_ALPHA;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+			}
+			break;
+		case VENUS::Render::RENDER_STATE_BLENDDST:
+			{
+				VENUS::Render::BLEND blend = (VENUS::Render::BLEND)(GAIA::EN)v;
+				switch(blend)
+				{
+				case VENUS::Render::BLEND_ZERO:
+					glBlendFunc(pContext->nSrcBlend, GL_ZERO);
+					pContext->nDstBlend = GL_ZERO;
+					break;
+				case VENUS::Render::BLEND_ONE:
+					glBlendFunc(pContext->nSrcBlend, GL_ONE);
+					pContext->nDstBlend = GL_ONE;
+					break;
+				case VENUS::Render::BLEND_SRCALPHA:
+					glBlendFunc(pContext->nSrcBlend, GL_SRC_ALPHA);
+					pContext->nDstBlend = GL_SRC_ALPHA;
+					break;
+				case VENUS::Render::BLEND_DSTALPHA:
+					glBlendFunc(pContext->nSrcBlend, GL_DST_ALPHA);
+					pContext->nDstBlend = GL_DST_ALPHA;
+					break;
+				case VENUS::Render::BLEND_SRCALPHAINV:
+					glBlendFunc(pContext->nSrcBlend, GL_ONE_MINUS_SRC_ALPHA);
+					pContext->nDstBlend = GL_ONE_MINUS_SRC_ALPHA;
+					break;
+				case VENUS::Render::BLEND_DSTALPHAINV:
+					glBlendFunc(pContext->nSrcBlend, GL_ONE_MINUS_DST_ALPHA);
+					pContext->nDstBlend = GL_ONE_MINUS_DST_ALPHA;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+			}
+			break;
+		case VENUS::Render::RENDER_STATE_BLENDMETHOD:
+			{
+				VENUS::Render::BLEND_METHOD bm = (VENUS::Render::BLEND_METHOD)(GAIA::EN)v;
+				switch(bm)
+				{
+				case VENUS::Render::BLEND_METHOD_ADD:
+					glBlendEquation(GL_FUNC_ADD);
+					break;
+				case VENUS::Render::BLEND_METHOD_SUB:
+					glBlendEquation(GL_FUNC_SUBTRACT);
+					break;
+				case VENUS::Render::BLEND_METHOD_SUBINV:
+					glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
 			}
 			break;
 		case VENUS::Render::RENDER_STATE_ZTEST:
@@ -1244,12 +1349,93 @@ namespace VENUS
 		GPCHR_NULL_RET(pContext, GAIA::False);
 		switch(s)
 		{
-		case VENUS::Render::RENDER_STATE_ALPHABLEND:
+		case VENUS::Render::RENDER_STATE_BLEND:
 			{
 				if(glIsEnabled(GL_BLEND))
 					v = GAIA::True;
 				else
 					v = GAIA::False;
+			}
+			break;
+		case VENUS::Render::RENDER_STATE_BLENDSRC:
+			{
+				GLint n;
+				glGetIntegerv(GL_BLEND_SRC_ALPHA, &n);
+				switch(n)
+				{
+				case GL_ZERO:
+					v = VENUS::Render::BLEND_ZERO;
+					break;
+				case GL_ONE:
+					v = VENUS::Render::BLEND_ONE;
+					break;
+				case GL_SRC_ALPHA:
+					v = VENUS::Render::BLEND_SRCALPHA;
+					break;
+				case GL_DST_ALPHA:
+					v = VENUS::Render::BLEND_DSTALPHA;
+					break;
+				case GL_ONE_MINUS_SRC_ALPHA:
+					v = VENUS::Render::BLEND_SRCALPHAINV;
+					break;
+				case GL_ONE_MINUS_DST_ALPHA:
+					v = VENUS::Render::BLEND_DSTALPHAINV;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+			}
+			break;
+		case VENUS::Render::RENDER_STATE_BLENDDST:
+			{
+				GLint n;
+				glGetIntegerv(GL_BLEND_DST_ALPHA, &n);
+				switch(n)
+				{
+				case GL_ZERO:
+					v = VENUS::Render::BLEND_ZERO;
+					break;
+				case GL_ONE:
+					v = VENUS::Render::BLEND_ONE;
+					break;
+				case GL_SRC_ALPHA:
+					v = VENUS::Render::BLEND_SRCALPHA;
+					break;
+				case GL_DST_ALPHA:
+					v = VENUS::Render::BLEND_DSTALPHA;
+					break;
+				case GL_ONE_MINUS_SRC_ALPHA:
+					v = VENUS::Render::BLEND_SRCALPHAINV;
+					break;
+				case GL_ONE_MINUS_DST_ALPHA:
+					v = VENUS::Render::BLEND_DSTALPHAINV;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+			}
+			break;
+		case VENUS::Render::RENDER_STATE_BLENDMETHOD:
+			{
+				GLint n;
+				glGetIntegerv(GL_BLEND_EQUATION_ALPHA, &n);
+				switch(n)
+				{
+				case GL_FUNC_ADD:
+					v = VENUS::Render::BLEND_METHOD_ADD;
+					break;
+				case GL_FUNC_SUBTRACT:
+					v = VENUS::Render::BLEND_METHOD_SUB;
+					break;
+				case GL_FUNC_REVERSE_SUBTRACT:
+					v = VENUS::Render::BLEND_METHOD_SUBINV;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					break;
+				}
 			}
 			break;
 		case VENUS::Render::RENDER_STATE_ZTEST:
