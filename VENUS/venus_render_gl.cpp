@@ -324,6 +324,7 @@ namespace VENUS
 			m_uShader = glCreateShader(GL_FRAGMENT_SHADER);
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 		if(m_uShader == GL_INVALID)
@@ -643,6 +644,7 @@ namespace VENUS
 		case VENUS::Render::FORMAT_DXT5:
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 		switch(m_desc.type)
@@ -673,6 +675,7 @@ namespace VENUS
 			}
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 		return GAIA::True;
@@ -1068,6 +1071,37 @@ namespace VENUS
 			break;
 		case VENUS::Render::RENDER_STATE_ZFUNC:
 			{
+				GAIA::RELATION_TYPE r = (GAIA::RELATION_TYPE)(GAIA::EN)v;
+				switch(r)
+				{
+				case GAIA::RELATION_TYPE_EQUAL:
+					glDepthFunc(GL_EQUAL);
+					break;
+				case GAIA::RELATION_TYPE_NOTEQUAL:
+					glDepthFunc(GL_NOTEQUAL);
+					break;
+				case GAIA::RELATION_TYPE_ABOVE:
+					glDepthFunc(GL_GREATER);
+					break;
+				case GAIA::RELATION_TYPE_BELOW:
+					glDepthFunc(GL_LESS);
+					break;
+				case GAIA::RELATION_TYPE_ABOVEEQUAL:
+					glDepthFunc(GL_GEQUAL);
+					break;
+				case GAIA::RELATION_TYPE_BELOWEQUAL:
+					glDepthFunc(GL_LEQUAL);
+					break;
+				case GAIA::RELATION_TYPE_TRUE:
+					glDepthFunc(GL_ALWAYS);
+					break;
+				case GAIA::RELATION_TYPE_FALSE:
+					glDepthFunc(GL_NEVER);
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
 			}
 			break;
 		case VENUS::Render::RENDER_STATE_ZWRITE:
@@ -1083,6 +1117,7 @@ namespace VENUS
 			}
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 		return GAIA::True;
@@ -1198,6 +1233,7 @@ namespace VENUS
 			}
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 		return GAIA::True;
@@ -1226,6 +1262,38 @@ namespace VENUS
 			break;
 		case VENUS::Render::RENDER_STATE_ZFUNC:
 			{
+				GLint n;
+				glGetIntegerv(GL_DEPTH_FUNC, &n);
+				switch(n)
+				{
+				case GL_EQUAL:
+					v = GAIA::RELATION_TYPE_EQUAL;
+					break;
+				case GL_NOTEQUAL:
+					v = GAIA::RELATION_TYPE_NOTEQUAL;
+					break;
+				case GL_GREATER:
+					v = GAIA::RELATION_TYPE_ABOVE;
+					break;
+				case GL_LESS:
+					v = GAIA::RELATION_TYPE_BELOW;
+					break;
+				case GL_GEQUAL:
+					v = GAIA::RELATION_TYPE_ABOVEEQUAL;
+					break;
+				case GL_LEQUAL:
+					v = GAIA::RELATION_TYPE_BELOWEQUAL;
+					break;
+				case GL_ALWAYS:
+					v = GAIA::RELATION_TYPE_TRUE;
+					break;
+				case GL_NEVER:
+					v = GAIA::RELATION_TYPE_FALSE;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
 			}
 			break;
 		case VENUS::Render::RENDER_STATE_ZWRITE:
@@ -1241,6 +1309,7 @@ namespace VENUS
 			}
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 		return GAIA::True;
@@ -1268,7 +1337,7 @@ namespace VENUS
 					break;
 				default:
 					GAIA_AST(GAIA::ALWAYSFALSE);
-					break;
+					return GAIA::False;
 				}
 			}
 			break;
@@ -1289,7 +1358,7 @@ namespace VENUS
 					break;
 				default:
 					GAIA_AST(GAIA::ALWAYSFALSE);
-					break;
+					return GAIA::False;
 				}
 			}
 			break;
@@ -1350,6 +1419,7 @@ namespace VENUS
 			}
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 		return GAIA::True;
@@ -1712,6 +1782,7 @@ namespace VENUS
 				case 3:
 				case 4:
 				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
 				}
 			}
@@ -1729,6 +1800,7 @@ namespace VENUS
 				case 3:
 				case 4:
 				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
 				}
 			}
@@ -1747,6 +1819,7 @@ namespace VENUS
 					break;
 				case 4:
 				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
 				}
 			}
@@ -1765,11 +1838,13 @@ namespace VENUS
 					glUniformMatrix4fv(c.nLocation, sCount, GL_FALSE, p);
 					break;
 				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
 					return GAIA::False;
 				}
 			}
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 
@@ -1900,6 +1975,7 @@ namespace VENUS
 			count = sElementCount + 2;
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 
@@ -1926,6 +2002,7 @@ namespace VENUS
 				type = GL_FLOAT;
 				break;
 			default:
+				GAIA_AST(GAIA::ALWAYSFALSE);
 				return GAIA::False;
 			}
 		#if GAIA_COMPILER == GAIA_COMPILER_CL
