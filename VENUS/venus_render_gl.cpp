@@ -38,6 +38,8 @@ namespace VENUS
 	#define GL_FLOAT_MAT2 0x8B5A
 	#define GL_FLOAT_MAT3 0x8B5B
 	#define GL_FLOAT_MAT4 0x8B5C
+	#define GL_SAMPLER_2D 0x8B5E
+	#define GL_SAMPLER_CUBE 0x8B60
 	#define GL_TEXTURE_CUBE_MAP 0x8513
 	#define GL_TEXTURE_CUBE_MAP_POSITIVE_X 0x8515
 	#define GL_TEXTURE_CUBE_MAP_NEGATIVE_X 0x8516
@@ -47,6 +49,14 @@ namespace VENUS
 	#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
 	#define GL_CLAMP_TO_EDGE 0x812F
 	#define GL_MIRRORED_REPEAT 0x8370
+	#define GL_TEXTURE0 0x84C0
+	#define GL_TEXTURE1 0x84C1
+	#define GL_TEXTURE2 0x84C2
+	#define GL_TEXTURE3 0x84C3
+	#define GL_TEXTURE4 0x84C4
+	#define GL_TEXTURE5 0x84C5
+	#define GL_TEXTURE6 0x84C6
+	#define GL_TEXTURE7 0x84C7
 	#define GL_BLEND_SRC_ALPHA 0x80CB
 	#define GL_BLEND_DST_ALPHA 0x80CA
 	#define GL_FUNC_ADD 0x8006
@@ -148,6 +158,18 @@ namespace VENUS
 
 	static GLBLENDEQUATION glBlendEquation = GNIL;
 #endif
+	static const GAIA::U32 SAMPLEID[] = 
+	{
+		GL_TEXTURE0,
+		GL_TEXTURE1,
+		GL_TEXTURE2,
+		GL_TEXTURE3,
+		GL_TEXTURE4,
+		GL_TEXTURE5,
+		GL_TEXTURE6,
+		GL_TEXTURE7,
+	};
+
 	RenderGL::Context::Context()
 	{
 		this->init();
@@ -432,6 +454,7 @@ namespace VENUS
 				m_uProgram = GL_INVALID;
 				attrlist.clear();
 				uniformlist.clear();
+				samplist.clear();
 				return GAIA::False;
 			}
 
@@ -494,6 +517,7 @@ namespace VENUS
 				m_uProgram = GL_INVALID;
 				attrlist.clear();
 				uniformlist.clear();
+				samplist.clear();
 				return GAIA::False;
 			}
 			c.uCount = resdatasize;
@@ -519,11 +543,13 @@ namespace VENUS
 				m_uProgram = GL_INVALID;
 				attrlist.clear();
 				uniformlist.clear();
+				samplist.clear();
 				return GAIA::False;
 			}
 
 			Constant c;
-			c.sNameIndex = r.m_strpool.alloc(szTemp);
+			Sampler s;
+			s.sNameIndex = c.sNameIndex = r.m_strpool.alloc(szTemp);
 			switch(restype)
 			{
 			case GL_FLOAT:
@@ -575,19 +601,34 @@ namespace VENUS
 					c.uDimenY = 4;
 				}
 				break;
+			case GL_SAMPLER_2D:
+				{
+					s.type = VENUS::Render::TEXTURE_TYPE_2D;
+				}
+				break;
+			case GL_SAMPLER_CUBE:
+				{
+					s.type = VENUS::Render::TEXTURE_TYPE_CUBE;
+				}
+				break;
 			default:
 				GAIA_AST(GAIA::ALWAYSFALSE);
 				glDeleteProgram(m_uProgram);
 				m_uProgram = GL_INVALID;
 				attrlist.clear();
 				uniformlist.clear();
+				samplist.clear();
 				return GAIA::False;
 			}
 			c.uCount = resdatasize;
-			c.nLocation = nLocation;
-			uniformlist.push_back(c);
+			s.nLocation = c.nLocation = nLocation;
+			if(restype == GL_SAMPLER_2D || restype == GL_SAMPLER_CUBE)
+				samplist.push_back(s);
+			else
+				uniformlist.push_back(c);
 		}
 		uniformlist.sort();
+		samplist.sort();
 		m_desc = desc;
 		if(m_desc.pVS != GNIL)
 			m_desc.pVS->Reference();
@@ -2168,7 +2209,7 @@ namespace VENUS
 		/* Set index buffer. */
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pContext->pIB->m_uIB);
 
-		/* Set mapping vertex buffer. */
+		/* Set vertex buffer. */
 		for(GAIA::CTN::Vector<VENUS::RenderGL::Program::Constant>::it it = pContext->pProgram->attrlist.front_it(); !it.empty(); ++it)
 		{
 			VENUS::RenderGL::Program::Constant& c = *it;
@@ -2198,6 +2239,34 @@ namespace VENUS
 		#if GAIA_COMPILER == GAIA_COMPILER_CL
 		#	pragma warning(default: 4312)
 		#endif
+		}
+
+		/* Set texture. */
+		GAIA::SIZE sTextureCount = 0;
+		for(GAIA::CTN::Vector<VENUS::RenderGL::Program::Sampler>::it it = pContext->pProgram->samplist.front_it(); !it.empty(); ++it)
+		{
+			VENUS::RenderGL::Program::Sampler& s = *it;
+			VENUS::RenderGL::Context::TextureRec finder;
+			finder.sNameIndex = s.sNameIndex;
+			VENUS::RenderGL::Context::TextureRec* pFinded = pContext->texset.find(finder);
+			if(pFinded == GNIL)
+				return GAIA::False;
+
+			glActiveTexture(SAMPLEID[sTextureCount]);
+			switch(s.type)
+			{
+			case VENUS::Render::TEXTURE_TYPE_2D:
+				glBindTexture(GL_TEXTURE_2D, pFinded->pTex->m_uTex);
+				break;
+			case VENUS::Render::TEXTURE_TYPE_CUBE:
+				glBindTexture(GL_TEXTURE_CUBE_MAP, pFinded->pTex->m_uTex);
+				break;
+			default:
+				GAIA_AST(GAIA::ALWAYSFALSE);
+				return GAIA::False;
+			}
+			glUniform1i(s.nLocation, sTextureCount);
+			++sTextureCount;
 		}
 
 		/* Draw. */

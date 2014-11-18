@@ -6,6 +6,7 @@ class ScreenVertex
 public:
 	GAIA::MATH::VEC2<GAIA::F32> pos;
 	GAIA::MATH::ARGB<GAIA::F32> cr;
+	GAIA::MATH::VEC2<GAIA::F32> tc;
 };
 
 class Vertex
@@ -17,21 +18,26 @@ static const GAIA::CH VERTEXSHADERSTRING[] =
 "\
 attribute vec2 a_pos;\
 attribute vec4 a_cr;\
+attribute vec2 a_tc;\
 varying vec4 v_cr;\
+varying vec2 v_tc;\
 void main()\
 {\
 	gl_Position = vec4(a_pos.x, a_pos.y, 0.5, 1.0);\
 	v_cr = a_cr;\
+	v_tc = a_tc;\
 }\
 ";
 
 static const GAIA::CH PIXELSHADERSTRING[] = 
 "\
 varying vec4 v_cr;\
+varying vec2 v_tc;\
 uniform float u_time;\
+uniform sampler2D u_tex;\
 void main()\
 {\
-	gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * v_cr * abs(sin(u_time));\
+	gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * v_cr * abs(sin(u_time)) * texture2D(u_tex, v_tc);\
 }\
 ";
 
@@ -55,6 +61,9 @@ public:
 			v[0].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 1.0F, 0.0F, 0.0F);
 			v[1].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 0.0F, 1.0F, 0.0F);
 			v[2].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 0.0F, 0.0F, 1.0F);
+			v[0].tc = GAIA::MATH::VEC2<GAIA::F32>(0.0F, 0.0F);
+			v[1].tc = GAIA::MATH::VEC2<GAIA::F32>(0.0F, 1.0F);
+			v[2].tc = GAIA::MATH::VEC2<GAIA::F32>(1.0F, 1.0F);
 			pScreenTriangleVB->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, sizeof(v), v);
 
 			VENUS::Render::IndexBuffer::Desc descIB;
@@ -82,6 +91,29 @@ public:
 			descProgram.pVS = pScreenVShader;
 			descProgram.pPS = pScreenPShader;
 			pScreenProgram = r.CreateProgram(descProgram);
+
+			VENUS::Render::Texture::Desc descTex;
+			descTex.reset();
+			descTex.type = VENUS::Render::TEXTURE_TYPE_2D;
+			descTex.fmt = VENUS::Render::FORMAT_A8R8G8B8;
+			descTex.sSizeX = 128;
+			descTex.sSizeY = 128;
+			pTex = r.CreateTexture(descTex);
+			{
+				GAIA::MATH::ARGB<GAIA::U8>* pTexData = new GAIA::MATH::ARGB<GAIA::U8>[descTex.sSizeX * descTex.sSizeY];
+				for(GAIA::SIZE y = 0; y < descTex.sSizeY; ++y)
+				{
+					for(GAIA::SIZE x = 0; x < descTex.sSizeX; ++x)
+					{
+						pTexData[x].r = (GAIA::U8)((GAIA::F32)x / (GAIA::F32)descTex.sSizeX * 255.0F);
+						pTexData[x].g = (GAIA::U8)((GAIA::F32)y / (GAIA::F32)descTex.sSizeY * 255.0F);
+						pTexData[x].b = 255;
+						pTexData[x].a = 255;
+					}
+				}
+				pTex->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, descTex.sSizeX * descTex.sSizeY * 4, 0, 0, pTexData);
+				GAIA_DELETE_SAFE(pTexData);
+			}
 		}
 		return GAIA::True;
 	}
@@ -92,6 +124,7 @@ public:
 		GAIA_RELEASE_SAFE(pScreenVShader);
 		GAIA_RELEASE_SAFE(pScreenPShader);
 		GAIA_RELEASE_SAFE(pScreenProgram);
+		GAIA_RELEASE_SAFE(pTex);
 		return GAIA::True;
 	}
 public:
@@ -100,6 +133,7 @@ public:
 	VENUS::Render::Shader* pScreenVShader;
 	VENUS::Render::Shader* pScreenPShader;
 	VENUS::Render::Program* pScreenProgram;
+	VENUS::Render::Texture* pTex;
 private:
 	GAIA::GVOID init()
 	{
@@ -108,6 +142,7 @@ private:
 		pScreenVShader = GNIL;
 		pScreenPShader = GNIL;
 		pScreenProgram = GNIL;
+		pTex = GNIL;
 	}
 };
 
@@ -120,8 +155,10 @@ static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resourc
 	r.ClearTarget(ctx, 0, crClear);
 
 	// Draw screen triangle.
+	r.SetTexture(ctx, "u_tex", res.pTex);
 	r.SetVertexBuffer(ctx, "a_pos", res.pScreenTriangleVB, sizeof(ScreenVertex), 0);
 	r.SetVertexBuffer(ctx, "a_cr", res.pScreenTriangleVB, sizeof(ScreenVertex), sizeof(GAIA::MATH::VEC2<GAIA::F32>));
+	r.SetVertexBuffer(ctx, "a_tc", res.pScreenTriangleVB, sizeof(ScreenVertex), sizeof(GAIA::MATH::VEC2<GAIA::F32>) + sizeof(GAIA::MATH::ARGB<GAIA::F32>));
 	r.SetIndexBuffer(ctx, res.pScreenTriangleIB);
 	r.SetProgram(ctx, res.pScreenProgram);
 	GAIA::F32 fTime = (GAIA::F32)GAIA::TIME::tick_time() / 1000.0F / 1000.0F;

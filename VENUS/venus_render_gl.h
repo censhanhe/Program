@@ -125,6 +125,15 @@ namespace VENUS
 				GAIA::U8 uDimenY;
 				GAIA::N8 nLocation;
 			};
+			class Sampler : public GAIA::Base
+			{
+			public:
+				GAIA_CLASS_OPERATOR_COMPARE(sNameIndex, sNameIndex, Sampler);
+			public:
+				GAIA::SIZE sNameIndex;
+				VENUS::Render::TEXTURE_TYPE type;
+				GAIA::N8 nLocation;
+			};
 		public:
 			Program();
 			~Program();
@@ -137,6 +146,7 @@ namespace VENUS
 		public:
 			GAIA::CTN::Vector<Constant> attrlist;
 			GAIA::CTN::Vector<Constant> uniformlist;
+			GAIA::CTN::Vector<Sampler> samplist;
 		public:
 			VENUS::Render::Program::Desc m_desc;
 			GAIA::U32 m_uProgram;
