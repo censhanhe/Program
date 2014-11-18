@@ -150,8 +150,11 @@ namespace VENUS
 		}
 		vbset.destroy();
 		GAIA_RELEASE_SAFE(pProgram);
-		for(GAIA::SIZE x = 0; x < sizeofarray(pTex); ++x)
-			GAIA_RELEASE_SAFE(pTex[x]);
+		for(GAIA::CTN::Set<TextureRec>::it it = texset.front_it(); !it.empty(); ++it)
+		{
+			TextureRec& tr = *it;
+			GAIA_RELEASE_SAFE(tr.pTex);
+		}
 		for(GAIA::SIZE x = 0; x < sizeofarray(pTarget); ++x)
 			GAIA_RELEASE_SAFE(pTarget[x]);
 		GAIA_RELEASE_SAFE(pDepther);
@@ -162,7 +165,6 @@ namespace VENUS
 		eletype = VENUS::Render::ELEMENT_TYPE_TRIANGLELIST;
 		pIB = GNIL;
 		pProgram = GNIL;
-		GAIA::ALGO::nil(pTex, sizeofarray(pTex));
 		GAIA::ALGO::nil(pTarget, sizeofarray(pTarget));
 		pDepther = GNIL;
 	}
@@ -1298,21 +1300,28 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULL_RET(pIB, GAIA::False);
+
+		if(pContext->pIB == pIB)
+			return GAIA::True;
+
 		GAIA_RELEASE_SAFE(pContext->pIB);
-		pContext->pIB = GDCAST(VENUS::RenderGL::IndexBuffer*)(pIB);
-		GPCHR_NULL_RET(pContext->pIB, GAIA::False);
-		pContext->pIB->Reference();
+		if(pIB != GNIL)
+		{
+			pContext->pIB = GDCAST(VENUS::RenderGL::IndexBuffer*)(pIB);
+			GPCHR_NULL_RET(pContext->pIB, GAIA::False);
+			pContext->pIB->Reference();
+		}
+
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::SetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszAttrName, VENUS::Render::VertexBuffer* pVB, GAIA::SIZE sStride, GAIA::SIZE sOffset)
+	GAIA::BL RenderGL::SetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszName, VENUS::Render::VertexBuffer* pVB, GAIA::SIZE sStride, GAIA::SIZE sOffset)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULLSTRPTR_RET(pszAttrName, GAIA::False);
+		GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
 
 		Context::VertexBufferRec finder;
-		finder.sNameIndex = m_strpool.alloc(pszAttrName);
+		finder.sNameIndex = m_strpool.alloc(pszName);
 		Context::VertexBufferRec* pFinded = pContext->vbset.find(finder);
 		if(pVB != GNIL)
 		{
@@ -1357,53 +1366,102 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULL_RET(pProgram, GAIA::False);
+
+		if(pContext->pProgram == pProgram)
+			return GAIA::True;
+
 		GAIA_RELEASE_SAFE(pContext->pProgram);
-		pContext->pProgram = GDCAST(VENUS::RenderGL::Program*)(pProgram);
-		GPCHR_NULL_RET(pContext->pProgram, GAIA::False);
-		pContext->pProgram->Reference();
-		glUseProgram(pContext->pProgram->m_uProgram);
+		if(pProgram != GNIL)
+		{
+			pContext->pProgram = GDCAST(VENUS::RenderGL::Program*)(pProgram);
+			GPCHR_NULL_RET(pContext->pProgram, GAIA::False);
+			pContext->pProgram->Reference();
+			glUseProgram(pContext->pProgram->m_uProgram);
+		}
+		else
+			glUseProgram(0);
+
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::SetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex, VENUS::Render::Texture* pTex)
+	GAIA::BL RenderGL::SetTexture(VENUS::Render::Context& ctx, const GAIA::CH* pszName, VENUS::Render::Texture* pTex)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULL_RET(pTex, GAIA::False);
-		GPCHR_BELOWZERO_RET(sTextureIndex, GAIA::False);
-		GAIA_AST(sTextureIndex < sizeofarray(pContext->pTex));
-		if(sTextureIndex >= sizeofarray(pContext->pTex))
-			return GAIA::False;
-		GAIA_RELEASE_SAFE(pContext->pTex[sTextureIndex]);
-		pContext->pTex[sTextureIndex] = GDCAST(VENUS::RenderGL::Texture*)(pTex);
-		GPCHR_NULL_RET(pContext->pTex[sTextureIndex], GAIA::False);
-		pContext->pTex[sTextureIndex]->Reference();
+		GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
+
+		Context::TextureRec finder;
+		finder.sNameIndex = m_strpool.alloc(pszName);
+		Context::TextureRec* pFinded = pContext->texset.find(finder);
+		if(pTex != GNIL)
+		{
+			if(pFinded != GNIL)
+			{
+				if(pFinded->pTex != pTex)
+				{
+					GAIA_RELEASE_SAFE(pFinded->pTex);
+					pFinded->pTex = GDCAST(VENUS::RenderGL::Texture*)(pTex);
+					GPCHR_NULL_RET(pFinded->pTex, GAIA::False);
+					pFinded->pTex->Reference();
+				}
+			}
+			else
+			{
+				finder.pTex = GDCAST(VENUS::RenderGL::Texture*)(pTex);
+				GPCHR_NULL_RET(finder.pTex, GAIA::False);
+				finder.pTex->Reference();
+				pContext->texset.insert(finder);
+			}
+		}
+		else
+		{
+			if(pFinded != GNIL)
+			{
+				pFinded->pTex->Release();
+				pContext->texset.erase(finder);
+			}
+			else
+				return GAIA::False;
+		}
+
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, VENUS::Render::Target* pTarget)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULL_RET(pTarget, GAIA::False);
 		GPCHR_BELOWZERO_RET(sTargetIndex, GAIA::False);
 		GAIA_AST(sTargetIndex < sizeofarray(pContext->pTarget));
 		if(sTargetIndex >= sizeofarray(pContext->pTarget))
 			return GAIA::False;
+
+		if(pContext->pTarget[sTargetIndex] == pTarget)
+			return GAIA::True;
+
 		GAIA_RELEASE_SAFE(pContext->pTarget[sTargetIndex]);
-		pContext->pTarget[sTargetIndex] = GDCAST(VENUS::RenderGL::Target*)(pTarget);
-		GPCHR_NULL_RET(pContext->pTarget[sTargetIndex], GAIA::False);
-		pContext->pTarget[sTargetIndex]->Reference();
+		if(pTarget != GNIL)
+		{
+			pContext->pTarget[sTargetIndex] = GDCAST(VENUS::RenderGL::Target*)(pTarget);
+			GPCHR_NULL_RET(pContext->pTarget[sTargetIndex], GAIA::False);
+			pContext->pTarget[sTargetIndex]->Reference();
+		}
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetDepther(VENUS::Render::Context& ctx, VENUS::Render::Depther* pDepther)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULL_RET(pDepther, GAIA::False);
+
+		if(pContext->pDepther == pDepther)
+			return GAIA::True;
+
 		GAIA_RELEASE_SAFE(pContext->pDepther);
-		pContext->pDepther = GDCAST(VENUS::RenderGL::Depther*)(pDepther);
-		GPCHR_NULL_RET(pContext->pDepther, GAIA::False);
-		pContext->pDepther->Reference();
+		if(pDepther != GNIL)
+		{
+			pContext->pDepther = GDCAST(VENUS::RenderGL::Depther*)(pDepther);
+			GPCHR_NULL_RET(pContext->pDepther, GAIA::False);
+			pContext->pDepther->Reference();
+		}
+
 		return GAIA::True;
 	}
 	VENUS::Render::IndexBuffer* RenderGL::GetIndexBuffer(VENUS::Render::Context& ctx)
@@ -1414,14 +1472,14 @@ namespace VENUS
 			pContext->pIB->Reference();
 		return pContext->pIB;
 	}
-	VENUS::Render::VertexBuffer* RenderGL::GetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszAttrName, GAIA::SIZE& sStride, GAIA::SIZE& sOffset)
+	VENUS::Render::VertexBuffer* RenderGL::GetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszName, GAIA::SIZE& sStride, GAIA::SIZE& sOffset)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		GPCHR_NULLSTRPTR_RET(pszAttrName, GNIL);
+		GPCHR_NULLSTRPTR_RET(pszName, GNIL);
 
 		Context::VertexBufferRec finder;
-		finder.sNameIndex = m_strpool.alloc(pszAttrName);
+		finder.sNameIndex = m_strpool.alloc(pszName);
 		Context::VertexBufferRec* pFinded = pContext->vbset.find(finder);
 		if(pFinded == GNIL)
 			return GNIL;
@@ -1438,17 +1496,19 @@ namespace VENUS
 			pContext->pProgram->Reference();
 		return pContext->pProgram;
 	}
-	VENUS::Render::Texture* RenderGL::GetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex)
+	VENUS::Render::Texture* RenderGL::GetTexture(VENUS::Render::Context& ctx, const GAIA::CH* pszName)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		GPCHR_BELOWZERO_RET(sTextureIndex, GNIL);
-		GAIA_AST(sTextureIndex < sizeofarray(pContext->pTex));
-		if(sTextureIndex >= sizeofarray(pContext->pTex))
-			return GAIA::False;
-		if(pContext->pTex[sTextureIndex] != GNIL)
-			pContext->pTex[sTextureIndex]->Reference();
-		return pContext->pTex[sTextureIndex];
+		GPCHR_NULLSTRPTR_RET(pszName, GNIL);
+
+		Context::TextureRec finder;
+		finder.sNameIndex = m_strpool.alloc(pszName);
+		Context::TextureRec* pFinded = pContext->texset.find(finder);
+		if(pFinded == GNIL)
+			return GNIL;
+		pFinded->pTex->Reference();
+		return pFinded->pTex;
 	}
 	VENUS::Render::Target* RenderGL::GetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex)
 	{

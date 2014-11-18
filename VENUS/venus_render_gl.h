@@ -34,6 +34,14 @@ namespace VENUS
 				GAIA::SIZE sOffset;
 				GAIA::SIZE sStride;
 			};
+			class TextureRec : public GAIA::Base
+			{
+			public:
+				GAIA_CLASS_OPERATOR_COMPARE(sNameIndex, sNameIndex, TextureRec);
+			public:
+				VENUS::RenderGL::Texture* pTex;
+				GAIA::SIZE sNameIndex;
+			};
 		public:
 			Context();
 			~Context();
@@ -44,7 +52,7 @@ namespace VENUS
 			VENUS::RenderGL::IndexBuffer* pIB;
 			GAIA::CTN::Set<VertexBufferRec> vbset;
 			VENUS::RenderGL::Program* pProgram;
-			VENUS::RenderGL::Texture* pTex[4];
+			GAIA::CTN::Set<TextureRec> texset;
 			VENUS::RenderGL::Target* pTarget[4];
 			VENUS::RenderGL::Depther* pDepther;
 		};
@@ -221,16 +229,16 @@ namespace VENUS
 		virtual VENUS::Render::Depther* CreateDepther(const VENUS::Render::Depther::Desc& desc);
 
 		virtual GAIA::BL SetIndexBuffer(VENUS::Render::Context& ctx, VENUS::Render::IndexBuffer* pIB);
-		virtual GAIA::BL SetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszAttrName, VENUS::Render::VertexBuffer* pVB, GAIA::SIZE sStride, GAIA::SIZE sOffset);
+		virtual GAIA::BL SetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszName, VENUS::Render::VertexBuffer* pVB, GAIA::SIZE sStride, GAIA::SIZE sOffset);
 		virtual GAIA::BL SetProgram(VENUS::Render::Context& ctx, VENUS::Render::Program* pProgram);
-		virtual GAIA::BL SetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex, VENUS::Render::Texture* pTex);
+		virtual GAIA::BL SetTexture(VENUS::Render::Context& ctx, const GAIA::CH* pszName, VENUS::Render::Texture* pTex);
 		virtual GAIA::BL SetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, VENUS::Render::Target* pTarget);
 		virtual GAIA::BL SetDepther(VENUS::Render::Context& ctx, VENUS::Render::Depther* pDepther);
 
 		virtual VENUS::Render::IndexBuffer* GetIndexBuffer(VENUS::Render::Context& ctx);
-		virtual VENUS::Render::VertexBuffer* GetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszAttrName, GAIA::SIZE& sStride, GAIA::SIZE& sOffset);
+		virtual VENUS::Render::VertexBuffer* GetVertexBuffer(VENUS::Render::Context& ctx, const GAIA::CH* pszName, GAIA::SIZE& sStride, GAIA::SIZE& sOffset);
 		virtual VENUS::Render::Program* GetProgram(VENUS::Render::Context& ctx);
-		virtual VENUS::Render::Texture* GetTexture(VENUS::Render::Context& ctx, GAIA::SIZE sTextureIndex);
+		virtual VENUS::Render::Texture* GetTexture(VENUS::Render::Context& ctx, const GAIA::CH* pszName);
 		virtual VENUS::Render::Target* GetTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex);
 		virtual VENUS::Render::Depther* GetDepther(VENUS::Render::Context& ctx);
 
