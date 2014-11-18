@@ -146,6 +146,7 @@ namespace VENUS
 			GAIA::BL IsCreated() const;
 		public:
 			VENUS::Render::Texture::Desc m_desc;
+			GAIA::U32 m_uTex;
 		};
 
 		class Target : public virtual VENUS::Render::Target

@@ -38,6 +38,13 @@ namespace VENUS
 	#define GL_FLOAT_MAT2 0x8B5A
 	#define GL_FLOAT_MAT3 0x8B5B
 	#define GL_FLOAT_MAT4 0x8B5C
+	#define GL_TEXTURE_CUBE_MAP 0x8513
+	#define GL_TEXTURE_CUBE_MAP_POSITIVE_X 0x8515
+	#define GL_TEXTURE_CUBE_MAP_NEGATIVE_X 0x8516
+	#define GL_TEXTURE_CUBE_MAP_POSITIVE_Y 0x8517
+	#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Y 0x8518
+	#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z 0x8519
+	#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
 
 	typedef void (GAIA_BASEAPI* GLGENBUFFERS)(GLsizei n, GLuint *buffers);
 	typedef void (GAIA_BASEAPI* GLDELETEBUFFERS)(GLsizei n, const GLuint *buffers);
@@ -590,6 +597,7 @@ namespace VENUS
 	RenderGL::Texture::Texture()
 	{
 		m_desc.reset();
+		m_uTex = GL_INVALID;
 	}
 	RenderGL::Texture::~Texture()
 	{
@@ -608,6 +616,61 @@ namespace VENUS
 	GAIA::BL RenderGL::Texture::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p)
 	{
 		GPCHR_NULL_RET(p, GAIA::False);
+		GLint nFormat = GL_INVALID;
+		GLenum uType = GL_INVALID;
+		switch(m_desc.fmt)
+		{
+		case VENUS::Render::FORMAT_A8R8G8B8:
+			nFormat = GL_RGBA;
+			uType = GL_UNSIGNED_BYTE;
+			break;
+		case VENUS::Render::FORMAT_X8R8G8B8:
+			nFormat = GL_RGBA;
+			uType = GL_UNSIGNED_BYTE;
+			break;
+		case VENUS::Render::FORMAT_R8G8B8:
+			nFormat = GL_RGB;
+			uType = GL_UNSIGNED_BYTE;
+			break;
+		case VENUS::Render::FORMAT_DXT1:
+			break;
+		case VENUS::Render::FORMAT_DXT3:
+			break;
+		case VENUS::Render::FORMAT_DXT5:
+			break;
+		default:
+			return GAIA::False;
+		}
+		switch(m_desc.type)
+		{
+		case VENUS::Render::TEXTURE_TYPE_1D:
+			{
+				glBindTexture(GL_TEXTURE_2D, m_uTex);
+				glTexImage2D(GL_TEXTURE_2D, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, p);
+			}
+			break;
+		case VENUS::Render::TEXTURE_TYPE_2D:
+			{
+				glBindTexture(GL_TEXTURE_2D, m_uTex);
+				glTexImage2D(GL_TEXTURE_2D, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, p);
+			}
+			break;
+		case VENUS::Render::TEXTURE_TYPE_3D:
+			return GAIA::False;
+		case VENUS::Render::TEXTURE_TYPE_CUBE:
+			{
+				glBindTexture(GL_TEXTURE_CUBE_MAP, m_uTex);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, (GAIA::U8*)p + sSize / 6 * 0);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, (GAIA::U8*)p + sSize / 6 * 1);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, (GAIA::U8*)p + sSize / 6 * 2);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, (GAIA::U8*)p + sSize / 6 * 3);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, (GAIA::U8*)p + sSize / 6 * 4);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, (GAIA::U8*)p + sSize / 6 * 5);
+			}
+			break;
+		default:
+			return GAIA::False;
+		}
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Texture::Create(VENUS::RenderGL& r, const VENUS::Render::Texture::Desc& desc)
@@ -615,11 +678,19 @@ namespace VENUS
 		GAIA_AST(desc.check());
 		if(this->IsCreated())
 			this->Destroy();
+		glGenTextures(1, &m_uTex);
+		if(m_uTex == GL_INVALID)
+			return GAIA::False;
 		m_desc = desc;
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Texture::Destroy()
 	{
+		if(m_uTex != GL_INVALID)
+		{
+			glDeleteTextures(1, &m_uTex);
+			m_uTex = GL_INVALID;
+		}
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Texture::IsCreated() const
