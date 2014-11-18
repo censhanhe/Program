@@ -45,6 +45,8 @@ namespace VENUS
 	#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Y 0x8518
 	#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z 0x8519
 	#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
+	#define GL_CLAMP_TO_EDGE 0x812F
+	#define GL_MIRRORED_REPEAT 0x8370
 
 	typedef void (GAIA_BASEAPI* GLGENBUFFERS)(GLsizei n, GLuint *buffers);
 	typedef void (GAIA_BASEAPI* GLDELETEBUFFERS)(GLsizei n, const GLuint *buffers);
@@ -1058,6 +1060,10 @@ namespace VENUS
 			break;
 		case VENUS::Render::RENDER_STATE_ZTEST:
 			{
+				if((GAIA::BL)v)
+					glEnable(GL_DEPTH_TEST);
+				else
+					glDisable(GL_DEPTH_TEST);
 			}
 			break;
 		case VENUS::Render::RENDER_STATE_ZFUNC:
@@ -1070,6 +1076,10 @@ namespace VENUS
 			break;
 		case VENUS::Render::RENDER_STATE_CULL:
 			{
+				if((GAIA::BL)v)
+					glEnable(GL_CULL_FACE);
+				else
+					glDisable(GL_CULL_FACE);
 			}
 			break;
 		default:
@@ -1083,27 +1093,92 @@ namespace VENUS
 		GPCHR_NULL_RET(pContext, GAIA::False);
 		switch(s)
 		{
+		case VENUS::Render::SAMPLER_STATE_UNWRAPMODEU:
+			{
+				VENUS::Render::UNWRAPMODE m = (VENUS::Render::UNWRAPMODE)(GAIA::EN)v;
+				switch(m)
+				{
+				case VENUS::Render::UNWRAPMODE_REPEAT:
+					glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+					glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
+					break;
+				case VENUS::Render::UNWRAPMODE_CLAMP:
+					glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+					glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+					break;
+				case VENUS::Render::UNWRAPMODE_MIRRIOR:
+					glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+					glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+			}
+			break;
+		case VENUS::Render::SAMPLER_STATE_UNWRAPMODEV:
+			{
+				VENUS::Render::UNWRAPMODE m = (VENUS::Render::UNWRAPMODE)(GAIA::EN)v;
+				switch(m)
+				{
+				case VENUS::Render::UNWRAPMODE_REPEAT:
+					glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+					glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
+					break;
+				case VENUS::Render::UNWRAPMODE_CLAMP:
+					glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+					glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+					break;
+				case VENUS::Render::UNWRAPMODE_MIRRIOR:
+					glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+					glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
+			}
+			break;
 		case VENUS::Render::SAMPLER_STATE_MINFILTER:
 			{
+				VENUS::Render::FILTER f = (VENUS::Render::FILTER)(GAIA::EN)v;
+				switch(f)
+				{
+				case VENUS::Render::FILTER_NEAREST:
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+					glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+					break;
+				case VENUS::Render::FILTER_LINEAR:
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+					glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
 			}
 			break;
 		case VENUS::Render::SAMPLER_STATE_MAXFILTER:
 			{
-			}
-			break;
-		case VENUS::Render::SAMPLER_STATE_MIPFILTER:
-			{
-			}
-			break;
-		case VENUS::Render::SAMPLER_STATE_BORDERCOLOR:
-			{
-			}
-			break;
-		case VENUS::Render::SAMPLER_STATE_BORDER:
-			{
+				VENUS::Render::FILTER f = (VENUS::Render::FILTER)(GAIA::EN)v;
+				switch(f)
+				{
+				case VENUS::Render::FILTER_NEAREST:
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+					glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+					break;
+				case VENUS::Render::FILTER_LINEAR:
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+					glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
 			}
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 		return GAIA::True;
@@ -1143,6 +1218,10 @@ namespace VENUS
 			break;
 		case VENUS::Render::RENDER_STATE_ZTEST:
 			{
+				if(glIsEnabled(GL_DEPTH_TEST))
+					v = GAIA::True;
+				else
+					v = GAIA::False;
 			}
 			break;
 		case VENUS::Render::RENDER_STATE_ZFUNC:
@@ -1155,6 +1234,10 @@ namespace VENUS
 			break;
 		case VENUS::Render::RENDER_STATE_CULL:
 			{
+				if(glIsEnabled(GL_CULL_FACE))
+					v = GAIA::True;
+				else
+					v = GAIA::False;
 			}
 			break;
 		default:
@@ -1168,27 +1251,86 @@ namespace VENUS
 		GPCHR_NULL_RET(pContext, GAIA::False);
 		switch(s)
 		{
+		case VENUS::Render::SAMPLER_STATE_UNWRAPMODEU:
+			{
+				GLint n;
+				glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &n);
+				switch(n)
+				{
+				case GL_REPEAT:
+					v = VENUS::Render::UNWRAPMODE_REPEAT;
+					break;
+				case GL_CLAMP_TO_EDGE:
+					v = VENUS::Render::UNWRAPMODE_CLAMP;
+					break;
+				case GL_MIRRORED_REPEAT:
+					v = VENUS::Render::UNWRAPMODE_MIRRIOR;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					break;
+				}
+			}
+			break;
+		case VENUS::Render::SAMPLER_STATE_UNWRAPMODEV:
+			{
+				GLint n;
+				glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &n);
+				switch(n)
+				{
+				case GL_REPEAT:
+					v = VENUS::Render::UNWRAPMODE_REPEAT;
+					break;
+				case GL_CLAMP_TO_EDGE:
+					v = VENUS::Render::UNWRAPMODE_CLAMP;
+					break;
+				case GL_MIRRORED_REPEAT:
+					v = VENUS::Render::UNWRAPMODE_MIRRIOR;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					break;
+				}
+			}
+			break;
 		case VENUS::Render::SAMPLER_STATE_MINFILTER:
 			{
+				GLint n;
+				glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &n);
+				switch(n)
+				{
+				case GL_NEAREST:
+					v = VENUS::Render::FILTER_NEAREST;
+					break;
+				case GL_LINEAR:
+					v = VENUS::Render::FILTER_LINEAR;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
 			}
 			break;
 		case VENUS::Render::SAMPLER_STATE_MAXFILTER:
 			{
-			}
-			break;
-		case VENUS::Render::SAMPLER_STATE_MIPFILTER:
-			{
-			}
-			break;
-		case VENUS::Render::SAMPLER_STATE_BORDERCOLOR:
-			{
-			}
-			break;
-		case VENUS::Render::SAMPLER_STATE_BORDER:
-			{
+				GLint n;
+				glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &n);
+				switch(n)
+				{
+				case GL_NEAREST:
+					v = VENUS::Render::FILTER_NEAREST;
+					break;
+				case GL_LINEAR:
+					v = VENUS::Render::FILTER_LINEAR;
+					break;
+				default:
+					GAIA_AST(GAIA::ALWAYSFALSE);
+					return GAIA::False;
+				}
 			}
 			break;
 		default:
+			GAIA_AST(GAIA::ALWAYSFALSE);
 			return GAIA::False;
 		}
 		return GAIA::True;
@@ -1667,19 +1809,34 @@ namespace VENUS
 
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::SetViewport(const VENUS::Render::Viewport& vp)
+	GAIA::BL RenderGL::SetViewport(const GAIA::MATH::AABR<GAIA::N32>& vp)
 	{
-		glViewport(vp.sOffsetX, vp.sOffsetY, vp.sWidth, vp.sHeight);
+		glViewport(vp.pmin.x, vp.pmin.y, vp.width(), vp.height());
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::GetViewport(VENUS::Render::Viewport& vp) const
+	GAIA::BL RenderGL::GetViewport(GAIA::MATH::AABR<GAIA::N32>& vp) const
 	{
 		GLint n[4];
 		glGetIntegerv(GL_VIEWPORT, n);
-		vp.sOffsetX = n[0];
-		vp.sOffsetY = n[1];
-		vp.sWidth = n[2];
-		vp.sHeight = n[3];
+		vp.pmin.x = n[0];
+		vp.pmin.y = n[1];
+		vp.pmax.x = n[0] + n[2];
+		vp.pmax.y = n[1] + n[3];
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::SetScissor(const GAIA::MATH::AABR<GAIA::N32>& s)
+	{
+		glScissor(s.pmin.x, s.pmin.y, s.width(), s.height());
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::GetScissor(GAIA::MATH::AABR<GAIA::N32>& s) const
+	{
+		GLint n[4];
+		glGetIntegerv(GL_SCISSOR_BOX, n);
+		s.pmin.x = n[0];
+		s.pmin.y = n[1];
+		s.pmax.x = n[0] + n[2];
+		s.pmax.y = n[1] + n[3];
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetElementType(VENUS::Render::Context& ctx, VENUS::Render::ELEMENT_TYPE eletype)

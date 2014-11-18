@@ -27,12 +27,22 @@ namespace VENUS
 		GAIA_ENUM_END(RENDER_STATE)
 
 		GAIA_ENUM_BEGIN(SAMPLER_STATE)
+			SAMPLER_STATE_UNWRAPMODEU,
+			SAMPLER_STATE_UNWRAPMODEV,
 			SAMPLER_STATE_MINFILTER,
 			SAMPLER_STATE_MAXFILTER,
-			SAMPLER_STATE_MIPFILTER,
-			SAMPLER_STATE_BORDERCOLOR,
-			SAMPLER_STATE_BORDER,
 		GAIA_ENUM_END(SAMPLER_STATE)
+
+		GAIA_ENUM_BEGIN(UNWRAPMODE)
+			UNWRAPMODE_REPEAT,
+			UNWRAPMODE_CLAMP,
+			UNWRAPMODE_MIRRIOR,
+		GAIA_ENUM_END(UNWRAPMODE)
+
+		GAIA_ENUM_BEGIN(FILTER)
+			FILTER_NEAREST,
+			FILTER_LINEAR,
+		GAIA_ENUM_END(FILTER)
 
 		GAIA_ENUM_BEGIN(QUALITY_STATE)
 			QUALITY_STATE_ANTIALIAS,
@@ -394,15 +404,6 @@ namespace VENUS
 		};
 
 	public:
-		class Viewport : GAIA::Base
-		{
-		public:
-			GAIA::SIZE sOffsetX;
-			GAIA::SIZE sOffsetY;
-			GAIA::SIZE sWidth;
-			GAIA::SIZE sHeight;
-		};
-	public:
 
 		/* Base. */
 		virtual GAIA::BL Create(const VENUS::Render::Desc& desc) = 0;
@@ -452,8 +453,10 @@ namespace VENUS
 		virtual GAIA::BL GetConstant(VENUS::Render::Context& ctx, VENUS::Render::Program& prog, const GAIA::CH* pszUniformName, GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount) = 0;
 
 		/* Draw function. */
-		virtual GAIA::BL SetViewport(const VENUS::Render::Viewport& vp) = 0;
-		virtual GAIA::BL GetViewport(VENUS::Render::Viewport& vp) const = 0;
+		virtual GAIA::BL SetViewport(const GAIA::MATH::AABR<GAIA::N32>& vp) = 0;
+		virtual GAIA::BL GetViewport(GAIA::MATH::AABR<GAIA::N32>& vp) const = 0;
+		virtual GAIA::BL SetScissor(const GAIA::MATH::AABR<GAIA::N32>& s) = 0;
+		virtual GAIA::BL GetScissor(GAIA::MATH::AABR<GAIA::N32>& s) const = 0;
 		virtual GAIA::BL SetElementType(VENUS::Render::Context& ctx, VENUS::Render::ELEMENT_TYPE eletype) = 0;
 		virtual VENUS::Render::ELEMENT_TYPE GetElementType(VENUS::Render::Context& ctx) const = 0;
 		virtual GAIA::BL ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;
