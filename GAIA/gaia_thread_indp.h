@@ -44,10 +44,10 @@ namespace GAIA
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			if(m_hThread != GNIL)
 				return GAIA::False;
+			m_state = STATE_RUNNING;
 			m_hThread = ::CreateThread(GNIL, m_stacksize, thread_procedure, static_cast<GAIA::GVOID*>(this), 0, GNIL);
 			if(m_hThread == GNIL)
 				return GAIA::False;
-			m_state = STATE_RUNNING;
 			return GAIA::True;
 		#else
 			if(m_bCreated)
@@ -57,11 +57,11 @@ namespace GAIA
 				return GAIA::False;
 			if(pthread_attr_setstacksize(&attr, m_stacksize) != 0)
 				return GAIA::False;
+			m_state = STATE_RUNNING;
 			if(pthread_create(&m_thread, &attr, thread_procedure, static_cast<GAIA::GVOID*>(this)) != 0)
 				return GAIA::False;
 			pthread_attr_destroy(&attr);
 			m_bCreated = GAIA::True;
-			m_state = STATE_RUNNING;
 			return GAIA::True;
 		#endif
 		}
