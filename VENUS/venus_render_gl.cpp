@@ -44,6 +44,8 @@ namespace VENUS
 	typedef void (GAIA_BASEAPI* GLBINDBUFFER)(GLenum target, GLuint buffer);
 	typedef void (GAIA_BASEAPI* GLBUFFERDATA)(GLenum target, GAIA::NM size, const void *data, GLenum usage);
 
+	typedef void (GAIA_BASEAPI* GLACTIVETEXTURE)(GLenum texture);
+
 	typedef GLuint (GAIA_BASEAPI* GLCREATESHADER)(GLenum type);
 	typedef void (GAIA_BASEAPI* GLDELETESHADER)(GLuint shader);
 	typedef void (GAIA_BASEAPI* GLSHADERSOURCE)(GLuint shader, GLsizei count, const GAIA::CH *const*string, const GLint *length);
@@ -80,11 +82,14 @@ namespace VENUS
 	typedef void (GAIA_BASEAPI* GLUNIFORMMATRIX4FV)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 
 	typedef void (GAIA_BASEAPI* GLGETUNIFORMFV)(GLuint program, GLint location, GLfloat *params);
+	typedef void (GAIA_BASEAPI* GLUNIFORM1I)(GLint location, GLint v0);
 
 	static GLGENBUFFERS glGenBuffers = GNIL;
 	static GLDELETEBUFFERS glDeleteBuffers = GNIL;
 	static GLBINDBUFFER glBindBuffer = GNIL;
 	static GLBUFFERDATA glBufferData = GNIL;
+
+	static GLACTIVETEXTURE glActiveTexture = GNIL;
 
 	static GLCREATESHADER glCreateShader = GNIL;
 	static GLDELETESHADER glDeleteShader = GNIL;
@@ -122,6 +127,7 @@ namespace VENUS
 	static GLUNIFORMMATRIX4FV glUniformMatrix4fv = GNIL;
 
 	static GLGETUNIFORMFV glGetUniformfv = GNIL;
+	static GLUNIFORM1I glUniform1i = GNIL;
 #endif
 	RenderGL::Context::Context()
 	{
@@ -798,6 +804,8 @@ namespace VENUS
 		glBindBuffer = (GLBINDBUFFER)::wglGetProcAddress("glBindBuffer");
 		glBufferData = (GLBUFFERDATA)::wglGetProcAddress("glBufferData");
 
+		glActiveTexture = (GLACTIVETEXTURE)::wglGetProcAddress("glActiveTexture");
+
 		glCreateShader = (GLCREATESHADER)::wglGetProcAddress("glCreateShader");
 		glDeleteShader = (GLDELETESHADER)::wglGetProcAddress("glDeleteShader");
 		glShaderSource = (GLSHADERSOURCE)::wglGetProcAddress("glShaderSource");
@@ -834,6 +842,7 @@ namespace VENUS
 		glUniformMatrix4fv = (GLUNIFORMMATRIX4FV)::wglGetProcAddress("glUniformMatrix4fv");
 
 		glGetUniformfv = (GLGETUNIFORMFV)::wglGetProcAddress("glGetUniformfv");
+		glUniform1i = (GLUNIFORM1I)::wglGetProcAddress("glUniform1i");
 	#endif
 
 		const GLubyte* pVersion = glGetString(GL_VERSION);
@@ -1525,6 +1534,21 @@ namespace VENUS
 
 		glGetUniformfv(pProgram->m_uProgram, c.nLocation, p);
 
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::SetViewport(const VENUS::Render::Viewport& vp)
+	{
+		glViewport(vp.sOffsetX, vp.sOffsetY, vp.sWidth, vp.sHeight);
+		return GAIA::True;
+	}
+	GAIA::BL RenderGL::GetViewport(VENUS::Render::Viewport& vp) const
+	{
+		GLint n[4];
+		glGetIntegerv(GL_VIEWPORT, n);
+		vp.sOffsetX = n[0];
+		vp.sOffsetY = n[1];
+		vp.sWidth = n[2];
+		vp.sHeight = n[3];
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::SetElementType(VENUS::Render::Context& ctx, VENUS::Render::ELEMENT_TYPE eletype)

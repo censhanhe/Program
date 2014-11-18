@@ -78,6 +78,7 @@ namespace VENUS
 			COMMIT_METHOD_READWRITE,
 		GAIA_ENUM_END(COMMIT_METHOD)
 
+	public:
 		class Desc : public virtual GAIA::FWORK::InstanceDesc
 		{
 		public:
@@ -393,6 +394,15 @@ namespace VENUS
 		};
 
 	public:
+		class Viewport : GAIA::Base
+		{
+		public:
+			GAIA::SIZE sOffsetX;
+			GAIA::SIZE sOffsetY;
+			GAIA::SIZE sWidth;
+			GAIA::SIZE sHeight;
+		};
+	public:
 
 		/* Base. */
 		virtual GAIA::BL Create(const VENUS::Render::Desc& desc) = 0;
@@ -442,6 +452,8 @@ namespace VENUS
 		virtual GAIA::BL GetConstant(VENUS::Render::Context& ctx, VENUS::Render::Program& prog, const GAIA::CH* pszUniformName, GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount) = 0;
 
 		/* Draw function. */
+		virtual GAIA::BL SetViewport(const VENUS::Render::Viewport& vp) = 0;
+		virtual GAIA::BL GetViewport(VENUS::Render::Viewport& vp) const = 0;
 		virtual GAIA::BL SetElementType(VENUS::Render::Context& ctx, VENUS::Render::ELEMENT_TYPE eletype) = 0;
 		virtual VENUS::Render::ELEMENT_TYPE GetElementType(VENUS::Render::Context& ctx) const = 0;
 		virtual GAIA::BL ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& cr) = 0;

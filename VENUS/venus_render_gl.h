@@ -238,6 +238,8 @@ namespace VENUS
 		virtual GAIA::BL GetConstant(VENUS::Render::Context& ctx, VENUS::Render::Program& prog, const GAIA::CH* pszUniformName, GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount);
 
 		/* Draw function. */
+		virtual GAIA::BL SetViewport(const VENUS::Render::Viewport& vp);
+		virtual GAIA::BL GetViewport(VENUS::Render::Viewport& vp) const;
 		virtual GAIA::BL SetElementType(VENUS::Render::Context& ctx, VENUS::Render::ELEMENT_TYPE eletype);
 		virtual VENUS::Render::ELEMENT_TYPE GetElementType(VENUS::Render::Context& ctx) const;
 		virtual GAIA::BL ClearTarget(VENUS::Render::Context& ctx, GAIA::SIZE sTargetIndex, const GAIA::MATH::ARGB<GAIA::REAL>& cr);
