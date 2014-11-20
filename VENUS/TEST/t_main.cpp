@@ -105,10 +105,10 @@ public:
 				{
 					for(GAIA::SIZE x = 0; x < descTex.sSizeX; ++x)
 					{
-						pTexData[x].r = (GAIA::U8)((GAIA::F32)x / (GAIA::F32)descTex.sSizeX * 255.0F);
-						pTexData[x].g = (GAIA::U8)((GAIA::F32)y / (GAIA::F32)descTex.sSizeY * 255.0F);
-						pTexData[x].b = 255;
-						pTexData[x].a = 255;
+						pTexData[y * descTex.sSizeX + x].a = 255;
+						pTexData[y * descTex.sSizeX + x].r = GAIA::MATH::xrandom() % 255;
+						pTexData[y * descTex.sSizeX + x].g = GAIA::MATH::xrandom() % 255;
+						pTexData[y * descTex.sSizeX + x].b = 255;
 					}
 				}
 				pTex->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, descTex.sSizeX * descTex.sSizeY * 4, 0, 0, pTexData);
@@ -155,6 +155,10 @@ static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resourc
 	r.ClearTarget(ctx, 0, crClear);
 
 	// Draw screen triangle.
+	r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_MINFILTER, VENUS::Render::FILTER_LINEAR);
+	r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_MAXFILTER, VENUS::Render::FILTER_LINEAR);
+	r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_UNWRAPMODEU, VENUS::Render::UNWRAPMODE_CLAMP);
+	r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_UNWRAPMODEV, VENUS::Render::UNWRAPMODE_CLAMP);
 	r.SetTexture(ctx, "u_tex", res.pTex);
 	r.SetVertexBuffer(ctx, "a_pos", res.pScreenTriangleVB, sizeof(ScreenVertex), 0);
 	r.SetVertexBuffer(ctx, "a_cr", res.pScreenTriangleVB, sizeof(ScreenVertex), sizeof(GAIA::MATH::VEC2<GAIA::F32>));
