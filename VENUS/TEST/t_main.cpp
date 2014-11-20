@@ -173,6 +173,16 @@ static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resourc
 	// Flush.
 	r.Flush(ctx, GAIA::True);
 
+	// Calculate frame count.
+	static GAIA::U32 s_nFrameCount = 0;
+	++s_nFrameCount;
+	if(s_nFrameCount % 100 == 0)
+	{
+		GAIA::TCH szTemp[32];
+		GAIA::ALGO::value_cast(s_nFrameCount, szTemp, sizeofarray(szTemp));
+		r.GetDesc().pCanvas->SetCaptionText(szTemp);
+	}
+
 	return GAIA::True;
 }
 

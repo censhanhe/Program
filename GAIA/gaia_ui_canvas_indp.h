@@ -774,13 +774,10 @@ namespace GAIA
 			if(!desc.check())
 				return GAIA::False;
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			static const GAIA::TCH CLASS_PREFIX[] = _T("class_");
-			GAIA::TCH szWindowClass[1024];
-			if((GAIA::N32)GAIA::ALGO::strlen(desc.pszCaptionText) >= 
-				(GAIA::N32)sizeofarray(szWindowClass) - GAIA::ALGO::strlen(CLASS_PREFIX))
-				return GAIA::False;
-			GAIA::ALGO::strcpy(szWindowClass, CLASS_PREFIX);
-			GAIA::ALGO::strcat(szWindowClass, desc.pszCaptionText);
+			GAIA::TCH szWindowClass[64];
+			GAIA::MATH::RID128 rid;
+			rid.uuid();
+			rid.tostring(szWindowClass);
 		#if GAIA_CHARSET == GAIA_CHARSET_ANSI
 			WNDCLASSEXA wcex;
 		#elif GAIA_CHARSET == GAIA_CHARSET_UNICODE
