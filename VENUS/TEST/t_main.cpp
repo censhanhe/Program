@@ -61,9 +61,9 @@ public:
 			v[0].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 1.0F, 0.0F, 0.0F);
 			v[1].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 0.0F, 1.0F, 0.0F);
 			v[2].cr = GAIA::MATH::ARGB<GAIA::F32>(1.0F, 0.0F, 0.0F, 1.0F);
-			v[0].tc = GAIA::MATH::VEC2<GAIA::F32>(0.0F, 0.0F);
-			v[1].tc = GAIA::MATH::VEC2<GAIA::F32>(0.0F, 1.0F);
-			v[2].tc = GAIA::MATH::VEC2<GAIA::F32>(1.0F, 1.0F);
+			v[0].tc = GAIA::MATH::VEC2<GAIA::F32>(-1.0F, -1.0F);
+			v[1].tc = GAIA::MATH::VEC2<GAIA::F32>(-1.0F, 2.0F);
+			v[2].tc = GAIA::MATH::VEC2<GAIA::F32>(2.0F, 2.0F);
 			pScreenTriangleVB->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, sizeof(v), v);
 
 			VENUS::Render::IndexBuffer::Desc descIB;
