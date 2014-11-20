@@ -114,6 +114,10 @@ public:
 				pTex->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, descTex.sSizeX * descTex.sSizeY * 4, 0, 0, pTexData);
 				GAIA_DELETE_SAFE(pTexData);
 			}
+			r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_MINFILTER, VENUS::Render::FILTER_NEAREST);
+			r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_MAXFILTER, VENUS::Render::FILTER_NEAREST);
+			r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_UNWRAPMODEU, VENUS::Render::UNWRAPMODE_CLAMP);
+			r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_UNWRAPMODEV, VENUS::Render::UNWRAPMODE_CLAMP);
 		}
 		return GAIA::True;
 	}
@@ -155,10 +159,6 @@ static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resourc
 	r.ClearTarget(ctx, 0, crClear);
 
 	// Draw screen triangle.
-	r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_MINFILTER, VENUS::Render::FILTER_LINEAR);
-	r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_MAXFILTER, VENUS::Render::FILTER_LINEAR);
-	r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_UNWRAPMODEU, VENUS::Render::UNWRAPMODE_CLAMP);
-	r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_UNWRAPMODEV, VENUS::Render::UNWRAPMODE_CLAMP);
 	r.SetTexture(ctx, "u_tex", res.pTex);
 	r.SetVertexBuffer(ctx, "a_pos", res.pScreenTriangleVB, sizeof(ScreenVertex), 0);
 	r.SetVertexBuffer(ctx, "a_cr", res.pScreenTriangleVB, sizeof(ScreenVertex), sizeof(GAIA::MATH::VEC2<GAIA::F32>));
