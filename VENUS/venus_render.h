@@ -467,8 +467,8 @@ namespace VENUS
 		virtual VENUS::Render::Depther* GetDepther(VENUS::Render::Context& ctx) = 0;
 
 		/* Program constant management. */
-		virtual GAIA::BL SetConstant(VENUS::Render::Context& ctx, VENUS::Render::Program& prog, const GAIA::CH* pszUniformName, const GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount) = 0;
-		virtual GAIA::BL GetConstant(VENUS::Render::Context& ctx, VENUS::Render::Program& prog, const GAIA::CH* pszUniformName, GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount) = 0;
+		virtual GAIA::BL SetConstant(VENUS::Render::Context& ctx, const GAIA::CH* pszUniformName, const GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount) = 0;
+		virtual GAIA::BL GetConstant(VENUS::Render::Context& ctx, const GAIA::CH* pszUniformName, GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount) = 0;
 
 		/* Draw function. */
 		virtual GAIA::BL SetViewport(const GAIA::MATH::AABR<GAIA::N32>& vp) = 0;

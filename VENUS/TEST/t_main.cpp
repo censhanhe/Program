@@ -166,8 +166,7 @@ static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resourc
 	r.SetIndexBuffer(ctx, res.pScreenTriangleIB);
 	r.SetProgram(ctx, res.pScreenProgram);
 	GAIA::F32 fTime = (GAIA::F32)GAIA::TIME::tick_time() / 1000.0F / 1000.0F;
-	r.SetConstant(ctx, *res.pScreenProgram, "u_time", &fTime, 1, 1, 1);
-	r.GetConstant(ctx, *res.pScreenProgram, "u_time", &fTime, 1, 1, 1);
+	r.SetConstant(ctx, "u_time", &fTime, 1, 1, 1);
 	r.SetElementType(ctx, VENUS::Render::ELEMENT_TYPE_TRIANGLELIST);
 	r.Draw(ctx, 1);
 

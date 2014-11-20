@@ -2017,32 +2017,20 @@ namespace VENUS
 			pContext->pDepther->Reference();
 		return pContext->pDepther;
 	}
-	GAIA::BL RenderGL::SetConstant(VENUS::Render::Context& ctx, VENUS::Render::Program& prog, const GAIA::CH* pszUniformName, const GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount)
+	GAIA::BL RenderGL::SetConstant(VENUS::Render::Context& ctx, const GAIA::CH* pszUniformName, const GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
 		GPCHR_NULLSTRPTR_RET(pszUniformName, GAIA::False);
 		GPCHR_NULL_RET(p, GAIA::False);
-
-		VENUS::RenderGL::Program* pProgram = GDCAST(VENUS::RenderGL::Program*)(&prog);
-		if(pProgram == GNIL)
-			return GAIA::False;
-
-		GAIA::BL bChangeProgram;
-		if(pProgram != pContext->pProgram)
-		{
-			bChangeProgram = GAIA::True;
-			glUseProgram(pProgram->m_uProgram);
-		}
-		else
-			bChangeProgram = GAIA::False;
+		GPCHR_NULL_RET(pContext->pProgram, GAIA::False);
 
 		VENUS::RenderGL::Program::Constant finder;
 		finder.sNameIndex = m_strpool.alloc(pszUniformName);
-		GAIA::SIZE sFindedIndex = pProgram->uniformlist.search(finder);
+		GAIA::SIZE sFindedIndex = pContext->pProgram->uniformlist.search(finder);
 		if(sFindedIndex == GINVALID)
 			return GAIA::False;
-		VENUS::RenderGL::Program::Constant& c = pProgram->uniformlist[sFindedIndex];
+		VENUS::RenderGL::Program::Constant& c = pContext->pProgram->uniformlist[sFindedIndex];
 
 		switch(uDimenX)
 		{
@@ -2123,39 +2111,28 @@ namespace VENUS
 			return GAIA::False;
 		}
 
-		if(bChangeProgram)
-		{
-			if(pContext->pProgram != GNIL)
-				glUseProgram(pContext->pProgram->m_uProgram);
-			else
-				glUseProgram(0);
-		}
-
 		return GAIA::True;
 	}
-	GAIA::BL RenderGL::GetConstant(VENUS::Render::Context& ctx, VENUS::Render::Program& prog, const GAIA::CH* pszUniformName, GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount)
+	GAIA::BL RenderGL::GetConstant(VENUS::Render::Context& ctx, const GAIA::CH* pszUniformName, GAIA::F32* p, GAIA::U8 uDimenX, GAIA::U8 uDimenY, GAIA::SIZE sCount)
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
 		GPCHR_NULLSTRPTR_RET(pszUniformName, GAIA::False);
 		GPCHR_NULL_RET(p, GAIA::False);
-
-		VENUS::RenderGL::Program* pProgram = GDCAST(VENUS::RenderGL::Program*)(&prog);
-		if(pProgram == GNIL)
-			return GAIA::False;
+		GPCHR_NULL_RET(pContext->pProgram, GAIA::False);
 
 		VENUS::RenderGL::Program::Constant finder;
 		finder.sNameIndex = m_strpool.alloc(pszUniformName);
-		GAIA::SIZE sFindedIndex = pProgram->uniformlist.search(finder);
+		GAIA::SIZE sFindedIndex = pContext->pProgram->uniformlist.search(finder);
 		if(sFindedIndex == GINVALID)
 			return GAIA::False;
-		VENUS::RenderGL::Program::Constant& c = pProgram->uniformlist[sFindedIndex];
+		VENUS::RenderGL::Program::Constant& c = pContext->pProgram->uniformlist[sFindedIndex];
 		if(c.uDimenX != uDimenX || c.uDimenY != uDimenY)
 			return GAIA::False;
 		if(c.uCount != sCount)
 			return GAIA::False;
 
-		glGetUniformfv(pProgram->m_uProgram, c.nLocation, p);
+		glGetUniformfv(pContext->pProgram->m_uProgram, c.nLocation, p);
 
 		return GAIA::True;
 	}
