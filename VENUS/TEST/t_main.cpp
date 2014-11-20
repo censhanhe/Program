@@ -64,7 +64,7 @@ public:
 			v[0].tc = GAIA::MATH::VEC2<GAIA::F32>(-1.0F, -1.0F);
 			v[1].tc = GAIA::MATH::VEC2<GAIA::F32>(-1.0F, 2.0F);
 			v[2].tc = GAIA::MATH::VEC2<GAIA::F32>(2.0F, 2.0F);
-			pScreenTriangleVB->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, sizeof(v), v);
+			pScreenTriangleVB->Commit(0, sizeof(v), v);
 
 			VENUS::Render::IndexBuffer::Desc descIB;
 			descIB.reset();
@@ -72,7 +72,7 @@ public:
 			descIB.sCount = 3;
 			pScreenTriangleIB = r.CreateIndexBuffer(descIB);
 			GAIA::U16 i[3] = {0, 1, 2};
-			pScreenTriangleIB->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, sizeof(i), i);
+			pScreenTriangleIB->Commit(0, sizeof(i), i);
 
 			VENUS::Render::Shader::Desc descVShader;
 			descVShader.reset();
@@ -111,7 +111,7 @@ public:
 						pTexData[y * descTex.sSizeX + x].b = 255;
 					}
 				}
-				pTex->Commit(VENUS::Render::COMMIT_METHOD_WRITE, 0, descTex.sSizeX * descTex.sSizeY * 4, 0, 0, pTexData);
+				pTex->Commit(0, descTex.sSizeX * descTex.sSizeY * 4, 0, 0, pTexData);
 				GAIA_DELETE_SAFE(pTexData);
 			}
 			r.SetSamplerState(ctx, VENUS::Render::SAMPLER_STATE_MINFILTER, VENUS::Render::FILTER_NEAREST);

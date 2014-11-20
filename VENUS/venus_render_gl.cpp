@@ -13,6 +13,7 @@ namespace VENUS
 	#define GL_ARRAY_BUFFER 0x8892
 	#define GL_ELEMENT_ARRAY_BUFFER 0x8893
 	#define GL_STATIC_DRAW 0x88E4
+	#define GL_DYNAMIC_DRAW 0x88E8
 	#define GL_SHADER_COMPILER 0x8DFA
 	#define GL_NUM_SHADER_BINARY_FORMATS 0x8DF9
 	#define GL_SHADER_BINARY_FORMATS 0x8DF8
@@ -272,7 +273,7 @@ namespace VENUS
 	{
 		return m_desc;
 	}
-	GAIA::BL RenderGL::IndexBuffer::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
+	GAIA::BL RenderGL::IndexBuffer::Commit(GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
 		GPCHR_NULL_RET(p, GAIA::False);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uIB);
@@ -322,11 +323,11 @@ namespace VENUS
 	{
 		return m_desc;
 	}
-	GAIA::BL RenderGL::VertexBuffer::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
+	GAIA::BL RenderGL::VertexBuffer::Commit(GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
 	{
 		GPCHR_NULL_RET(p, GAIA::False);
 		glBindBuffer(GL_ARRAY_BUFFER, m_uVB);
-		glBufferData(GL_ARRAY_BUFFER, sSize, p, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sSize, p, m_desc.bDynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 		return GAIA::True;
 	}
 	GAIA::BL RenderGL::VertexBuffer::Create(VENUS::RenderGL& r, const VENUS::Render::VertexBuffer::Desc& desc)
@@ -720,7 +721,7 @@ namespace VENUS
 	{
 		return m_desc;
 	}
-	GAIA::BL RenderGL::Texture::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p)
+	GAIA::BL RenderGL::Texture::Commit(GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p)
 	{
 		GPCHR_NULL_RET(p, GAIA::False);
 		GLint nFormat = GL_INVALID;
@@ -816,11 +817,6 @@ namespace VENUS
 	{
 		return m_desc;
 	}
-	GAIA::BL RenderGL::Target::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
-	{
-		GPCHR_NULL_RET(p, GAIA::False);
-		return GAIA::True;
-	}
 	GAIA::BL RenderGL::Target::Create(VENUS::RenderGL& r, const VENUS::Render::Target::Desc& desc)
 	{
 		GAIA_AST(desc.check());
@@ -854,11 +850,6 @@ namespace VENUS
 	const VENUS::Render::Depther::Desc& RenderGL::Depther::GetDesc() const
 	{
 		return m_desc;
-	}
-	GAIA::BL RenderGL::Depther::Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p)
-	{
-		GPCHR_NULL_RET(p, GAIA::False);
-		return GAIA::True;
 	}
 	GAIA::BL RenderGL::Depther::Create(VENUS::RenderGL& r, const VENUS::Render::Depther::Desc& desc)
 	{

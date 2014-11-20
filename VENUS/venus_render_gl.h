@@ -66,7 +66,7 @@ namespace VENUS
 			~IndexBuffer();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual const VENUS::Render::IndexBuffer::Desc& GetDesc() const;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
+			virtual GAIA::BL Commit(GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(VENUS::RenderGL& r, const VENUS::Render::IndexBuffer::Desc& desc);
 			GAIA::BL Destroy();
@@ -83,7 +83,7 @@ namespace VENUS
 			~VertexBuffer();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual const VENUS::Render::VertexBuffer::Desc& GetDesc() const;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
+			virtual GAIA::BL Commit(GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(VENUS::RenderGL& r, const VENUS::Render::VertexBuffer::Desc& desc);
 			GAIA::BL Destroy();
@@ -159,7 +159,7 @@ namespace VENUS
 			~Texture();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual const VENUS::Render::Texture::Desc& GetDesc() const;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p);
+			virtual GAIA::BL Commit(GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(VENUS::RenderGL& r, const VENUS::Render::Texture::Desc& desc);
 			GAIA::BL Destroy();
@@ -176,7 +176,6 @@ namespace VENUS
 			~Target();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual const VENUS::Render::Target::Desc& GetDesc() const;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(VENUS::RenderGL& r, const VENUS::Render::Target::Desc& desc);
 			GAIA::BL Destroy();
@@ -192,7 +191,6 @@ namespace VENUS
 			~Depther();
 			virtual GAIA::BL SaveToFile(GAIA::FSYS::FileBase* pFile) const;
 			virtual const VENUS::Render::Depther::Desc& GetDesc() const;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD cm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p);
 		public:
 			GAIA::BL Create(VENUS::RenderGL& r, const VENUS::Render::Depther::Desc& desc);
 			GAIA::BL Destroy();

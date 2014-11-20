@@ -98,12 +98,6 @@ namespace VENUS
 			TEXTURE_TYPE_CUBE,
 		GAIA_ENUM_END(TEXTURE_TYPE)
 
-		GAIA_ENUM_BEGIN(COMMIT_METHOD)
-			COMMIT_METHOD_READ,
-			COMMIT_METHOD_WRITE,
-			COMMIT_METHOD_READWRITE,
-		GAIA_ENUM_END(COMMIT_METHOD)
-
 	public:
 		class Desc : public virtual GAIA::FWORK::InstanceDesc
 		{
@@ -179,7 +173,7 @@ namespace VENUS
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_INDEXBUFFER;}
 			virtual const VENUS::Render::IndexBuffer::Desc& GetDesc() const = 0;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
+			virtual GAIA::BL Commit(GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
 		};
 
 		class VertexBuffer : public virtual Resource
@@ -193,6 +187,7 @@ namespace VENUS
 					VENUS::Render::Resource::Desc::reset();
 					sElementSize = 0;
 					sElementCount = 0;
+					bDynamic = GAIA::False;
 				}
 				virtual GAIA::BL check() const
 				{
@@ -208,11 +203,12 @@ namespace VENUS
 				}
 				GAIA::SIZE sElementSize; // In bytes.
 				GAIA::SIZE sElementCount;
+				GAIA::U8 bDynamic : 1;
 			};
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_VERTEXBUFFER;}
 			virtual const VENUS::Render::VertexBuffer::Desc& GetDesc() const = 0;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
+			virtual GAIA::BL Commit(GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
 		};
 
 		class Shader : public virtual Resource
@@ -321,7 +317,7 @@ namespace VENUS
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_TEXTURE;}
 			virtual const VENUS::Render::Texture::Desc& GetDesc() const = 0;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p) = 0;
+			virtual GAIA::BL Commit(GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, GAIA::SIZE sMipIndex, GAIA::SIZE sFaceIndex, const GAIA::GVOID* p) = 0;
 		};
 
 		class Target : public virtual Resource
@@ -359,7 +355,6 @@ namespace VENUS
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_TARGET;}
 			virtual const VENUS::Render::Target::Desc& GetDesc() const = 0;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
 		};
 
 		class Depther : public virtual Resource
@@ -396,7 +391,6 @@ namespace VENUS
 		public:
 			virtual VENUS::Render::RESOURCE_TYPE GetResourceType() const{return VENUS::Render::RESOURCE_TYPE_DEPTHER;}
 			virtual const VENUS::Render::Depther::Desc& GetDesc() const = 0;
-			virtual GAIA::BL Commit(VENUS::Render::COMMIT_METHOD lm, GAIA::SIZE sOffsetInBytes, GAIA::SIZE sSize, const GAIA::GVOID* p) = 0;
 		};
 
 	public:
