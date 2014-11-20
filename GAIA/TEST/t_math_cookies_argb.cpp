@@ -160,6 +160,12 @@ namespace GAIA_TEST
 			GTLINE2("ARGB isfinited error!");
 			++nRet;
 		}
+		argb.fromu32(0xFF010203);
+		if(argb.tou32() != 0xFF010203)
+		{
+			GTLINE2("ARGB fromu32 or tou32 error!");
+			++nRet;
+		}
 
 		return nRet;
 	}

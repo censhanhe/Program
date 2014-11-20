@@ -145,6 +145,13 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
+		nrgb.fromu32(0x00010203);
+		if(nrgb.tou32() != 0x00010203)
+		{
+			GTLINE2("ARGB fromu32 or tou32 error!");
+			++nRet;
+		}
+
 		return nRet;
 	}
 };

@@ -48,6 +48,7 @@ namespace GAIA
 			GINL GAIA::U32 tou32() const
 			{
 				GAIA::U32 ret;
+				ret = 0;
 				GRCAST(GAIA::U8*)(&ret)[2] = GSCAST(GAIA::U8)(r);
 				GRCAST(GAIA::U8*)(&ret)[1] = GSCAST(GAIA::U8)(g);
 				GRCAST(GAIA::U8*)(&ret)[0] = GSCAST(GAIA::U8)(b);
