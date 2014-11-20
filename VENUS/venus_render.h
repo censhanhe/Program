@@ -94,9 +94,7 @@ namespace VENUS
 		GAIA_ENUM_END(SHADER_TYPE)
 
 		GAIA_ENUM_BEGIN(TEXTURE_TYPE)
-			TEXTURE_TYPE_1D,
 			TEXTURE_TYPE_2D,
-			TEXTURE_TYPE_3D,
 			TEXTURE_TYPE_CUBE,
 		GAIA_ENUM_END(TEXTURE_TYPE)
 
@@ -298,16 +296,6 @@ namespace VENUS
 						return GAIA::False;
 					switch(type)
 					{
-					case VENUS::Render::TEXTURE_TYPE_1D:
-						{
-							if(sSizeX <= 0)
-								return GAIA::False;
-							if(sSizeY != 0)
-								return GAIA::False;
-							if(sSizeZ != 0)
-								return GAIA::False;
-						}
-						break;
 					case VENUS::Render::TEXTURE_TYPE_2D:
 						{
 							if(sSizeX <= 0)
@@ -315,16 +303,6 @@ namespace VENUS
 							if(sSizeY <= 0)
 								return GAIA::False;
 							if(sSizeZ != 0)
-								return GAIA::False;
-						}
-						break;
-					case VENUS::Render::TEXTURE_TYPE_3D:
-						{
-							if(sSizeX <= 0)
-								return GAIA::False;
-							if(sSizeY <= 0)
-								return GAIA::False;
-							if(sSizeZ <= 0)
 								return GAIA::False;
 						}
 						break;

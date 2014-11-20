@@ -751,20 +751,12 @@ namespace VENUS
 		}
 		switch(m_desc.type)
 		{
-		case VENUS::Render::TEXTURE_TYPE_1D:
-			{
-				glBindTexture(GL_TEXTURE_2D, m_uTex);
-				glTexImage2D(GL_TEXTURE_2D, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, p);
-			}
-			break;
 		case VENUS::Render::TEXTURE_TYPE_2D:
 			{
 				glBindTexture(GL_TEXTURE_2D, m_uTex);
 				glTexImage2D(GL_TEXTURE_2D, sMipIndex, nFormat, m_desc.sSizeX, m_desc.sSizeY, 0, nFormat, uType, p);
 			}
 			break;
-		case VENUS::Render::TEXTURE_TYPE_3D:
-			return GAIA::False;
 		case VENUS::Render::TEXTURE_TYPE_CUBE:
 			{
 				glBindTexture(GL_TEXTURE_CUBE_MAP, m_uTex);
