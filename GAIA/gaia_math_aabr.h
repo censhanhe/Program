@@ -227,8 +227,6 @@ namespace GAIA
 			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return !this->operator >= (v);}
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
-			GINL operator _DataType*(){return this->front_ptr();}
-			GINL operator const _DataType*() const{return this->front_ptr();}
 		private:
 			GINL GAIA::GVOID selfupdate()
 			{

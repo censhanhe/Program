@@ -58,22 +58,20 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType v){x = y = GSCAST(_DataType)(v); return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){x = GSCAST(_DataType)(p[0]); y = GSCAST(_DataType)(p[1]); return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
-			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(this->front_ptr(), v.front_ptr()) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return !this->operator < (v);}
 			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return !this->operator > (v);}
-			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) > 0;}
-			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) < 0;}
-			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGO::cmp2k((const _DataType*)*this, v) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(this->front_ptr(), v.front_ptr()) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(this->front_ptr(), v.front_ptr()) < 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGO::cmp2k(this->front_ptr(), v) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& v) const{return !this->operator == (v);}
 			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& v) const{return !this->operator < (v);}
 			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& v) const{return !this->operator > (v);}
-			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return GAIA::ALGO::cmp2k((const _DataType*)*this, v) > 0;}
-			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return GAIA::ALGO::cmp2k((const _DataType*)*this, v) < 0;}
-			template<typename _ParamDataType> const _DataType& operator [] (const _DataType& index) const{GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
-			template<typename _ParamDataType> _DataType& operator [] (const _DataType& index){GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
-			GINL operator _DataType*(){return this->front_ptr();}
-			GINL operator const _DataType*() const{return this->front_ptr();}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return GAIA::ALGO::cmp2k(this->front_ptr(), v) > 0;}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return GAIA::ALGO::cmp2k(this->front_ptr(), v) < 0;}
+			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
+			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
 		public:
 			_DataType x, y;
 		};

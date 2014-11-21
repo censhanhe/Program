@@ -95,7 +95,7 @@ namespace GAIA_TEST
 		rv.y = 4.0F;
 		rv.z = 5.0F;
 		rv.w = 6.0F;
-		rv = static_cast<const __NMVecType::_datatype*>(nmv);
+		rv = nmv.front_ptr();
 		if(rv.x != 1.0F || rv.y != 2.0F || rv.z != 0.0F || rv.w != 3.0F)
 		{
 			GTLINE2("VEC4 set pointer error!");
