@@ -171,6 +171,15 @@ namespace GAIA
 				else
 					return +det;
 			}
+			GINL GAIA::GVOID look(const GAIA::MATH::VEC3<_DataType>& pos, const GAIA::MATH::VEC3<_DataType>& lookat, const GAIA::MATH::VEC3<_DataType>& up)
+			{
+			}
+			GINL GAIA::GVOID ortho(const _DataType& width, const _DataType& height, const _DataType& near, const _DataType& far)
+			{
+			}
+			GINL GAIA::GVOID perspective(const _DataType& fov, const _DataType& aspect, const _DataType& near, const _DataType& far)
+			{
+			}
 			template<typename _ParamDataType1, typename _ParamDataType2, typename _ParamDataType3> GAIA::GVOID translate(const _ParamDataType1& x, const _ParamDataType2& y, const _ParamDataType3& z)
 			{
 				m[0][0] = (_DataType)1; m[0][1] = (_DataType)0; m[0][2] = (_DataType)0; m[0][3] = (_DataType)0; 
