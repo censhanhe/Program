@@ -1236,6 +1236,14 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="CONVERT"
+							>
+							<File
+								RelativePath=".\gaia_math_convert.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="CAL"

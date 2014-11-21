@@ -32,6 +32,7 @@
 
 #include	"gaia_math_constant.h"
 #include	"gaia_math_basic.h"
+#include	"gaia_math_convert.h"
 #include 	"gaia_math_random.h"
 #include 	"gaia_math_lerp.h"
 

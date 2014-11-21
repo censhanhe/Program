@@ -15,7 +15,7 @@ namespace GAIA
 			GINL VEC2(){}
 			template<typename _ParamDataType> VEC2(const GAIA::MATH::VEC2<_ParamDataType>& v){this->operator = (v);}
 			template<typename _ParamDataType1, typename _ParamDataType2> VEC2(const _ParamDataType1& x, const _ParamDataType2& y){this->x = GSCAST(_DataType)(x); this->y = GSCAST(_DataType)(y);}
-			template<typename _ParamDataType> VEC2(const _ParamDataType& v){this->operator = (v);}
+			template<typename _ParamDataType> VEC2(_ParamDataType v){this->operator = (v);}
 			template<typename _ParamDataType> VEC2(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> VEC2(_ParamDataType* p){this->operator = (p);}
 			GINL GAIA::SIZE size() const{return 2;}
@@ -50,12 +50,12 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator -= (const GAIA::MATH::VEC2<_ParamDataType>& v){x -= v.x; y -= v.y; return *this;}
 			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::VEC2<_ParamDataType>& v){x *= v.x; y *= v.y; return *this;}
 			template<typename _ParamDataType> __MyType& operator /= (const GAIA::MATH::VEC2<_ParamDataType>& v){x /= v.x; y /= v.y; return *this;}
-			template<typename _ParamDataType> __MyType& operator += (const _ParamDataType& v){x += v; y += v; return *this;}
-			template<typename _ParamDataType> __MyType& operator -= (const _ParamDataType& v){x -= v; y -= v; return *this;}
-			template<typename _ParamDataType> __MyType& operator *= (const _ParamDataType& v){x *= v; y *= v; return *this;}
-			template<typename _ParamDataType> __MyType& operator /= (const _ParamDataType& v){x /= v; y /= v; return *this;}
+			template<typename _ParamDataType> __MyType& operator += (_ParamDataType v){x += v; y += v; return *this;}
+			template<typename _ParamDataType> __MyType& operator -= (_ParamDataType v){x -= v; y -= v; return *this;}
+			template<typename _ParamDataType> __MyType& operator *= (_ParamDataType v){x *= v; y *= v; return *this;}
+			template<typename _ParamDataType> __MyType& operator /= (_ParamDataType v){x /= v; y /= v; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::VEC2<_ParamDataType>& v){x = GSCAST(_DataType)(v.x); y = GSCAST(_DataType)(v.y); return *this;}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& v){x = y = GSCAST(_DataType)(v); return *this;}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType v){x = y = GSCAST(_DataType)(v); return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){x = GSCAST(_DataType)(p[0]); y = GSCAST(_DataType)(p[1]); return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::VEC2<_ParamDataType>& v) const{return GAIA::ALGO::cmp2(GSCAST(const _DataType*)(*this), GSCAST(const _ParamDataType*)(v)) == 0;}
