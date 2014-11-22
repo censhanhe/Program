@@ -24,7 +24,7 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::SIZE add_formula(const _CharType* pName, const _CharType* pFormula)
 		{
-			GPCHR_NULLSTRPTR_RET(pName, GINVALID);
+			GPCHR_NULLSTR_RET(pName, GINVALID);
 			GPCHR_NULL_RET(pFormula, GINVALID);
 			if(this->get_formula_by_name(pName) != GINVALID)
 				return GINVALID;
@@ -68,7 +68,7 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::SIZE get_formula_by_name(const _CharType* pName)
 		{
-			GPCHR_NULLSTRPTR_RET(pName, GINVALID);
+			GPCHR_NULLSTR_RET(pName, GINVALID);
 			m_finder.name = pName;
 			typename __FormulaSetType::_datatype reffinder(&m_finder);
 			const typename __FormulaSetType::_datatype* pFinded = m_fmset.find(reffinder);

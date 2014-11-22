@@ -46,7 +46,7 @@ namespace DWARFS_MISC
 		GINL const __CharType* content() const{return m_content;}
 		GINL GAIA::BL add_attach(const __FileNameCharType* pszFileName)
 		{
-			GPCHR_NULLSTRPTR_RET(pszFileName, GAIA::False);
+			GPCHR_NULLSTR_RET(pszFileName, GAIA::False);
 			if(this->get_attach_by_name(pszFileName) != GINVALID)
 				return GAIA::False;
 			GAIA::SIZE uValidIndex = GINVALID;
@@ -66,7 +66,7 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::BL delete_attach(const __FileNameCharType* pszFileName)
 		{
-			GPCHR_NULLSTRPTR_RET(pszFileName, GAIA::False);
+			GPCHR_NULLSTR_RET(pszFileName, GAIA::False);
 			GAIA::SIZE uIndex = this->get_attach_by_name(pszFileName);
 			if(uIndex == GINVALID)
 				return GAIA::False;
@@ -83,7 +83,7 @@ namespace DWARFS_MISC
 		}
 		GINL GAIA::SIZE get_attach_by_name(const __FileNameCharType* pszFileName)
 		{
-			GPCHR_NULLSTRPTR_RET(pszFileName, GAIA::False);
+			GPCHR_NULLSTR_RET(pszFileName, GAIA::False);
 			for(GAIA::SIZE x = 0; x < m_attachs.size(); ++x)
 			{
 				if(m_attachs[x] == pszFileName)

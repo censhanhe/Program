@@ -35,7 +35,7 @@ public:
 		const GAIA::TCH* pszLog)
 	{
 		/* Parameter checkup. */
-		GPCHR_NULLSTRPTR_RET(pszLog, GAIA::False);
+		GPCHR_NULLSTR_RET(pszLog, GAIA::False);
 		GAIA_AST(type < GAIA::LOG::Log::TYPE_MAXENUMCOUNT);
 		if(type >= GAIA::LOG::Log::TYPE_MAXENUMCOUNT)
 			return GAIA::False;

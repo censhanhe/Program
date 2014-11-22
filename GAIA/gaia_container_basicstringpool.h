@@ -38,7 +38,7 @@ namespace GAIA
 			}
 			GINL _SizeType alloc(const _DataType* p)
 			{
-				GPCHR_NULLSTRPTR_RET(p, GNIL);
+				GPCHR_NULLSTR_RET(p, GNIL);
 				Node finder;
 				finder.data = GCCAST(_DataType*)(p);
 				NodeCmp* pFinded = m_nodeset.find(finder);

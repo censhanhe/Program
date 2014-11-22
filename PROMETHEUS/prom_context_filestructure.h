@@ -23,8 +23,8 @@ namespace PROM
 	public:
 		GINL GAIA::BL AddLink(const GAIA::TCH* pszParentFile, const GAIA::TCH* pszChildFile)
 		{
-			GPCHR_NULLSTRPTR_RET(pszParentFile, GAIA::False);
-			GPCHR_NULLSTRPTR_RET(pszChildFile, GAIA::False);
+			GPCHR_NULLSTR_RET(pszParentFile, GAIA::False);
+			GPCHR_NULLSTR_RET(pszChildFile, GAIA::False);
 			if(this->IsLinkExist(pszParentFile, pszChildFile))
 				return GAIA::True;
 			Node* pFindedParent = this->FindNode(pszParentFile);
@@ -51,8 +51,8 @@ namespace PROM
 		}
 		GINL GAIA::BL IsLinkExist(const GAIA::TCH* pszParentFile, const GAIA::TCH* pszChildFile) const
 		{
-			GPCHR_NULLSTRPTR_RET(pszParentFile, GAIA::False);
-			GPCHR_NULLSTRPTR_RET(pszChildFile, GAIA::False);
+			GPCHR_NULLSTR_RET(pszParentFile, GAIA::False);
+			GPCHR_NULLSTR_RET(pszChildFile, GAIA::False);
 			const Node* pFinded = this->FindNode(pszParentFile);
 			if(pFinded != GNIL)
 				if(pFinded->childs.find(pszChildFile) != GNIL)
@@ -61,14 +61,14 @@ namespace PROM
 		}
 		GINL const Node* FindNode(const GAIA::TCH* pszFile) const
 		{
-			GPCHR_NULLSTRPTR_RET(pszFile, GNIL);
+			GPCHR_NULLSTR_RET(pszFile, GNIL);
 			Node finder;
 			finder.name = pszFile;
 			return filenodeset.find(finder);
 		}
 		GINL Node* FindNode(const GAIA::TCH* pszFile)
 		{
-			GPCHR_NULLSTRPTR_RET(pszFile, GNIL);
+			GPCHR_NULLSTR_RET(pszFile, GNIL);
 			Node finder;
 			finder.name = pszFile;
 			return filenodeset.find(finder);

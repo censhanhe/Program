@@ -1788,7 +1788,7 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
+		GPCHR_NULLSTR_RET(pszName, GAIA::False);
 
 		Context::VertexBufferRec finder;
 		finder.sNameIndex = m_strpool.alloc(pszName);
@@ -1857,7 +1857,7 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
+		GPCHR_NULLSTR_RET(pszName, GAIA::False);
 
 		Context::TextureRec finder;
 		finder.sNameIndex = m_strpool.alloc(pszName);
@@ -1946,7 +1946,7 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		GPCHR_NULLSTRPTR_RET(pszName, GNIL);
+		GPCHR_NULLSTR_RET(pszName, GNIL);
 
 		Context::VertexBufferRec finder;
 		finder.sNameIndex = m_strpool.alloc(pszName);
@@ -1970,7 +1970,7 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GNIL);
-		GPCHR_NULLSTRPTR_RET(pszName, GNIL);
+		GPCHR_NULLSTR_RET(pszName, GNIL);
 
 		Context::TextureRec finder;
 		finder.sNameIndex = m_strpool.alloc(pszName);
@@ -2004,7 +2004,7 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULLSTRPTR_RET(pszUniformName, GAIA::False);
+		GPCHR_NULLSTR_RET(pszUniformName, GAIA::False);
 		GPCHR_NULL_RET(p, GAIA::False);
 		GPCHR_NULL_RET(pContext->pProgram, GAIA::False);
 
@@ -2100,7 +2100,7 @@ namespace VENUS
 	{
 		VENUS::RenderGL::Context* pContext = GDCAST(VENUS::RenderGL::Context*)(&ctx);
 		GPCHR_NULL_RET(pContext, GAIA::False);
-		GPCHR_NULLSTRPTR_RET(pszUniformName, GAIA::False);
+		GPCHR_NULLSTR_RET(pszUniformName, GAIA::False);
 		GPCHR_NULL_RET(p, GAIA::False);
 		GPCHR_NULL_RET(pContext->pProgram, GAIA::False);
 

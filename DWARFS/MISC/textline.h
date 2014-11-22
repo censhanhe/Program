@@ -19,7 +19,7 @@ namespace DWARFS_MISC
 		GINL ~TextLine(){}
 		GINL GAIA::BL lineflag(const __CharType* psz)
 		{
-			GPCHR_NULLSTRPTR_RET(psz, GAIA::False);
+			GPCHR_NULLSTR_RET(psz, GAIA::False);
 			if(GAIA::ALGO::strcmp(psz, _T(GAIA_FILELINEBREAK_R)) != 0 &&
 				GAIA::ALGO::strcmp(psz, _T(GAIA_FILELINEBREAK_N)) != 0 &&
 				GAIA::ALGO::strcmp(psz, _T(GAIA_FILELINEBREAK_RN)) != 0)

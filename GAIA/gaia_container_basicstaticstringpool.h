@@ -26,7 +26,7 @@ namespace GAIA
 			GINL const _DataType* get(const _SizeType& index) const{return m_datalist.front_ptr() + m_nodelist[index].offset;}
 			GINL _SizeType alloc(const _DataType* p)
 			{
-				GPCHR_NULLSTRPTR_RET(p, GNIL);
+				GPCHR_NULLSTR_RET(p, GNIL);
 				Node finder;
 				finder.pContainer = this;
 				GAIA::BL bSelfData;
