@@ -5,6 +5,9 @@
 
 namespace GAIA_TEST
 {
+	extern GAIA::N32 tp_compiler(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm);
+	extern GAIA::N32 tp_objstatus(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm);
+
 	extern GAIA::N32 t_type(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm);
 
 	extern GAIA::N32 t_math_arithmatic_basic(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm);
@@ -97,7 +100,14 @@ namespace GAIA_TEST
 		GAIA::CTN::AString str;
 
 		// Every test procedure.
-		GTLINE("[GAIA TEST BEGIN]");
+		GTLINE("[GAIA PLATFORM TEST BEGIN]");
+		{
+			GTLINE1("Platform: Compiler test begin!"); nRet += tp_compiler(file, stm); GTLINE1("End"); GTLINE("\t");
+			GTLINE1("Platform: ObjStatus test begin!"); nRet += tp_objstatus(file, stm); GTLINE1("End"); GTLINE("\t");
+		}
+		GTLINE("[GAIA PLATFORM TEST END]");
+
+		GTLINE("[GAIA UNIT TEST BEGIN]");
 		{
 			GTLINE1("Type: Type test begin!"); nRet += t_type(file, stm); GTLINE1("End"); GTLINE("\t");
 
@@ -183,7 +193,7 @@ namespace GAIA_TEST
 			GTLINE1("UI: Message test begin!"); nRet += t_ui_message(file, stm); GTLINE1("End"); GTLINE("\t");
 			GTLINE1("UI: Canvas test begin!"); nRet += t_ui_canvas(file, stm); GTLINE1("End"); GTLINE("\t");
 		}
-		GTLINE("[GAIA TEST END]");
+		GTLINE("[GAIA UNIT TEST END]");
 
 		GTLINE("\t");
 

@@ -1926,6 +1926,14 @@
 			<Filter
 				Name="PLATFORMTEST"
 				>
+				<File
+					RelativePath=".\TEST\tp_compiler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\tp_objstatus.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="UNITTEST"

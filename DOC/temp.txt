@@ -22,6 +22,10 @@ Locale
 Container
 
 
+Stream
+	StringStream support read from.
+
+
 NETWORK
 	Remove network test case's xsleep function.
 
