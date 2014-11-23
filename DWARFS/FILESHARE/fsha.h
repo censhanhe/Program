@@ -1378,7 +1378,7 @@ namespace DWARFS_FSHA
 	};
 
 	/* Ban IP. */
-	class __DWARFS_FILESHARE_API BanIP : public GAIA::Entity
+	class __DWARFS_FILESHARE_API BanIP : public GAIA::Base
 	{
 	public:
 		class BanIPNode

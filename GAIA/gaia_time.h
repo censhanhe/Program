@@ -184,7 +184,7 @@ namespace GAIA
 			*pDst = '\0';
 			return GAIA::True;
 		}
-		class Time : public GAIA::Entity
+		class Time : public GAIA::Base
 		{
 		public:
 			GINL Time(){}

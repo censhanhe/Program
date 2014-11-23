@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		class Lock : public GAIA::Entity
+		class Lock : public GAIA::Base
 		{
 		public:
 			GINL Lock();

@@ -39,7 +39,7 @@ namespace GAIA
 		};
 
 		/* 64 bit random id. */
-		class RID64 : public GAIA::Entity
+		class RID64 : public GAIA::Base
 		{
 		public:
 			GINL GAIA::SIZE size() const{return sizeofarray(u);}
@@ -69,7 +69,7 @@ namespace GAIA
 		};
 
 		/* 32 bit random id. */
-		class RID32 : public GAIA::Entity
+		class RID32 : public GAIA::Base
 		{
 		public:
 			GINL GAIA::SIZE size() const{return sizeofarray(u);}

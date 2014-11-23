@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		class Atomic : public GAIA::Entity
+		class Atomic : public GAIA::Base
 		{
 		public:
 			GINL Atomic(){this->init();}

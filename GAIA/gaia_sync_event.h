@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		class Event : public GAIA::Entity
+		class Event : public GAIA::Base
 		{
 		public:
 			GINL Event();

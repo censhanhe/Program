@@ -12,7 +12,7 @@ namespace PROM
 			ERROR_TYPE_WARING,
 			ERROR_TYPE_ERROR,
 		GAIA_ENUM_END(ERROR_TYPE)
-		class ErrorBase : public GAIA::Entity
+		class ErrorBase : public GAIA::Base
 		{
 		public:
 			GINL ErrorBase(){m_uFileLine = (GAIA::U32)GINVALID;}

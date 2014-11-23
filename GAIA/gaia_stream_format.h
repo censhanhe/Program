@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace STREAM
 	{
-		class StreamFormat : public GAIA::Entity
+		class StreamFormat : public GAIA::Base
 		{
 		public:
 			GINL StreamFormat(){}

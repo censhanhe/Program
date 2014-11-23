@@ -8,7 +8,7 @@ namespace GAIA
 		class Factory : public Object
 		{
 		public:
-			class CreateCallBack : public GAIA::Entity
+			class CreateCallBack : public GAIA::Base
 			{
 			public:
 				GINL CreateCallBack(){}

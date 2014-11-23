@@ -6,7 +6,7 @@ namespace GAIA
 	namespace THREAD
 	{
 		GINL GAIA::UM threadid();
-		class Thread : public GAIA::Entity
+		class Thread : public GAIA::Base
 		{
 		public:
 			GAIA_ENUM_BEGIN(STATE)

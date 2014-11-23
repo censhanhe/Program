@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace FWORK
 	{
-		class ClsID : public GAIA::Entity
+		class ClsID : public GAIA::Base
 		{
 		public:
 			GAIA_ENUM_BEGIN(FLAG)

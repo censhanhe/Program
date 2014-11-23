@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		class AutoLock : public GAIA::Entity
+		class AutoLock : public GAIA::Base
 		{
 		public:
 			GINL AutoLock(Lock& l){m_pLock = &l; m_pLock->Enter();}
