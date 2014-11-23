@@ -229,6 +229,15 @@ namespace GAIA
 				GAIA_AST(p->fi < m_fixedlist.size());
 				return p->fi;
 			}
+			GINL _SizeType find(const _DataType& t) const
+			{
+				for(GAIA::SIZE x = 0; x < this->size(); ++x)
+				{
+					if((*this)[x] == t)
+						return x;
+				}
+				return GINVALID;
+			}
 			GINL const _DataType& operator[](const _SizeType& usedindex) const
 			{
 				_SizeType fixedindex = this->fixedindex(usedindex);

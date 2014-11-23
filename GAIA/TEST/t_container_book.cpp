@@ -98,6 +98,12 @@ namespace GAIA_TEST
 				++nRet;
 				break;
 			}
+			if(bt.find(x) != sUsedIndex)
+			{
+				GTLINE2("Book find error!");
+				++nRet;
+				break;
+			}
 		}
 		bt1 = bt;
 		if(bt.capacity() < bt.size())
