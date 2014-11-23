@@ -9,7 +9,7 @@ namespace GAIA_TEST
 
 		GAIA::STREAM::StringStream s;
 
-		s << "[TYPE SIZE]\n";
+		s << "[TYPE SIZE]\r\n";
 		s << "bool size = " << sizeof(bool) << "\r\n";
 		s << "char size = " << sizeof(char) << "\r\n";
 		s << "wchar_t size = " << sizeof(wchar_t) << "\r\n";
