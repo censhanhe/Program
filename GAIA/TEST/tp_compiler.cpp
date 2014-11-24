@@ -1,6 +1,8 @@
 #include "preheader.h"
 #include "t_header.h"
 
+#include <typeinfo>
+
 namespace GAIA_TEST
 {
 	extern GAIA::N32 tp_compiler(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
