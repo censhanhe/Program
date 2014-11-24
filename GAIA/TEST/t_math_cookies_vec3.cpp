@@ -446,6 +446,20 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
+		rv.x = 1.0F;
+		rv.y = 2.0F;
+		rv.xy(rv.yx());
+		if(!GAIA::MATH::xequal(rv.x, 2.0F))
+		{
+			GTLINE2("VEC3 yx error!");
+			++nRet;
+		}
+		if(!GAIA::MATH::xequal(rv.y, 1.0F))
+		{
+			GTLINE2("VEC3 yx error!");
+			++nRet;
+		}
+
 		rv = 1.0F;
 		rv.lerp(2.0F, 0.5F);
 		if(!GAIA::MATH::xequal(rv.x, 1.5F))
