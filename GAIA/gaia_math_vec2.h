@@ -34,6 +34,8 @@ namespace GAIA
 			GINL GAIA::GVOID inverse(){x = (_DataType)1 / x; y = (_DataType)1 / y;}
 			template<typename _ParamDataType> _DataType dot(const GAIA::MATH::VEC2<_ParamDataType>& v) const{return x * v.x + y * v.y;}
 			template<typename _ParamDataType> __MyType num(const GAIA::MATH::VEC2<_ParamDataType>& v) const{__MyType ret; ret.x = x * v.x; ret.y = y * v.y; return ret;}
+			GINL GAIA::MATH::VEC2<_DataType> yx() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = y; ret.y = x; return ret;}
+			template<typename _ParamDataType> GAIA::GVOID yx(const GAIA::MATH::VEC2<_ParamDataType>& src){y = GSCAST(_DataType)(src.x); x = GSCAST(_DataType)(src.y);}
 			GINL const _DataType* front_ptr() const{return &x;}
 			GINL _DataType* front_ptr(){return &x;}
 			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}

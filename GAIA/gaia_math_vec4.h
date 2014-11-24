@@ -47,6 +47,30 @@ namespace GAIA
 				ret.w = (_DataType)1;
 				return ret;
 			}
+			GINL GAIA::MATH::VEC2<_DataType> xy() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = x; ret.y = y; return ret;}
+			GINL GAIA::MATH::VEC2<_DataType> xz() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = x; ret.y = z; return ret;}
+			GINL GAIA::MATH::VEC2<_DataType> yz() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = y; ret.y = z; return ret;}
+			GINL GAIA::MATH::VEC2<_DataType> yx() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = y; ret.y = x; return ret;}
+			GINL GAIA::MATH::VEC2<_DataType> zx() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = z; ret.y = x; return ret;}
+			GINL GAIA::MATH::VEC2<_DataType> zy() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = z; ret.y = y; return ret;}
+			GINL GAIA::MATH::VEC3<_DataType> xyz() const{GAIA::MATH::VEC3<_DataType> ret; ret.x = x; ret.y = y; ret.z = z; return ret;}
+			GINL GAIA::MATH::VEC3<_DataType> xzy() const{GAIA::MATH::VEC3<_DataType> ret; ret.x = x; ret.y = z; ret.z = y; return ret;}
+			GINL GAIA::MATH::VEC3<_DataType> yxz() const{GAIA::MATH::VEC3<_DataType> ret; ret.x = y; ret.y = x; ret.z = z; return ret;}
+			GINL GAIA::MATH::VEC3<_DataType> yzx() const{GAIA::MATH::VEC3<_DataType> ret; ret.x = y; ret.y = z; ret.z = x; return ret;}
+			GINL GAIA::MATH::VEC3<_DataType> zxy() const{GAIA::MATH::VEC3<_DataType> ret; ret.x = z; ret.y = x; ret.z = y; return ret;}
+			GINL GAIA::MATH::VEC3<_DataType> zyx() const{GAIA::MATH::VEC3<_DataType> ret; ret.x = z; ret.y = y; ret.z = x; return ret;}
+			template<typename _ParamDataType> GAIA::GVOID xy(const GAIA::MATH::VEC2<_ParamDataType>& src){x = GSCAST(_DataType)(src.x); y = GSCAST(_DataType)(src.y);}
+			template<typename _ParamDataType> GAIA::GVOID xz(const GAIA::MATH::VEC2<_ParamDataType>& src){x = GSCAST(_DataType)(src.x); z = GSCAST(_DataType)(src.y);}
+			template<typename _ParamDataType> GAIA::GVOID yz(const GAIA::MATH::VEC2<_ParamDataType>& src){y = GSCAST(_DataType)(src.x); z = GSCAST(_DataType)(src.y);}
+			template<typename _ParamDataType> GAIA::GVOID yx(const GAIA::MATH::VEC2<_ParamDataType>& src){y = GSCAST(_DataType)(src.x); x = GSCAST(_DataType)(src.y);}
+			template<typename _ParamDataType> GAIA::GVOID zx(const GAIA::MATH::VEC2<_ParamDataType>& src){z = GSCAST(_DataType)(src.x); x = GSCAST(_DataType)(src.y);}
+			template<typename _ParamDataType> GAIA::GVOID zy(const GAIA::MATH::VEC2<_ParamDataType>& src){z = GSCAST(_DataType)(src.x); y = GSCAST(_DataType)(src.y);}
+			template<typename _ParamDataType> GAIA::GVOID xyz(const GAIA::MATH::VEC3<_ParamDataType>& src){x = GSCAST(_DataType)(src.x); y = GSCAST(_DataType)(src.y); z = GSCAST(_DataType)(src.z);}
+			template<typename _ParamDataType> GAIA::GVOID xzy(const GAIA::MATH::VEC3<_ParamDataType>& src){x = GSCAST(_DataType)(src.x); z = GSCAST(_DataType)(src.y); y = GSCAST(_DataType)(src.z);}
+			template<typename _ParamDataType> GAIA::GVOID yxz(const GAIA::MATH::VEC3<_ParamDataType>& src){y = GSCAST(_DataType)(src.x); x = GSCAST(_DataType)(src.y); z = GSCAST(_DataType)(src.z);}
+			template<typename _ParamDataType> GAIA::GVOID yzx(const GAIA::MATH::VEC3<_ParamDataType>& src){y = GSCAST(_DataType)(src.x); z = GSCAST(_DataType)(src.y); x = GSCAST(_DataType)(src.z);}
+			template<typename _ParamDataType> GAIA::GVOID zxy(const GAIA::MATH::VEC3<_ParamDataType>& src){z = GSCAST(_DataType)(src.x); x = GSCAST(_DataType)(src.y); y = GSCAST(_DataType)(src.z);}
+			template<typename _ParamDataType> GAIA::GVOID zyx(const GAIA::MATH::VEC3<_ParamDataType>& src){z = GSCAST(_DataType)(src.x); y = GSCAST(_DataType)(src.y); x = GSCAST(_DataType)(src.z);}
 			GINL const _DataType* front_ptr() const{return &x;}
 			GINL _DataType* front_ptr(){return &x;}
 			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}
