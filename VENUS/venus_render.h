@@ -185,8 +185,8 @@ namespace VENUS
 				virtual GAIA::GVOID reset()
 				{
 					VENUS::Render::Resource::Desc::reset();
-					sElementSize = 0;
-					sElementCount = 0;
+					sVertexSize = 0;
+					sVertexCount = 0;
 					bDynamic = GAIA::False;
 				}
 				virtual GAIA::BL check() const
@@ -195,14 +195,14 @@ namespace VENUS
 						return GAIA::False;
 					if(pFile != GNIL)
 						return GAIA::True;
-					if(sElementSize <= 0)
+					if(sVertexSize <= 0)
 						return GAIA::False;
-					if(sElementCount <= 0)
+					if(sVertexCount <= 0)
 						return GAIA::False;
 					return GAIA::True;
 				}
-				GAIA::SIZE sElementSize; // In bytes.
-				GAIA::SIZE sElementCount;
+				GAIA::SIZE sVertexSize; // In bytes.
+				GAIA::SIZE sVertexCount;
 				GAIA::U8 bDynamic : 1;
 			};
 		public:

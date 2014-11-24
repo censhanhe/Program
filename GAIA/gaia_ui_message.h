@@ -14,18 +14,18 @@ namespace GAIA
 				TYPE_DESTROY, // No parameter.
 				TYPE_SHOW, // No parameter.
 				TYPE_HIDE, // No parameter.
-				TYPE_MOVE, // Param0 is the new position(GAIA::UI::Canvas::__PosType*). When the message sent, the canvas position is not changed.
-				TYPE_MOVED, // Param0 is the new position(GAIA::UI::Canvas::__PosType*). When the message sent, the canvas position is changed.
-				TYPE_RESIZE, // Param0 is the new size(GAIA::UI::Canvas::__SizeType*). When the message sent, the canvas size is not changed.
-				TYPE_RESIZED, // Param0 is the new size(GAIA::UI::Canvas::__SizeType*). When the message sent, the canvas size is changed.
+				TYPE_MOVE, // Param0 is the new position(const GAIA::UI::Canvas::__PosType*). When the message sent, the canvas position is not changed.
+				TYPE_MOVED, // Param0 is the new position(const GAIA::UI::Canvas::__PosType*). When the message sent, the canvas position is changed.
+				TYPE_RESIZE, // Param0 is the new size(const GAIA::UI::Canvas::__SizeType*). When the message sent, the canvas size is not changed.
+				TYPE_RESIZED, // Param0 is the new size(const GAIA::UI::Canvas::__SizeType*). When the message sent, the canvas size is changed.
 				TYPE_ACTIVE, // No parameter.
 				TYPE_INACTIVE, // No parameter.
 				/* Cursor message. */
-				TYPE_CURSORDOWN, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). Param1 is the key id(GAIA::INPUT::KEY).
-				TYPE_CURSORUP, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). Param1 is the key id(GAIA::INPUT::KEY).
-				TYPE_CURSORMOVE, // Param0 is the new cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*). When the message sent, the cursor's position is not changed.
-				TYPE_CURSORMOVEIN, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*).
-				TYPE_CURSORMOVEOUT, // Param0 is the cursor position in canvas coordinate(GAIA::UI::Canvas::__PosType*).
+				TYPE_CURSORDOWN, // Param0 is the cursor position in canvas coordinate(const GAIA::UI::Canvas::__PosType*). Param1 is the key id(GAIA::INPUT::KEY).
+				TYPE_CURSORUP, // Param0 is the cursor position in canvas coordinate(const GAIA::UI::Canvas::__PosType*). Param1 is the key id(GAIA::INPUT::KEY).
+				TYPE_CURSORMOVE, // Param0 is the new cursor position in canvas coordinate(const GAIA::UI::Canvas::__PosType*). When the message sent, the cursor's position is not changed.
+				TYPE_CURSORMOVEIN, // Param0 is the cursor position in canvas coordinate(const GAIA::UI::Canvas::__PosType*).
+				TYPE_CURSORMOVEOUT, // Param0 is the cursor position in canvas coordinate(const GAIA::UI::Canvas::__PosType*).
 				/* Keyboard message. */
 				TYPE_KEYDOWN, // Param0 is the key's ansi character(GAIA::N32)(if is 0 means a pure virtual key), Param1 is the key id(GAIA::INPUT::KEY).
 				TYPE_KEYUP, // Param0 is the key's ansi character(GAIA::N32)(if is 0 means a pure virtual key), Param1 is the key id(GAIA::INPUT::KEY).

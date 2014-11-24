@@ -96,6 +96,7 @@ namespace GAIA
 			KEY_NUM9,
 			KEY_NUMPOINT,
 			/* Cursor key. */
+			KEY_MAINBTN,
 			KEY_LBTN,
 			KEY_RBTN,
 			KEY_MBTN,

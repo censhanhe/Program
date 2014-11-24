@@ -173,7 +173,11 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID look(const GAIA::MATH::VEC3<_DataType>& pos, const GAIA::MATH::VEC3<_DataType>& lookat, const GAIA::MATH::VEC3<_DataType>& up)
 			{
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				GAIA::MATH::VEC3<_DataType> zaxis = lookat - pos;
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
 				GAIA::MATH::VEC3<_DataType> zaxis = pos - lookat;
+			#endif
 				zaxis.normalize();
 				GAIA::MATH::VEC3<_DataType> xaxis = up.cross(zaxis);
 				xaxis.normalize();
@@ -185,21 +189,51 @@ namespace GAIA
 			}
 			GINL GAIA::GVOID ortho(const _DataType& width, const _DataType& height, const _DataType& znear, const _DataType& zfar)
 			{
-				_DataType fac = (znear - zfar);
+				_DataType fac = znear - zfar;
 				m[0][0] = (_DataType)2 / width;	m[0][1] = (_DataType)0;				m[0][2] = (_DataType)0;			m[0][3] = (_DataType)0;
 				m[1][0] = (_DataType)0;			m[1][1] = (_DataType)2 / height;	m[1][2] = (_DataType)0;			m[1][3] = (_DataType)0;
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				m[2][0] = (_DataType)0;			m[2][1] = (_DataType)0;				m[2][2] = (_DataType)-1 / fac;	m[2][3] = (_DataType)0;
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
 				m[2][0] = (_DataType)0;			m[2][1] = (_DataType)0;				m[2][2] = (_DataType)1 / fac;	m[2][3] = (_DataType)0;
+			#endif
 				m[3][0] = (_DataType)0;			m[3][1] = (_DataType)0;				m[3][2] = znear / fac;			m[3][3] = (_DataType)1;
 			}
-			GINL GAIA::GVOID perspective(const _DataType& fovy, const _DataType& aspect, const _DataType& znear, const _DataType& zfar)
+			GINL GAIA::GVOID perspective(const _DataType& width, const _DataType& height, const _DataType& znear, const _DataType& zfar)
+			{
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				_DataType fac = zfar / (zfar - znear);
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
+				_DataType fac = zfar / (znear - zfar);
+			#endif
+				m[0][0] = (_DataType)2 * znear / width;	m[0][1] = (_DataType)0;					m[0][2] = (_DataType)0;				m[0][3] = (_DataType)0;
+				m[1][0] = (_DataType)0;					m[1][1] = (_DataType)2 * znear / height;m[1][2] = (_DataType)0;				m[1][3] = (_DataType)0;
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				m[2][0] = (_DataType)0;					m[2][1] = (_DataType)0;					m[2][2] = fac;						m[2][3] = (_DataType)1;
+				m[3][0] = (_DataType)0;					m[3][1] = (_DataType)0;					m[3][2] = -znear * fac;				m[3][3] = (_DataType)0;
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
+				m[2][0] = (_DataType)0;					m[2][1] = (_DataType)0;					m[2][2] = fac;						m[2][3] = (_DataType)-1;
+				m[3][0] = (_DataType)0;					m[3][1] = (_DataType)0;					m[3][2] = znear * fac;				m[3][3] = (_DataType)0;
+			#endif
+			}
+			GINL GAIA::GVOID perspectivefov(const _DataType& fovy, const _DataType& aspect, const _DataType& znear, const _DataType& zfar)
 			{
 				_DataType ys = (_DataType)1 / GAIA::MATH::xtan(fovy / (_DataType)2);
 				_DataType xs = ys / aspect;
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				_DataType fac = zfar / (zfar - znear);
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
 				_DataType fac = zfar / (znear - zfar);
+			#endif
 				m[0][0] = xs;				m[0][1] = (_DataType)0;		m[0][2] = (_DataType)0;				m[0][3] = (_DataType)0;
 				m[1][0] = (_DataType)0;		m[1][1] = ys;				m[1][2] = (_DataType)0;				m[1][3] = (_DataType)0;
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				m[2][0] = (_DataType)0;		m[2][1] = (_DataType)0;		m[2][2] = fac;						m[2][3] = (_DataType)1;
+				m[3][0] = (_DataType)0;		m[3][1] = (_DataType)0;		m[3][2] = -znear * fac;				m[3][3] = (_DataType)0;
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
 				m[2][0] = (_DataType)0;		m[2][1] = (_DataType)0;		m[2][2] = fac;						m[2][3] = (_DataType)-1;
 				m[3][0] = (_DataType)0;		m[3][1] = (_DataType)0;		m[3][2] = znear * fac;				m[3][3] = (_DataType)0;
+			#endif
 			}
 			template<typename _ParamDataType1, typename _ParamDataType2, typename _ParamDataType3> GAIA::GVOID translate(const _ParamDataType1& x, const _ParamDataType2& y, const _ParamDataType3& z)
 			{

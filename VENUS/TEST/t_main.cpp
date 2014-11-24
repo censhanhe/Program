@@ -42,8 +42,8 @@ public:
 			// Create vertex buffer.
 			VENUS::Render::VertexBuffer::Desc descVB;
 			descVB.reset();
-			descVB.sElementCount = 3;
-			descVB.sElementSize = sizeof(GAIA::MATH::VEC2<GAIA::F32>);
+			descVB.sVertexCount = 3;
+			descVB.sVertexSize = sizeof(GAIA::MATH::VEC2<GAIA::F32>);
 			pTriangleVB = r.CreateVertexBuffer(descVB);
 			Vertex v[6 * 4];
 
@@ -247,7 +247,7 @@ static GAIA::BL FrameLoop(VENUS::Render::Context& ctx, VENUS::Render& r, Resourc
 		GAIA::MATH::VEC3<GAIA::REAL>(R(0.0), R(0.0), R(-10.0)), 
 		GAIA::MATH::VEC3<GAIA::REAL>(R(0.0), R(0.0), R(1.0)), 
 		GAIA::MATH::VEC3<GAIA::REAL>(R(0.0), R(1.0), R(0.0)));
-	mtxProj.perspective(GAIA::MATH::PI * R(0.5), 1.0F / rAspect, R(0.001), R(1000.0));
+	mtxProj.perspectivefov(GAIA::MATH::PI * R(0.5), 1.0F / rAspect, R(0.001), R(1000.0));
 	mtxCombin = mtxRotate * mtxView * mtxProj;
 	r.SetConstant(ctx, "u_mtx", mtxCombin.front_ptr(), 4, 4, 1);
 	r.Draw(ctx, 12);
