@@ -419,6 +419,43 @@ namespace GAIA_TEST
 			++nRet;
 		}
 
+		rv = 1.0F;
+		rv.lerp(2.0F, 0.5F);
+		if(!GAIA::MATH::xequal(rv.x, 1.5F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		if(!GAIA::MATH::xequal(rv.y, 1.5F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		rv = 1.0F;
+		rv.lerp(rv + 1.0F, 0.5F);
+		if(!GAIA::MATH::xequal(rv.x, 1.5F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		if(!GAIA::MATH::xequal(rv.y, 1.5F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		rv = 1.0F;
+		rv.lerp(rv + 1.0F, rv);
+		if(!GAIA::MATH::xequal(rv.x, 2.0F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		if(!GAIA::MATH::xequal(rv.y, 2.0F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+
 		return nRet;
 	}
 };

@@ -47,6 +47,9 @@ namespace GAIA
 				ret.w = (_DataType)1;
 				return ret;
 			}
+			template<typename _ParamDataType1, typename _ParamDataType2> GAIA::GVOID lerp(const _ParamDataType1& src, const _ParamDataType2& s){x = GAIA::MATH::lerp(x, src, s); y = GAIA::MATH::lerp(y, src, s); z = GAIA::MATH::lerp(z, src, s); w = GAIA::MATH::lerp(w, src, s);}
+			template<typename _ParamDataType1, typename _ParamDataType2> GAIA::GVOID lerp(const GAIA::MATH::VEC4<_ParamDataType1>& src, const _ParamDataType2& s){x = GAIA::MATH::lerp(x, src.x, s); y = GAIA::MATH::lerp(y, src.y, s); z = GAIA::MATH::lerp(z, src.z, s); w = GAIA::MATH::lerp(w, src.w, s);}
+			template<typename _ParamDataType1, typename _ParamDataType2> GAIA::GVOID lerp(const GAIA::MATH::VEC4<_ParamDataType1>& src, const GAIA::MATH::VEC4<_ParamDataType2>& s){x = GAIA::MATH::lerp(x, src.x, s.x); y = GAIA::MATH::lerp(y, src.y, s.y); z = GAIA::MATH::lerp(z, src.z, s.z); w = GAIA::MATH::lerp(w, src.w, s.w);}
 			GINL GAIA::MATH::VEC2<_DataType> xy() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = x; ret.y = y; return ret;}
 			GINL GAIA::MATH::VEC2<_DataType> xz() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = x; ret.y = z; return ret;}
 			GINL GAIA::MATH::VEC2<_DataType> yz() const{GAIA::MATH::VEC2<_DataType> ret; ret.x = y; ret.y = z; return ret;}
