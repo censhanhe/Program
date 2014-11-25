@@ -23,6 +23,18 @@ namespace GAIA
 			ret.w = v.x * mtx.m[0][3] + v.y * mtx.m[1][3] + v.z * mtx.m[2][3] + v.w * mtx.m[3][3];
 			return ret;
 		}
+
+		template<typename _VecType, typename _MatrixType> GAIA::MATH::VEC3<_VecType>& operator *= (GAIA::MATH::VEC3<_VecType>& v, const GAIA::MATH::MTX44<_MatrixType>& mtx)
+		{
+			v = v * mtx;
+			return v;
+		}
+
+		template<typename _VecType, typename _MatrixType> GAIA::MATH::VEC4<_VecType>& operator *= (GAIA::MATH::VEC4<_VecType>& v, const GAIA::MATH::MTX44<_MatrixType>& mtx)
+		{
+			v = v * mtx;
+			return v;
+		}
 	};
 };
 
