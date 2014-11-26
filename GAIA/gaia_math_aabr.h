@@ -40,7 +40,7 @@ namespace GAIA
 			template<typename _ParamDataType> AABR(_ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> AABR(_ParamDataType v){this->operator = (v);}
 			GINL GAIA::SIZE size() const{return 4;}
-			GINL GAIA::GVOID identity(){pmin = (_DataType)+1; pmax = (_DataType)-1;}
+			GINL GAIA::GVOID identity(){pmin = (_DataType)+99999999; pmax = (_DataType)-99999999;}
 			GINL GAIA::BL isidentity() const{return pmin.x > pmax.x || pmin.y > pmax.y;}
 			GINL _vectype center() const{return (pmin + pmax) / (_DataType)2;}
 			GINL _vectype long_size() const{return pmax - pmin;}
