@@ -1,28 +1,21 @@
 cxx=g++
-linkflag=-luuid -lpthread -liconv -o
-compflag=-c -pipe -O2
+linkflag=-luuid -lpthread -o
+compflag=-c -pipe -O2 -D__X64__
 binpath=./BIN/
 
 srcs=$(wildcard ./GAIA/TEST/*.cpp)
 objs=$(srcs:%.cpp=%.o)
-pchh=./GAIA/TEST/preheader.h
-pch=./GAIA/TEST/preheader.h.gch
-pchflag=-Winvalid-pch
 
 build:$(objs)
 #	@echo ------begin link------ $(objs)
 	$(cxx) $(objs) $(linkflag) $(binpath)gaia
 
-$(objs):%.o:%.cpp $(pch)
+$(objs):%.o:%.cpp
 #	@echo ------begin compile------ $(objs)
-	$(cxx) $(compflag) $(pchflag) $< -o $@
+	$(cxx) $(compflag) $< -o $@
 	
-$(pch):$(pchh)
-	$(cxx) -x c++-header $(compflag) $(pchh) -o $(pch)
-
 .PHONY:clean
 clean:
 #	@echo ------begin clear------ $(objs)
 	-rm $(objs)
-	-rm $(pch)
 	-rm $(binpath)gaia
