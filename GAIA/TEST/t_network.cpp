@@ -111,7 +111,7 @@ namespace GAIA_TEST
 		NReceiver* m_pReceiver;
 	};
 
-	extern GAIA::N32 t_network(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_network(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 

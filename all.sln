@@ -23,9 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{E11624AF-30B
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MAKEFILE", "MAKEFILE", "{C6359517-2075-49BB-B67B-ABA16F0329EB}"
-	ProjectSection(SolutionItems) = preProject
-		makefile = makefile
-	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "venus", "VENUS\venus.vcproj", "{D668CD4F-4C69-4574-850D-90F5EF501429}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +66,14 @@ Global
 		{DD56E02F-A3AD-425D-8883-C8808DCAF05F}.Release|Win32.Build.0 = Release|Win32
 		{DD56E02F-A3AD-425D-8883-C8808DCAF05F}.Release|x64.ActiveCfg = Release|x64
 		{DD56E02F-A3AD-425D-8883-C8808DCAF05F}.Release|x64.Build.0 = Release|x64
+		{D668CD4F-4C69-4574-850D-90F5EF501429}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D668CD4F-4C69-4574-850D-90F5EF501429}.Debug|Win32.Build.0 = Debug|Win32
+		{D668CD4F-4C69-4574-850D-90F5EF501429}.Debug|x64.ActiveCfg = Debug|x64
+		{D668CD4F-4C69-4574-850D-90F5EF501429}.Debug|x64.Build.0 = Debug|x64
+		{D668CD4F-4C69-4574-850D-90F5EF501429}.Release|Win32.ActiveCfg = Release|Win32
+		{D668CD4F-4C69-4574-850D-90F5EF501429}.Release|Win32.Build.0 = Release|Win32
+		{D668CD4F-4C69-4574-850D-90F5EF501429}.Release|x64.ActiveCfg = Release|x64
+		{D668CD4F-4C69-4574-850D-90F5EF501429}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

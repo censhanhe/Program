@@ -8,7 +8,7 @@ namespace PROM
 	public:
 		GINL Prom(){}
 		GINL ~Prom(){}
-		GINL GAIA::BL Command(const GAIA::TCH* psz, GAIA::PRINT::PrintBase& prt)
+		GINL GAIA::BL Command(const GAIA::TCH* psz, GAIA::STREAM::StreamBase& stm)
 		{
 			GAIA_AST(psz != GNIL);
 			if(psz == GNIL)
@@ -20,8 +20,8 @@ namespace PROM
 			PLC_SourceCommand* pPLC = new PLC_SourceCommand; pPLC->pszCmd = psz;
 			Pipeline* pPL = this->ConstructPipeline();
 			{
-				pPLD->Run(GNIL, 0, &pPL, 1, (PipelineContext**)&pPLC, 1, prt, m_errors);
-				this->PrintError(prt);
+				pPLD->Run(GNIL, 0, &pPL, 1, (PipelineContext**)&pPLC, 1, stm, m_errors);
+				this->StreamError(stm);
 				this->ClearError();
 			}
 			this->DestructPipeline(pPL); pPL = GNIL;
@@ -95,44 +95,44 @@ namespace PROM
 			pPL->UnbindNextAll();
 			pPL->Release();
 		}
-		GINL GAIA::GVOID PrintError(GAIA::PRINT::PrintBase& prt)
+		GINL GAIA::GVOID StreamError(GAIA::STREAM::StreamBase& stm)
 		{
-			GAIA::PRINT::PrintFormat prtfmt;
-			GAIA::PRINT::PrintFormat prtfmt_old;
+			GAIA::STREAM::StreamFormat prtfmt;
+			GAIA::STREAM::StreamFormat prtfmt_old;
 			prtfmt.reset();
 			prtfmt_old.reset();
-			prt >> prtfmt_old;
-			prt << prtfmt;
+			stm >> prtfmt_old;
+			stm << prtfmt;
 
 			for(GAIA::SIZE x = 0; x < m_errors.size(); ++x)
 			{
 				ERROR_SYSTEM::ErrorBase* pError = m_errors[x];
 				if(pError == GNIL)
 					continue;
-				prt << "Prometheus:";
-				prt << "P" << GSCAST(GAIA::N32)(pError->getstage());
-				prt << "L" << GSCAST(GAIA::N32)(pError->getlevel());
-				prt << "N" << GSCAST(GAIA::N32)(pError->getid());
+				stm << "Prometheus:";
+				stm << "P" << GSCAST(GAIA::N32)(pError->getstage());
+				stm << "L" << GSCAST(GAIA::N32)(pError->getlevel());
+				stm << "N" << GSCAST(GAIA::N32)(pError->getid());
 				if(!GAIA::ALGO::stremp(pError->getdesc()))
 				{
-					prt << ", ";
-					prt << pError->getdesc();
+					stm << ", ";
+					stm << pError->getdesc();
 				}
 				if(!GAIA::ALGO::stremp(pError->getfilename()))
 				{
-					prt << ", ";
-					prt << pError->getfilename();
+					stm << ", ";
+					stm << pError->getfilename();
 					if(pError->getfileline() != GINVALID)
-						prt << "(" << pError->getfileline() << ")";
+						stm << "(" << pError->getfileline() << ")";
 				}
 				if(!GAIA::ALGO::stremp(pError->getsample()))
 				{
-					prt << ", ";
-					prt << pError->getsample();
+					stm << ", ";
+					stm << pError->getsample();
 				}
-				prt << ". \n";
+				stm << ". \n";
 			}
-			prt << prtfmt_old;
+			stm << prtfmt_old;
 		}
 		GINL GAIA::GVOID ClearError()
 		{

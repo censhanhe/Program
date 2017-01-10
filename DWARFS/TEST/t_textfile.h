@@ -3,7 +3,7 @@
 
 namespace DWARFSTEST
 {
-	GINL GAIA::N32 t_textfile(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_textfile(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -21,7 +21,7 @@ namespace DWARFSTEST
 			GTLINE2("Load ansi.cpp failed!");
 			++nRet;
 		}
-		if(textfile.charset_type() != GAIA::CHARSET_TYPE_ANSI)
+		if(textfile.charset_type() != GAIA::CHARSET_TYPE_ASCII)
 		{
 			GTLINE2("File ansi charset error!");
 			++nRet;

@@ -33,14 +33,14 @@ namespace GAIA
 		public:
 			/* Base. */
 			GINL Form(){this->init();}
-			GINL ~Form(){}
+			GINL ~Form(){this->Destroy();}
 
 			/* Location management. */
-			GINL GAIA::BL Position(const __PosType& pos){m_pos = pos;}
+			GINL GAIA::BL Position(const __PosType& pos){m_pos = pos; return GAIA::True;}
 			GINL const __PosType& Position() const{return m_pos;}
-			GINL GAIA::BL Size(const __SizeType& size){m_size = size;}
+			GINL GAIA::BL Size(const __SizeType& size){m_size = size; return GAIA::True;}
 			GINL const __SizeType& Size() const{return m_size;}
-			GINL GAIA::BL Rotate(const __RotateType& rotate){m_rotate = rotate;}
+			GINL GAIA::BL Rotate(const __RotateType& rotate){m_rotate = rotate; return GAIA::True;}
 			GINL const __RotateType& Rotate() const{return m_rotate;}
 
 			/* Link management. */
@@ -78,6 +78,7 @@ namespace GAIA
 					else
 						pParent->m_childs[nFreeIndex] = this;
 				}
+				return GAIA::True;
 			}
 			GINL __MyType* GetParent() const
 			{
@@ -108,7 +109,7 @@ namespace GAIA
 				return bExist;
 			}
 
-			/* Msg management. */
+			/* Message management. */
 			GINL GAIA::GVOID EnableCallbackMsg(GAIA::BL bEnable){m_bEnableCallBackMsg = bEnable;}
 			GINL GAIA::BL IsEnableCallBackMsg() const{return m_bEnableCallBackMsg;}
 
@@ -125,9 +126,9 @@ namespace GAIA
 			GINL GAIA::BL Modal() const{return m_bModal;}
 
 			/* Display management. */
-			GINL GAIA::BL Show(GAIA::BL bShow){m_bShow = bShow;}
+			GINL GAIA::BL Show(GAIA::BL bShow){m_bShow = bShow; return GAIA::True;}
 			GINL GAIA::BL IsShow() const{return m_bShow;}
-			GINL GAIA::BL Color(const __ColorType& cr){m_cr = cr;}
+			GINL GAIA::BL Color(const __ColorType& cr){m_cr = cr; return GAIA::True;}
 			GINL const __ColorType& Color() const{return m_cr;}
 
 			/* Scissor management. */
@@ -157,6 +158,13 @@ namespace GAIA
 					return GAIA::False;
 				GAIA_MFREE_SAFE(m_desc.pszName);
 				m_desc.reset();
+				if(m_parent != GNIL)
+					this->SetParent(GNIL);
+				for(__ChildListType::it it = m_childs.front_it(); !it.empty(); ++it)
+				{
+					__MyType* p = *it;
+					p->SetParent(GNIL);
+				}
 				return GAIA::True;
 			}
 			virtual GAIA::BL IsCreated() const{return !GAIA::ALGO::stremp(m_desc.pszName);}

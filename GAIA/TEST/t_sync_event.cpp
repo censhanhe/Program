@@ -21,7 +21,7 @@ namespace GAIA_TEST
 		GAIA::SYNC::Event* m_pEvent;
 	};
 
-	extern GAIA::N32 t_sync_event(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_sync_event(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 

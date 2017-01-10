@@ -3,6 +3,9 @@
 
 #define GINL inline
 
+/* System codepage. */
+#define GAIA_SYS_CODEPAGE "GBK"
+
 /* OS flag. */
 #define GAIA_OS_WINDOWS 1
 #define GAIA_OS_OSX 2
@@ -12,6 +15,14 @@
 #define GAIA_OS_UNIX 6
 #ifdef _MSC_VER
 #	define GAIA_OS GAIA_OS_WINDOWS
+#elif defined(__LINUX__)
+#	define GAIA_OS GAIA_OS_LINUX
+#elif defined(__OSX__)
+#	define GAIA_OS GAIA_OS_OSX
+#elif defined(__IOS__)
+#	define GAIA_OS GAIA_OS_IOS
+#elif defined(__ANDROID__)
+#	define GAIA_OS GAIA_OS_ANDROID
 #else
 #	define GAIA_OS GAIA_OS_LINUX
 #endif
@@ -62,7 +73,13 @@
 /* Language code flag. */
 #define GAIA_CHARSET_ANSI 1
 #define GAIA_CHARSET_UNICODE 2
-#define GAIA_CHARSET GAIA_CHARSET_UNICODE
+#ifdef __UNICODE__
+#	define GAIA_CHARSET GAIA_CHARSET_UNICODE
+#elif defined(__ANSI__)
+#	define GAIA_CHARSET GAIA_CHARSET_ANSI
+#else
+#	define GAIA_CHARSET GAIA_CHARSET_UNICODE
+#endif
 
 /* Machine bit count flag. */
 #define GAIA_MACHINE32 32
@@ -74,8 +91,14 @@
 #	else
 #		define GAIA_MACHINE GAIA_MACHINE32
 #	endif
-#else
+#elif __X32__
+#	define GAIA_MACHINE GAIA_MACHINE32
+#elif __X64__
 #	define GAIA_MACHINE GAIA_MACHINE64
+#elif __X128__
+#	define GAIA_MACHINE GAIA_MACHINE128
+#else
+#	define GAIA_MACHINE GAIA_MACHINE32
 #endif
 
 #if GAIA_MACHINE == GAIA_MACHINE32
@@ -95,7 +118,7 @@
 //#define GAIA_DEBUG_ASTDEBUG
 #define GAIA_DEBUG_STATICAST
 #define GAIA_DEBUG_MACHINELENGTH
-//#define GAIA_DEBUG_MEMORYLEAK
+#define GAIA_DEBUG_MEMORYLEAK
 #define GAIA_DEBUG_PLATFORM
 
 #ifdef GAIA_DEBUG_CODING
@@ -116,9 +139,14 @@
 
 /* Warning adjust. */
 #ifdef GAIA_DEBUG_WARNING
-#	if GAIA_OS == GAIA_OS_WINDOWS
+#	if GAIA_COMPILER == GAIA_COMPILER_CL
 #		pragma warning(disable : 4100)
 #		pragma warning(disable : 4189)
+#		pragma warning(disable : 4996)
+#		pragma warning(disable : 4127)
+#		pragma warning(disable : 4201)
+#		pragma warning(disable : 4800)
+#		pragma warning(disable : 4244)
 #	else
 #	endif
 #endif
@@ -137,5 +165,22 @@
 
 /* Integration flag. */
 #define GAIA_USESTL
+
+/* Line break flag. */
+#define GAIA_FILELINEBREAK_RN "\r\n"
+#define GAIA_FILELINEBREAK_R "\r"
+#define GAIA_FILELINEBREAK_N "\n"
+#define GAIA_FILELINEBREAK GAIA_FILELINEBREAK_RN
+
+/* Coordinate flag. */
+#define GAIA_COORDINATE_LEFTHAND 1
+#define GAIA_COORDINATE_RIGHTHAND 2
+#ifdef __LEFTHAND__
+#	define GAIA_COORDINATE GAIA_COORDINATE_LEFTHAND
+#elif defined(__RIGHTHAND__)
+#	define GAIA_COORDINATE GAIA_COORDINATE_RIGHTHAND
+#else
+#	define GAIA_COORDINATE GAIA_COORDINATE_LEFTHAND
+#endif
 
 #endif

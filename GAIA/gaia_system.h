@@ -23,4 +23,6 @@ namespace GAIA
 	};
 };
 
+#include "gaia_system_indp.h"
+
 #endif

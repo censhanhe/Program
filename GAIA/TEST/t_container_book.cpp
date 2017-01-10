@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_container_book(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_container_book(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -95,6 +95,12 @@ namespace GAIA_TEST
 			if(sUsedIndex != x)
 			{
 				GTLINE2("Book get usedindex error!");
+				++nRet;
+				break;
+			}
+			if(bt.find(x) != sUsedIndex)
+			{
+				GTLINE2("Book find error!");
 				++nRet;
 				break;
 			}
@@ -281,6 +287,24 @@ namespace GAIA_TEST
 		}
 		bt.clear();
 		bt.destroy();
+
+		{
+			GAIA::SIZE u1 = bt.set(0);
+			GAIA::SIZE f1 = bt.fixedindex(u1);
+			GAIA::SIZE u2 = bt.set(1);
+			GAIA::SIZE f2 = bt.fixedindex(u2);
+			if(!bt.erase(bt.usedindex(f1)))
+			{
+				GTLINE2("Book erase error!");
+				++nRet;
+			}
+			u2 = bt.usedindex(f2);
+			if(u2 == GINVALID)
+			{
+				GTLINE2("Book usedindex error!");
+				++nRet;
+			}
+		}
 
 		return nRet;
 	}

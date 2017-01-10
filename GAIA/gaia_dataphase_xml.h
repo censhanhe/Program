@@ -60,7 +60,7 @@ namespace GAIA
 					return GAIA::False;
 
 				/* Save file header. */
-				if(cst != CHARSET_TYPE_ANSI && 
+				if(cst != CHARSET_TYPE_ASCII && 
 					cst != CHARSET_TYPE_UTF7 && 
 					cst != CHARSET_TYPE_UTF8 && 
 					cst != CHARSET_TYPE_UTF16LE && 
@@ -287,7 +287,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL Change(const _CharType* pName, const _CharType* pValue) // If pValue is GNIL, it means change a node name.
 			{
-				GPCHR_NULLSTRPTR_RET(pName, GAIA::False);
+				GPCHR_NULLSTR_RET(pName, GAIA::False);
 				if(m_callstack.empty())
 					return GAIA::False;
 				Node* pNode = m_callstack.back().pNode;
@@ -308,7 +308,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL WriteNode(const _CharType* pNode)
 			{
-				GPCHR_NULLSTRPTR_RET(pNode, GAIA::False);
+				GPCHR_NULLSTR_RET(pNode, GAIA::False);
 				Node* pNewNode = m_npool.alloc();
 				pNewNode->name = m_ssp.alloc(pNode);
 				if(m_callstack.empty())
@@ -331,7 +331,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL WriteAttr(const _CharType* pAttrName, const _CharType* pAttrValue)
 			{
-				GPCHR_NULLSTRPTR_RET(pAttrName, GAIA::False);
+				GPCHR_NULLSTR_RET(pAttrName, GAIA::False);
 				GPCHR_NULL_RET(pAttrName, GAIA::False);
 				if(m_callstack.empty())
 					return GAIA::False;
@@ -355,10 +355,10 @@ namespace GAIA
 			GINL GAIA::BL IsResetCursor() const{return m_callstack.empty() && !m_bEnd;}
 			GINL GAIA::BL SetLineFlag(const _CharType* p)
 			{
-				GPCHR_NULLSTRPTR_RET(p, GAIA::False);
-				if(GAIA::ALGO::strcmp(p, _T("\r")) != 0 &&
-					GAIA::ALGO::strcmp(p, _T("\n")) != 0 &&
-					GAIA::ALGO::strcmp(p, _T("\r\n")) != 0)
+				GPCHR_NULLSTR_RET(p, GAIA::False);
+				if(GAIA::ALGO::strcmp(p, _T(GAIA_FILELINEBREAK_R)) != 0 &&
+					GAIA::ALGO::strcmp(p, _T(GAIA_FILELINEBREAK_N)) != 0 &&
+					GAIA::ALGO::strcmp(p, _T(GAIA_FILELINEBREAK_RN)) != 0)
 					return GAIA::False;
 				m_lineflag = p;
 				return GAIA::True;
@@ -366,7 +366,7 @@ namespace GAIA
 			GINL const _CharType* GetLineFlag() const{return m_lineflag;}
 			GINL const _CharType* NameFamily(const _CharType* pNF, const _CharType* pConditionName, const _CharType* pConditionValue) const
 			{
-				GPCHR_NULLSTRPTR_RET(pNF, GNIL);
+				GPCHR_NULLSTR_RET(pNF, GNIL);
 				return GNIL;
 			}
 		private:
@@ -402,7 +402,7 @@ namespace GAIA
 			{
 				this->ResetCursor();
 				m_root = GNIL;
-				m_lineflag = _T("\r\n");
+				m_lineflag = _T(GAIA_FILELINEBREAK);
 			}
 			GINL GAIA::BL IsAttrExist(const Node& node, const _CharType* pAttrName) const
 			{

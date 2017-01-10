@@ -186,7 +186,7 @@ namespace PROM
 		}
 		GINL GAIA::BL FindObjByName(const GAIA::TCH* pszName, GAIA::CTN::Vector<Obj*>& listResult) const
 		{
-			GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
+			GPCHR_NULLSTR_RET(pszName, GAIA::False);
 			GAIA::BL bRet = GAIA::False;
 			GAIA::SIZE namelen = GAIA::ALGO::strlen(pszName);
 			for(GAIA::SIZE x = 0; x < rec_name.size(); ++x)

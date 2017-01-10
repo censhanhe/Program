@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_container_orderless(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_container_orderless(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		static const GAIA::SIZE SAMPLE_COUNT = 100;
 		GAIA::N32 nRet = 0;

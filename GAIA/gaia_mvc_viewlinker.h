@@ -45,8 +45,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL UnlinkView(GAIA::MVC::View& view)
 			{
-				__ViewList::it it = m_views.front_it();
-				for(; !it.empty(); ++it)
+				for(__ViewList::it it = m_views.front_it(); !it.empty(); ++it)
 				{
 					ViewNode& n = *it;
 					if(n.pView == &view)
@@ -57,6 +56,7 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
+			GINL GAIA::GVOID UnlinkViewAll(){m_views.clear();}
 			GINL GAIA::BL IsLinkedView(GAIA::MVC::View& view) const
 			{
 				__ViewList::const_it it = m_views.const_front_it();

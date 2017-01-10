@@ -1,13 +1,11 @@
 #ifndef		__GAIA_LOCALE_INDP_H__
 #define		__GAIA_LOCALE_INDP_H__
 
-#include <locale.h>
 #if GAIA_OS == GAIA_OS_WINDOWS
 #	include <xlocale>
+#else
+#	include <iconv.h>
 #endif
-
-extern GAIA::SYNC::Lock g_gaia_localelock;
-extern GAIA::CHARSET_TYPE g_gaia_charsettype;
 
 namespace GAIA
 {
@@ -18,7 +16,7 @@ namespace GAIA
 			GAIA_AST(charset_type < GAIA::CHARSET_TYPE_MAXENUMCOUNT);
 			if(charset_type >= GAIA::CHARSET_TYPE_MAXENUMCOUNT)
 				return 0;
-			if(charset_type == GAIA::CHARSET_TYPE_ANSI)
+			if(charset_type == GAIA::CHARSET_TYPE_ASCII)
 			{
 				GAIA::SIZE ret = 0;
 				for(;;)
@@ -46,23 +44,34 @@ namespace GAIA
 				uCodePage = GAIA::CHARSET_CODEPAGE[charset_type];
 			return ::MultiByteToWideChar(uCodePage, 0, pszSrc, -1, pszDst, dst_size_in_wchar);
 		#else
-			GAIA::SYNC::AutoLock al(g_gaia_localelock);
-			if(g_gaia_charsettype != charset_type)
-			{
-				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAMEA[charset_type]) == GNIL)
-					return 0;
-				g_gaia_charsettype = charset_type;
-			}
-			return (GAIA::SIZE)mbstowcs(pszDst, pszSrc, dst_size_in_wchar);
-		#endif
+			iconv_t cv = iconv_open(GAIA::CHARSET_CODEPAGE_NAMEA[GAIA::CHARSET_TYPE_UTF16LE], GAIA::CHARSET_CODEPAGE_NAMEA[charset_type]);
+			if(cv == (iconv_t)-1)
+				return 0;
 
+			GAIA::CH* pTempSrc = (GAIA::CH*)pszSrc;
+			GAIA::CH* pTempDst = (GAIA::CH*)pszDst;
+			size_t uSrcSize = GAIA_INTERNAL_NAMESPACE::strlen(pszSrc);
+			size_t uDstSize = dst_size_in_wchar * sizeof(GAIA::WCH);
+
+			if(iconv(cv, &pTempSrc, &uSrcSize, &pTempDst, &uDstSize) == -1)
+				return 0;
+
+			if(iconv_close(cv) == -1)
+				return 0;
+
+			GAIA::SIZE sByteCount = dst_size_in_wchar * sizeof(GAIA::WCH) - uDstSize;
+			GAIA_AST(sByteCount % sizeof(GAIA::WCH) == 0);
+			GAIA::SIZE sCharCount = sByteCount / sizeof(GAIA::WCH);
+			pszDst[sCharCount] = '\0';
+			return sCharCount + 1;
+		#endif
 		}
 		GINL GAIA::SIZE w2m(const GAIA::WCH* pszSrc, GAIA::CH* pszDst, GAIA::SIZE dst_size_in_bytes, GAIA::CHARSET_TYPE charset_type)
 		{
 			GAIA_AST(charset_type < GAIA::CHARSET_TYPE_MAXENUMCOUNT);
 			if(charset_type >= GAIA::CHARSET_TYPE_MAXENUMCOUNT)
 				return 0;
-			if(charset_type == GAIA::CHARSET_TYPE_ANSI)
+			if(charset_type == GAIA::CHARSET_TYPE_ASCII)
 			{
 				GAIA::SIZE ret = 0;
 				for(;;)
@@ -90,14 +99,24 @@ namespace GAIA
 				uCodePage = GAIA::CHARSET_CODEPAGE[charset_type];
 			return ::WideCharToMultiByte(uCodePage, 0, pszSrc, -1, pszDst, dst_size_in_bytes, GNIL, GNIL);
 		#else
-			GAIA::SYNC::AutoLock al(g_gaia_localelock);
-			if(g_gaia_charsettype != charset_type)
-			{
-				if(setlocale(LC_ALL, CHARSET_CODEPAGE_NAMEA[charset_type]) == GNIL)
-					return 0;
-				g_gaia_charsettype = charset_type;
-			}
-			return (GAIA::SIZE)wcstombs(pszDst, pszSrc, dst_size_in_bytes);
+			iconv_t cv = iconv_open(GAIA::CHARSET_CODEPAGE_NAMEA[charset_type], GAIA::CHARSET_CODEPAGE_NAMEA[GAIA::CHARSET_TYPE_UTF16LE]);
+			if(cv == (iconv_t)-1)
+				return 0;
+
+			GAIA::CH* pTempSrc = (GAIA::CH*)pszSrc;
+			GAIA::CH* pTempDst = (GAIA::CH*)pszDst;
+			size_t uSrcSize = GAIA_INTERNAL_NAMESPACE::strlen(pszSrc) * sizeof(GAIA::WCH);
+			size_t uDstSize = dst_size_in_bytes;
+
+			if(iconv(cv, &pTempSrc, &uSrcSize, &pTempDst, &uDstSize) == -1)
+				return 0;
+
+			if(iconv_close(cv) == -1)
+				return 0;
+
+			GAIA::SIZE sByteCount = dst_size_in_bytes - uDstSize;
+			pszDst[sByteCount] = '\0';
+			return sByteCount + 1;
 		#endif
 		}
 	};

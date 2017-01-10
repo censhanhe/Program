@@ -11,7 +11,12 @@ namespace GAIA
 			typedef GAIA::MATH::VEC2<GAIA::N32> __PosType;
 			typedef GAIA::MATH::VEC2<GAIA::N32> __SizeType;
 		public:
-			class CanvasStyle
+			class CallBack : public GAIA::Base
+			{
+			public:
+				virtual GAIA::BL Message(GAIA::UI::Canvas& canvas, const GAIA::UI::Message& msg) = 0;
+			};
+			class Style : public GAIA::Base
 			{
 			public:
 				GINL GAIA::GVOID reset()
@@ -31,7 +36,7 @@ namespace GAIA
 				GAIA::U8 bMinimizeBox : 1;
 				GAIA::U8 bResizeAble : 1;
 			};
-			class CanvasDesc
+			class Desc : public GAIA::Base
 			{
 			public:
 				GINL GAIA::GVOID reset()
@@ -39,6 +44,7 @@ namespace GAIA
 					pszCaptionText = GNIL;
 					pParent = GNIL;
 					style.reset();
+					pCallBack = GNIL;
 				}
 				GINL GAIA::BL check() const
 				{
@@ -58,14 +64,15 @@ namespace GAIA
 			public:
 				const GAIA::TCH* pszCaptionText;
 				Canvas* pParent;
-				CanvasStyle style;
+				Style style;
+				CallBack* pCallBack;
 			};
 		public:
 			virtual GAIA::FWORK::ClsID GetClassID() const{return GAIA::FWORK::CLSID_UI_CANVAS;}
 		public:
 			GINL Canvas();
 			GINL ~Canvas();
-			GINL GAIA::BL Create(const CanvasDesc& desc);
+			GINL GAIA::BL Create(const Desc& desc);
 			GINL GAIA::BL Destroy();
 			GINL GAIA::BL IsCreated() const;
 			GINL GAIA::BL Quit();
@@ -79,7 +86,20 @@ namespace GAIA
 			GINL __SizeType Size() const;
 			GINL GAIA::BL SetCaptionText(const GAIA::TCH* pszCaptionText);
 			GINL GAIA::BL GetCaptionText(GAIA::TCH* pszResult, GAIA::SIZE sResultMaxCharCount, GAIA::SIZE& sResultCount) const;
+			GINL CallBack* GetCallBack() const{return m_pCallBack;}
 			GINL GAIA::GVOID* GetHandle() const;
+			GINL GAIA::BL SendMessage(const GAIA::UI::Message& msg)
+			{
+				if(m_pCallBack == GNIL)
+					return GAIA::False;
+				GAIA::BL bRet;
+				this->Reference();
+				{
+					bRet = m_pCallBack->Message(*this, msg);
+				}
+				this->Release();
+				return bRet;
+			}
 			GINL GAIA::BL operator == (const GAIA::UI::Canvas& src) const;
 			GINL GAIA::BL operator != (const GAIA::UI::Canvas& src) const;
 			GINL GAIA::BL operator >= (const GAIA::UI::Canvas& src) const;
@@ -89,9 +109,14 @@ namespace GAIA
 		private:
 			GINL GAIA::GVOID init();
 			GINL GAIA::BL RegistToGlobalList();
-			GINL GAIA::BL UnregistToGlobalList();
+			GINL GAIA::BL UnregistFromGlobalList();
+		#if GAIA_OS == GAIA_OS_WINDOWS
+		public:
+			static GINL GAIA::BL WindowsMessageCallBack(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+		#endif
 		private:
-			CanvasStyle m_style;
+			Style m_style;
+			CallBack* m_pCallBack;
 		#if GAIA_OS == GAIA_OS_WINDOWS
 			HWND m_hWnd;
 			GAIA::TCH* m_pszClassName;

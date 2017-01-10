@@ -6,7 +6,7 @@ namespace GAIA
 	namespace THREAD
 	{
 		GINL GAIA::UM threadid();
-		class Thread : public GAIA::Entity
+		class Thread : public GAIA::Base
 		{
 		public:
 			GAIA_ENUM_BEGIN(STATE)
@@ -29,11 +29,25 @@ namespace GAIA
 			GINL GAIA::BL Wait() const;
 			virtual GAIA::GVOID WorkProcedure() = 0;
 		private:
-			GINL GAIA::GVOID init(){m_stacksize = 1024 * 1024; m_state = STATE_INVALID; m_pThread = GNIL;}
+			GINL GAIA::GVOID init()
+			{
+				m_stacksize = 1024 * 1024;
+				m_state = STATE_INVALID;
+			#if GAIA_OS == GAIA_OS_WINDOWS
+				m_hThread = GNIL;
+			#else
+				m_bCreated = GAIA::False;
+			#endif
+			}
 		private:
 			GAIA::U32 m_stacksize;
 			STATE m_state;
-			GAIA::GVOID* m_pThread;
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			HANDLE m_hThread;
+		#else
+			pthread_t m_thread;
+			GAIA::BL m_bCreated;
+		#endif
 		};
 	};
 };

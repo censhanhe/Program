@@ -3,7 +3,7 @@
 
 namespace DWARFSTEST
 {
-	GINL GAIA::N32 t_textline(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	GINL GAIA::N32 t_textline(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])\r\n\
 		}
 		tfile.Close();
 		DWARFS_MISC::TextLine tl;
-		tl.lineflag(_T("\r\n"));
+		tl.lineflag(_T(GAIA_FILELINEBREAK));
 		if(tl.size() != 0)
 		{
 			GTLINE2("New textline's size not zero!");

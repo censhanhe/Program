@@ -77,8 +77,6 @@
 			Receiver : From(Thread), CallBack(Receive), (Begin End IsBegin)
 			Sender : From(Thread), (Begin End IsBegin)
 
-		RENDER
-
 		SOUND
 
 

@@ -8,6 +8,7 @@
 #else
 #	include <pthread.h>
 #	include <sys/time.h>
+#	include <sys/errno.h>
 #endif
 
 namespace GAIA
@@ -17,51 +18,52 @@ namespace GAIA
 		GINL Event::Event()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			*(HANDLE*)m_head = ::CreateEvent(GNIL, FALSE, FALSE, GNIL);
+			m_hEvent = ::CreateEvent(GNIL, FALSE, FALSE, GNIL);
 		#else
-			pthread_mutex_init((pthread_mutex_t*)m_headmutex, GNIL);
-			pthread_cond_init((pthread_cond_t*)m_head, GNIL);
+			pthread_mutex_init(&m_mutex, GNIL);
+			pthread_cond_init(&m_cond, GNIL);
+			m_waitcnt = 0;
 		#endif
 		}
 		GINL Event::~Event()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			::CloseHandle(*(HANDLE*)m_head);
+			::CloseHandle(m_hEvent);
 		#else
-			pthread_mutex_destroy((pthread_mutex_t*)m_headmutex);
-			pthread_cond_destroy((pthread_cond_t*)m_head);
+			pthread_mutex_destroy(&m_mutex);
+			pthread_cond_destroy(&m_cond);
 		#endif
 		}
 		GINL GAIA::GVOID Event::Fire()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			::SetEvent(*(HANDLE*)m_head);
+			::SetEvent(m_hEvent);
 		#else
-			pthread_mutex_lock((pthread_mutex_t*)m_headmutex);
+			pthread_mutex_lock(&m_mutex);
 			{
 				if(m_waitcnt > 0)
-					pthread_cond_signal((pthread_cond_t*)m_head);
+					pthread_cond_signal(&m_cond);
 				--m_waitcnt;
 			}
-			pthread_mutex_unlock((pthread_mutex_t*)m_headmutex);
+			pthread_mutex_unlock(&m_mutex);
 		#endif
 		}
 		GINL GAIA::BL Event::Wait(GAIA::U32 uMilliSecond)
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
-			if(::WaitForSingleObject(*(HANDLE*)m_head, uMilliSecond) == WAIT_OBJECT_0)
+			if(::WaitForSingleObject(m_hEvent, uMilliSecond) == WAIT_OBJECT_0)
 				return GAIA::True;
 			return GAIA::False;
 		#else
 			GAIA::BL ret = GAIA::False;
-			pthread_mutex_lock((pthread_mutex_t*)m_headmutex);
+			pthread_mutex_lock(&m_mutex);
 			{
 				++m_waitcnt;
 				if(m_waitcnt > 0)
 				{
 					if(uMilliSecond == 0xFFFFFFFF)
 					{
-						if(pthread_cond_wait((pthread_cond_t*)m_head, (pthread_mutex_t*)m_headmutex) == 0)
+						if(pthread_cond_wait(&m_cond, &m_mutex) == 0)
 							ret = GAIA::True;
 					}
 					else
@@ -69,16 +71,21 @@ namespace GAIA
 						timeval now;
 						gettimeofday(&now, GNIL);
 						timespec abstime;
-						abstime.tv_nsec = now.tv_usec * 1000 + (uMilliSecond % 1000) * 1000000;
+						abstime.tv_nsec = now.tv_usec * 1000 + (uMilliSecond % 1000) * 1000 * 1000;
 						abstime.tv_sec = now.tv_sec + uMilliSecond / 1000;
-						if(pthread_cond_timedwait((pthread_cond_t*)m_head, (pthread_mutex_t*)m_headmutex, &abstime) == 0)
+						abstime.tv_sec += abstime.tv_nsec / (1000 * 1000 * 1000);
+						abstime.tv_nsec = abstime.tv_nsec % (1000 * 1000 * 1000);
+						GAIA::N32 nWaitResult = pthread_cond_timedwait(&m_cond, &m_mutex, &abstime);
+						if(nWaitResult == ETIMEDOUT)
+							--m_waitcnt;
+						else if(nWaitResult == 0)
 							ret = GAIA::True;
 					}
 				}
 				else
 					ret = GAIA::True;
 			}
-			pthread_mutex_unlock((pthread_mutex_t*)m_headmutex);
+			pthread_mutex_unlock(&m_mutex);
 			return ret;
 		#endif
 		}

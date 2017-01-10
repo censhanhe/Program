@@ -91,7 +91,7 @@ namespace GAIA
 				static const GAIA::U8 p[] = {0, 1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26};
 				m_crctable.resize(256);
 				GAIA::U32 poly = 0;
-				for(GAIA::N32 x = 0; x < sizeof(p) / sizeof(GAIA::U8); x++)
+				for(GAIA::N32 x = 0; x < sizeofarray(p); x++)
 					poly |= 1 << (31 - p[x]);
 				for(GAIA::N32 x = 0; x < 256; x++)
 				{

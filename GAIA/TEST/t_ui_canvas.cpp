@@ -85,7 +85,7 @@ namespace GAIA_TEST
 		GAIA::BL m_bResult;
 	};
 
-	extern GAIA::N32 t_ui_canvas(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_ui_canvas(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -116,7 +116,7 @@ namespace GAIA_TEST
 			return nRet;
 		}
 		/* Create and show canvas. */
-		GAIA::UI::Canvas::CanvasDesc desc;
+		GAIA::UI::Canvas::Desc desc;
 		desc.reset();
 		desc.pszCaptionText = _T("Test canvas 1");
 		pCanvas1->Create(desc);

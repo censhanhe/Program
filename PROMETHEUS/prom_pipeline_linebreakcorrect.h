@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_LineBreakCorrect(){}
 		GINL ~PL_LineBreakCorrect(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_LineBreakCorrect");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -49,11 +49,11 @@ namespace PROM
 				}
 			}
 			if(chs == _T("\\r\\n"))
-				chs = _T("\r\n");
+				chs = _T(GAIA_FILELINEBREAK_RN);
 			else if(chs == _T("\\n"))
-				chs = _T("\n");
+				chs = _T(GAIA_FILELINEBREAK_N);
 			else if(chs == _T("\\r"))
-				chs = _T("\r");
+				chs = _T(GAIA_FILELINEBREAK_R);
 			else
 				chs.clear();
 			if(!chs.empty())
@@ -87,7 +87,7 @@ namespace PROM
 						GAIA::BL bExistValidFlag = GAIA::False;
 						if(strTemp.size () >= chs.size())
 						{
-							if(strTemp.rfind(chs.front_ptr(), strTemp.size() - 1) !=
+							if(strTemp.rfind(GCCAST(const GAIA::TCH*)(chs.front_ptr()), strTemp.size() - 1) !=
 								strTemp.size() - chs.size())
 								++add;
 							else
@@ -112,18 +112,18 @@ namespace PROM
 						else
 							++add;
 
-						remove_rn += strTemp.replace(_T("\r\n"), _T(""));
-						remove_n += strTemp.replace(_T("\n"), _T(""));
-						remove_r += strTemp.replace(_T("\r"), _T(""));
+						remove_rn += strTemp.replace(_T(GAIA_FILELINEBREAK_RN), _T(""));
+						remove_n += strTemp.replace(_T(GAIA_FILELINEBREAK_N), _T(""));
+						remove_r += strTemp.replace(_T(GAIA_FILELINEBREAK_R), _T(""));
 						strTemp += chs.front_ptr();
 
 						if(bExistValidFlag)
 						{
-							if(chs == _T("\r\n"))
+							if(chs == _T(GAIA_FILELINEBREAK_RN))
 								--remove_rn;
-							if(chs == _T("\n"))
+							if(chs == _T(GAIA_FILELINEBREAK_N))
 								--remove_n;
-							if(chs == _T("\r"))
+							if(chs == _T(GAIA_FILELINEBREAK_R))
 								--remove_r;
 						}
 						t.lines.set_line(y, strTemp);
@@ -142,17 +142,17 @@ namespace PROM
 				}
 
 				GAIA::CTN::TChars tempchs;
-				if(chs == _T("\r\n"))
+				if(chs == _T(GAIA_FILELINEBREAK_RN))
 					tempchs = _T("\\r\\n");
-				else if(chs == _T("\n"))
+				else if(chs == _T(GAIA_FILELINEBREAK_N))
 					tempchs = _T("\\n");
-				else if(chs == _T("\r"))
+				else if(chs == _T(GAIA_FILELINEBREAK_R))
 					tempchs = _T("\\r");
 				else
 					tempchs = _T("(InvalidCharacter)");
-				prt << "\t\tAdd " << tempchs.front_ptr() << "=" << add << ".\n";
-				prt << "\t\tRemove \\r\\n=" << remove_rn << ", \\n=" << remove_n << ", \\r=" << remove_r << ".\n";
-				prt << "\t\tChange " << need_save << " files.\n";
+				stm << "\t\tAdd " << tempchs.front_ptr() << "=" << add << ".\n";
+				stm << "\t\tRemove \\r\\n=" << remove_rn << ", \\n=" << remove_n << ", \\r=" << remove_r << ".\n";
+				stm << "\t\tChange " << need_save << " files.\n";
 			}
 
 			/* Release. */

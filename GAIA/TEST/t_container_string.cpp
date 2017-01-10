@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_container_string(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_container_string(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -762,7 +762,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 		str = _T("HelloWorld");
-		str.trim_left(5);
+		str.trim_left_index(5);
 		if(str != _T("World"))
 		{
 			GTLINE2("String trim_left by index failed!");
@@ -918,7 +918,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 		str = _T("HelloWorld");
-		str.trim_right(4);
+		str.trim_right_index(4);
 		if(str != _T("Hello"))
 		{
 			GTLINE2("String trim_right by index failed!");

@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_math_arithmatic_lerp(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_math_arithmatic_lerp(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -14,7 +14,7 @@ namespace GAIA_TEST
 			++nRet;
 		}
 		GAIA::F64 f64 = GAIA::MATH::lerp_cosfactor(1.0);
-		if(f64 != 1.0)
+		if(!GAIA::MATH::xequal(f64, 1.0))
 		{
 			GTLINE2("lerp_cosfactor error!");
 			++nRet;

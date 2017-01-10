@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_Format(){}
 		GINL ~PL_Format(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_Format");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -72,15 +72,15 @@ namespace PROM
 							if(strLine.size() > 1)
 							{
 								if(strLine[strLine.size() - 2] == _T('\r'))
-									GAIA::ALGO::strcpy(szLineBreak, _T("\r\n"));
+									GAIA::ALGO::strcpy(szLineBreak, _T(GAIA_FILELINEBREAK_RN));
 								else
-									GAIA::ALGO::strcpy(szLineBreak, _T("\n"));
+									GAIA::ALGO::strcpy(szLineBreak, _T(GAIA_FILELINEBREAK_N));
 							}
 							else
-								GAIA::ALGO::strcpy(szLineBreak, _T("\n"));
+								GAIA::ALGO::strcpy(szLineBreak, _T(GAIA_FILELINEBREAK_N));
 						}
 						else if(strLine.back() == _T('\r'))
-							GAIA::ALGO::strcpy(szLineBreak, _T("\r"));
+							GAIA::ALGO::strcpy(szLineBreak, _T(GAIA_FILELINEBREAK_R));
 						if(GAIA::ALGO::strlen(szLineBreak) == 2)
 							strLine.resize(strLine.size() - 2);
 						else
@@ -142,9 +142,9 @@ namespace PROM
 						++file_change_count;
 					}
 				}
-				prt << "\t\tCode line formated!" << "\n";
-				prt << "\t\tRemove space = " << remove_space_count << ", remove tab = " << remove_tab_count << ".\n";
-				prt << "\t\tThere are " << line_change_count << " line changed, and " << file_change_count << " file changed.\n";
+				stm << "\t\tCode line formated!" << "\n";
+				stm << "\t\tRemove space = " << remove_space_count << ", remove tab = " << remove_tab_count << ".\n";
+				stm << "\t\tThere are " << line_change_count << " line changed, and " << file_change_count << " file changed.\n";
 			}
 
 		FUNCTION_END:

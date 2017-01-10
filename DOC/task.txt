@@ -1,3 +1,10 @@
+[COMMON TASK]
+
+	Defend for reference count circle.
+	Search : this->Reference() and check up it.
+	
+	
+
 [GAIA TASK]
 
 	PLATFORM

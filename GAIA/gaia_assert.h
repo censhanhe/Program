@@ -5,25 +5,17 @@ namespace GAIA
 {
 	namespace DEBUG
 	{
-		class AstException
-		{
-		public:
-			AstException(const GAIA::CH* pszFile, GAIA::N32 nLine){m_pszFile = pszFile; m_nLine = nLine;}
-			const GAIA::CH* m_pszFile;
-			GAIA::N32 m_nLine;
-		};
-
 #ifdef GAIA_DEBUG_AST
 #	define GAIA_AST(e)	do\
 						{\
 							if(!(e))\
 							{\
-								GAIA::PRINT::Print prt;\
-								prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue:";\
+								GAIA::STREAM::STDStream stm;\
+								stm << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue:";\
 								GAIA::CH ch[32];\
-								prt >> ch;\
+								stm >> ch;\
 								if(ch[0] == '1' && ch[1] == '\0')\
-									throw GAIA::DEBUG::AstException(__FILE__, __LINE__);\
+									throw GAIA::EXCEPTION::ExceptionAst(__FILE__, __LINE__);\
 							}\
 						}while(0)
 #else
@@ -35,12 +27,12 @@ namespace GAIA
 								{\
 									if(!(e))\
 									{\
-										GAIA::PRINT::Print prt;\
-										prt << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue(Debug):";\
+										GAIA::STREAM::STDStream stm;\
+										stm << "GAIA_AST Failed:\n\t" << __FILE__ << "(" << __LINE__ << ")\n\tInput 1 to break and other to continue(Debug):";\
 										GAIA::CH ch;\
-										prt >> ch;\
+										stm >> ch;\
 										if(ch == '1')\
-											throw GAIA::DEBUG::AstException(__FILE__, __LINE__);\
+											throw GAIA::EXCEPTION::ExceptionAstDebug(__FILE__, __LINE__);\
 									}\
 								}while(0)
 #else

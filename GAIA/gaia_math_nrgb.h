@@ -28,7 +28,7 @@ namespace GAIA
 			template<typename _ParamDataType> NRGB(const GAIA::MATH::NRGB<_ParamDataType>& src){this->operator = (src);}
 			template<typename _ParamDataType> NRGB(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> NRGB(_ParamDataType* p){this->operator = (p);}
-			template<typename _ParamDataType> NRGB(const _ParamDataType& t){this->operator = (t);}
+			template<typename _ParamDataType> NRGB(_ParamDataType v){this->operator = (v);}
 
 			GINL GAIA::SIZE size() const{return 3;}
 
@@ -48,6 +48,7 @@ namespace GAIA
 			GINL GAIA::U32 tou32() const
 			{
 				GAIA::U32 ret;
+				ret = 0;
 				GRCAST(GAIA::U8*)(&ret)[2] = GSCAST(GAIA::U8)(r);
 				GRCAST(GAIA::U8*)(&ret)[1] = GSCAST(GAIA::U8)(g);
 				GRCAST(GAIA::U8*)(&ret)[0] = GSCAST(GAIA::U8)(b);
@@ -60,8 +61,8 @@ namespace GAIA
 				b = GSCAST(_DataType)(GRCAST(GAIA::U8*)(&u)[0]);
 			}
 
-			GINL const _DataType* front_ptr() const{return &b;}
-			GINL _DataType* front_ptr(){return &b;}
+			GINL const _DataType* front_ptr() const{return &r;}
+			GINL _DataType* front_ptr(){return &r;}
 			GINL const _DataType* back_ptr() const{return this->front_ptr() + this->size() - 1;}
 			GINL _DataType* back_ptr(){return this->front_ptr() + this->size() - 1;}
 
@@ -73,9 +74,9 @@ namespace GAIA
 			}
 
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::NRGB<_ParamDataType>& src){r = src.r; g = src.g; b = src.b; return *this;}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){r = p[2]; g = p[1]; b = p[0]; return *this;}
+			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){r = p[0]; g = p[1]; b = p[2]; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){r = g = b = t; return *this;}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType v){r = g = b = v; return *this;}
 
 			template<typename _ParamDataType> __MyType operator + (const GAIA::MATH::ARGB<_ParamDataType>& src) const{__MyType ret = *this; ret += src; return ret;}
 			template<typename _ParamDataType> __MyType operator - (const GAIA::MATH::ARGB<_ParamDataType>& src) const{__MyType ret = *this; ret -= src; return ret;}
@@ -86,36 +87,31 @@ namespace GAIA
 			template<typename _ParamDataType> __MyType& operator *= (const GAIA::MATH::ARGB<_ParamDataType>& src){r *= src.r; g *= src.g; b *= src.b; return *this;}
 			template<typename _ParamDataType> __MyType& operator /= (const GAIA::MATH::ARGB<_ParamDataType>& src){r /= src.r; g /= src.g; b /= src.b; return *this;}
 
-			template<typename _ParamDataType> __MyType operator + (const _ParamDataType& src) const{__MyType ret = *this; ret.r += src; ret.g += src; ret.b += src; return ret;}
-			template<typename _ParamDataType> __MyType operator - (const _ParamDataType& src) const{__MyType ret = *this; ret.r -= src; ret.g -= src; ret.b -= src; return ret;}
-			template<typename _ParamDataType> __MyType operator * (const _ParamDataType& src) const{__MyType ret = *this; ret.r *= src; ret.g *= src; ret.b *= src; return ret;}
-			template<typename _ParamDataType> __MyType operator / (const _ParamDataType& src) const{__MyType ret = *this; ret.r /= src; ret.g /= src; ret.b /= src; return ret;}
-			template<typename _ParamDataType> __MyType& operator += (const _ParamDataType& src){r += src; g += src; b += src; return *this;}
-			template<typename _ParamDataType> __MyType& operator -= (const _ParamDataType& src){r -= src; g -= src; b -= src; return *this;}
-			template<typename _ParamDataType> __MyType& operator *= (const _ParamDataType& src){r *= src; g *= src; b *= src; return *this;}
-			template<typename _ParamDataType> __MyType& operator /= (const _ParamDataType& src){r /= src; g /= src; b /= src; return *this;}
+			template<typename _ParamDataType> __MyType operator + (const _ParamDataType& v) const{__MyType ret = *this; ret.r += v; ret.g += v; ret.b += v; return ret;}
+			template<typename _ParamDataType> __MyType operator - (const _ParamDataType& v) const{__MyType ret = *this; ret.r -= v; ret.g -= v; ret.b -= v; return ret;}
+			template<typename _ParamDataType> __MyType operator * (const _ParamDataType& v) const{__MyType ret = *this; ret.r *= v; ret.g *= v; ret.b *= v; return ret;}
+			template<typename _ParamDataType> __MyType operator / (const _ParamDataType& v) const{__MyType ret = *this; ret.r /= v; ret.g /= v; ret.b /= v; return ret;}
+			template<typename _ParamDataType> __MyType& operator += (_ParamDataType v){r += v; g += v; b += v; return *this;}
+			template<typename _ParamDataType> __MyType& operator -= (_ParamDataType v){r -= v; g -= v; b -= v; return *this;}
+			template<typename _ParamDataType> __MyType& operator *= (_ParamDataType v){r *= v; g *= v; b *= v; return *this;}
+			template<typename _ParamDataType> __MyType& operator /= (_ParamDataType v){r /= v; g /= v; b /= v; return *this;}
 
-			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return GAIA::ALGO::cmp3((const _DataType*)*this, (const _ParamDataType*)src) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return GAIA::ALGO::cmp3(this->front_ptr(), src.front_ptr()) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return !(this->operator == (src));}
-			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return GAIA::ALGO::cmp3((const _DataType*)*this, (const _ParamDataType*)src) >= 0;}
-			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return GAIA::ALGO::cmp3((const _DataType*)*this, (const _ParamDataType*)src) <= 0;}
+			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return GAIA::ALGO::cmp3(this->front_ptr(), src.front_ptr()) >= 0;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return GAIA::ALGO::cmp3(this->front_ptr(), src.front_ptr()) <= 0;}
 			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return !(this->operator <= (src));}
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::NRGB<_ParamDataType>& src) const{return !(this->operator >= (src));}
 
-			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& src) const{return GAIA::ALGO::cmp3k((const _DataType*)*this, src) == 0;}
-			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& src) const{return !(this->operator == (src));}
-			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& src) const{return GAIA::ALGO::cmp3k((const _DataType*)*this, src) >= 0;}
-			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& src) const{return GAIA::ALGO::cmp3k((const _DataType*)*this, src) <= 0;}
-			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& src) const{return !(this->operator <= (src));}
-			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& src) const{return !(this->operator >= (src));}
-
-			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
-			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
-			GINL operator _DataType*(){return this->front_ptr();}
-			GINL operator const _DataType*() const{return this->front_ptr();}
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return GAIA::ALGO::cmp3k(this->front_ptr(), v) == 0;}
+			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& v) const{return !(this->operator == (v));}
+			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& v) const{return GAIA::ALGO::cmp3k(this->front_ptr(), v) >= 0;}
+			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& v) const{return GAIA::ALGO::cmp3k(this->front_ptr(), v) <= 0;}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return !(this->operator <= (v));}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return !(this->operator >= (v));}
 
 		public:
-			_DataType b, g, r;
+			_DataType r, g, b;
 		};
 	};
 };

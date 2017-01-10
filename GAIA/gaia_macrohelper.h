@@ -123,12 +123,12 @@
 			if(!(p))\
 				return ret;}while(0)
 
-#define GPCHR_NULLSTRPTR(p) do{\
+#define GPCHR_NULLSTR(p) do{\
 			GAIA_AST(!GAIA::ALGO::stremp(p));\
 			if(GAIA::ALGO::stremp(p))\
 				return;}while(0)
 
-#define GPCHR_NULLSTRPTR_RET(p, ret) do{\
+#define GPCHR_NULLSTR_RET(p, ret) do{\
 			GAIA_AST(!GAIA::ALGO::stremp(p));\
 			if(GAIA::ALGO::stremp(p))\
 				return ret;}while(0)

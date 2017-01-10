@@ -278,7 +278,7 @@ namespace DWARFS_MISC
 		}
 
 	public:	/* Command access interface. */
-		GINL GAIA::BL build(const GAIA::TCH* pszCmd, GAIA::PRINT::PrintBase& prt)
+		GINL GAIA::BL build(const GAIA::TCH* pszCmd, GAIA::STREAM::StreamBase& stm)
 		{
 			GAIA_AST(!this->is_begin_decl());
 			if(this->is_begin_decl())
@@ -363,7 +363,7 @@ namespace DWARFS_MISC
 				{
 					if(m_cmds.empty())
 					{
-						prt << "CmdParam:Invalid command or parameter without command! \"" << word.front_ptr() << "\"\n";
+						stm << "CmdParam:Invalid command or parameter without command! \"" << word.front_ptr() << "\"\n";
 						goto FUNCTION_END;
 					}
 					m_cmds.back().params.push_back(word);
@@ -377,13 +377,13 @@ namespace DWARFS_MISC
 				GAIA::SIZE uDecl = this->finddecl(temp.cmd, temp.params.size());
 				if(uDecl == GINVALID)
 				{
-					prt << "CmdParam:Invalid command! \"" << temp.cmd.front_ptr() << "\"\n";
+					stm << "CmdParam:Invalid command! \"" << temp.cmd.front_ptr() << "\"\n";
 					goto FUNCTION_END;
 				}
 				CmdDecl& decl = m_decls[uDecl];
 				if(temp.params.size() < decl.min_param_size)
 				{
-					prt << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" <<
+					stm << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" <<
 						" [" << decl.min_param_size << ", " << decl.max_param_size << "]" << "\n";
 					goto FUNCTION_END;
 				}
@@ -391,7 +391,7 @@ namespace DWARFS_MISC
 				{
 					if(temp.params.size() > decl.max_param_size)
 					{
-						prt << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" <<
+						stm << "CmdParam:Insufficient parameter count! \"" << temp.cmd.front_ptr() << "\"" <<
 							" [" << decl.min_param_size << ", " << decl.max_param_size << "]" << "\n";
 						goto FUNCTION_END;
 					}
@@ -414,7 +414,7 @@ namespace DWARFS_MISC
 					}
 					if(!bExist)
 					{
-						prt << "CmdParam:Must exist command! \"" << decl.cmd.front_ptr() << "\"\n";
+						stm << "CmdParam:Must exist command! \"" << decl.cmd.front_ptr() << "\"\n";
 						goto FUNCTION_END;
 					}
 				}
@@ -440,7 +440,7 @@ namespace DWARFS_MISC
 								continue;
 							if(m_cmds[z].cmd == *pCmd)
 							{
-								prt << "CmdParam:Command mutex! \"" << temp.cmd.front_ptr() << "\" " << "and" << "\"" << pCmd->front_ptr() << "\"\n";
+								stm << "CmdParam:Command mutex! \"" << temp.cmd.front_ptr() << "\" " << "and" << "\"" << pCmd->front_ptr() << "\"\n";
 								goto FUNCTION_END;
 							}
 						}
@@ -469,7 +469,7 @@ namespace DWARFS_MISC
 						}
 						if(!bExist)
 						{
-							prt << "CmdParam:Command coop! \"" << temp.cmd.front_ptr() << "\" " << "and" << "\"" << pCmd->front_ptr() << "\"\n";
+							stm << "CmdParam:Command coop! \"" << temp.cmd.front_ptr() << "\" " << "and" << "\"" << pCmd->front_ptr() << "\"\n";
 							goto FUNCTION_END;
 						}
 					}

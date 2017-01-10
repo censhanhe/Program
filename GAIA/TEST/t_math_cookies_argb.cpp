@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_math_cookies_argb(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_math_cookies_argb(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -138,27 +138,6 @@ namespace GAIA_TEST
 			GTLINE2("ARGB operator < error!");
 			++nRet;
 		}
-		argb = __ARGBType(1, 2, 3, 4);
-		if(argb[3] != (__ARGBType::_datatype)1)
-		{
-			GTLINE2("ARGB operator [] error!");
-			++nRet;
-		}
-		if(argb[2] != (__ARGBType::_datatype)2)
-		{
-			GTLINE2("ARGB operator [] error!");
-			++nRet;
-		}
-		if(argb[1] != (__ARGBType::_datatype)3)
-		{
-			GTLINE2("ARGB operator [] error!");
-			++nRet;
-		}
-		if(argb[0] != (__ARGBType::_datatype)4)
-		{
-			GTLINE2("ARGB operator [] error!");
-			++nRet;
-		}
 		argb = 0.0F;
 		if(argb != 0.0F)
 		{
@@ -179,6 +158,12 @@ namespace GAIA_TEST
 		if(argb.isfinited())
 		{
 			GTLINE2("ARGB isfinited error!");
+			++nRet;
+		}
+		argb.fromu32(0xFF010203);
+		if(argb.tou32() != 0xFF010203)
+		{
+			GTLINE2("ARGB fromu32 or tou32 error!");
 			++nRet;
 		}
 

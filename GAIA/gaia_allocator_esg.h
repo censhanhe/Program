@@ -6,7 +6,7 @@ namespace GAIA
 	namespace ALLOCATOR
 	{
 		#define GAIA_ALLOCATOR_ESG_MULTITHREAD
-		class AllocatorESG : public Allocator
+		class AllocatorESG : public GAIA::ALLOCATOR::Allocator
 		{
 		public:
 			GINL AllocatorESG(){this->init(); this->InitHeap();}

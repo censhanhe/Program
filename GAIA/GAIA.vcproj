@@ -98,6 +98,85 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="/bigobj"
+				PreprocessorDefinitions="GAIA_PLATFORM_NETWORK;GAIA_PLATFORM_GDIPLUS;GAIA_PLATFORM_DDRAW;GAIA_PLATFORM_OPENGL1;GAIA_PLATFORM_OPENGL2;GAIA_PLATFORM_OPENGL3;GAIA_PLATFORM_OPENGLES1;GAIA_PLATFORM_OPENGLES2;GAIA_PLATFORM_OPENGLES3;GAIA_PLATFORM_DX9;GAIA_PLATFORM_DX10;GAIA_PLATFORM_DX11;GAIA_PLATFORM_COM"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="preheader.h"
+				WarningLevel="4"
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4996;4127;4201;4800;4244;"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkIncremental="1"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+				UseFAT32Workaround="true"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Debug|x64"
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
@@ -150,85 +229,6 @@
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-				UseFAT32Workaround="true"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			CharacterSet="1"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions="/bigobj"
-				PreprocessorDefinitions="GAIA_PLATFORM_NETWORK;GAIA_PLATFORM_GDIPLUS;GAIA_PLATFORM_DDRAW;GAIA_PLATFORM_OPENGL1;GAIA_PLATFORM_OPENGL2;GAIA_PLATFORM_OPENGL3;GAIA_PLATFORM_OPENGLES1;GAIA_PLATFORM_OPENGLES2;GAIA_PLATFORM_OPENGLES3;GAIA_PLATFORM_DX9;GAIA_PLATFORM_DX10;GAIA_PLATFORM_DX11;GAIA_PLATFORM_COM"
-				RuntimeLibrary="2"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="preheader.h"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4996;4127;4201;4800;4244;"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -348,6 +348,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gaia_global_decl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gaia_global_impl.h"
 				>
 			</File>
@@ -383,7 +387,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|x64"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -391,7 +395,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -478,6 +482,10 @@
 						</File>
 						<File
 							RelativePath=".\gaia_filesystem_file_indp.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_filesystem_filebase.h"
 							>
 						</File>
 					</Filter>
@@ -894,7 +902,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="VAR"
+						Name="VARI"
 						>
 						<File
 							RelativePath=".\gaia_container_vari.h"
@@ -934,6 +942,18 @@
 						</File>
 						<File
 							RelativePath=".\gaia_container_book.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="CHARSSTRING"
+						>
+						<File
+							RelativePath=".\gaia_container_basiccharsstring.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_container_charsstring.h"
 							>
 						</File>
 					</Filter>
@@ -1216,6 +1236,14 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="CONVERT"
+							>
+							<File
+								RelativePath=".\gaia_math_convert.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="CAL"
@@ -1347,30 +1375,6 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="MODEL"
-					>
-					<Filter
-						Name="LINKMODEL"
-						>
-						<File
-							RelativePath=".\gaia_linkmodel.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="DATAMODEL"
-						>
-						<File
-							RelativePath=".\gaia_datamodel.h"
-							>
-						</File>
-						<File
-							RelativePath=".\gaia_datamodel_sp.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
 					Name="TIME"
 					>
 					<File
@@ -1395,20 +1399,40 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="PRINT"
+					Name="STREAM"
 					>
 					<File
-						RelativePath=".\gaia_print.h"
+						RelativePath=".\gaia_stream_format.h"
 						>
 					</File>
 					<File
-						RelativePath=".\gaia_print_format.h"
+						RelativePath=".\gaia_stream_streambase.h"
 						>
 					</File>
-					<File
-						RelativePath=".\gaia_print_indp.h"
+					<Filter
+						Name="STDSTREAM"
 						>
-					</File>
+						<File
+							RelativePath=".\gaia_stream_stdstream.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_stream_stdstream_indp.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="STRINGSTREAM"
+						>
+						<File
+							RelativePath=".\gaia_stream_stringstream.h"
+							>
+						</File>
+						<File
+							RelativePath=".\gaia_stream_stringstream_indp.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="SYSTEM"
@@ -1434,58 +1458,6 @@
 						>
 					</File>
 				</Filter>
-				<Filter
-					Name="FRAMEWORK"
-					>
-					<File
-						RelativePath=".\gaia_framework_clsid.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_framework_factory.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_framework_factory_impl.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_framework_instance.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_framework_instancecreator.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_framework_instancecreator_impl.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_framework_instancedesc.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_framework_instancehd.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_framework_instanceid.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="FAVO"
-					>
-					<Filter
-						Name="FETCHDATA"
-						>
-						<File
-							RelativePath=".\gaia_favo_fetchdata.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="FUNCTON_LAYER"
@@ -1499,18 +1471,6 @@
 					</File>
 					<File
 						RelativePath=".\gaia_task_taskdriver.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="RESOURCEDRIVER"
-					>
-					<File
-						RelativePath=".\gaia_resource_resource.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_resource_resourcedriver.h"
 						>
 					</File>
 				</Filter>
@@ -1617,6 +1577,14 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="MESSAGE"
+						>
+						<File
+							RelativePath=".\gaia_ui_message.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="DATATRAFFIC"
@@ -1701,30 +1669,6 @@
 							</File>
 						</Filter>
 					</Filter>
-				</Filter>
-				<Filter
-					Name="GAME"
-					>
-					<Filter
-						Name="AI"
-						>
-						<Filter
-							Name="AICONTEXT"
-							>
-							<File
-								RelativePath=".\gaia_ai_context.h"
-								>
-							</File>
-						</Filter>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="COMPONENT"
-					>
-					<File
-						RelativePath=".\gaia_scene_component.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="IO"
@@ -1887,246 +1831,6 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="SOUND"
-					>
-					<File
-						RelativePath=".\gaia_sound_listener.h"
-						>
-					</File>
-					<File
-						RelativePath=".\gaia_sound_sounder.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="SCENE"
-					>
-					<File
-						RelativePath=".\gaia_scene_scene.h"
-						>
-					</File>
-					<Filter
-						Name="SCENEOBJ"
-						>
-						<File
-							RelativePath=".\gaia_scene_sceneobj.h"
-							>
-						</File>
-						<Filter
-							Name="COMPONENT"
-							>
-							<Filter
-								Name="CAMERA"
-								>
-								<File
-									RelativePath=".\gaia_scene_camera.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="HEIGHTFIELD"
-								>
-								<File
-									RelativePath=".\gaia_scene_heightfield.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="PARTICLE"
-								>
-								<File
-									RelativePath=".\gaia_scene_particle.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="SKIN"
-								>
-								<File
-									RelativePath=".\gaia_scene_skin.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="STATICMESH"
-								>
-								<File
-									RelativePath=".\gaia_scene_staticmesh.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="GEOMETRY"
-								>
-								<File
-									RelativePath=".\gaia_scene_geometry.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="POSTPROCESS"
-								>
-								<File
-									RelativePath=".\gaia_scene_postprocess.h"
-									>
-								</File>
-							</Filter>
-						</Filter>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="RENDER"
-					>
-					<Filter
-						Name="RESOURCE"
-						>
-						<File
-							RelativePath=".\gaia_render_resource.h"
-							>
-						</File>
-						<File
-							RelativePath=".\gaia_render_resource_impl.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="RENDER"
-						>
-						<File
-							RelativePath=".\gaia_render_render.h"
-							>
-						</File>
-						<Filter
-							Name="2D"
-							>
-							<File
-								RelativePath=".\gaia_render_render2d.h"
-								>
-							</File>
-							<Filter
-								Name="GDIPLUS"
-								>
-								<File
-									RelativePath=".\gaia_render_gdiplus.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="DDRAW"
-								>
-								<File
-									RelativePath=".\gaia_render_ddraw.h"
-									>
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="3D"
-							>
-							<File
-								RelativePath=".\gaia_render_render3d.h"
-								>
-							</File>
-							<Filter
-								Name="GLES"
-								>
-								<File
-									RelativePath=".\gaia_render_gles1.h"
-									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_gles2.h"
-									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_gles3.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="GL"
-								>
-								<File
-									RelativePath=".\gaia_render_gl1.h"
-									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_gl2.h"
-									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_gl3.h"
-									>
-								</File>
-							</Filter>
-							<Filter
-								Name="DX"
-								>
-								<File
-									RelativePath=".\gaia_render_dx10.h"
-									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_dx11.h"
-									>
-								</File>
-								<File
-									RelativePath=".\gaia_render_dx9.h"
-									>
-								</File>
-							</Filter>
-						</Filter>
-					</Filter>
-					<Filter
-						Name="RENDERCONTEXT"
-						>
-						<File
-							RelativePath=".\gaia_render_context.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="PIPELINE"
-						>
-						<File
-							RelativePath=".\gaia_render_pipeline.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="MATERIAL"
-						>
-						<File
-							RelativePath=".\gaia_render_material.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="IMAGEWORK"
-						>
-						<File
-							RelativePath=".\gaia_render_imagework.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="PHYSICS"
-					>
-					<File
-						RelativePath=".\gaia_physics_physicsdriver.h"
-						>
-					</File>
-					<Filter
-						Name="COLLISIONCONTEXT"
-						>
-						<File
-							RelativePath=".\gaia_physics_context.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
 					Name="STATE"
 					>
 					<File
@@ -2150,11 +1854,63 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="INPUT"
+					>
+					<File
+						RelativePath=".\gaia_input_inputstate.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="FRAMEWORK"
+					>
+					<File
+						RelativePath=".\gaia_framework_clsid.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_factory.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_factory_impl.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instance.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instancecreator.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instancecreator_impl.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instancedesc.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instancehd.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gaia_framework_instanceid.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="TEST"
 			>
+			<File
+				RelativePath=".\TEST\preheader.h"
+				>
+			</File>
 			<File
 				RelativePath=".\TEST\t_common.h"
 				>
@@ -2170,6 +1926,14 @@
 			<Filter
 				Name="PLATFORMTEST"
 				>
+				<File
+					RelativePath=".\TEST\tp_compiler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\TEST\tp_objstatus.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="UNITTEST"
@@ -2188,75 +1952,11 @@
 								>
 							</File>
 						</Filter>
-					</Filter>
-					<Filter
-						Name="RENDER"
-						>
 						<Filter
-							Name="2D"
+							Name="MESSAGE"
 							>
 							<File
-								RelativePath=".\TEST\t_render2d.h"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_ddraw.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_gdiplus.cpp"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="3D"
-							>
-							<File
-								RelativePath=".\TEST\t_render3d.h"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_dx10.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_dx11.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_dx9.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_gl1.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_gl2.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_gl3.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_gles1.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_gles2.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TEST\t_render_gles3.cpp"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="IMAGEWORK"
-							>
-							<File
-								RelativePath=".\TEST\t_render_imagework.cpp"
+								RelativePath=".\TEST\t_ui_message.cpp"
 								>
 							</File>
 						</Filter>
@@ -2314,6 +2014,10 @@
 						</File>
 						<File
 							RelativePath=".\TEST\t_container_chars.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_container_charsstring.cpp"
 							>
 						</File>
 						<File
@@ -2409,6 +2113,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\TEST\t_container_vari.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\TEST\t_container_vector.cpp"
 							>
 						</File>
@@ -2418,6 +2126,10 @@
 						>
 						<File
 							RelativePath=".\TEST\t_algorithm_set.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TEST\t_algorithm_string.cpp"
 							>
 						</File>
 					</Filter>
@@ -2566,6 +2278,30 @@
 						</File>
 						<File
 							RelativePath=".\TEST\t_sync_mutex.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="TYPE"
+						>
+						<File
+							RelativePath=".\TEST\t_type.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="PRINT"
+						>
+						<File
+							RelativePath=".\TEST\t_print_stringstream.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="LOG"
+						>
+						<File
+							RelativePath=".\TEST\t_log_log.cpp"
 							>
 						</File>
 					</Filter>

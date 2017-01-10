@@ -3,7 +3,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_math_cookies_vec2(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_math_cookies_vec2(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 
@@ -89,7 +89,7 @@ namespace GAIA_TEST
 		nmv = rv;
 		rv.x = 3.0F;
 		rv.y = 4.0F;
-		rv = static_cast<const __NMVecType::_datatype*>(nmv);
+		rv = nmv.front_ptr();
 		if(rv.x != 1.0F || rv.y != 2.0F)
 		{
 			GTLINE2("VEC2 set pointer error!");
@@ -416,6 +416,57 @@ namespace GAIA_TEST
 		if(rv.isfinited())
 		{
 			GTLINE2("VEC2 isfinited error!");
+			++nRet;
+		}
+
+		rv.x = 1.0F;
+		rv.y = 2.0F;
+		rv = rv.yx();
+		if(!GAIA::MATH::xequal(rv.x, 2.0F))
+		{
+			GTLINE2("VEC2 yx error!");
+			++nRet;
+		}
+		if(!GAIA::MATH::xequal(rv.y, 1.0F))
+		{
+			GTLINE2("VEC2 yx error!");
+			++nRet;
+		}
+
+		rv = 1.0F;
+		rv.lerp(2.0F, 0.5F);
+		if(!GAIA::MATH::xequal(rv.x, 1.5F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		if(!GAIA::MATH::xequal(rv.y, 1.5F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		rv = 1.0F;
+		rv.lerp(rv + 1.0F, 0.5F);
+		if(!GAIA::MATH::xequal(rv.x, 1.5F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		if(!GAIA::MATH::xequal(rv.y, 1.5F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		rv = 1.0F;
+		rv.lerp(rv + 1.0F, rv);
+		if(!GAIA::MATH::xequal(rv.x, 2.0F))
+		{
+			GTLINE2("VEC2 lerp error!");
+			++nRet;
+		}
+		if(!GAIA::MATH::xequal(rv.y, 2.0F))
+		{
+			GTLINE2("VEC2 lerp error!");
 			++nRet;
 		}
 

@@ -60,7 +60,7 @@ namespace GAIA
 	#endif
 		if(nNew == 0 && !m_bDestructing)
 		{
-			m_bDestructing = true;
+			m_bDestructing = GAIA::True;
 			this->RefObjectDestruct();
 			delete this;
 		}

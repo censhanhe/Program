@@ -10,7 +10,7 @@ namespace DWARFS_MISC
 	public:
 		typedef GAIA::CTN::TString __LineType;
 		typedef __LineType::_datatype __CharType;
-		typedef GAIA::CTN::BasicChars<__CharType, GAIA::N32, 2> __FlagType;
+		typedef GAIA::CTN::BasicChars<__CharType, GAIA::N32, 2> __LineBreakType;
 	private:
 		typedef GAIA::CTN::Vector<__LineType> __LineListType;
 	public:
@@ -19,15 +19,15 @@ namespace DWARFS_MISC
 		GINL ~TextLine(){}
 		GINL GAIA::BL lineflag(const __CharType* psz)
 		{
-			GPCHR_NULLSTRPTR_RET(psz, GAIA::False);
-			if(GAIA::ALGO::strcmp(psz, _T("\r")) != 0 &&
-				GAIA::ALGO::strcmp(psz, _T("\n")) != 0 &&
-				GAIA::ALGO::strcmp(psz, _T("\r\n")) != 0)
+			GPCHR_NULLSTR_RET(psz, GAIA::False);
+			if(GAIA::ALGO::strcmp(psz, _T(GAIA_FILELINEBREAK_R)) != 0 &&
+				GAIA::ALGO::strcmp(psz, _T(GAIA_FILELINEBREAK_N)) != 0 &&
+				GAIA::ALGO::strcmp(psz, _T(GAIA_FILELINEBREAK_RN)) != 0)
 				return GAIA::False;
-			m_lineflag = psz;
+			m_linebreak = psz;
 			return GAIA::True;
 		}
-		GINL const __CharType* lineflag() const{return m_lineflag;}
+		GINL const __CharType* lineflag() const{return m_linebreak;}
 		GINL GAIA::BL load(GAIA::FSYS::FileBase& file)
 		{
 			if(file.Size() == 0)
@@ -85,7 +85,7 @@ namespace DWARFS_MISC
 				__LineType& l = m_lines.back();
 				__LineType::_datatype t = *l.back_it();
 				if(t != _T('\r') && t != _T('\n'))
-					l += m_lineflag;
+					l += m_linebreak;
 			}
 			return GAIA::True;
 		}
@@ -126,7 +126,7 @@ namespace DWARFS_MISC
 			}
 			m_lines[index] = p;
 			if(bAppendLineFlag)
-				m_lines[index] += m_lineflag;
+				m_lines[index] += m_linebreak;
 			return GAIA::True;
 		}
 		GINL const __CharType* get_line(const GAIA::SIZE& index) const{return m_lines[index];}
@@ -163,7 +163,7 @@ namespace DWARFS_MISC
 				if(!this->checkline(p[x], line_flag_count))
 				{
 					if(line_flag_count == 0)
-						m_lines[index + x] += m_lineflag;
+						m_lines[index + x] += m_linebreak;
 				}
 			}
 			return GAIA::True;
@@ -194,12 +194,12 @@ namespace DWARFS_MISC
 		GINL TextLine& operator = (const TextLine& src)
 		{
 			m_lines = src.m_lines;
-			m_lineflag = src.m_lineflag;
+			m_linebreak = src.m_linebreak;
 			return *this;
 		}
-		GAIA_CLASS_OPERATOR_COMPARE2(m_lines, m_lines, m_lineflag, m_lineflag, TextLine);
+		GAIA_CLASS_OPERATOR_COMPARE2(m_lines, m_lines, m_linebreak, m_linebreak, TextLine);
 	private:
-		GINL GAIA::GVOID init(){m_lineflag = _T("\r"); m_charset_type = GAIA::CHARSET_TYPE_INVALID; m_bEnableCheckLine = GAIA::True;}
+		GINL GAIA::GVOID init(){m_linebreak = _T(GAIA_FILELINEBREAK); m_charset_type = GAIA::CHARSET_TYPE_INVALID; m_bEnableCheckLine = GAIA::True;}
 		GINL GAIA::BL checkline(const __CharType* p, GAIA::SIZE& line_flag_count) const
 		{
 			if(!this->isenable_checkline())
@@ -240,7 +240,7 @@ namespace DWARFS_MISC
 		}
 	private:
 		__LineListType m_lines;
-		__FlagType m_lineflag;
+		__LineBreakType m_linebreak;
 		GAIA::CHARSET_TYPE m_charset_type;
 		GAIA::U8 m_bEnableCheckLine : 1;
 	};

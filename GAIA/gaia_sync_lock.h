@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		class Lock : public GAIA::Entity
+		class Lock : public GAIA::Base
 		{
 		public:
 			GINL Lock();
@@ -16,15 +16,9 @@ namespace GAIA
 			GINL Lock(const Lock& src){}
 		private:
 		#if GAIA_OS == GAIA_OS_WINDOWS
-		#	if GAIA_MACHINE == GAIA_MACHINE32
-				GAIA::N8 m_head[24];
-		#	else
-				GAIA::N8 m_head[48];
-		#	endif
-		#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
-			GAIA::N8 m_head[64];
+			CRITICAL_SECTION m_cs;
 		#else
-			GAIA::N8 m_head[64];
+			pthread_mutex_t m_mutex;
 		#endif
 		};
 	};

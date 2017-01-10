@@ -11,7 +11,7 @@ namespace GAIA
 			m_alloctimes.Increase();
 
 			GAIA::UM uSectionIndex = this->GetSectionIndex(uSize + HEAP_BUFFER_HEADERSIZE);
-			if(uSectionIndex == GINVALID)
+			if(uSectionIndex == (GAIA::UM)GINVALID)
 			{
 				m_capacity.Add(uSize + HEAP_BUFFER_HEADERSIZE);
 				m_size.Add(uSize + HEAP_BUFFER_HEADERSIZE);
@@ -33,7 +33,7 @@ namespace GAIA
 		#endif
 			{
 				Section& hs = m_seclist[uSectionIndex];
-				if(hs.uMinFreeIndex == GINVALID)
+				if(hs.uMinFreeIndex == (GAIA::UM)GINVALID)
 				{
 					hs.uMinFreeSize = (GAIA::UM)GINVALID;
 					for(GAIA::UM x = 0; x < hs.uObListSize; ++x)
@@ -46,7 +46,7 @@ namespace GAIA
 						}
 					}
 				}
-				if(hs.uMinFreeIndex == GINVALID)
+				if(hs.uMinFreeIndex == (GAIA::UM)GINVALID)
 				{
 					GAIA::U16 uOriginBufferIndex;
 					if(hs.uFreeStackSize == 0)
@@ -114,7 +114,7 @@ namespace GAIA
 				return;
 			}
 			GAIA::UM uSectionIndex = this->GetSectionIndex(*GRCAST(GAIA::UM*)(pOriginP) + HEAP_BUFFER_HEADERSIZE);
-			GAIA_AST(uSectionIndex != GINVALID);
+			GAIA_AST(uSectionIndex != (GAIA::UM)GINVALID);
 			m_size.Add(-(GAIA::N64)m_secsizelist[uSectionIndex]);
 			m_usesize.Add(-(GAIA::N64)this->memory_size(p));
 			m_piecesize.Decrease();

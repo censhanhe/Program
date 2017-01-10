@@ -212,8 +212,8 @@ namespace DWARFS_FSHA
 	public:
 		GINL FileList(){this->init();}
 		GINL ~FileList(){}
-		GINL GAIA::GVOID SetPrint(GAIA::PRINT::PrintBase* pPr){m_pPr = pPr;}
-		GINL GAIA::PRINT::PrintBase* GetPrint() const{return m_pPr;}
+		GINL GAIA::GVOID SetStream(GAIA::STREAM::StreamBase* pPr){m_pPr = pPr;}
+		GINL GAIA::STREAM::StreamBase* GetStream() const{return m_pPr;}
 		GAIA::BL Load(const GAIA::TCH* pszFileName)
 		{
 			GAIA_AST(!GAIA::ALGO::stremp(pszFileName));
@@ -838,7 +838,7 @@ namespace DWARFS_FSHA
 		__FileRecSeqListType m_recseqs; // Sorted by sequence and id.
 		__FileTreeType m_ftree; // Sorted by file name section.
 		FILEID m_LastMaxFileID;
-		GAIA::PRINT::PrintBase* m_pPr;
+		GAIA::STREAM::StreamBase* m_pPr;
 		GAIA::DATAPHASE::CRC32 m_crcbuilder;
 	};
 
@@ -1378,7 +1378,7 @@ namespace DWARFS_FSHA
 	};
 
 	/* Ban IP. */
-	class __DWARFS_FILESHARE_API BanIP : public GAIA::Entity
+	class __DWARFS_FILESHARE_API BanIP : public GAIA::Base
 	{
 	public:
 		class BanIPNode
@@ -2858,7 +2858,7 @@ namespace DWARFS_FSHA
 				if(listPart.size() == 1)
 				{
 					AL alprt(m_lr_prt);
-					m_prt.clear_screen();
+					GAIA::SYSTEM::command_line("clear");
 				}
 				else
 					CMDFAILED;
@@ -2866,7 +2866,7 @@ namespace DWARFS_FSHA
 			else if(CMD(CMD_HELP))
 			{
 				AL alprt(m_lr_prt);
-				GAIA::PRINT::PrintFormat pfold, pfnew;
+				GAIA::STREAM::StreamFormat pfold, pfnew;
 				pfold.reset();
 				pfnew.reset();
 				m_prt >> pfold >> pfnew;
@@ -3944,7 +3944,7 @@ namespace DWARFS_FSHA
 			m_bStartuped = GAIA::False;
 			m_uUSpeed = (GAIA::U64)GINVALID;
 			m_uDSpeed = (GAIA::U64)GINVALID;
-			m_filelist.SetPrint(&m_prt);
+			m_filelist.SetStream(&m_prt);
 			m_pMWThread = GNIL;
 			m_pHeartTickThread = GNIL;
 			m_pNH = GNIL;
@@ -6566,7 +6566,7 @@ namespace DWARFS_FSHA
 		NSender* m_pNSender;
 		NListener* m_pNListener;
 		NAcceptCallBack m_NAcceptCallBack;
-		GAIA::PRINT::Print m_prt; GAIA::SYNC::Lock m_lr_prt;
+		GAIA::STREAM::STDStream m_prt; GAIA::SYNC::Lock m_lr_prt;
 		FSTR m_readroot;
 		FSTR m_writeroot;
 		__LinkListType m_links; GAIA::SYNC::Lock m_lr_links;

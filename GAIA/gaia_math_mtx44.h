@@ -16,7 +16,7 @@ namespace GAIA
 			GINL MTX44(const __MyType& src){this->operator = (src);}
 			template<typename _ParamDataType> MTX44(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> MTX44(_ParamDataType* p){this->operator = (p);}
-			template<typename _ParamDataType> MTX44(const _ParamDataType& t){this->operator = (t);}
+			template<typename _ParamDataType> MTX44(_ParamDataType v){this->operator = (v);}
 			GINL GAIA::SIZE size() const{return sizeofarray2(m);}
 			GINL GAIA::SIZE sizex() const{return sizeofarray(m[0]);}
 			GINL GAIA::SIZE sizey() const{return this->size() / this->sizex();}
@@ -87,15 +87,15 @@ namespace GAIA
 			{
 				__MyType m = (*this);
 				_DataType det = GSCAST(_DataType)(1);
-				GAIA::N8 is[4];
-				GAIA::N8 js[4];
-				GAIA::N8 f = 1;
-				for(GAIA::N8 k = 0; k < 4; ++k)
+				GAIA::N32 is[4];
+				GAIA::N32 js[4];
+				GAIA::N32 f = 1;
+				for(GAIA::N32 k = 0; k < 4; ++k)
 				{
 					_DataType tmax = 0;
-					for(GAIA::N8 i = k; i < 4; ++i)
+					for(GAIA::N32 i = k; i < 4; ++i)
 					{
-						for(GAIA::N8 j = k; j < 4; ++j)
+						for(GAIA::N32 j = k; j < 4; ++j)
 						{
 							const _DataType t = GAIA::MATH::xabs(m(i, j));
 							if(t > tmax)
@@ -126,29 +126,29 @@ namespace GAIA
 					}
 					det *= m(k, k);
 					m(k, k) = 1 / m(k, k);	
-					for(GAIA::N8 j = 0; j < 4; ++j)
+					for(GAIA::N32 j = 0; j < 4; ++j)
 					{
 						if(j != k)
 							m(k, j) *= m(k, k);
 					}
-					for(GAIA::N8 i = 0; i < 4; ++i)
+					for(GAIA::N32 i = 0; i < 4; ++i)
 					{
 						if(i != k)
 						{
-							for(GAIA::N8 j = 0; j < 4; ++j)
+							for(GAIA::N32 j = 0; j < 4; ++j)
 							{
 								if(j != k)
 									m(i, j) = m(i, j) - m(i, k) * m(k, j);
 							}
 						}
 					}
-					for(GAIA::N8 i = 0; i < 4; ++i)
+					for(GAIA::N32 i = 0; i < 4; ++i)
 					{
 						if(i != k)
 							m(i, k) *= -m(k, k);
 					}
 				}
-				for(GAIA::N8 k = 3; k >= 0; --k)
+				for(GAIA::N32 k = 3; k >= 0; --k)
 				{
 					if(js[k] != k)
 					{
@@ -171,6 +171,70 @@ namespace GAIA
 				else
 					return +det;
 			}
+			GINL GAIA::GVOID look(const GAIA::MATH::VEC3<_DataType>& pos, const GAIA::MATH::VEC3<_DataType>& lookat, const GAIA::MATH::VEC3<_DataType>& up)
+			{
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				GAIA::MATH::VEC3<_DataType> zaxis = lookat - pos;
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
+				GAIA::MATH::VEC3<_DataType> zaxis = pos - lookat;
+			#endif
+				zaxis.normalize();
+				GAIA::MATH::VEC3<_DataType> xaxis = up.cross(zaxis);
+				xaxis.normalize();
+				GAIA::MATH::VEC3<_DataType> yaxis = zaxis.cross(xaxis);
+				m[0][0] = xaxis.x;			m[0][1] = yaxis.x;			m[0][2] = zaxis.x;			m[0][3] = (_DataType)0;
+				m[1][0] = xaxis.y;			m[1][1] = yaxis.y;			m[1][2] = zaxis.y;			m[1][3] = (_DataType)0;
+				m[2][0] = xaxis.z;			m[2][1] = yaxis.z;			m[2][2] = zaxis.z;			m[2][3] = (_DataType)0;
+				m[3][0] = -xaxis.dot(pos);	m[3][1] = -yaxis.dot(pos);	m[3][2] = -zaxis.dot(pos);	m[3][3] = (_DataType)1;
+			}
+			GINL GAIA::GVOID ortho(const _DataType& width, const _DataType& height, const _DataType& znear, const _DataType& zfar)
+			{
+				_DataType fac = znear - zfar;
+				m[0][0] = (_DataType)2 / width;	m[0][1] = (_DataType)0;				m[0][2] = (_DataType)0;			m[0][3] = (_DataType)0;
+				m[1][0] = (_DataType)0;			m[1][1] = (_DataType)2 / height;	m[1][2] = (_DataType)0;			m[1][3] = (_DataType)0;
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				m[2][0] = (_DataType)0;			m[2][1] = (_DataType)0;				m[2][2] = (_DataType)-1 / fac;	m[2][3] = (_DataType)0;
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
+				m[2][0] = (_DataType)0;			m[2][1] = (_DataType)0;				m[2][2] = (_DataType)1 / fac;	m[2][3] = (_DataType)0;
+			#endif
+				m[3][0] = (_DataType)0;			m[3][1] = (_DataType)0;				m[3][2] = znear / fac;			m[3][3] = (_DataType)1;
+			}
+			GINL GAIA::GVOID perspective(const _DataType& width, const _DataType& height, const _DataType& znear, const _DataType& zfar)
+			{
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				_DataType fac = zfar / (zfar - znear);
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
+				_DataType fac = zfar / (znear - zfar);
+			#endif
+				m[0][0] = (_DataType)2 * znear / width;	m[0][1] = (_DataType)0;					m[0][2] = (_DataType)0;				m[0][3] = (_DataType)0;
+				m[1][0] = (_DataType)0;					m[1][1] = (_DataType)2 * znear / height;m[1][2] = (_DataType)0;				m[1][3] = (_DataType)0;
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				m[2][0] = (_DataType)0;					m[2][1] = (_DataType)0;					m[2][2] = fac;						m[2][3] = (_DataType)1;
+				m[3][0] = (_DataType)0;					m[3][1] = (_DataType)0;					m[3][2] = -znear * fac;				m[3][3] = (_DataType)0;
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
+				m[2][0] = (_DataType)0;					m[2][1] = (_DataType)0;					m[2][2] = fac;						m[2][3] = (_DataType)-1;
+				m[3][0] = (_DataType)0;					m[3][1] = (_DataType)0;					m[3][2] = znear * fac;				m[3][3] = (_DataType)0;
+			#endif
+			}
+			GINL GAIA::GVOID perspectivefov(const _DataType& fovy, const _DataType& aspect, const _DataType& znear, const _DataType& zfar)
+			{
+				_DataType ys = (_DataType)1 / GAIA::MATH::xtan(fovy / (_DataType)2);
+				_DataType xs = ys / aspect;
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				_DataType fac = zfar / (zfar - znear);
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
+				_DataType fac = zfar / (znear - zfar);
+			#endif
+				m[0][0] = xs;				m[0][1] = (_DataType)0;		m[0][2] = (_DataType)0;				m[0][3] = (_DataType)0;
+				m[1][0] = (_DataType)0;		m[1][1] = ys;				m[1][2] = (_DataType)0;				m[1][3] = (_DataType)0;
+			#if GAIA_COORDINATE == GAIA_COORDINATE_LEFTHAND
+				m[2][0] = (_DataType)0;		m[2][1] = (_DataType)0;		m[2][2] = fac;						m[2][3] = (_DataType)1;
+				m[3][0] = (_DataType)0;		m[3][1] = (_DataType)0;		m[3][2] = -znear * fac;				m[3][3] = (_DataType)0;
+			#elif GAIA_COORDINATE == GAIA_COORDINATE_RIGHTHAND
+				m[2][0] = (_DataType)0;		m[2][1] = (_DataType)0;		m[2][2] = fac;						m[2][3] = (_DataType)-1;
+				m[3][0] = (_DataType)0;		m[3][1] = (_DataType)0;		m[3][2] = znear * fac;				m[3][3] = (_DataType)0;
+			#endif
+			}
 			template<typename _ParamDataType1, typename _ParamDataType2, typename _ParamDataType3> GAIA::GVOID translate(const _ParamDataType1& x, const _ParamDataType2& y, const _ParamDataType3& z)
 			{
 				m[0][0] = (_DataType)1; m[0][1] = (_DataType)0; m[0][2] = (_DataType)0; m[0][3] = (_DataType)0; 
@@ -178,7 +242,7 @@ namespace GAIA
 				m[2][0] = (_DataType)0; m[2][1] = (_DataType)0; m[2][2] = (_DataType)1; m[2][3] = (_DataType)0; 
 				m[3][0] = (_DataType)x;	m[3][1] = (_DataType)y;	m[3][2] = (_DataType)z;	m[3][3] = (_DataType)1; 
 			}
-			template<typename _ParamDataType> GAIA::GVOID rotatex(const _ParamDataType& x)
+			template<typename _ParamDataType> GAIA::GVOID rotatex(_ParamDataType x)
 			{
 				_DataType cosv = GAIA::MATH::xcos(x);
 				_DataType sinv = GAIA::MATH::xsin(x);
@@ -187,7 +251,7 @@ namespace GAIA
 				m[2][0] = (_DataType)0; m[2][1] = -sinv;		m[2][2] = cosv;			m[2][3] = (_DataType)0; 
 				m[3][0] = (_DataType)0; m[3][1] = (_DataType)0; m[3][2] = (_DataType)0; m[3][3] = (_DataType)1; 
 			}
-			template<typename _ParamDataType> GAIA::GVOID rotatey(const _ParamDataType& y)
+			template<typename _ParamDataType> GAIA::GVOID rotatey(_ParamDataType y)
 			{
 				_DataType cosv = GAIA::MATH::xcos(y);
 				_DataType sinv = GAIA::MATH::xsin(y);
@@ -196,7 +260,7 @@ namespace GAIA
 				m[2][0] = sinv;			m[2][1] = (_DataType)0; m[2][2] = cosv;			m[2][3] = (_DataType)0; 
 				m[3][0] = (_DataType)0; m[3][1] = (_DataType)0; m[3][2] = (_DataType)0; m[3][3] = (_DataType)1; 
 			}
-			template<typename _ParamDataType> GAIA::GVOID rotatez(const _ParamDataType& z)
+			template<typename _ParamDataType> GAIA::GVOID rotatez(_ParamDataType z)
 			{
 				_DataType cosv = GAIA::MATH::xcos(z);
 				_DataType sinv = GAIA::MATH::xsin(z);
@@ -289,7 +353,7 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){GAIA_AST(p != GNIL); GAIA::ALGO::copy(this->front_ptr(), p, this->size()); return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& t){GAIA::ALGO::set(this->front_ptr(), t, this->size()); return *this;}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType v){GAIA::ALGO::set(this->front_ptr(), v, this->size()); return *this;}
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGO::cmps(this->front_ptr(), src.front_ptr(), this->size()) == 0;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return !(this->operator == (src));}
 			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::MTX44<_ParamDataType>& src) const{return GAIA::ALGO::cmps(this->front_ptr(), src.front_ptr(), this->size()) >= 0;}

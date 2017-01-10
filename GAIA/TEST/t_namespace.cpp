@@ -5,7 +5,7 @@
 
 namespace GAIA_TEST
 {
-	extern GAIA::N32 t_namespace(GAIA::FSYS::File& file, GAIA::PRINT::PrintBase& prt)
+	extern GAIA::N32 t_namespace(GAIA::FSYS::File& file, GAIA::STREAM::StreamBase& stm)
 	{
 		GAIA::N32 nRet = 0;
 		{
@@ -38,7 +38,7 @@ namespace GAIA_TEST
 			Canvas* pCanvas = dynamic_cast<Canvas*>(fac.CreateInstance(CLSID_UI_CANVAS, GNIL));
 			if(pCanvas != GNIL)
 			{
-				Canvas::CanvasDesc desc;
+				Canvas::Desc desc;
 				desc.reset();
 				desc.pszCaptionText = _T("Hello World");
 				if(!pCanvas->Create(desc))
@@ -55,6 +55,6 @@ namespace GAIA_TEST
 				pCanvas = GNIL;
 			}
 		}
-		return nRet = 0;
+		return nRet;
 	}
 };

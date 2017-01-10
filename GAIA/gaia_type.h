@@ -69,13 +69,18 @@ namespace GAIA
 #	define R(x) x
 #endif
 
+	typedef N32 EN;
+
 	/* Char type declaration. */
 	typedef char CH;
 	typedef wchar_t WCH;
 #if GAIA_CHARSET == GAIA_CHARSET_UNICODE
 	typedef wchar_t TCH;
 #	ifndef _T
-#		define _T(x) L##x
+#		ifndef __T
+#			define __T(x)      L##x
+#		endif
+#		define _T(x) __T(x)
 #	endif
 #else
 	typedef char TCH;
@@ -96,52 +101,6 @@ namespace GAIA
 	/* Void. */
 	typedef void GVOID;
 
-	/* X128 */
-	class X128
-	{
-	public:
-		GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
-		GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
-		GINL X128& operator = (const X128& src){u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
-		template<typename _DataType> X128& operator = (const _DataType* p)
-		{
-			u0 = u1 = u2 = u3 = 0;
-			for(GAIA::U32 x = 0; x < 32; ++x)
-			{
-				GAIA::U32 uIndex = x / 8;
-				if(p[x] >= '0' && p[x] <= '9')
-					u[uIndex] |= p[x] - '0';
-				else if(p[x] >= 'a' && p[x] <= 'f')
-					u[uIndex] |= p[x] - 'a' + 10;
-				else if(p[x] >= 'A' && p[x] <= 'F')
-					u[uIndex] |= p[x] - 'A' + 10;
-				if((x % 8) != 7)
-					u[uIndex] = u[uIndex] << 4;
-			}
-			return *this;
-		}
-		GAIA_CLASS_OPERATOR_COMPARE2(u64_0, u64_0, u64_1, u64_1, X128);
-	public:
-		union
-		{
-			GAIA::U32 u[4];
-			class
-			{
-			public:
-				GAIA::U32 u0;
-				GAIA::U32 u1;
-				GAIA::U32 u2;
-				GAIA::U32 u3;
-			};
-			class
-			{
-			public:
-				GAIA::U64 u64_0;
-				GAIA::U64 u64_1;
-			};
-		};
-	};
-
 	/* Other global constants. */
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSTRUE = GAIA::True;
 	static GAIA_DEBUG_CONST GAIA::BL ALWAYSFALSE = GAIA::False;
@@ -154,25 +113,72 @@ namespace GAIA
 	#define GINVALID (~0)
 
 	/* Common operation. */
-	#define sizeofarray(arr) (sizeof(arr) / sizeof((arr)[0]))
-	#define sizeofarray2(arr) (sizeof(arr) / sizeof((arr)[0][0]))
+	#define sizeofarray(arr) ((GAIA::NM)(sizeof(arr) / sizeof((arr)[0])))
+	#define sizeofarray2(arr) ((GAIA::NM)(sizeof(arr) / sizeof((arr)[0][0])))
+
+	/* X128 */
+	class X128
+	{
+	public:
+		GINL X128(){}
+		GINL X128(const X128& src){this->operator = (src);}
+		template<typename _DataType> X128(const _DataType* p){this->operator = (p);}
+		GINL GAIA::BL empty() const{return u64_0 == 0 && u64_1 == 0;}
+		GINL GAIA::GVOID clear(){u64_0 = u64_1 = 0;}
+		template<typename _ParamDataType> GAIA::GVOID fromstring(const _ParamDataType* psz);
+		template<typename _ParamDataType> GAIA::GVOID tostring(_ParamDataType* psz) const;
+		GINL X128& operator = (const X128& src){u64_0 = src.u64_0; u64_1 = src.u64_1; return *this;}
+		template<typename _DataType> X128& operator = (const _DataType* p)
+		{
+			u32_0 = u32_1 = u32_2 = u32_3 = 0;
+			for(GAIA::U32 x = 0; x < 32; ++x)
+			{
+				GAIA::U32 uIndex = x / 8;
+				if(p[x] >= '0' && p[x] <= '9')
+					u32[uIndex] |= p[x] - '0';
+				else if(p[x] >= 'a' && p[x] <= 'f')
+					u32[uIndex] |= p[x] - 'a' + 10;
+				else if(p[x] >= 'A' && p[x] <= 'F')
+					u32[uIndex] |= p[x] - 'A' + 10;
+				if((x % 8) != 7)
+					u32[uIndex] = u32[uIndex] << 4;
+			}
+			return *this;
+		}
+		GAIA_CLASS_OPERATOR_COMPARE2(u64_0, u64_0, u64_1, u64_1, X128);
+	public:
+		union
+		{
+			GAIA::U32 u32[4];
+			GAIA::U8 u8[16];
+			class
+			{
+			public:
+				GAIA::U32 u32_0;
+				GAIA::U32 u32_1;
+				GAIA::U32 u32_2;
+				GAIA::U32 u32_3;
+			};
+			class
+			{
+			public:
+				GAIA::U64 u64_0;
+				GAIA::U64 u64_1;
+			};
+		};
+	};
 
 	/* Class Base. All class's parent. */
 	class Base
 	{
 	public:
 	#ifndef GAIA_DEBUG_MEMORYLEAK
-	#	if GAIA_OS == GAIA_OS_WINDOWS
-	#		if GAIA_MACHINE == GAIA_MACHINE32
-				GINL GAIA::GVOID* operator new(GAIA::U32 size);
-				GINL GAIA::GVOID* operator new[](GAIA::U32 size);
-	#		elif GAIA_MACHINE == GAIA_MACHINE64
-				GINL GAIA::GVOID* operator new(GAIA::U64 size);
-				GINL GAIA::GVOID* operator new[](GAIA::U64 size);
-	#		endif
-	#	else
-			GINL GAIA::GVOID* operator new(GAIA::UM size);
-			GINL GAIA::GVOID* operator new[](GAIA::UM size);
+	#	if GAIA_MACHINE == GAIA_MACHINE32
+			GINL GAIA::GVOID* operator new(GAIA::U32 size);
+			GINL GAIA::GVOID* operator new[](GAIA::U32 size);
+	#	elif GAIA_MACHINE == GAIA_MACHINE64
+			GINL GAIA::GVOID* operator new(GAIA::U64 size);
+			GINL GAIA::GVOID* operator new[](GAIA::U64 size);
 	#	endif
 		GINL GAIA::GVOID operator delete(GAIA::GVOID* p);
 		GINL GAIA::GVOID operator delete[](GAIA::GVOID* p);
@@ -180,7 +186,7 @@ namespace GAIA
 	};
 
 	/* Entity can been dispatch by virtual table and have a virtual destructor. */
-	class Entity : public Base
+	class Entity : public GAIA::Base
 	{
 	public:
 		GAIA_ENUM_BEGIN(FEATURE)
@@ -194,13 +200,13 @@ namespace GAIA
 	};
 
 	/* Class Object. It's the all class's base(except high-performance container and math class. */
-	class Object : public Entity
+	class Object : public GAIA::Entity
 	{
 	public:
 	};
 
 	/* Class RefObject. If a class need a reference function, it will derived from here. */
-	class RefObject : public Object
+	class RefObject : public GAIA::Object
 	{
 	public:
 		GINL RefObject(){m_nRef = 1; m_bDestructing = GAIA::False;}
@@ -247,8 +253,8 @@ namespace GAIA
 		TYPEID_X128,
 		TYPEID_F32,
 		TYPEID_F64,
-		TYPEID_CH,
-		TYPEID_WCH,
+		TYPEID_POINTER,
+		TYPEID_CONSTPOINTER,
 	GAIA_ENUM_END(TYPEID)
 
 	static const GAIA::CH* TYPEID_ANAME[] =
@@ -268,8 +274,8 @@ namespace GAIA
 		"X128",
 		"F32",
 		"F64",
-		"CH",
-		"WCH",
+		"Pointer",
+		"ConstPointer",
 	};
 
 	static const GAIA::WCH* TYPEID_WNAME[] =
@@ -289,8 +295,8 @@ namespace GAIA
 		L"X128",
 		L"F32",
 		L"F64",
-		L"CH",
-		L"WCH",
+		L"Pointer",
+		L"ConstPointer",
 	};
 
 	GINL TYPEID nametotype(const GAIA::CH* psz);
@@ -311,6 +317,8 @@ namespace GAIA
 		RELATION_TYPE_BELOW,
 		RELATION_TYPE_ABOVEEQUAL,
 		RELATION_TYPE_BELOWEQUAL,
+		RELATION_TYPE_TRUE,
+		RELATION_TYPE_FALSE,
 	GAIA_ENUM_END(RELATION_TYPE)
 
 	GAIA_ENUM_BEGIN(STRING_TYPE)
@@ -338,7 +346,7 @@ namespace GAIA
 
 	GAIA_ENUM_BEGIN(CHARSET_TYPE) // If you change the sequence of the enum item, you must change CHARSET_CODEPAGE array element's sequence.
 		CHARSET_TYPE_SYS,
-		CHARSET_TYPE_ANSI,
+		CHARSET_TYPE_ASCII,
 		CHARSET_TYPE_UTF7,
 		CHARSET_TYPE_UTF8,
 		CHARSET_TYPE_UTF16LE,
@@ -348,34 +356,23 @@ namespace GAIA
 	static const GAIA::U32 CHARSET_CODEPAGE[] =
 	{
 		0,		// CHARSET_INVALID
-		1,		// CHARSET_SYS
-		2,		// CHARSET_ANSI
-		65000,	// CHARSET_UTF7
-		65001,	// CHARSET_UTF8
-		1200,	// CHARSET_UTF16LE
-		1201,	// CHARSET_UTF16BE
+		1,		// CHARSET_TYPE_SYS
+		2,		// CHARSET_TYPE_ASCII
+		65000,	// CHARSET_TYPE_UTF7
+		65001,	// CHARSET_TYPE_UTF8
+		1200,	// CHARSET_TYPE_UTF16LE
+		1201,	// CHARSET_TYPE_UTF16BE
 	};
 
 	static const GAIA::CH* CHARSET_CODEPAGE_NAMEA[] =
 	{
-		"invalid",	// CHARSET_INVALID
-		"",			// CHARSET_SYS
-		".ansi",	// CHARSET_ANSI
-		".utf7",	// CHARSET_UTF7
-		".utf8",	// CHARSET_UTF8
-		".utf16le",	// CHARSET_UTF16LE
-		".utf16be",	// CHARSET_UTF16BE
-	};
-
-	static const GAIA::WCH* CHARSET_CODEPAGE_NAMEW[] =
-	{
-		L"invalid",	// CHARSET_INVALID
-		L"",		// CHARSET_SYS
-		L".ansi",	// CHARSET_ANSI
-		L".utf7",	// CHARSET_UTF7
-		L".utf8",	// CHARSET_UTF8
-		L".utf16le",// CHARSET_UTF16LE
-		L".utf16be",// CHARSET_UTF16BE
+		"invalid",			// CHARSET_INVALID
+		GAIA_SYS_CODEPAGE,	// CHARSET_TYPE_SYS
+		"ASCII",			// CHARSET_TYPE_ASCII
+		"UTF-7",			// CHARSET_TYPE_UTF7
+		"UTF-8",			// CHARSET_TYPE_UTF8
+		"UTF-16LE",			// CHARSET_TYPE_UTF16LE
+		"UTF-16BE",			// CHARSET_TYPE_UTF16BE
 	};
 
 	static const GAIA::U8 UTF8_FILEHEAD[3] = {0xEF, 0xBB, 0xBF};

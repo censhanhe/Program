@@ -44,9 +44,9 @@ namespace GAIA
 			template<typename _ParamDataType> AABB(const GAIA::MATH::AABB<_ParamDataType>& src){this->operator = (src);}
 			template<typename _ParamDataType> AABB(const _ParamDataType* p){this->operator = (p);}
 			template<typename _ParamDataType> AABB(_ParamDataType* p){this->operator = (p);}
-			template<typename _ParamDataType> AABB(const _ParamDataType& t){this->operator = (t);}
+			template<typename _ParamDataType> AABB(_ParamDataType v){this->operator = (v);}
 			GINL GAIA::SIZE size() const{return 6;}
-			GINL GAIA::GVOID identity(){pmin = (_DataType)+1; pmax = (_DataType)-1;}
+			GINL GAIA::GVOID identity(){pmin = (_DataType)+99999999; pmax = (_DataType)-99999999;}
 			GINL GAIA::BL isidentity() const{return pmin.x > pmax.x || pmin.y > pmax.y || pmin.z > pmax.z;}
 			GINL _vectype center() const{return (pmin + pmax) / (_DataType)2;}
 			GINL _vectype long_size() const{return pmax - pmin;}
@@ -200,15 +200,17 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_ray(const GAIA::MATH::VEC3<_ParamDataType>& pos, const GAIA::MATH::VEC3<_ParamDataType>& dir) const
 			{
+				return GAIA::INTERSECT_TYPE_INVALID;
 			}
 			template<typename _ParamDataType> GAIA::INTERSECT_TYPE intersect_plane(const GAIA::MATH::PLANE<_ParamDataType>* pPlanes, const GAIA::SIZE& sPlaneCount) const
 			{
 				GAIA_AST(pPlanes != GNIL);
+				return GAIA::INTERSECT_TYPE_INVALID;
 			}
 			template<typename _ParamDataType> __MyType& operator = (const GAIA::MATH::AABB<_ParamDataType>& src){pmin = src.pmin; pmax = src.pmax; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType* p){pmin = p; pmax = p + 3; return *this;}
 			template<typename _ParamDataType> __MyType& operator = (_ParamDataType* p){return this->operator = (GSCAST(const _ParamDataType*)(p));}
-			template<typename _ParamDataType> __MyType& operator = (const _ParamDataType& v){pmin = v; pmax = v; return *this;}
+			template<typename _ParamDataType> __MyType& operator = (_ParamDataType v){pmin = v; pmax = v; return *this;}
 			template<typename _ParamDataType> GAIA::BL operator == (const GAIA::MATH::AABB<_ParamDataType>& t) const{return pmin == t.pmin && pmax == t.pmax;}
 			template<typename _ParamDataType> GAIA::BL operator != (const GAIA::MATH::AABB<_ParamDataType>& t) const{return !(this->operator == (t));}
 			template<typename _ParamDataType> GAIA::BL operator >= (const GAIA::MATH::AABB<_ParamDataType>& t) const
@@ -237,38 +239,36 @@ namespace GAIA
 			}
 			template<typename _ParamDataType> GAIA::BL operator > (const GAIA::MATH::AABB<_ParamDataType>& t) const{return !(this->operator <= (t));}
 			template<typename _ParamDataType> GAIA::BL operator < (const GAIA::MATH::AABB<_ParamDataType>& t) const{return !(this->operator >= (t));}
-			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& t) const{return pmin == t && pmax == t;}
-			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& t) const{return !this->operator == (t);}
-			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& t) const
+			template<typename _ParamDataType> GAIA::BL operator == (const _ParamDataType& v) const{return pmin == v && pmax == v;}
+			template<typename _ParamDataType> GAIA::BL operator != (const _ParamDataType& v) const{return !this->operator == (v);}
+			template<typename _ParamDataType> GAIA::BL operator >= (const _ParamDataType& v) const
 			{
-				if(pmin < t)
+				if(pmin < v)
 					return GAIA::False;
-				else if(pmin > t)
+				else if(pmin > v)
 					return GAIA::True;
-				if(pmax < t)
+				if(pmax < v)
 					return GAIA::False;
-				else if(pmax >= t)
+				else if(pmax >= v)
 					return GAIA::True;
 				return GAIA::False;
 			}
-			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& t) const
+			template<typename _ParamDataType> GAIA::BL operator <= (const _ParamDataType& v) const
 			{
-				if(pmin > t)
+				if(pmin > v)
 					return GAIA::False;
-				else if(pmin < t)
+				else if(pmin < v)
 					return GAIA::True;
-				if(pmax > t)
+				if(pmax > v)
 					return GAIA::False;
-				else if(pmax <= t)
+				else if(pmax <= v)
 					return GAIA::True;
 				return GAIA::False;
 			}
-			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& t) const{return !this->operator <= (t);}
-			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& t) const{return !this->operator >= (t);}
+			template<typename _ParamDataType> GAIA::BL operator > (const _ParamDataType& v) const{return !this->operator <= (v);}
+			template<typename _ParamDataType> GAIA::BL operator < (const _ParamDataType& v) const{return !this->operator >= (v);}
 			template<typename _ParamDataType> const _DataType& operator [] (const _ParamDataType& index) const{GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
 			template<typename _ParamDataType> _DataType& operator [] (const _ParamDataType& index){GAIA_AST(index >= 0 && index < this->size()); return this->front_ptr()[index];}
-			GINL operator _DataType*(){return this->front_ptr();}
-			GINL operator const _DataType*() const{return this->front_ptr();}
 		private:
 			GINL GAIA::GVOID selfupdate()
 			{

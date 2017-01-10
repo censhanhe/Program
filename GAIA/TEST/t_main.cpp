@@ -1,15 +1,4 @@
 //#define GAIA_PLATFORM_NETWORK
-//#define GAIA_PLATFORM_GDIPLUS
-//#define GAIA_PLATFORM_DDRAW
-//#define GAIA_PLATFORM_OPENGL1
-//#define GAIA_PLATFORM_OPENGL2
-//#define GAIA_PLATFORM_OPENGL3
-//#define GAIA_PLATFORM_OPENGLES1
-//#define GAIA_PLATFORM_OPENGLES2
-//#define GAIA_PLATFORM_OPENGLES3
-//#define GAIA_PLATFORM_DX9
-//#define GAIA_PLATFORM_DX10
-//#define GAIA_PLATFORM_DX11
 //#define GAIA_PLATFORM_COM
 
 #include "preheader.h"
@@ -38,12 +27,12 @@
 
 int main()
 {
-#if GAIA_OS == GAIA_OS_WINDOWS
+#if GAIA_COMPILER == GAIA_COMPILER_CL && GAIA_PROFILE == GAIA_PROFILE_DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 	GAIA::FSYS::File file;
 	file.Open(_T("../gaia_test.txt"), GAIA::FSYS::File::OPEN_TYPE_CREATEALWAYS | GAIA::FSYS::File::OPEN_TYPE_WRITE);
-	GAIA::PRINT::Print prt;
-	GAIA_TEST::t_all(file, prt);
+	GAIA::STREAM::STDStream stm;
+	GAIA_TEST::t_all(file, stm);
 	return 0;
 }

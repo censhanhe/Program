@@ -55,8 +55,11 @@ namespace GAIA
 			*  convert "00010203040506007" to "0001-02-03_04:05:06_007";
 			*  convert "00010203040506007008" to "0001-02-03_04:05:06_007:008";
 			*/
-			GPCHR_NULLSTRPTR_RET(pSrc, GAIA::False);
+			GPCHR_NULLSTR_RET(pSrc, GAIA::False);
 			GPCHR_NULL_RET(pDst, GAIA::False);
+			GAIA_AST(pSrc != pDst);
+			if(pSrc == pDst)
+				return GAIA::False;
 			GAIA::SIZE sLen = GAIA::ALGO::strlen(pSrc);
 			if(sLen != 8 && sLen != 12 && sLen != 14 && sLen != 17 && sLen != 20 && sLen < 20)
 			{
@@ -121,8 +124,11 @@ namespace GAIA
 			*  convert "00010203040506007" from "0001-02-03_04:05:06_007";
 			*  convert "00010203040506007008" from "0001-02-03_04:05:06_007:008";
 			*/
-			GPCHR_NULLSTRPTR_RET(pSrc, GAIA::False);
+			GPCHR_NULLSTR_RET(pSrc, GAIA::False);
 			GPCHR_NULL_RET(pDst, GAIA::False);
+			GAIA_AST(pSrc != pDst);
+			if(pSrc == pDst)
+				return GAIA::False;
 			GAIA::SIZE sLen = GAIA::ALGO::strlen(pSrc);
 			if(sLen != 10 && sLen != 16 && sLen != 19 && sLen != 23 && sLen != 27 && sLen < 27)
 			{
@@ -178,7 +184,7 @@ namespace GAIA
 			*pDst = '\0';
 			return GAIA::True;
 		}
-		class Time : public GAIA::Entity
+		class Time : public GAIA::Base
 		{
 		public:
 			GINL Time(){}
@@ -340,7 +346,6 @@ namespace GAIA
 				static const GAIA::N64 ONEYEARDAYS = 366;
 				static const GAIA::N64 TWOYEARDAYS = ONEYEARDAYS + 365;
 				static const GAIA::N64 THREEYEARDAYS = TWOYEARDAYS + 365;
-				static const GAIA::N64 FOURYEARDAYS = THREEYEARDAYS + 365;
 				y = day / DAYS4YEAR * 4;
 				day %= DAYS4YEAR;
 				if(day < ONEYEARDAYS){}
@@ -405,7 +410,7 @@ namespace GAIA
 			GINL GAIA::GVOID daydec(){(*this) -= GSCAST(GAIA::N64)(24) * 60 * 60 * 1000 * 1000;}
 			template<typename _ParamDataType> GAIA::GVOID from(const _ParamDataType* psz)
 			{
-				GPCHR_NULLSTRPTR(psz);
+				GPCHR_NULLSTR(psz);
 				GAIA::SIZE sLen = GAIA::ALGO::strlen(psz);
 				if(sLen != 8 && sLen != 12 && sLen != 14 && sLen != 17 && sLen != 20 && sLen < 20)
 				{

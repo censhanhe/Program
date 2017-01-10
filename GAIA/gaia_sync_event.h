@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace SYNC
 	{
-		class Event : public GAIA::Entity
+		class Event : public GAIA::Base
 		{
 		public:
 			GINL Event();
@@ -16,18 +16,10 @@ namespace GAIA
 			GINL Event(const Event& src){}
 		private:
 		#if GAIA_OS == GAIA_OS_WINDOWS
-		#	if GAIA_MACHINE == GAIA_MACHINE32
-				GAIA::N8 m_head[4];
-		#	else
-				GAIA::N8 m_head[8];
-		#	endif
-		#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
-			GAIA::N8 m_head[48];
-			GAIA::N8 m_headmutex[64];
-			GAIA::NM m_waitcnt;
+			HANDLE m_hEvent;
 		#else
-			GAIA::N8 m_head[64];
-			GAIA::N8 m_headmutex[64];
+			pthread_mutex_t m_mutex;
+			pthread_cond_t m_cond;
 			GAIA::NM m_waitcnt;
 		#endif
 		};

@@ -3,49 +3,40 @@ Common
 	Solve ANSI/Unicode model compile warning and error.
 	Solve GAIA_DEBUG_MEMORYLEAK's compile warning and error.
 	Solve 32/64 bit compile warning and error.
+	Support platform : 
+		1.	Microsoft Visual Studio 8 and later.
+		2.	Cygwin-x32.
+		3.	Cygwin-x64.
+		4.	OSX-x64.
+		5.	Android.
+		7.	Linux Ubuntu x64.
+		8.	Linux Ubuntu x32.
+
+Locale
+	When the platform initialize, please calculate the code page and mapping to iconv_open's parameter.
+	Please reference GAIA::CHARSET_TYPE_SYS, "GBK", "zh_CH" and GAIA_SYS_CODEPAGE macro etc.
+
+	Optimize locale convert speed, decrease calls of iconv_open and iconv_close.
 
 
 Container
-	Book's test case impl.
 
 
-Render
-
-	Gdiplus support target function.
-	Gdiplus support texture function.
-	Gdiplus support alpha blend enhance function.
-	
-	Shader system designment.
-
-
-Timer
-	Timer implement.
-
-
-Time
-	toyear change to year.
-
-
-Math
-	MTX33, MTX22, MTX43 implement.
-
-
-FRAMEWORK
-	All Instance derived class's destructor or RefObjectDestruct will destroy itself completely.
+Stream
+	StringStream support read from.
 
 
 NETWORK
 	Remove network test case's xsleep function.
 
 
-LOG
-	Add global log system.
-
-
 EXCEPTION
 	Add exception system.
+	Accesser will cause exception(OutOfBounder).
+	StringStream will case exception(ReceiverTypeNotMatch : public InvalidParam)
 
 
 DataResearch
 	Pair operation end's special operations.
 	Change U64 to N64.
+

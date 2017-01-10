@@ -8,6 +8,8 @@ namespace PROM
 	public:
 		typedef DirectionalFreeLink<_DataType> __MyType;
 	public:
+		GINL DirectionalFreeLink(){}
+		GINL ~DirectionalFreeLink(){this->UnbindNextAll(); this->UnbindPrevAll();}
 		GINL GAIA::BL BindNext(__MyType* p)
 		{
 			GAIA_AST(p != GNIL);
@@ -177,12 +179,6 @@ namespace PROM
 				pPrev->Release();
 			}
 			return GAIA::False;
-		}
-	protected:
-		virtual GAIA::GVOID RefObjectDestruct()
-		{
-			this->UnbindNextAll();
-			this->UnbindPrevAll();
 		}
 	private:
 		typedef GAIA::CTN::Vector<__MyType*> __DoubleLinkList;

@@ -20,7 +20,7 @@ namespace DWARFS_MISC
 			buf.resize(file.Size());
 			if(buf.write_size() == 0)
 			{
-				m_charset_type = GAIA::CHARSET_TYPE_ANSI;
+				m_charset_type = GAIA::CHARSET_TYPE_ASCII;
 				return GAIA::True;
 			}
 			if(file.Read(buf.front_ptr(), buf.write_size()) != buf.write_size())
@@ -52,12 +52,12 @@ namespace DWARFS_MISC
 					}
 				}
 				if(bIsAllAnsi)
-					m_charset_type = GAIA::CHARSET_TYPE_ANSI;
+					m_charset_type = GAIA::CHARSET_TYPE_ASCII;
 				else
 					m_charset_type = GAIA::CHARSET_TYPE_SYS;
 			}
 		#if GAIA_CHARSET == GAIA_CHARSET_ANSI
-			if(m_charset_type != GAIA::CHARSET_TYPE_ANSI &&
+			if(m_charset_type != GAIA::CHARSET_TYPE_ASCII &&
 				m_charset_type != GAIA::CHARSET_TYPE_SYS)
 			{
 				m_charset_type = GAIA::CHARSET_TYPE_INVALID;
@@ -66,7 +66,7 @@ namespace DWARFS_MISC
 		#endif
 			switch(m_charset_type)
 			{
-			case GAIA::CHARSET_TYPE_ANSI:
+			case GAIA::CHARSET_TYPE_ASCII:
 				{
 					m_str.resize(buf.write_size());
 					for(GAIA::SIZE x = 0; x < buf.write_size(); ++x)
@@ -158,13 +158,13 @@ namespace DWARFS_MISC
 			if(m_charset_type == GAIA::CHARSET_TYPE_INVALID)
 				return GAIA::False;
 		#if GAIA_CHARSET == GAIA_CHARSET_ANSI
-			if(m_charset_type != GAIA::CHARSET_TYPE_ANSI &&
+			if(m_charset_type != GAIA::CHARSET_TYPE_ASCII &&
 				m_charset_type != GAIA::CHARSET_TYPE_SYS)
 				return GAIA::False;
 		#endif
 			switch(m_charset_type)
 			{
-			case GAIA::CHARSET_TYPE_ANSI:
+			case GAIA::CHARSET_TYPE_ASCII:
 				{
 					if(m_str.size() > 0)
 					{
@@ -271,7 +271,7 @@ namespace DWARFS_MISC
 			if(charset_type >= GAIA::CHARSET_TYPE_MAXENUMCOUNT)
 				return GAIA::False;
 		#if GAIA_CHARSET == GAIA_CHARSET_ANSI
-			if(charset_type != GAIA::CHARSET_TYPE_ANSI &&
+			if(charset_type != GAIA::CHARSET_TYPE_ASCII &&
 				charset_type != GAIA::CHARSET_TYPE_SYS)
 				return GAIA::False;
 		#endif

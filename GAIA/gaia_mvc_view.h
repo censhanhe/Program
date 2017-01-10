@@ -32,7 +32,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL SetModel(const GAIA::TCH* pszName, GAIA::MVC::Model* pModel)
 			{
-				GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
+				GPCHR_NULLSTR_RET(pszName, GAIA::False);
 				pModel->Reference();
 				ModelNode* pNode = this->GetModelByName(pszName);
 				if(pNode != GNIL)
@@ -61,7 +61,7 @@ namespace GAIA
 			}
 			GINL GAIA::MVC::Model* GetModel(const GAIA::TCH* pszName) const
 			{
-				GPCHR_NULLSTRPTR_RET(pszName, GNIL);
+				GPCHR_NULLSTR_RET(pszName, GNIL);
 				const ModelNode* pNode = this->GetModelByName(pszName);
 				if(pNode == GNIL)
 					return GNIL;
@@ -88,7 +88,7 @@ namespace GAIA
 			}
 			GINL GAIA::BL SetController(const GAIA::TCH* pszName, GAIA::MVC::Controller* pController)
 			{
-				GPCHR_NULLSTRPTR_RET(pszName, GAIA::False);
+				GPCHR_NULLSTR_RET(pszName, GAIA::False);
 				pController->Reference();
 				ControllerNode* pNode = this->GetControllerByName(pszName);
 				if(pNode != GNIL)
@@ -117,7 +117,7 @@ namespace GAIA
 			}
 			GINL GAIA::MVC::Controller* GetController(const GAIA::TCH* pszName) const
 			{
-				GPCHR_NULLSTRPTR_RET(pszName, GNIL);
+				GPCHR_NULLSTR_RET(pszName, GNIL);
 				const ControllerNode* pNode = this->GetControllerByName(pszName);
 				if(pNode == GNIL)
 					return GNIL;

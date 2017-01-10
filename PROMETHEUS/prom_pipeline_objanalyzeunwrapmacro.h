@@ -9,7 +9,7 @@ namespace PROM
 		GINL PL_ObjAnalyzeUnwrapMacro(){}
 		GINL ~PL_ObjAnalyzeUnwrapMacro(){}
 		virtual const GAIA::TCH* GetName() const{return _T("Prom:PL_ObjAnalyzeUnwrapMacro");}
-		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::PRINT::PrintBase& prt, __ErrorListType& errs)
+		virtual PipelineContext* Execute(PipelineContext** ppPLC, const GAIA::SIZE& size, GAIA::STREAM::StreamBase& stm, __ErrorListType& errs)
 		{
 			/* Parameter check up. */
 			GPCHR_NULL_RET(ppPLC, GNIL);
@@ -44,7 +44,7 @@ namespace PROM
 				plc_objctn->Release();
 			return pRet;
 		}
-		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::PRINT::PrintBase& prt)
+		virtual GAIA::BL Output(PipelineContext* pPLC, GAIA::FSYS::FileBase* pFile, GAIA::STREAM::StreamBase& stm)
 		{
 			/* Parameter check up. */
 			GAIA_AST(pPLC != GNIL);

@@ -12,10 +12,12 @@
 #include	"gaia_platform.h"
 #include	"gaia_internal.h"
 
-#include	"gaia_print_format.h"
-#include	"gaia_print.h"
-#include	"gaia_assert.h"
+#include	"gaia_stream_format.h"
+#include	"gaia_stream_streambase.h"
+#include	"gaia_stream_stdstream.h"
+
 #include	"gaia_exception.h"
+#include	"gaia_assert.h"
 
 #include	"gaia_system.h"
 
@@ -30,6 +32,7 @@
 
 #include	"gaia_math_constant.h"
 #include	"gaia_math_basic.h"
+#include	"gaia_math_convert.h"
 #include 	"gaia_math_random.h"
 #include 	"gaia_math_lerp.h"
 
@@ -69,6 +72,8 @@
 #include	"gaia_container_wstring.h"
 #include	"gaia_container_astring.h"
 #include	"gaia_container_tstring.h"
+#include	"gaia_container_basiccharsstring.h"
+#include	"gaia_container_charsstring.h"
 #include 	"gaia_container_basicstackstack.h"
 #include	"gaia_container_stackstack.h"
 #include	"gaia_container_basicstack.h"
@@ -87,10 +92,10 @@
 #include 	"gaia_container_buffer.h"
 #include	"gaia_container_basicorderless.h"
 #include	"gaia_container_orderless.h"
-#include	"gaia_container_basicbook.h"
-#include	"gaia_container_book.h"
 #include 	"gaia_container_basicpool.h"
 #include 	"gaia_container_pool.h"
+#include	"gaia_container_basicbook.h"
+#include	"gaia_container_book.h"
 #include 	"gaia_container_basiclist.h"
 #include 	"gaia_container_list.h"
 #include 	"gaia_container_basicavltree.h"
@@ -121,6 +126,8 @@
 #include 	"gaia_container_staticstringpool.h"
 #include	"gaia_container_cooperation.h"
 
+#include	"gaia_stream_stringstream.h"
+
 #include	"gaia_time.h"
 
 #include	"gaia_thread.h"
@@ -146,9 +153,7 @@
 #include	"gaia_math_aabb.h"
 #include	"gaia_math_cooperation.h"
 
-#include	"gaia_datamodel.h"
-#include	"gaia_linkmodel.h"
-
+#include	"gaia_filesystem_filebase.h"
 #include	"gaia_filesystem_file.h"
 #include	"gaia_filesystem_directory.h"
 #include	"gaia_filesystem_chunkdef.h"
@@ -174,8 +179,6 @@
 #include	"gaia_framework_instancecreator.h"
 #include	"gaia_framework_factory.h"
 
-#include	"gaia_favo_fetchdata.h"
-
 #include 	"gaia_io_io.h"
 #include 	"gaia_io_fileio.h"
 #include 	"gaia_io_memio.h"
@@ -198,6 +201,9 @@
 #include	"gaia_datatraffic_route_net.h"
 #include	"gaia_datatraffic_transmission_idm.h"
 
+#include	"gaia_input_inputstate.h"
+
+#include	"gaia_ui_message.h"
 #include	"gaia_ui_canvas.h"
 #include	"gaia_ui_canvasmsgdisp.h"
 
@@ -220,27 +226,6 @@
 #include	"gaia_collisioner_tree8.h"
 #include	"gaia_collisioner_boundarea.h"
 
-#include	"gaia_render_material.h"
-#include	"gaia_render_imagework.h"
-#include	"gaia_render_resource.h"
-#include	"gaia_render_context.h"
-#include 	"gaia_render_render.h"
-#include 	"gaia_render_render2d.h"
-#include 	"gaia_render_render3d.h"
-#include 	"gaia_render_gl1.h"
-#include 	"gaia_render_gl2.h"
-#include 	"gaia_render_gl3.h"
-#include 	"gaia_render_gles1.h"
-#include 	"gaia_render_gles2.h"
-#include 	"gaia_render_gles3.h"
-#include 	"gaia_render_dx9.h"
-#include 	"gaia_render_dx10.h"
-#include 	"gaia_render_dx11.h"
-#include	"gaia_render_gdiplus.h"
-#include	"gaia_render_ddraw.h"
-
-#include	"gaia_render_resource_impl.h"
-
 #include	"gaia_layout_widget.h"
 #include	"gaia_layout.h"
 #include	"gaia_layout_widget.h"
@@ -260,6 +245,8 @@
 
 #include	"gaia_framework_instancecreator_impl.h"
 #include	"gaia_framework_factory_impl.h"
+
+#include	"gaia_global_decl.h"
 
 #endif
 
@@ -292,18 +279,7 @@
 *    The following macro will specified which feature will be actived.
 *
 *        1.  GAIA_PLATFORM_NETWORK
-*        2.  GAIA_PLATFORM_GDIPLUS
-*        3.  GAIA_PLATFORM_DDRAW
-*        4.  GAIA_PLATFORM_OPENGL1
-*        5.  GAIA_PLATFORM_OPENGL2
-*        6.  GAIA_PLATFORM_OPENGL3
-*        7.  GAIA_PLATFORM_OPENGLES1
-*        8.  GAIA_PLATFORM_OPENGLES2
-*        9.  GAIA_PLATFORM_OPENGLES3
-*        10. GAIA_PLATFORM_DX9
-*        11. GAIA_PLATFORM_DX10
-*        12. GAIA_PLATFORM_DX11
-*        13. GAIA_PLATFORM_COM
+*        2.  GAIA_PLATFORM_COM
 *
 */
 

@@ -5,7 +5,7 @@ namespace GAIA
 {
 	namespace ALLOCATOR
 	{
-		class AllocatorCRT : public Allocator
+		class AllocatorCRT : public GAIA::ALLOCATOR::Allocator
 		{
 		public:
 			GINL AllocatorCRT(){this->init();}

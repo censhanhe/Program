@@ -5,27 +5,28 @@ namespace GAIA
 {
 	namespace FWORK
 	{
-		class FactoryCreateCallBack : public GAIA::Entity
-		{
-		public:
-			GINL FactoryCreateCallBack(){}
-			virtual Instance* Create(GAIA::FWORK::Factory* pFactory, const ClsID& cid) = 0;
-		};
 		class Factory : public Object
 		{
+		public:
+			class CreateCallBack : public GAIA::Base
+			{
+			public:
+				GINL CreateCallBack(){}
+				virtual GAIA::FWORK::Instance* Create(GAIA::FWORK::Factory* pFactory, const GAIA::FWORK::ClsID& cid) = 0;
+			};
 		private: // Helper type declaration here for internal use.
-			typedef GAIA::CTN::Vector<FactoryCreateCallBack*> LIST_CREATECALLBACK;
+			typedef GAIA::CTN::Vector<CreateCallBack*> LIST_CREATECALLBACK;
 		public:
 			GINL Factory(){this->init();}
 			GINL ~Factory(){}
-			GINL GAIA::BL RegistCreateCallBack(FactoryCreateCallBack* pCallBack)
+			GINL GAIA::BL RegistCreateCallBack(CreateCallBack* pCallBack)
 			{
 				if(m_listCreateCB.find(pCallBack, 0) != GINVALID)
 					return GAIA::False;
 				m_listCreateCB.push_back(pCallBack);
 				return GAIA::True;
 			}
-			GINL GAIA::BL UnregistCreateCallBack(FactoryCreateCallBack* pCallBack)
+			GINL GAIA::BL UnregistCreateCallBack(CreateCallBack* pCallBack)
 			{
 				GAIA_AST(!!pCallBack);
 				if(pCallBack == GNIL)
@@ -36,7 +37,7 @@ namespace GAIA
 				m_listCreateCB.erase(t);
 				return GAIA::True;
 			}
-			GINL GAIA::BL IsRegistedCreateCallBack(FactoryCreateCallBack* pCallBack) const
+			GINL GAIA::BL IsRegistedCreateCallBack(CreateCallBack* pCallBack) const
 			{
 				GAIA_AST(!!pCallBack);
 				if(pCallBack == GNIL)
@@ -151,7 +152,7 @@ namespace GAIA
 				}
 				return GAIA::False;
 			}
-			GINL GAIA::GVOID CollectCreateCallBack(GAIA::CTN::Vector<FactoryCreateCallBack*>& listResult) const{listResult = m_listCreateCB;}
+			GINL GAIA::GVOID CollectCreateCallBack(GAIA::CTN::Vector<CreateCallBack*>& listResult) const{listResult = m_listCreateCB;}
 			GINL virtual Instance* CreateInstance(const ClsID& cid, GAIA::GVOID* pParameter);
 			GINL virtual Instance* RequestInstance(const ClsID& cid, GAIA::GVOID* pParameter);
 		public:

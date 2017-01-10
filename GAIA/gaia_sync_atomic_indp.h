@@ -17,6 +17,43 @@ namespace GAIA
 {
 	namespace SYNC
 	{
+		GINL Atomic& Atomic::operator = (const GAIA::N64& src)
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			#if GAIA_MACHINE == GAIA_MACHINE64
+				m_n = src;
+			#else
+				*GRCAST(volatile GAIA::NM*)(&m_n) = GSCAST(GAIA::NM)(src);
+			#endif
+		#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
+			m_n = src;
+		#else
+		#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
+				*GRCAST(volatile GAIA::N32*)(&m_n) = GSCAST(GAIA::N32)(src);
+		#	else
+				*GRCAST(volatile GAIA::N32*)(&m_n) = GSCAST(GAIA::N32)(src);
+		#	endif
+		#endif
+			return *this;
+		}
+		GINL Atomic::operator GAIA::N64() const
+		{
+		#if GAIA_OS == GAIA_OS_WINDOWS
+			#if GAIA_MACHINE == GAIA_MACHINE64
+				return m_n;
+			#else
+				return *GRCAST(volatile const GAIA::NM*)(&m_n);
+			#endif
+		#elif GAIA_OS == GAIA_OS_OSX || GAIA_OS == GAIA_OS_IOS
+			return m_n;
+		#else
+		#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
+				return *GRCAST(volatile const GAIA::N32*)(&m_n);
+		#	else
+				return *GRCAST(volatile const GAIA::N32*)(&m_n);
+		#	endif
+		#endif
+		}
 		GINL GAIA::N64 Atomic::Increase()
 		{
 		#if GAIA_OS == GAIA_OS_WINDOWS
@@ -29,7 +66,7 @@ namespace GAIA
 			return OSAtomicIncrement64(&m_n);
 		#else
 		#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
-				return __sync_add_and_fetch((GAIA::N32*)&m_n, 1) + 1;
+				return __sync_add_and_fetch((GAIA::N32*)&m_n, 1);
 		#	else
 				return atomic_inc_return((GAIA::N32*)&m_n);
 		#	endif
@@ -47,7 +84,7 @@ namespace GAIA
 			return OSAtomicDecrement64(&m_n);
 		#else
 		#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
-				return __sync_sub_and_fetch((GAIA::N32*)&m_n, 1) - 1;
+				return __sync_sub_and_fetch((GAIA::N32*)&m_n, 1);
 		#	else
 				return atomic_dec_return((GAIA::N32*)&m_n);
 		#	endif
@@ -65,7 +102,7 @@ namespace GAIA
 			return OSAtomicAdd64(src, &m_n);
 		#else
 		#	if GAIA_COMPILER == GAIA_COMPILER_GCC && GAIA_COMPILER_GCCVER >= GAIA_COMPILER_GCCVER_USESYNCXX
-				return __sync_add_and_fetch((GAIA::N32*)&m_n, (GAIA::N32)src) + src;
+				return __sync_add_and_fetch((GAIA::N32*)&m_n, (GAIA::N32)src);
 		#	else
 				return atomic_add_return((GAIA::N32)src, (GAIA::N32*)&m_n);
 		#	endif
